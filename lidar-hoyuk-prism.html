@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peg, Boat, and Quartered Sky — archAIology.org</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+  /* ── TOKENS ── */
+  :root {
+    --sand:     #f5f0e8;
+    --parchment:#ede7d9;
+    --clay:     #c8a96e;
+    --ochre:    #b8892a;
+    --terra:    #8b4513;
+    --ink:      #1a1410;
+    --ash:      #5a5248;
+    --rule:     #d4c9b0;
+    --accent:   #2d4a3e;
+    --accent-lt:#3d6b5a;
+    --white:    #fefcf8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--sand);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.75;
+  }
+
+  /* ── SITE HEADER ── */
+  .site-header {
+    background: var(--ink);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .site-logo {
+    font-family: 'Instrument Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--clay);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .site-logo span { color: var(--white); }
+  .site-nav {
+    display: flex;
+    gap: 1.8rem;
+    list-style: none;
+  }
+  .site-nav a {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rule);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .site-nav a:hover { color: var(--clay); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 120%, #2d3a2e 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-section-label {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+  }
+  .hero-section-label::before,
+  .hero-section-label::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 3rem;
+    background: var(--clay);
+    opacity: 0.5;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    line-height: 1.15;
+    color: var(--white);
+    max-width: 820px;
+    margin: 0 auto 1.2rem;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--clay);
+  }
+  .hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--rule);
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .hero-meta-item {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ash);
+  }
+  .hero-meta-item strong {
+    color: var(--clay);
+    font-weight: 600;
+  }
+  .hero-dot { color: var(--ash); opacity: 0.4; }
+
+  /* ── LAYOUT ── */
+  .article-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ── LEAD IMAGE ── */
+  .lead-figure {
+    margin: -1px 0 0;
+    background: var(--parchment);
+    border-bottom: 1px solid var(--rule);
+  }
+  .lead-figure-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 2rem 2rem;
+  }
+
+  /* ── PHOTO PLACEHOLDER ── */
+  .photo-placeholder {
+    background: var(--parchment);
+    border: 2px dashed var(--clay);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem;
+    color: var(--ash);
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.8rem;
+    text-align: center;
+    position: relative;
+  }
+  .photo-placeholder .ph-icon {
+    font-size: 2rem;
+    opacity: 0.4;
+  }
+  .photo-placeholder .ph-label {
+    font-weight: 600;
+    color: var(--ochre);
+    font-size: 0.85rem;
+  }
+  .photo-placeholder .ph-note {
+    opacity: 0.7;
+    font-size: 0.72rem;
+    max-width: 340px;
+  }
+  .photo-placeholder.wide { min-height: 260px; }
+  .photo-placeholder.tall { min-height: 400px; }
+
+  /* Replace placeholder with real image: swap .photo-placeholder for <img> */
+
+  .figure-caption {
+    margin-top: 0.85rem;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--ash);
+    line-height: 1.5;
+  }
+  .figure-caption strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .figure-number {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--white);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+  }
+
+  /* ── BODY COLUMNS ── */
+  .article-body {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 4rem;
+    padding: 4rem 0 5rem;
+    align-items: start;
+  }
+  @media (max-width: 800px) {
+    .article-body { grid-template-columns: 1fr; gap: 2rem; }
+    .article-sidebar { order: -1; }
+  }
+
+  /* ── PROSE ── */
+  .prose { max-width: 680px; }
+
+  .prose p {
+    margin-bottom: 1.4em;
+    text-align: justify;
+    hyphens: auto;
+  }
+  .prose p:first-child::first-letter {
+    font-size: 3.8em;
+    font-weight: 600;
+    float: left;
+    line-height: 0.82;
+    margin: 0.08em 0.08em 0 0;
+    color: var(--ochre);
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .section-head {
+    margin: 3rem 0 1rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+  }
+  .section-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+  .section-head-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .section-rule {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 2.5rem 0;
+  }
+
+  /* Inline term */
+  .term {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  /* Pull quote */
+  .pullquote {
+    border-left: 3px solid var(--clay);
+    margin: 2rem 0 2rem -1.5rem;
+    padding: 0.8rem 1.2rem 0.8rem 1.5rem;
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--ash);
+    line-height: 1.5;
+  }
+  .pullquote cite {
+    display: block;
+    font-size: 0.72rem;
+    font-style: normal;
+    font-family: 'Instrument Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--clay);
+    margin-top: 0.5rem;
+  }
+
+  /* Inline figure within prose */
+  .prose-figure {
+    margin: 2.5rem 0;
+  }
+
+  /* Operator steps */
+  .steps {
+    margin: 1.5rem 0;
+    counter-reset: step;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.6rem 1rem;
+    margin-bottom: 1.2rem;
+    align-items: start;
+  }
+  .step-num {
+    counter-increment: step;
+    background: var(--accent);
+    color: var(--white);
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .step-body { font-size: 0.95rem; }
+  .step-body strong {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  /* Tests grid */
+  .tests-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  @media (max-width: 600px) { .tests-grid { grid-template-columns: 1fr; } }
+  .test-card {
+    background: var(--white);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--accent);
+    padding: 1rem 1.1rem;
+    border-radius: 0 0 4px 4px;
+  }
+  .test-card h4 {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+  .test-card p { font-size: 0.85rem; margin: 0; text-align: left; }
+
+  /* ── SIDEBAR ── */
+  .article-sidebar {
+    position: sticky;
+    top: 72px;
+  }
+  .sidebar-card {
+    background: var(--white);
+    border: 1px solid var(--rule);
+    padding: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+  .sidebar-label {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sidebar-card p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--ash);
+    margin-bottom: 0.6rem;
+  }
+  .sidebar-card p:last-child { margin-bottom: 0; }
+  .sidebar-card strong { color: var(--ink); }
+
+  .object-specs dt {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin-top: 0.6rem;
+  }
+  .object-specs dd {
+    font-size: 0.88rem;
+    color: var(--ink);
+    margin-left: 0;
+  }
+
+  .toc-list { list-style: none; }
+  .toc-list li { 
+    border-bottom: 1px solid var(--rule); 
+    padding: 0.4rem 0;
+  }
+  .toc-list li:last-child { border-bottom: none; }
+  .toc-list a {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--ash);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s;
+  }
+  .toc-list a:hover { color: var(--accent); }
+  .toc-num {
+    font-size: 0.62rem;
+    color: var(--clay);
+    font-weight: 700;
+    min-width: 1rem;
+  }
+
+  /* ── NOTES ── */
+  .notes-section {
+    border-top: 1px solid var(--rule);
+    padding: 2.5rem 0;
+  }
+  .notes-label {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 1.2rem;
+  }
+  .notes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 2rem;
+  }
+  @media (max-width: 700px) { .notes-grid { grid-template-columns: 1fr; } }
+  .note-item {
+    font-size: 0.8rem;
+    color: var(--ash);
+    line-height: 1.5;
+    display: grid;
+    grid-template-columns: 1.2rem 1fr;
+    gap: 0.4rem;
+  }
+  .note-num {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--clay);
+    padding-top: 0.1rem;
+  }
+
+  /* ── AUTHOR BLOCK ── */
+  .author-block {
+    background: var(--accent);
+    color: var(--white);
+    padding: 2rem 2.5rem;
+    margin: 0 0 4rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .author-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--accent-lt);
+    border: 2px solid var(--clay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--clay);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .author-info-label {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 0.3rem;
+  }
+  .author-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .author-bio {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.75);
+  }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    background: var(--ink);
+    color: var(--ash);
+    text-align: center;
+    padding: 2rem;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+  }
+  .site-footer a { color: var(--clay); text-decoration: none; }
+
+  /* ── SUPERSCRIPT NOTES ── */
+  sup.note {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--clay);
+    cursor: default;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero h1, .hero-subtitle, .hero-meta {
+    animation: fadeUp 0.7s ease both;
+  }
+  .hero-subtitle { animation-delay: 0.12s; }
+  .hero-meta     { animation-delay: 0.22s; }
+</style>
+</head>
+<body>
+
+<!-- SITE HEADER -->
+<header class="site-header">
+  <a class="site-logo" href="https://archaiology.org"><span>arch</span>AI<span>ology</span></a>
+  <nav><ul class="site-nav">
+    <li><a href="https://archaiology.org/articles">Articles</a></li>
+    <li><a href="https://archaiology.org/research">Research</a></li>
+    <li><a href="https://archaiology.org/regions">Regions</a></li>
+    <li><a href="https://archaiology.org/about">About</a></li>
+  </ul></nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-section-label">Near Eastern Archaeoastronomy</div>
+  <h1>Peg, Boat, and <em>Quartered Sky</em></h1>
+  <p class="hero-subtitle">How a small limestone prism from Bronze Age Anatolia may be the earliest known hand-held astronomical instrument</p>
+  <div class="hero-meta">
+    <span class="hero-meta-item"><strong>John Carlton</strong></span>
+    <span class="hero-dot">·</span>
+    <span class="hero-meta-item">Lidar Höyük, Şanlıurfa</span>
+    <span class="hero-dot">·</span>
+    <span class="hero-meta-item">November 2025</span>
+    <span class="hero-dot">·</span>
+    <span class="hero-meta-item">Revised March 2026</span>
+  </div>
+</section>
+
+<!-- LEAD FIGURE -->
+<div class="lead-figure">
+  <div class="lead-figure-inner">
+    <!-- REPLACE: swap this placeholder div with <img src="fig1-four-faces.jpg" alt="..."> -->
+    <div class="photo-placeholder wide">
+      <div class="ph-icon">🪨</div>
+      <div class="ph-label">Figure 1 — Four Faces of the Lidar Höyük Prism</div>
+      <div class="ph-note">Replace this block with the four-face photograph array (Şanlıurfa Museum Li 87/19). Image credit: Eberhard Zangger / Luwian Studies Foundation.</div>
+    </div>
+    <p class="figure-caption"><span class="figure-number">Fig. 1</span> <strong>Lidar Höyük limestone prism (Şanlıurfa Museum Li 87/19), four faces.</strong> Two faces carry the celestial boat and quartered disk; two carry raised-hand human figures. Drill holes visible on the figure face at left serve as the device's peg index. Scale bar = 5 cm.</p>
+  </div>
+</div>
+
+<!-- ARTICLE WRAP -->
+<div class="article-wrap">
+<div class="article-body">
+
+<!-- ── MAIN PROSE ── -->
+<main class="prose" id="article-main">
+
+<p>Somewhere in southeastern Anatolia, probably in the centuries bracketing 1800 BCE, a craftsman picked up a piece of soft limestone and carved something that had never quite been made before: a small, hand-held device for tracking the seasons. It fits in a palm. Its geometry is minimal — a cross inside a circle, a crescent below, four small dots, and three drilled holes of unequal depth. Yet when read together, these elements form a coherent and falsifiable instrument, one that anticipated the logic of the Greek and Roman <span class="term">parapegma</span> by more than a millennium.</p>
+
+<p>The object is catalogued as Şanlıurfa Museum Li 87/19 and known by its findspot: Lidar Höyük, a mound site in the upper Euphrates basin. It was excavated in the 1980s but received only passing scholarly attention until a 2025 study by Eberhard Zangger, Daniel Sarlo, and Fabienne Haas Dantes reinterpreted the closely related ˁAin Samiya goblet as one of the earliest cosmological depictions in the ancient world. The Lidar prism appeared in that study as a supporting comparandum — a parallel carrying the same celestial boat motif. What had not yet been asked was whether the prism was itself functional: not merely a cosmological symbol, but a working instrument.</p>
+
+<p>This article argues that it was.</p>
+
+<div class="section-head" id="object"><h2>The Object</h2><div class="section-head-rule"></div></div>
+
+<p>The prism measures approximately 13 × 7 × 6 cm and is carved from soft limestone. Its surface shows the unmistakable patina of long handling — worn smooth at the edges, with a worked-in-the-hand quality that stone acquires only over years of use. It has six faces. Two are the primary display faces; two carry human figures; and the remaining faces preserve structural or indexing features.</p>
+
+<p>The two display faces each show the same essential composition: a crescent form — the celestial boat — supporting a large disk subdivided by a cross into four equal quadrants. A single small punctum (dot) appears inside each quadrant; a central boss marks the cross's intersection. One of these faces is instrument-ruled, with the geometry precisely drawn; the other is freer and more expressive. On the ruled face, two smaller human figures appear below the disk in a formal reading arrangement, flanking what appears to be the boat's prow.</p>
+
+<p>The figure faces carry human figures in a raised-hand posture — a well-attested officiant or reader's stance in Near Eastern art, from Mesopotamian cylinder seals to Anatolian rock reliefs. These figures do not encode astronomical data; they indicate who performs the reading.</p>
+
+<p>The three drill holes are the device's most diagnostic feature. Two are notably deep; one is shallow. They survive near the torso and shoulder zone of the figure face. A fourth hole on a missing or damaged edge is plausible but cannot be confirmed from current photographs.</p>
+
+<!-- RULED FACE PHOTO -->
+<div class="prose-figure">
+  <!-- REPLACE: swap with <img src="fig2-ruled-face.jpg" alt="Ruled face of the Lidar Höyük prism"> -->
+  <div class="photo-placeholder tall">
+    <div class="ph-icon">📷</div>
+    <div class="ph-label">Figure 2 — Ruled Face (Photograph)</div>
+    <div class="ph-note">Replace with close-up photograph of the ruled face showing the instrument-drawn cross, quartered disk, celestial boat, puncta, and shallow peg hole. Scale bar = 5 cm.</div>
+  </div>
+  <p class="figure-caption"><span class="figure-number">Fig. 2</span> <strong>Ruled face, close-up.</strong> The instrument-drawn cross divides the disk into four equal sectors, each containing a single punctum. The crescent boat is clearly visible below the disk. One shallow peg hole appears near the lower torso of the attendant figures.</p>
+</div>
+
+<!-- RULED FACE SCHEMATIC SVG -->
+<div class="prose-figure">
+<svg viewBox="0 0 580 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:1px solid #d4c9b0;background:#fefcf8;border-radius:4px;">
+  <defs>
+    <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#5a5248"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="290" y="28" text-anchor="middle" font-family="'Instrument Sans',sans-serif" font-size="11" font-weight="700" fill="#1a1410" letter-spacing="1">LIDAR HÖYÜK PRISM — RULED FACE</text>
+  <text x="290" y="44" text-anchor="middle" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#5a5248">Schematic reconstruction · proportions approximate to artifact photographs</text>
+  <line x1="40" y1="54" x2="540" y2="54" stroke="#d4c9b0" stroke-width="0.8"/>
+
+  <!-- Outer disk circle -->
+  <circle cx="230" cy="210" r="130" fill="none" stroke="#1a1410" stroke-width="2"/>
+
+  <!-- Cross (instrument-ruled) - highlight horizontal orange -->
+  <line x1="100" y1="210" x2="360" y2="210" stroke="#b8892a" stroke-width="2.2"/>
+  <!-- Slight diagonal as in photo -->
+  <line x1="216" y1="82" x2="244" y2="338" stroke="#1a1410" stroke-width="1.8"/>
+
+  <!-- Center boss -->
+  <circle cx="230" cy="210" r="7" fill="#1a1410"/>
+  <circle cx="230" cy="210" r="4" fill="#fefcf8"/>
+
+  <!-- Quadrant puncta -->
+  <circle cx="182" cy="168" r="5" fill="#1a1410"/>
+  <circle cx="284" cy="165" r="5" fill="#1a1410"/>
+  <circle cx="178" cy="260" r="5" fill="#1a1410"/>
+  <circle cx="284" cy="258" r="5" fill="#1a1410"/>
+
+  <!-- Celestial boat (crescent below disk) -->
+  <path d="M115,305 Q230,380 345,305" fill="none" stroke="#1a1410" stroke-width="2.5"/>
+  <path d="M130,305 Q230,360 330,305" fill="none" stroke="#1a1410" stroke-width="1.2"/>
+
+  <!-- Peg hole (shallow, on ruled face) -->
+  <circle cx="230" cy="390" r="7" fill="none" stroke="#8b4513" stroke-width="2" stroke-dasharray="4,2"/>
+  <circle cx="230" cy="390" r="3" fill="#8b4513" opacity="0.4"/>
+
+  <!-- Attendant figures (simplified rectangles) -->
+  <rect x="184" y="410" width="20" height="32" rx="3" fill="none" stroke="#5a5248" stroke-width="1.5"/>
+  <rect x="256" y="410" width="20" height="32" rx="3" fill="none" stroke="#5a5248" stroke-width="1.5"/>
+  <line x1="194" y1="410" x2="194" y2="402" stroke="#5a5248" stroke-width="1.2"/>
+  <line x1="266" y1="410" x2="266" y2="402" stroke="#5a5248" stroke-width="1.2"/>
+
+  <!-- LEGEND + CALLOUTS right side -->
+  <!-- Legend items -->
+  <g transform="translate(400, 80)">
+    <text font-family="'Instrument Sans',sans-serif" font-size="9" font-weight="700" fill="#5a5248" letter-spacing="0.8">LEGEND</text>
+    <line x1="0" y1="8" x2="140" y2="8" stroke="#d4c9b0" stroke-width="0.8"/>
+    <!-- items -->
+    <g transform="translate(0,18)">
+      <circle cx="6" cy="4" r="4" fill="#1a1410"/>
+      <circle cx="6" cy="4" r="2.5" fill="#fefcf8"/>
+      <text x="16" y="8" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#1a1410">① Center boss (cursor)</text>
+    </g>
+    <g transform="translate(0,34)">
+      <line x1="0" y1="4" x2="12" y2="4" stroke="#b8892a" stroke-width="2"/>
+      <text x="16" y="8" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#1a1410">② Ruled cross (instrument)</text>
+    </g>
+    <g transform="translate(0,50)">
+      <circle cx="6" cy="4" r="4" fill="#1a1410"/>
+      <text x="16" y="8" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#1a1410">③ Punctum × 4 (season hinges)</text>
+    </g>
+    <g transform="translate(0,66)">
+      <path d="M0,8 Q6,0 12,8" fill="none" stroke="#1a1410" stroke-width="2"/>
+      <text x="16" y="8" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#1a1410">④ Crescent / celestial boat</text>
+    </g>
+    <g transform="translate(0,82)">
+      <circle cx="6" cy="4" r="5" fill="none" stroke="#8b4513" stroke-width="1.5" stroke-dasharray="3,1.5"/>
+      <text x="16" y="8" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#1a1410">⑤ Peg index (shallow)</text>
+    </g>
+    <g transform="translate(0,98)">
+      <rect x="0" y="0" width="12" height="16" rx="2" fill="none" stroke="#5a5248" stroke-width="1.2"/>
+      <text x="16" y="10" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#1a1410">⑥ Attendants (reading scene)</text>
+    </g>
+    <g transform="translate(0,120)">
+      <circle cx="6" cy="6" r="12" fill="none" stroke="#1a1410" stroke-width="1.5"/>
+      <line x1="0" y1="6" x2="12" y2="6" stroke="#1a1410" stroke-width="1"/>
+      <line x1="6" y1="0" x2="6" y2="12" stroke="#1a1410" stroke-width="1"/>
+      <text x="16" y="10" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#1a1410">⑦ Quartered disk (4 sectors)</text>
+    </g>
+  </g>
+
+  <!-- Callout lines from diagram -->
+  <!-- Quartered disk label -->
+  <line x1="360" y1="100" x2="395" y2="85" stroke="#aaa" stroke-width="1" marker-end="url(#arr)"/>
+  <text x="125" y="98" font-family="'Instrument Sans',sans-serif" font-size="8" fill="#5a5248">Quartered disk</text>
+  <text x="125" y="109" font-family="'Instrument Sans',sans-serif" font-size="8" fill="#5a5248">(4 seasonal sectors)</text>
+
+  <!-- Punctum label -->
+  <line x1="284" y1="165" x2="350" y2="148" stroke="#aaa" stroke-width="1" marker-end="url(#arr)"/>
+
+  <!-- Boat label -->
+  <line x1="345" y1="320" x2="395" y2="310" stroke="#aaa" stroke-width="1" marker-end="url(#arr)"/>
+  <text x="210" y="372" font-family="'Instrument Sans',sans-serif" font-size="8" fill="#5a5248" text-anchor="middle">Crescent / horizon boat</text>
+
+  <!-- Peg label -->
+  <line x1="237" y1="390" x2="370" y2="385" stroke="#aaa" stroke-width="1" marker-end="url(#arr)"/>
+  <text x="372" y="388" font-family="'Instrument Sans',sans-serif" font-size="8" fill="#8b4513">Peg index (shallow · park position)</text>
+
+  <!-- Attendants label -->
+  <text x="230" y="462" text-anchor="middle" font-family="'Instrument Sans',sans-serif" font-size="8" fill="#5a5248">Attendants / reading scene (ruled face)</text>
+
+  <!-- Scale bar -->
+  <line x1="50" y1="455" x2="110" y2="455" stroke="#1a1410" stroke-width="1.5"/>
+  <line x1="50" y1="450" x2="50" y2="460" stroke="#1a1410" stroke-width="1.5"/>
+  <line x1="110" y1="450" x2="110" y2="460" stroke="#1a1410" stroke-width="1.5"/>
+  <text x="80" y="470" text-anchor="middle" font-family="'Instrument Sans',sans-serif" font-size="8" fill="#5a5248">≈ 5 cm</text>
+
+  <!-- Credit -->
+  <text x="290" y="478" text-anchor="middle" font-family="'Instrument Sans',sans-serif" font-size="7.5" fill="#aaa">John Carlton · archAIology · schematic for publication</text>
+</svg>
+<p class="figure-caption"><span class="figure-number">Fig. 3</span> <strong>Ruled face schematic.</strong> The instrument-drawn cross (horizontal axis highlighted) divides the disk into four equal seasonal sectors. The crescent boat acts as horizon carrier below. The single shallow peg hole on this face serves as the neutral or "park" position.</p>
+</div>
+
+<div class="section-head" id="reading"><h2>Reading the Parts</h2><div class="section-head-rule"></div></div>
+
+<p><strong>The quartered disk</strong> is the instrument's core display. A cross dividing a circle into four equal sectors encodes the simplest possible seasonal calendar: a year with four quarters, each beginning at a cardinal moment — the spring equinox as the natural zero point in Near Eastern tradition. This structure requires no zodiac, no star catalogue, and no writing. It requires only the recognition that the solar year has four turning points and that three months separate each one. That logic is attested in MUL.APIN and other first-millennium cuneiform sources, but the underlying arithmetic is older and widespread.</p>
+
+<blockquote class="pullquote">
+  "The quartering does not require zodiac names; it only requires a spring start and equal sectors."
+  <cite>— Carlton 2025</cite>
+</blockquote>
+
+<p><strong>The celestial boat</strong> — the crescent form cradling the disk — is among the most persistent motifs in ancient Near Eastern sky imagery. It carries the sun and moon across the celestial horizon. On the ruled face, the boat sits precisely below the disk in a "lifted sky" composition directly paralleled at Yazılıkaya, the great Hittite rock sanctuary in central Anatolia, where Zangger and Gautschy have documented a similar seasonal celestial program carved into living rock. The prism miniaturizes that monumental scheme into a hand-held tool.</p>
+
+<p><strong>The puncta</strong> — one per quadrant, placed with evident intention — are the season's hinge-markers. They represent the minimum information needed to identify a key event within each quarter: perhaps a heliacal rising, perhaps a festival rite, perhaps a full moon of special calendrical significance. Mark E. Cohen's survey of ancient Near Eastern cultic calendars shows that festival packets in this tradition typically cluster around seasonal hinges, often spanning seven days, with a spring-anchored four-season scaffold that operated widely before zodiacal nomenclature was formalized.<sup class="note">5</sup></p>
+
+<p><strong>The human figures</strong> do not add astronomical content. Their raised-hand posture — the standard reader's or officiant's gesture in Near Eastern art — identifies the role of the person holding the device. The two attendant figures on the ruled face reinforce the formal reading arrangement: this is the face you turn to when you announce.</p>
+
+<p><strong>The holes</strong> are where the instrument becomes undeniable. Three drill holes of two markedly different depths survive on the figure face. A small peg or cord inserted into a deep hole indicates which quarter is currently active; the shallow hole provides a neutral position when the device is not in use. The logic is exactly what Daryn Lehoux identified as the defining feature of ancient parapegmata: "a peg index adjacent to a cycle image."<sup class="note">4</sup> The Lidar prism satisfies that criterion in miniature.</p>
+
+<!-- OFFICIANT FACE PHOTO -->
+<div class="prose-figure">
+  <!-- REPLACE: swap with <img src="fig4-officiant-annotated.jpg" alt="Officiant face with annotations"> -->
+  <div class="photo-placeholder tall">
+    <div class="ph-icon">📷</div>
+    <div class="ph-label">Figure 4 — Officiant Face (Annotated Photograph)</div>
+    <div class="ph-note">Replace with the annotated photograph of the officiant face showing the quartered disk, celestial boat, shallow peg hole, and two deep peg holes labelled.</div>
+  </div>
+  <p class="figure-caption"><span class="figure-number">Fig. 4</span> <strong>Officiant face, annotated.</strong> The two deep peg holes serve as active-season indices; the shallow hole at upper right is the neutral or "park" position. The raised-hand figure below carries the disk and boat on its body, integrating the cosmic image with the officiant role.</p>
+</div>
+
+<!-- OFFICIANT FACE SCHEMATIC SVG -->
+<div class="prose-figure">
+<svg viewBox="0 0 560 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:1px solid #d4c9b0;background:#fefcf8;border-radius:4px;">
+  <defs>
+    <marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#5a5248"/>
+    </marker>
+  </defs>
+
+  <text x="280" y="26" text-anchor="middle" font-family="'Instrument Sans',sans-serif" font-size="11" font-weight="700" fill="#1a1410" letter-spacing="1">LIDAR HÖYÜK PRISM — OFFICIANT FACE</text>
+  <text x="280" y="42" text-anchor="middle" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#5a5248">Labels: officiant, raised-hand gesture, quartered disk on boat, peg-holes (two deep, one shallow)</text>
+  <line x1="40" y1="52" x2="520" y2="52" stroke="#d4c9b0" stroke-width="0.8"/>
+
+  <!-- Small disk (top of figure, above head) -->
+  <circle cx="200" cy="115" r="52" fill="none" stroke="#1a1410" stroke-width="2"/>
+  <!-- Cross in disk -->
+  <line x1="148" y1="115" x2="252" y2="115" stroke="#b8892a" stroke-width="1.8"/>
+  <line x1="200" y1="63" x2="200" y2="167" stroke="#1a1410" stroke-width="1.5"/>
+  <!-- Center boss -->
+  <circle cx="200" cy="115" r="5" fill="#1a1410"/>
+  <circle cx="200" cy="115" r="3" fill="#fefcf8"/>
+  <!-- Quadrant puncta -->
+  <circle cx="174" cy="92" r="4" fill="#1a1410"/>
+  <circle cx="226" cy="91" r="4" fill="#1a1410"/>
+  <circle cx="173" cy="138" r="4" fill="#1a1410"/>
+  <circle cx="226" cy="138" r="4" fill="#1a1410"/>
+
+  <!-- Boat (crescent under disk) -->
+  <path d="M148,160 Q200,210 252,160" fill="none" stroke="#1a1410" stroke-width="2.2"/>
+  <path d="M158,160 Q200,195 242,160" fill="none" stroke="#1a1410" stroke-width="1.2"/>
+
+  <!-- Shallow peg hole (upper right of figure, park position) -->
+  <circle cx="265" cy="172" r="6" fill="none" stroke="#8b4513" stroke-width="1.8" stroke-dasharray="4,2"/>
+  <circle cx="265" cy="172" r="2.5" fill="#8b4513" opacity="0.4"/>
+
+  <!-- Torso / body of figure -->
+  <rect x="165" y="210" width="70" height="60" rx="4" fill="none" stroke="#5a5248" stroke-width="1.5"/>
+  <!-- Arms raised -->
+  <line x1="165" y1="225" x2="130" y2="195" stroke="#5a5248" stroke-width="2"/>
+  <line x1="235" y1="225" x2="270" y2="195" stroke="#5a5248" stroke-width="2"/>
+  <!-- Hands -->
+  <circle cx="128" cy="193" r="5" fill="none" stroke="#5a5248" stroke-width="1.5"/>
+  <circle cx="272" cy="193" r="5" fill="none" stroke="#5a5248" stroke-width="1.5"/>
+
+  <!-- Deep peg hole 1 (torso area, left) -->
+  <circle cx="152" cy="240" r="10" fill="#1a1410" opacity="0.85"/>
+  <circle cx="152" cy="240" r="5" fill="#333"/>
+
+  <!-- Deep peg hole 2 (lower torso) -->
+  <circle cx="200" cy="290" r="10" fill="#1a1410" opacity="0.85"/>
+  <circle cx="200" cy="290" r="5" fill="#333"/>
+
+  <!-- Legs -->
+  <rect x="170" y="270" width="20" height="55" rx="3" fill="none" stroke="#5a5248" stroke-width="1.2"/>
+  <rect x="210" y="270" width="20" height="55" rx="3" fill="none" stroke="#5a5248" stroke-width="1.2"/>
+
+  <!-- CALLOUT LINES & LABELS -->
+  <!-- Quartered disk -->
+  <line x1="252" y1="90" x2="310" y2="80" stroke="#aaa" stroke-width="1" marker-end="url(#arr2)"/>
+  <text x="313" y="83" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#1a1410">Quartered disk</text>
+  <text x="313" y="94" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#5a5248">(season tiles)</text>
+
+  <!-- Celestial boat -->
+  <line x1="252" y1="175" x2="310" y2="165" stroke="#aaa" stroke-width="1" marker-end="url(#arr2)"/>
+  <text x="313" y="168" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#1a1410">Celestial boat /</text>
+  <text x="313" y="179" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#5a5248">horizon carrier</text>
+
+  <!-- Shallow peg -->
+  <line x1="271" y1="172" x2="315" y2="198" stroke="#aaa" stroke-width="1" marker-end="url(#arr2)"/>
+  <text x="318" y="201" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#8b4513">Shallow peg-hole</text>
+  <text x="318" y="212" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#5a5248">(park / neutral)</text>
+
+  <!-- Deep peg 1 -->
+  <line x1="142" y1="240" x2="80" y2="240" stroke="#aaa" stroke-width="1" marker-end="url(#arr2)"/>
+  <text x="10" y="236" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#1a1410">Deep peg-hole</text>
+  <text x="10" y="247" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#2d4a3e">(active index)</text>
+
+  <!-- Deep peg 2 -->
+  <line x1="190" y1="300" x2="120" y2="320" stroke="#aaa" stroke-width="1" marker-end="url(#arr2)"/>
+  <text x="10" y="316" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#1a1410">Deep peg-hole</text>
+  <text x="10" y="327" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#2d4a3e">(active index)</text>
+
+  <!-- Raised hands label -->
+  <line x1="272" y1="195" x2="315" y2="230" stroke="#aaa" stroke-width="1" marker-end="url(#arr2)"/>
+  <text x="318" y="233" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#1a1410">Raised-hand</text>
+  <text x="318" y="244" font-family="'Instrument Sans',sans-serif" font-size="8.5" fill="#5a5248">officiant gesture</text>
+
+  <!-- Scale bar -->
+  <line x1="50" y1="460" x2="110" y2="460" stroke="#1a1410" stroke-width="1.5"/>
+  <line x1="50" y1="455" x2="50" y2="465" stroke="#1a1410" stroke-width="1.5"/>
+  <line x1="110" y1="455" x2="110" y2="465" stroke="#1a1410" stroke-width="1.5"/>
+  <text x="80" y="476" text-anchor="middle" font-family="'Instrument Sans',sans-serif" font-size="8" fill="#5a5248">≈ 5 cm</text>
+
+  <text x="280" y="495" text-anchor="middle" font-family="'Instrument Sans',sans-serif" font-size="7.5" fill="#aaa">John Carlton · archAIology · schematic for publication</text>
+</svg>
+<p class="figure-caption"><span class="figure-number">Fig. 5</span> <strong>Officiant face schematic.</strong> Two deep peg holes serve as active-season indices; the shallow hole is the neutral position. The raised-hand figure integrates the cosmic program with the human officiant, making explicit who reads and announces the seasonal state.</p>
+</div>
+
+<div class="section-head" id="operation"><h2>How It Was Used</h2><div class="section-head-rule"></div></div>
+
+<p>The prism is not a day counter. Its scale, its portability, and its minimal geometry argue against any function requiring fine-grained daily tracking. What it does provide — elegantly, with no superfluous features — is a <em>position indicator</em> within a four-part year. The operator's routine can be reconstructed in four steps:</p>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body"><strong>Set the season</strong> Place the peg in the appropriate deep hole to mark which quarter is active. Two holes for two "in-use" states; the shallow hole parks the peg between seasons or before the year begins.</div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body"><strong>Mark the start</strong> On the figure-face, with its single officiant and boat-plus-disk, align the month's opening — likely keyed to a heliacal rising or the first crescent visibility that begins the lunar month. The boat-as-horizon and the raised hand together constitute a strong "begin" icon.</div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body"><strong>Acknowledge the culmination</strong> Turn to the ruled face — the formal reading side — to mark the quarter's central event: a festival week, a full moon, or a seasonal ceremony. The two attendant figures on this face confirm its role as the announcement face.</div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body"><strong>Advance</strong> Move the peg to the next deep hole when the season turns. Three surviving holes can index at least three states; a complete four-hole set (the fourth likely on the damaged edge) would index a full year.</div>
+  </div>
+</div>
+
+<p>The result is a device that lets a single officiant carry the year's structure in one hand — a compact, mnemonic, operator-centric tool. Its nearest functional analogues are the later Greek and Roman parapegmata, stone or bronze tablets where a movable peg tracks a user's position within an astronomical or meteorological cycle. Lehoux's analysis of those Classical instruments maps cleanly onto the prism's logic: cycle image plus indexed position. The Lidar prism appears to be that logic in its oldest surviving, hand-held form.</p>
+
+<div class="section-head" id="date"><h2>Date, Geography, and Context</h2><div class="section-head-rule"></div></div>
+
+<p>The original excavation publication tentatively assigned the prism to the Middle Bronze Age — roughly 2000–1600 BCE — but acknowledged the absence of precise stratigraphic context. Stylistic and functional considerations extend plausibility into the late second or early first millennium BCE. For the parapegma argument, the dating question is secondary: the quartered-year scaffold the prism encodes is period-appropriate across the full range.</p>
+
+<p>Near Eastern cultic calendars, as documented by Cohen, consistently organize ritual life around a spring-anchored four-season framework, with festival packets that often run for seven days or more and cluster at seasonal boundaries — precisely the resolution the prism's puncta could index. The ˁAin Samiya goblet, which Zangger et al. assign to northern Syrian production in the Intermediate Bronze Age, demonstrates that the celestial boat motif combined with a quartered celestial body was circulating as a coherent iconographic program centuries before any zodiacal notation was invented. The Lidar prism participates in the same program but adds the indexing holes that transform image into instrument.</p>
+
+<p>Geographically, Lidar Höyük sits at the cultural intersection of Mesopotamian, Hurrian, and Hittite spheres — a corridor through which astronomical ideas moved with documented regularity. The Hittite sanctuary at Yazılıkaya, some 600 km to the northwest, shows that the quartered celestial year was given monumental expression in Anatolia. The prism miniaturizes that monumental program into something a single person could carry.</p>
+
+<div class="section-head" id="tests"><h2>Predictions and Tests</h2><div class="section-head-rule"></div></div>
+
+<p>The parapegma interpretation generates four falsifiable predictions. Each can be evaluated with standard archaeometric and microscopic techniques. If none holds, the object is better described as a cosmological miniature — compelling, but symbolic rather than functional. If one or more hold, the instrument claim becomes strong.</p>
+
+<div class="tests-grid">
+  <div class="test-card">
+    <h4>① Wear Mapping</h4>
+    <p>The two deep holes and the grooves adjacent to them should show greater polish and surface wear than other areas of the face, betraying repeated peg cycling over many seasons.</p>
+  </div>
+  <div class="test-card">
+    <h4>② Sub-grouping</h4>
+    <p>If the puncta inside each quadrant cluster in threes or show seven-step sub-marks visible under magnification, this would anchor the triadic or heptadic arithmetic widely attested in Near Eastern festival sequences.</p>
+  </div>
+  <div class="test-card">
+    <h4>③ Zero Position</h4>
+    <p>One quadrant or one point on the boat's "prow" may carry a slightly larger or more deeply incised mark — the instrument's start position, analogous to the month-one indicator on later parapegmata.</p>
+  </div>
+  <div class="test-card">
+    <h4>④ Geometry Audit</h4>
+    <p>On the ruled face, the ratio of disk diameter to boat chord should be recoverable and consistent with a simple artisan's rule-of-thumb. If it matches comparanda, a standardized production convention is implied.</p>
+  </div>
+</div>
+
+<div class="section-head" id="significance"><h2>Why It Matters</h2><div class="section-head-rule"></div></div>
+
+<p>If the use-wear evidence confirms repeated peg cycling, the Lidar Höyük prism will stand as the earliest known hand-held astronomical index device. That distinction is not merely a superlative. It documents a specific cognitive achievement: the compression of an entire seasonal calendar into a portable object small enough to fit in a palm, operated by a single person, requiring no writing and no specialist training beyond knowing the four seasons and their hinge events.</p>
+
+<p>The history of astronomical instruments typically begins with Greek parapegmata, Babylonian tablets, and Egyptian shadow clocks — all first-millennium or later. The Lidar prism suggests that the underlying logic — cycle plus indexed position — was already being implemented in durable, hand-held form in the Bronze Age Levantine-Anatolian world. That is a significant extension of the known record.</p>
+
+<p>It also matters for what it does <em>not</em> require. No zodiac. No star catalogue. No writing. No institutional infrastructure. Just a cross inside a circle, a crescent, four dots, and three holes — and someone who knew what season it was.</p>
+
+<hr class="section-rule">
+
+<!-- NOTES -->
+<div class="notes-section">
+  <div class="notes-label">Notes</div>
+  <div class="notes-grid">
+    <div class="note-item">
+      <span class="note-num">1</span>
+      <span>Zangger, E., Sarlo, D., & Haas Dantes, F. "The Earliest Cosmological Depictions: Reconsidering the Imagery on the ˁAin Samiya Goblet." <em>JEOL</em> 49 (2022–2023): 1–38. <a href="https://doi.org/10.5281/zenodo.17594730" style="color:var(--accent)">doi:10.5281/zenodo.17594730</a></span>
+    </div>
+    <div class="note-item">
+      <span class="note-num">2</span>
+      <span>Van der Waerden, B. L. <em>Science Awakening II: The Birth of Astronomy.</em> Leiden: Brill, 1974. Discussion of MUL.APIN's four equal arcs and three-month seasons.</span>
+    </div>
+    <div class="note-item">
+      <span class="note-num">3</span>
+      <span>On Anatolian celestial schemata and "lifted sky" compositions, see Zangger & Gautschy's discussions of Yazılıkaya's seasonal program, as cited in the Lidar Höyük comparanda.</span>
+    </div>
+    <div class="note-item">
+      <span class="note-num">4</span>
+      <span>Lehoux, D. <em>Astronomy, Weather, and Calendars in the Ancient World.</em> Cambridge University Press, 2007. Esp. pp. 61, 84–85 on parapegmata as indexed cycle-trackers.</span>
+    </div>
+    <div class="note-item">
+      <span class="note-num">5</span>
+      <span>Cohen, M. E. <em>The Cultic Calendars of the Ancient Near East.</em> CDL Press, 1993. Esp. pp. 343–453 on seasonal symmetry and festival packets, including <em>akītu</em> sequences.</span>
+    </div>
+  </div>
+</div>
+
+</main><!-- /prose -->
+
+<!-- ── SIDEBAR ── -->
+<aside class="article-sidebar">
+
+  <div class="sidebar-card">
+    <div class="sidebar-label">Contents</div>
+    <ul class="toc-list">
+      <li><a href="#object"><span class="toc-num">1</span>The Object</a></li>
+      <li><a href="#reading"><span class="toc-num">2</span>Reading the Parts</a></li>
+      <li><a href="#operation"><span class="toc-num">3</span>How It Was Used</a></li>
+      <li><a href="#date"><span class="toc-num">4</span>Date & Context</a></li>
+      <li><a href="#tests"><span class="toc-num">5</span>Predictions & Tests</a></li>
+      <li><a href="#significance"><span class="toc-num">6</span>Why It Matters</a></li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-label">Object Record</div>
+    <dl class="object-specs">
+      <dt>Catalogue</dt>
+      <dd>Şanlıurfa Museum Li 87/19</dd>
+      <dt>Findspot</dt>
+      <dd>Lidar Höyük, SE Anatolia</dd>
+      <dt>Material</dt>
+      <dd>Soft limestone</dd>
+      <dt>Dimensions</dt>
+      <dd>ca. 13 × 7 × 6 cm</dd>
+      <dt>Date</dt>
+      <dd>Middle Bronze Age (tent.); late 2nd–early 1st mill. BCE plausible</dd>
+      <dt>Faces</dt>
+      <dd>6 (2 display, 2 figure, 1 index, 1 plain)</dd>
+      <dt>Peg holes</dt>
+      <dd>3 surviving (2 deep, 1 shallow)</dd>
+    </dl>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-label">Related Coverage</div>
+    <p><strong>Smithsonian Magazine</strong> (Nov. 2025) covered the Zangger et al. reinterpretation of the ˁAin Samiya goblet, which first brought the Lidar prism to wider attention.</p>
+    <p>Presented at <strong>SEAC XXXIII</strong>, University of Thessaly, Volos, September 2026.</p>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-label">Key Concept</div>
+    <p>A <strong>parapegma</strong> is an ancient astronomical device that tracks cycles by means of a movable peg indexed against a visual display. Greek and Roman examples survive in stone and bronze; the Lidar prism may be the tradition's oldest hand-held precursor.</p>
+  </div>
+
+</aside>
+
+</div><!-- /article-body -->
+</div><!-- /article-wrap -->
+
+<!-- AUTHOR BLOCK -->
+<div class="article-wrap">
+<div class="author-block">
+  <div class="author-avatar">JC</div>
+  <div>
+    <div class="author-info-label">About the Author</div>
+    <div class="author-name">John Carlton</div>
+    <div class="author-bio">John Carlton is a Mesoamerican archaeologist and independent researcher with fieldwork experience at major Maya sites. His research interests span ancient calendrical systems, portable astronomical instruments, and the archaeology of the ancient Near East. His study of the Lidar Höyük prism grew from engagement with Eberhard Zangger's 2025 reanalysis of the ˁAin Samiya goblet.</div>
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div><a href="https://archaiology.org">arch<strong>AI</strong>ology</a> &nbsp;·&nbsp; archaiology.org &nbsp;·&nbsp; Archaeology at the intersection of field research and artificial intelligence &nbsp;·&nbsp; © 2026</div>
+</footer>
+
+</body>
+</html>
