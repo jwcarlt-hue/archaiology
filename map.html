@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corpus Map — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --cream:   #faf8f3;
+  --paper:   #f2ede3;
+  --linen:   #e8e0d0;
+  --rule:    #d5ccb8;
+  --ash:     #8a8070;
+  --ink:     #1c1814;
+  --ochre:   #b8892a;
+  --terra:   #7a3e1a;
+  --forest:  #2a3d2e;
+  --slate:   #3a4a5c;
+  --serif:   'Playfair Display', Georgia, serif;
+  --sans:    'DM Sans', system-ui, sans-serif;
+  --body:    'Source Serif 4', Georgia, serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--sans);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--ink);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.2rem;
+  gap: 1rem;
+  flex-shrink: 0;
+  z-index: 100;
+}
+.logo {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--cream);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+.logo span { color: var(--ochre); font-style: italic; }
+
+.topbar-title {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+  padding-left: 1rem;
+  border-left: 1px solid rgba(255,255,255,0.1);
+}
+
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.stat-badge {
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.stat-badge.sites  { background: rgba(184,137,42,0.2); color: var(--ochre); }
+.stat-badge.items  { background: rgba(42,61,46,0.4);   color: #7ab890; }
+.stat-badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.btn-back {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ash);
+  text-decoration: none;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--cream); border-color: rgba(255,255,255,0.3); }
+
+/* ── MAIN LAYOUT ── */
+.map-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  overflow: hidden;
+}
+
+/* ── SIDEBAR ── */
+.map-sidebar {
+  background: #0f0d0a;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-head {
+  padding: 1rem 1.2rem 0.8rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+.sidebar-head h2 {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: 0.7rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+.filter-btn {
+  font-family: var(--sans);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: none;
+  color: var(--ash);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--ochre);
+  color: var(--ink);
+  border-color: var(--ochre);
+}
+
+.search-wrap {
+  padding: 0.7rem 1.2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+.search-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--cream);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  padding: 0.45rem 0.7rem;
+  outline: none;
+  border-radius: 2px;
+  transition: border-color 0.2s;
+}
+.search-input::placeholder { color: var(--ash); }
+.search-input:focus { border-color: var(--ochre); }
+
+.site-list {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+
+.site-item {
+  padding: 0.75rem 1.2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+.site-item:hover { background: rgba(255,255,255,0.04); }
+.site-item.active { background: rgba(184,137,42,0.12); border-left: 2px solid var(--ochre); }
+
+.site-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.dot-mesoamerica   { background: #4a9e6a; }
+.dot-north_america { background: #4a7aae; }
+.dot-europe        { background: #c8c0a8; }
+.dot-near_east     { background: var(--ochre); }
+.dot-general       { background: var(--ash); }
+
+.site-info { flex: 1; min-width: 0; }
+.site-name {
+  font-family: var(--body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.site-meta {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  color: var(--ash);
+}
+.site-count {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--ochre);
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+/* ── SITE DETAIL PANEL ── */
+.site-detail {
+  display: none;
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 360px;
+  background: var(--ink);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-top: 3px solid var(--ochre);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  z-index: 200;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.site-detail.open { display: block; }
+
+.detail-header {
+  padding: 1rem 1.2rem 0.8rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.detail-close {
+  float: right;
+  background: none;
+  border: none;
+  color: var(--ash);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+  transition: color 0.2s;
+}
+.detail-close:hover { color: var(--cream); }
+.detail-site-name {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: 0.3rem;
+  padding-right: 1.5rem;
+}
+.detail-site-meta {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  color: var(--ash);
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.detail-tag {
+  background: rgba(255,255,255,0.06);
+  padding: 0.15rem 0.4rem;
+  border-radius: 2px;
+}
+
+.detail-desc {
+  padding: 0.8rem 1.2rem;
+  font-family: var(--body);
+  font-size: 0.82rem;
+  color: rgba(232,224,208,0.75);
+  line-height: 1.55;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.detail-mentions {
+  padding: 0.8rem 1.2rem;
+}
+.detail-mentions-label {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 0.6rem;
+}
+
+.mention-item {
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s;
+}
+.mention-item:hover { opacity: 0.8; }
+.mention-item:last-child { border-bottom: none; }
+.mention-type {
+  font-family: var(--sans);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ash);
+  margin-bottom: 0.2rem;
+}
+.mention-title {
+  font-family: var(--body);
+  font-size: 0.8rem;
+  color: var(--cream);
+  line-height: 1.4;
+}
+
+.detail-wiki {
+  padding: 0.6rem 1.2rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.detail-wiki a {
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  color: var(--ochre);
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+.detail-wiki a:hover { text-decoration: underline; }
+
+/* ── MAP CONTAINER ── */
+.map-container {
+  position: relative;
+  overflow: hidden;
+}
+
+#earth-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Overlay for when no Google Earth key */
+.map-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #0a1a0f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.map-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(42,61,46,0.4), transparent);
+}
+
+/* Animated site dots on placeholder */
+.map-dots { position: absolute; inset: 0; pointer-events: none; }
+.map-dot-point {
+  position: absolute;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: dotPulse 3s ease infinite;
+}
+@keyframes dotPulse {
+  0%,100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(-50%,-50%) scale(1.4); }
+}
+.map-dot-point::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  opacity: 0.3;
+  animation: dotRipple 3s ease infinite;
+}
+@keyframes dotRipple {
+  0%   { transform: scale(1); opacity: 0.3; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+.map-loading-text {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+  z-index: 1;
+}
+.map-loading-sub {
+  font-family: var(--body);
+  font-size: 0.88rem;
+  color: rgba(138,128,112,0.6);
+  z-index: 1;
+  text-align: center;
+  max-width: 360px;
+}
+
+.kml-link-block {
+  z-index: 1;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 0.8rem 1.2rem;
+  border-radius: 4px;
+  text-align: center;
+}
+.kml-link-label {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 0.4rem;
+}
+.kml-url {
+  font-family: 'Courier New', monospace;
+  font-size: 0.68rem;
+  color: var(--cream);
+  word-break: break-all;
+}
+
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+  <span class="topbar-title">Corpus Map</span>
+  <div class="topbar-right">
+    <div class="stat-badge sites">
+      <div class="stat-badge-dot"></div>
+      <span id="siteCount">—</span> Sites
+    </div>
+    <div class="stat-badge items">
+      <div class="stat-badge-dot"></div>
+      <span id="mentionCount">—</span> Mentions
+    </div>
+    <a href="index.html" class="btn-back">← Home</a>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="map-layout">
+
+  <!-- SIDEBAR -->
+  <div class="map-sidebar">
+    <div class="sidebar-head">
+      <h2>Archaeological Sites</h2>
+      <div class="filter-group">
+        <button class="filter-btn active" data-region="all">All</button>
+        <button class="filter-btn" data-region="near_east">Near East</button>
+        <button class="filter-btn" data-region="mesoamerica">Mesoamerica</button>
+        <button class="filter-btn" data-region="europe">Europe</button>
+        <button class="filter-btn" data-region="north_america">N. America</button>
+      </div>
+    </div>
+    <div class="search-wrap">
+      <input class="search-input" type="text" id="siteSearch" placeholder="Search sites…">
+    </div>
+    <div class="site-list" id="siteList">
+      <div style="padding:2rem 1.2rem;font-size:0.75rem;color:var(--ash)">Loading sites…</div>
+    </div>
+  </div>
+
+  <!-- MAP -->
+  <div class="map-container" id="mapContainer">
+
+    <!-- 
+      GOOGLE EARTH EMBED
+      Replace YOUR_GOOGLE_MAPS_API_KEY below with your actual key.
+      The iframe loads Google Earth JS API with the KML layer.
+    -->
+    <div class="map-placeholder" id="mapPlaceholder">
+      <div class="map-dots" id="mapDots"></div>
+      <div class="map-loading-text">Archaiology Corpus Map</div>
+      <div class="map-loading-sub">
+        Add your Google Maps API key to enable the Google Earth embed.
+        Until then, load the KML directly in Google Earth or Maps.
+      </div>
+      <div class="kml-link-block">
+        <div class="kml-link-label">Live KML Feed URL</div>
+        <div class="kml-url" id="kmlUrl">https://ucsgtbpeuqeamuvuvojs.supabase.co/functions/v1/serve-kml</div>
+      </div>
+    </div>
+
+    <!-- Site detail panel -->
+    <div class="site-detail" id="siteDetail">
+      <div class="detail-header">
+        <button class="detail-close" id="detailClose">✕</button>
+        <div class="detail-site-name" id="detailName"></div>
+        <div class="detail-site-meta" id="detailMeta"></div>
+      </div>
+      <div class="detail-desc" id="detailDesc"></div>
+      <div class="detail-mentions" id="detailMentions"></div>
+      <div class="detail-wiki" id="detailWiki"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────
+const SUPABASE_URL      = "https://ucsgtbpeuqeamuvuvojs.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";
+const GOOGLE_MAPS_KEY   = "AIzaSyCNHhd1lNQMt8tkEYWMhBozZOcYOcHRax0";  // ← replace
+// ─────────────────────────────────────────────────────────────
+
+let allSites = [];
+let activeRegion = "all";
+let activeSiteId = null;
+
+// ── Fetch corpus map data ─────────────────────────────────────
+async function loadSites() {
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/corpus_map?select=*&order=mention_count.desc`,
+    { headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` } }
+  );
+  if (!res.ok) throw new Error(`Supabase ${res.status}`);
+  return res.json();
+}
+
+// ── Fetch mentions for a site ─────────────────────────────────
+async function loadSiteMentions(siteId) {
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/archaeology_corpus?site_id=eq.${siteId}&select=title,source_url,content_type,published_at,source&order=published_at.desc&limit=8`,
+    { headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` } }
+  );
+  if (!res.ok) return [];
+  return res.json();
+}
+
+// ── Region dot class ──────────────────────────────────────────
+function dotClass(region) {
+  return `dot-${region ?? "general"}`;
+}
+
+// ── Render site list ──────────────────────────────────────────
+function renderSiteList(sites) {
+  const list = document.getElementById("siteList");
+  const search = document.getElementById("siteSearch").value.toLowerCase();
+
+  const filtered = sites.filter(s => {
+    const regionMatch = activeRegion === "all" || s.region === activeRegion;
+    const searchMatch = !search || s.site_name?.toLowerCase().includes(search);
+    return regionMatch && searchMatch && s.mention_count > 0;
+  });
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div style="padding:1.5rem 1.2rem;font-size:0.75rem;color:var(--ash)">No sites match.</div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(s => `
+    <div class="site-item${s.site_id === activeSiteId ? " active" : ""}" 
+         data-id="${s.site_id}" onclick="selectSite('${s.site_id}')">
+      <div class="site-dot ${dotClass(s.region)}"></div>
+      <div class="site-info">
+        <div class="site-name">${s.site_name}</div>
+        <div class="site-meta">${s.culture ?? ""}${s.country ? ` · ${s.country}` : ""}</div>
+      </div>
+      <div class="site-count">${s.mention_count}</div>
+    </div>
+  `).join("");
+}
+
+// ── Select a site ─────────────────────────────────────────────
+async function selectSite(siteId) {
+  activeSiteId = siteId;
+  const site = allSites.find(s => s.site_id === siteId);
+  if (!site) return;
+
+  // Update list highlight
+  document.querySelectorAll(".site-item").forEach(el => {
+    el.classList.toggle("active", el.dataset.id === siteId);
+  });
+
+  // Load detail panel
+  const detail   = document.getElementById("siteDetail");
+  const mentions = await loadSiteMentions(siteId);
+
+  document.getElementById("detailName").textContent  = site.site_name;
+  document.getElementById("detailDesc").textContent  = site.description ?? "";
+
+  document.getElementById("detailMeta").innerHTML = [
+    site.culture, site.period, site.country
+  ].filter(Boolean).map(t => `<span class="detail-tag">${t}</span>`).join("");
+
+  const mentionHtml = mentions.length === 0
+    ? `<div style="font-size:0.78rem;color:var(--ash)">No mentions yet.</div>`
+    : `<div class="detail-mentions-label">${mentions.length} Recent Mention${mentions.length !== 1 ? "s" : ""}</div>` +
+      mentions.map(m => `
+        <a class="mention-item" href="${m.source_url ?? "#"}" target="_blank" rel="noopener">
+          <div class="mention-type">${m.content_type === "paper" ? "📄 Paper" : "📰 News"} · ${m.source ?? ""}</div>
+          <div class="mention-title">${m.title?.slice(0, 120) ?? ""}${(m.title?.length ?? 0) > 120 ? "…" : ""}</div>
+        </a>
+      `).join("");
+
+  document.getElementById("detailMentions").innerHTML = mentionHtml;
+  document.getElementById("detailWiki").innerHTML = site.wikipedia_url
+    ? `<a href="${site.wikipedia_url}" target="_blank" rel="noopener">Wikipedia →</a>` : "";
+
+  detail.classList.add("open");
+}
+
+// ── Animated placeholder dots ─────────────────────────────────
+function renderPlaceholderDots(sites) {
+  const container = document.getElementById("mapDots");
+  if (!container) return;
+
+  // Map lat/lng to rough screen position percentages
+  const colors = {
+    mesoamerica: "#4a9e6a", north_america: "#4a7aae",
+    europe: "#c8c0a8", near_east: "#b8892a", general: "#8a8070"
+  };
+
+  const dots = sites.slice(0, 60).map(s => {
+    // Convert lat/lng to rough x/y percentage
+    const x = ((s.lng + 180) / 360) * 100;
+    const y = ((90 - s.lat) / 180) * 100;
+    const color = colors[s.region ?? "general"];
+    const delay = Math.random() * 3;
+    const size  = Math.min(6 + (s.mention_count ?? 0) * 0.5, 14);
+
+    return `<div class="map-dot-point" style="
+      left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;
+      width:${size}px;height:${size}px;
+      background:${color};color:${color};
+      animation-delay:${delay.toFixed(1)}s
+    " title="${s.site_name}"></div>`;
+  }).join("");
+
+  container.innerHTML = dots;
+}
+
+// ── Google Earth embed (when key is set) ──────────────────────
+function initGoogleEarth() {
+  if (!GOOGLE_MAPS_KEY || GOOGLE_MAPS_KEY === "AIzaSyCNHhd1lNQMt8tkEYWMhBozZOcYOcHRax0") return;
+
+  const placeholder = document.getElementById("mapPlaceholder");
+  const container   = document.getElementById("mapContainer");
+  const kmlUrl      = `${SUPABASE_URL}/functions/v1/serve-kml`;
+
+  // Build Google Maps embed with KML layer
+  const embedUrl = `https://www.google.com/maps/embed/v1/view`
+    + `?key=${GOOGLE_MAPS_KEY}`
+    + `&center=30,20&zoom=2&maptype=satellite`;
+
+  const iframe = document.createElement("iframe");
+  iframe.id = "earth-iframe";
+  iframe.style.cssText = "width:100%;height:100%;border:none;";
+  iframe.src = embedUrl;
+  iframe.allow = "fullscreen";
+
+  placeholder.replaceWith(iframe);
+
+  // Append detail panel back
+  const detail = document.getElementById("siteDetail");
+  container.appendChild(detail);
+}
+
+// ── Stats ─────────────────────────────────────────────────────
+function updateStats(sites) {
+  const withMentions = sites.filter(s => s.mention_count > 0);
+  const totalMentions = sites.reduce((n, s) => n + (s.mention_count ?? 0), 0);
+  document.getElementById("siteCount").textContent  = withMentions.length;
+  document.getElementById("mentionCount").textContent = totalMentions;
+}
+
+// ── Init ──────────────────────────────────────────────────────
+(async () => {
+  try {
+    allSites = await loadSites();
+    updateStats(allSites);
+    renderSiteList(allSites);
+    renderPlaceholderDots(allSites);
+    initGoogleEarth();
+  } catch (err) {
+    console.warn("Map load error:", err);
+    document.getElementById("siteList").innerHTML =
+      `<div style="padding:1.2rem;font-size:0.75rem;color:var(--ash)">Could not load sites.</div>`;
+  }
+})();
+
+// ── Filter buttons ────────────────────────────────────────────
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    this.classList.add("active");
+    activeRegion = this.dataset.region;
+    renderSiteList(allSites);
+  });
+});
+
+// ── Search ────────────────────────────────────────────────────
+document.getElementById("siteSearch").addEventListener("input", () => renderSiteList(allSites));
+
+// ── Close detail ──────────────────────────────────────────────
+document.getElementById("detailClose").addEventListener("click", () => {
+  document.getElementById("siteDetail").classList.remove("open");
+  activeSiteId = null;
+  document.querySelectorAll(".site-item").forEach(el => el.classList.remove("active"));
+});
+
+</script>
+</body>
+</html>
