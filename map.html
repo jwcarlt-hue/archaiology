@@ -514,17 +514,28 @@ body {
       Replace YOUR_GOOGLE_MAPS_API_KEY below with your actual key.
       The iframe loads Google Earth JS API with the KML layer.
     -->
-    <div class="map-placeholder" id="mapPlaceholder">
+    <div class="map-placeholder" id="mapPlaceholder" style="display:none">
       <div class="map-dots" id="mapDots"></div>
-      <div class="map-loading-text">Archaiology Corpus Map</div>
-      <div class="map-loading-sub">
-        Add your Google Maps API key to enable the Google Earth embed.
-        Until then, load the KML directly in Google Earth or Maps.
-      </div>
-      <div class="kml-link-block">
-        <div class="kml-link-label">Live KML Feed URL</div>
-        <div class="kml-url" id="kmlUrl">https://ucsgtbpeuqeamuvuvojs.supabase.co/functions/v1/serve-kml</div>
-      </div>
+    </div>
+    <iframe
+      id="earth-iframe"
+      style="width:100%;height:100%;border:none;display:block;"
+      loading="lazy"
+      allowfullscreen
+      referrerpolicy="no-referrer-when-downgrade"
+      src="https://www.google.com/maps/embed/v1/view?key=AIzaSyCNHhd1lNQMt8tkEYWMhBozZOcYOcHRax0&center=30,15&zoom=2&maptype=satellite">
+    </iframe>
+    <div class="kml-overlay" style="
+      position:absolute;bottom:80px;left:50%;transform:translateX(-50%);
+      background:rgba(15,13,10,0.85);border:1px solid rgba(184,137,42,0.4);
+      padding:0.6rem 1rem;border-radius:3px;text-align:center;
+      font-family:var(--sans);font-size:0.62rem;color:var(--ash);
+      backdrop-filter:blur(4px);white-space:nowrap;
+    ">
+      <span style="color:var(--ochre);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-right:.5rem">KML Feed</span>
+      <a href="https://ucsgtbpeuqeamuvuvojs.supabase.co/functions/v1/serve-kml" style="color:var(--cream);font-family:monospace;font-size:0.65rem;" 
+         target="_blank">https://ucsgtbpeuqeamuvuvojs.supabase.co/functions/v1/serve-kml</a>
+      <span style="color:var(--ash);margin-left:.6rem">· Open in Google Earth for placemarks</span>
     </div>
 
     <!-- Site detail panel -->
@@ -678,7 +689,7 @@ function renderPlaceholderDots(sites) {
 
 // ── Google Earth embed (when key is set) ──────────────────────
 function initGoogleEarth() {
-  if (!GOOGLE_MAPS_KEY || GOOGLE_MAPS_KEY === "AIzaSyCNHhd1lNQMt8tkEYWMhBozZOcYOcHRax0") return;
+  if (!GOOGLE_MAPS_KEY || GOOGLE_MAPS_KEY === "YOUR_GOOGLE_MAPS_API_KEY") return;
 
   const placeholder = document.getElementById("mapPlaceholder");
   const container   = document.getElementById("mapContainer");
