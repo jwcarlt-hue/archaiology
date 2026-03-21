@@ -829,9 +829,312 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   transition: opacity 0.55s ease, transform 0.55s ease;
 }
 .reveal.visible { opacity: 1; transform: none; }
+ block or keep inline) ── -->
+<style>
+.ticker-bar {
+  background: var(--ink);
+  color: var(--cream);
+  height: 42px;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border-bottom: 2px solid var(--ochre);
+  position: relative;
+}
+
+.ticker-label {
+  background: var(--ochre);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0 1.2rem;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+  gap: 0.4rem;
+  z-index: 2;
+}
+
+.ticker-label::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--label-w, 110px));
+  top: 0; bottom: 0;
+  width: 32px;
+  background: linear-gradient(to right, var(--ink), transparent);
+  z-index: 1;
+}
+
+.ticker-track-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ticker-track {
+  display: flex;
+  gap: 0;
+  white-space: nowrap;
+  will-change: transform;
+  animation: ticker-scroll 60s linear infinite;
+  padding-left: 2rem;
+}
+
+.ticker-track:hover { animation-play-state: paused; }
+
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 2rem 0 0;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.ticker-item:hover { opacity: 0.8; }
+.ticker-item:hover .ticker-item-title { text-decoration: underline; }
+
+.ticker-item-badge {
+  font-family: var(--sans);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.4rem;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.badge-news    { background: rgba(184,137,42,0.25); color: var(--ochre-lt); }
+.badge-paper   { background: rgba(42,61,46,0.6);    color: #7ab890; }
+.badge-general { background: rgba(255,255,255,0.1); color: #aaa; }
+
+.ticker-item-source {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  color: var(--ash);
+  flex-shrink: 0;
+}
+
+.ticker-item-title {
+  font-family: var(--body);
+  font-size: 0.82rem;
+  color: #e8e0d0;
+  max-width: 460px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ticker-sep {
+  color: var(--ochre);
+  opacity: 0.4;
+  font-size: 0.7rem;
+  padding: 0 0.5rem 0 0;
+}
+
+.ticker-controls {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+.ticker-btn {
+  background: none;
+  border: none;
+  color: var(--ash);
+  width: 36px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: color 0.2s, background 0.2s;
+}
+.ticker-btn:hover { color: var(--ochre); background: rgba(255,255,255,0.05); }
+
+.ticker-loading {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  color: var(--ash);
+  padding: 0 1.5rem;
+  animation: pulse 1.4s ease infinite;
+}
+@keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+/* Full feed panel */
+.feed-panel {
+  display: none;
+  position: fixed;
+  top: 0; right: 0;
+  width: 420px;
+  height: 100vh;
+  background: var(--cream);
+  border-left: 1px solid var(--rule);
+  z-index: 1000;
+  box-shadow: -8px 0 32px rgba(0,0,0,0.15);
+  flex-direction: column;
+  overflow: hidden;
+}
+.feed-panel.open { display: flex; }
+
+.feed-panel-header {
+  background: var(--ink);
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.feed-panel-title {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cream);
+}
+.feed-close {
+  background: none;
+  border: none;
+  color: var(--ash);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.2rem;
+  transition: color 0.2s;
+}
+.feed-close:hover { color: var(--ochre); }
+
+.feed-filters {
+  padding: 0.8rem 1.2rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.feed-filter-btn {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--rule);
+  background: none;
+  color: var(--ash);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+.feed-filter-btn:hover,
+.feed-filter-btn.active {
+  background: var(--ink);
+  color: var(--cream);
+  border-color: var(--ink);
+}
+
+.feed-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.feed-entry {
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--linen);
+  cursor: pointer;
+  transition: background 0.15s;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+.feed-entry:hover { background: var(--paper); }
+
+.feed-entry-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+.feed-entry-tag {
+  font-family: var(--sans);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ochre);
+}
+.feed-entry-pub {
+  font-family: var(--sans);
+  font-size: 0.58rem;
+  color: var(--ash);
+}
+.feed-entry-date {
+  font-family: var(--sans);
+  font-size: 0.58rem;
+  color: var(--ash);
+  margin-left: auto;
+}
+.feed-entry-title {
+  font-family: var(--serif);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+  margin-bottom: 0.3rem;
+}
+.feed-entry-summary {
+  font-size: 0.78rem;
+  color: var(--ash);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.feed-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 999;
+}
+.feed-overlay.open { display: block; }
+
 </style>
 </head>
 <body>
+
+<div class="feed-overlay" id="feedOverlay"></div>
+<div class="feed-panel" id="feedPanel">
+  <div class="feed-panel-header">
+    <span class="feed-panel-title">archAIology Live Feed</span>
+    <button class="feed-close" id="feedClose">✕</button>
+  </div>
+  <div class="feed-filters">
+    <button class="feed-filter-btn active" data-filter="all">All</button>
+    <button class="feed-filter-btn" data-filter="news">News</button>
+    <button class="feed-filter-btn" data-filter="paper">Papers</button>
+    <button class="feed-filter-btn" data-filter="mesoamerica">Mesoamerica</button>
+    <button class="feed-filter-btn" data-filter="near_east">Near East</button>
+    <button class="feed-filter-btn" data-filter="europe">Europe</button>
+    <button class="feed-filter-btn" data-filter="north_america">N. America</button>
+  </div>
+  <div class="feed-list" id="feedList">
+    <div style="padding:2rem;text-align:center;color:var(--ash);font-family:var(--sans);font-size:0.8rem">Loading…</div>
+  </div>
+</div>
+
 
 <!-- TOPBAR -->
 <div class="topbar">
@@ -874,6 +1177,24 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
     <a class="section-nav-link" href="#">3D Reconstructions</a>
   </div>
 </nav>
+
+<!-- ── TICKER HTML (insert after section-nav) ── -->
+<div class="ticker-bar" id="tickerBar">
+  <div class="ticker-label" id="tickerLabel">
+    <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#fff" opacity="0.9"><animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.6s" repeatCount="indefinite"/></circle></svg>
+    Live Feed
+  </div>
+  <div class="ticker-track-wrap">
+    <div class="ticker-track" id="tickerTrack">
+      <span class="ticker-loading">Loading archaeology news…</span>
+    </div>
+  </div>
+  <div class="ticker-controls">
+    <button class="ticker-btn" id="tickerPauseBtn" title="Pause">⏸</button>
+    <button class="ticker-btn" id="tickerOpenBtn" title="Open feed">≡</button>
+  </div>
+</div>
+
 
 <!-- MAIN -->
 <main>
@@ -1177,7 +1498,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
     <div class="footer-col">
       <h4>Connect</h4>
       <ul>
-        <li><a href="mailto:jwcarlt@gmail.com">Contact</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#81ebf6e2e0f3edf5c1e6ece0e8edafe2eeec">Contact</a></li>
         <li><a href="#">Newsletter</a></li>
         <li><a href="https://doi.org/10.5281/zenodo.17594730">Zangger et al. 2025</a></li>
         <li><a href="#">SEAC 2026</a></li>
@@ -1190,7 +1511,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Scroll reveal
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -1212,5 +1533,199 @@ document.querySelectorAll('.section-nav-link').forEach(link => {
   });
 });
 </script>
+
+<!-- ── FEED PANEL ── -->
+<div class="feed-overlay" id="feedOverlay"></div>
+<div class="feed-panel" id="feedPanel">
+  <div class="feed-panel-header">
+    <span class="feed-panel-title">archAIology Live Feed</span>
+    <button class="feed-close" id="feedClose">✕</button>
+  </div>
+  <div class="feed-filters">
+    <button class="feed-filter-btn active" data-filter="all">All</button>
+    <button class="feed-filter-btn" data-filter="news">News</button>
+    <button class="feed-filter-btn" data-filter="paper">Papers</button>
+    <button class="feed-filter-btn" data-filter="mesoamerica">Mesoamerica</button>
+    <button class="feed-filter-btn" data-filter="near_east">Near East</button>
+    <button class="feed-filter-btn" data-filter="europe">Europe</button>
+    <button class="feed-filter-btn" data-filter="north_america">N. America</button>
+  </div>
+  <div class="feed-list" id="feedList">
+    <div style="padding:2rem;text-align:center;color:var(--ash);font-family:var(--sans);font-size:0.8rem">Loading…</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ── CONFIG — set your Supabase project values ──────────────
+  const SUPABASE_URL      = "https://ucsgtbpeuqeamuvuvojs.supabase.co";   // ← replace
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";                       // ← replace
+  const FEED_LIMIT        = 50;
+  const TICKER_LIMIT      = 20;
+  // ────────────────────────────────────────────────────────────
+
+  const track      = document.getElementById("tickerTrack");
+  const pauseBtn   = document.getElementById("tickerPauseBtn");
+  const openBtn    = document.getElementById("tickerOpenBtn");
+  const feedPanel  = document.getElementById("feedPanel");
+  const feedOverlay= document.getElementById("feedOverlay");
+  const feedClose  = document.getElementById("feedClose");
+  const feedList   = document.getElementById("feedList");
+
+  let paused = false;
+  let allItems = [];
+  let activeFilter = "all";
+
+  // ── Fetch from Supabase REST ─────────────────────────────
+  async function fetchFeed(filter = "all") {
+    let url = `${SUPABASE_URL}/rest/v1/news_feed?limit=${FEED_LIMIT}&select=*`;
+    if (filter !== "all" && ["news","paper"].includes(filter)) {
+      url += `&content_type=eq.${filter}`;
+    } else if (filter !== "all") {
+      url += `&region=eq.${filter}`;
+    }
+
+    const res = await fetch(url, {
+      headers: {
+        "apikey":        SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Content-Type":  "application/json",
+      }
+    });
+
+    if (!res.ok) throw new Error(`Supabase ${res.status}`);
+    return res.json();
+  }
+
+  // ── Format relative date ─────────────────────────────────
+  function relDate(iso) {
+    if (!iso) return "";
+    const d = new Date(iso);
+    const diff = (Date.now() - d.getTime()) / 1000;
+    if (diff < 3600)  return Math.floor(diff / 60) + "m ago";
+    if (diff < 86400) return Math.floor(diff / 3600) + "h ago";
+    return Math.floor(diff / 86400) + "d ago";
+  }
+
+  // ── Region label ────────────────────────────────────────
+  function regionLabel(r) {
+    const map = {
+      mesoamerica: "Mesoamerica",
+      north_america: "N. America",
+      europe: "Europe",
+      near_east: "Near East",
+      general: "General",
+    };
+    return map[r] ?? r ?? "";
+  }
+
+  // ── Badge class ─────────────────────────────────────────
+  function badgeClass(type) {
+    if (type === "paper") return "badge-paper";
+    if (type === "news")  return "badge-news";
+    return "badge-general";
+  }
+
+  // ── Build ticker ─────────────────────────────────────────
+  function buildTicker(items) {
+    const subset = items.slice(0, TICKER_LIMIT);
+    // Duplicate for seamless loop
+    const doubled = [...subset, ...subset];
+
+    const html = doubled.map(item => {
+      const label = item.content_type === "paper" ? "Paper" : "News";
+      return `
+        <span class="ticker-item" onclick="window.open('${item.source_url ?? "#"}','_blank')">
+          <span class="ticker-item-badge ${badgeClass(item.content_type)}">${label}</span>
+          <span class="ticker-item-source">${regionLabel(item.region)}</span>
+          <span class="ticker-item-title">${item.title}</span>
+        </span>
+        <span class="ticker-sep">◆</span>
+      `;
+    }).join("");
+
+    track.innerHTML = html;
+
+    // Adjust animation duration based on content length
+    const totalChars = subset.reduce((n, i) => n + (i.title?.length ?? 0), 0);
+    const duration = Math.max(30, Math.min(90, totalChars / 8));
+    track.style.animationDuration = duration + "s";
+  }
+
+  // ── Build feed panel ─────────────────────────────────────
+  function buildFeedPanel(items) {
+    if (items.length === 0) {
+      feedList.innerHTML = `<div style="padding:2rem;text-align:center;color:var(--ash);font-family:var(--sans);font-size:0.8rem">No items found.</div>`;
+      return;
+    }
+
+    feedList.innerHTML = items.map(item => `
+      <a class="feed-entry" href="${item.source_url ?? '#'}" target="_blank" rel="noopener">
+        <div class="feed-entry-meta">
+          <span class="feed-entry-tag">${item.content_type === "paper" ? "Paper" : "News"} · ${regionLabel(item.region)}</span>
+          ${item.publisher ? `<span class="feed-entry-pub">${item.publisher.slice(0, 30)}</span>` : ""}
+          <span class="feed-entry-date">${relDate(item.published_at)}</span>
+        </div>
+        <div class="feed-entry-title">${item.title}</div>
+        ${item.summary ? `<div class="feed-entry-summary">${item.summary}</div>` : ""}
+      </a>
+    `).join("");
+  }
+
+  // ── Load ────────────────────────────────────────────────
+  async function load(filter = "all") {
+    try {
+      const items = await fetchFeed(filter);
+      allItems = items;
+      buildFeedPanel(items);
+      if (filter === "all") buildTicker(items);
+    } catch (err) {
+      track.innerHTML = `<span class="ticker-loading">Feed temporarily unavailable</span>`;
+      console.warn("archAIology feed error:", err);
+    }
+  }
+
+  // ── Controls ─────────────────────────────────────────────
+  pauseBtn.addEventListener("click", () => {
+    paused = !paused;
+    track.style.animationPlayState = paused ? "paused" : "running";
+    pauseBtn.textContent = paused ? "▶" : "⏸";
+  });
+
+  openBtn.addEventListener("click", () => {
+    feedPanel.classList.add("open");
+    feedOverlay.classList.add("open");
+  });
+
+  feedClose.addEventListener("click", () => {
+    feedPanel.classList.remove("open");
+    feedOverlay.classList.remove("open");
+  });
+
+  feedOverlay.addEventListener("click", () => {
+    feedPanel.classList.remove("open");
+    feedOverlay.classList.remove("open");
+  });
+
+  // Filter buttons
+  document.querySelectorAll(".feed-filter-btn").forEach(btn => {
+    btn.addEventListener("click", function() {
+      document.querySelectorAll(".feed-filter-btn").forEach(b => b.classList.remove("active"));
+      this.classList.add("active");
+      activeFilter = this.dataset.filter;
+      feedList.innerHTML = `<div style="padding:2rem;text-align:center;color:var(--ash);font-family:var(--sans);font-size:0.8rem">Loading…</div>`;
+      load(activeFilter);
+    });
+  });
+
+  // ── Init ────────────────────────────────────────────────
+  load("all");
+
+  // Refresh every 15 minutes
+  setInterval(() => load(activeFilter), 15 * 60 * 1000);
+
+})();
+</script>
+
 </body>
 </html>
