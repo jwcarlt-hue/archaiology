@@ -462,6 +462,126 @@ body {
   word-break: break-all;
 }
 
+
+/* ── ANCIENT TEXTS LAYER ── */
+.topos-section {
+  padding: 0.8rem 1.2rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.topos-ref-block {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+.topos-ref-num {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--ochre);
+  line-height: 1;
+}
+.topos-ref-label {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ash);
+  line-height: 1.3;
+}
+.topos-link {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  text-decoration: none;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid rgba(184,137,42,0.3);
+  border-radius: 2px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.topos-link:hover {
+  background: rgba(184,137,42,0.15);
+  border-color: var(--ochre);
+}
+.topos-note {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  color: rgba(138,128,112,0.5);
+  margin-top: 0.2rem;
+}
+
+/* ── ANCIENT PASSAGES ── */
+.passages-section {
+  padding: 0.8rem 1.2rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.passages-label {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.passages-label-icon { font-size: 0.8rem; }
+.passage-item {
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.passage-item:last-child { border-bottom: none; }
+.passage-ref {
+  font-family: var(--sans);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 0.2rem;
+}
+.passage-text {
+  font-family: var(--body);
+  font-size: 0.78rem;
+  color: rgba(232,224,208,0.7);
+  line-height: 1.5;
+  font-style: italic;
+}
+.passage-link {
+  font-family: var(--sans);
+  font-size: 0.58rem;
+  color: rgba(184,137,42,0.6);
+  text-decoration: none;
+  margin-top: 0.2rem;
+  display: inline-block;
+  transition: color 0.2s;
+}
+.passage-link:hover { color: var(--ochre); }
+.ancient-refs-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(184,137,42,0.12);
+  color: var(--ochre);
+  font-family: var(--sans);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.4rem;
+  border-radius: 2px;
+  margin-left: 0.4rem;
+}
 </style>
 </head>
 <body>
@@ -526,6 +646,20 @@ body {
       <div class="detail-desc" id="detailDesc"></div>
       <div class="detail-mentions" id="detailMentions"></div>
       <div class="detail-wiki" id="detailWiki"></div>
+      <div id="detailPassages" style="display:none">
+        <div class="topos-section">
+          <div>
+            <div class="topos-ref-block">
+              <span class="topos-ref-num" id="passageCount">0</span>
+              <span class="topos-ref-label">Ancient text<br>references</span>
+            </div>
+            <div class="topos-note">From Greek & Latin literature via ToposText</div>
+          </div>
+          <a id="toposLink" class="topos-link" href="#" target="_blank" rel="noopener">
+            Read passages →
+          </a>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -549,6 +683,16 @@ async function loadSites() {
     { headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` } }
   );
   if (!res.ok) throw new Error(`Supabase ${res.status}`);
+  return res.json();
+}
+
+// ── Fetch ancient passages for a site ────────────────────────
+async function loadAncientPassages(siteId) {
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/ancient_passages?site_id=eq.${siteId}&select=author,reference,passage_text,passage_url&order=author.asc&limit=10`,
+    { headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` } }
+  );
+  if (!res.ok) return [];
   return res.json();
 }
 
@@ -589,7 +733,7 @@ function renderSiteList(sites) {
       <div class="site-dot ${dotClass(s.region)}"></div>
       <div class="site-info">
         <div class="site-name">${s.site_name}</div>
-        <div class="site-meta">${s.culture ?? ""}${s.country ? ` · ${s.country}` : ""}</div>
+        <div class="site-meta">${s.culture ?? ""}${s.country ? ` · ${s.country}` : ""}${s.ancient_refs > 0 ? ` · <span style="color:var(--ochre);font-size:0.55rem">${s.ancient_refs} ancient refs</span>` : ""}</div>
       </div>
       <div class="site-count">${s.mention_count}</div>
     </div>
@@ -634,8 +778,23 @@ async function selectSite(siteId) {
       `).join("");
 
   document.getElementById("detailMentions").innerHTML = mentionHtml;
-  document.getElementById("detailWiki").innerHTML = site.wikipedia_url
-    ? `<a href="${site.wikipedia_url}" target="_blank" rel="noopener">Wikipedia →</a>` : "";
+  document.getElementById("detailWiki").innerHTML = [
+    site.wikipedia_url ? `<a href="${site.wikipedia_url}" target="_blank" rel="noopener">Wikipedia →</a>` : "",
+    site.topostext_url ? `<a href="${site.topostext_url}" target="_blank" rel="noopener" style="margin-left:1rem">ToposText →</a>` : "",
+  ].filter(Boolean).join("") || "";
+
+  // Show ancient text reference count from ToposText KMZ data
+  const passagesEl   = document.getElementById("detailPassages");
+  const passageCount = document.getElementById("passageCount");
+  const toposLink    = document.getElementById("toposLink");
+
+  if (site.ancient_refs > 0 && site.topostext_url) {
+    passagesEl.style.display = "block";
+    passageCount.textContent = site.ancient_refs.toLocaleString();
+    toposLink.href = site.topostext_url;
+  } else {
+    passagesEl.style.display = "none";
+  }
 
   detail.classList.add("open");
 }
