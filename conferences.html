@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Conference Calendar — archAIology</title>
+<meta name="description" content="The 2026 archaeology and anthropology conference calendar — SAA, EAA, AAA, SEAC, AIA and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#faf8f3; --paper:#f2ede3; --linen:#e8e0d0; --rule:#d5ccb8;
+  --ash:#8a8070; --ink:#1c1814; --deep:#0f0d0a;
+  --ochre:#b8892a; --ochre-lt:#d4a84b; --terra:#7a3e1a;
+  --forest:#2a3d2e; --slate:#3a4a5c; --burgundy:#6b2737;
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+/* MASTHEAD */
+.masthead{background:var(--ink);padding:0 2rem;}
+.masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px;}
+.logo{font-family:var(--serif);font-size:1.2rem;font-weight:900;color:var(--cream);}
+.logo span{color:var(--ochre);font-style:italic;}
+.nav-links{display:flex;gap:1.5rem;}
+.nav-link{font-family:var(--sans);font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);transition:color .2s;}
+.nav-link:hover,.nav-link.active{color:var(--cream);}
+
+/* PAGE HERO */
+.page-hero{background:var(--deep);padding:3rem 2rem 2.5rem;border-bottom:2px solid var(--ochre);}
+.page-hero-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr auto;align-items:end;gap:2rem;}
+.hero-eyebrow{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre);margin-bottom:.6rem;display:flex;align-items:center;gap:.6rem;}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--ochre);animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:900;color:var(--cream);line-height:1.1;letter-spacing:-.02em;margin-bottom:.5rem;}
+.hero-title em{color:var(--ochre);font-style:italic;}
+.hero-sub{font-family:var(--sans);font-size:.78rem;color:var(--ash);line-height:1.6;max-width:560px;}
+.hero-stats{display:flex;gap:2rem;flex-shrink:0;}
+.hero-stat{text-align:right;}
+.hero-stat-num{font-family:var(--serif);font-size:2rem;font-weight:900;color:var(--ochre);display:block;line-height:1;}
+.hero-stat-lbl{font-family:var(--sans);font-size:.58rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);}
+
+/* FILTER BAR */
+.filter-bar{background:var(--paper);border-bottom:1px solid var(--rule);padding:0 2rem;position:sticky;top:0;z-index:50;}
+.filter-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:.4rem;padding:.6rem 0;flex-wrap:wrap;row-gap:.3rem;}
+.filter-chip{font-family:var(--sans);font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border:1px solid var(--rule);background:none;color:var(--ash);cursor:pointer;border-radius:2px;transition:all .15s;white-space:nowrap;}
+.filter-chip:hover{color:var(--ink);border-color:var(--ink);}
+.filter-chip.active{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+.filter-sep{width:1px;height:20px;background:var(--rule);margin:0 .4rem;}
+
+/* MAIN */
+.page-wrap{max-width:1280px;margin:0 auto;padding:2.5rem 2rem 4rem;display:grid;grid-template-columns:1fr 280px;gap:3rem;align-items:start;}
+@media(max-width:900px){.page-wrap{grid-template-columns:1fr;}}
+
+/* MONTH GROUPS */
+.month-group{margin-bottom:2.5rem;}
+.month-label{font-family:var(--serif);font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--linen);display:flex;align-items:baseline;gap:.8rem;}
+.month-count{font-family:var(--sans);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);}
+
+/* CONFERENCE CARDS */
+.conf-card{background:white;border:1px solid var(--rule);border-left:4px solid var(--ochre);padding:1.2rem 1.4rem;margin-bottom:.8rem;transition:box-shadow .2s,transform .2s;cursor:default;}
+.conf-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-1px);}
+.conf-card.discipline-archaeology{border-left-color:var(--ochre);}
+.conf-card.discipline-anthropology{border-left-color:var(--forest);}
+.conf-card.discipline-biological{border-left-color:var(--slate);}
+.conf-card.discipline-archaeoastronomy{border-left-color:var(--burgundy);}
+.conf-card.discipline-classical{border-left-color:var(--terra);}
+.conf-card.discipline-heritage{border-left-color:#6b8e6b;}
+
+.conf-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.5rem;}
+.conf-title{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--ink);line-height:1.3;}
+.conf-title a{color:inherit;transition:color .2s;}
+.conf-title a:hover{color:var(--ochre);}
+.conf-dates{font-family:var(--sans);font-size:.68rem;font-weight:700;color:var(--ochre);white-space:nowrap;padding-top:.15rem;flex-shrink:0;}
+
+.conf-meta{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.4rem;}
+.conf-badge{font-family:var(--sans);font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.15rem .4rem;border-radius:2px;}
+.badge-archaeology{background:rgba(184,137,42,.12);color:var(--ochre);}
+.badge-anthropology{background:rgba(42,61,46,.12);color:var(--forest);}
+.badge-biological{background:rgba(58,74,92,.12);color:var(--slate);}
+.badge-archaeoastronomy{background:rgba(107,39,55,.12);color:var(--burgundy);}
+.badge-classical{background:rgba(122,62,26,.12);color:var(--terra);}
+.badge-heritage{background:rgba(107,142,107,.15);color:#4a7a4a;}
+.conf-location{font-family:var(--sans);font-size:.65rem;color:var(--ash);display:flex;align-items:center;gap:.3rem;}
+.conf-desc{font-family:var(--body);font-size:.82rem;color:#5a5248;line-height:1.55;margin-top:.4rem;}
+.conf-link{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--sans);font-size:.62rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ochre);margin-top:.6rem;transition:color .2s;}
+.conf-link:hover{color:var(--terra);}
+
+/* TRADEFAIRE CTA */
+.tradefaire-banner{background:var(--forest);padding:1.2rem 1.5rem;margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;border-left:4px solid var(--ochre);}
+.tf-text{color:rgba(232,224,208,.85);font-family:var(--sans);font-size:.78rem;line-height:1.5;}
+.tf-text strong{color:var(--cream);}
+.tf-btn{font-family:var(--sans);font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--ochre);color:var(--ink);padding:.5rem 1rem;white-space:nowrap;transition:background .2s;flex-shrink:0;}
+.tf-btn:hover{background:var(--ochre-lt);}
+
+/* SIDEBAR */
+.sidebar-card{background:white;border:1px solid var(--rule);padding:1.2rem 1.3rem;margin-bottom:1.2rem;}
+.sidebar-label{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ochre);margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule);}
+.legend-item{display:flex;align-items:center;gap:.6rem;padding:.3rem 0;font-family:var(--sans);font-size:.72rem;color:var(--ash);}
+.legend-dot{width:10px;height:10px;border-radius:1px;flex-shrink:0;}
+.sidebar-link{display:flex;align-items:center;justify-content:space-between;padding:.35rem 0;border-bottom:1px dotted var(--linen);font-family:var(--sans);font-size:.72rem;color:var(--ash);transition:color .2s;}
+.sidebar-link:last-child{border-bottom:none;}
+.sidebar-link:hover{color:var(--ochre);}
+.upcoming-item{padding:.55rem 0;border-bottom:1px solid var(--linen);}
+.upcoming-item:last-child{border-bottom:none;}
+.upcoming-date{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ochre);margin-bottom:.15rem;}
+.upcoming-name{font-family:var(--body);font-size:.82rem;font-weight:600;color:var(--ink);line-height:1.3;}
+.upcoming-loc{font-family:var(--sans);font-size:.6rem;color:var(--ash);}
+
+/* FOOTER */
+.footer{background:var(--ink);color:var(--ash);text-align:center;padding:1.5rem;font-family:var(--sans);font-size:.68rem;}
+.footer a{color:var(--ochre);}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <nav class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="news.html">Feed</a>
+      <a class="nav-link" href="map.html">Map</a>
+      <a class="nav-link active" href="conferences.html">Conferences</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div>
+      <div class="hero-eyebrow"><div class="hero-eyebrow-dot"></div>2026 Season</div>
+      <h1 class="hero-title">Archaeology &amp; Anthropology<br><em>Conference Calendar</em></h1>
+      <p class="hero-sub">Major meetings across archaeology, biological anthropology, cultural anthropology, archaeoastronomy, and classical studies — updated as new conferences are announced.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="hero-stat-num">24</span><span class="hero-stat-lbl">Conferences</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">6</span><span class="hero-stat-lbl">Disciplines</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">14</span><span class="hero-stat-lbl">Countries</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <div class="filter-inner">
+    <button class="filter-chip active" data-filter="all">All</button>
+    <div class="filter-sep"></div>
+    <button class="filter-chip" data-filter="archaeology">Archaeology</button>
+    <button class="filter-chip" data-filter="anthropology">Anthropology</button>
+    <button class="filter-chip" data-filter="biological">Biological Anthro</button>
+    <button class="filter-chip" data-filter="archaeoastronomy">Archaeoastronomy</button>
+    <button class="filter-chip" data-filter="classical">Classical</button>
+    <button class="filter-chip" data-filter="heritage">Heritage</button>
+    <div class="filter-sep"></div>
+    <button class="filter-chip" data-region="americas">Americas</button>
+    <button class="filter-chip" data-region="europe">Europe</button>
+    <button class="filter-chip" data-region="global">Global</button>
+  </div>
+</div>
+
+<div class="page-wrap">
+<main>
+
+  <!-- TradeFaire CTA -->
+  <div class="tradefaire-banner">
+    <div class="tf-text">
+      <strong>Exhibiting or attending?</strong> TradeFaire helps archaeology vendors and publishers find the right conferences, manage booth bookings, and build targeted attendee outreach campaigns.
+    </div>
+    <a class="tf-btn" href="https://tradefaire.ai" target="_blank">TradeFaire →</a>
+  </div>
+
+  <!-- JANUARY -->
+  <div class="month-group" data-month="jan">
+    <div class="month-label">January <span class="month-count">1 conference</span></div>
+
+    <div class="conf-card discipline-classical" data-discipline="classical" data-region="americas">
+      <div class="conf-header">
+        <div class="conf-title"><a href="https://www.archaeological.org/programs/professionals/annual-meeting/" target="_blank">AIA/SCS Annual Meeting</a></div>
+        <div class="conf-dates">Jan 7–10, 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-classical">Classical</span>
+        <span class="conf-badge badge-archaeology">Archaeology</span>
+        <span class="conf-location">📍 San Francisco, CA · USA</span>
+      </div>
+      <div class="conf-desc">The Archaeological Institute of America and Society for Classical Studies joint annual meeting — North America's largest gathering for classical archaeology and ancient studies. Over 1,800 participants. <strong>2026 meeting complete.</strong></div>
+    </div>
+  </div>
+
+  <!-- MARCH -->
+  <div class="month-group" data-month="mar">
+    <div class="month-label">March <span class="month-count">2 conferences</span></div>
+
+    <div class="conf-card discipline-anthropology" data-discipline="anthropology" data-region="americas">
+      <div class="conf-header">
+        <div class="conf-title"><a href="https://appliedanthro.org/annual-meeting/" target="_blank">SfAA 86th Annual Meeting</a></div>
+        <div class="conf-dates">Mar 17–21, 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-anthropology">Applied Anthropology</span>
+        <span class="conf-location">📍 Albuquerque, NM · USA</span>
+      </div>
+      <div class="conf-desc">Society for Applied Anthropology annual meeting at Hotel Albuquerque at Old Town. Brings together scholars, practitioners, and students across anthropology, sociology, and related social sciences.</div>
+      <a class="conf-link" href="https://appliedanthro.org/annual-meeting/" target="_blank">Conference website ↗</a>
+    </div>
+
+    <div class="conf-card discipline-archaeology" data-discipline="archaeology" data-region="americas">
+      <div class="conf-header">
+        <div class="conf-title">Northwest Anthropological Conference / Alaska Anthropological Association Joint Meeting</div>
+        <div class="conf-dates">Mar 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-anthropology">Anthropology</span>
+        <span class="conf-badge badge-archaeology">Archaeology</span>
+        <span class="conf-location">📍 Bellingham, WA · USA</span>
+      </div>
+      <div class="conf-desc">Joint NWAC–AAA meeting hosted by Western Washington University Department of Anthropology. Pacific Northwest, Alaska, and Indigenous archaeology focus.</div>
+    </div>
+  </div>
+
+  <!-- APRIL / MAY -->
+  <div class="month-group" data-month="apr">
+    <div class="month-label">April – May <span class="month-count">3 conferences</span></div>
+
+    <div class="conf-card discipline-archaeology" data-discipline="archaeology" data-region="americas">
+      <div class="conf-header">
+        <div class="conf-title"><a href="https://saa.org/AnnualMeeting" target="_blank">SAA 91st Annual Meeting</a></div>
+        <div class="conf-dates">Apr 29 – May 3, 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-archaeology">Archaeology</span>
+        <span class="conf-location">📍 San Francisco, CA · USA · Hilton Union Square</span>
+      </div>
+      <div class="conf-desc">The Society for American Archaeology's flagship event — the largest gathering of archaeologists in the Americas, drawing attendees from 45+ countries. General sessions, symposia, forums, lightning rounds, posters, and workshops. Early bird registration extended to March 5.</div>
+      <a class="conf-link" href="https://saa.org/AnnualMeeting" target="_blank">Conference website ↗</a>
+    </div>
+
+    <div class="conf-card discipline-classical" data-discipline="classical" data-region="europe">
+      <div class="conf-header">
+        <div class="conf-title">Classical Association Annual Conference</div>
+        <div class="conf-dates">Apr 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-classical">Classical Studies</span>
+        <span class="conf-location">📍 UK</span>
+      </div>
+      <div class="conf-desc">The premier UK gathering for classical studies, covering ancient Greece, Rome, and the ancient Near East across archaeology, history, and literature.</div>
+    </div>
+
+    <div class="conf-card discipline-biological" data-discipline="biological" data-region="americas">
+      <div class="conf-header">
+        <div class="conf-title"><a href="https://bioanth.org" target="_blank">AABA Annual Meeting</a></div>
+        <div class="conf-dates">Apr 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-biological">Biological Anthropology</span>
+        <span class="conf-location">📍 USA</span>
+      </div>
+      <div class="conf-desc">American Association of Biological Anthropologists annual meeting — covering human evolution, paleoanthropology, skeletal biology, ancient DNA, and primatology. Over 2,000 scientists and students.</div>
+      <a class="conf-link" href="https://bioanth.org" target="_blank">Conference website ↗</a>
+    </div>
+  </div>
+
+  <!-- JUNE -->
+  <div class="month-group" data-month="jun">
+    <div class="month-label">June <span class="month-count">2 conferences</span></div>
+
+    <div class="conf-card discipline-archaeology" data-discipline="archaeology" data-region="europe">
+      <div class="conf-header">
+        <div class="conf-title">SHA / ACUA Annual Conference</div>
+        <div class="conf-dates">Jun 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-archaeology">Historical Archaeology</span>
+        <span class="conf-badge badge-heritage">Underwater Heritage</span>
+        <span class="conf-location">📍 TBA</span>
+      </div>
+      <div class="conf-desc">Society for Historical Archaeology and Advisory Council on Underwater Archaeology joint conference. Historical, underwater, and maritime archaeology focus.</div>
+    </div>
+
+    <div class="conf-card discipline-heritage" data-discipline="heritage" data-region="global">
+      <div class="conf-header">
+        <div class="conf-title">ICOMOS General Assembly</div>
+        <div class="conf-dates">Jun 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-heritage">Cultural Heritage</span>
+        <span class="conf-location">📍 TBA · International</span>
+      </div>
+      <div class="conf-desc">International Council on Monuments and Sites — the premier international forum on architectural and archaeological heritage conservation, documentation, and management.</div>
+    </div>
+  </div>
+
+  <!-- AUGUST -->
+  <div class="month-group" data-month="aug">
+    <div class="month-label">August <span class="month-count">4 conferences</span></div>
+
+    <div class="conf-card discipline-archaeology" data-discipline="archaeology" data-region="europe">
+      <div class="conf-header">
+        <div class="conf-title"><a href="https://www.e-a-a.org/EAA2026" target="_blank">EAA 32nd Annual Meeting — "Resonant Pasts"</a></div>
+        <div class="conf-dates">Aug 26–29, 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-archaeology">European Archaeology</span>
+        <span class="conf-location">📍 Athens, Greece · National and Kapodistrian University</span>
+      </div>
+      <div class="conf-desc">The European Association of Archaeologists flagship meeting — 3,000–4,000 delegates, 250+ sessions. Theme: "Resonant Pasts." Held at the School of Philosophy, with 80+ archaeological sites within reach. Eight thematic streams including interdisciplinarity, climate change, and digital archaeology.</div>
+      <a class="conf-link" href="https://www.e-a-a.org/EAA2026" target="_blank">Conference website ↗</a>
+    </div>
+
+    <div class="conf-card discipline-archaeology" data-discipline="archaeology" data-region="europe">
+      <div class="conf-header">
+        <div class="conf-title">UISPP World Congress</div>
+        <div class="conf-dates">Aug 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-archaeology">Prehistoric Archaeology</span>
+        <span class="conf-location">📍 TBA · International</span>
+      </div>
+      <div class="conf-desc">Union Internationale des Sciences Préhistoriques et Protohistoriques — the global congress for prehistoric and protohistoric archaeology, held every 5 years.</div>
+    </div>
+
+    <div class="conf-card discipline-archaeology" data-discipline="archaeology" data-region="europe">
+      <div class="conf-header">
+        <div class="conf-title">Computer Applications in Archaeology (CAA) 2026</div>
+        <div class="conf-dates">Aug 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-archaeology">Digital Archaeology</span>
+        <span class="conf-location">📍 TBA · Europe</span>
+      </div>
+      <div class="conf-desc">CAA International annual meeting — the leading forum for computational approaches in archaeology including GIS, 3D reconstruction, machine learning, LiDAR analysis, and agent-based modeling.</div>
+    </div>
+
+    <div class="conf-card discipline-biological" data-discipline="biological" data-region="europe">
+      <div class="conf-header">
+        <div class="conf-title">BABAO Annual Conference</div>
+        <div class="conf-dates">Aug/Sep 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-biological">Biological Anthropology</span>
+        <span class="conf-location">📍 UK</span>
+      </div>
+      <div class="conf-desc">British Association for Biological Anthropology and Osteoarchaeology annual meeting — skeletal analysis, paleopathology, funerary archaeology, and ancient DNA.</div>
+    </div>
+  </div>
+
+  <!-- SEPTEMBER -->
+  <div class="month-group" data-month="sep">
+    <div class="month-label">September <span class="month-count">4 conferences</span></div>
+
+    <div class="conf-card discipline-archaeoastronomy" data-discipline="archaeoastronomy" data-region="europe">
+      <div class="conf-header">
+        <div class="conf-title"><a href="https://seac2026.uth.gr/" target="_blank">SEAC XXXIII — European Society for Astronomy in Culture</a></div>
+        <div class="conf-dates">Sep 4–8, 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-archaeoastronomy">Archaeoastronomy</span>
+        <span class="conf-location">📍 Volos, Greece · University of Thessaly</span>
+      </div>
+      <div class="conf-desc">The 33rd annual meeting of the European Society for Astronomy in Culture — archaeoastronomy, ethnoastronomy, cultural astronomy, and history of astronomy. Abstract deadline: April 16, 2026. <strong>archaiology.org presenting: "Peg, Boat, and Quartered Sky: The Lidar Höyük Prism as Portable Parapegma."</strong></div>
+      <a class="conf-link" href="https://seac2026.uth.gr/" target="_blank">Conference website ↗</a>
+    </div>
+
+    <div class="conf-card discipline-archaeology" data-discipline="archaeology" data-region="global">
+      <div class="conf-header">
+        <div class="conf-title">World Archaeological Congress (WAC) Inter-Congress</div>
+        <div class="conf-dates">Sep 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-archaeology">Archaeology</span>
+        <span class="conf-badge badge-heritage">Indigenous Heritage</span>
+        <span class="conf-location">📍 TBA · International</span>
+      </div>
+      <div class="conf-desc">WAC inter-congress event — focus on decolonizing archaeology, Indigenous heritage rights, and global archaeological practice. WAC-10 main congress next cycle.</div>
+      <a class="conf-link" href="https://worldarchaeologicalcongress.com/" target="_blank">Conference website ↗</a>
+    </div>
+
+    <div class="conf-card discipline-classical" data-discipline="classical" data-region="global">
+      <div class="conf-header">
+        <div class="conf-title">International Congress of Classical Archaeology (AIAC)</div>
+        <div class="conf-dates">Sep 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-classical">Classical Archaeology</span>
+        <span class="conf-location">📍 TBA · International</span>
+      </div>
+      <div class="conf-desc">Association Internationale d'Archéologie Classique — major international congress covering Greek, Roman, Etruscan, and Near Eastern classical archaeology.</div>
+    </div>
+
+    <div class="conf-card discipline-heritage" data-discipline="heritage" data-region="global">
+      <div class="conf-header">
+        <div class="conf-title">IFRAO World Rock Art Congress</div>
+        <div class="conf-dates">Sep 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-heritage">Rock Art</span>
+        <span class="conf-badge badge-archaeology">Prehistoric Archaeology</span>
+        <span class="conf-location">📍 TBA · International</span>
+      </div>
+      <div class="conf-desc">International Federation of Rock Art Organizations world congress — the global forum for prehistoric rock art research, conservation, and interpretation.</div>
+    </div>
+  </div>
+
+  <!-- OCTOBER / NOVEMBER -->
+  <div class="month-group" data-month="oct">
+    <div class="month-label">October – November <span class="month-count">5 conferences</span></div>
+
+    <div class="conf-card discipline-archaeology" data-discipline="archaeology" data-region="americas">
+      <div class="conf-header">
+        <div class="conf-title">AIA Fieldwork Fair / Regional Meetings</div>
+        <div class="conf-dates">Oct 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-classical">Classical Archaeology</span>
+        <span class="conf-location">📍 USA · Multiple cities</span>
+      </div>
+      <div class="conf-desc">Archaeological Institute of America regional society meetings and fieldwork fair — connecting students and early-career archaeologists with excavation opportunities.</div>
+    </div>
+
+    <div class="conf-card discipline-anthropology" data-discipline="anthropology" data-region="americas">
+      <div class="conf-header">
+        <div class="conf-title"><a href="https://annualmeeting.americananthro.org/" target="_blank">AAA 125th Annual Meeting — "On the Verge"</a></div>
+        <div class="conf-dates">Nov 18–22, 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-anthropology">Anthropology</span>
+        <span class="conf-location">📍 St. Louis, MO · USA</span>
+      </div>
+      <div class="conf-desc">The American Anthropological Association's 125th annual meeting — the world's largest gathering of anthropologists. Theme: "On the Verge." Covering cultural, biological, linguistic, and archaeological anthropology across all four subdisciplines.</div>
+      <a class="conf-link" href="https://annualmeeting.americananthro.org/" target="_blank">Conference website ↗</a>
+    </div>
+
+    <div class="conf-card discipline-archaeology" data-discipline="archaeology" data-region="americas">
+      <div class="conf-header">
+        <div class="conf-title">SHA / ACAH Annual Meeting</div>
+        <div class="conf-dates">Nov 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-archaeology">Historical Archaeology</span>
+        <span class="conf-location">📍 USA</span>
+      </div>
+      <div class="conf-desc">Society for Historical Archaeology — historical period sites, material culture, plantation archaeology, and community-engaged practice.</div>
+    </div>
+
+    <div class="conf-card discipline-archaeology" data-discipline="archaeology" data-region="americas">
+      <div class="conf-header">
+        <div class="conf-title">TAG (Theoretical Archaeology Group) USA</div>
+        <div class="conf-dates">Nov/Dec 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-archaeology">Archaeological Theory</span>
+        <span class="conf-location">📍 USA</span>
+      </div>
+      <div class="conf-desc">American TAG annual meeting — archaeological theory, ontology, digital humanities, and critical approaches. Companion to the UK TAG conference.</div>
+    </div>
+
+    <div class="conf-card discipline-archaeology" data-discipline="archaeology" data-region="europe">
+      <div class="conf-header">
+        <div class="conf-title">TAG (Theoretical Archaeology Group) UK</div>
+        <div class="conf-dates">Dec 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-archaeology">Archaeological Theory</span>
+        <span class="conf-location">📍 UK</span>
+      </div>
+      <div class="conf-desc">The original Theoretical Archaeology Group annual conference — the UK's premier forum for archaeological theory, critical heritage, and interpretive approaches.</div>
+    </div>
+  </div>
+
+  <!-- RECURRING / TBA -->
+  <div class="month-group" data-month="tba">
+    <div class="month-label">Dates TBA <span class="month-count">3 conferences</span></div>
+
+    <div class="conf-card discipline-archaeology" data-discipline="archaeology" data-region="global">
+      <div class="conf-header">
+        <div class="conf-title">ASOR Annual Meeting</div>
+        <div class="conf-dates">Nov 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-archaeology">Near Eastern Archaeology</span>
+        <span class="conf-location">📍 USA</span>
+      </div>
+      <div class="conf-desc">American Schools of Oriental Research — the premier North American conference for Near Eastern archaeology, Biblical archaeology, and ancient Levantine studies.</div>
+      <a class="conf-link" href="https://www.asor.org" target="_blank">Conference website ↗</a>
+    </div>
+
+    <div class="conf-card discipline-biological" data-discipline="biological" data-region="global">
+      <div class="conf-header">
+        <div class="conf-title">Paleoanthropology Society Annual Meeting</div>
+        <div class="conf-dates">Apr/May 2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-biological">Paleoanthropology</span>
+        <span class="conf-location">📍 Co-located with AABA · USA</span>
+      </div>
+      <div class="conf-desc">Annual meeting covering human origins, hominin evolution, fossil hominids, and the archaeology of early human behavior. Held alongside the AABA meeting.</div>
+    </div>
+
+    <div class="conf-card discipline-heritage" data-discipline="heritage" data-region="global">
+      <div class="conf-header">
+        <div class="conf-title">Digital Heritage International Congress</div>
+        <div class="conf-dates">2026</div>
+      </div>
+      <div class="conf-meta">
+        <span class="conf-badge badge-heritage">Digital Heritage</span>
+        <span class="conf-badge badge-archaeology">3D Reconstruction</span>
+        <span class="conf-location">📍 TBA · International</span>
+      </div>
+      <div class="conf-desc">The leading international congress on digital technologies in cultural heritage — 3D reconstruction, virtual reality, photogrammetry, LiDAR, and digital preservation. Highly relevant to the archaiology.org reconstruction pipeline.</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- SIDEBAR -->
+<aside>
+
+  <div class="sidebar-card">
+    <div class="sidebar-label">Discipline Legend</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--ochre)"></div>Archaeology</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--forest)"></div>Anthropology</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--slate)"></div>Biological Anthropology</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--burgundy)"></div>Archaeoastronomy</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--terra)"></div>Classical Studies</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#6b8e6b"></div>Heritage &amp; Digital</div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-label">Coming Up Next</div>
+    <div class="upcoming-item">
+      <div class="upcoming-date">Apr 16, 2026</div>
+      <div class="upcoming-name">SEAC 2026 Abstract Deadline</div>
+      <div class="upcoming-loc">Volos, Greece</div>
+    </div>
+    <div class="upcoming-item">
+      <div class="upcoming-date">Apr 29 – May 3</div>
+      <div class="upcoming-name">SAA 91st Annual Meeting</div>
+      <div class="upcoming-loc">San Francisco, CA</div>
+    </div>
+    <div class="upcoming-item">
+      <div class="upcoming-date">Aug 26–29</div>
+      <div class="upcoming-name">EAA "Resonant Pasts"</div>
+      <div class="upcoming-loc">Athens, Greece</div>
+    </div>
+    <div class="upcoming-item">
+      <div class="upcoming-date">Sep 4–8</div>
+      <div class="upcoming-name">SEAC XXXIII</div>
+      <div class="upcoming-loc">Volos, Greece</div>
+    </div>
+    <div class="upcoming-item">
+      <div class="upcoming-date">Nov 18–22</div>
+      <div class="upcoming-name">AAA 125th Annual Meeting</div>
+      <div class="upcoming-loc">St. Louis, MO</div>
+    </div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-label">Submit a Conference</div>
+    <p style="font-family:var(--sans);font-size:.72rem;color:var(--ash);line-height:1.55;margin-bottom:.7rem">Know of a 2026 archaeology or anthropology conference not listed here? Let us know.</p>
+    <a class="conf-link" href="mailto:jwcarlt@gmail.com?subject=Conference submission for archaiology.org" style="display:inline-flex">Submit ↗</a>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-label">Key Dates</div>
+    <a class="sidebar-link" href="https://seac2026.uth.gr/" target="_blank"><span>SEAC abstract deadline</span><span style="font-size:.62rem;color:var(--ochre)">Apr 16</span></a>
+    <a class="sidebar-link" href="https://saa.org" target="_blank"><span>SAA early bird ends</span><span style="font-size:.62rem;color:var(--ochre)">Mar 5</span></a>
+    <a class="sidebar-link" href="https://www.e-a-a.org/EAA2026" target="_blank"><span>EAA registration open</span><span style="font-size:.62rem;color:var(--ochre)">Now</span></a>
+  </div>
+
+</aside>
+</div>
+
+<footer class="footer">
+  <a href="index.html">archAIology</a> · archaiology.org · 2026 Conference Calendar · © 2026
+</footer>
+
+<script>
+// Filter logic
+let activeDisc = "all", activeRegion = null;
+
+function applyFilters() {
+  document.querySelectorAll(".conf-card").forEach(card => {
+    const disc   = card.dataset.discipline;
+    const region = card.dataset.region;
+    const discOk   = activeDisc === "all" || disc === activeDisc;
+    const regionOk = !activeRegion || region === activeRegion;
+    card.style.display = discOk && regionOk ? "" : "none";
+  });
+  // Hide empty month groups
+  document.querySelectorAll(".month-group").forEach(group => {
+    const visible = [...group.querySelectorAll(".conf-card")]
+      .some(c => c.style.display !== "none");
+    group.style.display = visible ? "" : "none";
+  });
+}
+
+document.querySelectorAll(".filter-chip[data-filter]").forEach(btn => {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".filter-chip[data-filter]").forEach(b => b.classList.remove("active"));
+    this.classList.add("active");
+    activeDisc = this.dataset.filter;
+    applyFilters();
+  });
+});
+
+document.querySelectorAll(".filter-chip[data-region]").forEach(btn => {
+  btn.addEventListener("click", function() {
+    const wasActive = this.classList.contains("active");
+    document.querySelectorAll(".filter-chip[data-region]").forEach(b => b.classList.remove("active"));
+    activeRegion = wasActive ? null : this.dataset.region;
+    if (!wasActive) this.classList.add("active");
+    applyFilters();
+  });
+});
+</script>
+</body>
+</html>
