@@ -1007,9 +1007,35 @@ document.getElementById("searchInput").addEventListener("input", function() {
   }, 250);
 });
 
+// ── Read URL params on load ───────────────────────────────────
+function readUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const region = params.get("region");
+  const type   = params.get("type");
+  const q      = params.get("q");
+
+  if (region) {
+    activeRegion = region;
+    document.querySelectorAll(".filter-chip[data-region]").forEach(b => {
+      b.classList.toggle("active", b.dataset.region === region);
+    });
+  }
+  if (type && ["paper","news"].includes(type)) {
+    activeType = type;
+    document.querySelectorAll(".filter-chip[data-type]").forEach(b => {
+      b.classList.toggle("active", b.dataset.type === type);
+    });
+  }
+  if (q) {
+    searchQuery = q;
+    document.getElementById("searchInput").value = q;
+  }
+}
+
 // ── Init ──────────────────────────────────────────────────────
 (async () => {
   try {
+    readUrlParams();
     allItems = await fetchAll();
     updateStats(allItems);
     applyFilters();
