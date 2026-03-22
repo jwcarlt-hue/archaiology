@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Site — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+:root {
+  --cream:#faf8f3; --paper:#f2ede3; --linen:#e8e0d0; --rule:#d5ccb8;
+  --ash:#8a8070; --ink:#1c1814; --deep:#0f0d0a;
+  --ochre:#b8892a; --ochre-lt:#d4a84b; --terra:#7a3e1a;
+  --forest:#2a3d2e; --slate:#3a4a5c;
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+/* ── MASTHEAD ── */
+.masthead{background:var(--ink);padding:0 2rem;border-bottom:1px solid rgba(255,255,255,0.06);}
+.masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px;}
+.logo{font-family:var(--serif);font-size:1.2rem;font-weight:900;color:var(--cream);letter-spacing:-0.01em;}
+.logo span{color:var(--ochre);font-style:italic;}
+.nav-links{display:flex;gap:1.5rem;}
+.nav-link{font-family:var(--sans);font-size:0.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);transition:color .2s;}
+.nav-link:hover{color:var(--cream);}
+
+/* ── SITE HERO ── */
+.site-hero{background:var(--deep);padding:2.5rem 2rem 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.site-hero-inner{max-width:1280px;margin:0 auto;}
+.site-breadcrumb{font-family:var(--sans);font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);margin-bottom:.8rem;}
+.site-breadcrumb a{color:var(--ochre);}
+.site-breadcrumb span{margin:0 .4rem;opacity:.3;}
+.site-name{font-family:var(--serif);font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:var(--cream);line-height:1.1;letter-spacing:-.02em;margin-bottom:.5rem;}
+.site-meta-row{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.site-badge{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .6rem;border-radius:2px;}
+.badge-culture{background:rgba(184,137,42,.2);color:var(--ochre);}
+.badge-region{background:rgba(42,61,46,.4);color:#7ab890;}
+.badge-period{background:rgba(255,255,255,.06);color:var(--ash);}
+.site-stats-row{display:flex;gap:2rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.site-stat{text-align:center;}
+.site-stat-num{font-family:var(--serif);font-size:1.6rem;font-weight:900;color:var(--ochre);display:block;line-height:1;}
+.site-stat-label{font-family:var(--sans);font-size:.58rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);margin-top:.2rem;}
+
+/* ── TABS ── */
+.site-tabs{background:var(--deep);border-bottom:1px solid rgba(255,255,255,.06);padding:0 2rem;}
+.tabs-inner{max-width:1280px;margin:0 auto;display:flex;gap:0;overflow-x:auto;}
+.tab-btn{font-family:var(--sans);font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.8rem 1.2rem;border:none;background:none;color:var(--ash);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.tab-btn:hover{color:var(--cream);}
+.tab-btn.active{color:var(--ochre);border-bottom-color:var(--ochre);}
+
+/* ── MAIN LAYOUT ── */
+.site-body{max-width:1280px;margin:0 auto;padding:2.5rem 2rem 4rem;display:grid;grid-template-columns:1fr 360px;gap:3rem;align-items:start;}
+@media(max-width:900px){.site-body{grid-template-columns:1fr;}}
+
+/* ── TAB PANELS ── */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ── 3D VIEWPORT ── */
+.scene-wrap{background:var(--deep);border:1px solid rgba(255,255,255,.08);margin-bottom:2rem;position:relative;border-radius:3px;overflow:hidden;}
+.scene-canvas{width:100%;height:420px;display:block;}
+.scene-controls{position:absolute;bottom:.8rem;right:.8rem;display:flex;gap:.4rem;}
+.scene-btn{background:rgba(15,13,10,.8);border:1px solid rgba(255,255,255,.12);color:var(--ash);font-family:var(--sans);font-size:.6rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.3rem .7rem;cursor:pointer;border-radius:2px;transition:all .2s;backdrop-filter:blur(4px);}
+.scene-btn:hover{color:var(--cream);border-color:rgba(255,255,255,.3);}
+.scene-label{position:absolute;top:.8rem;left:.8rem;background:rgba(15,13,10,.8);border:1px solid rgba(184,137,42,.3);color:var(--ochre);font-family:var(--sans);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem;border-radius:2px;backdrop-filter:blur(4px);}
+.scene-attribution{position:absolute;bottom:.8rem;left:.8rem;font-family:var(--sans);font-size:.55rem;color:rgba(138,128,112,.6);}
+
+/* ── SYNTHESIS CONTENT ── */
+.synthesis-content{font-size:.95rem;line-height:1.75;color:#3a3028;}
+.synthesis-content h3{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--ink);margin:1.5rem 0 .5rem;}
+.synthesis-content p{margin-bottom:1rem;}
+.synthesis-content ul{margin:.5rem 0 1rem 1.5rem;}
+.synthesis-content li{margin-bottom:.3rem;}
+.ai-badge{display:inline-flex;align-items:center;gap:.35rem;background:rgba(184,137,42,.1);color:var(--ochre);font-family:var(--sans);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .5rem;border-radius:2px;margin-bottom:1rem;}
+.confidence-bar{height:2px;background:var(--linen);border-radius:1px;margin-bottom:1.5rem;}
+.confidence-fill{height:100%;background:var(--ochre);border-radius:1px;transition:width .5s ease;}
+.placeholder-text{color:var(--ash);font-style:italic;font-size:.9rem;line-height:1.6;}
+
+/* ── PAPERS FEED ── */
+.papers-list{display:flex;flex-direction:column;gap:0;}
+.paper-item{padding:1.2rem 0;border-bottom:1px solid var(--linen);}
+.paper-item:last-child{border-bottom:none;}
+.paper-tag{font-family:var(--sans);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre);margin-bottom:.25rem;}
+.paper-title{font-family:var(--serif);font-size:.95rem;font-weight:600;color:var(--ink);line-height:1.35;margin-bottom:.3rem;}
+.paper-title a:hover{color:var(--ochre);}
+.paper-summary{font-size:.8rem;color:var(--ash);line-height:1.5;margin-bottom:.4rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.paper-meta{font-family:var(--sans);font-size:.62rem;color:var(--ash);display:flex;gap:.5rem;flex-wrap:wrap;}
+.paper-meta strong{color:var(--ink);}
+
+/* ── SIDEBAR ── */
+.site-sidebar{position:sticky;top:1.5rem;}
+.sidebar-card{background:white;border:1px solid var(--rule);padding:1.2rem 1.3rem;margin-bottom:1.2rem;}
+.sidebar-label{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ochre);margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule);}
+.info-row{display:flex;justify-content:space-between;align-items:baseline;padding:.3rem 0;border-bottom:1px dotted var(--linen);}
+.info-row:last-child{border-bottom:none;}
+.info-key{font-family:var(--sans);font-size:.65rem;color:var(--ash);}
+.info-val{font-family:var(--sans);font-size:.72rem;font-weight:600;color:var(--ink);text-align:right;max-width:60%;}
+.ext-link{display:flex;align-items:center;justify-content:space-between;padding:.4rem 0;border-bottom:1px dotted var(--linen);font-family:var(--sans);font-size:.72rem;color:var(--ash);transition:color .2s;cursor:pointer;}
+.ext-link:last-child{border-bottom:none;}
+.ext-link:hover{color:var(--ochre);}
+.ext-link-arrow{font-size:.7rem;opacity:.5;}
+
+/* ── TOPOSTEXT BLOCK ── */
+.topos-block{background:var(--forest);padding:1rem 1.3rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.2rem;}
+.topos-num{font-family:var(--serif);font-size:2rem;font-weight:900;color:var(--ochre);line-height:1;}
+.topos-lbl{font-family:var(--sans);font-size:.58rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(232,224,208,.6);line-height:1.4;}
+.topos-btn{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ochre);border:1px solid rgba(184,137,42,.4);padding:.35rem .8rem;white-space:nowrap;transition:all .2s;}
+.topos-btn:hover{background:rgba(184,137,42,.15);}
+
+/* ── LOADING ── */
+.loading-state{padding:3rem 0;text-align:center;}
+.loading-dots span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ochre);margin:0 2px;animation:ldot 1.2s ease infinite;}
+.loading-dots span:nth-child(2){animation-delay:.2s;}
+.loading-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes ldot{0%,100%{opacity:.2;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
+
+/* ── FOOTER ── */
+.footer{background:var(--ink);color:var(--ash);text-align:center;padding:1.5rem;font-family:var(--sans);font-size:.68rem;}
+.footer a{color:var(--ochre);}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <nav class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="news.html">Feed</a>
+      <a class="nav-link" href="map.html">Map</a>
+    </nav>
+  </div>
+</header>
+
+<div class="site-hero">
+  <div class="site-hero-inner">
+    <div class="site-breadcrumb">
+      <a href="map.html">Map</a><span>›</span>
+      <span id="bcRegion">—</span><span>›</span>
+      <span id="bcName">Loading…</span>
+    </div>
+    <div class="site-name" id="siteName">
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+    </div>
+    <div class="site-meta-row" id="siteMeta"></div>
+    <div class="site-stats-row" id="siteStats"></div>
+  </div>
+</div>
+
+<div class="site-tabs">
+  <div class="tabs-inner">
+    <button class="tab-btn active" data-tab="overview">Overview</button>
+    <button class="tab-btn" data-tab="archaeological">Archaeological</button>
+    <button class="tab-btn" data-tab="biological">Biological</button>
+    <button class="tab-btn" data-tab="cultural">Cultural</button>
+    <button class="tab-btn" data-tab="linguistic">Linguistic</button>
+    <button class="tab-btn" data-tab="papers">Papers & Reports</button>
+  </div>
+</div>
+
+<div class="site-body">
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <!-- OVERVIEW TAB -->
+    <div class="tab-panel active" id="tab-overview">
+      <!-- 3D Scene -->
+      <div class="scene-wrap" id="sceneWrap">
+        <canvas class="scene-canvas" id="sceneCanvas"></canvas>
+        <div class="scene-label" id="sceneLabel">Procedural Reconstruction</div>
+        <div class="scene-attribution" id="sceneAttr"></div>
+        <div class="scene-controls">
+          <button class="scene-btn" id="btnRotate">⟳ Auto-rotate</button>
+          <button class="scene-btn" id="btnReset">Reset view</button>
+        </div>
+      </div>
+      <!-- Overview synthesis -->
+      <div id="synthesisOverview">
+        <div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+      </div>
+    </div>
+
+    <!-- ARCHAEOLOGICAL TAB -->
+    <div class="tab-panel" id="tab-archaeological">
+      <div id="synthesisArchaeological">
+        <div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+      </div>
+    </div>
+
+    <!-- BIOLOGICAL TAB -->
+    <div class="tab-panel" id="tab-biological">
+      <div id="synthesisBiological">
+        <div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+      </div>
+    </div>
+
+    <!-- CULTURAL TAB -->
+    <div class="tab-panel" id="tab-cultural">
+      <div id="synthesisCultural">
+        <div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+      </div>
+    </div>
+
+    <!-- LINGUISTIC TAB -->
+    <div class="tab-panel" id="tab-linguistic">
+      <div id="synthesisLinguistic">
+        <div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+      </div>
+    </div>
+
+    <!-- PAPERS TAB -->
+    <div class="tab-panel" id="tab-papers">
+      <div class="papers-list" id="papersList">
+        <div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="site-sidebar">
+
+    <div id="toposBlock" style="display:none">
+      <div class="topos-block">
+        <div>
+          <div class="topos-num" id="toposNum">0</div>
+          <div class="topos-lbl">Ancient text<br>references</div>
+        </div>
+        <a class="topos-btn" id="toposBtn" href="#" target="_blank">Read passages →</a>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-label">Site Record</div>
+      <div id="siteRecord"></div>
+    </div>
+
+    <div class="sidebar-card" id="extLinksCard">
+      <div class="sidebar-label">External Links</div>
+      <div id="extLinks"></div>
+    </div>
+
+  </aside>
+</div>
+
+<footer class="footer">
+  <a href="index.html">archAIology</a> · archaiology.org · © 2026
+</footer>
+
+<!-- Load scene engine -->
+<script src="scene-engine.js"></script>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────
+const SUPABASE_URL      = "https://ucsgtbpeuqeamuvuvojs.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";
+
+// ── Get site ID from URL ──────────────────────────────────
+function getSiteId() {
+  const params = new URLSearchParams(window.location.search);
+  const path   = window.location.pathname;
+  // Support /site.html?id=tikal and /site/tikal
+  return params.get("id") ||
+         path.split("/").filter(Boolean).pop()?.replace(".html","") ||
+         "tikal";
+}
+
+const siteId = getSiteId();
+
+// ── Supabase fetch helper ─────────────────────────────────
+async function sb(path) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: {
+      "apikey":        SUPABASE_ANON_KEY,
+      "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+    }
+  });
+  if (!res.ok) throw new Error(`Supabase ${res.status}: ${path}`);
+  return res.json();
+}
+
+// ── Helpers ───────────────────────────────────────────────
+function regionLabel(r) {
+  return {mesoamerica:"Mesoamerica",north_america:"North America",
+          europe:"Europe",near_east:"Near East",general:"General"}[r] ?? r ?? "";
+}
+function relDate(iso) {
+  if (!iso) return "";
+  const diff = (Date.now() - new Date(iso).getTime()) / 86400000;
+  if (diff < 1)  return "Today";
+  if (diff < 7)  return Math.floor(diff)+"d ago";
+  if (diff < 60) return Math.floor(diff/7)+"w ago";
+  return new Date(iso).toLocaleDateString("en-US",{month:"short",year:"numeric"});
+}
+function renderMarkdown(md) {
+  if (!md) return "";
+  return md
+    .replace(/^### (.+)$/gm, "<h3>$1</h3>")
+    .replace(/^## (.+)$/gm,  "<h3>$1</h3>")
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g,     "<em>$1</em>")
+    .replace(/^- (.+)$/gm,    "<li>$1</li>")
+    .replace(/(<li>.*<\/li>\n?)+/g, s => `<ul>${s}</ul>`)
+    .replace(/\n\n/g, "</p><p>")
+    .replace(/^(?!<[hul])/gm, "<p>")
+    .replace(/(?<![>])$/gm, "</p>")
+    .replace(/<p><\/p>/g, "");
+}
+
+// ── Load site data ────────────────────────────────────────
+async function loadSite() {
+  // Find site by name (slug) or UUID
+  const isUuid = /^[0-9a-f-]{36}$/i.test(siteId);
+  const filter = isUuid
+    ? `id=eq.${siteId}`
+    : `name=ilike.${encodeURIComponent(siteId)}&limit=1`;
+
+  const sites = await sb(`archaeology_sites?${filter}&select=*`);
+  if (!sites.length) {
+    document.getElementById("siteName").textContent = "Site not found";
+    return;
+  }
+  const site = sites[0];
+
+  // Update page title and breadcrumb
+  document.title = `${site.name} — archAIology`;
+  document.getElementById("pageTitle").textContent = `${site.name} — archAIology`;
+  document.getElementById("bcRegion").textContent = regionLabel(site.region);
+  document.getElementById("bcName").textContent   = site.name;
+  document.getElementById("siteName").textContent = site.name;
+
+  // Badges
+  const badges = [
+    site.culture ? `<span class="site-badge badge-culture">${site.culture}</span>` : "",
+    site.region  ? `<span class="site-badge badge-region">${regionLabel(site.region)}</span>` : "",
+    site.period  ? `<span class="site-badge badge-period">${site.period}</span>` : "",
+    site.country ? `<span class="site-badge badge-period">${site.country}</span>` : "",
+  ].filter(Boolean).join("");
+  document.getElementById("siteMeta").innerHTML = badges;
+
+  // Stats (will update with real counts below)
+  renderStats(site, 0, 0);
+
+  // Sidebar record
+  renderRecord(site);
+
+  // External links
+  renderExtLinks(site);
+
+  // ToposText block
+  if (site.ancient_refs > 0 && site.topostext_url) {
+    document.getElementById("toposBlock").style.display = "block";
+    document.getElementById("toposNum").textContent = site.ancient_refs.toLocaleString();
+    document.getElementById("toposBtn").href = site.topostext_url;
+  }
+
+  // Load corpus mentions
+  const corpus = await sb(
+    `archaeology_corpus?site_id=eq.${site.id}&select=title,source_url,content_type,published_at,source,author,summary&order=published_at.desc&limit=20`
+  );
+  renderStats(site, corpus.length, site.ancient_refs ?? 0);
+  renderPapers(corpus);
+
+  // Load reconstruction
+  const recons = await sb(`site_reconstructions?site_id=eq.${site.id}&select=*`);
+  initScene(recons[0] ?? null, site);
+
+  // Load synthesis tabs
+  const tabs = await sb(`site_synthesis?site_id=eq.${site.id}&select=*`);
+  renderSynthesisTabs(tabs, site, corpus);
+
+  return site;
+}
+
+function renderStats(site, mentionCount, ancientRefs) {
+  document.getElementById("siteStats").innerHTML = `
+    <div class="site-stat">
+      <span class="site-stat-num">${mentionCount}</span>
+      <span class="site-stat-label">Modern papers</span>
+    </div>
+    <div class="site-stat">
+      <span class="site-stat-num">${(ancientRefs || 0).toLocaleString()}</span>
+      <span class="site-stat-label">Ancient refs</span>
+    </div>
+    ${site.lat ? `
+    <div class="site-stat">
+      <span class="site-stat-num">${site.lat.toFixed(2)}°</span>
+      <span class="site-stat-label">Latitude</span>
+    </div>
+    <div class="site-stat">
+      <span class="site-stat-num">${site.lng.toFixed(2)}°</span>
+      <span class="site-stat-label">Longitude</span>
+    </div>` : ""}
+  `;
+}
+
+function renderRecord(site) {
+  const rows = [
+    ["Culture",    site.culture],
+    ["Period",     site.period],
+    ["Region",     regionLabel(site.region)],
+    ["Country",    site.country],
+    ["Subregion",  site.subregion],
+  ].filter(r => r[1]);
+
+  document.getElementById("siteRecord").innerHTML = rows.map(([k,v]) => `
+    <div class="info-row">
+      <span class="info-key">${k}</span>
+      <span class="info-val">${v}</span>
+    </div>`).join("") +
+    (site.description ? `<p style="font-family:var(--body);font-size:.82rem;color:var(--ash);line-height:1.55;margin-top:.8rem">${site.description}</p>` : "");
+}
+
+function renderExtLinks(site) {
+  const links = [
+    site.wikipedia_url  ? ["Wikipedia",  site.wikipedia_url]  : null,
+    site.topostext_url  ? ["ToposText",  site.topostext_url]  : null,
+    site.lat && site.lng ? ["Google Maps",
+      `https://www.google.com/maps/@${site.lat},${site.lng},14z`] : null,
+  ].filter(Boolean);
+
+  document.getElementById("extLinks").innerHTML = links.map(([label, url]) => `
+    <a class="ext-link" href="${url}" target="_blank" rel="noopener">
+      <span>${label}</span><span class="ext-link-arrow">↗</span>
+    </a>`).join("");
+}
+
+function renderPapers(corpus) {
+  const list = document.getElementById("papersList");
+  if (!corpus.length) {
+    list.innerHTML = `<p class="placeholder-text">No papers in corpus yet for this site. The pipeline will add items as they are published.</p>`;
+    return;
+  }
+  list.innerHTML = corpus.map(p => `
+    <div class="paper-item">
+      <div class="paper-tag">${p.content_type === "paper" ? "📄 Paper" : "📰 News"} · ${p.source ?? ""}</div>
+      <div class="paper-title"><a href="${p.source_url ?? '#'}" target="_blank">${p.title}</a></div>
+      ${p.summary ? `<div class="paper-summary">${p.summary}</div>` : ""}
+      <div class="paper-meta">
+        ${p.author ? `<strong>${p.author.slice(0,60)}</strong>` : ""}
+        <span>${relDate(p.published_at)}</span>
+      </div>
+    </div>`).join("");
+}
+
+function renderSynthesisTabs(tabs, site, corpus) {
+  const tabNames = ["overview","archaeological","biological","cultural","linguistic"];
+  const tabMap   = {};
+  tabs.forEach(t => { tabMap[t.tab] = t; });
+
+  tabNames.forEach(tabName => {
+    const el  = document.getElementById(`synthesis${tabName.charAt(0).toUpperCase()+tabName.slice(1)}`);
+    if (!el) return;
+    const syn = tabMap[tabName];
+
+    if (syn?.content) {
+      el.innerHTML = `
+        <div class="ai-badge">🤖 AI Draft${syn.approved ? " · ✓ Reviewed" : " · Pending review"}</div>
+        <div class="confidence-bar">
+          <div class="confidence-fill" style="width:${Math.round((syn.confidence??0.7)*100)}%"></div>
+        </div>
+        <div class="synthesis-content">${renderMarkdown(syn.content)}</div>
+      `;
+    } else {
+      // Show placeholder with site info
+      const name = site.name;
+      const placeholders = {
+        overview:       `Overview synthesis for ${name} will be generated from corpus papers. ${corpus.length} papers currently in corpus.`,
+        archaeological: `Archaeological analysis for ${name} — covering stratigraphy, material culture, architecture, and chronology — will be drafted from corpus papers.`,
+        biological:     `Biological anthropology data for ${name} — skeletal analysis, paleopathology, diet, migration patterns — will be synthesized when relevant papers are available.`,
+        cultural:       `Cultural analysis for ${name} — ritual practices, social organization, iconography, exchange networks — will be drafted from corpus.`,
+        linguistic:     `Linguistic data for ${name} — epigraphy, glyphic inscriptions, language affiliations — will be synthesized from relevant scholarship.`,
+      };
+      el.innerHTML = `<p class="placeholder-text">${placeholders[tabName] ?? "Content pending."}</p>`;
+    }
+  });
+}
+
+// ── Three.js Scene ────────────────────────────────────────
+let renderer, camera, sceneThree, animating = true, autoRotate = true;
+const ORBIT_SPEED = 0.003;
+
+function initScene(recon, site) {
+  const canvas = document.getElementById("sceneCanvas");
+  const wrap   = document.getElementById("sceneWrap");
+
+  sceneThree = new THREE.Scene();
+  camera     = new THREE.PerspectiveCamera(55, canvas.clientWidth / canvas.clientHeight, 0.1, 200);
+  camera.position.set(18, 12, 18);
+  camera.lookAt(0, 3, 0);
+
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+
+  // Lighting
+  const ambient = new THREE.AmbientLight(0xfff8e8, 0.6);
+  sceneThree.add(ambient);
+  const sun = new THREE.DirectionalLight(0xfff0cc, 1.2);
+  sun.position.set(20, 30, 10);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(1024, 1024);
+  sceneThree.add(sun);
+  const fill = new THREE.DirectionalLight(0xc8e8ff, 0.3);
+  fill.position.set(-15, 10, -10);
+  sceneThree.add(fill);
+
+  // Build scene from reconstruction params or defaults
+  const sceneParams = recon?.scene_json ?? {
+    culture:    (site.culture ?? "maya").toLowerCase(),
+    period:     site.period ?? "Classic",
+    structures: [],
+    scale:      "large",
+  };
+  sceneParams.culture = sceneParams.culture ?? (site.culture ?? "maya").toLowerCase();
+
+  ArchaiologyEngine.buildScene(THREE, sceneThree, sceneParams);
+
+  // Labels
+  document.getElementById("sceneLabel").textContent =
+    `${site.name} — Procedural Reconstruction`;
+  document.getElementById("sceneAttr").textContent =
+    recon ? `Based on ${recon.source_count ?? 0} corpus papers` :
+            "Default model · Refines as corpus grows";
+
+  // Mouse orbit
+  let dragging = false, lastX = 0, lastY = 0;
+  let theta = Math.PI/4, phi = Math.PI/4, radius = 26;
+
+  function updateCamera() {
+    camera.position.set(
+      radius * Math.sin(phi) * Math.sin(theta),
+      radius * Math.cos(phi),
+      radius * Math.sin(phi) * Math.cos(theta)
+    );
+    camera.lookAt(0, 3, 0);
+  }
+
+  canvas.addEventListener("mousedown", e => { dragging = true; lastX=e.clientX; lastY=e.clientY; autoRotate=false; });
+  window.addEventListener("mouseup",   () => { dragging = false; });
+  window.addEventListener("mousemove", e => {
+    if (!dragging) return;
+    theta += (e.clientX - lastX) * 0.008;
+    phi    = Math.max(0.2, Math.min(Math.PI/2, phi + (e.clientY - lastY) * 0.005));
+    lastX  = e.clientX; lastY = e.clientY;
+    updateCamera();
+  });
+  canvas.addEventListener("wheel", e => {
+    radius = Math.max(10, Math.min(50, radius + e.deltaY * 0.04));
+    updateCamera();
+  });
+
+  // Touch support
+  let lastTouchX = 0;
+  canvas.addEventListener("touchstart", e => { lastTouchX = e.touches[0].clientX; autoRotate=false; });
+  canvas.addEventListener("touchmove",  e => {
+    theta += (e.touches[0].clientX - lastTouchX) * 0.01;
+    lastTouchX = e.touches[0].clientX;
+    updateCamera();
+  });
+
+  // Buttons
+  document.getElementById("btnRotate").addEventListener("click", function() {
+    autoRotate = !autoRotate;
+    this.textContent = autoRotate ? "⟳ Auto-rotate" : "⏸ Paused";
+  });
+  document.getElementById("btnReset").addEventListener("click", () => {
+    theta = Math.PI/4; phi = Math.PI/4; radius = 26;
+    autoRotate = true;
+    updateCamera();
+  });
+
+  // Resize
+  window.addEventListener("resize", () => {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  });
+
+  // Render loop
+  function animate() {
+    if (!animating) return;
+    requestAnimationFrame(animate);
+    if (autoRotate) { theta += ORBIT_SPEED; updateCamera(); }
+    renderer.render(sceneThree, camera);
+  }
+  animate();
+}
+
+// ── Tab switching ─────────────────────────────────────────
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    this.classList.add("active");
+    document.getElementById(`tab-${this.dataset.tab}`)?.classList.add("active");
+  });
+});
+
+// ── Init ──────────────────────────────────────────────────
+loadSite().catch(err => {
+  document.getElementById("siteName").textContent = "Error loading site";
+  console.error(err);
+});
+</script>
+</body>
+</html>
