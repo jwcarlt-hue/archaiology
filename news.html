@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Feed — archAIology</title>
+<meta name="description" content="Live archaeology research feed — new papers, excavation news, and field reports from across the ancient world.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --cream:    #faf8f3;
+  --paper:    #f2ede3;
+  --linen:    #e8e0d0;
+  --rule:     #d5ccb8;
+  --ash:      #8a8070;
+  --ink:      #1c1814;
+  --deep:     #0f0d0a;
+  --ochre:    #b8892a;
+  --ochre-lt: #d4a84b;
+  --terra:    #7a3e1a;
+  --forest:   #2a3d2e;
+  --slate:    #3a4a5c;
+  --serif:    'Playfair Display', Georgia, serif;
+  --body:     'Source Serif 4', Georgia, serif;
+  --sans:     'DM Sans', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--ink);
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+.topbar-item {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+.topbar-item a { color: var(--ochre); }
+
+/* ── MASTHEAD ── */
+.masthead {
+  background: var(--cream);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 2rem;
+}
+.masthead-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 1.4rem 0 1.2rem;
+}
+.masthead-left { display: flex; gap: 1.6rem; }
+.masthead-right { display: flex; gap: 1.6rem; justify-content: flex-end; align-items: center; }
+.nav-link {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ash);
+  transition: color 0.2s;
+  border-bottom: 1.5px solid transparent;
+  padding: 0.2rem 0;
+}
+.nav-link:hover { color: var(--ink); border-bottom-color: var(--ochre); }
+.nav-link.active { color: var(--ink); border-bottom-color: var(--ochre); }
+.logo-wordmark {
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1;
+  display: block;
+  text-align: center;
+}
+.logo-wordmark .ai-mark { color: var(--ochre); font-style: italic; }
+.logo-tagline {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ash);
+  text-align: center;
+  margin-top: 0.3rem;
+}
+
+/* ── PAGE HERO ── */
+.page-hero {
+  background: var(--ink);
+  padding: 3rem 2rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg, transparent, transparent 40px,
+    rgba(184,137,42,0.03) 40px, rgba(184,137,42,0.03) 41px
+  );
+}
+.page-hero-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 2rem;
+  position: relative;
+}
+.page-hero-label {
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.hero-live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ochre);
+  animation: livepulse 2s ease infinite;
+}
+@keyframes livepulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+
+.page-hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  color: var(--cream);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.page-hero h1 em { color: var(--ochre); font-style: italic; }
+.page-hero-sub {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ash);
+  margin-top: 0.6rem;
+  line-height: 1.5;
+}
+.hero-stats {
+  display: flex;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+.hero-stat {
+  text-align: right;
+}
+.hero-stat-num {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--ochre);
+  line-height: 1;
+  display: block;
+}
+.hero-stat-label {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+/* ── FILTER BAR ── */
+.filter-bar {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.filter-bar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0.6rem 0;
+  flex-wrap: wrap;
+  row-gap: 0.4rem;
+}
+.filter-group {
+  display: flex;
+  gap: 0.3rem;
+  padding-right: 1rem;
+  margin-right: 1rem;
+  border-right: 1px solid var(--rule);
+}
+.filter-group:last-of-type { border-right: none; margin-right: 0; }
+
+.filter-chip {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.7rem;
+  border: 1px solid var(--rule);
+  background: none;
+  color: var(--ash);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.filter-chip:hover { color: var(--ink); border-color: var(--ink); }
+.filter-chip.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.filter-chip.type-paper.active  { background: var(--forest); border-color: var(--forest); }
+.filter-chip.type-news.active   { background: var(--ochre);  border-color: var(--ochre); color: var(--ink); }
+
+.search-wrap {
+  margin-left: auto;
+  position: relative;
+}
+.search-input {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.8rem 0.3rem 2rem;
+  border: 1px solid var(--rule);
+  background: var(--cream);
+  color: var(--ink);
+  outline: none;
+  width: 200px;
+  transition: all 0.2s;
+  border-radius: 2px;
+}
+.search-input:focus { border-color: var(--ochre); width: 260px; }
+.search-input::placeholder { color: var(--ash); }
+.search-icon {
+  position: absolute;
+  left: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ash);
+  font-size: 0.75rem;
+  pointer-events: none;
+}
+
+/* ── LAYOUT ── */
+.page-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.feed-layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 3rem;
+  padding: 2.5rem 0 4rem;
+  align-items: start;
+}
+@media (max-width: 900px) { .feed-layout { grid-template-columns: 1fr; } }
+
+/* ── FEED LIST ── */
+.feed-list { min-height: 400px; }
+
+.feed-loading {
+  padding: 3rem 0;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ash);
+}
+.feed-loading-dots span {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ochre);
+  margin: 0 2px;
+  animation: loadingdot 1.2s ease infinite;
+}
+.feed-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.feed-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes loadingdot { 0%,100%{opacity:0.2;transform:translateY(0)} 50%{opacity:1;transform:translateY(-4px)} }
+
+/* Feed item */
+.feed-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 1.5rem;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid var(--linen);
+  animation: fadeIn 0.3s ease both;
+}
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+.feed-item-aside {
+  width: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 0.25rem;
+  gap: 0.5rem;
+}
+.source-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.source-icon.openalex  { background: rgba(42,61,46,0.12); }
+.source-icon.crossref  { background: rgba(58,74,92,0.12); }
+.source-icon.wordpress { background: rgba(184,137,42,0.12); }
+.source-icon.gdelt     { background: rgba(122,62,26,0.12); }
+
+.feed-item-date {
+  font-family: var(--sans);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ash);
+  text-align: center;
+  line-height: 1.3;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  opacity: 0.6;
+}
+
+.feed-item-body { min-width: 0; }
+
+.feed-item-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+  flex-wrap: wrap;
+}
+.tag {
+  font-family: var(--sans);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.45rem;
+  border-radius: 2px;
+}
+.tag-paper    { background: rgba(42,61,46,0.1);  color: var(--forest); }
+.tag-news     { background: rgba(184,137,42,0.1);color: var(--ochre); }
+.tag-region   { background: rgba(26,20,16,0.06); color: var(--ash); }
+.tag-journal  { color: var(--ash); font-size: 0.55rem; font-weight: 500; letter-spacing: 0; text-transform: none; font-family: var(--body); font-style: italic; }
+
+.feed-item-title {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+  margin-bottom: 0.45rem;
+  transition: color 0.2s;
+}
+.feed-item-title a:hover { color: var(--ochre); }
+
+.feed-item-summary {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #5a5248;
+  margin-bottom: 0.6rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.feed-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+.meta-author {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.meta-sep { color: var(--rule); font-size: 0.6rem; }
+.meta-source {
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  color: var(--ash);
+}
+.meta-doi {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  color: var(--ochre);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.meta-doi:hover { text-decoration: underline; }
+
+/* ── PAGINATION ── */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 2.5rem 0 1rem;
+}
+.page-btn {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--rule);
+  background: none;
+  color: var(--ash);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+.page-btn:hover { border-color: var(--ink); color: var(--ink); }
+.page-btn.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.page-btn.wide { width: auto; padding: 0 0.8rem; }
+.page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ── SIDEBAR ── */
+.feed-sidebar { position: sticky; top: 72px; }
+
+.sidebar-card {
+  background: var(--white, #fff);
+  border: 1px solid var(--rule);
+  padding: 1.2rem 1.3rem;
+  margin-bottom: 1.4rem;
+}
+.sidebar-label {
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--clay, var(--ochre));
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Source breakdown */
+.source-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px dotted var(--linen);
+}
+.source-row:last-child { border-bottom: none; }
+.source-row-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  color: var(--ash);
+}
+.source-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+}
+.source-row-count {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Region list */
+.region-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem 0;
+  border-bottom: 1px dotted var(--linen);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.region-link:last-child { border-bottom: none; }
+.region-link:hover .region-link-name { color: var(--ochre); }
+.region-link-name {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  color: var(--ash);
+  transition: color 0.15s;
+}
+.region-link-count {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Top journals */
+.journal-item {
+  padding: 0.4rem 0;
+  border-bottom: 1px dotted var(--linen);
+  font-family: var(--body);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--ash);
+  line-height: 1.4;
+}
+.journal-item:last-child { border-bottom: none; }
+
+/* Feed info */
+.feed-info-item {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.4rem 0;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  color: var(--ash);
+  border-bottom: 1px dotted var(--linen);
+  line-height: 1.4;
+}
+.feed-info-item:last-child { border-bottom: none; }
+.feed-info-icon { flex-shrink: 0; }
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  padding: 4rem 0;
+  text-align: center;
+}
+.empty-state-icon { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.4; }
+.empty-state-head {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  color: var(--ash);
+  margin-bottom: 0.4rem;
+}
+.empty-state-sub { font-family: var(--sans); font-size: 0.78rem; color: var(--ash); opacity: 0.7; }
+
+/* ── FOOTER ── */
+.footer {
+  background: var(--ink);
+  color: var(--ash);
+  text-align: center;
+  padding: 2rem;
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+}
+.footer a { color: var(--ochre); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:none; }
+}
+.page-hero h1 { animation: fadeUp 0.5s ease both; }
+.page-hero-sub { animation: fadeUp 0.5s 0.08s ease both; }
+.hero-stats { animation: fadeUp 0.5s 0.15s ease both; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <span class="topbar-item">archaiology.org</span>
+  <span class="topbar-item" style="color:rgba(138,128,112,0.3)">·</span>
+  <span class="topbar-item">Autonomous archaeology research feed</span>
+</div>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <nav class="masthead-left">
+      <a class="nav-link active" href="news.html">Articles</a>
+      <a class="nav-link" href="#">Research</a>
+      <a class="nav-link" href="map.html">Map</a>
+    </nav>
+    <div>
+      <a href="index.html" class="logo-wordmark">arch<span class="ai-mark">AI</span>ology</a>
+      <div class="logo-tagline">Where ancient worlds meet modern methods</div>
+    </div>
+    <div class="masthead-right">
+      <a class="nav-link" href="#">Regions</a>
+      <a class="nav-link" href="#">About</a>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div>
+      <div class="page-hero-label">
+        <div class="hero-live-dot"></div>
+        Live Research Feed · Updates Every 6 Hours
+      </div>
+      <h1>The <em>Archaeology</em><br>Feed</h1>
+      <p class="page-hero-sub">
+        New papers from 8 leading journals · Breaking excavation news · Field reports from AIA, ASOR & Archaeology Magazine
+      </p>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num" id="statTotal">—</span>
+        <span class="hero-stat-label">Items</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num" id="statSources">4</span>
+        <span class="hero-stat-label">Sources</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num" id="statSites">16</span>
+        <span class="hero-stat-label">Sites mapped</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-bar-inner">
+    <!-- Type -->
+    <div class="filter-group">
+      <button class="filter-chip active" data-type="all">All</button>
+      <button class="filter-chip type-paper" data-type="paper">📄 Papers</button>
+      <button class="filter-chip type-news"  data-type="news">📰 News</button>
+    </div>
+    <!-- Region -->
+    <div class="filter-group">
+      <button class="filter-chip" data-region="mesoamerica">Mesoamerica</button>
+      <button class="filter-chip" data-region="near_east">Near East</button>
+      <button class="filter-chip" data-region="europe">Europe</button>
+      <button class="filter-chip" data-region="north_america">N. America</button>
+      <button class="filter-chip" data-region="general">General</button>
+    </div>
+    <!-- Search -->
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" type="text" id="searchInput" placeholder="Search titles…">
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="page-wrap">
+  <div class="feed-layout">
+
+    <!-- FEED -->
+    <div>
+      <div class="feed-list" id="feedList">
+        <div class="feed-loading">
+          <div class="feed-loading-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div style="margin-top:0.8rem">Loading feed…</div>
+        </div>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="feed-sidebar">
+
+      <div class="sidebar-card">
+        <div class="sidebar-label">Sources</div>
+        <div class="source-row">
+          <span class="source-row-label">
+            <span class="source-dot" style="background:#4a9e6a"></span>OpenAlex
+          </span>
+          <span class="source-row-count" id="countOpenalex">—</span>
+        </div>
+        <div class="source-row">
+          <span class="source-row-label">
+            <span class="source-dot" style="background:#4a7aae"></span>Crossref
+          </span>
+          <span class="source-row-count" id="countCrossref">—</span>
+        </div>
+        <div class="source-row">
+          <span class="source-row-label">
+            <span class="source-dot" style="background:#b8892a"></span>WordPress
+          </span>
+          <span class="source-row-count" id="countWordpress">—</span>
+        </div>
+        <div class="source-row">
+          <span class="source-row-label">
+            <span class="source-dot" style="background:#8a8070"></span>GDELT
+          </span>
+          <span class="source-row-count" id="countGdelt">—</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-label">By Region</div>
+        <div class="region-link" onclick="setRegion('mesoamerica')">
+          <span class="region-link-name">Mesoamerica</span>
+          <span class="region-link-count" id="countMeso">—</span>
+        </div>
+        <div class="region-link" onclick="setRegion('near_east')">
+          <span class="region-link-name">Near East</span>
+          <span class="region-link-count" id="countNear">—</span>
+        </div>
+        <div class="region-link" onclick="setRegion('europe')">
+          <span class="region-link-name">Europe</span>
+          <span class="region-link-count" id="countEurope">—</span>
+        </div>
+        <div class="region-link" onclick="setRegion('north_america')">
+          <span class="region-link-name">North America</span>
+          <span class="region-link-count" id="countNorth">—</span>
+        </div>
+        <div class="region-link" onclick="setRegion('general')">
+          <span class="region-link-name">General</span>
+          <span class="region-link-count" id="countGeneral">—</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-label">Journals Monitored</div>
+        <div class="journal-item">American Antiquity</div>
+        <div class="journal-item">American Journal of Archaeology</div>
+        <div class="journal-item">European Journal of Archaeology</div>
+        <div class="journal-item">Anatolian Studies</div>
+        <div class="journal-item">Journal of Near Eastern Studies</div>
+        <div class="journal-item">Ancient Mesoamerica</div>
+        <div class="journal-item">Journal of Field Archaeology</div>
+        <div class="journal-item">Journal of Archaeological Science</div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-label">Feed Info</div>
+        <div class="feed-info-item">
+          <span class="feed-info-icon">⏱</span>
+          <span>Papers and news checked every 6 hours via OpenAlex, Crossref, and WordPress APIs</span>
+        </div>
+        <div class="feed-info-item">
+          <span class="feed-info-icon">🗺</span>
+          <span>Site mentions are extracted by AI and georeferenced to the <a href="map.html" style="color:var(--ochre)">Corpus Map</a></span>
+        </div>
+        <div class="feed-info-item">
+          <span class="feed-info-icon">📥</span>
+          <span>KML feed: <a href="https://ucsgtbpeuqeamuvuvojs.supabase.co/functions/v1/serve-kml" style="color:var(--ochre)">Open in Google Earth</a></span>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <a href="index.html">arch<strong>AI</strong>ology</a> &nbsp;·&nbsp;
+  archaiology.org &nbsp;·&nbsp;
+  Archaeology at the intersection of field research and artificial intelligence &nbsp;·&nbsp;
+  © 2026
+</footer>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────
+const SUPABASE_URL      = "https://ucsgtbpeuqeamuvuvojs.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";
+const PAGE_SIZE = 20;
+
+// ── State ─────────────────────────────────────────────────────
+let currentPage   = 1;
+let activeType    = "all";
+let activeRegion  = null;
+let searchQuery   = "";
+let allItems      = [];
+let filteredItems = [];
+
+// ── Fetch all items once ──────────────────────────────────────
+async function fetchAll() {
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/news_feed?select=*&limit=1000`,
+    { headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` } }
+  );
+  if (!res.ok) throw new Error(`Supabase ${res.status}`);
+  return res.json();
+}
+
+// ── Helpers ───────────────────────────────────────────────────
+function relDate(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  const diff = (Date.now() - d.getTime()) / 86400000;
+  if (diff < 1)  return "Today";
+  if (diff < 7)  return Math.floor(diff) + "d ago";
+  if (diff < 60) return Math.floor(diff / 7) + "w ago";
+  return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+}
+
+function shortDate(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+function regionLabel(r) {
+  return { mesoamerica:"Mesoamerica", north_america:"N. America",
+           europe:"Europe", near_east:"Near East", general:"General" }[r] ?? r ?? "";
+}
+
+function sourceIcon(source) {
+  return { openalex:"📗", crossref:"📘", wordpress:"📰", gdelt:"🌐" }[source] ?? "📄";
+}
+
+// ── Filter logic ──────────────────────────────────────────────
+function applyFilters() {
+  filteredItems = allItems.filter(item => {
+    if (activeType !== "all" && item.content_type !== activeType) return false;
+    if (activeRegion && item.region !== activeRegion) return false;
+    if (searchQuery) {
+      const hay = (item.title + " " + (item.summary ?? "") + " " + (item.author ?? "")).toLowerCase();
+      if (!hay.includes(searchQuery.toLowerCase())) return false;
+    }
+    return true;
+  });
+  currentPage = 1;
+  renderFeed();
+  renderPagination();
+}
+
+// ── Render feed ───────────────────────────────────────────────
+function renderFeed() {
+  const list  = document.getElementById("feedList");
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const page  = filteredItems.slice(start, start + PAGE_SIZE);
+
+  if (page.length === 0) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🏺</div>
+        <div class="empty-state-head">No items found</div>
+        <div class="empty-state-sub">Try clearing filters or broadening your search</div>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = page.map((item, i) => {
+    const isPaper = item.content_type === "paper";
+    const icon    = sourceIcon(item.source);
+    const doi     = item.doi
+      ? `<a class="meta-doi" href="${item.doi}" target="_blank" rel="noopener">DOI →</a>`
+      : "";
+
+    return `
+    <article class="feed-item" style="animation-delay:${i * 0.03}s">
+      <div class="feed-item-aside">
+        <div class="source-icon ${item.source ?? ''}">${icon}</div>
+        <div class="feed-item-date">${shortDate(item.published_at)}</div>
+      </div>
+      <div class="feed-item-body">
+        <div class="feed-item-tags">
+          <span class="tag ${isPaper ? 'tag-paper' : 'tag-news'}">${isPaper ? 'Paper' : 'News'}</span>
+          <span class="tag tag-region">${regionLabel(item.region)}</span>
+          ${item.publisher ? `<span class="tag tag-journal">${item.publisher.slice(0,50)}</span>` : ''}
+        </div>
+        <div class="feed-item-title">
+          <a href="${item.source_url ?? '#'}" target="_blank" rel="noopener">${item.title}</a>
+        </div>
+        ${item.summary ? `<div class="feed-item-summary">${item.summary}</div>` : ''}
+        <div class="feed-item-meta">
+          ${item.author ? `<span class="meta-author">${item.author.slice(0,60)}${item.author.length > 60 ? '…' : ''}</span>` : ''}
+          ${item.author && item.publisher ? `<span class="meta-sep">·</span>` : ''}
+          ${item.publisher ? `<span class="meta-source">${item.publisher.slice(0,40)}</span>` : ''}
+          ${(item.author || item.publisher) && item.published_at ? `<span class="meta-sep">·</span>` : ''}
+          <span class="meta-source">${relDate(item.published_at)}</span>
+          ${doi}
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+
+  // Scroll to top of feed on page change
+  if (currentPage > 1) {
+    document.getElementById("feedList").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+// ── Pagination ────────────────────────────────────────────────
+function renderPagination() {
+  const total = Math.ceil(filteredItems.length / PAGE_SIZE);
+  const pg    = document.getElementById("pagination");
+
+  if (total <= 1) { pg.innerHTML = ""; return; }
+
+  let html = `<button class="page-btn wide" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>← Prev</button>`;
+
+  const range = [];
+  for (let i = 1; i <= total; i++) {
+    if (i === 1 || i === total || Math.abs(i - currentPage) <= 2) range.push(i);
+    else if (range[range.length-1] !== '…') range.push('…');
+  }
+
+  for (const p of range) {
+    if (p === '…') html += `<span class="page-btn" style="cursor:default;border:none">…</span>`;
+    else html += `<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
+  }
+
+  html += `<button class="page-btn wide" onclick="goPage(${currentPage+1})" ${currentPage===total?'disabled':''}>Next →</button>`;
+  pg.innerHTML = html;
+}
+
+function goPage(p) {
+  const total = Math.ceil(filteredItems.length / PAGE_SIZE);
+  if (p < 1 || p > total) return;
+  currentPage = p;
+  renderFeed();
+  renderPagination();
+}
+
+// ── Sidebar stats ─────────────────────────────────────────────
+function updateStats(items) {
+  document.getElementById("statTotal").textContent = items.length;
+
+  const counts = { source: {}, region: {} };
+  for (const item of items) {
+    counts.source[item.source] = (counts.source[item.source] ?? 0) + 1;
+    counts.region[item.region] = (counts.region[item.region] ?? 0) + 1;
+  }
+
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val ?? 0; };
+  set("countOpenalex",  counts.source.openalex);
+  set("countCrossref",  counts.source.crossref);
+  set("countWordpress", counts.source.wordpress);
+  set("countGdelt",     counts.source.gdelt);
+  set("countMeso",    counts.region.mesoamerica);
+  set("countNear",    counts.region.near_east);
+  set("countEurope",  counts.region.europe);
+  set("countNorth",   counts.region.north_america);
+  set("countGeneral", counts.region.general);
+}
+
+// ── Filter controls ───────────────────────────────────────────
+document.querySelectorAll(".filter-chip[data-type]").forEach(btn => {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".filter-chip[data-type]").forEach(b => b.classList.remove("active"));
+    this.classList.add("active");
+    activeType = this.dataset.type;
+    applyFilters();
+  });
+});
+
+document.querySelectorAll(".filter-chip[data-region]").forEach(btn => {
+  btn.addEventListener("click", function() {
+    const wasActive = this.classList.contains("active");
+    document.querySelectorAll(".filter-chip[data-region]").forEach(b => b.classList.remove("active"));
+    if (!wasActive) {
+      this.classList.add("active");
+      activeRegion = this.dataset.region;
+    } else {
+      activeRegion = null;
+    }
+    applyFilters();
+  });
+});
+
+window.setRegion = function(region) {
+  document.querySelectorAll(".filter-chip[data-region]").forEach(b => {
+    b.classList.toggle("active", b.dataset.region === region);
+  });
+  activeRegion = region;
+  applyFilters();
+};
+
+let searchTimer;
+document.getElementById("searchInput").addEventListener("input", function() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    searchQuery = this.value.trim();
+    applyFilters();
+  }, 250);
+});
+
+// ── Init ──────────────────────────────────────────────────────
+(async () => {
+  try {
+    allItems = await fetchAll();
+    updateStats(allItems);
+    applyFilters();
+  } catch (err) {
+    document.getElementById("feedList").innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">⚠️</div>
+        <div class="empty-state-head">Feed unavailable</div>
+        <div class="empty-state-sub">${err.message}</div>
+      </div>`;
+  }
+})();
+</script>
+</body>
+</html>
