@@ -34,8 +34,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
 /* MAP */
 #map{position:fixed;top:44px;left:0;right:0;bottom:0;z-index:1;}
 
-/* Override Leaflet tiles to dark */
-.leaflet-tile-pane{filter:brightness(.45) saturate(.6) sepia(.3);}
+/* tile filter applied per-tile by JS */
 
 /* CONTROLS */
 .map-controls{position:fixed;top:56px;left:12px;z-index:500;
@@ -225,6 +224,17 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <button class="filter-chip" data-region="mesoamerica">Mesoamerica</button>
       <button class="filter-chip" data-region="north_america">N. America</button>
       <button class="filter-chip" data-region="south_america">S. America</button>
+    </div>
+  </div>
+  <div class="ctrl-card">
+    <div class="ctrl-label">Base Map</div>
+    <div class="filter-row">
+      <button class="filter-chip tile-chip" data-tile="Terrain" onclick="_setTile('Terrain')">Terrain</button>
+      <button class="filter-chip tile-chip" data-tile="Topo" onclick="_setTile('Topo')">Topo</button>
+      <button class="filter-chip tile-chip" data-tile="Antique" onclick="_setTile('Antique')">Antique</button>
+      <button class="filter-chip tile-chip" data-tile="Satellite" onclick="_setTile('Satellite')">Satellite</button>
+      <button class="filter-chip tile-chip" data-tile="Light" onclick="_setTile('Light')">Light</button>
+      <button class="filter-chip tile-chip" data-tile="Dark" onclick="_setTile('Dark')">Dark</button>
     </div>
   </div>
 </div>
@@ -493,11 +503,29 @@ async function init() {
 
   L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-  // Dark OSM tile layer
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© <a href="https://carto.com/">CARTO</a> © <a href="https://openstreetmap.org">OSM</a>',
-    subdomains: 'abcd', maxZoom: 19,
-  }).addTo(map);
+  // Tile layers
+  const TILES = {
+    'Antique':  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
+      attribution:'© Esri', maxZoom:8 }),
+    'Terrain':  L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png', {
+      attribution:'© Stamen / OSM', subdomains:'abcd', maxZoom:18 }),
+    'Topo':     L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      attribution:'© OpenTopoMap / OSM', subdomains:'abc', maxZoom:17 }),
+    'Satellite':L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution:'© Esri', maxZoom:19 }),
+    'Dark':     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution:'© CARTO / OSM', subdomains:'abcd', maxZoom:19 }),
+    'Light':    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution:'© CARTO / OSM', subdomains:'abcd', maxZoom:19 }),
+  };
+  let activeTile = TILES['Terrain'];
+  activeTile.addTo(map);
+  window._setTile = function(name) {
+    if (activeTile) map.removeLayer(activeTile);
+    activeTile = TILES[name];
+    activeTile.addTo(map);
+    document.querySelectorAll('.tile-chip').forEach(b => b.classList.toggle('active', b.dataset.tile===name));
+  };
 
   try {
     await Promise.all([loadAllSites(), loadCorpus()]);

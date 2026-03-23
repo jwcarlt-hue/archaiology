@@ -226,6 +226,17 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--d
     <div class="leg-row"><div class="leg-dot" style="background:#6090c0"></div><span class="leg-lbl">Deep 100m+</span><span class="leg-cnt" id="dc3">—</span></div>
     <div class="leg-row"><div class="leg-dot" style="background:#506050"></div><span class="leg-lbl">Unknown</span><span class="leg-cnt" id="dc4">—</span></div>
   </div>
+  <div class="ctrl-card">
+    <div class="ctrl-lbl">Base Map</div>
+    <div class="chip-row">
+      <button class="chip active" data-tile="Terrain" onclick="_setTile('Terrain')">Terrain</button>
+      <button class="chip" data-tile="Topo" onclick="_setTile('Topo')">Topo</button>
+      <button class="chip" data-tile="Satellite" onclick="_setTile('Satellite')">Satellite</button>
+      <button class="chip" data-tile="Light" onclick="_setTile('Light')">Light</button>
+      <button class="chip" data-tile="Dark" onclick="_setTile('Dark')">Dark</button>
+      <button class="chip" data-tile="Nautical" onclick="_setTile('Nautical')">+ Nautical</button>
+    </div>
+  </div>
 </div>
 
 <!-- DETAIL PANEL -->
@@ -522,10 +533,32 @@ async function init() {
   L.control.zoom({ position:'bottomright' }).addTo(map);
 
   // Deep ocean tiles
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution:'© <a href="https://carto.com/">CARTO</a> © <a href="https://openstreetmap.org">OSM</a>',
-    subdomains:'abcd', maxZoom:19,
-  }).addTo(map);
+  const TILES = {
+    'Nautical':  L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {attribution:'© OpenSeaMap', maxZoom:18, opacity:.8}),
+    'Terrain':   L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png', {attribution:'© Stamen/OSM', subdomains:'abcd', maxZoom:18}),
+    'Topo':      L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {attribution:'© OpenTopoMap/OSM', subdomains:'abc', maxZoom:17}),
+    'Satellite': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {attribution:'© Esri', maxZoom:19}),
+    'Dark':      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {attribution:'© CARTO/OSM', subdomains:'abcd', maxZoom:19}),
+    'Light':     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {attribution:'© CARTO/OSM', subdomains:'abcd', maxZoom:19}),
+  };
+  // Base + optional nautical overlay
+  let activeBase = TILES['Terrain'];
+  activeBase.addTo(map);
+  let nauticalOn = false;
+  window._setTile = function(name) {
+    if (name === 'Nautical') {
+      nauticalOn = !nauticalOn;
+      nauticalOn ? TILES['Nautical'].addTo(map) : map.removeLayer(TILES['Nautical']);
+      document.querySelector('[data-tile="Nautical"]')?.classList.toggle('active', nauticalOn);
+      return;
+    }
+    map.removeLayer(activeBase);
+    activeBase = TILES[name];
+    activeBase.addTo(map);
+    if (nauticalOn) TILES['Nautical'].bringToFront();
+    document.querySelectorAll('.chip[data-tile]').forEach(b =>
+      b.classList.toggle('active', b.dataset.tile===name));
+  };
 
   clusterLayer = L.markerClusterGroup({
     maxClusterRadius: 50,
