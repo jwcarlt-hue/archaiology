@@ -200,61 +200,34 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 }
 
 .hero-img {
-  background: var(--linen);
-  height: 380px;
-  border: 2px dashed var(--ochre);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  color: var(--ash);
-  font-family: var(--sans);
-  font-size: 0.75rem;
+  height: 420px;
   position: relative;
   overflow: hidden;
+  background: var(--ink);
 }
-/* Decorative SVG background for hero placeholder */
-.hero-img::before {
-  content: '';
+.hero-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  opacity: .92;
+  transition: opacity .3s;
+}
+.hero-img:hover img { opacity: 1; }
+.hero-img-caption {
   position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 24px,
-      rgba(184,137,42,0.04) 24px,
-      rgba(184,137,42,0.04) 25px
-    );
-}
-.hero-img-label {
-  font-weight: 600;
-  color: var(--ochre);
-  font-size: 0.8rem;
-  position: relative;
-}
-.hero-img-note {
-  opacity: 0.6;
-  font-size: 0.68rem;
-  max-width: 280px;
-  text-align: center;
-  position: relative;
-}
-.hero-img-icon { font-size: 2.2rem; position: relative; opacity: 0.5; }
-
-.hero-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(0deg, rgba(28,24,20,.85) 0%, transparent 100%);
+  padding: .6rem .8rem .5rem;
   font-family: var(--sans);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ochre);
-  margin: 1.4rem 0 0.7rem;
+  font-size: .62rem;
+  color: rgba(250,248,243,.6);
+  letter-spacing: .04em;
 }
+.hero-img-caption strong { color: var(--ochre); }
 .hero-label::before {
   content: '';
   display: block;
@@ -889,9 +862,14 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
     <article class="hero-primary">
       <!-- REPLACE with: <img src="hero-prism.jpg" alt="Lidar Höyük Prism"> -->
       <div class="hero-img">
-        <span class="hero-img-icon">🪨</span>
-        <span class="hero-img-label">Featured image: Lidar Höyük Prism</span>
-        <span class="hero-img-note">Replace with four-face photograph of Li 87/19. Credit: Zangger / Luwian Studies Foundation.</span>
+        <img src="lidar-prism.jpg"
+             alt="Lidar Höyük prism Li 87/19 — four faces showing Boat, Sun disc, and horizon imagery. Şanlıurfa Museum."
+             loading="eager">
+        <div class="hero-img-caption">
+          <strong>Lidar Höyük Prism</strong> (Li 87/19) · Şanlıurfa Museum ·
+          Four-face limestone hand-held parapegma, Bronze Age Anatolia ·
+          © Zangger / Luwian Studies Foundation
+        </div>
       </div>
       <div class="hero-label">Near East · Archaeoastronomy</div>
       <h1>Peg, Boat, and <em>Quartered Sky:</em> The Lidar Höyük Prism as Portable Parapegma</h1>
