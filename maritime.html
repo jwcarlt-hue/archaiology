@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maritime Archaeology — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d1117;--deep:#080c12;--ocean:#071428;--wave:#0a2a4a;
+  --foam:#c8dff0;--sand:#c8b87a;--amber:#d4a84b;--rust:#8b3a1a;
+  --hull:#4a3020;--rope:#8a7050;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--deep);}
+
+/* MASTHEAD */
+.masthead{position:fixed;top:0;left:0;right:0;z-index:200;height:44px;
+  background:rgba(7,20,40,.95);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(200,223,240,.06);
+  display:flex;align-items:center;padding:0 1.2rem;gap:1.5rem;}
+.logo{font-family:var(--serif);font-size:1.1rem;font-weight:900;color:var(--foam);text-decoration:none;}
+.logo span{color:var(--amber);font-style:italic;}
+.nav-link{font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(200,223,240,.4);text-decoration:none;transition:color .2s;}
+.nav-link:hover,.nav-link.active{color:var(--foam);}
+.masthead-right{margin-left:auto;display:flex;align-items:center;gap:1.2rem;}
+.hdr-stat{font-size:.6rem;color:rgba(200,223,240,.4);}
+.hdr-stat strong{color:var(--amber);}
+
+/* MAP */
+#map{position:fixed;top:44px;left:0;right:0;bottom:0;}
+
+/* LOADING */
+.map-loading{position:fixed;inset:0;top:44px;background:rgba(7,20,40,.95);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;z-index:300;}
+.ld-dots span{display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--amber);margin:0 3px;animation:ld 1.2s ease infinite;}
+.ld-dots span:nth-child(2){animation-delay:.2s;}
+.ld-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes ld{0%,100%{opacity:.2;transform:translateY(0)}50%{opacity:1;transform:translateY(-5px)}}
+.ld-text{font-size:.75rem;color:rgba(200,223,240,.5);}
+
+/* CONTROLS */
+.controls{position:fixed;top:56px;left:12px;z-index:100;display:flex;flex-direction:column;gap:6px;width:220px;}
+.ctrl-card{background:rgba(7,20,40,.92);border:1px solid rgba(200,223,240,.08);
+  backdrop-filter:blur(10px);padding:.65rem .8rem;}
+.ctrl-lbl{font-size:.55rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:.5rem;}
+.ctrl-sep{height:1px;background:rgba(200,223,240,.05);margin:.35rem 0;}
+
+/* Period range slider */
+.range-wrap{padding:.2rem 0;}
+.range-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;}
+.range-val{font-size:.65rem;font-weight:600;color:var(--foam);}
+.range-slider{width:100%;accent-color:var(--amber);cursor:pointer;}
+.date-display{font-size:.6rem;color:rgba(200,223,240,.5);text-align:center;margin-top:.2rem;}
+
+/* Cargo toggles */
+.cargo-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:.3rem;}
+.cargo-btn{font-size:.58rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  padding:.25rem .4rem;border:1px solid rgba(200,223,240,.1);background:none;
+  color:rgba(200,223,240,.5);cursor:pointer;border-radius:2px;transition:all .15s;text-align:center;}
+.cargo-btn:hover{color:var(--foam);border-color:rgba(200,223,240,.25);}
+.cargo-btn.active{border-color:var(--amber);color:var(--amber);background:rgba(212,168,75,.12);}
+
+/* Period chips */
+.period-chips{display:flex;flex-wrap:wrap;gap:3px;margin-top:.3rem;}
+.pchip{font-size:.55rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+  padding:.18rem .42rem;border:1px solid rgba(200,223,240,.08);background:none;
+  color:rgba(200,223,240,.4);cursor:pointer;border-radius:2px;transition:all .15s;}
+.pchip:hover{color:var(--foam);}
+.pchip.active{background:rgba(212,168,75,.15);color:var(--amber);border-color:rgba(212,168,75,.4);}
+
+/* Tier rows */
+.tier-row{display:flex;align-items:center;gap:.45rem;padding:.2rem 0;}
+.tdot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.tlbl{font-size:.65rem;color:rgba(200,223,240,.65);}
+.tcnt{margin-left:auto;font-size:.58rem;font-weight:700;color:var(--amber);}
+
+/* DETAIL PANEL */
+.detail{position:fixed;right:0;top:44px;bottom:0;width:360px;
+  background:var(--ocean);border-left:1px solid rgba(200,223,240,.07);
+  overflow-y:auto;transform:translateX(100%);transition:transform .3s ease;z-index:150;}
+.detail.open{transform:translateX(0);}
+.detail-close{position:absolute;top:.8rem;right:.8rem;
+  background:rgba(200,223,240,.06);border:1px solid rgba(200,223,240,.1);
+  color:rgba(200,223,240,.5);width:28px;height:28px;cursor:pointer;
+  font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.detail-close:hover{color:var(--foam);}
+
+.detail-hero{
+  background:linear-gradient(180deg,rgba(10,42,74,.8) 0%,var(--ocean) 100%);
+  padding:1.2rem 1.2rem .8rem;border-bottom:1px solid rgba(200,223,240,.06);
+}
+.d-eyebrow{font-size:.55rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:.4rem;}
+.d-name{font-family:var(--serif);font-size:1.4rem;font-weight:900;color:var(--foam);
+  line-height:1.2;margin-bottom:.6rem;}
+.d-badges{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.5rem;}
+.dbadge{font-size:.55rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:.15rem .45rem;border-radius:2px;}
+.dbadge-period{background:rgba(212,168,75,.15);color:var(--amber);}
+.dbadge-sea{background:rgba(10,90,150,.3);color:#7ab8e0;}
+.dbadge-country{background:rgba(200,223,240,.06);color:rgba(200,223,240,.6);}
+.dbadge-cargo{background:rgba(139,58,26,.25);color:#e09070;}
+
+/* Stats grid */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:rgba(200,223,240,.05);border-top:1px solid rgba(200,223,240,.05);}
+.stat-cell{background:var(--ocean);padding:.65rem 1rem;}
+.stat-n{font-family:var(--serif);font-size:1.3rem;font-weight:900;color:var(--amber);display:block;line-height:1;}
+.stat-l{font-size:.55rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:rgba(200,223,240,.4);margin-top:.15rem;}
+
+.d-section{padding:.9rem 1.2rem;border-top:1px solid rgba(200,223,240,.05);}
+.d-section-lbl{font-size:.56rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:.55rem;}
+.d-text{font-size:.78rem;color:rgba(200,223,240,.65);line-height:1.6;}
+.amp-pill{display:inline-block;font-size:.58rem;font-weight:600;
+  background:rgba(139,58,26,.2);border:1px solid rgba(139,58,26,.3);
+  color:#e09070;padding:.12rem .4rem;border-radius:2px;margin:2px;}
+.d-ref{font-size:.65rem;color:rgba(200,223,240,.4);font-style:italic;
+  padding:.8rem 1.2rem;border-top:1px solid rgba(200,223,240,.05);}
+
+/* Timeline bar */
+.timeline{position:fixed;bottom:0;left:0;right:0;height:52px;
+  background:rgba(7,20,40,.92);backdrop-filter:blur(8px);
+  border-top:1px solid rgba(200,223,240,.06);z-index:100;
+  display:flex;align-items:center;padding:0 1rem;gap:1rem;}
+.tl-lbl{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);white-space:nowrap;}
+.tl-track{flex:1;position:relative;height:28px;cursor:pointer;}
+.tl-bar-bg{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(200,223,240,.1);}
+.tl-bar-fill{position:absolute;bottom:0;left:0;height:3px;background:var(--amber);transition:width .2s;}
+.tl-handle{position:absolute;bottom:-3px;width:10px;height:10px;border-radius:50%;
+  background:var(--amber);border:2px solid var(--foam);transform:translateX(-50%);
+  cursor:grab;transition:left .05s;}
+.tl-era-mark{position:absolute;bottom:6px;width:1px;background:rgba(200,223,240,.15);
+  font-size:.5rem;color:rgba(200,223,240,.3);}
+.tl-era-lbl{position:absolute;bottom:8px;font-size:.5rem;color:rgba(200,223,240,.3);
+  transform:translateX(-50%);white-space:nowrap;}
+.tl-date{font-size:.72rem;font-weight:700;color:var(--foam);white-space:nowrap;min-width:80px;}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+  <a class="nav-link" href="index.html">Home</a>
+  <a class="nav-link" href="news.html">Feed</a>
+  <a class="nav-link" href="map.html">Map</a>
+  <a class="nav-link" href="sky.html">Sky Archive</a>
+  <a class="nav-link active" href="maritime.html">Maritime</a>
+  <a class="nav-link" href="conferences.html">Conferences</a>
+  <div class="masthead-right">
+    <div class="hdr-stat"><strong id="hdrShown">—</strong> wrecks shown</div>
+    <div class="hdr-stat"><strong id="hdrTotal">1,584</strong> total · OXREP v2.1</div>
+  </div>
+</header>
+
+<div id="map"></div>
+
+<div class="map-loading" id="loading">
+  <div class="ld-dots"><span></span><span></span><span></span></div>
+  <div class="ld-text" id="ldText">Loading shipwrecks database…</div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+
+  <div class="ctrl-card">
+    <div class="ctrl-lbl">Date Range</div>
+    <div class="range-wrap">
+      <div class="range-row">
+        <span class="range-val" id="dateFrom">500 BCE</span>
+        <span class="range-val" id="dateTo">700 CE</span>
+      </div>
+      <input type="range" class="range-slider" id="sliderFrom" min="-2500" max="1500" value="-500" step="25">
+      <input type="range" class="range-slider" id="sliderTo"   min="-2500" max="1500" value="700"  step="25">
+    </div>
+    <div class="ctrl-sep"></div>
+    <div class="ctrl-lbl">Period</div>
+    <div class="period-chips">
+      <button class="pchip active" data-period="all">All</button>
+      <button class="pchip" data-period="Bronze Age">Bronze Age</button>
+      <button class="pchip" data-period="Phoenician">Phoenician</button>
+      <button class="pchip" data-period="Greek">Greek</button>
+      <button class="pchip" data-period="Hellenistic">Hellenistic</button>
+      <button class="pchip" data-period="Roman Republic">Republic</button>
+      <button class="pchip" data-period="Roman Imperial">Imperial</button>
+      <button class="pchip" data-period="Late Roman">Late Roman</button>
+      <button class="pchip" data-period="Byzantine">Byzantine</button>
+      <button class="pchip" data-period="Medieval">Medieval</button>
+    </div>
+  </div>
+
+  <div class="ctrl-card">
+    <div class="ctrl-lbl">Cargo Filter</div>
+    <div class="cargo-grid">
+      <button class="cargo-btn active" data-cargo="all">All wrecks</button>
+      <button class="cargo-btn" data-cargo="amphorae">🏺 Amphorae</button>
+      <button class="cargo-btn" data-cargo="marble">🏛 Marble</button>
+      <button class="cargo-btn" data-cargo="hull">🚢 Hull found</button>
+      <button class="cargo-btn" data-cargo="stone">🪨 Stone cargo</button>
+      <button class="cargo-btn" data-cargo="tonnage">⚖ Has tonnage</button>
+    </div>
+  </div>
+
+  <div class="ctrl-card">
+    <div class="ctrl-lbl">Depth Legend</div>
+    <div class="tier-row"><div class="tdot" style="background:#f4e060"></div><span class="tlbl">Shallow (&lt;30m)</span><span class="tcnt" id="c1">—</span></div>
+    <div class="tier-row"><div class="tdot" style="background:#d4a84b"></div><span class="tlbl">Mid (30–100m)</span><span class="tcnt" id="c2">—</span></div>
+    <div class="tier-row"><div class="tdot" style="background:#7090c0"></div><span class="tlbl">Deep (100m+)</span><span class="tcnt" id="c3">—</span></div>
+    <div class="tier-row"><div class="tdot" style="background:#607060"></div><span class="tlbl">Depth unknown</span><span class="tcnt" id="c4">—</span></div>
+  </div>
+
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="detail" id="detail">
+  <button class="detail-close" id="dClose">✕</button>
+  <div class="detail-hero">
+    <div class="d-eyebrow" id="dEyebrow">Ancient Shipwreck</div>
+    <div class="d-name" id="dName">—</div>
+    <div class="d-badges" id="dBadges"></div>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-cell"><span class="stat-n" id="dDepth">—</span><div class="stat-l">Depth</div></div>
+    <div class="stat-cell"><span class="stat-n" id="dTonnage">—</span><div class="stat-l">Tonnes</div></div>
+    <div class="stat-cell"><span class="stat-n" id="dLength">—</span><div class="stat-l">Length</div></div>
+  </div>
+  <div class="d-section" id="dCargoSection" style="display:none">
+    <div class="d-section-lbl">Cargo</div>
+    <div id="dCargoText" class="d-text"></div>
+  </div>
+  <div class="d-section" id="dAmpSection" style="display:none">
+    <div class="d-section-lbl">Amphora Types</div>
+    <div id="dAmpTypes"></div>
+  </div>
+  <div class="d-section" id="dCommSection" style="display:none">
+    <div class="d-section-lbl">Notes</div>
+    <div id="dComments" class="d-text"></div>
+  </div>
+  <div class="d-ref" id="dRef"></div>
+</div>
+
+<!-- TIMELINE -->
+<div class="timeline" id="timeline">
+  <div class="tl-lbl">Timeline</div>
+  <div class="tl-track" id="tlTrack">
+    <div class="tl-bar-bg"></div>
+    <div class="tl-bar-fill" id="tlFill"></div>
+    <div class="tl-handle" id="tlHandle"></div>
+    <!-- Era markers injected by JS -->
+  </div>
+  <div class="tl-date" id="tlDate">500 BCE – 700 CE</div>
+</div>
+
+<script>
+const SUPABASE_URL      = "https://ucsgtbpeuqeamuvuvojs.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";
+const PAGE = 1000;
+
+// ── Period color map ──────────────────────────────────────────
+const PERIOD_COLORS = {
+  'Bronze Age':         '#c060a0',
+  'Minoan':             '#c060a0',
+  'Phoenician':         '#a05050',
+  'Archaic':            '#b07030',
+  'Greek':              '#d4a84b',
+  'Classical Greek':    '#d4a84b',
+  'Hellenistic':        '#90c060',
+  'Hellenistic/Roman':  '#60b080',
+  'Roman Republic':     '#40a8c0',
+  'Roman':              '#3090e0',
+  'Roman Imperial':     '#2070d0',
+  'Late Roman':         '#5060c0',
+  'Byzantine':          '#8050c0',
+  'Medieval':           '#907060',
+  'Islamic':            '#b08040',
+  'default':            '#607060',
+};
+
+function periodColor(p) {
+  if (!p) return PERIOD_COLORS.default;
+  for (const [k,v] of Object.entries(PERIOD_COLORS)) {
+    if (p.toLowerCase().includes(k.toLowerCase())) return v;
+  }
+  return PERIOD_COLORS.default;
+}
+
+function depthColor(w) {
+  const d = w.max_depth ?? w.min_depth;
+  if (d == null) return '#607060';
+  if (d < 30)   return '#f4e060';
+  if (d < 100)  return '#d4a84b';
+  return '#7090c0';
+}
+
+function fmtDate(y) {
+  if (y == null) return '—';
+  return y < 0 ? `${Math.abs(y)} BCE` : `${y} CE`;
+}
+
+function fmtDepth(w) {
+  const mn = w.min_depth, mx = w.max_depth;
+  if (mn == null && mx == null) return w.depth_note ?? '—';
+  if (mn != null && mx != null && mn !== mx) return `${mn}–${mx}m`;
+  return `${mn ?? mx}m`;
+}
+
+// ── State ─────────────────────────────────────────────────────
+let allWrecks = [], allMarkers = [], map;
+let filterPeriod = 'all', filterCargo = 'all';
+let filterFrom = -500, filterTo = 700;
+
+// ── Fetch all wrecks ──────────────────────────────────────────
+async function loadWrecks() {
+  let offset = 0, batch;
+  do {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/shipwrecks?select=id,name,lat,lng,earliest_date,latest_date,period,sea_area,country,region,min_depth,max_depth,depth_note,has_amphorae,has_marble,has_hull,stone_cargo,tonnage,length_m,other_cargo,shipboard,comments,reference,amphora_types,parker_number&limit=${PAGE}&offset=${offset}&order=earliest_date.asc.nullslast`,
+      { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } }
+    );
+    batch = await res.json();
+    if (!Array.isArray(batch)) { console.error(batch); break; }
+    allWrecks.push(...batch);
+    offset += PAGE;
+    document.getElementById('ldText').textContent = `Loading… ${allWrecks.length.toLocaleString()} wrecks`;
+  } while (batch.length === PAGE);
+}
+
+// ── Create marker ─────────────────────────────────────────────
+function makeMarker(w) {
+  const color = periodColor(w.period);
+  const m = new google.maps.Marker({
+    position: { lat: w.lat, lng: w.lng },
+    map: null,
+    title: w.name,
+    icon: {
+      path:        google.maps.SymbolPath.CIRCLE,
+      scale:       w.has_amphorae || w.has_marble ? 6 : 4,
+      fillColor:   color,
+      fillOpacity: 0.85,
+      strokeColor: w.has_hull ? '#ffffff' : 'rgba(255,255,255,0.15)',
+      strokeWeight: w.has_hull ? 1.5 : 0.5,
+    },
+    zIndex: w.has_amphorae || w.has_marble ? 5 : 2,
+  });
+  m._w = w;
+  m.addListener('click', () => showDetail(w));
+  return m;
+}
+
+// ── Apply filters ─────────────────────────────────────────────
+function applyFilters() {
+  let shown = 0;
+  const c = [0,0,0,0];
+
+  allMarkers.forEach(m => {
+    const w = m._w;
+
+    // Date range
+    const lo = w.earliest_date ?? w.latest_date;
+    const hi = w.latest_date   ?? w.earliest_date;
+    const dateOk = lo == null || !(hi < filterFrom || lo > filterTo);
+
+    // Period
+    const periodOk = filterPeriod === 'all' || matchPeriod(w.period, filterPeriod);
+
+    // Cargo
+    let cargoOk = true;
+    if (filterCargo === 'amphorae') cargoOk = w.has_amphorae;
+    else if (filterCargo === 'marble')   cargoOk = w.has_marble;
+    else if (filterCargo === 'hull')     cargoOk = w.has_hull;
+    else if (filterCargo === 'stone')    cargoOk = w.stone_cargo;
+    else if (filterCargo === 'tonnage')  cargoOk = w.tonnage != null;
+
+    const visible = dateOk && periodOk && cargoOk;
+    m.setMap(visible ? map : null);
+
+    if (visible) {
+      shown++;
+      const d = w.max_depth ?? w.min_depth;
+      if (d == null)    c[3]++;
+      else if (d < 30)  c[0]++;
+      else if (d < 100) c[1]++;
+      else              c[2]++;
+    }
+  });
+
+  document.getElementById('hdrShown').textContent = shown.toLocaleString();
+  document.getElementById('c1').textContent = c[0].toLocaleString();
+  document.getElementById('c2').textContent = c[1].toLocaleString();
+  document.getElementById('c3').textContent = c[2].toLocaleString();
+  document.getElementById('c4').textContent = c[3].toLocaleString();
+}
+
+function matchPeriod(period, filter) {
+  if (!period) return false;
+  const p = period.toLowerCase();
+  const f = filter.toLowerCase();
+  if (f === 'greek') return (p.includes('greek') || p.includes('classical')) && !p.includes('roman');
+  if (f === 'hellenistic') return p.includes('hellenistic');
+  if (f === 'roman republic') return p.includes('republic') || p.includes('rep');
+  if (f === 'roman imperial') return (p.includes('imperial') || p === 'roman') && !p.includes('late');
+  if (f === 'late roman') return p.includes('late roman') || p.includes('late antiq') || p.includes('late imp');
+  return p.includes(f);
+}
+
+// ── Show detail ───────────────────────────────────────────────
+function showDetail(w) {
+  document.getElementById('dEyebrow').textContent =
+    [w.sea_area, w.country].filter(Boolean).join(' · ') || 'Ancient Shipwreck';
+  document.getElementById('dName').textContent = w.name;
+
+  const badges = [
+    w.period   ? `<span class="dbadge dbadge-period">${w.period}</span>` : '',
+    w.sea_area ? `<span class="dbadge dbadge-sea">${w.sea_area}</span>` : '',
+    w.country  ? `<span class="dbadge dbadge-country">${w.country}</span>` : '',
+    w.has_amphorae ? `<span class="dbadge dbadge-cargo">🏺 Amphorae</span>` : '',
+    w.has_marble   ? `<span class="dbadge dbadge-cargo">🏛 Marble</span>` : '',
+    w.has_hull     ? `<span class="dbadge dbadge-cargo">🚢 Hull found</span>` : '',
+    w.stone_cargo  ? `<span class="dbadge dbadge-cargo">🪨 Stone cargo</span>` : '',
+  ].filter(Boolean).join('');
+  document.getElementById('dBadges').innerHTML = badges;
+
+  document.getElementById('dDepth').textContent   = fmtDepth(w);
+  document.getElementById('dTonnage').textContent = w.tonnage ? `${w.tonnage}t` : '—';
+  document.getElementById('dLength').textContent  = w.length_m ? `${w.length_m}m` : '—';
+
+  // Dates inline
+  const dateStr = `${fmtDate(w.earliest_date)} – ${fmtDate(w.latest_date)}`;
+  document.getElementById('dEyebrow').textContent =
+    [w.sea_area, dateStr].filter(Boolean).join(' · ');
+
+  // Cargo
+  const cargoText = [w.other_cargo, w.shipboard].filter(Boolean).join(' · ');
+  if (cargoText) {
+    document.getElementById('dCargoSection').style.display = 'block';
+    document.getElementById('dCargoText').textContent = cargoText;
+  } else {
+    document.getElementById('dCargoSection').style.display = 'none';
+  }
+
+  // Amphora types
+  if (w.amphora_types?.length) {
+    document.getElementById('dAmpSection').style.display = 'block';
+    document.getElementById('dAmpTypes').innerHTML =
+      w.amphora_types.map(t => `<span class="amp-pill">${t}</span>`).join('');
+  } else {
+    document.getElementById('dAmpSection').style.display = 'none';
+  }
+
+  // Comments
+  if (w.comments) {
+    document.getElementById('dCommSection').style.display = 'block';
+    document.getElementById('dComments').textContent = w.comments;
+  } else {
+    document.getElementById('dCommSection').style.display = 'none';
+  }
+
+  // Reference
+  document.getElementById('dRef').innerHTML = w.reference
+    ? (w.reference.startsWith('http')
+        ? `<a href="${w.reference}" target="_blank" style="color:var(--amber)">${w.reference}</a>`
+        : w.reference)
+    : '';
+
+  document.getElementById('detail').classList.add('open');
+}
+
+// ── Timeline ──────────────────────────────────────────────────
+const ERAS = [
+  { y:-2500, l:'2500 BCE' }, { y:-1200, l:'Bronze Age' },
+  { y:-800,  l:'800 BCE'  }, { y:-500,  l:'500 BCE' },
+  { y:-200,  l:'200 BCE'  }, { y:0,     l:'0' },
+  { y:200,   l:'200 CE'   }, { y:500,   l:'500 CE' },
+  { y:800,   l:'800 CE'   }, { y:1100,  l:'1100 CE' },
+  { y:1500,  l:'1500 CE'  },
+];
+const TL_MIN = -2500, TL_MAX = 1500, TL_RANGE = TL_MAX - TL_MIN;
+
+function yearToPercent(y) { return (y - TL_MIN) / TL_RANGE * 100; }
+function percentToYear(p) { return Math.round(TL_MIN + p / 100 * TL_RANGE); }
+
+function buildTimeline() {
+  const track = document.getElementById('tlTrack');
+  ERAS.forEach(e => {
+    const pct = yearToPercent(e.y);
+    const mark = document.createElement('div');
+    mark.className = 'tl-era-mark';
+    mark.style.cssText = `left:${pct}%;height:100%;`;
+    track.appendChild(mark);
+    const lbl = document.createElement('div');
+    lbl.className = 'tl-era-lbl';
+    lbl.style.left = `${pct}%`;
+    lbl.textContent = e.l;
+    track.appendChild(lbl);
+  });
+
+  // Drag handle for "from" date
+  let dragging = false;
+  const handle = document.getElementById('tlHandle');
+  const fill   = document.getElementById('tlFill');
+
+  function updateHandle(clientX) {
+    const rect = track.getBoundingClientRect();
+    let pct = Math.max(0, Math.min(100, (clientX - rect.left) / rect.width * 100));
+    const yr = percentToYear(pct);
+    filterFrom = yr;
+    handle.style.left = `${pct}%`;
+    fill.style.width  = `${pct}%`;
+    document.getElementById('tlDate').textContent =
+      `${fmtDate(filterFrom)} – ${fmtDate(filterTo)}`;
+    applyFilters();
+  }
+
+  handle.addEventListener('mousedown', () => { dragging = true; });
+  document.addEventListener('mousemove', e => { if (dragging) updateHandle(e.clientX); });
+  document.addEventListener('mouseup',   () => { dragging = false; });
+  track.addEventListener('click', e => updateHandle(e.clientX));
+
+  // Set initial handle
+  const initPct = yearToPercent(filterFrom);
+  handle.style.left = `${initPct}%`;
+  fill.style.width  = `${initPct}%`;
+}
+
+// ── Date range sliders ────────────────────────────────────────
+function initSliders() {
+  const sFrom = document.getElementById('sliderFrom');
+  const sTo   = document.getElementById('sliderTo');
+
+  function update() {
+    let a = parseInt(sFrom.value), b = parseInt(sTo.value);
+    if (a > b) { [a,b] = [b,a]; }
+    filterFrom = a; filterTo = b;
+    document.getElementById('dateFrom').textContent = fmtDate(a);
+    document.getElementById('dateTo').textContent   = fmtDate(b);
+    document.getElementById('tlDate').textContent   = `${fmtDate(a)} – ${fmtDate(b)}`;
+    // sync timeline handle
+    const pct = yearToPercent(a);
+    document.getElementById('tlHandle').style.left = `${pct}%`;
+    document.getElementById('tlFill').style.width  = `${pct}%`;
+    applyFilters();
+  }
+  sFrom.addEventListener('input', update);
+  sTo.addEventListener('input', update);
+}
+
+// ── Init ──────────────────────────────────────────────────────
+async function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: { lat: 38, lng: 18 },
+    zoom: 5,
+    mapTypeId: 'hybrid',
+    styles: [
+      { featureType:'water',     elementType:'geometry', stylers:[{color:'#071428'}] },
+      { featureType:'landscape', elementType:'geometry', stylers:[{color:'#0d1a0a'}] },
+      { featureType:'administrative.country', elementType:'geometry.stroke',
+        stylers:[{color:'#3a3020'},{weight:.8}] },
+      { featureType:'poi',   stylers:[{visibility:'off'}] },
+      { featureType:'road',  stylers:[{visibility:'off'}] },
+      { featureType:'transit',stylers:[{visibility:'off'}] },
+      { featureType:'all', elementType:'labels.text.fill', stylers:[{color:'#8a9070'}] },
+    ],
+    disableDefaultUI:   true,
+    zoomControl:        true,
+    zoomControlOptions: { position: google.maps.ControlPosition.RIGHT_CENTER },
+    gestureHandling:    'greedy',
+  });
+
+  await loadWrecks();
+  document.getElementById('ldText').textContent = 'Building wreck markers…';
+
+  allWrecks.forEach(w => {
+    if (!w.lat || !w.lng) return;
+    allMarkers.push(makeMarker(w));
+  });
+
+  document.getElementById('hdrTotal').textContent = `${allMarkers.length.toLocaleString()} total · OXREP v2.1`;
+  initSliders();
+  buildTimeline();
+  applyFilters();
+  document.getElementById('loading').style.display = 'none';
+}
+
+// ── Event listeners ───────────────────────────────────────────
+document.getElementById('dClose').addEventListener('click', () => {
+  document.getElementById('detail').classList.remove('open');
+});
+
+document.querySelectorAll('.pchip').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.pchip').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    filterPeriod = this.dataset.period;
+    applyFilters();
+  });
+});
+
+document.querySelectorAll('.cargo-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.cargo-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    filterCargo = this.dataset.cargo;
+    applyFilters();
+  });
+});
+</script>
+
+<script>
+(function(){
+  const s = document.createElement('script');
+  s.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCNHhd1lNQMt8tkEYWMhBozZOcYOcHRax0&callback=initMap';
+  s.async = true; s.defer = true;
+  document.head.appendChild(s);
+})();
+</script>
+</body>
+</html>
