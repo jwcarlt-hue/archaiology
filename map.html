@@ -6,116 +6,92 @@
 <title>Corpus Map — archAIology</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
 <style>
-:root {
-  --ink:#1c1814; --cream:#faf8f3; --ochre:#b8892a; --ash:#8a8070;
-  --forest:#2a3d2e; --rule:#d5ccb8; --linen:#e8e0d0;
+:root{
+  --ink:#1c1814;--cream:#faf8f3;--ochre:#b8892a;--ochre-lt:#d4a84b;
+  --ash:#8a8070;--rule:#d5ccb8;--linen:#e8e0d0;--forest:#2a3d2e;
   --serif:'Playfair Display',Georgia,serif;
   --sans:'DM Sans',system-ui,sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;font-family:var(--sans);}
 
-/* ── MASTHEAD ── */
-.masthead{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  background:var(--ink);height:44px;
-  display:flex;align-items:center;padding:0 1.2rem;gap:1.5rem;
-}
+/* MASTHEAD */
+.masthead{position:fixed;top:0;left:0;right:0;z-index:1000;height:44px;
+  background:var(--ink);display:flex;align-items:center;padding:0 1.2rem;gap:1.5rem;}
 .logo{font-family:var(--serif);font-size:1.1rem;font-weight:900;color:var(--cream);text-decoration:none;}
 .logo span{color:var(--ochre);font-style:italic;}
-.nav-link{font-family:var(--sans);font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color .2s;}
+.nav-link{font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ash);text-decoration:none;transition:color .2s;}
 .nav-link:hover,.nav-link.active{color:var(--cream);}
 .masthead-right{margin-left:auto;display:flex;align-items:center;gap:1rem;}
-.map-stats{font-family:var(--sans);font-size:.65rem;color:var(--ash);}
+.map-stats{font-size:.65rem;color:var(--ash);}
 .map-stats strong{color:var(--ochre);}
 
-/* ── MAP ── */
-#map{position:fixed;top:44px;left:0;right:0;bottom:0;}
+/* MAP */
+#map{position:fixed;top:44px;left:0;right:0;bottom:0;z-index:1;}
 
-/* ── CONTROLS ── */
-.map-controls{
-  position:fixed;top:56px;left:12px;z-index:50;
-  display:flex;flex-direction:column;gap:6px;
-}
-.ctrl-card{
-  background:rgba(15,13,10,.88);
-  border:1px solid rgba(255,255,255,.1);
-  backdrop-filter:blur(8px);
-  padding:.6rem .8rem;
-  min-width:180px;
-}
-.ctrl-label{
-  font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--ochre);margin-bottom:.5rem;
-}
-.tier-row{
-  display:flex;align-items:center;gap:.5rem;
-  padding:.25rem 0;cursor:pointer;
-}
-.tier-dot{
-  width:10px;height:10px;border-radius:50%;flex-shrink:0;
-  border:1.5px solid rgba(255,255,255,.2);
-}
-.tier-label{font-size:.68rem;color:rgba(232,224,208,.8);}
+/* Override Leaflet tiles to dark */
+.leaflet-tile-pane{filter:brightness(.45) saturate(.6) sepia(.3);}
+
+/* CONTROLS */
+.map-controls{position:fixed;top:56px;left:12px;z-index:500;
+  display:flex;flex-direction:column;gap:6px;width:195px;}
+.ctrl-card{background:rgba(15,13,10,.9);border:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(8px);padding:.65rem .8rem;}
+.ctrl-label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ochre);margin-bottom:.5rem;}
+.tier-row{display:flex;align-items:center;gap:.5rem;padding:.22rem 0;cursor:pointer;}
+.tier-dot{border-radius:50%;flex-shrink:0;border:1.5px solid rgba(255,255,255,.2);}
+.tier-label{font-size:.67rem;color:rgba(232,224,208,.8);}
 .tier-count{margin-left:auto;font-size:.58rem;font-weight:700;color:var(--ochre);}
 .ctrl-sep{height:1px;background:rgba(255,255,255,.06);margin:.3rem 0;}
-.filter-chip{
-  font-size:.6rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  padding:.2rem .5rem;border:1px solid rgba(255,255,255,.12);
-  background:none;color:var(--ash);cursor:pointer;border-radius:2px;
-  transition:all .15s;white-space:nowrap;
-}
+.filter-row{display:flex;flex-wrap:wrap;gap:3px;margin-top:.3rem;}
+.filter-chip{font-size:.58rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  padding:.18rem .45rem;border:1px solid rgba(255,255,255,.1);background:none;
+  color:var(--ash);cursor:pointer;border-radius:2px;transition:all .15s;white-space:nowrap;}
 .filter-chip:hover{color:var(--cream);border-color:rgba(255,255,255,.3);}
 .filter-chip.active{background:rgba(184,137,42,.2);color:var(--ochre);border-color:var(--ochre);}
-.filter-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:.3rem;}
+.mentions-row{display:flex;align-items:center;justify-content:space-between;margin-top:.4rem;}
+.mentions-lbl{font-size:.62rem;color:var(--ash);}
 
-/* ── DETAIL PANEL ── */
-.detail-panel{
-  position:fixed;right:0;top:44px;bottom:0;width:340px;
+/* SEARCH */
+.search-wrap{position:fixed;top:56px;right:12px;z-index:500;}
+.search-inner{position:relative;}
+.search-icon{position:absolute;left:.55rem;top:50%;transform:translateY(-50%);
+  color:var(--ash);font-size:.7rem;pointer-events:none;}
+.search-input{background:rgba(15,13,10,.9);border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(8px);color:var(--cream);font-family:var(--sans);font-size:.75rem;
+  padding:.4rem .8rem .4rem 1.8rem;width:220px;outline:none;transition:all .2s;}
+.search-input:focus{border-color:var(--ochre);width:280px;}
+.search-input::placeholder{color:var(--ash);}
+
+/* DETAIL PANEL */
+.detail-panel{position:fixed;right:0;top:44px;bottom:0;width:340px;
   background:var(--ink);border-left:1px solid rgba(255,255,255,.08);
-  overflow-y:auto;transform:translateX(100%);
-  transition:transform .3s ease;z-index:60;
-}
+  overflow-y:auto;transform:translateX(100%);transition:transform .3s ease;z-index:600;}
 .detail-panel.open{transform:translateX(0);}
-.detail-close{
-  position:absolute;top:.8rem;right:.8rem;
+.detail-close{position:absolute;top:.8rem;right:.8rem;
   background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
   color:var(--ash);width:28px;height:28px;cursor:pointer;border-radius:2px;
-  font-size:1rem;display:flex;align-items:center;justify-content:center;
-  transition:all .2s;
-}
-.detail-close:hover{color:var(--cream);background:rgba(255,255,255,.12);}
+  font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.detail-close:hover{color:var(--cream);}
 .detail-header{padding:1.2rem 1.2rem .8rem;}
-.detail-tier{
-  font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  margin-bottom:.4rem;
-}
-.detail-name{
-  font-family:var(--serif);font-size:1.4rem;font-weight:900;
-  color:var(--cream);line-height:1.2;margin-bottom:.5rem;
-}
+.detail-tier{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.4rem;}
+.detail-name{font-family:var(--serif);font-size:1.4rem;font-weight:900;color:var(--cream);line-height:1.2;margin-bottom:.5rem;}
 .detail-badges{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.8rem;}
-.badge{
-  font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  padding:.15rem .45rem;border-radius:2px;
-}
+.badge{font-size:.56rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.14rem .42rem;border-radius:2px;}
 .badge-culture{background:rgba(184,137,42,.15);color:var(--ochre);}
 .badge-region{background:rgba(42,61,46,.3);color:#7ab890;}
 .badge-period{background:rgba(255,255,255,.06);color:var(--ash);}
-.detail-desc{
-  font-family:'Georgia',serif;font-size:.82rem;line-height:1.6;
-  color:rgba(232,224,208,.65);padding:.8rem 1.2rem;
-  border-top:1px solid rgba(255,255,255,.05);
-}
-.detail-stats{
-  display:grid;grid-template-columns:1fr 1fr;gap:1px;
-  background:rgba(255,255,255,.05);margin:.8rem 0 0;
-  border-top:1px solid rgba(255,255,255,.05);
-}
-.stat-cell{
-  background:var(--ink);padding:.7rem 1.2rem;
-}
+.detail-desc{font-family:Georgia,serif;font-size:.82rem;line-height:1.6;
+  color:rgba(232,224,208,.65);padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.05);}
+.detail-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:rgba(255,255,255,.05);border-top:1px solid rgba(255,255,255,.05);}
+.stat-cell{background:var(--ink);padding:.7rem 1.2rem;}
 .stat-num{font-family:var(--serif);font-size:1.4rem;font-weight:900;color:var(--ochre);display:block;line-height:1;}
 .stat-lbl{font-size:.58rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ash);margin-top:.15rem;}
 .detail-section{padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.05);}
@@ -126,66 +102,56 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
 .mention-title a{color:inherit;text-decoration:none;}
 .mention-title a:hover{color:var(--ochre);}
 .mention-meta{font-size:.62rem;color:var(--ash);}
-.topos-block{
-  display:flex;align-items:center;justify-content:space-between;gap:1rem;
-  background:rgba(42,61,46,.3);padding:.8rem 1.2rem;
-  border-top:1px solid rgba(255,255,255,.05);
-}
+.topos-block{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  background:rgba(42,61,46,.3);padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.05);}
 .topos-num{font-family:var(--serif);font-size:1.6rem;font-weight:900;color:var(--ochre);}
 .topos-lbl{font-size:.58rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(232,224,208,.5);margin-top:.1rem;}
-.topos-btn{
-  font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--ochre);border:1px solid rgba(184,137,42,.35);
-  padding:.3rem .7rem;text-decoration:none;transition:all .2s;white-space:nowrap;
-}
+.topos-btn{font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ochre);border:1px solid rgba(184,137,42,.35);padding:.3rem .7rem;
+  text-decoration:none;transition:all .2s;white-space:nowrap;}
 .topos-btn:hover{background:rgba(184,137,42,.15);}
 .ext-links{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.05);}
-.ext-link{
-  font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--ash);border:1px solid rgba(255,255,255,.1);
-  padding:.25rem .6rem;text-decoration:none;transition:all .2s;border-radius:2px;
-}
+.ext-link{font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ash);border:1px solid rgba(255,255,255,.1);padding:.25rem .6rem;
+  text-decoration:none;transition:all .2s;border-radius:2px;}
 .ext-link:hover{color:var(--ochre);border-color:var(--ochre);}
-.site-page-btn{
-  display:block;margin:.8rem 1.2rem;
+.site-page-btn{display:block;margin:.8rem 1.2rem;
   background:rgba(184,137,42,.15);border:1px solid rgba(184,137,42,.3);
   color:var(--ochre);font-size:.65rem;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;padding:.5rem;text-align:center;
-  text-decoration:none;transition:all .2s;
-}
+  text-transform:uppercase;padding:.5rem;text-align:center;text-decoration:none;transition:all .2s;}
 .site-page-btn:hover{background:rgba(184,137,42,.25);}
 
-/* ── SEARCH ── */
-.search-wrap{
-  position:fixed;top:56px;right:352px;z-index:50;
-}
-.search-input{
-  background:rgba(15,13,10,.88);border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(8px);color:var(--cream);
-  font-family:var(--sans);font-size:.75rem;
-  padding:.4rem .8rem .4rem 2rem;width:220px;outline:none;
-  transition:all .2s;
-}
-.search-input:focus{border-color:var(--ochre);width:280px;}
-.search-input::placeholder{color:var(--ash);}
-.search-icon{position:absolute;left:.6rem;top:50%;transform:translateY(-50%);color:var(--ash);font-size:.7rem;pointer-events:none;}
-
-/* ── LOADING ── */
-.map-loading{
-  position:fixed;inset:0;top:44px;
-  background:rgba(15,13,10,.9);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  z-index:200;gap:1rem;
-}
-.loading-dots span{
-  display:inline-block;width:8px;height:8px;border-radius:50%;
-  background:var(--ochre);margin:0 3px;
-  animation:ldot 1.2s ease infinite;
-}
+/* LOADING */
+.map-loading{position:fixed;inset:0;top:44px;background:rgba(15,13,10,.92);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;z-index:900;}
+.loading-dots span{display:inline-block;width:8px;height:8px;border-radius:50%;
+  background:var(--ochre);margin:0 3px;animation:ldot 1.2s ease infinite;}
 .loading-dots span:nth-child(2){animation-delay:.2s;}
 .loading-dots span:nth-child(3){animation-delay:.4s;}
 @keyframes ldot{0%,100%{opacity:.2;transform:translateY(0)}50%{opacity:1;transform:translateY(-5px)}}
-.loading-text{font-family:var(--sans);font-size:.78rem;color:var(--ash);}
+.loading-text{font-size:.78rem;color:var(--ash);}
+
+/* Leaflet popup override */
+.leaflet-popup-content-wrapper{
+  background:rgba(15,13,10,.95);border:1px solid rgba(255,255,255,.1);
+  border-radius:2px;box-shadow:0 4px 20px rgba(0,0,0,.6);color:var(--cream);
+}
+.leaflet-popup-tip{background:rgba(15,13,10,.95);}
+.leaflet-popup-content{margin:.7rem .9rem;font-family:var(--sans);}
+.popup-name{font-family:var(--serif);font-size:1rem;font-weight:900;color:var(--cream);margin-bottom:.3rem;}
+.popup-sub{font-size:.65rem;color:var(--ochre);}
+.popup-btn{display:block;margin-top:.5rem;font-size:.6rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--ochre);
+  border:1px solid rgba(184,137,42,.3);padding:.25rem .5rem;text-align:center;
+  background:none;cursor:pointer;width:100%;transition:all .2s;}
+.popup-btn:hover{background:rgba(184,137,42,.15);}
+
+/* Cluster override */
+.marker-cluster-small,.marker-cluster-medium,.marker-cluster-large{
+  background:rgba(184,137,42,.25)!important;}
+.marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{
+  background:rgba(184,137,42,.7)!important;color:#1c1814!important;
+  font-family:var(--sans)!important;font-weight:700!important;font-size:.7rem!important;}
 </style>
 </head>
 <body>
@@ -195,61 +161,61 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   <a class="nav-link" href="index.html">Home</a>
   <a class="nav-link" href="news.html">Feed</a>
   <a class="nav-link active" href="map.html">Map</a>
+  <a class="nav-link" href="sky.html">Sky Archive</a>
+  <a class="nav-link" href="maritime.html">Maritime</a>
   <a class="nav-link" href="conferences.html">Conferences</a>
   <div class="masthead-right">
     <div class="map-stats">
-      <strong id="statSites">—</strong> sites &nbsp;·&nbsp;
-      <strong id="statMentions">—</strong> mapped
+      <strong id="statShown">—</strong> shown &nbsp;·&nbsp;
+      <strong id="statTotal">—</strong> sites &nbsp;·&nbsp;
+      <strong id="statMentioned">—</strong> in corpus
     </div>
   </div>
 </header>
 
-<!-- MAP -->
 <div id="map"></div>
 
-<!-- LOADING -->
 <div class="map-loading" id="mapLoading">
   <div class="loading-dots"><span></span><span></span><span></span></div>
   <div class="loading-text" id="loadingText">Loading gazetteer…</div>
 </div>
 
-<!-- SEARCH -->
 <div class="search-wrap">
-  <span class="search-icon">🔍</span>
-  <input class="search-input" id="siteSearch" type="text" placeholder="Search sites…">
+  <div class="search-inner">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="siteSearch" type="text" placeholder="Search sites…">
+  </div>
 </div>
 
-<!-- CONTROLS -->
 <div class="map-controls">
   <div class="ctrl-card">
     <div class="ctrl-label">Site Tiers</div>
-    <div class="tier-row" data-tier="1">
+    <div class="tier-row">
       <div class="tier-dot" style="background:#f4a234;width:14px;height:14px;"></div>
       <span class="tier-label">Major sites</span>
       <span class="tier-count" id="cnt1">—</span>
     </div>
-    <div class="tier-row" data-tier="2">
+    <div class="tier-row">
       <div class="tier-dot" style="background:#d4a84b;width:10px;height:10px;"></div>
       <span class="tier-label">Regional centers</span>
       <span class="tier-count" id="cnt2">—</span>
     </div>
-    <div class="tier-row" data-tier="3">
+    <div class="tier-row">
       <div class="tier-dot" style="background:#8a7050;width:7px;height:7px;"></div>
       <span class="tier-label">Local sites</span>
       <span class="tier-count" id="cnt3">—</span>
     </div>
-    <div class="tier-row" data-tier="4">
+    <div class="tier-row">
       <div class="tier-dot" style="background:#5a4a35;width:5px;height:5px;"></div>
-      <span class="tier-label">Port / minor sites</span>
+      <span class="tier-label">Port / minor</span>
       <span class="tier-count" id="cnt4">—</span>
     </div>
     <div class="ctrl-sep"></div>
-    <div style="display:flex;align-items:center;justify-content:space-between;">
-      <span style="font-size:.62rem;color:var(--ash);">Corpus matches only</span>
+    <div class="mentions-row">
+      <span class="mentions-lbl">Corpus matches only</span>
       <input type="checkbox" id="mentionedOnly" style="accent-color:var(--ochre);">
     </div>
   </div>
-
   <div class="ctrl-card">
     <div class="ctrl-label">Region</div>
     <div class="filter-row">
@@ -263,7 +229,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   </div>
 </div>
 
-<!-- DETAIL PANEL -->
 <div class="detail-panel" id="detailPanel">
   <button class="detail-close" id="detailClose">✕</button>
   <div class="detail-header">
@@ -273,21 +238,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   </div>
   <div class="detail-desc" id="detailDesc"></div>
   <div class="detail-stats">
-    <div class="stat-cell">
-      <span class="stat-num" id="detailMentions">0</span>
-      <div class="stat-lbl">Modern papers</div>
-    </div>
-    <div class="stat-cell">
-      <span class="stat-num" id="detailAncientRefs">0</span>
-      <div class="stat-lbl">Ancient refs</div>
-    </div>
+    <div class="stat-cell"><span class="stat-num" id="detailMentions">0</span><div class="stat-lbl">Modern papers</div></div>
+    <div class="stat-cell"><span class="stat-num" id="detailAncientRefs">0</span><div class="stat-lbl">Ancient refs</div></div>
   </div>
   <div id="detailTopos" style="display:none">
     <div class="topos-block">
-      <div>
-        <div class="topos-num" id="toposNum">0</div>
-        <div class="topos-lbl">Ancient text references</div>
-      </div>
+      <div><div class="topos-num" id="toposNum">0</div><div class="topos-lbl">Ancient text references</div></div>
       <a class="topos-btn" id="toposBtn" href="#" target="_blank">Read →</a>
     </div>
   </div>
@@ -296,164 +252,190 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     <div id="mentionItems"></div>
   </div>
   <div class="ext-links" id="extLinks"></div>
-  <a class="site-page-btn" id="sitePageBtn" href="#" style="display:none">
-    Open Site Research Page →
-  </a>
+  <a class="site-page-btn" id="sitePageBtn" href="#" style="display:none">Open Site Research Page →</a>
 </div>
 
-<!-- Google Maps API -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
 <script>
-(function() {
-  const s = document.createElement('script');
-  s.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCNHhd1lNQMt8tkEYWMhBozZOcYOcHRax0&callback=initMap';
-  s.async = true; s.defer = true;
-  document.head.appendChild(s);
-})();
-</script>
-
-<script>
-// ── CONFIG ────────────────────────────────────────────────────
 const SUPABASE_URL      = "https://ucsgtbpeuqeamuvuvojs.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";
-const PAGE_SIZE = 1000; // sites per fetch
+const PAGE_SIZE = 1000;
 
-// ── TIER LOGIC ────────────────────────────────────────────────
-// Tier 1: ancient_refs > 500 OR mention_count > 5  → always visible
-// Tier 2: ancient_refs 50-500 OR mention_count 2-5 → visible zoom 3+
-// Tier 3: ancient_refs 1-50 OR known named sites   → visible zoom 5+
-// Tier 4: ancient_refs 0, ports/minor              → visible zoom 7+
-
-function getSiteTier(site) {
-  const refs  = site.ancient_refs  ?? 0;
-  const ments = site.mention_count ?? 0;
-  if (refs > 500 || ments > 5)  return 1;
-  if (refs > 50  || ments > 1)  return 2;
-  if (refs > 0   || ments > 0)  return 3;
-  // Subregion-based defaults
-  if (site.subregion === 'mithraic' || site.subregion === 'adriatic' ||
-      site.subregion === 'black_sea') return 4;
-  if (site.culture === 'Ancient Mediterranean') return 4; // Ancient Ports bulk
+// ── Tier logic ────────────────────────────────────────────────
+function getTier(site, mentionCount) {
+  const refs  = site.ancient_refs  || 0;
+  const ments = mentionCount || 0;
+  if (refs > 500 || ments > 5) return 1;
+  if (refs > 50  || ments > 1) return 2;
+  if (refs > 0   || ments > 0) return 3;
+  if (['mithraic','adriatic','black_sea'].includes(site.subregion)) return 4;
   return 3;
 }
 
-const TIER_COLORS  = { 1:'#f4a234', 2:'#d4a84b', 3:'#a07840', 4:'#6a5230' };
-const TIER_SIZES   = { 1:10, 2:7, 3:5, 4:3 };
-const TIER_MIN_ZOOM= { 1:0, 2:3, 3:5, 4:7 };
-const TIER_LABELS  = { 1:'Major site', 2:'Regional center', 3:'Archaeological site', 4:'Port / minor site' };
+const TIER_COLORS  = {1:'#f4a234', 2:'#d4a84b', 3:'#a07840', 4:'#6a5230'};
+const TIER_RADIUS  = {1:7, 2:5, 3:4, 4:3};
+const TIER_LABELS  = {1:'Major site', 2:'Regional center', 3:'Archaeological site', 4:'Port / minor site'};
+const TIER_ZOOM    = {1:0, 2:3, 3:5, 4:7};
 
-// ── STATE ─────────────────────────────────────────────────────
-let map, allSites = [], allMarkers = [], corpusMap = {};
-let activeRegion = 'all', mentionedOnly = false, searchTerm = '';
-let currentZoom = 3;
-
-// ── SUPABASE FETCH ────────────────────────────────────────────
-async function sbFetch(path) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
-    headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+function makeIcon(tier, mentioned) {
+  const r = TIER_RADIUS[tier];
+  const c = TIER_COLORS[tier];
+  const stroke = mentioned ? '#ffffff' : 'rgba(255,255,255,0.2)';
+  const sw     = mentioned ? 1.5 : 0.5;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+4}" height="${r*2+4}">
+    <circle cx="${r+2}" cy="${r+2}" r="${r}" fill="${c}" fill-opacity="${mentioned?1:.65}"
+      stroke="${stroke}" stroke-width="${sw}"/>
+  </svg>`;
+  return L.divIcon({
+    html: svg,
+    className: '',
+    iconSize:   [r*2+4, r*2+4],
+    iconAnchor: [r+2,   r+2],
   });
-  if (!res.ok) throw new Error(`Supabase ${res.status}`);
-  return res.json();
 }
 
-// ── LOAD ALL SITES (paginated) ────────────────────────────────
+// ── State ─────────────────────────────────────────────────────
+let map, clusterGroups = {1:null,2:null,3:null,4:null};
+let allSites = [], allMarkerData = [], corpusMap = {};
+let activeRegion = 'all', mentionedOnly = false, searchTerm = '';
+
+// ── Supabase ──────────────────────────────────────────────────
+async function sbFetch(path) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers:{apikey:SUPABASE_ANON_KEY, Authorization:`Bearer ${SUPABASE_ANON_KEY}`}
+  });
+  if (!r.ok) throw new Error(`Supabase ${r.status}`);
+  return r.json();
+}
+
 async function loadAllSites() {
-  document.getElementById('loadingText').textContent = 'Loading sites…';
   let offset = 0, batch;
   do {
     batch = await sbFetch(
-      `archaeology_sites?select=id,name,region,subregion,culture,period,lat,lng,country,description,wikipedia_url,topostext_url,ancient_refs` +
-      `&limit=${PAGE_SIZE}&offset=${offset}&order=ancient_refs.desc`
+      `archaeology_sites?select=id,name,region,subregion,culture,period,lat,lng,country,description,wikipedia_url,topostext_url,ancient_refs`+
+      `&limit=${PAGE_SIZE}&offset=${offset}&order=ancient_refs.desc.nullslast`
     );
     allSites.push(...batch);
     offset += PAGE_SIZE;
-    document.getElementById('loadingText').textContent =
-      `Loading sites… ${allSites.length.toLocaleString()}`;
+    document.getElementById('loadingText').textContent = `Loading sites… ${allSites.length.toLocaleString()}`;
   } while (batch.length === PAGE_SIZE);
-  return allSites;
 }
 
-// ── LOAD CORPUS MAP ───────────────────────────────────────────
-async function loadCorpusMap() {
+async function loadCorpus() {
   document.getElementById('loadingText').textContent = 'Loading corpus…';
-  const rows = await sbFetch(
-    `corpus_map?select=site_id,mention_count,latest_title,latest_url,latest_source`
-  );
+  const rows = await sbFetch(`corpus_map?select=site_id,mention_count,latest_title,latest_url,latest_source`);
   rows.forEach(r => { corpusMap[r.site_id] = r; });
 }
 
-// ── CREATE MARKER ─────────────────────────────────────────────
-function createMarker(site) {
-  const corpus = corpusMap[site.id] ?? {};
-  const mentionCount = corpus.mention_count ?? 0;
-  const tier  = getSiteTier({ ...site, mention_count: mentionCount });
-  const color = TIER_COLORS[tier];
-  const size  = TIER_SIZES[tier];
+// ── Build markers ─────────────────────────────────────────────
+function buildMarkers() {
+  document.getElementById('loadingText').textContent = 'Building markers…';
 
-  const marker = new google.maps.Marker({
-    position: { lat: site.lat, lng: site.lng },
-    map:      null, // hidden until filter applied
-    title:    site.name,
-    icon: {
-      path:          google.maps.SymbolPath.CIRCLE,
-      scale:         size,
-      fillColor:     color,
-      fillOpacity:   mentionCount > 0 ? 1.0 : 0.65,
-      strokeColor:   mentionCount > 0 ? '#ffffff' : 'rgba(255,255,255,0.2)',
-      strokeWeight:  mentionCount > 0 ? 1.5 : 0.5,
-    },
-    zIndex: tier === 1 ? 10 : tier === 2 ? 5 : 2,
+  // Init cluster groups per tier
+  for (let t = 1; t <= 4; t++) {
+    clusterGroups[t] = L.markerClusterGroup({
+      maxClusterRadius: t === 1 ? 40 : t === 2 ? 60 : t === 3 ? 80 : 100,
+      disableClusteringAtZoom: t === 1 ? 4 : t === 2 ? 6 : t === 3 ? 8 : 10,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+    });
+  }
+
+  const counts = {1:0,2:0,3:0,4:0};
+
+  allSites.forEach(site => {
+    if (!site.lat || !site.lng) return;
+    const corpus = corpusMap[site.id] || {};
+    const mentions = corpus.mention_count || 0;
+    const tier = getTier(site, mentions);
+    counts[tier]++;
+
+    const marker = L.marker([site.lat, site.lng], {
+      icon: makeIcon(tier, mentions > 0),
+      title: site.name,
+    });
+
+    marker.on('click', () => showDetail(site, corpus));
+
+    // Popup on hover
+    marker.bindPopup(`
+      <div class="popup-name">${site.name}</div>
+      <div class="popup-sub">${[site.culture, site.period].filter(Boolean).join(' · ') || site.region || ''}</div>
+      <button class="popup-btn" onclick="showDetailById(${site.id})">View details →</button>
+    `, { maxWidth: 220, closeButton: false });
+
+    allMarkerData.push({ site, corpus, tier, marker });
+    clusterGroups[tier].addLayer(marker);
   });
 
-  marker._site    = site;
-  marker._tier    = tier;
-  marker._corpus  = corpus;
+  // Add tier groups to map (tier 1 always, others based on zoom)
+  map.addLayer(clusterGroups[1]);
+  map.addLayer(clusterGroups[2]);
 
-  marker.addListener('click', () => showDetail(site, corpus));
-  return marker;
+  map.on('zoomend', () => {
+    const z = map.getZoom();
+    [3,4].forEach(t => {
+      const minZ = TIER_ZOOM[t];
+      if (z >= minZ && !map.hasLayer(clusterGroups[t])) map.addLayer(clusterGroups[t]);
+      else if (z < minZ && map.hasLayer(clusterGroups[t])) map.removeLayer(clusterGroups[t]);
+    });
+  });
+
+  for (let t = 1; t <= 4; t++) {
+    document.getElementById(`cnt${t}`).textContent = counts[t].toLocaleString();
+  }
+
+  document.getElementById('statTotal').textContent    = allSites.length.toLocaleString();
+  document.getElementById('statMentioned').textContent = Object.keys(corpusMap).length.toLocaleString();
+  updateShownCount();
 }
 
-// ── APPLY FILTERS ─────────────────────────────────────────────
+function updateShownCount() {
+  let shown = 0;
+  allMarkerData.forEach(d => {
+    if (d.marker._map) shown++;
+  });
+  document.getElementById('statShown').textContent = shown.toLocaleString();
+}
+
+// ── Filters ───────────────────────────────────────────────────
 function applyFilters() {
-  const zoom = map.getZoom();
-  currentZoom = zoom;
+  for (let t = 1; t <= 4; t++) clusterGroups[t].clearLayers();
 
   let shown = 0;
-  allMarkers.forEach(m => {
-    const s    = m._site;
-    const tier = m._tier;
+  allMarkerData.forEach(d => {
+    const { site, corpus, tier, marker } = d;
+    const regionOk  = activeRegion === 'all' || site.region === activeRegion;
+    const mentionOk = !mentionedOnly || (corpus.mention_count || 0) > 0;
+    const searchOk  = !searchTerm ||
+      site.name.toLowerCase().includes(searchTerm) ||
+      (site.culture || '').toLowerCase().includes(searchTerm);
 
-    // Tier visibility by zoom
-    const tierVisible = zoom >= TIER_MIN_ZOOM[tier];
-
-    // Region filter
-    const regionOk = activeRegion === 'all' || s.region === activeRegion;
-
-    // Mentions filter
-    const mentionOk = !mentionedOnly || (m._corpus?.mention_count ?? 0) > 0;
-
-    // Search filter
-    const searchOk = !searchTerm ||
-      s.name.toLowerCase().includes(searchTerm) ||
-      (s.culture ?? '').toLowerCase().includes(searchTerm);
-
-    const visible = tierVisible && regionOk && mentionOk && searchOk;
-    m.setMap(visible ? map : null);
-    if (visible) shown++;
+    if (regionOk && mentionOk && searchOk) {
+      clusterGroups[tier].addLayer(marker);
+      shown++;
+    }
   });
 
-  document.getElementById('statSites').textContent = shown.toLocaleString();
+  document.getElementById('statShown').textContent = shown.toLocaleString();
 }
 
-// ── SHOW DETAIL ───────────────────────────────────────────────
+// ── Detail panel ──────────────────────────────────────────────
+window.showDetailById = function(id) {
+  const d = allMarkerData.find(x => x.site.id === id);
+  if (d) showDetail(d.site, d.corpus);
+};
+
 function showDetail(site, corpus) {
-  const panel = document.getElementById('detailPanel');
-  const tier  = getSiteTier({ ...site, mention_count: corpus?.mention_count ?? 0 });
+  const mentions = corpus.mention_count || 0;
+  const tier = getTier(site, mentions);
 
-  document.getElementById('detailTier').textContent = TIER_LABELS[tier];
-  document.getElementById('detailTier').style.color = TIER_COLORS[tier];
-  document.getElementById('detailName').textContent = site.name;
+  document.getElementById('detailTier').textContent  = TIER_LABELS[tier];
+  document.getElementById('detailTier').style.color  = TIER_COLORS[tier];
+  document.getElementById('detailName').textContent  = site.name;
 
-  // Badges
   const badges = [
     site.culture ? `<span class="badge badge-culture">${site.culture}</span>` : '',
     site.region  ? `<span class="badge badge-region">${regionLabel(site.region)}</span>` : '',
@@ -461,128 +443,74 @@ function showDetail(site, corpus) {
     site.country ? `<span class="badge badge-period">${site.country}</span>` : '',
   ].filter(Boolean).join('');
   document.getElementById('detailBadges').innerHTML = badges;
+  document.getElementById('detailDesc').textContent  = site.description || '';
+  document.getElementById('detailMentions').textContent   = mentions.toString();
+  document.getElementById('detailAncientRefs').textContent = (site.ancient_refs || 0).toLocaleString();
 
-  document.getElementById('detailDesc').textContent = site.description ?? '';
-  document.getElementById('detailMentions').textContent = (corpus?.mention_count ?? 0).toString();
-  document.getElementById('detailAncientRefs').textContent = (site.ancient_refs ?? 0).toLocaleString();
-
-  // ToposText
   const toposEl = document.getElementById('detailTopos');
   if (site.ancient_refs > 0 && site.topostext_url) {
     toposEl.style.display = 'block';
     document.getElementById('toposNum').textContent = site.ancient_refs.toLocaleString();
     document.getElementById('toposBtn').href = site.topostext_url;
-  } else {
-    toposEl.style.display = 'none';
-  }
+  } else { toposEl.style.display = 'none'; }
 
-  // Mentions
-  const mentionsSection = document.getElementById('detailMentionsList');
-  const mentionsItems   = document.getElementById('mentionItems');
-  if (corpus?.latest_title) {
-    mentionsSection.style.display = 'block';
-    mentionsItems.innerHTML = `
+  const mentSection = document.getElementById('detailMentionsList');
+  if (corpus.latest_title) {
+    mentSection.style.display = 'block';
+    document.getElementById('mentionItems').innerHTML = `
       <div class="mention-item">
-        <div class="mention-title">
-          <a href="${corpus.latest_url ?? '#'}" target="_blank">${corpus.latest_title}</a>
-        </div>
-        <div class="mention-meta">${corpus.latest_source ?? ''}</div>
+        <div class="mention-title"><a href="${corpus.latest_url||'#'}" target="_blank">${corpus.latest_title}</a></div>
+        <div class="mention-meta">${corpus.latest_source||''}</div>
       </div>`;
-  } else {
-    mentionsSection.style.display = 'none';
-  }
+  } else { mentSection.style.display = 'none'; }
 
-  // External links
   const links = [
-    site.wikipedia_url ? `<a class="ext-link" href="${site.wikipedia_url}" target="_blank">Wikipedia ↗</a>` : '',
-    site.topostext_url ? `<a class="ext-link" href="${site.topostext_url}" target="_blank">ToposText ↗</a>` : '',
-    `<a class="ext-link" href="https://www.google.com/maps/@${site.lat},${site.lng},14z" target="_blank">Maps ↗</a>`,
+    site.wikipedia_url  ? `<a class="ext-link" href="${site.wikipedia_url}"  target="_blank">Wikipedia ↗</a>` : '',
+    site.topostext_url  ? `<a class="ext-link" href="${site.topostext_url}"  target="_blank">ToposText ↗</a>` : '',
+    `<a class="ext-link" href="https://www.openstreetmap.org/?mlat=${site.lat}&mlon=${site.lng}&zoom=14" target="_blank">OSM ↗</a>`,
   ].filter(Boolean).join('');
   document.getElementById('extLinks').innerHTML = links;
 
-  // Site page link
   const siteBtn = document.getElementById('sitePageBtn');
   siteBtn.href = `site.html?id=${encodeURIComponent(site.name)}`;
   siteBtn.style.display = 'block';
 
-  panel.classList.add('open');
+  document.getElementById('detailPanel').classList.add('open');
 }
 
-// ── HELPERS ───────────────────────────────────────────────────
 function regionLabel(r) {
   return {europe:'Europe',near_east:'Near East',mesoamerica:'Mesoamerica',
-          north_america:'N. America',south_america:'S. America',general:'General'}[r] ?? r;
+    north_america:'N. America',south_america:'S. America',general:'General'}[r] || r;
 }
 
-// ── INIT MAP ──────────────────────────────────────────────────
-async function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center:    { lat: 35, lng: 18 },
-    zoom:      3,
-    mapTypeId: 'hybrid',
-    styles: [
-      { featureType:'all', elementType:'labels.text.fill',
-        stylers:[{color:'#c8b890'}] },
-      { featureType:'administrative.country', elementType:'geometry.stroke',
-        stylers:[{color:'#5a4a30'},{weight:1}] },
-      { featureType:'water', elementType:'geometry',
-        stylers:[{color:'#0a1a2e'}] },
-      { featureType:'landscape', elementType:'geometry',
-        stylers:[{color:'#1a1410'}] },
-      { featureType:'poi', stylers:[{visibility:'off'}] },
-      { featureType:'transit', stylers:[{visibility:'off'}] },
-      { featureType:'road', elementType:'geometry',
-        stylers:[{color:'#2a2018'},{weight:0.5}] },
-    ],
-    disableDefaultUI:     true,
-    zoomControl:          true,
-    zoomControlOptions:   { position: google.maps.ControlPosition.RIGHT_CENTER },
-    gestureHandling:      'greedy',
-    restriction: {
-      latLngBounds: { north:85, south:-85, west:-180, east:180 },
-      strictBounds: false,
-    },
+// ── Init ──────────────────────────────────────────────────────
+async function init() {
+  map = L.map('map', {
+    center: [35, 18], zoom: 3,
+    zoomControl: false,
+    attributionControl: true,
   });
 
-  // Load data
+  L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+  // Dark OSM tile layer
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© <a href="https://carto.com/">CARTO</a> © <a href="https://openstreetmap.org">OSM</a>',
+    subdomains: 'abcd', maxZoom: 19,
+  }).addTo(map);
+
   try {
-    await Promise.all([loadAllSites(), loadCorpusMap()]);
-  } catch (err) {
-    document.getElementById('loadingText').textContent = 'Error: ' + err.message;
+    await Promise.all([loadAllSites(), loadCorpus()]);
+  } catch(e) {
+    document.getElementById('loadingText').textContent = 'Error: ' + e.message;
     return;
   }
 
-  document.getElementById('loadingText').textContent = 'Building markers…';
-
-  // Build markers
-  allSites.forEach(site => {
-    if (!site.lat || !site.lng) return;
-    const m = createMarker(site);
-    allMarkers.push(m);
-  });
-
-  // Tier counts
-  [1,2,3,4].forEach(t => {
-    document.getElementById(`cnt${t}`).textContent =
-      allMarkers.filter(m => m._tier === t).length.toLocaleString();
-  });
-
-  // Stats
-  const mentioned = Object.keys(corpusMap).length;
-  document.getElementById('statMentions').textContent = mentioned;
-  document.getElementById('statSites').textContent = allSites.length.toLocaleString();
-
-  // Apply initial filter
-  applyFilters();
-
-  // Zoom listener
-  map.addListener('zoom_changed', applyFilters);
-
-  // Hide loading
+  buildMarkers();
   document.getElementById('mapLoading').style.display = 'none';
 }
 
-// ── EVENT LISTENERS ───────────────────────────────────────────
+// ── Event listeners ───────────────────────────────────────────
 document.getElementById('detailClose').addEventListener('click', () => {
   document.getElementById('detailPanel').classList.remove('open');
 });
@@ -606,21 +534,17 @@ document.getElementById('siteSearch').addEventListener('input', function() {
   clearTimeout(searchTimer);
   searchTimer = setTimeout(() => {
     searchTerm = this.value.trim().toLowerCase();
-    // If searching, show all tiers
     if (searchTerm) {
-      allMarkers.forEach(m => {
-        const visible = m._site.name.toLowerCase().includes(searchTerm) ||
-                        (m._site.culture ?? '').toLowerCase().includes(searchTerm);
-        m.setMap(visible ? map : null);
-        if (visible && map) {
-          map.panTo(m.getPosition());
-        }
-      });
-    } else {
-      applyFilters();
+      // Fly to first match
+      const match = allMarkerData.find(d =>
+        d.site.name.toLowerCase().includes(searchTerm));
+      if (match) map.flyTo([match.site.lat, match.site.lng], 8, {duration:1.2});
     }
-  }, 250);
+    applyFilters();
+  }, 300);
 });
+
+init();
 </script>
 </body>
 </html>
