@@ -123,11 +123,13 @@ a{text-decoration:none;color:inherit;}
   <div class="masthead-inner">
     <a href="index.html" class="logo">arch<span>AI</span>ology</a>
     <nav class="nav-links">
-      <a class="nav-link" href="index.html">Home</a>
-      <a class="nav-link" href="news.html">Feed</a>
-      <a class="nav-link" href="map.html">Map</a>
-      <a class="nav-link active" href="conferences.html">Conferences</a>
-    </nav>
+        <a class="nav-link" href="index.html">Home</a>
+  <a class="nav-link" href="news.html">Feed</a>
+  <a class="nav-link" href="map.html">Map</a>
+  <a class="nav-link" href="sky.html">Sky Archive</a>
+  <a class="nav-link" href="maritime.html">Maritime</a>
+  <a class="nav-link active" href="conferences.html">Conferences</a>
+</nav>
   </div>
 </header>
 
@@ -563,7 +565,7 @@ a{text-decoration:none;color:inherit;}
   <div class="sidebar-card">
     <div class="sidebar-label">Submit a Conference</div>
     <p style="font-family:var(--sans);font-size:.72rem;color:var(--ash);line-height:1.55;margin-bottom:.7rem">Know of a 2026 archaeology or anthropology conference not listed here? Let us know.</p>
-    <a class="conf-link" href="mailto:jwcarlt@gmail.com?subject=Conference submission for archaiology.org" style="display:inline-flex">Submit ↗</a>
+    <a class="conf-link" href="/cdn-cgi/l/email-protection#81ebf6e2e0f3edf5c1e6ece0e8edafe2eeecbef2f4e3ebe4e2f5bcc2eeefe7e4f3e4efe2e4a1f2f4e3ece8f2f2e8eeefa1e7eef3a1e0f3e2e9e0e8eeedeee6f8afeef3e6" style="display:inline-flex">Submit ↗</a>
   </div>
 
   <div class="sidebar-card">
@@ -580,7 +582,7 @@ a{text-decoration:none;color:inherit;}
   <a href="index.html">archAIology</a> · archaiology.org · 2026 Conference Calendar · © 2026
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Filter logic
 let activeDisc = "all", activeRegion = null;
 
@@ -612,12 +614,4 @@ document.querySelectorAll(".filter-chip[data-filter]").forEach(btn => {
 document.querySelectorAll(".filter-chip[data-region]").forEach(btn => {
   btn.addEventListener("click", function() {
     const wasActive = this.classList.contains("active");
-    document.querySelectorAll(".filter-chip[data-region]").forEach(b => b.classList.remove("active"));
-    activeRegion = wasActive ? null : this.dataset.region;
-    if (!wasActive) this.classList.add("active");
-    applyFilters();
-  });
-});
-</script>
-</body>
-</html>
+    document.querySelectorAll(".filter-chip[data-region]").forEach(b =

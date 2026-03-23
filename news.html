@@ -607,10 +607,13 @@ a { text-decoration: none; color: inherit; }
 <header class="masthead">
   <div class="masthead-inner">
     <nav class="masthead-left">
-      <a class="nav-link active" href="news.html">Articles</a>
-      <a class="nav-link" href="#">Research</a>
-      <a class="nav-link" href="map.html">Map</a>
-    </nav>
+        <a class="nav-link" href="index.html">Home</a>
+  <a class="nav-link active" href="news.html">Feed</a>
+  <a class="nav-link" href="map.html">Map</a>
+  <a class="nav-link" href="sky.html">Sky Archive</a>
+  <a class="nav-link" href="maritime.html">Maritime</a>
+  <a class="nav-link" href="conferences.html">Conferences</a>
+</nav>
     <div>
       <a href="index.html" class="logo-wordmark">arch<span class="ai-mark">AI</span>ology</a>
       <div class="logo-tagline">Where ancient worlds meet modern methods</div>
@@ -1007,35 +1010,9 @@ document.getElementById("searchInput").addEventListener("input", function() {
   }, 250);
 });
 
-// ── Read URL params on load ───────────────────────────────────
-function readUrlParams() {
-  const params = new URLSearchParams(window.location.search);
-  const region = params.get("region");
-  const type   = params.get("type");
-  const q      = params.get("q");
-
-  if (region) {
-    activeRegion = region;
-    document.querySelectorAll(".filter-chip[data-region]").forEach(b => {
-      b.classList.toggle("active", b.dataset.region === region);
-    });
-  }
-  if (type && ["paper","news"].includes(type)) {
-    activeType = type;
-    document.querySelectorAll(".filter-chip[data-type]").forEach(b => {
-      b.classList.toggle("active", b.dataset.type === type);
-    });
-  }
-  if (q) {
-    searchQuery = q;
-    document.getElementById("searchInput").value = q;
-  }
-}
-
 // ── Init ──────────────────────────────────────────────────────
 (async () => {
   try {
-    readUrlParams();
     allItems = await fetchAll();
     updateStats(allItems);
     applyFilters();

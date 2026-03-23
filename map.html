@@ -157,13 +157,13 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
 
 <header class="masthead">
   <a href="index.html" class="logo">arch<span>AI</span>ology</a>
-  <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="index.html">Home</a>
   <a class="nav-link" href="news.html">Feed</a>
   <a class="nav-link active" href="map.html">Map</a>
   <a class="nav-link" href="sky.html">Sky Archive</a>
   <a class="nav-link" href="maritime.html">Maritime</a>
   <a class="nav-link" href="conferences.html">Conferences</a>
-  <div class="masthead-right">
+<div class="masthead-right">
     <div class="map-stats">
       <strong id="statShown">—</strong> shown &nbsp;·&nbsp;
       <strong id="statTotal">—</strong> sites &nbsp;·&nbsp;
@@ -229,9 +229,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   <div class="ctrl-card">
     <div class="ctrl-label">Base Map</div>
     <div class="filter-row">
-      <button class="filter-chip tile-chip active" data-tile="OSM" onclick="_setTile('OSM')">OSM</button>
+      <button class="filter-chip tile-chip" data-tile="OSM" onclick="_setTile('OSM')">OSM</button>
       <button class="filter-chip tile-chip" data-tile="Topo" onclick="_setTile('Topo')">Topo</button>
-      <button class="filter-chip tile-chip" data-tile="Antique" onclick="_setTile('Antique')">Antique</button>
+      <button class="filter-chip tile-chip active" data-tile="Antique" onclick="_setTile('Antique')">Antique</button>
       <button class="filter-chip tile-chip" data-tile="Satellite" onclick="_setTile('Satellite')">Satellite</button>
       <button class="filter-chip tile-chip" data-tile="Light" onclick="_setTile('Light')">Light</button>
       <button class="filter-chip tile-chip" data-tile="Dark" onclick="_setTile('Dark')">Dark</button>
@@ -518,7 +518,7 @@ async function init() {
     'Dark':     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       attribution:'© CARTO / OSM', subdomains:'abcd', maxZoom:19 }),
   };
-  let activeTile = TILES['OSM'];
+  let activeTile = TILES['Antique'];
   activeTile.addTo(map);
   window._setTile = function(name) {
     if (activeTile) map.removeLayer(activeTile);

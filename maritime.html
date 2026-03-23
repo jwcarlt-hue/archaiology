@@ -157,13 +157,13 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--d
 
 <header class="masthead">
   <a href="index.html" class="logo">arch<span>AI</span>ology</a>
-  <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="index.html">Home</a>
   <a class="nav-link" href="news.html">Feed</a>
   <a class="nav-link" href="map.html">Map</a>
   <a class="nav-link" href="sky.html">Sky Archive</a>
   <a class="nav-link active" href="maritime.html">Maritime</a>
   <a class="nav-link" href="conferences.html">Conferences</a>
-  <div class="masthead-right">
+<div class="masthead-right">
     <div class="hdr-stat"><strong id="hdrShown">—</strong> wrecks visible</div>
     <div class="hdr-stat"><strong id="hdrTotal">1,584</strong> total · OXREP v2.1</div>
   </div>
@@ -229,7 +229,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--d
   <div class="ctrl-card">
     <div class="ctrl-lbl">Base Map</div>
     <div class="chip-row">
-      <button class="chip active" data-tile="OSM" onclick="_setTile('OSM')">OSM</button>
+      <button class="chip" data-tile="OSM" onclick="_setTile('OSM')">OSM</button>
       <button class="chip" data-tile="Topo" onclick="_setTile('Topo')">Topo</button>
       <button class="chip" data-tile="Satellite" onclick="_setTile('Satellite')">Satellite</button>
       <button class="chip" data-tile="Light" onclick="_setTile('Light')">Light</button>
@@ -542,7 +542,7 @@ async function init() {
     'Light':     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {attribution:'© CARTO/OSM', subdomains:'abcd', maxZoom:19}),
   };
   // Base + optional nautical overlay
-  let activeBase = TILES['OSM'];
+  let activeBase = TILES['Antique'];
   activeBase.addTo(map);
   let nauticalOn = false;
   window._setTile = function(name) {
