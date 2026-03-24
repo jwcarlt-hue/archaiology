@@ -156,6 +156,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   color:#e8dfc8!important; font-size:.68rem!important; padding:4px 8px!important;
   border-radius:2px!important; white-space:nowrap; }
 .orbis-tip::before { display:none!important; }
+
+.lang-tip { background:rgba(8,11,18,.93)!important; border:1px solid rgba(160,100,200,.25)!important;
+  color:#e8dfc8!important; font-size:.68rem!important; padding:4px 8px!important;
+  border-radius:2px!important; white-space:nowrap; max-width:280px; white-space:normal; }
+.lang-tip::before { display:none!important; }
 </style>
 </head>
 <body>
@@ -261,6 +266,31 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
         <div style="width:20px;height:3px;background:#5bbca0;border-radius:1px;flex-shrink:0;opacity:.8"></div>
         <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Sea lanes (1026)</span>
       </div>
+    </div>
+  </div>
+  <div class="ctrl-card">
+    <div class="ctrl-label">Glottolog Languages</div>
+    <div class="filter-row">
+      <button class="filter-chip" id="lang-btn" onclick="toggleLangs()">Show Languages</button>
+    </div>
+    <div id="lang-legend" style="display:none;margin-top:6px;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#f07020;flex-shrink:0"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Severely endangered</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#d03030;flex-shrink:0"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Critically endangered</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#808080;flex-shrink:0"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Dormant / Extinct</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#40b060;flex-shrink:0"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Vulnerable / Safe</span>
+      </div>
+      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:4px;">47 languages · Glottolog CC-BY 4.0</div>
     </div>
   </div>
 </div>
@@ -724,6 +754,64 @@ function toggleOrbis() {
     btn.classList.add('active');
     leg.style.display = 'block';
     orbisOn = true;
+  }
+}
+
+
+// ── Glottolog Language Layer ──────────────────────────────────
+const GLOTTOLOG_LANGS = [{"id":"yuca1254","name":"Yucatec Maya","family":"Mayan","aes":2,"lat":19.5,"lng":-88.5,"speakers":800000,"country":"Mexico","note":"Most spoken Maya language; active epigraphy community"},{"id":"kiche1262","name":"K'iche'","family":"Mayan","aes":2,"lat":14.9,"lng":-91.4,"speakers":1000000,"country":"Guatemala","note":"Largest Maya language; Popol Vuh language"},{"id":"mam1291","name":"Mam","family":"Mayan","aes":2,"lat":15.2,"lng":-91.8,"speakers":500000,"country":"Guatemala"},{"id":"tzot1259","name":"Tzotzil","family":"Mayan","aes":2,"lat":16.7,"lng":-92.7,"speakers":450000,"country":"Mexico"},{"id":"tzel1254","name":"Tzeltal","family":"Mayan","aes":2,"lat":16.8,"lng":-92.3,"speakers":550000,"country":"Mexico"},{"id":"chol1285","name":"Ch'ol","family":"Mayan","aes":2,"lat":17.5,"lng":-92.1,"speakers":220000,"country":"Mexico","note":"Closest living relative to Classic Maya inscription language"},{"id":"itza1241","name":"Itzaj","family":"Mayan","aes":5,"lat":16.9,"lng":-89.9,"speakers":6,"country":"Guatemala","note":"Critically endangered; fewer than 10 fluent speakers"},{"id":"lacandon1242","name":"Lacandon","family":"Mayan","aes":4,"lat":16.7,"lng":-91.0,"speakers":1000,"country":"Mexico","note":"Last speakers in Lacand\u00f3n jungle"},{"id":"tojolabal1244","name":"Tojolabal","family":"Mayan","aes":3,"lat":16.3,"lng":-91.9,"speakers":50000,"country":"Mexico"},{"id":"mocho1256","name":"Mocho'","family":"Mayan","aes":5,"lat":15.5,"lng":-92.0,"speakers":150,"country":"Mexico","note":"Severely endangered Mayan language"},{"id":"cuzc1240","name":"Cusco Quechua","family":"Quechuan","aes":2,"lat":-13.5,"lng":-72.0,"speakers":1500000,"country":"Peru","note":"Language of Inca Empire; still spoken in Andes"},{"id":"ayac1239","name":"Ayacucho Quechua","family":"Quechuan","aes":2,"lat":-13.2,"lng":-74.2,"speakers":900000,"country":"Peru"},{"id":"sout2976","name":"Southern Quechua","family":"Quechuan","aes":2,"lat":-15.0,"lng":-70.0,"speakers":8000000,"country":"Peru"},{"id":"aymara1253","name":"Aymara","family":"Aymaran","aes":2,"lat":-16.5,"lng":-68.1,"speakers":2000000,"country":"Bolivia","note":"Co-official language of Bolivia; Tiwanaku civilization language"},{"id":"puru1261","name":"Purubor\u00e1","family":"Purubor\u00e1n","aes":5,"lat":-11.7,"lng":-63.9,"speakers":2,"country":"Brazil","note":"Critically endangered Amazonian language"},{"id":"tami1289","name":"Tamil","family":"Dravidian","aes":1,"lat":10.8,"lng":79.5,"speakers":80000000,"country":"India","note":"Oldest attested Dravidian language; proposed ancestor of Indus script"},{"id":"brah1256","name":"Brahui","family":"Dravidian","aes":3,"lat":28.8,"lng":65.8,"speakers":2000000,"country":"Pakistan","note":"Isolated Dravidian language in Balochistan \u2014 near Indus Valley heartland"},{"id":"kuru1302","name":"Kurukh","family":"Dravidian","aes":3,"lat":23.5,"lng":84.0,"speakers":2000000,"country":"India"},{"id":"malt1254","name":"Malto","family":"Dravidian","aes":4,"lat":25.1,"lng":87.5,"speakers":150000,"country":"India","note":"Endangered Northern Dravidian language"},{"id":"mand1466","name":"Mandaic","family":"Afro-Asiatic","aes":5,"lat":31.9,"lng":47.5,"speakers":2000,"country":"Iraq","note":"Liturgical language of Mandaean Gnostics; descended from Eastern Aramaic"},{"id":"nort2672","name":"Assyrian Neo-Aramaic","family":"Afro-Asiatic","aes":4,"lat":36.8,"lng":43.1,"speakers":600000,"country":"Iraq","note":"Descendant of ancient Aramaic; endangered due to displacement"},{"id":"mand1415","name":"Classical Mandaic","family":"Afro-Asiatic","aes":6,"lat":31.5,"lng":46.0,"speakers":0,"country":"Iraq","note":"Liturgical language; dormant"},{"id":"sura1264","name":"Surayt","family":"Afro-Asiatic","aes":4,"lat":37.3,"lng":41.2,"speakers":100000,"country":"Turkey","note":"Tur Abdin Aramaic dialect, severely endangered"},{"id":"chey1248","name":"Cheyenne","family":"Algic","aes":4,"lat":45.5,"lng":-106.5,"speakers":2100,"country":"USA","note":"Plains language; fewer than 2000 speakers"},{"id":"nava1243","name":"Navajo","family":"Athabaskan-Eyak-Tlingit","aes":2,"lat":36.5,"lng":-108.7,"speakers":170000,"country":"USA","note":"Largest Native North American language by speakers"},{"id":"choc1276","name":"Choctaw","family":"Muskogean","aes":3,"lat":33.0,"lng":-89.5,"speakers":10000,"country":"USA"},{"id":"chero1273","name":"Cherokee","family":"Iroquoian","aes":4,"lat":35.5,"lng":-83.5,"speakers":2100,"country":"USA","note":"Own syllabary invented by Sequoyah 1820"},{"id":"hopi1249","name":"Hopi","family":"Uto-Aztecan","aes":3,"lat":36.0,"lng":-110.5,"speakers":6800,"country":"USA","note":"Language of Pueblo Southwest; distinct script tradition"},{"id":"nahu1243","name":"Classical Nahuatl","family":"Uto-Aztecan","aes":6,"lat":19.4,"lng":-99.1,"speakers":0,"country":"Mexico","note":"Aztec empire language; extensive colonial-era texts"},{"id":"cent2155","name":"Central Nahuatl","family":"Uto-Aztecan","aes":2,"lat":19.0,"lng":-98.5,"speakers":1500000,"country":"Mexico"},{"id":"linea_b_a","name":"Minoan (unclassified)","family":"Unclassified","aes":6,"lat":35.3,"lng":25.1,"speakers":0,"country":"Greece","note":"Language of Linear A script; completely undeciphered; extinct ~1450 BCE"},{"id":"mycenae1234","name":"Mycenaean Greek","family":"Indo-European","aes":6,"lat":37.7,"lng":22.8,"speakers":0,"country":"Greece","note":"Earliest attested Greek; Linear B script"},{"id":"newa1246","name":"Newari","family":"Sino-Tibetan","aes":3,"lat":27.7,"lng":85.3,"speakers":900000,"country":"Nepal","note":"Language of Kathmandu Valley; ancient Buddhist manuscripts"},{"id":"dzon1239","name":"Dzongkha","family":"Sino-Tibetan","aes":1,"lat":27.5,"lng":89.6,"speakers":640000,"country":"Bhutan"},{"id":"buro1267","name":"Burushaski","family":"Isolate","aes":2,"lat":36.2,"lng":74.6,"speakers":100000,"country":"Pakistan","note":"Language isolate in Karakoram; proposed links to Harappan language"},{"id":"hadzane1242","name":"Hadza","family":"Isolate","aes":2,"lat":-3.8,"lng":35.2,"speakers":1000,"country":"Tanzania","note":"Language isolate; click consonants; one of oldest human languages"},{"id":"sand1273","name":"Sandawe","family":"Isolate","aes":3,"lat":-4.8,"lng":35.6,"speakers":60000,"country":"Tanzania","note":"Language isolate with click consonants"},{"id":"coptic1239","name":"Coptic","family":"Afro-Asiatic","aes":6,"lat":28.0,"lng":30.0,"speakers":0,"country":"Egypt","note":"Last stage of ancient Egyptian; liturgical language only"},{"id":"rapa1244","name":"Rapanui","family":"Austronesian","aes":4,"lat":-27.1,"lng":-109.4,"speakers":3700,"country":"Chile","note":"Easter Island language; connected to undeciphered Rongorongo script"},{"id":"hawa1245","name":"Hawaiian","family":"Austronesian","aes":4,"lat":20.9,"lng":-157.4,"speakers":24000,"country":"USA","note":"Major language revitalization effort underway"},{"id":"lezg1247","name":"Lezgian","family":"Northeast Caucasian","aes":2,"lat":41.5,"lng":48.0,"speakers":800000,"country":"Russia"},{"id":"avar1256","name":"Avar","family":"Northeast Caucasian","aes":2,"lat":42.5,"lng":46.5,"speakers":800000,"country":"Russia"},{"id":"urar1238","name":"Urartian","family":"Hurro-Urartian","aes":6,"lat":38.5,"lng":43.4,"speakers":0,"country":"Turkey","note":"Language of Kingdom of Urartu; related to Hurrian; extinct ~600 BCE"},{"id":"luwi1234","name":"Luwian","family":"Indo-European","aes":6,"lat":37.9,"lng":32.5,"speakers":0,"country":"Turkey","note":"Hieroglyphic Luwian script; Bronze Age Anatolia; active decipherment research"},{"id":"hitt1242","name":"Hittite","family":"Indo-European","aes":6,"lat":40.0,"lng":34.6,"speakers":0,"country":"Turkey","note":"Oldest attested Indo-European language; cuneiform script; Hattusa tablets"},{"id":"class1255","name":"Classical Chinese","family":"Sino-Tibetan","aes":6,"lat":35.0,"lng":105.0,"speakers":0,"country":"China","note":"Literary language of Chinese civilization; connects to CHGIS data"},{"id":"juch1238","name":"Jurchen","family":"Tungusic","aes":6,"lat":43.0,"lng":128.0,"speakers":0,"country":"China","note":"Language of Jin dynasty; own script; ancestor of Manchu"}];
+let langOn = false, langLayer = null;
+
+const AES_COLORS = {
+  1:'#40b060', 2:'#90c040', 3:'#f0c020',
+  4:'#f07020', 5:'#d03030', 6:'#808080'
+};
+const AES_LABELS = {
+  1:'Safe', 2:'Vulnerable', 3:'Definitely Endangered',
+  4:'Severely Endangered', 5:'Critically Endangered', 6:'Dormant/Extinct'
+};
+
+function buildLangLayer() {
+  const g = L.layerGroup();
+  GLOTTOLOG_LANGS.forEach(lang => {
+    const color = AES_COLORS[lang.aes] || '#808080';
+    const r = lang.aes >= 5 ? 7 : lang.aes >= 3 ? 5 : 4;
+    const icon = L.divIcon({
+      html:`<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+4}" height="${r*2+4}">
+        <circle cx="${r+2}" cy="${r+2}" r="${r}" fill="${color}" fill-opacity=".85"
+          stroke="#fff" stroke-width="1.5" stroke-opacity=".6"/>
+        ${lang.aes >= 5 ? `<circle cx="${r+2}" cy="${r+2}" r="${r+3}" fill="none" stroke="${color}" stroke-width="1" stroke-opacity=".4"/>` : ''}
+      </svg>`,
+      className:'', iconSize:[r*2+4,r*2+4], iconAnchor:[r+2,r+2]
+    });
+    const spk = lang.speakers > 0 ? `${lang.speakers.toLocaleString()} speakers` : 'Dormant/Extinct';
+    const note = lang.note ? `<br><i style="color:rgba(240,234,216,.5)">${lang.note}</i>` : '';
+    L.marker([lang.lat,lang.lng],{icon})
+      .bindTooltip(
+        `<b>${lang.name}</b> <span style="color:${color}">[AES ${lang.aes}: ${AES_LABELS[lang.aes]}]</span><br>` +
+        `${lang.family} · ${lang.country} · ${spk}${note}`,
+        {sticky:true, className:'lang-tip'}
+      ).addTo(g);
+  });
+  return g;
+}
+
+function toggleLangs() {
+  const btn = document.getElementById('lang-btn');
+  const leg = document.getElementById('lang-legend');
+  if (!langLayer) langLayer = buildLangLayer();
+  if (langOn) {
+    map.removeLayer(langLayer);
+    btn.textContent = 'Show Languages';
+    btn.classList.remove('active');
+    leg.style.display = 'none';
+    langOn = false;
+  } else {
+    langLayer.addTo(map);
+    btn.textContent = 'Hide Languages';
+    btn.classList.add('active');
+    leg.style.display = 'block';
+    langOn = true;
   }
 }
 

@@ -245,6 +245,8 @@ footer p{font-size:.7rem;color:rgba(240,234,216,.2);}
   <a class="tab" href="#protosinaitic" onclick="setTab(this)">Proto-Sinaitic</a>
   <a class="tab" href="#indus" onclick="setTab(this)">Indus Valley</a>
   <a class="tab" href="#maya" onclick="setTab(this)">Maya Hieroglyphs</a>
+  <a class="tab" href="#endangered" onclick="setTab(this)">Endangered Languages</a>
+  <a class="tab" href="#resources" onclick="setTab(this)">Tools</a>
 </nav>
 
 <main>
@@ -740,6 +742,523 @@ footer p{font-size:.7rem;color:rgba(240,234,216,.2);}
 
 </main>
 
+
+<!-- ═══════════════════════════════════════════════ ENDANGERED LANGUAGES -->
+<section class="script-section" id="endangered" style="background:rgba(160,100,200,.02);">
+<div class="container">
+  <div class="script-header">
+    <div>
+      <div class="script-eyebrow">Glottolog · Language Endangerment</div>
+      <h2 class="script-name">Living Languages at Risk</h2>
+      <div class="script-meta">
+        <span class="badge badge-live">🔴 Active monitoring</span>
+        <span class="badge badge-partial">Glottolog 5.x CC-BY 4.0</span>
+        <span class="badge badge-partial">AES scale</span>
+      </div>
+    </div>
+    <div class="script-status-block">
+      <div class="progress-label">Languages tracked</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--undeciphered)"></div></div>
+      <div class="progress-pct" style="color:var(--undeciphered)">47</div>
+      <div class="progress-sub">curated for archaeological relevance</div>
+    </div>
+  </div>
+
+  <div class="script-body">
+    <div>
+      <div class="script-prose">
+        <p>Language death and script extinction are the same process at different time scales. The 47 languages tracked here were selected because they either produced archaeological writing systems, are spoken by communities whose ancestors built the sites in our gazetteer, or represent language families central to the decipherment challenges covered on this page.</p>
+        <p>The <strong>Agglomerated Endangerment Scale (AES)</strong> aggregates data from UNESCO, the Catalogue of Endangered Languages, and Ethnologue. AES 3–5 languages are actively losing speakers; AES 6 (dormant/extinct) languages survive only in texts — precisely the condition that produces undeciphered scripts.</p>
+        <p>The connection is direct: <strong>Linear A</strong> became undecipherable when Minoan became AES 6. The <strong>Indus Valley script</strong> has no anchor language partly because the Harappan language went fully dormant. By contrast, <strong>Maya hieroglyphics</strong> remained ~85% readable because Mayan languages — Yucatec, Ch'ol, K'iche' — survived into the present with millions of speakers, providing the living phonological system that made decipherment possible.</p>
+        <p><strong>Itzaj Maya</strong> — closest to the Classic inscriptions — now has fewer than 10 fluent speakers. When it reaches AES 6, one more thread connecting us to the ancient texts breaks permanently.</p>
+      </div>
+
+      <div class="challenge-box" style="border-color:rgba(160,100,200,.15);background:rgba(160,100,200,.04);margin-top:1.5rem;">
+        <div class="challenge-title" style="color:#b080d0;">AES Endangerment Scale</div>
+        <div class="challenge-milestones">
+          <div class="milestone">
+            <div class="milestone-dot" style="background:#40b060"></div>
+            <span class="milestone-text">AES 1: Safe</span>
+            <span class="milestone-date">2 tracked</span>
+          </div><div class="milestone">
+            <div class="milestone-dot" style="background:#90c040"></div>
+            <span class="milestone-text">AES 2: Vulnerable</span>
+            <span class="milestone-date">16 tracked</span>
+          </div><div class="milestone">
+            <div class="milestone-dot" style="background:#f0c020"></div>
+            <span class="milestone-text">AES 3: Definitely Endangered</span>
+            <span class="milestone-date">7 tracked</span>
+          </div><div class="milestone">
+            <div class="milestone-dot" style="background:#f07020"></div>
+            <span class="milestone-text">AES 4: Severely Endangered</span>
+            <span class="milestone-date">8 tracked</span>
+          </div><div class="milestone">
+            <div class="milestone-dot" style="background:#d03030"></div>
+            <span class="milestone-text">AES 5: Critically Endangered</span>
+            <span class="milestone-date">4 tracked</span>
+          </div><div class="milestone">
+            <div class="milestone-dot" style="background:#808080"></div>
+            <span class="milestone-text">AES 6: Dormant/Extinct</span>
+            <span class="milestone-date">10 tracked</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ai-dev-list" style="margin-top:1.5rem;">
+        <div class="ai-dev-lbl">Scripts connected to living languages</div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Yucatec Maya <span style="color:#808080">AES 2</span></div>
+            <div class="ai-dev-desc">Most spoken Maya language; active epigraphy community</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">K'iche' <span style="color:#808080">AES 2</span></div>
+            <div class="ai-dev-desc">Largest Maya language; Popol Vuh language</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Ch'ol <span style="color:#808080">AES 2</span></div>
+            <div class="ai-dev-desc">Closest living relative to Classic Maya inscription language</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Mocho' <span style="color:#d03030">AES 5</span></div>
+            <div class="ai-dev-desc">Severely endangered Mayan language</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Tamil <span style="color:#808080">AES 1</span></div>
+            <div class="ai-dev-desc">Oldest attested Dravidian language; proposed ancestor of Indus script</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Brahui <span style="color:#808080">AES 3</span></div>
+            <div class="ai-dev-desc">Isolated Dravidian language in Balochistan — near Indus Valley heartland</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Mandaic <span style="color:#d03030">AES 5</span></div>
+            <div class="ai-dev-desc">Liturgical language of Mandaean Gnostics; descended from Eastern Aramaic</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Classical Mandaic <span style="color:#808080">AES 6</span></div>
+            <div class="ai-dev-desc">Liturgical language; dormant</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Minoan (unclassified) <span style="color:#808080">AES 6</span></div>
+            <div class="ai-dev-desc">Language of Linear A script; completely undeciphered; extinct ~1450 BCE</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Mycenaean Greek <span style="color:#808080">AES 6</span></div>
+            <div class="ai-dev-desc">Earliest attested Greek; Linear B script</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Coptic <span style="color:#808080">AES 6</span></div>
+            <div class="ai-dev-desc">Last stage of ancient Egyptian; liturgical language only</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Rapanui <span style="color:#f07020">AES 4</span></div>
+            <div class="ai-dev-desc">Easter Island language; connected to undeciphered Rongorongo script</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Urartian <span style="color:#808080">AES 6</span></div>
+            <div class="ai-dev-desc">Language of Kingdom of Urartu; related to Hurrian; extinct ~600 BCE</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Luwian <span style="color:#808080">AES 6</span></div>
+            <div class="ai-dev-desc">Hieroglyphic Luwian script; Bronze Age Anatolia; active decipherment research</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Hittite <span style="color:#808080">AES 6</span></div>
+            <div class="ai-dev-desc">Oldest attested Indo-European language; cuneiform script; Hattusa tablets</div>
+          </div>
+        </div><div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(160,100,200,.1)">🗣</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Jurchen <span style="color:#808080">AES 6</span></div>
+            <div class="ai-dev-desc">Language of Jin dynasty; own script; ancestor of Manchu</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="fact-stack">
+        <div class="fact-card">
+          <div class="fact-card-lbl">Why language death matters for archaeology</div>
+          <div class="fact-card-val">Living speakers provide phonological anchors for decipherment. Every Mayan language speaker keeps a pathway to the Classic inscriptions open.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">The Maya connection</div>
+          <div class="fact-card-val">Ch'ol Maya, spoken by ~220,000 people in Chiapas, is the closest living relative to the language of Classic Maya inscriptions. Its survival directly enables ongoing decipherment.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Burushaski — the Harappan candidate</div>
+          <div class="fact-card-val">The language isolate spoken in Pakistan's Karakoram valleys has been proposed as a Harappan language descendant. ~100,000 speakers, AES 2. One of the few possible living clues to the Indus script.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Rapanui and Rongorongo</div>
+          <div class="fact-card-val">Easter Island's ~3,700 Rapanui speakers are the only community that may have ancestral connection to the undeciphered Rongorongo script. AES 4 — severely endangered.</div>
+        </div>
+      </div>
+
+      <div class="glyph-display" style="margin-top:1.5rem;">
+        <div class="glyph-display-title">Critically endangered · fewer than 10 speakers</div>
+        <div style="font-size:.8rem;color:#d03030;margin:.2rem 0">Itzaj — Critically endangered; fewer than 10 fluent speakers</div><div style="font-size:.8rem;color:#d03030;margin:.2rem 0">Mocho' — Severely endangered Mayan language</div><div style="font-size:.8rem;color:#d03030;margin:.2rem 0">Puruborá — Critically endangered Amazonian language</div><div style="font-size:.8rem;color:#d03030;margin:.2rem 0">Mandaic — Liturgical language of Mandaean Gnostics; descended from Eastern Aramaic</div>
+        <div class="glyph-caption">Source: Glottolog Agglomerated Endangerment Scale · CC-BY 4.0</div>
+      </div>
+
+      <div style="margin-top:1.5rem;">
+        <div class="ai-dev-lbl">Explore on the map</div>
+        <div class="script-prose">
+          <p>The <strong>Glottolog language layer</strong> on the <a href="map.html">archAIology map</a> shows all 47 tracked languages as colour-coded dots — green for vulnerable, orange for severely endangered, red for critically endangered, grey for dormant. Each marker links to the language's Glottolog entry and overlaps with our 45,000+ archaeological site gazetteer, making the spatial relationship between living languages and ancient sites immediately visible.</p>
+        </div>
+        <a href="map.html" style="display:inline-block;margin-top:.8rem;padding:.5rem 1rem;background:rgba(160,100,200,.15);border:1px solid rgba(160,100,200,.3);color:#c090d8;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;">
+          Open Language Map →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Language cards grid -->
+  <div style="margin-top:3rem;border-top:1px solid rgba(240,234,216,.05);padding-top:2rem;">
+    <div class="ai-dev-lbl" style="margin-bottom:1.2rem;">All 47 tracked languages</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;">
+      <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #40b060;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Dzongkha</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Sino-Tibetan · Bhutan</div>
+        <div style="font-size:.6rem;color:#40b060;margin-top:.2rem;font-weight:700;">Safe</div>
+        
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #40b060;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Tamil</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Dravidian · India</div>
+        <div style="font-size:.6rem;color:#40b060;margin-top:.2rem;font-weight:700;">Safe</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Oldest attested Dravidian language; proposed ancestor of Indus script</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Avar</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Northeast Caucasian · Russia</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Ayacucho Quechua</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Quechuan · Peru</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Aymara</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Aymaran · Bolivia</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Co-official language of Bolivia; Tiwanaku civilization language</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Burushaski</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Isolate · Pakistan</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Language isolate in Karakoram; proposed links to Harappan language</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Central Nahuatl</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Uto-Aztecan · Mexico</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Ch'ol</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Mayan · Mexico</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Closest living relative to Classic Maya inscription language</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Cusco Quechua</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Quechuan · Peru</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Language of Inca Empire; still spoken in Andes</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Hadza</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Isolate · Tanzania</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Language isolate; click consonants; one of oldest human languages</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">K'iche'</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Mayan · Guatemala</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Largest Maya language; Popol Vuh language</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Lezgian</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Northeast Caucasian · Russia</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Mam</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Mayan · Guatemala</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Navajo</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Athabaskan-Eyak-Tlingit · USA</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Largest Native North American language by speakers</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Southern Quechua</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Quechuan · Peru</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Tzeltal</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Mayan · Mexico</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Tzotzil</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Mayan · Mexico</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #90c040;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Yucatec Maya</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Mayan · Mexico</div>
+        <div style="font-size:.6rem;color:#90c040;margin-top:.2rem;font-weight:700;">Vulnerable</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Most spoken Maya language; active epigraphy community</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f0c020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Brahui</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Dravidian · Pakistan</div>
+        <div style="font-size:.6rem;color:#f0c020;margin-top:.2rem;font-weight:700;">Definitely Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Isolated Dravidian language in Balochistan — near Indus Valley heartland</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f0c020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Choctaw</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Muskogean · USA</div>
+        <div style="font-size:.6rem;color:#f0c020;margin-top:.2rem;font-weight:700;">Definitely Endangered</div>
+        
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f0c020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Hopi</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Uto-Aztecan · USA</div>
+        <div style="font-size:.6rem;color:#f0c020;margin-top:.2rem;font-weight:700;">Definitely Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Language of Pueblo Southwest; distinct script tradition</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f0c020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Kurukh</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Dravidian · India</div>
+        <div style="font-size:.6rem;color:#f0c020;margin-top:.2rem;font-weight:700;">Definitely Endangered</div>
+        
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f0c020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Newari</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Sino-Tibetan · Nepal</div>
+        <div style="font-size:.6rem;color:#f0c020;margin-top:.2rem;font-weight:700;">Definitely Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Language of Kathmandu Valley; ancient Buddhist manuscripts</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f0c020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Sandawe</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Isolate · Tanzania</div>
+        <div style="font-size:.6rem;color:#f0c020;margin-top:.2rem;font-weight:700;">Definitely Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Language isolate with click consonants</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f0c020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Tojolabal</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Mayan · Mexico</div>
+        <div style="font-size:.6rem;color:#f0c020;margin-top:.2rem;font-weight:700;">Definitely Endangered</div>
+        
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f07020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Assyrian Neo-Aramaic</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Afro-Asiatic · Iraq</div>
+        <div style="font-size:.6rem;color:#f07020;margin-top:.2rem;font-weight:700;">Severely Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Descendant of ancient Aramaic; endangered due to displacement</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f07020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Cherokee</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Iroquoian · USA</div>
+        <div style="font-size:.6rem;color:#f07020;margin-top:.2rem;font-weight:700;">Severely Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Own syllabary invented by Sequoyah 1820</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f07020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Cheyenne</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Algic · USA</div>
+        <div style="font-size:.6rem;color:#f07020;margin-top:.2rem;font-weight:700;">Severely Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Plains language; fewer than 2000 speakers</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f07020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Hawaiian</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Austronesian · USA</div>
+        <div style="font-size:.6rem;color:#f07020;margin-top:.2rem;font-weight:700;">Severely Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Major language revitalization effort underway</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f07020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Lacandon</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Mayan · Mexico</div>
+        <div style="font-size:.6rem;color:#f07020;margin-top:.2rem;font-weight:700;">Severely Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Last speakers in Lacandón jungle</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f07020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Malto</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Dravidian · India</div>
+        <div style="font-size:.6rem;color:#f07020;margin-top:.2rem;font-weight:700;">Severely Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Endangered Northern Dravidian language</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f07020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Rapanui</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Austronesian · Chile</div>
+        <div style="font-size:.6rem;color:#f07020;margin-top:.2rem;font-weight:700;">Severely Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Easter Island language; connected to undeciphered Rongorongo script</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #f07020;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Surayt</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Afro-Asiatic · Turkey</div>
+        <div style="font-size:.6rem;color:#f07020;margin-top:.2rem;font-weight:700;">Severely Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Tur Abdin Aramaic dialect, severely endangered</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #d03030;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Itzaj</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Mayan · Guatemala</div>
+        <div style="font-size:.6rem;color:#d03030;margin-top:.2rem;font-weight:700;">Critically Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Critically endangered; fewer than 10 fluent speakers</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #d03030;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Mandaic</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Afro-Asiatic · Iraq</div>
+        <div style="font-size:.6rem;color:#d03030;margin-top:.2rem;font-weight:700;">Critically Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Liturgical language of Mandaean Gnostics; descended from Eastern Aramaic</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #d03030;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Mocho'</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Mayan · Mexico</div>
+        <div style="font-size:.6rem;color:#d03030;margin-top:.2rem;font-weight:700;">Critically Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Severely endangered Mayan language</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #d03030;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Puruborá</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Puruborán · Brazil</div>
+        <div style="font-size:.6rem;color:#d03030;margin-top:.2rem;font-weight:700;">Critically Endangered</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Critically endangered Amazonian language</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #808080;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Classical Chinese</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Sino-Tibetan · China</div>
+        <div style="font-size:.6rem;color:#808080;margin-top:.2rem;font-weight:700;">Dormant/Extinct</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Literary language of Chinese civilization; connects to CHGIS data</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #808080;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Classical Mandaic</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Afro-Asiatic · Iraq</div>
+        <div style="font-size:.6rem;color:#808080;margin-top:.2rem;font-weight:700;">Dormant/Extinct</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Liturgical language; dormant</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #808080;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Classical Nahuatl</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Uto-Aztecan · Mexico</div>
+        <div style="font-size:.6rem;color:#808080;margin-top:.2rem;font-weight:700;">Dormant/Extinct</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Aztec empire language; extensive colonial-era texts</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #808080;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Coptic</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Afro-Asiatic · Egypt</div>
+        <div style="font-size:.6rem;color:#808080;margin-top:.2rem;font-weight:700;">Dormant/Extinct</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Last stage of ancient Egyptian; liturgical language only</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #808080;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Hittite</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Indo-European · Turkey</div>
+        <div style="font-size:.6rem;color:#808080;margin-top:.2rem;font-weight:700;">Dormant/Extinct</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Oldest attested Indo-European language; cuneiform script; Hattusa tablets</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #808080;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Jurchen</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Tungusic · China</div>
+        <div style="font-size:.6rem;color:#808080;margin-top:.2rem;font-weight:700;">Dormant/Extinct</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Language of Jin dynasty; own script; ancestor of Manchu</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #808080;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Luwian</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Indo-European · Turkey</div>
+        <div style="font-size:.6rem;color:#808080;margin-top:.2rem;font-weight:700;">Dormant/Extinct</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Hieroglyphic Luwian script; Bronze Age Anatolia; active decipherment research</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #808080;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Minoan (unclassified)</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Unclassified · Greece</div>
+        <div style="font-size:.6rem;color:#808080;margin-top:.2rem;font-weight:700;">Dormant/Extinct</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Language of Linear A script; completely undeciphered; extinct ~1450 BCE</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #808080;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Mycenaean Greek</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Indo-European · Greece</div>
+        <div style="font-size:.6rem;color:#808080;margin-top:.2rem;font-weight:700;">Dormant/Extinct</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Earliest attested Greek; Linear B script</div>
+      </div><div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.7rem .9rem;border-left:3px solid #808080;">
+        <div style="font-size:.78rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;">Urartian</div>
+        <div style="font-size:.62rem;color:rgba(240,234,216,.4);">Hurro-Urartian · Turkey</div>
+        <div style="font-size:.6rem;color:#808080;margin-top:.2rem;font-weight:700;">Dormant/Extinct</div>
+        <div style='font-size:.6rem;color:rgba(240,234,216,.35);margin-top:.2rem;'>Language of Kingdom of Urartu; related to Hurrian; extinct ~600 BCE</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ RESOURCES -->
+<section class="script-section" id="resources">
+<div class="container">
+  <div class="script-eyebrow">Tools & Ecosystem</div>
+  <h2 class="script-name" style="margin-bottom:1.5rem;">Linguistic Research Tools</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;">
+    <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Annotation</div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">ELAN (MPI Nijmegen)</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">Time-aligned multi-tier annotation of audio/video. Gold standard for endangered language documentation. Exports to JSON, FLEx, Praat TextGrid. Free/open source.</div>
+    </div>
+<div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Lexicon & Morphology</div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">FieldWorks Language Explorer (FLEx)</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">SIL tool for lexicon, morphology, and interlinear text. Exports .flextext for web display via LingView pipeline.</div>
+    </div>
+<div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Corpus Query</div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">KorAP / Khepri</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">Corpus query platforms for large-scale linguistic analysis. KorAP handles billion-word corpora with complex morphosyntactic queries.</div>
+    </div>
+<div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Archive</div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">ELAR (SOAS London)</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">Endangered Languages Archive. 1,000+ endangered language deposits. Open access metadata; audio/video for researchers.</div>
+    </div>
+<div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Archive</div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">ELDP / ELDP Corpus</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">Endangered Language Documentation Programme. Funds and archives field documentation projects worldwide.</div>
+    </div>
+<div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Computational</div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">pyglottolog</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">Python API for Glottolog data. Access 25,000+ languoid records, classifications, coordinates, and endangerment status programmatically.</div>
+    </div>
+<div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Social Analysis</div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">ConvoKit (Cornell)</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">Python toolkit for conversational structure analysis. Useful for analyzing discourse patterns in ancient texts.</div>
+    </div>
+<div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Reference</div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">Glottolog 5.x</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">Comprehensive language family classification and bibliography for 25,000+ languoids. CC-BY 4.0. Used for our language map layer.</div>
+    </div>
+<div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Decipherment</div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">TWKM / IDIOM</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">Bonn-Bochum Maya epigraphy platform. Digital corpus of Classic Maya inscriptions with 1,400+ sign catalog. classicmayan.org</div>
+    </div>
+<div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Decipherment</div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">Vesuvius Challenge</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">scrollprize.org — live ML competition to read Herculaneum scrolls. $1.7M+ in prizes. Open CT scan data available for research.</div>
+    </div>
+<div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Standards</div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">Unicode Consortium</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">Encoding proposals for Maya (U+15500), Rongorongo, and other undeciphered scripts. Enables digital interchange of ancient texts.</div>
+    </div>
+<div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Corpus</div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">MayaVase Database</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">Justin Kerr's rollout photographs of Maya ceramic vessels. 5,000+ images at Dumbarton Oaks. Used for WVU Artful Algorithms AI training.</div>
+    </div>
+  </div>
+</div>
+</section>
+
 <footer>
   <div class="container">
     <p>archAIology · Linguistics & Decipherment · Updated from corpus pipeline · Not affiliated with Vesuvius Challenge, TWKM, or WVU</p>
@@ -758,7 +1277,7 @@ function setTab(el) {
 }
 
 // Scroll-spy for tabs
-const sections = ['vesuvius','lineara','protosinaitic','indus','maya'];
+const sections = ['vesuvius','lineara','protosinaitic','indus','maya','endangered','resources'];
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
