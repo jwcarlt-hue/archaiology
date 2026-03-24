@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latin Inscriptions — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{
+  --ink:#08090e;--stone:#f2ead8;--aged:#c8b88a;--chisel:#b07030;
+  --serif:'Playfair Display',Georgia,serif;
+  --mono:'DM Mono',monospace;--sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-height:100vh;}
+
+/* ── Masthead ── */
+.masthead{position:fixed;top:0;left:0;right:0;z-index:1000;height:44px;
+  background:rgba(8,9,14,.97);border-bottom:1px solid rgba(242,234,216,.06);
+  display:flex;align-items:center;padding:0 1.4rem;gap:1.5rem;}
+.logo{font-family:var(--serif);font-size:1.1rem;font-weight:900;color:var(--stone);text-decoration:none;}
+.logo span{color:var(--chisel);font-style:italic;}
+.nav-link{font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(242,234,216,.35);text-decoration:none;transition:color .2s;}
+.nav-link:hover,.nav-link.active{color:var(--stone);}
+
+/* ── Hero ── */
+.hero{padding:80px 0 40px;text-align:center;position:relative;}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 30%,rgba(176,112,48,.06) 0%,transparent 70%);}
+.hero-eyebrow{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--chisel);margin-bottom:.8rem;}
+.hero-title{font-family:var(--serif);font-size:clamp(2rem,5vw,3.8rem);font-weight:900;
+  color:var(--stone);line-height:1.1;margin-bottom:.8rem;}
+.hero-title em{color:var(--chisel);font-style:italic;}
+.hero-sub{font-size:.9rem;color:rgba(242,234,216,.5);max-width:560px;margin:0 auto 1.5rem;line-height:1.7;}
+.stat-strip{display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.stat{text-align:center;}
+.stat-n{font-family:var(--serif);font-size:1.8rem;font-weight:900;color:var(--chisel);}
+.stat-l{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(242,234,216,.35);}
+
+/* ── Layout ── */
+.container{max-width:1200px;margin:0 auto;padding:0 1.4rem;}
+.page-body{display:grid;grid-template-columns:300px 1fr;gap:0;min-height:calc(100vh - 44px);}
+@media(max-width:800px){.page-body{grid-template-columns:1fr;}}
+
+/* ── Search panel ── */
+.search-panel{position:sticky;top:44px;height:calc(100vh - 44px);overflow-y:auto;
+  background:rgba(242,234,216,.02);border-right:1px solid rgba(242,234,216,.06);
+  padding:1.2rem;scrollbar-width:thin;}
+.search-panel::-webkit-scrollbar{width:4px;}
+.search-panel::-webkit-scrollbar-track{background:transparent;}
+.search-panel::-webkit-scrollbar-thumb{background:rgba(242,234,216,.1);}
+
+.panel-label{font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--chisel);margin-bottom:.5rem;margin-top:1rem;}
+.panel-label:first-child{margin-top:0;}
+
+.search-input{width:100%;background:rgba(242,234,216,.04);border:1px solid rgba(242,234,216,.1);
+  color:var(--stone);font-family:var(--sans);font-size:.82rem;padding:.55rem .75rem;
+  outline:none;transition:border-color .2s;}
+.search-input:focus{border-color:rgba(176,112,48,.5);}
+.search-input::placeholder{color:rgba(242,234,216,.25);}
+
+.filter-select{width:100%;background:rgba(242,234,216,.04);border:1px solid rgba(242,234,216,.1);
+  color:var(--stone);font-family:var(--sans);font-size:.78rem;padding:.5rem .7rem;
+  outline:none;cursor:pointer;appearance:none;}
+.filter-select option{background:#1a1510;}
+
+.range-row{display:flex;gap:.4rem;align-items:center;}
+.range-input{flex:1;background:rgba(242,234,216,.04);border:1px solid rgba(242,234,216,.1);
+  color:var(--stone);font-family:var(--mono);font-size:.72rem;padding:.45rem .6rem;
+  outline:none;text-align:center;}
+.range-sep{font-size:.65rem;color:rgba(242,234,216,.3);}
+
+.chip-row{display:flex;flex-wrap:wrap;gap:3px;}
+.chip{font-size:.55rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  padding:.18rem .42rem;border:1px solid rgba(242,234,216,.1);background:none;
+  color:rgba(242,234,216,.4);cursor:pointer;border-radius:2px;transition:all .14s;}
+.chip:hover{color:var(--stone);}
+.chip.active{background:rgba(176,112,48,.15);color:var(--chisel);border-color:rgba(176,112,48,.4);}
+
+.search-btn{width:100%;margin-top:.8rem;padding:.6rem;background:rgba(176,112,48,.15);
+  border:1px solid rgba(176,112,48,.35);color:var(--chisel);font-family:var(--sans);
+  font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;transition:all .2s;}
+.search-btn:hover{background:rgba(176,112,48,.25);}
+
+.result-count{font-family:var(--mono);font-size:.62rem;color:rgba(242,234,216,.35);
+  margin-top:.6rem;text-align:center;}
+
+/* ── Results area ── */
+.results-area{display:flex;flex-direction:column;}
+
+/* Map */
+#insc-map{height:300px;border-bottom:1px solid rgba(242,234,216,.06);}
+
+/* Results list */
+.results-list{flex:1;padding:.8rem 1.2rem;}
+.results-header{display:flex;align-items:center;gap:1rem;padding:.6rem 0;
+  border-bottom:1px solid rgba(242,234,216,.05);margin-bottom:.6rem;}
+.results-n{font-family:var(--mono);font-size:.65rem;color:var(--chisel);}
+.sort-row{margin-left:auto;display:flex;gap:.3rem;}
+.sort-btn{font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.15rem .4rem;border:1px solid rgba(242,234,216,.08);background:none;
+  color:rgba(242,234,216,.35);cursor:pointer;border-radius:2px;}
+.sort-btn.active{color:var(--chisel);border-color:rgba(176,112,48,.3);}
+
+.insc-card{border-bottom:1px solid rgba(242,234,216,.04);padding:.8rem 0;cursor:pointer;
+  transition:background .15s;}
+.insc-card:hover{background:rgba(242,234,216,.02);}
+.insc-header{display:flex;align-items:flex-start;gap:.8rem;margin-bottom:.4rem;}
+.insc-id{font-family:var(--mono);font-size:.58rem;color:rgba(242,234,216,.3);
+  min-width:70px;padding-top:2px;}
+.insc-place{font-size:.82rem;font-weight:600;color:var(--stone);line-height:1.3;}
+.insc-prov{font-size:.62rem;color:rgba(242,234,216,.4);margin-top:.1rem;}
+.insc-badges{display:flex;flex-wrap:wrap;gap:.25rem;margin-left:auto;flex-shrink:0;}
+.badge{font-size:.5rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:.12rem .35rem;border-radius:2px;}
+.b-type{background:rgba(176,112,48,.12);color:#c89050;border:1px solid rgba(176,112,48,.2);}
+.b-date{background:rgba(80,120,180,.12);color:#80a8d8;border:1px solid rgba(80,120,180,.2);}
+.b-mat{background:rgba(120,100,70,.15);color:#b09870;border:1px solid rgba(120,100,70,.2);}
+.b-photo{background:rgba(60,140,80,.1);color:#70b888;border:1px solid rgba(60,140,80,.2);}
+.insc-text{font-family:var(--mono);font-size:.7rem;color:rgba(242,234,216,.55);
+  line-height:1.6;margin-top:.35rem;padding:.5rem .65rem;
+  background:rgba(242,234,216,.02);border-left:2px solid rgba(176,112,48,.2);}
+.insc-person{font-size:.65rem;color:rgba(242,234,216,.4);margin-top:.3rem;}
+.insc-person strong{color:rgba(242,234,216,.65);}
+
+/* Detail panel */
+.detail-overlay{position:fixed;right:0;top:44px;bottom:0;width:420px;
+  background:#0e0c09;border-left:1px solid rgba(242,234,216,.07);
+  overflow-y:auto;transform:translateX(100%);transition:transform .3s;z-index:900;}
+.detail-overlay.open{transform:translateX(0);}
+.detail-close{position:absolute;top:.8rem;right:.8rem;
+  background:rgba(242,234,216,.05);border:1px solid rgba(242,234,216,.1);
+  color:rgba(242,234,216,.4);width:28px;height:28px;
+  cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;}
+.d-hero{padding:1.2rem;border-bottom:1px solid rgba(242,234,216,.06);}
+.d-hd{font-family:var(--mono);font-size:.58rem;color:var(--chisel);margin-bottom:.3rem;}
+.d-place{font-family:var(--serif);font-size:1.3rem;font-weight:900;color:var(--stone);margin-bottom:.5rem;}
+.d-badges{display:flex;flex-wrap:wrap;gap:.3rem;}
+.d-section{padding:.9rem 1.2rem;border-top:1px solid rgba(242,234,216,.05);}
+.d-lbl{font-family:var(--mono);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--chisel);margin-bottom:.5rem;}
+.d-text{font-family:var(--mono);font-size:.75rem;color:rgba(242,234,216,.7);
+  line-height:1.7;white-space:pre-wrap;}
+.d-btext{font-family:var(--mono);font-size:.65rem;color:rgba(242,234,216,.35);
+  line-height:1.6;white-space:pre-wrap;margin-top:.5rem;}
+.d-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.d-meta-cell{background:rgba(242,234,216,.02);padding:.5rem .7rem;}
+.d-meta-k{font-size:.54rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(242,234,216,.3);margin-bottom:.2rem;}
+.d-meta-v{font-size:.75rem;color:var(--stone);}
+.d-photo{width:100%;margin-top:.5rem;border:1px solid rgba(242,234,216,.08);}
+.d-links{padding:.8rem 1.2rem;border-top:1px solid rgba(242,234,216,.05);
+  display:flex;flex-direction:column;gap:.4rem;}
+.d-link{font-size:.65rem;color:var(--chisel);text-decoration:none;
+  padding:.3rem .5rem;border:1px solid rgba(176,112,48,.15);
+  transition:border-color .2s;}
+.d-link:hover{border-color:rgba(176,112,48,.4);}
+
+/* Loading */
+.loading-state{text-align:center;padding:3rem;color:rgba(242,234,216,.3);font-size:.8rem;}
+.loading-dots span{display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--chisel);margin:0 2px;animation:ld 1.2s infinite;}
+.loading-dots span:nth-child(2){animation-delay:.2s;}
+.loading-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes ld{0%,100%{opacity:.2}50%{opacity:1}}
+
+.empty-state{text-align:center;padding:4rem 2rem;color:rgba(242,234,216,.25);}
+.empty-state h3{font-family:var(--serif);font-size:1.2rem;margin-bottom:.5rem;color:rgba(242,234,216,.4);}
+
+.pagination{display:flex;justify-content:center;align-items:center;gap:.5rem;padding:1.2rem 0;}
+.page-btn{font-family:var(--mono);font-size:.65rem;padding:.3rem .6rem;
+  border:1px solid rgba(242,234,216,.1);background:none;color:rgba(242,234,216,.4);
+  cursor:pointer;transition:all .15s;}
+.page-btn:hover,.page-btn.active{color:var(--chisel);border-color:rgba(176,112,48,.4);}
+.page-btn:disabled{opacity:.3;cursor:default;}
+
+.leaflet-popup-content-wrapper{background:rgba(8,9,14,.95);border:1px solid rgba(242,234,216,.1);
+  border-radius:2px;color:var(--stone);}
+.leaflet-popup-tip{background:rgba(8,9,14,.95);}
+.leaflet-popup-content{font-family:var(--sans);margin:.5rem .7rem;font-size:.72rem;}
+.map-popup-id{font-family:var(--mono);color:var(--chisel);margin-bottom:.2rem;}
+.map-popup-place{font-weight:600;color:var(--stone);}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <a class="nav-link " href="index.html">Home</a>
+  <a class="nav-link " href="news.html">Feed</a>
+  <a class="nav-link " href="map.html">Map</a>
+  <a class="nav-link " href="sky.html">Sky Archive</a>
+  <a class="nav-link " href="maritime.html">Maritime</a>
+  <a class="nav-link " href="linguistics.html">Linguistics</a>
+  <a class="nav-link active " href="inscriptions.html">Inscriptions</a>
+  <a class="nav-link " href="conferences.html">Conferences</a>
+</header>
+
+<div style="padding-top:44px;">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Epigraphic Database Heidelberg · CC-BY 4.0</div>
+    <h1 class="hero-title">Latin <em>Inscriptions</em></h1>
+    <p class="hero-sub">82,451 inscriptions from across the Roman Empire — funerary epitaphs, votive dedications, milestones, military diplomas. Search the stone record of antiquity.</p>
+    <div class="stat-strip">
+      <div class="stat"><div class="stat-n">82,451</div><div class="stat-l">Inscriptions</div></div>
+      <div class="stat"><div class="stat-n">81,975</div><div class="stat-l">With Latin text</div></div>
+      <div class="stat"><div class="stat-n">79,488</div><div class="stat-l">Geocoded</div></div>
+      <div class="stat"><div class="stat-n">43,093</div><div class="stat-l">Photos</div></div>
+      <div class="stat"><div class="stat-n">46,475</div><div class="stat-l">Named persons</div></div>
+      <div class="stat"><div class="stat-n">530 BCE</div><div class="stat-l">Earliest</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Main layout -->
+<div class="page-body">
+
+  <!-- Search panel -->
+  <aside class="search-panel">
+    <div class="panel-label">Search text</div>
+    <input class="search-input" id="q-text" type="text" placeholder="e.g. Iuppiter, dis manibus, legio…" autocomplete="off">
+
+    <div class="panel-label">Find-spot (ancient name)</div>
+    <input class="search-input" id="q-place" type="text" placeholder="e.g. Roma, Carnuntum, Londinium…">
+
+    <div class="panel-label">Province</div>
+    <select class="filter-select" id="q-prov">
+      <option value="">All provinces</option>
+      <option value="Rom">Roma</option>
+      <option value="Dal">Dalmatia</option>
+      <option value="GeS">Germania Superior</option>
+      <option value="HiC">Hispania Citerior</option>
+      <option value="Bri">Britannia</option>
+      <option value="Afr">Africa Proconsularis</option>
+      <option value="PaS">Pannonia Superior</option>
+      <option value="Dac">Dacia</option>
+      <option value="GeI">Germania Inferior</option>
+      <option value="PaI">Pannonia Inferior</option>
+      <option value="Bae">Baetica</option>
+      <option value="Nor">Noricum</option>
+      <option value="Num">Numidia</option>
+      <option value="LaC">Latium et Campania</option>
+      <option value="MoI">Moesia Inferior</option>
+      <option value="MoS">Moesia Superior</option>
+      <option value="Lus">Lusitania</option>
+      <option value="Rae">Raetia</option>
+      <option value="Ach">Achaea</option>
+      <option value="VeH">Venetia et Histria</option>
+      <option value="Bel">Belgica</option>
+      <option value="Nar">Gallia Narbonensis</option>
+      <option value="Tri">Thracia</option>
+      <option value="Mac">Macedonia</option>
+      <option value="Syr">Syria</option>
+      <option value="Ara">Arabia</option>
+      <option value="Jud">Judaea</option>
+      <option value="Aeg">Aegyptus</option>
+      <option value="Asi">Asia</option>
+    </select>
+
+    <div class="panel-label">Inscription type</div>
+    <div class="chip-row" id="type-chips">
+      <button class="chip active" data-type="">All</button>
+      <button class="chip" data-type="titsep">Funerary</button>
+      <button class="chip" data-type="titsac">Votive</button>
+      <button class="chip" data-type="tithon">Honorific</button>
+      <button class="chip" data-type="titoppubpriv">Public work</button>
+      <button class="chip" data-type="miliarium">Milestone</button>
+      <button class="chip" data-type="diplmil">Military diploma</button>
+      <button class="chip" data-type="nota">Graffito</button>
+      <button class="chip" data-type="titpossfabr">Maker's mark</button>
+    </div>
+
+    <div class="panel-label">Date range (CE; negative = BCE)</div>
+    <div class="range-row">
+      <input class="range-input" id="q-date-a" type="number" placeholder="-530" min="-600" max="800">
+      <span class="range-sep">to</span>
+      <input class="range-input" id="q-date-e" type="number" placeholder="800" min="-600" max="800">
+    </div>
+
+    <div class="panel-label">Has photo</div>
+    <div class="chip-row" id="photo-chips">
+      <button class="chip active" data-photo="">Any</button>
+      <button class="chip" data-photo="yes">With photo</button>
+    </div>
+
+    <button class="search-btn" id="search-btn" onclick="doSearch(1)">Search inscriptions</button>
+    <div class="result-count" id="result-count"></div>
+  </aside>
+
+  <!-- Results -->
+  <div class="results-area">
+    <div id="insc-map"></div>
+    <div class="results-list">
+      <div class="results-header">
+        <div class="results-n" id="results-n">Enter a search above</div>
+        <div class="sort-row">
+          <button class="sort-btn active" id="sort-date" onclick="setSort('date')">Date</button>
+          <button class="sort-btn" id="sort-place" onclick="setSort('place')">Place</button>
+          <button class="sort-btn" id="sort-hd" onclick="setSort('hd')">HD №</button>
+        </div>
+      </div>
+      <div id="results-container">
+        <div class="empty-state">
+          <h3>Search the Roman epigraphic record</h3>
+          <p style="font-size:.78rem;line-height:1.6;">Search by Latin text keywords, find-spot, province, inscription type, or date range. Each result shows the resolved Latin text with abbreviations expanded.</p>
+        </div>
+      </div>
+      <div class="pagination" id="pagination" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Detail panel -->
+<div class="detail-overlay" id="detail">
+  <button class="detail-close" id="detail-close">✕</button>
+  <div id="detail-content"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const SB_URL = "https://ucsgtbpeuqeamuvuvojs.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";
+const HDR = {"apikey":SB_KEY,"Authorization":`Bearer ${SB_KEY}`};
+
+const PROV_LABEL = {
+  'Rom':'Roma','Dal':'Dalmatia','GeS':'Germania Superior','HiC':'Hispania Citerior',
+  'Bri':'Britannia','Afr':'Africa Proconsularis','PaS':'Pannonia Superior','Dac':'Dacia',
+  'GeI':'Germania Inferior','PaI':'Pannonia Inferior','Bae':'Baetica','Nor':'Noricum',
+  'Num':'Numidia','LaC':'Latium et Campania','MoI':'Moesia Inferior','MoS':'Moesia Superior',
+  'Lus':'Lusitania','Rae':'Raetia','Ach':'Achaea','VeH':'Venetia et Histria',
+  'Bel':'Belgica','Nar':'Gallia Narbonensis','Tri':'Thracia','Mac':'Macedonia',
+  'Syr':'Syria','Ara':'Arabia','Jud':'Judaea','Aeg':'Aegyptus','Asi':'Asia',
+};
+const TYPE_LABEL = {
+  'titsep':'Funerary epitaph','titsac':'Votive/sacred','titpossfabr':'Ownership/maker mark',
+  'tithon':'Honorific','titoppubpriv':'Public/private work','miliarium':'Milestone',
+  'nota':'Graffito/notation','diplmil':'Military diploma','titaccl':'Acclamation',
+  'titterm':'Boundary stone','titsep?':'Funerary (?)','titsac?':'Votive (?)',
+};
+
+let map, markers = [], currentSort = 'date', currentPage = 1, totalCount = 0;
+let selectedType = '', selectedPhoto = '';
+
+// ── Map init ──────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  map = L.map('insc-map', {center:[44,14],zoom:4,zoomControl:false,attributionControl:false});
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',
+    {attribution:'© Esri',maxZoom:8}).addTo(map);
+  L.control.zoom({position:'bottomright'}).addTo(map);
+  L.control.attribution({position:'bottomright',prefix:'EDH · Heidelberg · CC-BY'}).addTo(map);
+});
+
+// ── Chip toggles ──────────────────────────────────────────────
+document.querySelectorAll('#type-chips .chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#type-chips .chip').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedType = btn.dataset.type;
+  });
+});
+document.querySelectorAll('#photo-chips .chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#photo-chips .chip').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedPhoto = btn.dataset.photo;
+  });
+});
+document.getElementById('q-text').addEventListener('keydown', e => { if(e.key==='Enter') doSearch(1); });
+document.getElementById('q-place').addEventListener('keydown', e => { if(e.key==='Enter') doSearch(1); });
+
+function setSort(s) {
+  currentSort = s;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.toggle('active', b.id===`sort-${s}`));
+  doSearch(currentPage);
+}
+
+// ── Build Supabase query ──────────────────────────────────────
+function buildQuery(page) {
+  const PER_PAGE = 25;
+  const offset = (page-1)*PER_PAGE;
+  const qText  = document.getElementById('q-text').value.trim();
+  const qPlace = document.getElementById('q-place').value.trim();
+  const qProv  = document.getElementById('q-prov').value;
+  const qDateA = document.getElementById('q-date-a').value;
+  const qDateE = document.getElementById('q-date-e').value;
+
+  let url = `${SB_URL}/rest/v1/edh_inscriptions?select=hd_nr,fo_antik,fo_modern,provinz,lat,lng,dat_jahr_a,dat_jahr_e,datierung,i_gattung,material,atext,foto_nr,foto_extern,person_name,person_gender,l_jahre,pleiades_id`;
+
+  // Filters
+  if (qPlace) url += `&fo_antik=ilike.*${encodeURIComponent(qPlace)}*`;
+  if (qProv)  url += `&provinz=eq.${qProv}`;
+  if (selectedType) url += `&i_gattung=like.${selectedType}*`;
+  if (qDateA) url += `&dat_jahr_a=gte.${qDateA}`;
+  if (qDateE) url += `&dat_jahr_e=lte.${qDateE}`;
+  if (selectedPhoto==='yes') url += `&foto_nr=not.is.null`;
+
+  // Full-text search on atext
+  if (qText) url += `&atext=ilike.*${encodeURIComponent(qText)}*`;
+
+  // Sort
+  if (currentSort==='date') url += '&order=dat_jahr_a.asc.nullslast';
+  else if (currentSort==='place') url += '&order=fo_antik.asc.nullslast';
+  else url += '&order=hd_nr.asc';
+
+  url += `&limit=${PER_PAGE}&offset=${offset}`;
+  return url;
+}
+
+function buildCountQuery() {
+  const qText  = document.getElementById('q-text').value.trim();
+  const qPlace = document.getElementById('q-place').value.trim();
+  const qProv  = document.getElementById('q-prov').value;
+  const qDateA = document.getElementById('q-date-a').value;
+  const qDateE = document.getElementById('q-date-e').value;
+
+  let url = `${SB_URL}/rest/v1/edh_inscriptions?select=hd_nr`;
+  if (qPlace) url += `&fo_antik=ilike.*${encodeURIComponent(qPlace)}*`;
+  if (qProv)  url += `&provinz=eq.${qProv}`;
+  if (selectedType) url += `&i_gattung=like.${selectedType}*`;
+  if (qDateA) url += `&dat_jahr_a=gte.${qDateA}`;
+  if (qDateE) url += `&dat_jahr_e=lte.${qDateE}`;
+  if (selectedPhoto==='yes') url += `&foto_nr=not.is.null`;
+  if (qText)  url += `&atext=ilike.*${encodeURIComponent(qText)}*`;
+  url += '&limit=1';
+  return url;
+}
+
+// ── Main search ───────────────────────────────────────────────
+async function doSearch(page=1) {
+  currentPage = page;
+  const container = document.getElementById('results-container');
+  container.innerHTML = `<div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div><p style="margin-top:1rem">Searching corpus…</p></div>`;
+  document.getElementById('pagination').style.display = 'none';
+
+  try {
+    // Parallel: results + count
+    const [dataRes, countRes] = await Promise.all([
+      fetch(buildQuery(page), {headers:{...HDR,'Prefer':'count=none'}}),
+      fetch(buildCountQuery(), {headers:{...HDR,'Prefer':'count=exact'}}),
+    ]);
+
+    const data = await dataRes.json();
+    const countHeader = countRes.headers.get('content-range');
+    totalCount = countHeader ? parseInt(countHeader.split('/')[1]) || 0 : 0;
+
+    if (!Array.isArray(data) || !data.length) {
+      container.innerHTML = `<div class="empty-state"><h3>No inscriptions found</h3><p style="font-size:.78rem">Try broadening your search — remove filters or use shorter keywords.</p></div>`;
+      document.getElementById('results-n').textContent = '0 results';
+      document.getElementById('result-count').textContent = '';
+      clearMapMarkers();
+      return;
+    }
+
+    document.getElementById('results-n').textContent = `${totalCount.toLocaleString()} inscriptions`;
+    document.getElementById('result-count').textContent = `Page ${page} of ${Math.ceil(totalCount/25)}`;
+    renderResults(data, container);
+    renderMapMarkers(data);
+    renderPagination(page, Math.ceil(totalCount/25));
+  } catch(e) {
+    container.innerHTML = `<div class="empty-state"><h3>Search error</h3><p style="font-size:.78rem">${e.message}</p></div>`;
+  }
+}
+
+// ── Render results ────────────────────────────────────────────
+function fmtDate(a, e, label) {
+  if (label) return label;
+  if (!a && !e) return '—';
+  const fmt = y => y < 0 ? `${Math.abs(y)} BCE` : `${y} CE`;
+  if (a && e && a !== e) return `${fmt(a)}–${fmt(e)}`;
+  return fmt(a || e);
+}
+
+function renderResults(items, container) {
+  container.innerHTML = items.map(r => {
+    const place = r.fo_antik || r.fo_modern || '—';
+    const prov  = PROV_LABEL[r.provinz] || r.provinz || '';
+    const type  = TYPE_LABEL[r.i_gattung] || r.i_gattung || '';
+    const date  = fmtDate(r.dat_jahr_a, r.dat_jahr_e, r.datierung);
+    const text  = (r.atext || '').slice(0,150).replace(/\n/g,' / ');
+    const hasPhoto = r.foto_nr || r.foto_extern;
+    return `
+    <div class="insc-card" onclick="showDetail('${r.hd_nr}')">
+      <div class="insc-header">
+        <div class="insc-id">${r.hd_nr}</div>
+        <div>
+          <div class="insc-place">${place}</div>
+          <div class="insc-prov">${prov}${r.lat ? ` · ${r.lat.toFixed(2)}, ${r.lng.toFixed(2)}` : ''}</div>
+        </div>
+        <div class="insc-badges">
+          ${type ? `<span class="badge b-type">${type.split('/')[0]}</span>` : ''}
+          ${date !== '—' ? `<span class="badge b-date">${date}</span>` : ''}
+          ${r.material ? `<span class="badge b-mat">${r.material.split(',')[0].slice(0,15)}</span>` : ''}
+          ${hasPhoto ? `<span class="badge b-photo">📷</span>` : ''}
+        </div>
+      </div>
+      ${text ? `<div class="insc-text">${text}${r.atext?.length>150 ? '…' : ''}</div>` : ''}
+      ${r.person_name ? `<div class="insc-person"><strong>${r.person_name}</strong>${r.person_gender==='W' ? ' · ♀' : r.person_gender==='M' ? ' · ♂' : ''}${r.l_jahre ? ` · aged ${Math.round(r.l_jahre)}` : ''}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ── Map markers ───────────────────────────────────────────────
+function clearMapMarkers() {
+  markers.forEach(m => map?.removeLayer(m));
+  markers = [];
+}
+function renderMapMarkers(items) {
+  clearMapMarkers();
+  if (!map) return;
+  const pts = items.filter(r => r.lat && r.lng);
+  pts.forEach(r => {
+    const icon = L.divIcon({
+      html:`<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><circle cx="5" cy="5" r="4" fill="#b07030" fill-opacity=".8" stroke="#f2ead8" stroke-width=".8"/></svg>`,
+      className:'', iconSize:[10,10], iconAnchor:[5,5]
+    });
+    const m = L.marker([r.lat,r.lng],{icon})
+      .bindPopup(`<div class="map-popup-id">${r.hd_nr}</div><div class="map-popup-place">${r.fo_antik||r.fo_modern||'—'}</div>`)
+      .on('click', () => showDetail(r.hd_nr));
+    m.addTo(map);
+    markers.push(m);
+  });
+  if (pts.length) {
+    try { map.fitBounds(L.featureGroup(markers).getBounds(), {padding:[20,20],maxZoom:8}); }
+    catch(e) {}
+  }
+}
+
+// ── Pagination ────────────────────────────────────────────────
+function renderPagination(page, total) {
+  const pag = document.getElementById('pagination');
+  if (total <= 1) { pag.style.display='none'; return; }
+  pag.style.display = 'flex';
+  const pages = [];
+  pages.push(1);
+  if (page > 3) pages.push('…');
+  for (let p = Math.max(2,page-1); p <= Math.min(total-1,page+1); p++) pages.push(p);
+  if (page < total-2) pages.push('…');
+  if (total > 1) pages.push(total);
+
+  pag.innerHTML = [
+    `<button class="page-btn" ${page===1?'disabled':''} onclick="doSearch(${page-1})">‹</button>`,
+    ...pages.map(p => p==='…'
+      ? `<span style="color:rgba(242,234,216,.2);font-size:.7rem;padding:0 .3rem">…</span>`
+      : `<button class="page-btn ${p===page?'active':''}" onclick="doSearch(${p})">${p}</button>`),
+    `<button class="page-btn" ${page===total?'disabled':''} onclick="doSearch(${page+1})">›</button>`
+  ].join('');
+}
+
+// ── Detail panel ──────────────────────────────────────────────
+async function showDetail(hdNr) {
+  const panel = document.getElementById('detail');
+  const content = document.getElementById('detail-content');
+  panel.classList.add('open');
+  content.innerHTML = `<div style="padding:2rem;color:rgba(242,234,216,.3)">Loading…</div>`;
+
+  try {
+    const r = await fetch(
+      `${SB_URL}/rest/v1/edh_inscriptions?hd_nr=eq.${hdNr}&select=*&limit=1`,
+      {headers: HDR}
+    );
+    const rows = await r.json();
+    if (!rows.length) return;
+    const d = rows[0];
+
+    const type  = TYPE_LABEL[d.i_gattung] || d.i_gattung || '—';
+    const date  = fmtDate(d.dat_jahr_a, d.dat_jahr_e, d.datierung);
+    const prov  = PROV_LABEL[d.provinz] || d.provinz || '—';
+    const place = d.fo_antik || d.fo_modern || '—';
+    const placeModern = d.fo_modern && d.fo_modern !== d.fo_antik ? ` (${d.fo_modern})` : '';
+
+    // Photo — foto_extern has thumb URL sometimes
+    let photoHtml = '';
+    if (d.foto_extern) {
+      const thumbMatch = d.foto_extern.match(/https?:\/\/[^\s|]+small[^\s|]*/);
+      if (thumbMatch) photoHtml = `<img class="d-photo" src="${thumbMatch[0]}" alt="Inscription photo" loading="lazy" onerror="this.style.display='none'">`;
+    }
+
+    content.innerHTML = `
+      <div class="d-hero">
+        <div class="d-hd">${d.hd_nr} · EDH Heidelberg</div>
+        <div class="d-place">${place}${placeModern}</div>
+        <div class="d-badges">
+          ${type!=='—'?`<span class="badge b-type">${type}</span>`:''}
+          ${date!=='—'?`<span class="badge b-date">${date}</span>`:''}
+          ${d.material?`<span class="badge b-mat">${d.material.split(',')[0].slice(0,20)}</span>`:''}
+          ${prov!=='—'?`<span class="badge" style="background:rgba(100,80,50,.15);color:#a08060;border:1px solid rgba(100,80,50,.25)">${prov}</span>`:''}
+        </div>
+        ${photoHtml}
+      </div>
+
+      ${d.atext ? `
+      <div class="d-section">
+        <div class="d-lbl">Resolved Latin text</div>
+        <div class="d-text">${d.atext.replace(/\n/g,'\n')}</div>
+        ${d.btext ? `<div class="d-lbl" style="margin-top:.8rem">Epigraphic text (original)</div><div class="d-btext">${d.btext.replace(/\n/g,'\n')}</div>` : ''}
+      </div>` : ''}
+
+      <div class="d-section">
+        <div class="d-lbl">Details</div>
+        <div class="d-meta-grid">
+          <div class="d-meta-cell"><div class="d-meta-k">Find-spot</div><div class="d-meta-v">${place}</div></div>
+          <div class="d-meta-cell"><div class="d-meta-k">Province</div><div class="d-meta-v">${prov}</div></div>
+          <div class="d-meta-cell"><div class="d-meta-k">Date</div><div class="d-meta-v">${date}</div></div>
+          <div class="d-meta-cell"><div class="d-meta-k">Type</div><div class="d-meta-v">${type}</div></div>
+          <div class="d-meta-cell"><div class="d-meta-k">Material</div><div class="d-meta-v">${d.material||'—'}</div></div>
+          ${d.lat?`<div class="d-meta-cell"><div class="d-meta-k">Coordinates</div><div class="d-meta-v" style="font-family:var(--mono);font-size:.7rem">${d.lat}, ${d.lng}</div></div>`:''}
+          ${d.trismegistos_nr?`<div class="d-meta-cell"><div class="d-meta-k">Trismegistos</div><div class="d-meta-v">${d.trismegistos_nr}</div></div>`:''}
+        </div>
+      </div>
+
+      ${d.person_name ? `
+      <div class="d-section">
+        <div class="d-lbl">Named person</div>
+        <div class="d-meta-grid">
+          <div class="d-meta-cell"><div class="d-meta-k">Name</div><div class="d-meta-v">${d.person_name}</div></div>
+          ${d.person_gender?`<div class="d-meta-cell"><div class="d-meta-k">Gender</div><div class="d-meta-v">${d.person_gender==='W'?'Female':d.person_gender==='M'?'Male':'—'}</div></div>`:''}
+          ${d.l_jahre?`<div class="d-meta-cell"><div class="d-meta-k">Age at death</div><div class="d-meta-v">${Math.round(d.l_jahre)} years</div></div>`:''}
+          ${d.person_status?`<div class="d-meta-cell"><div class="d-meta-k">Status</div><div class="d-meta-v">${d.person_status}</div></div>`:''}
+          ${d.person_beruf?`<div class="d-meta-cell"><div class="d-meta-k">Occupation</div><div class="d-meta-v">${d.person_beruf}</div></div>`:''}
+        </div>
+      </div>` : ''}
+
+      <div class="d-links">
+        <a class="d-link" href="https://edh.ub.uni-heidelberg.de/edh/inschrift/${d.hd_nr}" target="_blank" rel="noopener">
+          → View on EDH Heidelberg
+        </a>
+        ${d.pleiades_id ? `<a class="d-link" href="https://pleiades.stoa.org/places/${d.pleiades_id}" target="_blank" rel="noopener">→ Pleiades: ${d.pleiades_id}</a>` : ''}
+        ${d.trismegistos_nr ? `<a class="d-link" href="https://www.trismegistos.org/text/${d.trismegistos_nr}" target="_blank" rel="noopener">→ Trismegistos: ${d.trismegistos_nr}</a>` : ''}
+        ${d.lat ? `<a class="d-link" href="map.html" target="_blank">→ View region on archAIology map</a>` : ''}
+      </div>`;
+  } catch(e) {
+    content.innerHTML = `<div style="padding:2rem;color:rgba(242,234,216,.3)">Error loading inscription: ${e.message}</div>`;
+  }
+}
+
+document.getElementById('detail-close').addEventListener('click', () => {
+  document.getElementById('detail').classList.remove('open');
+});
+
+// Load a default view on start
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('q-prov').value = 'Rom';
+    document.querySelector('#type-chips .chip[data-type="titsep"]').click();
+    doSearch(1);
+  }, 500);
+});
+</script>
+</body>
+</html>
