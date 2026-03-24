@@ -566,6 +566,7 @@ async function init() {
     zoomControl:false, attributionControl:true,
   });
   L.control.zoom({ position:'bottomright' }).addTo(map);
+  activeBase.addTo(map); // now safe — map exists
 
   // Deep ocean tiles
   const TILES = {
@@ -578,9 +579,10 @@ async function init() {
   };
   // Base + optional nautical overlay
   let activeBase = TILES['Antique'];
-  activeBase.addTo(map);
+  // activeBase.addTo(map) called after map init below
   let nauticalOn = false;
   window._setTile = function(name) {
+    if (!map) return; // guard against pre-init clicks
     if (name === 'Nautical') {
       nauticalOn = !nauticalOn;
       nauticalOn ? TILES['Nautical'].addTo(map) : map.removeLayer(TILES['Nautical']);
@@ -667,7 +669,11 @@ document.querySelectorAll('[data-cargo]').forEach(btn => {
   });
 });
 
-init();
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}
 </script>
 </body>
 </html>
