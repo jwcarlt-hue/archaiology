@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linguistics & Decipherment — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0a0d12;--parch:#f0ead8;--aged:#d4c9a8;--cipher:#c8783a;
+  --glyph:#4a7c6f;--undeciphered:#7a4a6f;--partial:#4a6a9c;
+  --serif:'Playfair Display',Georgia,serif;
+  --mono:'DM Mono',monospace;--sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--ink);color:var(--parch);min-height:100vh;overflow-x:hidden;}
+
+/* ── Masthead ── */
+.masthead{position:fixed;top:0;left:0;right:0;z-index:1000;height:44px;
+  background:rgba(10,13,18,.97);border-bottom:1px solid rgba(240,234,216,.06);
+  display:flex;align-items:center;padding:0 1.4rem;gap:1.5rem;}
+.logo{font-family:var(--serif);font-size:1.1rem;font-weight:900;color:var(--parch);text-decoration:none;}
+.logo span{color:var(--cipher);font-style:italic;}
+.nav-link{font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(240,234,216,.35);text-decoration:none;transition:color .2s;}
+.nav-link:hover,.nav-link.active{color:var(--parch);}
+
+/* ── Hero ── */
+.hero{padding:120px 0 60px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(200,120,58,.07) 0%,transparent 70%);
+  pointer-events:none;}
+.hero-eyebrow{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cipher);margin-bottom:1.2rem;}
+.hero-title{font-family:var(--serif);font-size:clamp(2.8rem,6vw,5rem);font-weight:900;
+  line-height:1.08;color:var(--parch);margin-bottom:1.4rem;}
+.hero-title em{color:var(--cipher);font-style:italic;}
+.hero-sub{font-size:1rem;color:rgba(240,234,216,.55);max-width:600px;margin:0 auto 2.5rem;line-height:1.7;}
+.script-strip{display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap;margin-bottom:3rem;}
+.script-glyph{font-size:2rem;opacity:.25;transition:opacity .3s;cursor:default;user-select:none;}
+.script-glyph:hover{opacity:.8;}
+
+/* ── Progress bar legend ── */
+.legend{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:3rem;}
+.leg-item{display:flex;align-items:center;gap:.5rem;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;}
+.leg-dot{width:10px;height:10px;border-radius:50%;}
+
+/* ── Section nav tabs ── */
+.tabs{position:sticky;top:44px;z-index:500;background:rgba(10,13,18,.96);
+  border-bottom:1px solid rgba(240,234,216,.06);
+  display:flex;overflow-x:auto;scrollbar-width:none;padding:0 1.5rem;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:.9rem 1.2rem;color:rgba(240,234,216,.35);text-decoration:none;
+  border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.tab:hover{color:var(--parch);}
+.tab.active{color:var(--cipher);border-bottom-color:var(--cipher);}
+
+/* ── Main layout ── */
+.container{max-width:1100px;margin:0 auto;padding:0 1.5rem;}
+
+/* ── Script sections ── */
+.script-section{padding:5rem 0;border-bottom:1px solid rgba(240,234,216,.05);}
+.script-header{display:grid;grid-template-columns:1fr auto;align-items:start;gap:2rem;margin-bottom:3rem;}
+.script-eyebrow{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(240,234,216,.35);margin-bottom:.6rem;}
+.script-name{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;
+  color:var(--parch);line-height:1.15;margin-bottom:.8rem;}
+.script-meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;}
+.badge{font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.2rem .55rem;border-radius:2px;}
+.badge-undeciphered{background:rgba(122,74,111,.2);color:#c090b8;border:1px solid rgba(122,74,111,.3);}
+.badge-partial{background:rgba(74,106,156,.2);color:#90b0d8;border:1px solid rgba(74,106,156,.3);}
+.badge-deciphered{background:rgba(74,124,111,.2);color:#80c0b0;border:1px solid rgba(74,124,111,.3);}
+.badge-live{background:rgba(200,120,58,.2);color:var(--cipher);border:1px solid rgba(200,120,58,.3);
+  animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.script-status-block{min-width:200px;text-align:right;}
+.progress-label{font-family:var(--mono);font-size:.58rem;color:rgba(240,234,216,.4);
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;}
+.progress-bar{height:4px;background:rgba(240,234,216,.08);border-radius:2px;margin-bottom:.3rem;overflow:hidden;}
+.progress-fill{height:100%;border-radius:2px;transition:width 1s ease;}
+.progress-pct{font-family:var(--serif);font-size:1.8rem;font-weight:900;line-height:1;}
+.progress-sub{font-size:.58rem;color:rgba(240,234,216,.35);margin-top:.2rem;}
+
+/* ── Content columns ── */
+.script-body{display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+@media(max-width:700px){.script-body{grid-template-columns:1fr;}.script-header{grid-template-columns:1fr;}.script-status-block{text-align:left;}}
+.script-prose{font-size:.88rem;color:rgba(240,234,216,.65);line-height:1.8;}
+.script-prose p{margin-bottom:1rem;}
+.script-prose strong{color:var(--parch);font-weight:600;}
+.script-prose a{color:var(--cipher);text-decoration:none;border-bottom:1px solid rgba(200,120,58,.3);}
+.script-prose a:hover{border-bottom-color:var(--cipher);}
+
+/* ── Fact cards ── */
+.fact-stack{display:flex;flex-direction:column;gap:.8rem;}
+.fact-card{background:rgba(240,234,216,.03);border:1px solid rgba(240,234,216,.07);padding:1rem 1.2rem;}
+.fact-card-lbl{font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--cipher);margin-bottom:.35rem;}
+.fact-card-val{font-size:.84rem;color:var(--parch);line-height:1.5;}
+
+/* ── AI developments ── */
+.ai-dev-list{margin-top:2.5rem;}
+.ai-dev-lbl{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(240,234,216,.3);margin-bottom:1rem;padding-bottom:.5rem;
+  border-bottom:1px solid rgba(240,234,216,.06);}
+.ai-dev-item{display:flex;gap:1rem;padding:.9rem 0;border-bottom:1px solid rgba(240,234,216,.04);}
+.ai-dev-icon{width:32px;height:32px;border-radius:2px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+.ai-dev-text{flex:1;}
+.ai-dev-title{font-size:.82rem;font-weight:600;color:var(--parch);margin-bottom:.2rem;}
+.ai-dev-desc{font-size:.75rem;color:rgba(240,234,216,.5);line-height:1.5;}
+.ai-dev-date{font-family:var(--mono);font-size:.58rem;color:rgba(240,234,216,.25);margin-top:.3rem;}
+
+/* ── Challenge tracker ── */
+.challenge-box{background:rgba(200,120,58,.04);border:1px solid rgba(200,120,58,.15);
+  padding:1.8rem;margin-top:2.5rem;}
+.challenge-title{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--cipher);margin-bottom:1rem;}
+.challenge-milestones{display:flex;flex-direction:column;gap:.6rem;}
+.milestone{display:flex;align-items:center;gap:.8rem;font-size:.78rem;}
+.milestone-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.m-done{background:var(--glyph);}
+.m-active{background:var(--cipher);animation:pulse 1.5s infinite;}
+.m-pending{background:rgba(240,234,216,.15);}
+.milestone-text{color:rgba(240,234,216,.7);}
+.milestone-date{margin-left:auto;font-family:var(--mono);font-size:.58rem;color:rgba(240,234,216,.3);}
+
+/* ── Sample glyphs display ── */
+.glyph-display{background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);
+  padding:1.5rem;margin-top:1.5rem;text-align:center;}
+.glyph-display-title{font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(240,234,216,.3);margin-bottom:1rem;}
+.glyph-chars{font-size:2.5rem;letter-spacing:.3em;opacity:.6;line-height:1.6;}
+.glyph-caption{font-size:.65rem;color:rgba(240,234,216,.3);margin-top:.8rem;font-style:italic;}
+
+/* ── Corpus feed ── */
+.corpus-feed{margin-top:2.5rem;}
+.feed-lbl{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(240,234,216,.3);margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem;}
+.feed-live{width:6px;height:6px;border-radius:50%;background:var(--cipher);animation:pulse 2s infinite;}
+.feed-item{padding:.7rem 0;border-bottom:1px solid rgba(240,234,216,.04);}
+.feed-item-title{font-size:.78rem;color:var(--parch);margin-bottom:.2rem;line-height:1.4;}
+.feed-item-title a{color:var(--parch);text-decoration:none;}
+.feed-item-title a:hover{color:var(--cipher);}
+.feed-item-meta{font-family:var(--mono);font-size:.58rem;color:rgba(240,234,216,.3);}
+.feed-loading{font-size:.75rem;color:rgba(240,234,216,.3);font-style:italic;padding:.5rem 0;}
+
+/* ── Overview strip ── */
+.overview-strip{padding:4rem 0;background:rgba(240,234,216,.015);border-bottom:1px solid rgba(240,234,216,.05);}
+.strip-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(240,234,216,.06);}
+@media(max-width:800px){.strip-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:500px){.strip-grid{grid-template-columns:repeat(2,1fr);}}
+.strip-cell{background:var(--ink);padding:1.5rem 1.2rem;cursor:pointer;transition:background .2s;text-decoration:none;display:block;}
+.strip-cell:hover{background:rgba(240,234,216,.03);}
+.strip-script{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--parch);margin-bottom:.3rem;}
+.strip-pct{font-family:var(--mono);font-size:1.4rem;font-weight:500;margin-bottom:.3rem;}
+.strip-bar{height:2px;background:rgba(240,234,216,.08);margin-bottom:.4rem;}
+.strip-bar-fill{height:100%;}
+.strip-label{font-size:.6rem;color:rgba(240,234,216,.3);text-transform:uppercase;letter-spacing:.08em;}
+
+/* ── Footer ── */
+footer{padding:3rem 0;text-align:center;border-top:1px solid rgba(240,234,216,.05);}
+footer p{font-size:.7rem;color:rgba(240,234,216,.2);}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+  <a class="nav-link" href="index.html">Home</a>
+  <a class="nav-link" href="news.html">Feed</a>
+  <a class="nav-link" href="map.html">Map</a>
+  <a class="nav-link" href="sky.html">Sky Archive</a>
+  <a class="nav-link" href="maritime.html">Maritime</a>
+  <a class="nav-link active" href="linguistics.html">Linguistics</a>
+  <a class="nav-link" href="conferences.html">Conferences</a>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">AI × Ancient Scripts</div>
+    <h1 class="hero-title">The Decipherment<br><em>Frontier</em></h1>
+    <p class="hero-sub">Five ancient writing systems. Machine learning meets epigraphy. From Herculaneum scrolls to Maya glyphs — tracking the live edge of human knowledge recovery.</p>
+    <div class="script-strip">
+      <span class="script-glyph" title="Linear A">𐝂𐝄𐝀𐝋</span>
+      <span class="script-glyph" title="Proto-Sinaitic">𓃀𓈖𓌀𓅓</span>
+      <span class="script-glyph" title="Indus Valley">𐦲𐦳𐦴𐦵</span>
+      <span class="script-glyph" title="Maya">𛀀𛀁𛀂𛀃</span>
+      <span class="script-glyph" title="Greek">ΠΟΡΦΥΡΑ</span>
+    </div>
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--undeciphered)"></div>Undeciphered</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--partial)"></div>Partially decoded</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--glyph)"></div>Substantially decoded</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--cipher);animation:pulse 2s infinite"></div>Active challenge</div>
+    </div>
+  </div>
+</section>
+
+<!-- Overview strip -->
+<div class="overview-strip">
+  <div class="container">
+    <div class="strip-grid">
+      <a class="strip-cell" href="#vesuvius">
+        <div class="strip-script">Herculaneum</div>
+        <div class="strip-pct" style="color:var(--cipher)">~5%</div>
+        <div class="strip-bar"><div class="strip-bar-fill" style="width:5%;background:var(--cipher)"></div></div>
+        <div class="strip-label">Live challenge · Greek</div>
+      </a>
+      <a class="strip-cell" href="#lineara">
+        <div class="strip-script">Linear A</div>
+        <div class="strip-pct" style="color:var(--undeciphered)">0%</div>
+        <div class="strip-bar"><div class="strip-bar-fill" style="width:0%;background:var(--undeciphered)"></div></div>
+        <div class="strip-label">Undeciphered · Minoan</div>
+      </a>
+      <a class="strip-cell" href="#protosinaitic">
+        <div class="strip-script">Proto-Sinaitic</div>
+        <div class="strip-pct" style="color:var(--partial)">~40%</div>
+        <div class="strip-bar"><div class="strip-bar-fill" style="width:40%;background:var(--partial)"></div></div>
+        <div class="strip-label">Contested · Earliest alphabet</div>
+      </a>
+      <a class="strip-cell" href="#indus">
+        <div class="strip-script">Indus Valley</div>
+        <div class="strip-pct" style="color:var(--undeciphered)">0%</div>
+        <div class="strip-bar"><div class="strip-bar-fill" style="width:0%;background:var(--undeciphered)"></div></div>
+        <div class="strip-label">Undeciphered · 4,000 seals</div>
+      </a>
+      <a class="strip-cell" href="#maya">
+        <div class="strip-script">Maya</div>
+        <div class="strip-pct" style="color:var(--glyph)">85–90%</div>
+        <div class="strip-bar"><div class="strip-bar-fill" style="width:87%;background:var(--glyph)"></div></div>
+        <div class="strip-label">Logosyllabic · AI frontier</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Tab nav -->
+<nav class="tabs" id="tabs">
+  <a class="tab active" href="#vesuvius" onclick="setTab(this)">Vesuvius Challenge</a>
+  <a class="tab" href="#lineara" onclick="setTab(this)">Linear A</a>
+  <a class="tab" href="#protosinaitic" onclick="setTab(this)">Proto-Sinaitic</a>
+  <a class="tab" href="#indus" onclick="setTab(this)">Indus Valley</a>
+  <a class="tab" href="#maya" onclick="setTab(this)">Maya Hieroglyphs</a>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════ VESUVIUS -->
+<section class="script-section" id="vesuvius">
+<div class="container">
+  <div class="script-header">
+    <div>
+      <div class="script-eyebrow">Herculaneum Papyri</div>
+      <h2 class="script-name">Vesuvius Challenge</h2>
+      <div class="script-meta">
+        <span class="badge badge-live">🔴 Live Competition</span>
+        <span class="badge badge-partial">Ancient Greek</span>
+        <span class="badge badge-partial">79 CE burial</span>
+      </div>
+    </div>
+    <div class="script-status-block">
+      <div class="progress-label">Scroll decoded</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:5%;background:var(--cipher)"></div></div>
+      <div class="progress-pct" style="color:var(--cipher)">~5%</div>
+      <div class="progress-sub">of PHerc.Paris.4 · 2024 Grand Prize</div>
+    </div>
+  </div>
+
+  <div class="script-body">
+    <div>
+      <div class="script-prose">
+        <p>In 79 CE, Mount Vesuvius buried the Villa of the Papyri at Herculaneum under 20 meters of pyroclastic flow. Inside was the only intact library from the classical world — some <strong>1,800 papyrus scrolls</strong>, carbonized but preserved in the absence of oxygen. For 275 years after their 18th-century rediscovery, the scrolls were considered unreadable without physical unrolling that would destroy them.</p>
+        <p>The Vesuvius Challenge, launched in March 2023 by computer scientist <strong>Brent Seales</strong>, entrepreneur Nat Friedman, and Daniel Gross, changed everything. By releasing high-resolution CT scans and an AI-based ink detection model, the challenge invited the world to decode the scrolls without ever touching them — <em>virtual unwrapping</em>.</p>
+        <p>In February 2024, three students — Luke Farritor, Youssef Nader, and Julian Schilliger — claimed the $700,000 Grand Prize, deciphering over 2,000 Greek characters. The first word read was <strong>ΠΟΡΦΥΡΑ</strong> ("purple"). The text is believed to be Philodemus's philosophical writing on pleasure and music.</p>
+        <p>In February 2025, Oxford's Bodleian scroll <strong>PHerc. 172</strong> was imaged at the Diamond Light Source synchrotron, yielding more recoverable text than any previously scanned scroll. The first word decoded: <strong>διατροπή</strong> — "disgust."</p>
+      </div>
+      <div class="challenge-box">
+        <div class="challenge-title">Competition Milestones</div>
+        <div class="challenge-milestones">
+          <div class="milestone">
+            <div class="milestone-dot m-done"></div>
+            <span class="milestone-text">First ink detection on unopened scroll</span>
+            <span class="milestone-date">2023</span>
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot m-done"></div>
+            <span class="milestone-text">First word: ΠΟΡΦΥΡΑ ("purple") — Farritor</span>
+            <span class="milestone-date">Oct 2023</span>
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot m-done"></div>
+            <span class="milestone-text">Grand Prize: 2,000+ characters decoded · $700k</span>
+            <span class="milestone-date">Feb 2024</span>
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot m-done"></div>
+            <span class="milestone-text">Oxford PHerc. 172 scanned · "disgust" decoded</span>
+            <span class="milestone-date">Feb 2025</span>
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot m-active"></div>
+            <span class="milestone-text">Stage 2: 90% of four scrolls — active</span>
+            <span class="milestone-date">2025–</span>
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot m-pending"></div>
+            <span class="milestone-text">All 300 scanned scrolls readable</span>
+            <span class="milestone-date">future</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="fact-stack">
+        <div class="fact-card">
+          <div class="fact-card-lbl">Library size</div>
+          <div class="fact-card-val">~1,800 papyrus scrolls recovered. Unexcavated sections of the villa may contain thousands more.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Content so far</div>
+          <div class="fact-card-val">Epicurean philosophy by Philodemus. Scholars hope to find lost works of Aristotle, Sappho, and Sophocles.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Technology</div>
+          <div class="fact-card-val">X-ray CT scanning at synchrotron facilities, TimeSformer-based ML models for ink detection, virtual surface unwrapping.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Prize pool</div>
+          <div class="fact-card-val">$1.7M+ awarded to date. Active prizes for segmentation, ink detection, and full scroll reading.</div>
+        </div>
+      </div>
+      <div class="ai-dev-list">
+        <div class="ai-dev-lbl"><span class="feed-live"></span> AI Developments</div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(200,120,58,.1)">🤖</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">TimeSformer model dominates Grand Prize</div>
+            <div class="ai-dev-desc">Video transformer architecture applied to scroll cross-sections outperforms classical CNNs for carbon ink detection on carbonized papyrus.</div>
+            <div class="ai-dev-date">2024</div>
+          </div>
+        </div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(200,120,58,.1)">🔬</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">ThaumatoAnakalyptor: automated segmentation</div>
+            <div class="ai-dev-desc">New auto-segmentation pipeline reduces cost from $100/cm² manual labor to fully automated surface tracing — critical bottleneck broken.</div>
+            <div class="ai-dev-date">2025</div>
+          </div>
+        </div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(200,120,58,.1)">📜</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Egyptian scroll crossover</div>
+            <div class="ai-dev-desc">Nader reports Herculaneum-trained models producing promising results on Egyptian papyri from Berlin — unexpected generalization across ancient collections.</div>
+            <div class="ai-dev-date">2025</div>
+          </div>
+        </div>
+      </div>
+      <div id="feed-vesuvius" class="corpus-feed">
+        <div class="feed-lbl"><span class="feed-live"></span> Corpus feed</div>
+        <div class="feed-loading">Loading from pipeline…</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ LINEAR A -->
+<section class="script-section" id="lineara">
+<div class="container">
+  <div class="script-header">
+    <div>
+      <div class="script-eyebrow">Minoan Civilization · Aegean Bronze Age</div>
+      <h2 class="script-name">Linear A</h2>
+      <div class="script-meta">
+        <span class="badge badge-undeciphered">Undeciphered</span>
+        <span class="badge badge-partial">~1,500 inscriptions</span>
+        <span class="badge badge-partial">1800–1450 BCE</span>
+      </div>
+    </div>
+    <div class="script-status-block">
+      <div class="progress-label">Deciphered</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%;background:var(--undeciphered)"></div></div>
+      <div class="progress-pct" style="color:var(--undeciphered)">0%</div>
+      <div class="progress-sub">language unknown · signs partially mapped</div>
+    </div>
+  </div>
+
+  <div class="script-body">
+    <div>
+      <div class="script-prose">
+        <p>Linear A is the undeciphered writing system of the Minoan civilization, used across Crete and the Aegean from roughly 1800 to 1450 BCE. It is the direct ancestor of <strong>Linear B</strong> — the Mycenaean Greek script cracked by Michael Ventris in 1952 — but the underlying Minoan language remains completely unknown and unrelated to any other language family.</p>
+        <p>Approximately <strong>1,500 inscriptions</strong> survive, mostly administrative tablets from palatial sites like Haghia Triada, Zakros, and Akrotiri on Santorini. The signs can be phonetically read using Linear B correspondences, but the words produced are meaningless because the language itself is unknown — a tantalizing half-reading.</p>
+        <p>The core obstacle is the <strong>small corpus</strong>. Statistical and ML approaches require thousands of examples to extract patterns; Linear A's 1,500 short administrative texts offer too little signal. Without a bilingual text — a Minoan Rosetta Stone — purely computational approaches face a fundamental ceiling.</p>
+        <p>Recent work by researchers including Brent Davis and Silvia Ferrara has mapped sign functions and proposed structural analyses. ML models trained on related Bronze Age scripts have attempted phonetic mapping, but no breakthrough has emerged. Linear A remains one of the last great puzzles of the ancient Mediterranean.</p>
+      </div>
+      <div class="glyph-display">
+        <div class="glyph-display-title">Linear A signs (Haghia Triada tablet HT 31)</div>
+        <div class="glyph-chars">𐝀 𐝁 𐝂 𐝃 𐝄 𐝅 𐝆 𐝇</div>
+        <div class="glyph-caption">Administrative record — content readable phonetically but semantically opaque</div>
+      </div>
+    </div>
+    <div>
+      <div class="fact-stack">
+        <div class="fact-card">
+          <div class="fact-card-lbl">Corpus size</div>
+          <div class="fact-card-val">~1,500 inscriptions. Mostly short administrative tallies. No long texts. No bilingual anchor.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Key sites</div>
+          <div class="fact-card-val">Haghia Triada (largest archive), Zakros, Knossos, Akrotiri (Thera) — destroyed 1450 BCE, possibly by Thera eruption.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Relationship to Linear B</div>
+          <div class="fact-card-val">Linear B borrowed ~80% of Linear A's signs. Ventris's 1952 decipherment of Linear B as Mycenaean Greek made Linear A phonetically readable but semantically silent.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">AI challenge</div>
+          <div class="fact-card-val">Corpus too small for unsupervised learning. Approaches using cross-script transfer from Linear B show structural insights but no semantic breakthrough.</div>
+        </div>
+      </div>
+      <div class="ai-dev-list">
+        <div class="ai-dev-lbl">AI Approaches</div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(122,74,111,.1)">🧬</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Cross-script transfer learning</div>
+            <div class="ai-dev-desc">Models trained on Linear B, Cypro-Minoan, and Egyptian hieroglyphs applied to Linear A sign classification. Identifies functional categories but cannot assign meaning.</div>
+          </div>
+        </div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(122,74,111,.1)">📊</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">DĀMOS database + computational analysis</div>
+            <div class="ai-dev-desc">University of Oslo's DĀMOS project provides machine-readable Linear A and B corpora. Statistical distribution analyses suggest administrative structure similar to Linear B.</div>
+          </div>
+        </div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(122,74,111,.1)">🔗</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">The Rosetta Stone problem</div>
+            <div class="ai-dev-desc">Without a bilingual text, decipherment requires identifying a known language beneath the signs. Proposals for Luwian, Semitic, and Proto-Greek substrates all remain unverified.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ PROTO-SINAITIC -->
+<section class="script-section" id="protosinaitic">
+<div class="container">
+  <div class="script-header">
+    <div>
+      <div class="script-eyebrow">Sinai Peninsula · Levant · c. 1900–1500 BCE</div>
+      <h2 class="script-name">Proto-Sinaitic</h2>
+      <div class="script-meta">
+        <span class="badge badge-partial">Partially Decoded</span>
+        <span class="badge badge-partial">Earliest alphabet</span>
+        <span class="badge badge-partial">~40 inscriptions</span>
+      </div>
+    </div>
+    <div class="script-status-block">
+      <div class="progress-label">Deciphered</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:40%;background:var(--partial)"></div></div>
+      <div class="progress-pct" style="color:var(--partial)">~40%</div>
+      <div class="progress-sub">contested readings · ancestor of all alphabets</div>
+    </div>
+  </div>
+
+  <div class="script-body">
+    <div>
+      <div class="script-prose">
+        <p>Proto-Sinaitic is the oldest known alphabetic writing system — the direct ancestor of every modern alphabet on Earth, from Latin and Greek to Arabic and Hebrew. Developed by Semitic workers in Egyptian turquoise mines at Serabit el-Khadim in the Sinai around 1900–1800 BCE, it borrowed Egyptian hieroglyphic forms but redeployed them as consonantal sound signs for a Semitic language.</p>
+        <p>The principle — the <strong>acrophonic principle</strong> — is elegant: the sign for "ox" (ʾaleph in Semitic) represents the sound /ʾ/; the sign for "house" (bayt) represents /b/. This is the origin of our letters A (inverted ox head) and B (floor plan of a house).</p>
+        <p>Roughly <strong>40 short inscriptions</strong> survive, mostly from Sinai but with related examples at sites across the Levant. The readings are contested — scholars agree on the basic phonetic values but disagree sharply on word identification, language affiliation, and content. Recent work by Thomas Schneider, Brian Colless, and others has proposed new readings that challenge the 20th-century consensus.</p>
+        <p>The tiny corpus and lack of longform text means ML approaches are largely inapplicable here. The frontier is classical philological and epigraphic work, now accelerated by digital imaging — <strong>RTI (Reflectance Transformation Imaging)</strong> and photogrammetric 3D models revealing previously invisible signs on deteriorated surfaces.</p>
+      </div>
+    </div>
+    <div>
+      <div class="fact-stack">
+        <div class="fact-card">
+          <div class="fact-card-lbl">Discovery</div>
+          <div class="fact-card-val">Found by Flinders Petrie at Serabit el-Khadim, Sinai, in 1904. First decipherment proposals by Alan Gardiner in 1916.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Descendants</div>
+          <div class="fact-card-val">Proto-Canaanite → Phoenician → Greek, Latin, Cyrillic, Arabic, Hebrew, Ethiopic — essentially every alphabet in use today.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Key inscription</div>
+          <div class="fact-card-val">Sphinx inscription from Serabit reads (possibly) "to Baalat" — a Semitic goddess. The most agreed-upon reading in the corpus.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">AI role</div>
+          <div class="fact-card-val">RTI and photogrammetric imaging recover signs invisible to naked eye. ML used for sign classification and comparison across the 40-inscription corpus.</div>
+        </div>
+      </div>
+      <div class="ai-dev-list">
+        <div class="ai-dev-lbl">Current Research</div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(74,106,156,.1)">📷</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">RTI + photogrammetry revival</div>
+            <div class="ai-dev-desc">New digital imaging at Serabit el-Khadim and the British Museum is recovering previously illegible signs, effectively expanding the corpus for the first time in decades.</div>
+          </div>
+        </div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(74,106,156,.1)">🔤</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Wadi el-Hol inscriptions</div>
+            <div class="ai-dev-desc">John and Deborah Darnell's discovery in 1993 of early alphabetic inscriptions in Upper Egypt push the script's origin possibly to 1900 BCE — earlier than the Sinai examples.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ INDUS -->
+<section class="script-section" id="indus">
+<div class="container">
+  <div class="script-header">
+    <div>
+      <div class="script-eyebrow">Indus Valley Civilization · 2600–1900 BCE</div>
+      <h2 class="script-name">Indus Valley Script</h2>
+      <div class="script-meta">
+        <span class="badge badge-undeciphered">Undeciphered</span>
+        <span class="badge badge-partial">~4,000 inscriptions</span>
+        <span class="badge badge-partial">417 distinct signs</span>
+      </div>
+    </div>
+    <div class="script-status-block">
+      <div class="progress-label">Deciphered</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%;background:var(--undeciphered)"></div></div>
+      <div class="progress-pct" style="color:var(--undeciphered)">0%</div>
+      <div class="progress-sub">language unknown · largest undeciphered corpus</div>
+    </div>
+  </div>
+
+  <div class="script-body">
+    <div>
+      <div class="script-prose">
+        <p>The Indus Valley script is the most widely studied undeciphered writing system on Earth. Used by the Harappan civilization — which at its height encompassed more territory than Mesopotamia and Egypt combined — it appears on roughly <strong>4,000 objects</strong>, primarily small stamp seals and pottery sherds. The inscriptions are frustratingly short, averaging just 5 signs.</p>
+        <p>The language beneath the script is unknown and unattested. The major candidates are an ancestor of the <strong>Dravidian language family</strong> (Tamil, Telugu, Kannada) or an undocumented language isolate. A minority view holds the "script" is not language at all but a logo-administrative system of pure symbols — though most scholars reject this.</p>
+        <p>The <strong>417 distinct signs</strong> suggest a logosyllabic or logo-consonantal system. Statistical analyses by Rajesh Rao (2009) found that Indus sign sequences have conditional entropy values consistent with linguistic systems — arguing against the "non-linguistic" hypothesis. This work sparked renewed ML interest in the script.</p>
+        <p>Recent deep learning approaches, including work by Nisha Yadav and teams at TIFR, have mapped sign distributions and proposed syntactic rules. The 2021 South Asian inscription from Khirbat Hamra Ifdan in Jordan, referencing trade goods, hints at Indus-Mesopotamian contact — but no bilingual anchor has emerged.</p>
+      </div>
+    </div>
+    <div>
+      <div class="fact-stack">
+        <div class="fact-card">
+          <div class="fact-card-lbl">Corpus</div>
+          <div class="fact-card-val">~4,000 inscriptions. Average length: 5 signs. Longest known: 26 signs. All short — no "Rosetta Stone" equivalent exists.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Major sites</div>
+          <div class="fact-card-val">Mohenjo-daro, Harappa, Dholavira — the three largest Harappan cities. Dholavira's signboard inscription (10 large signs) is the most monumental.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Language candidates</div>
+          <div class="fact-card-val">Proto-Dravidian (majority view among scholars), Munda language ancestor, or an isolate. No consensus. No living descendant language confirmed.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">AI frontier</div>
+          <div class="fact-card-val">Rajesh Rao's entropy analysis (2009). TIFR computational studies. Most recently, transformer models trained on Dravidian scripts for cross-script feature comparison.</div>
+        </div>
+      </div>
+      <div class="ai-dev-list">
+        <div class="ai-dev-lbl">AI Approaches</div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(122,74,111,.1)">📈</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Entropy analysis confirms linguistic nature</div>
+            <div class="ai-dev-desc">Rao et al. (2009) in Science showed Indus sign conditional entropy matches known languages and differs from non-linguistic systems — strongest statistical argument for it being language.</div>
+          </div>
+        </div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(122,74,111,.1)">🔗</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Dravidian computer model (Mahadevan)</div>
+            <div class="ai-dev-desc">Iravatham Mahadevan's concordance of 3,000+ inscriptions forms the primary computational dataset. Tamil-Brahmi comparisons identify possible loanword correspondences.</div>
+          </div>
+        </div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(122,74,111,.1)">🧠</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">LLM attempts (2023–2024)</div>
+            <div class="ai-dev-desc">Multiple teams have fine-tuned LLMs on proposed Dravidian phonetic mappings. Results remain speculative — without a bilingual text, any "reading" is unfalsifiable.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ MAYA -->
+<section class="script-section" id="maya">
+<div class="container">
+  <div class="script-header">
+    <div>
+      <div class="script-eyebrow">Mesoamerica · 300 BCE – 1697 CE</div>
+      <h2 class="script-name">Maya Hieroglyphs</h2>
+      <div class="script-meta">
+        <span class="badge badge-deciphered">85–90% Decoded</span>
+        <span class="badge badge-live">🔴 AI Frontier</span>
+        <span class="badge badge-partial">Logosyllabic</span>
+      </div>
+    </div>
+    <div class="script-status-block">
+      <div class="progress-label">Deciphered</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:87%;background:var(--glyph)"></div></div>
+      <div class="progress-pct" style="color:var(--glyph)">85–90%</div>
+      <div class="progress-sub">reading dynastic histories · AI segmentation active</div>
+    </div>
+  </div>
+
+  <div class="script-body">
+    <div>
+      <div class="script-prose">
+        <p>Maya hieroglyphic writing is the <strong>only pre-Columbian writing system substantially deciphered</strong> — and the decipherment story is one of the great intellectual dramas of the 20th century. From complete mystery in the 1950s to reading dynastic histories, political betrayals, and philosophical texts by the 1990s, the breakthrough took 40 years and required integrating art history, linguistics, epigraphy, and anthropology in ways that no single discipline could achieve alone.</p>
+        <p>The key insight came from Soviet scholar <strong>Yuri Knorozov</strong> in 1952: the Maya script is logosyllabic, combining logograms (word signs) and syllabograms (sound signs), similar in structure to Egyptian or Sumerian cuneiform. Combined with <strong>Tatiana Proskouriakoff's</strong> 1959 discovery that inscriptions record historical events — not astronomy or prophecy — the script yielded its secrets rapidly.</p>
+        <p>Today, roughly <strong>85–90% of surviving glyphs can be read</strong>. Scholars like David Stuart, Stephen Houston, and Simon Martin continue to refine readings. The corpus spans stelae at Tikal, Palenque, Copan, and Yaxchilán; the four surviving codices (Dresden, Madrid, Paris, Grolier); and vast quantities of ceramic vessel texts. Each newly excavated site adds inscriptions — Palenque's Temple of the Inscriptions alone contains more text than all Egyptian royal inscriptions from Ramesses II.</p>
+        <p>The remaining 10–15% includes signs still poorly understood, regional scribal variants, and the challenge of the <strong>1,400+ sign inventory</strong> — making this the AI frontier: not decipherment from scratch, but computational assistance with the still-opaque remainder, automated glyph segmentation, and cross-corpus pattern analysis at scale.</p>
+      </div>
+      <div class="ai-dev-list">
+        <div class="ai-dev-lbl"><span class="feed-live"></span> Active AI Projects</div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(74,124,111,.1)">🎨</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">WVU Artful Algorithms Project</div>
+            <div class="ai-dev-desc">West Virginia University collaboration between Art History and Computer Science. Fine-tuning SAM (Segment Anything Model) on the Justin Kerr MayaVase database — 5,000+ rollout photographs of Maya ceramic vessels with expert-annotated glyph blocks.</div>
+            <div class="ai-dev-date">2024 — ongoing</div>
+          </div>
+        </div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(74,124,111,.1)">🏛️</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">TWKM / IDIOM Digital Corpus</div>
+            <div class="ai-dev-desc">Bonn-Bochum Maya epigraphy project building a TEI/XML machine-readable corpus of Classic Maya texts. The IDIOM research environment hosts 1,400+ sign catalog, transliterations, and dynamic RDF database incorporating Mathews's 40-year Maya History Project dataset.</div>
+            <div class="ai-dev-date">2024 — ongoing · classicmayan.org</div>
+          </div>
+        </div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(74,124,111,.1)">🔤</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Unicode encoding proposal</div>
+            <div class="ai-dev-desc">UC Berkeley Script Encoding Initiative working to encode Maya hieroglyphs in Unicode (tentative range U+15500–U+159FF). As of 2024 still under development — the logosyllabic flexibility (infixes inside signs) challenges standard Unicode encoding models.</div>
+            <div class="ai-dev-date">2016 grant — 2024 in progress</div>
+          </div>
+        </div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(74,124,111,.1)">📐</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Living epigraphy: new glyphs invented</div>
+            <div class="ai-dev-desc">Yucatec epigraphers like Eduardo Puga are creating new Maya glyphs for modern concepts — laptop, giraffe, democracy — using authentic acrophonic and phonetic conventions. The script is being extended by living practitioners for the first time in 500 years.</div>
+            <div class="ai-dev-date">2024</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="fact-stack">
+        <div class="fact-card">
+          <div class="fact-card-lbl">Script type</div>
+          <div class="fact-card-val">Logosyllabic: combines logograms (word signs) with syllabograms (CV syllables). Similar structure to Egyptian hieroglyphs and Sumerian cuneiform.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Corpus size</div>
+          <div class="fact-card-val">Thousands of monumental inscriptions. Four surviving codices. Vast ceramic vessel corpus. New texts emerge with every excavation season.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Key decipherment</div>
+          <div class="fact-card-val">Knorozov (1952) proves logosyllabic structure. Proskouriakoff (1959) proves historical content. Schele, Houston, Stuart (1970s–90s) crack phonetic readings at scale.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">What remains</div>
+          <div class="fact-card-val">~10–15% of signs still uncertain. Regional variants. The full Dresden Codex astronomical tables. New LiDAR discoveries at sites like Aguada Fénix contain unread texts.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">mayadecipherment.com</div>
+          <div class="fact-card-val">David Stuart's active blog — the primary venue for new glyph readings. New posts appear regularly with fresh decipherments from fieldwork and museum collections.</div>
+        </div>
+      </div>
+      <div class="challenge-box" style="border-color:rgba(74,124,111,.2);background:rgba(74,124,111,.04)">
+        <div class="challenge-title" style="color:var(--glyph)">The "Next Frontier" Framing</div>
+        <div class="challenge-milestones">
+          <div class="milestone">
+            <div class="milestone-dot m-done"></div>
+            <span class="milestone-text">Logosyllabic structure proven (Knorozov)</span>
+            <span class="milestone-date">1952</span>
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot m-done"></div>
+            <span class="milestone-text">Historical content confirmed (Proskouriakoff)</span>
+            <span class="milestone-date">1959</span>
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot m-done"></div>
+            <span class="milestone-text">~85% readable: dynastic histories recovered</span>
+            <span class="milestone-date">1990s</span>
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot m-done"></div>
+            <span class="milestone-text">MayaVase database digitized (Kerr / Dumbarton Oaks)</span>
+            <span class="milestone-date">2022</span>
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot m-active"></div>
+            <span class="milestone-text">AI glyph segmentation (WVU, TWKM) — active</span>
+            <span class="milestone-date">2024–</span>
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot m-active"></div>
+            <span class="milestone-text">Unicode encoding proposal — active</span>
+            <span class="milestone-date">2024–</span>
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot m-pending"></div>
+            <span class="milestone-text">Full corpus machine-readable · last 10–15% cracked</span>
+            <span class="milestone-date">future</span>
+          </div>
+        </div>
+      </div>
+      <div id="feed-maya" class="corpus-feed" style="margin-top:1.5rem">
+        <div class="feed-lbl"><span class="feed-live"></span> Corpus feed</div>
+        <div class="feed-loading">Loading from pipeline…</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>archAIology · Linguistics & Decipherment · Updated from corpus pipeline · Not affiliated with Vesuvius Challenge, TWKM, or WVU</p>
+  </div>
+</footer>
+
+<script>
+const SB_URL = "https://ucsgtbpeuqeamuvuvojs.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";
+const HDR = {"apikey":SB_KEY,"Authorization":`Bearer ${SB_KEY}`};
+
+// Tab handling
+function setTab(el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Scroll-spy for tabs
+const sections = ['vesuvius','lineara','protosinaitic','indus','maya'];
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      document.querySelectorAll('.tab').forEach(t => {
+        t.classList.toggle('active', t.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, {rootMargin:'-50% 0px -50% 0px'});
+sections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) observer.observe(el);
+});
+
+// Load corpus feeds by keyword
+async function loadFeed(containerId, keywords) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  try {
+    // Build search query — look for news matching any keyword
+    const kw = keywords[0];
+    const r = await fetch(
+      `${SB_URL}/rest/v1/archaeology_news?or=(title.ilike.*${encodeURIComponent(kw)}*,summary.ilike.*${encodeURIComponent(kw)}*)&select=title,source_url,source,published_at&order=published_at.desc&limit=5`,
+      {headers: HDR}
+    );
+    const items = await r.json();
+    const lbl = container.querySelector('.feed-lbl');
+    if (!Array.isArray(items) || !items.length) {
+      container.innerHTML = '';
+      if (lbl) container.appendChild(lbl);
+      const el = document.createElement('div');
+      el.className = 'feed-loading';
+      el.textContent = 'No corpus items yet — pipeline updating nightly.';
+      container.appendChild(el);
+      return;
+    }
+    container.innerHTML = '';
+    if (lbl) container.appendChild(lbl);
+    items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'feed-item';
+      const date = item.published_at ? new Date(item.published_at).toLocaleDateString('en-US',{year:'numeric',month:'short'}) : '';
+      div.innerHTML = `
+        <div class="feed-item-title">
+          ${item.source_url ? `<a href="${item.source_url}" target="_blank" rel="noopener">${item.title}</a>` : item.title}
+        </div>
+        <div class="feed-item-meta">${[item.source, date].filter(Boolean).join(' · ')}</div>`;
+      container.appendChild(div);
+    });
+  } catch(e) {
+    console.warn('feed load failed', e);
+  }
+}
+
+// Load feeds on page ready
+window.addEventListener('load', () => {
+  loadFeed('feed-vesuvius', ['Herculaneum', 'Vesuvius', 'papyri']);
+  loadFeed('feed-maya', ['Maya', 'hieroglyph', 'Mayan', 'epigraphy']);
+});
+
+// Animate progress bars on scroll
+const progressObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.width = e.target.dataset.width;
+      progressObserver.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.3});
+document.querySelectorAll('.progress-fill').forEach(el => {
+  const w = el.style.width;
+  el.dataset.width = w;
+  el.style.width = '0';
+  progressObserver.observe(el);
+});
+</script>
+</body>
+</html>
