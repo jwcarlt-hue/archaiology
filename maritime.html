@@ -332,18 +332,26 @@ function pct2yr(p){ return Math.round(TL_MIN + p / 100 * (TL_MAX - TL_MIN)); }
 
 // ── Load wrecks ───────────────────────────────────────────────
 async function loadWrecks() {
-  let offset = 0, batch;
-  do {
-    const r = await fetch(
-      `${SUPABASE_URL}/rest/v1/shipwrecks?select=id,name,lat,lng,earliest_date,latest_date,period,sea_area,country,min_depth,max_depth,depth_note,has_amphorae,has_marble,has_hull,stone_cargo,tonnage,length_m,other_cargo,shipboard,comments,reference,amphora_types&limit=1000&offset=${offset}&order=earliest_date.asc.nullslast`,
-      { headers:{ apikey:SUPABASE_ANON_KEY, Authorization:`Bearer ${SUPABASE_ANON_KEY}` } }
-    );
-    batch = await r.json();
-    if (!Array.isArray(batch)) { console.error(batch); break; }
-    allWrecks.push(...batch);
-    offset += 1000;
-    document.getElementById('ldText').textContent = `Loading… ${allWrecks.length.toLocaleString()} wrecks`;
-  } while (batch.length === 1000);
+  // Load in two passes: essential fields first for fast render, details on click
+  document.getElementById('ldText').textContent = 'Loading shipwrecks…';
+  
+  // Single request — 1584 wrecks with essential fields only
+  const r = await fetch(
+    `${SUPABASE_URL}/rest/v1/shipwrecks?select=id,name,lat,lng,earliest_date,latest_date,period,sea_area,country,min_depth,max_depth,depth_note,has_amphorae,has_marble,has_hull,stone_cargo,tonnage,length_m&limit=2000&order=earliest_date.asc.nullslast`,
+    { headers:{ apikey:SUPABASE_ANON_KEY, Authorization:`Bearer ${SUPABASE_ANON_KEY}` } }
+  );
+  if (!r.ok) {
+    document.getElementById('ldText').textContent = `Error loading shipwrecks: ${r.status}`;
+    return;
+  }
+  const batch = await r.json();
+  if (!Array.isArray(batch)) {
+    document.getElementById('ldText').textContent = 'Error: unexpected response from database';
+    console.error(batch);
+    return;
+  }
+  allWrecks.push(...batch);
+  document.getElementById('ldText').textContent = `Building ${allWrecks.length.toLocaleString()} wreck markers…`;
 }
 
 // ── Make icon ─────────────────────────────────────────────────
@@ -409,7 +417,20 @@ function matchPeriod(period, filter) {
 }
 
 // ── Detail panel ──────────────────────────────────────────────
-function showDetail(w) {
+async function fetchWreckDetail(id) {
+  const r = await fetch(
+    `${SUPABASE_URL}/rest/v1/shipwrecks?id=eq.${id}&select=other_cargo,shipboard,comments,reference,amphora_types&limit=1`,
+    { headers:{ apikey:SUPABASE_ANON_KEY, Authorization:`Bearer ${SUPABASE_ANON_KEY}` } }
+  );
+  if (!r.ok) return {};
+  const d = await r.json();
+  return d[0] ?? {};
+}
+
+async function showDetail(w) {
+  // Merge in detail fields lazily
+  const detail = await fetchWreckDetail(w.id);
+  w = {...w, ...detail};
   const dateStr = [fmtDate(w.earliest_date), fmtDate(w.latest_date)]
     .filter(x => x !== '—').join(' – ');
   document.getElementById('dEye').textContent  =
