@@ -578,5 +578,721 @@ document.getElementById('siteSelect').addEventListener('change', function() {
   updateInfo('Volos, Greece', 39.36, 22.94, '2026-06-21T04:00', 60);
 })();
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- MAYA CALENDAR ENGINE                                       -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<style>
+/* ── Maya section palette — inherits night theme ── */
+.maya-section {
+  background: var(--night);
+  border-top: 1px solid rgba(200,216,240,.06);
+  padding: 3rem 2rem 4rem;
+}
+.maya-section-inner { max-width: 1100px; margin: 0 auto; }
+
+.maya-eyebrow {
+  font-family: var(--sans); font-size:.6rem; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase;
+  color: var(--ochre-lt); margin-bottom:.7rem;
+  display:flex; align-items:center; gap:.5rem;
+}
+.maya-eyebrow::before {
+  content:''; display:inline-block; width:20px; height:1px;
+  background: var(--ochre-lt);
+}
+.maya-title {
+  font-family: var(--serif); font-size: clamp(1.8rem,4vw,3rem);
+  font-weight:900; color: var(--star); line-height:1.1;
+  margin-bottom:.6rem;
+}
+.maya-title em { color: var(--ochre-lt); font-style:italic; }
+.maya-intro {
+  font-size:.88rem; color:rgba(200,216,240,.55); line-height:1.75;
+  max-width:620px; margin-bottom:2.5rem;
+}
+
+/* ── Calculator card ── */
+.maya-calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+@media(max-width:760px){ .maya-calc-grid{ grid-template-columns:1fr; } }
+
+.maya-card {
+  background: rgba(200,216,240,.03);
+  border: 1px solid rgba(200,216,240,.08);
+  padding: 1.4rem 1.5rem;
+}
+.maya-card-title {
+  font-family: var(--sans); font-size:.58rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase;
+  color: var(--ochre-lt); margin-bottom:1rem;
+  padding-bottom:.5rem; border-bottom:1px solid rgba(200,216,240,.06);
+}
+
+.maya-input-row { display:flex; gap:.5rem; align-items:flex-end; margin-bottom:.8rem; }
+.maya-field { display:flex; flex-direction:column; gap:.3rem; flex:1; }
+.maya-label {
+  font-family:var(--sans); font-size:.54rem; font-weight:600;
+  letter-spacing:.1em; text-transform:uppercase; color:rgba(200,216,240,.4);
+}
+.maya-input {
+  background: rgba(200,216,240,.04); border: 1px solid rgba(200,216,240,.1);
+  color: var(--star); font-family: var(--sans); font-size:.82rem;
+  padding:.5rem .75rem; outline:none; transition:border-color .2s; width:100%;
+}
+.maya-input:focus { border-color: rgba(212,168,75,.5); }
+.maya-input::placeholder { color:rgba(200,216,240,.2); }
+
+.maya-btn {
+  background: rgba(212,168,75,.12); border: 1px solid rgba(212,168,75,.3);
+  color: var(--ochre-lt); font-family:var(--sans); font-size:.65rem;
+  font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:.5rem 1rem; cursor:pointer; transition:all .2s; white-space:nowrap;
+}
+.maya-btn:hover { background:rgba(212,168,75,.22); }
+.maya-btn-sm { padding:.35rem .7rem; font-size:.58rem; }
+
+.maya-presets {
+  display:flex; flex-wrap:wrap; gap:.35rem; margin-bottom:1rem;
+}
+.maya-preset {
+  font-size:.55rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+  padding:.2rem .5rem; border:1px solid rgba(200,216,240,.1);
+  background:none; color:rgba(200,216,240,.4); cursor:pointer;
+  transition:all .14s;
+}
+.maya-preset:hover { color:var(--star); border-color:rgba(200,216,240,.25); }
+.maya-preset.active { background:rgba(212,168,75,.1); color:var(--ochre-lt); border-color:rgba(212,168,75,.3); }
+
+/* ── Results display ── */
+.maya-result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+  gap:.5rem; margin-top:1rem;
+}
+.maya-result-cell {
+  background:rgba(200,216,240,.02); border:1px solid rgba(200,216,240,.06);
+  padding:.7rem .9rem;
+}
+.maya-result-k {
+  font-family:var(--sans); font-size:.5rem; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase; color:rgba(200,216,240,.3);
+  margin-bottom:.3rem;
+}
+.maya-result-v {
+  font-family:var(--serif); font-size:1rem; font-weight:700; color:var(--star);
+  line-height:1.2;
+}
+.maya-result-v.lc {
+  font-family:'DM Mono',monospace; font-size:.85rem; color:var(--ochre-lt);
+  letter-spacing:.08em;
+}
+.maya-result-sub {
+  font-size:.58rem; color:rgba(200,216,240,.35); margin-top:.2rem;
+  font-family:var(--sans);
+}
+
+.maya-glyph-row {
+  display:flex; gap:.5rem; margin-top:.8rem; flex-wrap:wrap;
+}
+.maya-glyph {
+  background:rgba(212,168,75,.06); border:1px solid rgba(212,168,75,.15);
+  padding:.4rem .7rem; text-align:center;
+}
+.maya-glyph-sym { font-size:1.4rem; line-height:1; }
+.maya-glyph-lbl { font-size:.5rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(200,216,240,.4); margin-top:.2rem; }
+
+/* ── Moon phase display ── */
+.moon-phase-display {
+  display:flex; align-items:center; gap:1rem; margin-top:.8rem;
+  padding:.7rem .9rem; background:rgba(200,216,240,.02);
+  border:1px solid rgba(200,216,240,.06);
+}
+.moon-phase-icon { font-size:2rem; line-height:1; }
+.moon-phase-info {}
+.moon-phase-name { font-family:var(--serif); font-size:.95rem; font-weight:700; color:var(--star); }
+.moon-phase-age { font-size:.65rem; color:rgba(200,216,240,.4); margin-top:.2rem; }
+
+/* ── Eclipse alert ── */
+.eclipse-alert {
+  display:none; margin-top:.8rem; padding:.7rem 1rem;
+  background:rgba(255,120,50,.05); border:1px solid rgba(255,120,50,.2);
+  border-left:3px solid rgba(255,120,50,.6);
+}
+.eclipse-alert.visible { display:block; }
+.eclipse-alert-title { font-size:.65rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#f07840; }
+.eclipse-alert-body  { font-size:.72rem; color:rgba(200,216,240,.55); margin-top:.2rem; }
+
+/* ── Cycle explorer ── */
+.cycle-bar-wrap { margin-top:.7rem; }
+.cycle-bar-row { display:flex; align-items:center; gap:.7rem; margin-bottom:.4rem; }
+.cycle-bar-lbl { font-size:.6rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:rgba(200,216,240,.4); min-width:90px; }
+.cycle-bar-track { flex:1; height:4px; background:rgba(200,216,240,.07); border-radius:2px; }
+.cycle-bar-fill { height:100%; background:var(--ochre-lt); border-radius:2px; transition:width .4s; }
+.cycle-bar-val { font-family:'DM Mono',monospace; font-size:.6rem; color:var(--ochre-lt); min-width:55px; text-align:right; }
+
+/* ── TWKM link ── */
+.twkm-link {
+  display:inline-flex; align-items:center; gap:.5rem; margin-top:1rem;
+  font-size:.65rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ochre-lt); text-decoration:none;
+  padding:.4rem .8rem; border:1px solid rgba(212,168,75,.2);
+  transition:border-color .2s;
+}
+.twkm-link:hover { border-color:rgba(212,168,75,.5); }
+
+/* ── Notable dates timeline ── */
+.maya-dates-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:.6rem; margin-top:1.5rem;
+}
+.maya-date-card {
+  background:rgba(200,216,240,.02); border:1px solid rgba(200,216,240,.06);
+  padding:.9rem 1rem; cursor:pointer; transition:all .15s;
+  border-left:2px solid transparent;
+}
+.maya-date-card:hover { border-left-color:var(--ochre-lt); background:rgba(212,168,75,.04); }
+.maya-date-lc { font-family:'DM Mono',monospace; font-size:.7rem; color:var(--ochre-lt); margin-bottom:.3rem; }
+.maya-date-label { font-size:.82rem; font-weight:600; color:var(--star); margin-bottom:.2rem; }
+.maya-date-greg { font-size:.62rem; color:rgba(200,216,240,.4); }
+.maya-date-desc { font-size:.65rem; color:rgba(200,216,240,.45); margin-top:.35rem; line-height:1.5; }
+</style>
+
+<section class="maya-section">
+<div class="maya-section-inner">
+
+  <div class="maya-eyebrow">TWKM · Bonn · Maya Calendar Engine</div>
+  <h2 class="maya-title">Maya <em>Calendar</em> & Astronomy</h2>
+  <p class="maya-intro">Convert any date between the Maya Long Count, Calendar Round (Tzolkʼin + Haabʼ), and Gregorian calendar. Calculate moon age, eclipse windows, and the 819-day count. Powered by the same algorithms as the TWKM Calendar Calculator (Universität Bonn).</p>
+
+  <div class="maya-calc-grid">
+
+    <!-- LEFT: Date converter -->
+    <div class="maya-card">
+      <div class="maya-card-title">Date Converter</div>
+
+      <div class="maya-presets" id="maya-presets">
+        <button class="maya-preset" data-lc="13.0.0.0.0"    data-label="13th Bʼakʼtun">13th Bʼakʼtun</button>
+        <button class="maya-preset" data-lc="9.17.0.0.0"    data-label="Katun 9.17">Katun 9.17</button>
+        <button class="maya-preset" data-lc="9.9.2.4.8"     data-label="Pakal's Birth">Pakal's Birth</button>
+        <button class="maya-preset" data-lc="9.12.11.5.18"  data-label="Pakal's Accession">Accession</button>
+        <button class="maya-preset" data-lc="0.0.0.0.0"     data-label="Creation Date">Creation</button>
+        <button class="maya-preset" data-lc="9.15.0.0.0"    data-label="Venus Table">Venus Table</button>
+      </div>
+
+      <div class="maya-field" style="margin-bottom:.7rem;">
+        <label class="maya-label">Long Count Date</label>
+        <div style="display:flex;gap:.5rem;">
+          <input class="maya-input" id="lc-input" placeholder="e.g. 9.17.0.0.0" style="font-family:'DM Mono',monospace;letter-spacing:.06em;">
+          <button class="maya-btn" onclick="convertLC()">Convert</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:.7rem;margin:.5rem 0;">
+        <div style="flex:1;height:1px;background:rgba(200,216,240,.06)"></div>
+        <span style="font-size:.55rem;color:rgba(200,216,240,.25);letter-spacing:.1em">OR</span>
+        <div style="flex:1;height:1px;background:rgba(200,216,240,.06)"></div>
+      </div>
+
+      <div class="maya-field" style="margin-bottom:.7rem;">
+        <label class="maya-label">Gregorian Date</label>
+        <div style="display:flex;gap:.5rem;">
+          <input class="maya-input" id="greg-input" type="date" value="2024-12-21">
+          <button class="maya-btn" onclick="convertGreg()">Convert</button>
+        </div>
+      </div>
+
+      <div id="convert-results" style="display:none;">
+        <div class="maya-result-grid" id="result-grid"></div>
+        <div class="moon-phase-display" id="moon-display">
+          <div class="moon-phase-icon" id="moon-icon">🌕</div>
+          <div class="moon-phase-info">
+            <div class="moon-phase-name" id="moon-name">Full Moon</div>
+            <div class="moon-phase-age" id="moon-age">Day 15 of lunar month</div>
+          </div>
+        </div>
+        <div class="eclipse-alert" id="eclipse-alert">
+          <div class="eclipse-alert-title">☀️ Eclipse window</div>
+          <div class="eclipse-alert-body" id="eclipse-body"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Cycle explorer -->
+    <div class="maya-card">
+      <div class="maya-card-title">Cycle Explorer</div>
+
+      <div id="cycle-display" style="color:rgba(200,216,240,.3);font-size:.78rem;padding:.5rem 0;">
+        Enter a date above to explore its position in each Maya cycle.
+      </div>
+
+      <div id="cycle-bars" style="display:none;">
+        <div class="cycle-bar-wrap">
+          <div class="cycle-bar-row">
+            <div class="cycle-bar-lbl">Tzolkʼin (260)</div>
+            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-tzolkin" style="width:0%"></div></div>
+            <div class="cycle-bar-val" id="val-tzolkin">—</div>
+          </div>
+          <div class="cycle-bar-row">
+            <div class="cycle-bar-lbl">Haabʼ (365)</div>
+            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-haab" style="width:0%"></div></div>
+            <div class="cycle-bar-val" id="val-haab">—</div>
+          </div>
+          <div class="cycle-bar-row">
+            <div class="cycle-bar-lbl">Cal. Round (52 yr)</div>
+            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-cr" style="width:0%;background:#80a8d8"></div></div>
+            <div class="cycle-bar-val" id="val-cr">—</div>
+          </div>
+          <div class="cycle-bar-row">
+            <div class="cycle-bar-lbl">819-Day</div>
+            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-819" style="width:0%;background:#9070b0"></div></div>
+            <div class="cycle-bar-val" id="val-819">—</div>
+          </div>
+          <div class="cycle-bar-row">
+            <div class="cycle-bar-lbl">Venus (584)</div>
+            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-venus" style="width:0%;background:#c8a030"></div></div>
+            <div class="cycle-bar-val" id="val-venus">—</div>
+          </div>
+          <div class="cycle-bar-row">
+            <div class="cycle-bar-lbl">Katun (7200)</div>
+            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-katun" style="width:0%;background:#507080"></div></div>
+            <div class="cycle-bar-val" id="val-katun">—</div>
+          </div>
+        </div>
+
+        <div style="margin-top:1.2rem;">
+          <div class="maya-card-title">Day glyphs</div>
+          <div class="maya-glyph-row" id="glyph-row"></div>
+        </div>
+
+        <div style="margin-top:1rem;">
+          <div class="maya-card-title">819-Day station</div>
+          <div id="station-819" style="font-size:.75rem;color:rgba(200,216,240,.5);line-height:1.6;"></div>
+        </div>
+      </div>
+
+      <a class="twkm-link" id="twkm-link" href="https://classicmayan.org/calendar-calculations/" target="_blank" rel="noopener">
+        → Open in TWKM Calculator
+      </a>
+    </div>
+  </div>
+
+  <!-- Notable Maya dates -->
+  <div class="maya-card-title" style="margin-bottom:.8rem;">Notable dates in the Maya calendar</div>
+  <div class="maya-dates-grid" id="notable-dates"></div>
+
+</div>
+</section>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// MAYA CALENDAR ENGINE
+// Correlation constant: GMT (584283) — standard in Maya scholarship
+// ════════════════════════════════════════════════════════════════
+
+const CORRELATION = 584283; // GMT correlation constant
+
+// ── Tzolkʼin day names ───────────────────────────────────────
+const TZOLKIN_DAYS = [
+  'Imixʼ','Ikʼ','Akbalʼ','Kʼan','Chikchan','Kimi','Manikʼ','Lamat',
+  'Muluk','Ok','Chuwen','Eb','Ben','Hix','Men','Kʼib','Kabán','Etznabʼ','Kawak','Ajaw'
+];
+const TZOLKIN_GLYPHS = [
+  '𝋠','𝋡','𝋢','𝋣','𝋤','𝋥','𝋦','𝋧','𝋨','𝋩',
+  '𝋪','𝋫','𝋬','𝋭','𝋮','𝋯','𝋰','𝋱','𝋲','𝋳'
+];
+const TZOLKIN_EMOJI = [
+  '🐊','💨','🌑','🌽','🐍','💀','🦌','⭐','🌊','🐾',
+  '🐒','🛤','🌿','🐆','🦅','🦉','🌍','🔪','⛈','☀️'
+];
+
+// ── Haabʼ month names ─────────────────────────────────────────
+const HAAB_MONTHS = [
+  'Pop','Woʼ','Sip','Sotzʼ','Sek','Xul','Yaxkʼin','Mol','Chʼen','Yax',
+  'Sakʼ','Keh','Mak','Kʼankʼin','Muwan','Pax','Kʼayabʼ','Kumkʼu','Wayebʼ'
+];
+
+// ── 819-day station colors/directions ────────────────────────
+const STATIONS_819 = [
+  {color:'Red',   direction:'East',  glyph:'🔴'},
+  {color:'White', direction:'North', glyph:'⚪'},
+  {color:'Black', direction:'West',  glyph:'⚫'},
+  {color:'Yellow',direction:'South', glyph:'🟡'},
+];
+
+// ── Moon phase names ──────────────────────────────────────────
+const MOON_PHASES = ['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'];
+const MOON_NAMES  = ['New Moon','Waxing Crescent','First Quarter','Waxing Gibbous',
+                     'Full Moon','Waning Gibbous','Last Quarter','Waning Crescent'];
+
+// ── Convert Julian Day Number to Long Count ───────────────────
+function jdnToLC(jdn) {
+  const d = jdn - CORRELATION;
+  if (d < 0) return null;
+  const baktun  = Math.floor(d / 144000);
+  const rem1    = d % 144000;
+  const katun   = Math.floor(rem1 / 7200);
+  const rem2    = rem1 % 7200;
+  const tun     = Math.floor(rem2 / 360);
+  const rem3    = rem2 % 360;
+  const winal   = Math.floor(rem3 / 20);
+  const kin     = rem3 % 20;
+  return {baktun, katun, tun, winal, kin, total: d};
+}
+
+// ── Convert Long Count to Julian Day Number ───────────────────
+function lcToJDN(baktun, katun, tun, winal, kin) {
+  return CORRELATION + (baktun*144000) + (katun*7200) + (tun*360) + (winal*20) + kin;
+}
+
+// ── Parse Long Count string ───────────────────────────────────
+function parseLC(str) {
+  const parts = str.trim().split('.').map(s => s.trim());
+  if (parts.length !== 5) return null;
+  const nums = parts.map(Number);
+  if (nums.some(isNaN)) return null;
+  return nums;
+}
+
+// ── Gregorian date to Julian Day Number ──────────────────────
+function gregToJDN(year, month, day) {
+  const a = Math.floor((14 - month) / 12);
+  const y = year + 4800 - a;
+  const m = month + 12*a - 3;
+  let jdn = day + Math.floor((153*m+2)/5) + 365*y + Math.floor(y/4) - Math.floor(y/100) + Math.floor(y/400) - 32045;
+  return jdn;
+}
+
+// ── Julian Day Number to Gregorian ───────────────────────────
+function jdnToGreg(jdn) {
+  const a = jdn + 32044;
+  const b = Math.floor((4*a+3)/146097);
+  const c = a - Math.floor(146097*b/4);
+  const d = Math.floor((4*c+3)/1461);
+  const e = c - Math.floor(1461*d/4);
+  const m = Math.floor((5*e+2)/153);
+  return {
+    day:   e - Math.floor((153*m+2)/5) + 1,
+    month: m + 3 - 12*Math.floor(m/10),
+    year:  100*b + d - 4800 + Math.floor(m/10),
+  };
+}
+
+// ── Tzolkʼin from day number ──────────────────────────────────
+function tzolkin(d) {
+  const num  = ((d + 3) % 13) + 1;   // 1-13
+  const name = ((d + 19) % 20);       // 0-19 → TZOLKIN_DAYS index
+  return {num, name, label: num + ' ' + TZOLKIN_DAYS[name], emoji: TZOLKIN_EMOJI[name]};
+}
+
+// ── Haabʼ from day number ─────────────────────────────────────
+function haab(d) {
+  const pos   = (d + 348) % 365;
+  const month = Math.floor(pos / 20);
+  const day   = pos % 20;
+  return {month, day, label: day + ' ' + HAAB_MONTHS[month]};
+}
+
+// ── Calendar Round position (0–18979) ─────────────────────────
+function calRound(d) {
+  return d % 18980;
+}
+
+// ── 819-Day station ───────────────────────────────────────────
+function station819(d) {
+  const pos = d % 819;
+  const station = Math.floor((d % (819*4)) / 819);
+  const days_since = pos;
+  return {pos, station, ...STATIONS_819[station % 4], days_since};
+}
+
+// ── Venus cycle (584 days) ────────────────────────────────────
+function venus(d) {
+  const pos = d % 584;
+  let phase;
+  if      (pos < 236) phase = 'Morning Star (236 days)';
+  else if (pos < 250) phase = 'Superior Conjunction (14 days)';
+  else if (pos < 500) phase = 'Evening Star (250 days)';
+  else                phase = 'Inferior Conjunction (84 days)';
+  return {pos, phase};
+}
+
+// ── Lunar age approximation ───────────────────────────────────
+function lunarAge(jdn) {
+  // Known new moon: JDN 2451549.5 = Jan 6, 2000
+  const KNOWN_NM = 2451550;
+  const SYNODIC  = 29.53058867;
+  const age = ((jdn - KNOWN_NM) % SYNODIC + SYNODIC) % SYNODIC;
+  return age;
+}
+
+function moonPhaseIcon(age) {
+  const idx = Math.round(age / 29.53 * 8) % 8;
+  return {icon: MOON_PHASES[idx], name: MOON_NAMES[idx], age};
+}
+
+// ── Eclipse proximity check ───────────────────────────────────
+// Eclipses occur near new/full moon at eclipse season (~173.3 day intervals)
+// Using the Maya eclipse table approximation
+function eclipseCheck(jdn, lcTotal) {
+  // The Dresden Codex eclipse table uses a period of 405 lunations = 11960 days
+  // Reference: eclipse table begins at 9.16.4.10.8 in the Dresden Codex
+  const ECLIPSE_REF = lcToJDN(9,16,4,10,8);
+  const ECLIPSE_PERIOD = 11960;
+  const pos = Math.abs((jdn - ECLIPSE_REF) % ECLIPSE_PERIOD);
+  const normalized = Math.min(pos, ECLIPSE_PERIOD - pos);
+
+  // Eclipse nodes in the table (approximate)
+  const nodes = [0, 177, 354, 531, 708, 885, 1062, 1239, 1416, 1593, 1770,
+                 1947, 2124, 2301, 2478, 2655, 2832, 3009, 3186, 3363, 3540,
+                 5960, 6137, 6314, 5783, 5960];
+
+  const age = lunarAge(jdn);
+  const nearNewFull = age < 2 || age > 27.5;
+
+  if (nearNewFull && normalized < 20) {
+    const type = age < 2 || age > 27.5 ? 'Solar' : 'Lunar';
+    return {possible: true, type, note: `Within Dresden Codex eclipse window. ${type} eclipse possible.`};
+  }
+  return {possible: false};
+}
+
+// ── Main conversion function ──────────────────────────────────
+function computeDate(jdn) {
+  const lc    = jdnToLC(jdn);
+  if (!lc) return null;
+  const tz    = tzolkin(lc.total);
+  const hb    = haab(lc.total);
+  const cr    = calRound(lc.total);
+  const s819  = station819(lc.total);
+  const ven   = venus(lc.total);
+  const moon  = moonPhaseIcon(lunarAge(jdn));
+  const greg  = jdnToGreg(jdn);
+  const ecl   = eclipseCheck(jdn, lc.total);
+
+  return {lc, tz, hb, cr, s819, ven, moon, greg, ecl,
+    lcStr: `${lc.baktun}.${lc.katun}.${lc.tun}.${lc.winal}.${lc.kin}`,
+    crStr: `${tz.label} ${hb.label}`,
+  };
+}
+
+// ── Format Gregorian ─────────────────────────────────────────
+const MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmtGreg(g) {
+  const era = g.year < 0 ? ` ${Math.abs(g.year)+1} BCE` : ` ${g.year} CE`;
+  return `${g.day} ${MONTHS_EN[g.month-1]}${era}`;
+}
+
+// ── Render results ────────────────────────────────────────────
+function renderResults(data) {
+  if (!data) return;
+
+  document.getElementById('convert-results').style.display = 'block';
+  document.getElementById('cycle-bars').style.display = 'block';
+  document.getElementById('cycle-display').style.display = 'none';
+
+  // Main result cells
+  document.getElementById('result-grid').innerHTML = `
+    <div class="maya-result-cell">
+      <div class="maya-result-k">Long Count</div>
+      <div class="maya-result-v lc">${data.lcStr}</div>
+      <div class="maya-result-sub">Day ${data.lc.total.toLocaleString()} of Maya era</div>
+    </div>
+    <div class="maya-result-cell">
+      <div class="maya-result-k">Tzolkʼin</div>
+      <div class="maya-result-v">${data.tz.emoji} ${data.tz.label}</div>
+      <div class="maya-result-sub">Sacred 260-day cycle · day ${((data.lc.total+3)%13)+1}/13</div>
+    </div>
+    <div class="maya-result-cell">
+      <div class="maya-result-k">Haabʼ</div>
+      <div class="maya-result-v">${data.hb.label}</div>
+      <div class="maya-result-sub">Solar 365-day cycle · day ${(data.lc.total+348)%365}/365</div>
+    </div>
+    <div class="maya-result-cell">
+      <div class="maya-result-k">Calendar Round</div>
+      <div class="maya-result-v">${data.crStr}</div>
+      <div class="maya-result-sub">Repeats every 52 years · position ${data.cr.toLocaleString()}/18,980</div>
+    </div>
+    <div class="maya-result-cell">
+      <div class="maya-result-k">Gregorian</div>
+      <div class="maya-result-v" style="font-size:.85rem">${fmtGreg(data.greg)}</div>
+      <div class="maya-result-sub">GMT correlation (584283)</div>
+    </div>
+    <div class="maya-result-cell">
+      <div class="maya-result-k">Venus Cycle</div>
+      <div class="maya-result-v" style="font-size:.72rem;color:var(--ochre-lt)">${data.ven.phase}</div>
+      <div class="maya-result-sub">Day ${data.ven.pos}/584 of synodic cycle</div>
+    </div>
+  `;
+
+  // Moon phase
+  document.getElementById('moon-icon').textContent = data.moon.icon;
+  document.getElementById('moon-name').textContent  = data.moon.name;
+  document.getElementById('moon-age').textContent   = `Day ${data.moon.age.toFixed(1)} of lunar month (29.53 days)`;
+
+  // Eclipse alert
+  const alert = document.getElementById('eclipse-alert');
+  if (data.ecl.possible) {
+    alert.classList.add('visible');
+    document.getElementById('eclipse-body').textContent = data.ecl.note;
+  } else {
+    alert.classList.remove('visible');
+  }
+
+  // Cycle bars
+  const tzPos = ((data.lc.total+3)%13 + (data.lc.total+19)%20) / 32 * 100;
+  document.getElementById('bar-tzolkin').style.width = `${((data.lc.total%260)/260*100).toFixed(1)}%`;
+  document.getElementById('val-tzolkin').textContent = `${data.lc.total%260}/260`;
+  document.getElementById('bar-haab').style.width    = `${((data.lc.total+348)%365/365*100).toFixed(1)}%`;
+  document.getElementById('val-haab').textContent    = `${(data.lc.total+348)%365}/365`;
+  document.getElementById('bar-cr').style.width      = `${(data.cr/18980*100).toFixed(1)}%`;
+  document.getElementById('val-cr').textContent      = `${data.cr}/18980`;
+  document.getElementById('bar-819').style.width     = `${(data.s819.pos/819*100).toFixed(1)}%`;
+  document.getElementById('val-819').textContent     = `${data.s819.pos}/819`;
+  document.getElementById('bar-venus').style.width   = `${(data.ven.pos/584*100).toFixed(1)}%`;
+  document.getElementById('val-venus').textContent   = `${data.ven.pos}/584`;
+  const katunPos = data.lc.total % 7200;
+  document.getElementById('bar-katun').style.width   = `${(katunPos/7200*100).toFixed(1)}%`;
+  document.getElementById('val-katun').textContent   = `${katunPos}/7200`;
+
+  // Day glyphs
+  document.getElementById('glyph-row').innerHTML = `
+    <div class="maya-glyph">
+      <div class="maya-glyph-sym">${data.tz.emoji}</div>
+      <div class="maya-glyph-lbl">${TZOLKIN_DAYS[data.tz.name]}</div>
+    </div>
+    <div class="maya-glyph">
+      <div class="maya-glyph-sym">🌙</div>
+      <div class="maya-glyph-lbl">Day ${Math.floor(data.moon.age)}</div>
+    </div>
+    <div class="maya-glyph">
+      <div class="maya-glyph-sym">${data.s819.glyph}</div>
+      <div class="maya-glyph-lbl">${data.s819.color}</div>
+    </div>
+    <div class="maya-glyph">
+      <div class="maya-glyph-sym">⭐</div>
+      <div class="maya-glyph-lbl">Venus ${data.ven.pos}</div>
+    </div>
+  `;
+
+  // 819-day station
+  document.getElementById('station-819').innerHTML =
+    `<strong style="color:var(--star)">${data.s819.color} (${data.s819.direction})</strong> — ` +
+    `Day ${data.s819.pos} of current 819-day station. ` +
+    `The 819-day count cycles through four directional colors (Red/East, White/North, Black/West, Yellow/South), ` +
+    `each 819 days. Current position: ${data.s819.days_since} days into the ${data.s819.color} station.`;
+
+  // TWKM link
+  const lcFmt = data.lcStr;
+  document.getElementById('twkm-link').href =
+    `https://classicmayan.org/calendar-calculations/#${encodeURIComponent(lcFmt)}`;
+}
+
+// ── Conversion actions ────────────────────────────────────────
+function convertLC() {
+  const str = document.getElementById('lc-input').value;
+  const parts = parseLC(str);
+  if (!parts) { alert('Enter a valid Long Count: e.g. 9.17.0.0.0'); return; }
+  const jdn = lcToJDN(...parts);
+  const data = computeDate(jdn);
+  renderResults(data);
+  // Sync greg input
+  if (data) {
+    const g = data.greg;
+    const yr = g.year > 0 ? g.year : g.year-1; // astronomical year
+    if (yr > 0 && yr <= 9999) {
+      document.getElementById('greg-input').value =
+        `${String(yr).padStart(4,'0')}-${String(g.month).padStart(2,'0')}-${String(g.day).padStart(2,'0')}`;
+    }
+  }
+}
+
+function convertGreg() {
+  const val = document.getElementById('greg-input').value;
+  if (!val) return;
+  const [y,m,d] = val.split('-').map(Number);
+  const jdn  = gregToJDN(y, m, d);
+  const data = computeDate(jdn);
+  renderResults(data);
+  // Sync LC input
+  if (data) document.getElementById('lc-input').value = data.lcStr;
+}
+
+// ── Preset buttons ────────────────────────────────────────────
+document.querySelectorAll('.maya-preset').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.maya-preset').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const lc = this.dataset.lc;
+    document.getElementById('lc-input').value = lc;
+    convertLC();
+  });
+});
+
+// ── Notable dates ─────────────────────────────────────────────
+const NOTABLE = [
+  {lc:'0.0.0.0.0',   label:'Maya Creation Date',
+   desc:'4 Ajaw 8 Kumkʼu — the mythological beginning of the current era. August 11, 3114 BCE (GMT).'},
+  {lc:'9.9.2.4.8',   label:'Pakal the Great — Birth',
+   desc:'8 Manikʼ 0 Sek — Kʼinich Janaab Pakal born at Palenque. March 24, 603 CE.'},
+  {lc:'9.12.11.5.18',label:'Pakal — Accession to throne',
+   desc:'1 Etznabʼ 11 Yax — Pakal becomes lord of Palenque at age 12. July 29, 615 CE.'},
+  {lc:'9.13.0.0.0',  label:'Katun ending 9.13',
+   desc:'8 Ajaw 8 Woʼ — key period ending at Palenque, Copán, Tikal. March 18, 692 CE.'},
+  {lc:'9.15.0.0.0',  label:'Katun ending 9.15 — Venus Table',
+   desc:'4 Ajaw 13 Yax — anchor date for the Dresden Codex Venus table. July 16, 731 CE.'},
+  {lc:'9.16.4.10.8', label:'Dresden Eclipse Table base',
+   desc:'12 Lamat 1 Muwan — starting date for the 11,960-day eclipse table. November 20, 755 CE.'},
+  {lc:'9.17.0.0.0',  label:'Katun ending 9.17 — New Moon base',
+   desc:'13 Ajaw 18 Kumkʼu — used as new moon baseline by TWKM. January 24, 771 CE.'},
+  {lc:'10.8.0.0.0',  label:'Classic Maya collapse begins',
+   desc:'9 Ajaw 3 Sip — approximate date of last major monumental inscriptions. c. 909 CE.'},
+  {lc:'11.3.0.0.0',  label:'Postclassic — Chichén Itzá peak',
+   desc:'Long Count in disuse; Chichén Itzá at height of power. c. 987 CE.'},
+  {lc:'13.0.0.0.0',  label:'13th Bʼakʼtun completion',
+   desc:'4 Ajaw 3 Kʼankʼin — end of the 13th Bʼakʼtun. December 21, 2012 CE.'},
+  {lc:'9.12.0.0.0',  label:'Lady Sixʼ Sky — Naranjo accession',
+   desc:'10 Ajaw 8 Yaxkʼin — Lady Sixʼ Sky becomes regent of Naranjo. c. 682 CE.'},
+  {lc:'8.14.3.1.12', label:'Earliest dated Classic Maya stela',
+   desc:'1 Eb 0 Yaxkʼin — Stela 29, Tikal. July 8, 292 CE. Oldest securely dated monument.'},
+];
+
+document.getElementById('notable-dates').innerHTML = NOTABLE.map(nd => {
+  const parts = parseLC(nd.lc);
+  let gregStr = '';
+  if (parts) {
+    const jdn  = lcToJDN(...parts);
+    const data = computeDate(jdn);
+    if (data) gregStr = fmtGreg(data.greg);
+  }
+  return `<div class="maya-date-card" onclick="loadNotable('${nd.lc}')">
+    <div class="maya-date-lc">${nd.lc}</div>
+    <div class="maya-date-label">${nd.label}</div>
+    <div class="maya-date-greg">${gregStr}</div>
+    <div class="maya-date-desc">${nd.desc}</div>
+  </div>`;
+}).join('');
+
+function loadNotable(lc) {
+  document.getElementById('lc-input').value = lc;
+  convertLC();
+  document.getElementById('lc-input').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+// ── Init: load today's date ───────────────────────────────────
+(function initMaya() {
+  const today = new Date();
+  const y = today.getFullYear(), m = today.getMonth()+1, d = today.getDate();
+  document.getElementById('greg-input').value =
+    `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  convertGreg();
+})();
+</script>
+
 </body>
 </html>
