@@ -336,22 +336,36 @@ async function loadWrecks() {
   document.getElementById('ldText').textContent = 'Loading shipwrecks…';
   
   // Single request — 1584 wrecks with essential fields only
-  const r = await fetch(
-    `${SUPABASE_URL}/rest/v1/shipwrecks?select=id,name,lat,lng,earliest_date,latest_date,period,sea_area,country,min_depth,max_depth,depth_note,has_amphorae,has_marble,has_hull,stone_cargo,tonnage,length_m&limit=2000&order=earliest_date.asc.nullslast`,
-    { headers:{ apikey:SUPABASE_ANON_KEY, Authorization:`Bearer ${SUPABASE_ANON_KEY}` } }
-  );
-  if (!r.ok) {
-    document.getElementById('ldText').textContent = `Error loading shipwrecks: ${r.status}`;
+  try {
+    document.getElementById('ldText').textContent = 'Connecting to database…';
+    const url = `${SUPABASE_URL}/rest/v1/shipwrecks?select=id,name,lat,lng,earliest_date,latest_date,period,sea_area,country,min_depth,max_depth,depth_note,has_amphorae,has_marble,has_hull,stone_cargo,tonnage,length_m&limit=2000&order=id.asc`;
+    const r = await fetch(url, {
+      headers:{
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Accept": "application/json"
+      }
+    });
+    const txt = await r.text();
+    if (!r.ok) {
+      document.getElementById('ldText').textContent = `DB error ${r.status}: ${txt.slice(0,120)}`;
+      return;
+    }
+    let batch;
+    try { batch = JSON.parse(txt); } catch(e) {
+      document.getElementById('ldText').textContent = `Parse error: ${txt.slice(0,120)}`;
+      return;
+    }
+    if (!Array.isArray(batch)) {
+      document.getElementById('ldText').textContent = `Unexpected response: ${JSON.stringify(batch).slice(0,120)}`;
+      return;
+    }
+    allWrecks.push(...batch);
+    document.getElementById('ldText').textContent = `Building ${allWrecks.length.toLocaleString()} wreck markers…`;
+  } catch(e) {
+    document.getElementById('ldText').textContent = `Network error: ${e.message}`;
     return;
   }
-  const batch = await r.json();
-  if (!Array.isArray(batch)) {
-    document.getElementById('ldText').textContent = 'Error: unexpected response from database';
-    console.error(batch);
-    return;
-  }
-  allWrecks.push(...batch);
-  document.getElementById('ldText').textContent = `Building ${allWrecks.length.toLocaleString()} wreck markers…`;
 }
 
 // ── Make icon ─────────────────────────────────────────────────
