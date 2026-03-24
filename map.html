@@ -319,17 +319,66 @@ async function sbFetch(path) {
   return r.json();
 }
 
-async function loadAllSites() {
-  let offset = 0, batch;
-  do {
-    batch = await sbFetch(
-      `archaeology_sites?select=id,name,region,subregion,culture,period,lat,lng,country,description,wikipedia_url,topostext_url,ancient_refs`+
-      `&limit=${PAGE_SIZE}&offset=${offset}&order=ancient_refs.desc.nullslast`
-    );
-    allSites.push(...batch);
-    offset += PAGE_SIZE;
-    document.getElementById('loadingText').textContent = `Loading sites… ${allSites.length.toLocaleString()}`;
-  } while (batch.length === PAGE_SIZE);
+async function loadTier1() {
+  const corpusSites = await sbFetch(`corpus_map?select=site_id,mention_count&mention_count=gt.0&limit=500`);
+  const corpusIds = corpusSites.map((r) => r.site_id).filter(Boolean);
+  const major = await sbFetch(
+    `archaeology_sites?select=id,name,region,subregion,culture,period,lat,lng,country,description,wikipedia_url,topostext_url,ancient_refs`+
+    `&ancient_refs=gt.200&limit=1000&order=ancient_refs.desc`
+  );
+  let corpusMatched = [];
+  for (let i = 0; i < Math.min(corpusIds.length, 200); i += 50) {
+    const chunk = corpusIds.slice(i, i+50);
+    if (!chunk.length) break;
+    const batch = await sbFetch(`archaeology_sites?select=id,name,region,subregion,culture,period,lat,lng,country,description,wikipedia_url,topostext_url,ancient_refs&id=in.(${chunk.join(',')})&limit=50`);
+    corpusMatched.push(...batch);
+  }
+  const seen = new Set();
+  [...major, ...corpusMatched].forEach(s => { if (!seen.has(s.id)) { seen.add(s.id); allSites.push(s); } });
+  document.getElementById('loadingText').textContent = `Loaded ${allSites.length} major sites…`;
+}
+
+async function loadTier2() {
+  const batch = await sbFetch(
+    `archaeology_sites?select=id,name,region,subregion,culture,period,lat,lng,country,description,wikipedia_url,topostext_url,ancient_refs`+
+    `&ancient_refs=gte.10&ancient_refs=lte.200&limit=2000&order=ancient_refs.desc`
+  );
+  const existing = new Set(allSites.map(s => s.id));
+  batch.filter((s) => !existing.has(s.id)).forEach(s => allSites.push(s));
+}
+
+async function loadViewport(bounds, zoom) {
+  if (zoom < 6) return;
+  const pad = 1;
+  const q = `lat=gte.${(bounds.getSouth()-pad).toFixed(2)}&lat=lte.${(bounds.getNorth()+pad).toFixed(2)}&lng=gte.${(bounds.getWest()-pad).toFixed(2)}&lng=lte.${(bounds.getEast()+pad).toFixed(2)}`;
+  const batch = await sbFetch(`archaeology_sites?select=id,name,region,subregion,culture,period,lat,lng,country,description,wikipedia_url,topostext_url,ancient_refs&${q}&ancient_refs=lt.10&limit=500&order=ancient_refs.desc.nullslast`);
+  const existing = new Set(allSites.map(s => s.id));
+  const newSites = batch.filter((s) => !existing.has(s.id));
+  if (!newSites.length) return;
+  newSites.forEach(s => allSites.push(s));
+  addMarkersForSites(newSites);
+}
+
+function addMarkersForSites(sites) {
+  sites.forEach(site => {
+    if (!site.lat || !site.lng) return;
+    const corpus = corpusMap[site.id] || {};
+    const mentions = corpus.mention_count || 0;
+    const tier = getTier(site, mentions);
+    const marker = L.marker([site.lat, site.lng], {icon:makeIcon(tier,mentions>0),title:site.name});
+    marker.on('click', () => showDetail(site, corpus));
+    marker.bindPopup(`<div class="popup-name">${site.name}</div><div class="popup-sub">${[site.culture,site.period].filter(Boolean).join(' · ')||''}</div>`,{maxWidth:220,closeButton:false});
+    allMarkerData.push({site,corpus,tier,marker});
+    clusterGroups[tier].addLayer(marker);
+  });
+  updateCounts();
+}
+
+function updateCounts() {
+  const counts = {1:0,2:0,3:0,4:0};
+  allMarkerData.forEach(d => counts[d.tier]++);
+  [1,2,3,4].forEach(t => { const el=document.getElementById(`cnt${t}`); if(el) el.textContent=counts[t].toLocaleString(); });
+  document.getElementById('statTotal').textContent = allSites.length.toLocaleString();
 }
 
 async function loadCorpus() {
@@ -528,7 +577,8 @@ async function init() {
   };
 
   try {
-    await Promise.all([loadAllSites(), loadCorpus()]);
+    await loadCorpus();
+    await loadTier1();
   } catch(e) {
     document.getElementById('loadingText').textContent = 'Error: ' + e.message;
     return;
@@ -536,6 +586,23 @@ async function init() {
 
   buildMarkers();
   document.getElementById('mapLoading').style.display = 'none';
+
+  // Tier 2 in background
+  setTimeout(async () => {
+    await loadTier2();
+    const existing = new Set(allMarkerData.map(d => d.site.id));
+    addMarkersForSites(allSites.filter(s => !existing.has(s.id)));
+    applyFilters();
+  }, 1500);
+
+  // Viewport loading at zoom 6+
+  let vpTimer;
+  map.on('moveend zoomend', () => {
+    clearTimeout(vpTimer);
+    vpTimer = setTimeout(async () => {
+      if (map.getZoom() >= 6) { await loadViewport(map.getBounds(), map.getZoom()); applyFilters(); }
+    }, 800);
+  });
 }
 
 // ── Event listeners ───────────────────────────────────────────
