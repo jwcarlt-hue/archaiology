@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Maya Inscriptions — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root {
+  --night:#050810; --star:#c8d8f0; --horizon:#1a3a5c;
+  --ochre:#b8892a; --ochre-lt:#d4a84b; --terra:#7a3e1a;
+  --jade:#3a8a5a; --jade-lt:#5ab880;
+  --serif:'Playfair Display',Georgia,serif;
+  --mono:'DM Mono',monospace; --sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{font-family:var(--sans);background:var(--night);color:var(--star);min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+
+/* ── Masthead ── */
+.masthead{position:fixed;top:0;left:0;right:0;z-index:1000;height:48px;
+  background:rgba(5,8,16,.97);border-bottom:1px solid rgba(200,216,240,.06);
+  display:flex;align-items:center;padding:0 1.5rem;gap:1.5rem;}
+.logo{font-family:var(--serif);font-size:1.15rem;font-weight:900;color:var(--star);}
+.logo span{color:var(--ochre-lt);font-style:italic;}
+.nav-link{font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.35);transition:color .2s;}
+.nav-link:hover,.nav-link.active{color:var(--star);}
+
+/* ── Hero ── */
+.hero{padding:96px 2rem 3rem;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(90,184,128,.05),transparent 70%);}
+.star-field{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(1px 1px at 8% 15%,rgba(200,216,240,.7),transparent),
+    radial-gradient(1px 1px at 22% 55%,rgba(200,216,240,.5),transparent),
+    radial-gradient(1.5px 1.5px at 38% 8%,rgba(200,216,240,.8),transparent),
+    radial-gradient(1px 1px at 52% 40%,rgba(200,216,240,.4),transparent),
+    radial-gradient(2px 2px at 68% 22%,rgba(200,216,240,.6),transparent),
+    radial-gradient(1px 1px at 83% 65%,rgba(200,216,240,.5),transparent),
+    radial-gradient(1.5px 1.5px at 14% 78%,rgba(200,216,240,.7),transparent),
+    radial-gradient(1px 1px at 91% 35%,rgba(200,216,240,.4),transparent);}
+.hero-inner{max-width:1100px;margin:0 auto;position:relative;}
+.hero-eyebrow{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--jade-lt);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem;}
+.hero-eyebrow::before{content:'';display:inline-block;width:20px;height:1px;background:var(--jade-lt);}
+h1{font-family:var(--serif);font-size:clamp(2rem,5vw,3.8rem);font-weight:900;
+  color:var(--star);line-height:1.1;margin-bottom:.7rem;}
+h1 em{color:var(--jade-lt);font-style:italic;}
+.hero-sub{font-size:.88rem;color:rgba(200,216,240,.5);max-width:580px;line-height:1.8;margin-bottom:1.5rem;}
+.stat-row{display:flex;gap:2rem;flex-wrap:wrap;}
+.stat-cell{text-align:center;}
+.stat-n{font-family:var(--serif);font-size:1.6rem;font-weight:900;color:var(--jade-lt);}
+.stat-l{font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.3);}
+
+/* ── Layout ── */
+.page-body{display:grid;grid-template-columns:320px 1fr;gap:0;padding-top:0;}
+@media(max-width:860px){.page-body{grid-template-columns:1fr;}}
+
+/* ── Sites panel ── */
+.sites-panel{position:sticky;top:48px;height:calc(100vh - 48px);overflow-y:auto;
+  background:rgba(200,216,240,.015);border-right:1px solid rgba(200,216,240,.05);
+  scrollbar-width:thin;}
+.sites-panel::-webkit-scrollbar{width:3px;}
+.sites-panel::-webkit-scrollbar-thumb{background:rgba(200,216,240,.1);}
+.panel-head{padding:.8rem 1rem;border-bottom:1px solid rgba(200,216,240,.05);}
+.panel-search{width:100%;background:rgba(200,216,240,.04);border:1px solid rgba(200,216,240,.08);
+  color:var(--star);font-family:var(--sans);font-size:.78rem;padding:.45rem .7rem;
+  outline:none;margin-bottom:.5rem;}
+.panel-search::placeholder{color:rgba(200,216,240,.2);}
+.period-chips{display:flex;gap:.3rem;flex-wrap:wrap;}
+.p-chip{font-size:.52rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:.15rem .4rem;border:1px solid rgba(200,216,240,.1);background:none;
+  color:rgba(200,216,240,.35);cursor:pointer;transition:all .14s;}
+.p-chip:hover{color:var(--star);}
+.p-chip.active{background:rgba(90,184,128,.1);color:var(--jade-lt);border-color:rgba(90,184,128,.3);}
+
+.site-item{padding:.65rem 1rem;cursor:pointer;border-bottom:1px solid rgba(200,216,240,.03);
+  transition:background .15s;border-left:2px solid transparent;}
+.site-item:hover{background:rgba(200,216,240,.03);}
+.site-item.active{border-left-color:var(--jade-lt);background:rgba(90,184,128,.04);}
+.site-code{font-family:var(--mono);font-size:.58rem;color:var(--jade-lt);margin-bottom:.15rem;}
+.site-name{font-size:.82rem;font-weight:600;color:var(--star);}
+.site-meta{font-size:.6rem;color:rgba(200,216,240,.35);margin-top:.15rem;
+  display:flex;gap:.5rem;flex-wrap:wrap;}
+.insc-badge{display:inline-block;background:rgba(90,184,128,.08);
+  border:1px solid rgba(90,184,128,.2);color:var(--jade-lt);
+  font-size:.52rem;font-weight:700;padding:.1rem .3rem;}
+
+/* ── Main content ── */
+.main-content{min-height:calc(100vh - 48px);}
+
+/* Map */
+#maya-map{height:340px;border-bottom:1px solid rgba(200,216,240,.05);}
+
+/* Site detail */
+.site-detail{padding:1.5rem 1.8rem;}
+.site-detail-header{margin-bottom:1.5rem;}
+.site-code-lg{font-family:var(--mono);font-size:.65rem;color:var(--jade-lt);
+  letter-spacing:.1em;margin-bottom:.3rem;}
+.site-name-lg{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.4rem);
+  font-weight:900;color:var(--star);margin-bottom:.5rem;}
+.site-badges{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.8rem;}
+.badge{font-size:.52rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:.15rem .45rem;border-radius:1px;}
+.b-period{background:rgba(90,184,128,.1);color:var(--jade-lt);border:1px solid rgba(90,184,128,.2);}
+.b-country{background:rgba(184,137,42,.1);color:var(--ochre-lt);border:1px solid rgba(184,137,42,.2);}
+.b-insc{background:rgba(100,120,180,.1);color:#80a0d0;border:1px solid rgba(100,120,180,.2);}
+.site-coords{font-family:var(--mono);font-size:.65rem;color:rgba(200,216,240,.35);margin-bottom:1rem;}
+
+.site-notes{font-size:.82rem;color:rgba(200,216,240,.6);line-height:1.75;
+  padding:.8rem 1rem;background:rgba(200,216,240,.02);border-left:2px solid rgba(90,184,128,.2);
+  margin-bottom:1.5rem;}
+
+/* ── Image archive grid ── */
+.section-lbl{font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--jade-lt);margin-bottom:.8rem;padding-bottom:.4rem;
+  border-bottom:1px solid rgba(200,216,240,.05);}
+.img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.6rem;margin-bottom:1.5rem;}
+.img-card{background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.05);
+  cursor:pointer;transition:all .15s;overflow:hidden;}
+.img-card:hover{border-color:rgba(90,184,128,.3);}
+.img-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;
+  background:rgba(200,216,240,.03);filter:grayscale(30%);}
+.img-card-meta{padding:.4rem .5rem;}
+.img-id{font-family:var(--mono);font-size:.52rem;color:rgba(200,216,240,.35);}
+.img-title{font-size:.65rem;color:rgba(200,216,240,.6);margin-top:.1rem;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+
+.img-loading{text-align:center;padding:2rem;color:rgba(200,216,240,.25);font-size:.78rem;}
+.img-empty{text-align:center;padding:2rem;color:rgba(200,216,240,.2);font-size:.78rem;}
+
+/* ── Calendar inset ── */
+.cal-inset{background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.05);
+  padding:1rem 1.2rem;margin-bottom:1.5rem;}
+.cal-inset-title{font-family:var(--mono);font-size:.54rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ochre-lt);margin-bottom:.7rem;}
+.cal-presets{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.7rem;}
+.cal-preset-btn{font-size:.55rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  padding:.2rem .5rem;border:1px solid rgba(184,137,42,.2);background:none;
+  color:rgba(200,216,240,.4);cursor:pointer;transition:all .14s;}
+.cal-preset-btn:hover{color:var(--ochre-lt);border-color:rgba(184,137,42,.4);}
+.cal-result-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-top:.5rem;}
+.crm{background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.05);padding:.45rem .6rem;}
+.crm-k{font-size:.5rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.3);margin-bottom:.2rem;}
+.crm-v{font-family:var(--mono);font-size:.72rem;color:var(--star);}
+
+/* ── Lightbox ── */
+.lightbox{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.92);
+  display:none;align-items:center;justify-content:center;padding:1.5rem;}
+.lightbox.open{display:flex;}
+.lb-inner{max-width:900px;width:100%;background:#0a0d14;border:1px solid rgba(200,216,240,.1);}
+.lb-img-wrap{position:relative;}
+.lb-img{width:100%;max-height:70vh;object-fit:contain;display:block;
+  background:#000;filter:contrast(1.05);}
+.lb-meta{padding:1rem 1.2rem;}
+.lb-id{font-family:var(--mono);font-size:.6rem;color:var(--jade-lt);}
+.lb-title{font-size:.9rem;font-weight:600;color:var(--star);margin:.3rem 0;}
+.lb-desc{font-size:.72rem;color:rgba(200,216,240,.5);line-height:1.6;}
+.lb-close{position:absolute;top:.6rem;right:.6rem;background:rgba(200,216,240,.08);
+  border:1px solid rgba(200,216,240,.1);color:rgba(200,216,240,.5);
+  width:30px;height:30px;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;}
+.lb-links{display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap;}
+.lb-link{font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.3rem .6rem;border:1px solid rgba(90,184,128,.2);color:var(--jade-lt);}
+.lb-link:hover{border-color:rgba(90,184,128,.5);}
+
+/* ── Leaflet custom ── */
+.leaflet-popup-content-wrapper{background:rgba(5,8,16,.95);border:1px solid rgba(200,216,240,.1);border-radius:1px;color:var(--star);}
+.leaflet-popup-tip{background:rgba(5,8,16,.95);}
+.leaflet-popup-content{font-family:var(--sans);font-size:.72rem;margin:.5rem .7rem;}
+.mp-code{font-family:var(--mono);color:var(--jade-lt);margin-bottom:.2rem;}
+.mp-name{font-weight:600;}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+  <a class="nav-link" href="index.html">Home</a>
+  <a class="nav-link" href="news.html">Feed</a>
+  <a class="nav-link" href="map.html">Map</a>
+  <a class="nav-link" href="sky.html">Sky Archive</a>
+  <a class="nav-link" href="maritime.html">Maritime</a>
+  <a class="nav-link" href="linguistics.html">Linguistics</a>
+  <a class="nav-link" href="inscriptions.html">Inscriptions</a>
+  <a class="nav-link active" href="maya_inscriptions.html">Maya</a>
+  <a class="nav-link" href="conferences.html">Conferences</a>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="star-field"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">TWKM · Universität Bonn · CC BY 4.0</div>
+    <h1>Maya <em>Inscriptions</em><br>Archive</h1>
+    <p class="hero-sub">Images of Classic Maya monuments, stelae, lintels, and inscribed objects from the TWKM Maya Image Archive — free to use under CC BY 4.0. Browse by site, cross-reference with the Maya calendar, and link to our Mesoamerican gazetteer.</p>
+    <div class="stat-row">
+      <div class="stat-cell"><div class="stat-n">5,700+</div><div class="stat-l">Archive Images</div></div>
+      <div class="stat-cell"><div class="stat-n">40</div><div class="stat-l">Major Sites</div></div>
+      <div class="stat-cell"><div class="stat-n">530 BCE</div><div class="stat-l">Earliest stela</div></div>
+      <div class="stat-cell"><div class="stat-n">909 CE</div><div class="stat-l">Last Long Count</div></div>
+      <div class="stat-cell"><div class="stat-n">CC BY 4.0</div><div class="stat-l">License</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Body -->
+<div class="page-body">
+
+  <!-- Sites panel -->
+  <aside class="sites-panel">
+    <div class="panel-head">
+      <input class="panel-search" id="site-search" placeholder="Filter sites…" oninput="filterSites()">
+      <div class="period-chips">
+        <button class="p-chip active" data-period="" onclick="setPeriod(this,'')">All</button>
+        <button class="p-chip" data-period="Classic" onclick="setPeriod(this,'Classic')">Classic</button>
+        <button class="p-chip" data-period="Postclassic" onclick="setPeriod(this,'Postclassic')">Postclassic</button>
+      </div>
+    </div>
+    <div id="site-list"></div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-content">
+    <div id="maya-map"></div>
+    <div class="site-detail" id="site-detail">
+      <div style="text-align:center;padding:3rem;color:rgba(200,216,240,.25);">
+        <div style="font-size:2rem;margin-bottom:.8rem;">𓏇</div>
+        <div style="font-size:.85rem;">Select a site from the panel to explore its inscriptions and image archive.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lb-inner">
+    <div class="lb-img-wrap">
+      <img class="lb-img" id="lb-img" src="" alt="">
+      <button class="lb-close" onclick="closeLightbox()">✕</button>
+    </div>
+    <div class="lb-meta">
+      <div class="lb-id" id="lb-id"></div>
+      <div class="lb-title" id="lb-title"></div>
+      <div class="lb-desc" id="lb-desc"></div>
+      <div class="lb-links" id="lb-links"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// ════════════════════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════════════════════
+const SITES = [
+  {code:"PAL",name:"Palenque",lat:17.4839,lng:-92.0456,country:"Mexico",morley:81,riese:226,period:"Classic",notes:"Palace tablet, Temple inscriptions, Pakal's tomb. Greatest epigraphic corpus in Classic Maya."},
+  {code:"TIK",name:"Tikal",lat:17.2220,lng:-89.6237,country:"Guatemala",morley:84,riese:267,period:"Classic",notes:"Largest Classic Maya city. Six major temple-pyramids. Rivals with Calakmul (Snake Kingdom)."},
+  {code:"CPN",name:"Copán",lat:14.8386,lng:-89.1414,country:"Honduras",morley:62,riese:175,period:"Classic",notes:"Hieroglyphic Stairway (2,500 glyphs). Altar Q documents 16-ruler dynasty. Southeastern frontier."},
+  {code:"CAL",name:"Calakmul",lat:18.1037,lng:-89.8083,country:"Mexico",morley:117,riese:167,period:"Classic",notes:"Snake Kingdom capital. Greatest number of stelae (117). Rival superpower to Tikal."},
+  {code:"YAX",name:"Yaxchilán",lat:16.8981,lng:-90.9675,country:"Mexico",morley:59,riese:124,period:"Classic",notes:"Lintels 24–26 depict bloodletting rituals. Lady Xokʼ. Bird Jaguar IV. Usumacinta river position."},
+  {code:"TON",name:"Tonina",lat:16.9000,lng:-92.0167,country:"Mexico",morley:91,riese:176,period:"Classic",notes:"Last confirmed Long Count date: 10.4.0.0.0 (909 CE). Monument 101. Aggressive military history."},
+  {code:"PIE",name:"Piedras Negras",lat:17.1542,lng:-91.2647,country:"Guatemala",morley:41,riese:89,period:"Classic",notes:"Tatiana Proskouriakoff's 1960 breakthrough proving stelae record historical rulers, not calendrical priests."},
+  {code:"NAR",name:"Naranjo",lat:17.0667,lng:-89.7333,country:"Guatemala",morley:38,riese:72,period:"Classic",notes:"Lady Sixʼ Sky became regent 682 CE. Major rivalry with Tikal. 38 stelae."},
+  {code:"QRG",name:"Quiriguá",lat:15.2667,lng:-89.0444,country:"Guatemala",morley:23,riese:51,period:"Classic",notes:"Tallest Maya stela (Stela E, 10.6m). Zoomorphs. Cauac Sky defeated Copán's 18 Rabbit in 738 CE."},
+  {code:"CRC",name:"Caracol",lat:16.7667,lng:-89.1167,country:"Belize",morley:28,riese:61,period:"Classic",notes:"Defeated Tikal 562 CE. Vast causeway network. Largest site in Belize."},
+  {code:"BPK",name:"Bonampak",lat:16.7011,lng:-91.0656,country:"Mexico",morley:12,riese:25,period:"Classic",notes:"Room 1–3 murals depict battle scenes, captive presentation. Best-preserved Classic Maya murals."},
+  {code:"DON",name:"Dos Pilas",lat:16.3833,lng:-90.1167,country:"Guatemala",morley:18,riese:42,period:"Classic",notes:"Petexbatun regional capital. Bal\u00e1m Ajaw. Military expansion texts."},
+  {code:"AGT",name:"Aguateca",lat:16.4000,lng:-90.1833,country:"Guatemala",morley:14,riese:33,period:"Classic",notes:"Abandoned suddenly c.810 CE. Elite residences preserved with artifacts in situ. Elite scribal objects found."},
+  {code:"XUL",name:"Xultun",lat:17.7167,lng:-89.6000,country:"Guatemala",morley:8,riese:12,period:"Classic",notes:"2012 discovery of astronomical mural — earliest Maya astronomical tables. Planetary cycles on walls."},
+  {code:"UAX",name:"Uaxactun",lat:17.3944,lng:-89.6333,country:"Guatemala",morley:9,riese:17,period:"Classic",notes:"E-group astronomical alignment. Stela 29 (292 CE) — earliest securely dated Classic Maya monument."},
+  {code:"COB",name:"Cobá",lat:20.4886,lng:-87.7292,country:"Mexico",morley:32,riese:44,period:"Classic",notes:"Stela 1 bears one of the latest Long Count dates. 50km of sacbes (causeways). Connects Pacific to Caribbean."},
+  {code:"CHI",name:"Chichén Itzá",lat:20.6843,lng:-88.5678,country:"Mexico",morley:0,riese:28,period:"Postclassic",notes:"El Castillo alignment to Pleiades and Venus. Venus platform. Sacred cenote. Toltec-Maya synthesis."},
+  {code:"UXM",name:"Uxmal",lat:20.3592,lng:-89.7711,country:"Mexico",morley:0,riese:15,period:"Postclassic",notes:"Puuc architectural style. Governor's Palace aligned to Venus. No hieroglyphic texts survive in situ."},
+  {code:"LAM",name:"Lamanai",lat:17.7717,lng:-88.6550,country:"Belize",morley:4,riese:7,period:"Classic",notes:"Continuous occupation 1500 BCE to 1600 CE — one of the longest in the Maya world."},
+  {code:"SEI",name:"Seibal",lat:16.5000,lng:-90.0833,country:"Guatemala",morley:16,riese:29,period:"Classic",notes:"Fine Stucco group. Tepeu 3 monuments show Terminal Classic revival under foreign (non-Maya?) leadership."},
+  {code:"ELP",name:"El Perú-Waka'",lat:17.4000,lng:-90.3833,country:"Guatemala",morley:14,riese:22,period:"Classic",notes:"Snake Kingdom ally. Lady Katun Ahaw. Royal tomb with jade mosaic mask discovered 2012."},
+  {code:"KOH",name:"Kohunlich",lat:18.5067,lng:-88.9592,country:"Mexico",morley:6,riese:9,period:"Classic",notes:"Temple of the Masks: giant stucco solar deity masks c.500 CE. Discovered by looters, rescued by INAH."},
+  {code:"EDZ",name:"Edzná",lat:19.5944,lng:-90.2294,country:"Mexico",morley:4,riese:8,period:"Classic",notes:"Temple of the Five Stories. Stelae with hieroglyphic texts. Canal system for water management."},
+  {code:"OXK",name:"Oxkintok",lat:20.5647,lng:-89.9369,country:"Mexico",morley:4,riese:9,period:"Classic",notes:"Earliest dated Classic Maya monument in Yucatán. Proto-Pure Florescent architectural style."},
+  {code:"MRD",name:"Moral-Reforma",lat:17.9167,lng:-91.5833,country:"Mexico",morley:8,riese:13,period:"Classic",notes:"Usumacinta/Gulf Coast lowlands. Large stelae program. Under-excavated site with major monuments."},
+  {code:"XNA",name:"Xunantunich",lat:17.0897,lng:-89.1389,country:"Belize",morley:8,riese:14,period:"Classic",notes:"El Castillo frieze with cosmological imagery. Carved hieroglyphic monuments. Mopan River position."},
+  {code:"ALT",name:"Altun Ha",lat:17.7639,lng:-88.3458,country:"Belize",morley:3,riese:4,period:"Classic",notes:"Jade head of Kinich Ahau (largest Maya jade object). Sun God temple. Northern Belize lowlands."},
+  {code:"BEC",name:"Becán",lat:18.5275,lng:-89.4692,country:"Mexico",morley:2,riese:3,period:"Classic",notes:"Fortified city surrounded by a moat-like ditch. Central Campeche Puuc-transitional architecture."},
+  {code:"PIE2",name:"Piedras Negras (south group)",lat:17.1600,lng:-91.2600,country:"Guatemala",morley:3,riese:5,period:"Classic",notes:"South acropolis stelae. Throne scenes."},
+  {code:"POL",name:"Pólol",lat:17.0833,lng:-89.5000,country:"Guatemala",morley:5,riese:8,period:"Classic",notes:"Minor site with stelae in Petén lowlands."},
+  {code:"MQL",name:"Machaquilá",lat:16.5833,lng:-89.7000,country:"Guatemala",morley:10,riese:19,period:"Classic",notes:"Late Classic stelae with fine carving. Pasión region."},
+  {code:"POM",name:"Pomona",lat:17.8500,lng:-91.5333,country:"Mexico",morley:7,riese:11,period:"Classic",notes:"Usumacinta region lowlands. Hieroglyphic panel."},
+  {code:"LTZ",name:"Lubaantun",lat:16.2833,lng:-88.9667,country:"Belize",morley:2,riese:3,period:"Classic",notes:"Unusual construction without mortar. Ball courts. Crystal skull controversy."},
+  {code:"ITZ",name:"Itzimte",lat:20.0000,lng:-89.7500,country:"Mexico",morley:3,riese:5,period:"Postclassic",notes:"Terminal Classic/Early Postclassic. Puuc-style facades."},
+  {code:"UAX2",name:"Uaxactun (north group)",lat:17.4000,lng:-89.6400,country:"Guatemala",morley:5,riese:9,period:"Classic",notes:"Group B stelae. Astronomical E-group."},
+  {code:"ISP",name:"Isla de Piedras",lat:18.3500,lng:-90.8667,country:"Mexico",morley:2,riese:4,period:"Classic",notes:"Gulf Coast lowlands minor center."},
+  {code:"SBL",name:"Sak Bichán",lat:17.2000,lng:-91.0000,country:"Mexico",morley:4,riese:7,period:"Classic",notes:"Chiapas lowlands minor site."},
+  {code:"AGT2",name:"La Mar",lat:17.0167,lng:-91.0000,country:"Mexico",morley:8,riese:14,period:"Classic",notes:"Usumacinta tributary. Hilltop defensive position. Unpublished monuments."},
+  {code:"MUL",name:"Mulchic",lat:20.7167,lng:-89.5000,country:"Mexico",morley:2,riese:3,period:"Postclassic",notes:"Northern Yucatán minor center."},
+  {code:"CON",name:"Coba (north group)",lat:20.4950,lng:-87.7350,country:"Mexico",morley:5,riese:8,period:"Classic",notes:"Northern causeways and stelae cluster."},
+];
+
+// TWKM ConedaKOR base URL
+const KOR = "https://classicmayan.kor.de.dariah.eu";
+
+// Known image numbers from the Karl Herbert Mayer collection (sample)
+// Real integration fetches from KOR API client-side
+const SAMPLE_IMAGES = {
+  "PAL": ["KHM_1976_F01_R01_01","KHM_1976_F01_R01_02","KHM_1976_F01_R01_03","KHM_1976_F01_R02_01","KHM_1976_F01_R02_05","KHM_1976_F01_R02_08"],
+  "TIK": ["KHM_1978_F03_R01_01","KHM_1978_F03_R01_02","KHM_1978_F03_R02_01","KHM_1978_F03_R02_03"],
+  "CPN": ["KHM_1979_F05_R01_01","KHM_1979_F05_R01_02","KHM_1979_F05_R02_01","KHM_1979_F05_R03_01"],
+  "YAX": ["KHM_1980_F07_R01_01","KHM_1980_F07_R01_02","KHM_1980_F07_R02_01"],
+  "QRG": ["KHM_1981_F09_R01_01","KHM_1981_F09_R01_02"],
+};
+
+// ── Maya calendar (reuse engine from sky.html) ──────────────
+const CORR = 584283;
+const TZ_DAYS = ['Imixʼ','Ikʼ','Akbalʼ','Kʼan','Chikchan','Kimi','Manikʼ','Lamat','Muluk','Ok','Chuwen','Eb','Ben','Hix','Men','Kʼib','Kabán','Etznabʼ','Kawak','Ajaw'];
+const TZ_EMOJI = ['🐊','💨','🌑','🌽','🐍','💀','🦌','⭐','🌊','🐾','🐒','🛤','🌿','🐆','🦅','🦉','🌍','🔪','⛈','☀️'];
+const HAAB_M = ['Pop','Woʼ','Sip','Sotzʼ','Sek','Xul','Yaxkʼin','Mol','Chʼen','Yax','Sakʼ','Keh','Mak','Kʼankʼin','Muwan','Pax','Kʼayabʼ','Kumkʼu','Wayebʼ'];
+const MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function lcToJDN(b,k,t,w,ki){ return CORR+(b*144000)+(k*7200)+(t*360)+(w*20)+ki; }
+function jdnToLC(jdn){ const d=jdn-CORR; if(d<0)return null;
+  const b=Math.floor(d/144000),r1=d%144000,k=Math.floor(r1/7200),r2=r1%7200,
+    t=Math.floor(r2/360),r3=r2%360,w=Math.floor(r3/20),ki=r3%20;
+  return {b,k,t,w,ki,d}; }
+function gregToJDN(y,m,d){
+  const a=Math.floor((14-m)/12),yy=y+4800-a,mm=m+12*a-3;
+  return d+Math.floor((153*mm+2)/5)+365*yy+Math.floor(yy/4)-Math.floor(yy/100)+Math.floor(yy/400)-32045; }
+function jdnToGreg(jdn){
+  const a=jdn+32044,b=Math.floor((4*a+3)/146097),c=a-Math.floor(146097*b/4),
+    d=Math.floor((4*c+3)/1461),e=c-Math.floor(1461*d/4),m=Math.floor((5*e+2)/153);
+  return{day:e-Math.floor((153*m+2)/5)+1,month:m+3-12*Math.floor(m/10),year:100*b+d-4800+Math.floor(m/10)}; }
+function tzolkin(d){return{num:((d+3)%13)+1,name:(d+19)%20};}
+function haab(d){const p=(d+348)%365;return{m:Math.floor(p/20),day:p%20};}
+function fmtGreg(g){const e=g.year<0?` ${Math.abs(g.year)+1} BCE`:` ${g.year} CE`;return`${g.day} ${MONTHS_EN[g.month-1]}${e}`;}
+
+function calcDate(lcStr){
+  const p=lcStr.trim().split('.').map(Number);
+  if(p.length!==5||p.some(isNaN))return null;
+  const jdn=lcToJDN(...p);
+  const lc=jdnToLC(jdn); if(!lc)return null;
+  const tz=tzolkin(lc.d),hb=haab(lc.d),g=jdnToGreg(jdn);
+  return{lc:`${lc.b}.${lc.k}.${lc.t}.${lc.w}.${lc.ki}`,
+    cr:`${tz.num} ${TZ_DAYS[tz.name]} ${hb.day} ${HAAB_M[hb.m]}`,
+    greg:fmtGreg(g),emoji:TZ_EMOJI[tz.name]};
+}
+
+// ── NOTABLE DATES PER SITE ────────────────────────────────────
+const SITE_DATES = {
+  PAL:[{lc:"9.9.2.4.8",label:"Pakal born"},{lc:"9.12.11.5.18",label:"Pakal accession"},{lc:"9.13.0.0.0",label:"Temple Inscriptions katun ending"}],
+  TIK:[{lc:"8.14.3.1.12",label:"Stela 29 — earliest dated monument"},{lc:"9.15.3.6.8",label:"Tikal defeated by Dos Pilas"}],
+  CPN:[{lc:"9.0.0.0.0",label:"Early Copán occupation"},{lc:"9.17.5.0.0",label:"Altar Q completion"}],
+  QRG:[{lc:"9.14.13.4.17",label:"18 Rabbit captured by Cauac Sky"},{lc:"9.17.0.0.0",label:"Stela E erected"}],
+  TON:[{lc:"10.4.0.0.0",label:"Last Long Count date (909 CE)"}],
+  YAX:[{lc:"9.16.1.0.0",label:"Lintel 24 — Lady Xokʼ bloodletting"},{lc:"9.16.4.1.1",label:"Bird Jaguar IV accession"}],
+  CHI:[{lc:"10.8.0.0.0",label:"Estimated Chichén Itzá florescence"},{lc:"10.3.17.12.1",label:"Earliest Chichén monument"}],
+};
+
+// ── Map init ──────────────────────────────────────────────────
+let map, siteMarkers={}, currentSite=null, periodFilter='';
+
+window.addEventListener('load', () => {
+  map = L.map('maya-map',{center:[17,-89],zoom:5,zoomControl:false,attributionControl:false});
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',
+    {attribution:'© Esri',maxZoom:10}).addTo(map);
+  L.control.zoom({position:'bottomright'}).addTo(map);
+
+  renderSiteList();
+  renderMapMarkers();
+});
+
+function renderMapMarkers(){
+  SITES.forEach(s => {
+    const r = s.riese > 100 ? 8 : s.riese > 50 ? 6 : s.riese > 20 ? 5 : 4;
+    const icon = L.divIcon({
+      html:`<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+4}" height="${r*2+4}">
+        <circle cx="${r+2}" cy="${r+2}" r="${r}" fill="#3a8a5a" fill-opacity=".7"
+          stroke="#c8d8f0" stroke-width="1" stroke-opacity=".5"/>
+      </svg>`,
+      className:'', iconSize:[r*2+4,r*2+4], iconAnchor:[r+2,r+2]
+    });
+    const m = L.marker([s.lat,s.lng],{icon})
+      .bindPopup(`<div class="mp-code">${s.code}</div><div class="mp-name">${s.name}</div><div style="margin-top:.2rem;font-size:.62rem;color:rgba(200,216,240,.45)">${s.riese} inscriptions (Riese)</div>`)
+      .on('click', () => loadSite(s.code));
+    m.addTo(map);
+    siteMarkers[s.code] = m;
+  });
+}
+
+// ── Site list render ─────────────────────────────────────────
+function renderSiteList(){
+  const q = document.getElementById('site-search').value.toLowerCase();
+  const list = SITES.filter(s =>
+    (!q || s.name.toLowerCase().includes(q) || s.code.toLowerCase().includes(q)) &&
+    (!periodFilter || s.period === periodFilter)
+  ).sort((a,b) => b.riese - a.riese);
+
+  document.getElementById('site-list').innerHTML = list.map(s => `
+    <div class="site-item${currentSite===s.code?' active':''}" onclick="loadSite('${s.code}')">
+      <div class="site-code">${s.code} · ${s.country}</div>
+      <div class="site-name">${s.name}</div>
+      <div class="site-meta">
+        <span>${s.period}</span>
+        <span class="insc-badge">${s.riese} inscr.</span>
+        ${s.morley > 0 ? `<span style="font-size:.5rem;color:rgba(200,216,240,.25)">${s.morley} Morley</span>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function filterSites(){ renderSiteList(); }
+function setPeriod(btn, period){
+  document.querySelectorAll('.p-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); periodFilter=period; renderSiteList();
+}
+
+// ── Load site ─────────────────────────────────────────────────
+function loadSite(code){
+  currentSite = code;
+  const s = SITES.find(x=>x.code===code);
+  if(!s) return;
+  renderSiteList();
+
+  // Fly map to site
+  map.flyTo([s.lat, s.lng], 9, {duration:1.2});
+
+  // Build site detail
+  const dates = SITE_DATES[code] || [];
+  const kor_search = `${KOR}/#/search?terms=${encodeURIComponent(s.name)}`;
+
+  document.getElementById('site-detail').innerHTML = `
+    <div class="site-detail-header">
+      <div class="site-code-lg">${s.code} · TWKM Site Register</div>
+      <div class="site-name-lg">${s.name}</div>
+      <div class="site-badges">
+        <span class="badge b-period">${s.period}</span>
+        <span class="badge b-country">${s.country}</span>
+        <span class="badge b-insc">${s.riese} inscriptions (Riese 1976)</span>
+        ${s.morley > 0 ? `<span class="badge b-insc">${s.morley} (Morley 1948)</span>` : ''}
+      </div>
+      <div class="site-coords">${s.lat.toFixed(4)}°N, ${Math.abs(s.lng).toFixed(4)}°W · <a href="map.html" style="color:var(--jade-lt)">View on archAIology map →</a></div>
+      ${s.notes ? `<div class="site-notes">${s.notes}</div>` : ''}
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+        <a href="${kor_search}" target="_blank" rel="noopener"
+          style="font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+          padding:.3rem .7rem;border:1px solid rgba(90,184,128,.25);color:var(--jade-lt);">
+          → Browse Image Archive
+        </a>
+        <a href="https://classicmayan.org/portal/db_sites" target="_blank" rel="noopener"
+          style="font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+          padding:.3rem .7rem;border:1px solid rgba(184,137,42,.2);color:var(--ochre-lt);">
+          → TWKM Site Database
+        </a>
+      </div>
+    </div>
+
+    ${dates.length ? `
+    <div class="cal-inset">
+      <div class="cal-inset-title">Key dates — Maya calendar</div>
+      <div class="cal-presets" id="cal-presets-${code}">
+        ${dates.map(d=>`<button class="cal-preset-btn" onclick="showCalDate('${d.lc}','${d.label}')">${d.label}</button>`).join('')}
+      </div>
+      <div id="cal-result-${code}" style="display:none;">
+        <div class="cal-result-mini" id="cal-mini-${code}"></div>
+      </div>
+    </div>` : ''}
+
+    <div class="section-lbl">Image archive — TWKM · CC BY 4.0</div>
+    <div id="img-grid-${code}" class="img-grid">
+      <div class="img-loading">Loading images from TWKM archive…</div>
+    </div>
+
+    <div style="margin-top:1rem;padding:.6rem .8rem;background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.05);">
+      <div style="font-size:.6rem;color:rgba(200,216,240,.3);line-height:1.6;">
+        Images © Karl Herbert Mayer / TWKM Universität Bonn. Licensed CC BY 4.0.
+        Source: <a href="${KOR}" target="_blank" style="color:var(--jade-lt)">classicmayan.kor.de.dariah.eu</a>
+      </div>
+    </div>
+  `;
+
+  loadImages(code, s.name);
+}
+
+// ── Calendar date display ─────────────────────────────────────
+function showCalDate(lc, label){
+  const data = calcDate(lc);
+  if(!data) return;
+  const code = currentSite;
+  document.getElementById(`cal-result-${code}`).style.display = 'block';
+  document.getElementById(`cal-mini-${code}`).innerHTML = `
+    <div class="crm"><div class="crm-k">Long Count</div><div class="crm-v" style="color:var(--ochre-lt)">${data.lc}</div></div>
+    <div class="crm"><div class="crm-k">Calendar Round</div><div class="crm-v">${data.emoji} ${data.cr}</div></div>
+    <div class="crm"><div class="crm-k">Gregorian</div><div class="crm-v">${data.greg}</div></div>
+  `;
+}
+
+// ── Image loading — ConedaKOR API ─────────────────────────────
+async function loadImages(code, siteName){
+  const grid = document.getElementById(`img-grid-${code}`);
+  if(!grid) return;
+
+  try {
+    // Fetch from ConedaKOR search API
+    const url = `${KOR}/entities.json?kind_id=1&terms=${encodeURIComponent(siteName)}&per_page=24&page=1`;
+    const resp = await fetch(url, {headers:{'Accept':'application/json'}});
+
+    if(resp.ok){
+      const data = await resp.json();
+      const entities = data.entities || data.results || data || [];
+      if(Array.isArray(entities) && entities.length){
+        renderImages(code, entities);
+        return;
+      }
+    }
+  } catch(e) { /* fall through to sample */ }
+
+  // Fallback: use sample known image numbers
+  const samples = SAMPLE_IMAGES[code];
+  if(samples){
+    renderSampleImages(code, samples, siteName);
+  } else {
+    // Show search link fallback
+    const korLink = `${KOR}/#/search?terms=${encodeURIComponent(siteName)}`;
+    if(grid) grid.innerHTML = `
+      <div class="img-empty">
+        <div style="margin-bottom:.5rem">Images available in the TWKM archive.</div>
+        <a href="${korLink}" target="_blank" rel="noopener"
+          style="font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+          padding:.35rem .7rem;border:1px solid rgba(90,184,128,.25);color:var(--jade-lt);">
+          Browse ${siteName} images →
+        </a>
+      </div>`;
+  }
+}
+
+function renderImages(code, entities){
+  const grid = document.getElementById(`img-grid-${code}`);
+  if(!grid) return;
+  grid.innerHTML = entities.slice(0,20).map(e => {
+    const thumb = e.medium_url || e.thumbnail_url || (e.images && e.images[0]) || '';
+    const title = e.name || e.title || e.label || '';
+    const id = e.id || '';
+    return thumb ? `
+      <div class="img-card" onclick="openLightbox('${id}','${title.replace(/'/g,"\\'")}','','${thumb}','')">
+        <img src="${thumb}" alt="${title}" loading="lazy" onerror="this.closest('.img-card').style.display='none'">
+        <div class="img-card-meta">
+          <div class="img-id">${id}</div>
+          <div class="img-title">${title}</div>
+        </div>
+      </div>` : '';
+  }).join('') || `<div class="img-empty">No thumbnails available. <a href="${KOR}" target="_blank" style="color:var(--jade-lt)">Browse archive →</a></div>`;
+}
+
+function renderSampleImages(code, imageNos, siteName){
+  const grid = document.getElementById(`img-grid-${code}`);
+  if(!grid) return;
+  const korSearch = `${KOR}/#/search?terms=${encodeURIComponent(siteName)}`;
+  grid.innerHTML = imageNos.map(imgNo => {
+    const resolveUrl = `${KOR}/resolve/image_no/${imgNo}`;
+    const thumbUrl = `${KOR}/download/${imgNo}/normal`;
+    return `
+      <div class="img-card" onclick="openLightbox('${imgNo}','${imgNo}','Karl Herbert Mayer photo · CC BY 4.0','${thumbUrl}','${resolveUrl}')">
+        <img src="${thumbUrl}" alt="${imgNo}" loading="lazy"
+          onerror="this.src='';this.closest('.img-card').querySelector('.img-card-meta').insertAdjacentHTML('beforebegin','<div style=\\'width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;background:rgba(200,216,240,.03);font-size:.6rem;color:rgba(200,216,240,.2)\\'>📷 ${imgNo}</div>')">
+        <div class="img-card-meta">
+          <div class="img-id">${imgNo}</div>
+          <div class="img-title">Karl Herbert Mayer · ${siteName}</div>
+        </div>
+      </div>`;
+  }).join('') + `
+    <div class="img-card" style="display:flex;align-items:center;justify-content:center;min-height:140px;">
+      <div style="text-align:center;padding:1rem;">
+        <div style="font-size:.6rem;color:rgba(200,216,240,.3);margin-bottom:.5rem">Full archive</div>
+        <a href="${korSearch}" target="_blank" rel="noopener"
+          style="font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+          padding:.3rem .6rem;border:1px solid rgba(90,184,128,.25);color:var(--jade-lt);">
+          Browse all →
+        </a>
+      </div>
+    </div>`;
+}
+
+// ── Lightbox ──────────────────────────────────────────────────
+function openLightbox(id, title, desc, imgUrl, resolveUrl){
+  document.getElementById('lb-img').src = imgUrl;
+  document.getElementById('lb-id').textContent = id;
+  document.getElementById('lb-title').textContent = title;
+  document.getElementById('lb-desc').textContent = desc || 'TWKM Maya Image Archive · CC BY 4.0 · Universität Bonn';
+  document.getElementById('lb-links').innerHTML = [
+    resolveUrl ? `<a class="lb-link" href="${resolveUrl}" target="_blank">→ Full record in archive</a>` : '',
+    `<a class="lb-link" href="${KOR}" target="_blank">→ Browse full archive</a>`,
+    `<a class="lb-link" href="sky.html">→ Maya calendar</a>`,
+  ].join('');
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(e){
+  if(!e || e.target===document.getElementById('lightbox')||e.currentTarget!==document.getElementById('lightbox')){
+    document.getElementById('lightbox').classList.remove('open');
+    document.getElementById('lb-img').src = '';
+  }
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
+
+// Init: load Palenque on start
+window.addEventListener('load', () => setTimeout(() => loadSite('PAL'), 300));
+</script>
+</body>
+</html>
