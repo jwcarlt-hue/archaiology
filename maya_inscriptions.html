@@ -176,6 +176,16 @@ h1 em{color:var(--jade-lt);font-style:italic;}
 .leaflet-popup-content{font-family:var(--sans);font-size:.72rem;margin:.5rem .7rem;}
 .mp-code{font-family:var(--mono);color:var(--jade-lt);margin-bottom:.2rem;}
 .mp-name{font-weight:600;}
+
+/* ── Archive link cards ── */
+.alc{display:flex;gap:.75rem;align-items:flex-start;
+  background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.06);
+  padding:.85rem 1rem;transition:all .15s;border-left:2px solid transparent;text-decoration:none;}
+.alc:hover{border-left-color:var(--jade-lt);background:rgba(90,184,128,.04);}
+.alc-icon{font-size:1.25rem;line-height:1;flex-shrink:0;padding-top:.1rem;}
+.alc-title{font-size:.78rem;font-weight:600;color:var(--star);margin-bottom:.25rem;}
+.alc-sub{font-size:.63rem;color:rgba(200,216,240,.45);line-height:1.55;margin-bottom:.3rem;}
+.alc-url{font-family:var(--mono);font-size:.5rem;color:var(--jade-lt);opacity:.65;}
 </style>
 </head>
 <body>
@@ -469,9 +479,7 @@ function loadSite(code){
     </div>` : ''}
 
     <div class="section-lbl">Image archive — TWKM · CC BY 4.0</div>
-    <div id="img-grid-${code}" class="img-grid">
-      <div class="img-loading">Loading images from TWKM archive…</div>
-    </div>
+    <div id="img-grid-${code}" class="img-grid" style="display:block;margin-bottom:1rem;"></div>
 
     <div style="margin-top:1rem;padding:.6rem .8rem;background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.05);">
       <div style="font-size:.6rem;color:rgba(200,216,240,.3);line-height:1.6;">
@@ -497,92 +505,89 @@ function showCalDate(lc, label){
   `;
 }
 
-// ── Image loading — ConedaKOR API ─────────────────────────────
-async function loadImages(code, siteName){
+// ── Archive link renderer ────────────────────────────────────
+function loadImages(code, siteName){
   const grid = document.getElementById(`img-grid-${code}`);
   if(!grid) return;
+  const KOR = "https://classicmayan.kor.de.dariah.eu";
+  const korSearch  = `${KOR}/#/search?terms=${encodeURIComponent(siteName)}`;
+  grid.innerHTML = `
+    <div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;">
 
-  try {
-    // Fetch from ConedaKOR search API
-    const url = `${KOR}/entities.json?kind_id=1&terms=${encodeURIComponent(siteName)}&per_page=24&page=1`;
-    const resp = await fetch(url, {headers:{'Accept':'application/json'}});
-
-    if(resp.ok){
-      const data = await resp.json();
-      const entities = data.entities || data.results || data || [];
-      if(Array.isArray(entities) && entities.length){
-        renderImages(code, entities);
-        return;
-      }
-    }
-  } catch(e) { /* fall through to sample */ }
-
-  // Fallback: use sample known image numbers
-  const samples = SAMPLE_IMAGES[code];
-  if(samples){
-    renderSampleImages(code, samples, siteName);
-  } else {
-    // Show search link fallback
-    const korLink = `${KOR}/#/search?terms=${encodeURIComponent(siteName)}`;
-    if(grid) grid.innerHTML = `
-      <div class="img-empty">
-        <div style="margin-bottom:.5rem">Images available in the TWKM archive.</div>
-        <a href="${korLink}" target="_blank" rel="noopener"
-          style="font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-          padding:.35rem .7rem;border:1px solid rgba(90,184,128,.25);color:var(--jade-lt);">
-          Browse ${siteName} images →
-        </a>
-      </div>`;
-  }
-}
-
-function renderImages(code, entities){
-  const grid = document.getElementById(`img-grid-${code}`);
-  if(!grid) return;
-  grid.innerHTML = entities.slice(0,20).map(e => {
-    const thumb = e.medium_url || e.thumbnail_url || (e.images && e.images[0]) || '';
-    const title = e.name || e.title || e.label || '';
-    const id = e.id || '';
-    return thumb ? `
-      <div class="img-card" onclick="openLightbox('${id}','${title.replace(/'/g,"\\'")}','','${thumb}','')">
-        <img src="${thumb}" alt="${title}" loading="lazy" onerror="this.closest('.img-card').style.display='none'">
-        <div class="img-card-meta">
-          <div class="img-id">${id}</div>
-          <div class="img-title">${title}</div>
+      <a href="${korSearch}" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">🖼</div>
+        <div class="alc-body">
+          <div class="alc-title">Image Archive — ${siteName}</div>
+          <div class="alc-sub">Karl Herbert Mayer photographs &amp; drawings. 5,700+ images.</div>
+          <div class="alc-url">classicmayan.kor.de.dariah.eu</div>
         </div>
-      </div>` : '';
-  }).join('') || `<div class="img-empty">No thumbnails available. <a href="${KOR}" target="_blank" style="color:var(--jade-lt)">Browse archive →</a></div>`;
-}
+      </a>
 
-function renderSampleImages(code, imageNos, siteName){
-  const grid = document.getElementById(`img-grid-${code}`);
-  if(!grid) return;
-  const korSearch = `${KOR}/#/search?terms=${encodeURIComponent(siteName)}`;
-  grid.innerHTML = imageNos.map(imgNo => {
-    const resolveUrl = `${KOR}/resolve/image_no/${imgNo}`;
-    const thumbUrl = `${KOR}/download/${imgNo}/normal`;
-    return `
-      <div class="img-card" onclick="openLightbox('${imgNo}','${imgNo}','Karl Herbert Mayer photo · CC BY 4.0','${thumbUrl}','${resolveUrl}')">
-        <img src="${thumbUrl}" alt="${imgNo}" loading="lazy"
-          onerror="this.src='';this.closest('.img-card').querySelector('.img-card-meta').insertAdjacentHTML('beforebegin','<div style=\\'width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;background:rgba(200,216,240,.03);font-size:.6rem;color:rgba(200,216,240,.2)\\'>📷 ${imgNo}</div>')">
-        <div class="img-card-meta">
-          <div class="img-id">${imgNo}</div>
-          <div class="img-title">Karl Herbert Mayer · ${siteName}</div>
+      <a href="${KOR}/#/new-media" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">🆕</div>
+        <div class="alc-body">
+          <div class="alc-title">Recently Added</div>
+          <div class="alc-sub">Latest additions — continuously expanded by Bonn researchers.</div>
+          <div class="alc-url">classicmayan.kor.de.dariah.eu/#/new-media</div>
         </div>
-      </div>`;
-  }).join('') + `
-    <div class="img-card" style="display:flex;align-items:center;justify-content:center;min-height:140px;">
-      <div style="text-align:center;padding:1rem;">
-        <div style="font-size:.6rem;color:rgba(200,216,240,.3);margin-bottom:.5rem">Full archive</div>
-        <a href="${korSearch}" target="_blank" rel="noopener"
-          style="font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-          padding:.3rem .6rem;border:1px solid rgba(90,184,128,.25);color:var(--jade-lt);">
-          Browse all →
-        </a>
-      </div>
+      </a>
+
+      <a href="https://classicmayan.org/portal/db_sites" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">📍</div>
+        <div class="alc-body">
+          <div class="alc-title">TWKM Site Register</div>
+          <div class="alc-sub">Geocoded register with Getty IDs, GeoNames, inscription counts.</div>
+          <div class="alc-url">classicmayan.org/portal/db_sites</div>
+        </div>
+      </a>
+
+      <a href="https://digitale-sammlungen.ulb.uni-bonn.de/maya" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">📜</div>
+        <div class="alc-body">
+          <div class="alc-title">Hieroglyphic Text Archive</div>
+          <div class="alc-sub">Full-text hieroglyphic corpus. Sign-level search. ULB Bonn.</div>
+          <div class="alc-url">digitale-sammlungen.ulb.uni-bonn.de</div>
+        </div>
+      </a>
+
+      <a href="https://www.zotero.org/idiom_bibliography" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">📚</div>
+        <div class="alc-body">
+          <div class="alc-title">IDIOM Bibliography</div>
+          <div class="alc-sub">Curated Zotero bibliography of Maya epigraphy and archaeology.</div>
+          <div class="alc-url">zotero.org/idiom_bibliography</div>
+        </div>
+      </a>
+
+      <a href="https://sketchfab.com/idiom-project" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">🗿</div>
+        <div class="alc-body">
+          <div class="alc-title">Artefacts in 3D</div>
+          <div class="alc-sub">Photogrammetric 3D models of stelae, altars, portable objects. CC BY.</div>
+          <div class="alc-url">sketchfab.com/idiom-project</div>
+        </div>
+      </a>
+
+      <a href="https://classicmayan.org/portal/signcatalog" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">𓀀</div>
+        <div class="alc-body">
+          <div class="alc-title">Sign Catalog</div>
+          <div class="alc-sub">1,000+ glyphs with readings, variants, and attestations.</div>
+          <div class="alc-url">classicmayan.org/portal/signcatalog</div>
+        </div>
+      </a>
+
+      <a href="https://classicmayan.org/calendar-calculations/" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">📅</div>
+        <div class="alc-body">
+          <div class="alc-title">Calendar Calculator</div>
+          <div class="alc-sub">Long Count ↔ Gregorian with eclipse prediction and 819-day count.</div>
+          <div class="alc-url">classicmayan.org/calendar-calculations</div>
+        </div>
+      </a>
+
     </div>`;
 }
-
 // ── Lightbox ──────────────────────────────────────────────────
 function openLightbox(id, title, desc, imgUrl, resolveUrl){
   document.getElementById('lb-img').src = imgUrl;
