@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Biological Anthropology — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root {
+  --night:#050810; --star:#c8d8f0; --horizon:#1a3a5c;
+  --ochre:#b8892a; --ochre-lt:#d4a84b;
+  --bone:#e8dfc8; --bone-dim:rgba(232,223,200,.45);
+  --rust:#8a3a1a; --rust-lt:#c05a30;
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --mono:'DM Mono',monospace; --sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--night);color:var(--star);min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+img{display:block;}
+
+/* ── Masthead ── */
+.masthead{position:fixed;top:0;left:0;right:0;z-index:1000;height:48px;
+  background:rgba(5,8,16,.96);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(200,216,240,.06);
+  display:flex;align-items:center;padding:0 1.5rem;gap:1.5rem;}
+.logo{font-family:var(--serif);font-size:1.15rem;font-weight:900;color:var(--star);}
+.logo span{color:var(--ochre-lt);font-style:italic;}
+.nav-link{font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.32);transition:color .2s;white-space:nowrap;}
+.nav-link:hover,.nav-link.active{color:var(--star);}
+
+/* ── Hero ── */
+.hero{padding:88px 2rem 3rem;position:relative;overflow:hidden;
+  background:linear-gradient(180deg,rgba(26,10,4,.6) 0%,transparent 100%);}
+.hero-dust{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%,rgba(138,58,26,.08),transparent 65%),
+    radial-gradient(1px 1px at 12% 20%,rgba(200,216,240,.5),transparent),
+    radial-gradient(1px 1px at 28% 60%,rgba(200,216,240,.35),transparent),
+    radial-gradient(1.5px 1.5px at 44% 12%,rgba(200,216,240,.6),transparent),
+    radial-gradient(1px 1px at 60% 45%,rgba(200,216,240,.3),transparent),
+    radial-gradient(2px 2px at 76% 28%,rgba(200,216,240,.5),transparent),
+    radial-gradient(1px 1px at 88% 72%,rgba(200,216,240,.4),transparent);}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;}
+.hero-eyebrow{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--rust-lt);margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem;}
+.hero-eyebrow::before{content:'';width:22px;height:1px;background:var(--rust-lt);}
+.hero-title{font-family:var(--serif);font-size:clamp(2rem,5.5vw,4rem);font-weight:900;
+  color:var(--bone);line-height:1.05;margin-bottom:.7rem;letter-spacing:-.01em;}
+.hero-title em{color:var(--rust-lt);font-style:italic;}
+.hero-sub{font-family:var(--body);font-size:.95rem;color:rgba(200,216,240,.45);
+  max-width:560px;line-height:1.8;margin-bottom:1.8rem;font-weight:300;}
+.hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap;}
+.hs{text-align:left;}
+.hs-n{font-family:var(--serif);font-size:1.6rem;font-weight:900;color:var(--rust-lt);}
+.hs-l{font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(200,216,240,.3);}
+
+/* ── Tab nav ── */
+.tab-bar{background:rgba(200,216,240,.02);border-bottom:1px solid rgba(200,216,240,.06);
+  display:flex;gap:0;padding:0 2rem;position:sticky;top:48px;z-index:90;}
+.tab{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(200,216,240,.3);padding:.9rem 1.2rem;
+  cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;}
+.tab:hover{color:rgba(200,216,240,.65);}
+.tab.active{color:var(--bone);border-bottom-color:var(--rust-lt);}
+
+/* ── Sections ── */
+.section{display:none;max-width:1200px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+.section.active{display:block;}
+
+/* ── Section headers ── */
+.sec-eyebrow{font-family:var(--mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--rust-lt);margin-bottom:.4rem;}
+.sec-title{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2.2rem);font-weight:900;
+  color:var(--bone);margin-bottom:.5rem;}
+.sec-sub{font-family:var(--body);font-size:.85rem;color:rgba(200,216,240,.4);
+  line-height:1.7;max-width:600px;margin-bottom:2rem;font-weight:300;}
+
+/* ════════════════════════════════════════
+   SECTION 1: JOURNAL FEED
+══════════════════════════════════════════ */
+.feed-controls{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center;}
+.journal-chip{font-size:.55rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:.22rem .55rem;border:1px solid rgba(200,216,240,.1);background:none;
+  color:rgba(200,216,240,.38);cursor:pointer;transition:all .15s;border-radius:1px;}
+.journal-chip:hover{color:var(--star);}
+.journal-chip.active{color:var(--rust-lt);border-color:rgba(192,90,48,.4);
+  background:rgba(192,90,48,.08);}
+.journal-chip[data-j="JHE"].active{color:#80a0d0;border-color:rgba(128,160,208,.4);background:rgba(128,160,208,.07);}
+.journal-chip[data-j="PA"].active{color:#70b870;border-color:rgba(112,184,112,.4);background:rgba(112,184,112,.07);}
+.journal-chip[data-j="EA"].active{color:#d4a84b;border-color:rgba(212,168,75,.4);background:rgba(212,168,75,.07);}
+.journal-chip[data-j="AJBA"].active{color:#b080d0;border-color:rgba(176,128,208,.4);background:rgba(176,128,208,.07);}
+.journal-chip[data-j="EHS"].active{color:#60c0a0;border-color:rgba(96,192,160,.4);background:rgba(96,192,160,.07);}
+
+.feed-status{font-family:var(--mono);font-size:.58rem;color:rgba(200,216,240,.25);margin-left:auto;}
+.feed-loading{text-align:center;padding:3rem;color:rgba(200,216,240,.2);font-size:.82rem;}
+.feed-loading::after{content:'...';animation:dots 1.5s infinite;}
+@keyframes dots{0%{content:'.';}33%{content:'..';}66%{content:'...';}100%{content:'.'}}
+
+.article-card{border-bottom:1px solid rgba(200,216,240,.05);padding:1.1rem 0;
+  cursor:pointer;transition:background .15s;}
+.article-card:hover{background:rgba(200,216,240,.02);}
+.ac-top{display:flex;align-items:flex-start;gap:.8rem;margin-bottom:.45rem;}
+.ac-journal{font-family:var(--mono);font-size:.5rem;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;padding:.12rem .35rem;border-radius:1px;flex-shrink:0;margin-top:2px;}
+.ac-title{font-family:var(--body);font-size:.92rem;font-weight:400;color:var(--bone);
+  line-height:1.45;}
+.ac-meta{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:.3rem;}
+.ac-authors{font-size:.65rem;color:rgba(200,216,240,.4);}
+.ac-date{font-family:var(--mono);font-size:.58rem;color:rgba(200,216,240,.28);}
+.ac-abstract{font-family:var(--body);font-size:.78rem;color:rgba(200,216,240,.45);
+  line-height:1.65;max-height:0;overflow:hidden;transition:max-height .3s;font-weight:300;}
+.ac-abstract.open{max-height:300px;}
+.ac-links{display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap;}
+.ac-link{font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.18rem .45rem;border:1px solid rgba(200,216,240,.1);color:rgba(200,216,240,.4);
+  transition:all .14s;}
+.ac-link:hover{color:var(--rust-lt);border-color:rgba(192,90,48,.3);}
+
+/* Journal badge colours */
+.jb-JHE{background:rgba(128,160,208,.12);color:#80a0d0;}
+.jb-PA{background:rgba(112,184,112,.12);color:#70b870;}
+.jb-EA{background:rgba(212,168,75,.12);color:#d4a84b;}
+.jb-AJBA{background:rgba(176,128,208,.12);color:#b080d0;}
+.jb-EHS{background:rgba(96,192,160,.12);color:#60c0a0;}
+
+.pagination{display:flex;justify-content:center;gap:.4rem;padding:1.5rem 0;}
+.pg-btn{font-family:var(--mono);font-size:.6rem;padding:.3rem .6rem;
+  border:1px solid rgba(200,216,240,.1);background:none;color:rgba(200,216,240,.35);
+  cursor:pointer;transition:all .15s;}
+.pg-btn:hover,.pg-btn.active{color:var(--rust-lt);border-color:rgba(192,90,48,.35);}
+.pg-btn:disabled{opacity:.25;cursor:default;}
+
+/* ════════════════════════════════════════
+   SECTION 2: HOMININ TIMELINE
+══════════════════════════════════════════ */
+.timeline-wrap{position:relative;overflow-x:auto;padding-bottom:1rem;}
+.timeline-svg-wrap{min-width:900px;}
+svg#timeline{width:100%;overflow:visible;}
+
+/* Timeline legend */
+.tl-legend{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;}
+.tl-leg-item{display:flex;align-items:center;gap:.4rem;font-size:.6rem;
+  color:rgba(200,216,240,.45);}
+.tl-leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+/* Species detail panel */
+.species-panel{background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.06);
+  padding:1.2rem 1.4rem;margin-top:1.5rem;display:none;}
+.species-panel.open{display:block;}
+.sp-header{display:flex;align-items:flex-start;justify-content:space-between;
+  gap:1rem;margin-bottom:.8rem;}
+.sp-name{font-family:var(--serif);font-size:1.3rem;font-style:italic;color:var(--bone);}
+.sp-close{background:none;border:1px solid rgba(200,216,240,.1);color:rgba(200,216,240,.3);
+  cursor:pointer;padding:.2rem .5rem;font-size:.7rem;}
+.sp-meta{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:.8rem;}
+.sp-badge{font-size:.52rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:.12rem .4rem;border-radius:1px;}
+.sp-desc{font-family:var(--body);font-size:.82rem;color:rgba(200,216,240,.55);
+  line-height:1.7;font-weight:300;}
+.sp-sites{margin-top:.8rem;}
+.sp-sites-lbl{font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--rust-lt);margin-bottom:.4rem;}
+.sp-site-tags{display:flex;flex-wrap:wrap;gap:.3rem;}
+.sp-tag{font-size:.58rem;padding:.12rem .4rem;background:rgba(192,90,48,.08);
+  border:1px solid rgba(192,90,48,.18);color:rgba(200,216,240,.5);cursor:pointer;}
+.sp-tag:hover{color:var(--rust-lt);}
+
+/* ════════════════════════════════════════
+   SECTION 3: FOSSIL SITE LAYER
+══════════════════════════════════════════ */
+#fossil-map{height:520px;border:1px solid rgba(200,216,240,.06);}
+.site-list-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:.5rem;margin-top:1.2rem;}
+.fs-card{background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.06);
+  padding:.8rem 1rem;cursor:pointer;transition:all .15s;border-left:2px solid transparent;}
+.fs-card:hover{border-left-color:var(--rust-lt);background:rgba(192,90,48,.04);}
+.fs-card.active{border-left-color:var(--rust-lt);background:rgba(192,90,48,.06);}
+.fsc-name{font-size:.82rem;font-weight:600;color:var(--bone);margin-bottom:.2rem;}
+.fsc-sub{font-size:.62rem;color:rgba(200,216,240,.38);}
+.fsc-species{display:flex;flex-wrap:wrap;gap:.2rem;margin-top:.35rem;}
+.fsc-sp{font-size:.5rem;padding:.08rem .3rem;background:rgba(192,90,48,.08);
+  border:1px solid rgba(192,90,48,.15);color:rgba(200,216,240,.45);}
+
+/* Leaflet overrides */
+.leaflet-popup-content-wrapper{background:rgba(5,8,16,.95);border:1px solid rgba(200,216,240,.1);border-radius:1px;color:var(--star);}
+.leaflet-popup-tip{background:rgba(5,8,16,.95);}
+.leaflet-popup-content{font-family:var(--sans);font-size:.72rem;margin:.6rem .8rem;}
+.fp-name{font-family:var(--serif);font-size:.95rem;font-weight:700;color:var(--bone);margin-bottom:.3rem;}
+.fp-sp{font-size:.62rem;color:var(--rust-lt);margin-bottom:.2rem;}
+.fp-age{font-family:var(--mono);font-size:.58rem;color:rgba(200,216,240,.4);}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <a class="nav-link " href="index.html">Home</a>
+  <a class="nav-link " href="news.html">Feed</a>
+  <a class="nav-link " href="map.html">Map</a>
+  <a class="nav-link " href="sky.html">Sky Archive</a>
+  <a class="nav-link " href="maritime.html">Maritime</a>
+  <a class="nav-link " href="linguistics.html">Linguistics</a>
+  <a class="nav-link " href="inscriptions.html">Inscriptions</a>
+  <a class="nav-link " href="maya_inscriptions.html">Maya</a>
+  <a class="nav-link active " href="bioanthro.html">Bioanthro</a>
+  <a class="nav-link " href="conferences.html">Conferences</a>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-dust"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Biological Anthropology · Human Evolution</div>
+    <h1 class="hero-title">The Hominin<br><em>Record</em></h1>
+    <p class="hero-sub">Live literature from five peer-reviewed journals. Seven million years of hominin evolution mapped to fossil discovery sites. The deep human past as it is actively being written.</p>
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-n">5</div><div class="hs-l">Journals</div></div>
+      <div class="hs"><div class="hs-n">~7 Ma</div><div class="hs-l">Record depth</div></div>
+      <div class="hs"><div class="hs-n">28+</div><div class="hs-l">Fossil sites</div></div>
+      <div class="hs"><div class="hs-n">20+</div><div class="hs-l">Hominin species</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab bar -->
+<div class="tab-bar">
+  <div class="tab active" onclick="setTab(this,'feed')">📄 Journal Feed</div>
+  <div class="tab" onclick="setTab(this,'timeline')">🌳 Hominin Timeline</div>
+  <div class="tab" onclick="setTab(this,'sites')">📍 Fossil Sites</div>
+</div>
+
+<!-- ═══════════════ SECTION 1: FEED ═══════════════ -->
+<div class="section active" id="sec-feed">
+  <div class="sec-eyebrow">PubMed eUtils · Live</div>
+  <h2 class="sec-title">Recent Literature</h2>
+  <p class="sec-sub">Articles drawn live from PubMed across five leading journals in human evolutionary biology. Click any article to expand the abstract.</p>
+
+  <div class="feed-controls">
+    <button class="journal-chip active" data-j="ALL" onclick="setJournal(this,'ALL')">All Journals</button>
+    <button class="journal-chip" data-j="JHE" onclick="setJournal(this,'JHE')">J. Human Evolution</button>
+    <button class="journal-chip" data-j="PA" onclick="setJournal(this,'PA')">PaleoAnthropology</button>
+    <button class="journal-chip" data-j="EA" onclick="setJournal(this,'EA')">Evolutionary Anthropology</button>
+    <button class="journal-chip" data-j="AJBA" onclick="setJournal(this,'AJBA')">Am. J. Biol. Anthropology</button>
+    <button class="journal-chip" data-j="EHS" onclick="setJournal(this,'EHS')">Evolutionary Human Sciences</button>
+    <div class="feed-status" id="feed-status">Loading…</div>
+  </div>
+
+  <div id="feed-container"><div class="feed-loading">Fetching from PubMed</div></div>
+  <div class="pagination" id="feed-pagination" style="display:none;"></div>
+</div>
+
+<!-- ═══════════════ SECTION 2: TIMELINE ═══════════════ -->
+<div class="section" id="sec-timeline">
+  <div class="sec-eyebrow">Hominin Phylogeny · Pliocene–Holocene</div>
+  <h2 class="sec-title">Seven Million Years</h2>
+  <p class="sec-sub">A schematic of major hominin taxa by temporal range. Bars indicate known fossil record duration. Click any species to see key sites, morphology notes, and recent literature.</p>
+
+  <div class="tl-legend">
+    <div class="tl-leg-item"><div class="tl-leg-dot" style="background:#c05a30"></div>Australopithecines / pre-Homo</div>
+    <div class="tl-leg-item"><div class="tl-leg-dot" style="background:#4a80c0"></div>Early Homo</div>
+    <div class="tl-leg-item"><div class="tl-leg-dot" style="background:#70b870"></div>Middle Pleistocene Homo</div>
+    <div class="tl-leg-item"><div class="tl-leg-dot" style="background:#d4a84b"></div>Late Homo (Neanderthals, Denisovans)</div>
+    <div class="tl-leg-item"><div class="tl-leg-dot" style="background:#c8d8f0"></div>Homo sapiens</div>
+    <div class="tl-leg-item"><div class="tl-leg-dot" style="background:#9070b0"></div>Enigmatic / isolated lineages</div>
+  </div>
+
+  <div class="timeline-wrap">
+    <div class="timeline-svg-wrap">
+      <svg id="timeline" height="640" viewBox="0 0 1000 640" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <div class="species-panel" id="species-panel">
+    <div class="sp-header">
+      <div>
+        <div class="sp-name" id="sp-name"></div>
+        <div class="sp-meta" id="sp-meta"></div>
+      </div>
+      <button class="sp-close" onclick="document.getElementById('species-panel').classList.remove('open')">✕</button>
+    </div>
+    <div class="sp-desc" id="sp-desc"></div>
+    <div class="sp-sites">
+      <div class="sp-sites-lbl">Key fossil sites</div>
+      <div class="sp-site-tags" id="sp-sites"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SECTION 3: SITES ═══════════════ -->
+<div class="section" id="sec-sites">
+  <div class="sec-eyebrow">Fossil Discovery Sites · Geocoded</div>
+  <h2 class="sec-title">Where We Were Found</h2>
+  <p class="sec-sub">Major hominin fossil discovery sites mapped globally. Marker size reflects the richness of the hominin record at each locality. Click sites to see species, age ranges, and key finds.</p>
+  <div id="fossil-map"></div>
+  <div class="site-list-grid" id="site-list"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// ════════════════════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════════════════════
+
+const JOURNALS = {
+  JHE:  {name:'J Human Evol',     query:'"Journal of Human Evolution"[journal]', full:'Journal of Human Evolution'},
+  PA:   {name:'PaleoAnthropology',query:'"PaleoAnthropology"[journal]',          full:'PaleoAnthropology'},
+  EA:   {name:'Evol Anthropology', query:'"Evolutionary Anthropology"[journal]',  full:'Evolutionary Anthropology'},
+  AJBA: {name:'Am J Biol Anthrop', query:'"American Journal of Biological Anthropology"[journal] OR "American Journal of Physical Anthropology"[journal]', full:'Am. J. Biological Anthropology'},
+  EHS:  {name:'Evol Human Sci',    query:'"Evolutionary Human Sciences"[journal]',full:'Evolutionary Human Sciences'},
+};
+
+// ── Hominin taxa ──────────────────────────────────────────────
+// [id, name, mya_start, mya_end, colour, category, sites[], desc]
+const TAXA = [
+  // Pre-Homo / Sahelanthropus etc.
+  ['sahelanthropus','Sahelanthropus tchadensis',7.0,6.0,'#c05a30','pre',
+   ['Toros-Menalla'],'Oldest potential hominin; Toumaï skull from Chad 2001. Upright posture debated. ~7 Ma.'],
+  ['orrorin','Orrorin tugenensis',6.1,5.7,'#c05a30','pre',
+   ['Tugen Hills'],'Kenya. Femur suggests bipedalism by 6 Ma. First described 2001.'],
+  ['ardi','Ardipithecus ramidus',4.5,4.3,'#c05a30','pre',
+   ['Middle Awash'],'Ethiopia. "Ardi" skeleton 2009. Mosaic: arboreal + incipient bipedal. 4.4 Ma.'],
+  ['kadabba','Ardipithecus kadabba',5.8,5.2,'#c05a30','pre',
+   ['Middle Awash'],'Ethiopia. Earliest Ardipithecus. Toe bone suggests bipedalism.'],
+  ['anamensis','Australopithecus anamensis',4.2,3.8,'#c05a30','pre',
+   ['Kanapoi','Allia Bay','Woranso-Mille'],'Earliest Australopithecus. Bipedal but ape-like cranium. Ethiopia & Kenya.'],
+  ['afarensis','Australopithecus afarensis',3.9,2.9,'#c05a30','pre',
+   ['Hadar','Laetoli','Woranso-Mille'],'Lucy (AL 288-1); Laetoli footprints. Most-studied early hominin. E. Africa.'],
+  ['africanus','Australopithecus africanus',3.3,2.1,'#c05a30','pre',
+   ['Sterkfontein','Makapansgat','Taung'],'South Africa. Taung Child (1924) — first hominin outside Africa/Europe found. Mrs Ples.'],
+  ['sediba','Australopithecus sediba',1.98,1.78,'#9070b0','enigmatic',
+   ['Malapa'],'S. Africa. 2010. Mosaic of australopith + Homo features; candidate ancestor of Homo.'],
+  ['robustus','Paranthropus robustus',1.8,1.2,'#c05a30','pre',
+   ['Swartkrans','Kromdraai'],'S. Africa. Megadont herbivore; sagittal crest; contemporary with early Homo.'],
+  ['boisei','Paranthropus boisei',2.4,1.3,'#c05a30','pre',
+   ['Olduvai','Koobi Fora','Chesowanja'],'E. Africa. "Nutcracker Man" OH 5 (1959). Largest molars of any hominin.'],
+  ['aethiopicus','Paranthropus aethiopicus',2.7,2.3,'#c05a30','pre',
+   ['Omo','West Turkana'],'E. Africa. "Black Skull" KNM-WT 17000; enigmatic placement in Paranthropus.'],
+  // Early Homo
+  ['habilis','Homo habilis',2.4,1.4,'#4a80c0','early_homo',
+   ['Olduvai','Koobi Fora'],'First species attributed to Homo. Oldowan tools. Debates on valid species status.'],
+  ['rudolfensis','Homo rudolfensis',2.5,1.8,'#4a80c0','early_homo',
+   ['Koobi Fora','Malawi'],'KNM-ER 1470. Large-brained; flat face. Validity as separate species actively debated.'],
+  ['naledi','Homo naledi',0.335,0.236,'#9070b0','enigmatic',
+   ['Rising Star Cave'],'S. Africa. Announced 2015; dated 2017. Small-brained but late survival. Deliberate burial?'],
+  // Homo erectus grade
+  ['ergaster','Homo ergaster',1.9,1.4,'#4a80c0','early_homo',
+   ['Koobi Fora','Nariokotome'],'Turkana Boy KNM-WT 15000; first tall, long-legged hominin. African H. erectus.'],
+  ['erectus','Homo erectus',1.9,0.14,'#70b870','middle_homo',
+   ['Dmanisi','Zhoukoudian','Trinil','Sangiran','Ngandong'],'Widest geographic range; longest-lived species. Java to Georgia. Acheulean tools.'],
+  ['antecessor','Homo antecessor',0.85,0.78,'#70b870','middle_homo',
+   ['Atapuerca (TD6)'],'Spain. Claimed earliest W. European hominin. Facial morphology debated.'],
+  ['heidelbergensis','Homo heidelbergensis',0.7,0.2,'#70b870','middle_homo',
+   ['Boxgrove','Atapuerca (SH)','Arago','Kabwe'],'Middle Pleistocene; ancestor of Neanderthals in Europe. Acheulean hunters.'],
+  ['floresiensis','Homo floresiensis',0.1,0.05,'#9070b0','enigmatic',
+   ['Liang Bua'],'Flores, Indonesia. "Hobbit"; 1m tall; small brain but sophisticated tools. Disputed ancestry.'],
+  ['luzonensis','Homo luzonensis',0.067,0.05,'#9070b0','enigmatic',
+   ['Callao Cave'],'Philippines. 2019. Mosaic of primitive + derived features. Uncertain phylogenetic position.'],
+  // Late Homo
+  ['neanderthalensis','Homo neanderthalensis',0.4,0.04,'#d4a84b','late_homo',
+   ['Neander Valley','Krapina','La Chapelle','Shanidar','El Sidrón','Vindija'],'Europe & W. Asia. Interbreed with H. sapiens; ~2% Neanderthal DNA in non-Africans. 2010 genome.'],
+  ['denisova','Denisovans',0.3,0.05,'#d4a84b','late_homo',
+   ['Denisova Cave','Xiahe','Tam Ngu Hao'],'Known primarily from DNA; few skeletal remains. Interbred with sapiens; 4-6% in Melanesians.'],
+  ['sapiens','Homo sapiens',0.315,0,'#c8d8f0','sapiens',
+   ['Jebel Irhoud','Herto','Omo Kibish','Skhul/Qafzeh'],'Oldest H. sapiens 315 ka (Jebel Irhoud, Morocco, 2017). Behaviour fully modern by ~100 ka.'],
+  ['longi','Homo longi / Dragon Man',0.146,0.138,'#9070b0','enigmatic',
+   ['Harbin'],'China. "Dragon Man" Harbin cranium 2021. Largest hominin brain case. Proposed sister to H. sapiens.'],
+  ['daliensis','Homo daliensis',0.27,0.2,'#70b870','middle_homo',
+   ['Dali','Jinniushan','Hualongdong'],'E. Asia Middle Pleistocene. Often grouped with "archaic H. sapiens" in China.'],
+];
+
+// ── Fossil sites ──────────────────────────────────────────────
+const SITES = [
+  {id:'olduvai',name:'Olduvai Gorge',lat:-2.9900,lng:35.3500,country:'Tanzania',
+   age:'1.9 Ma – 17 ka',species:['Homo habilis','Paranthropus boisei','Homo erectus'],
+   key:'OH 5 (Zinjanthropus), OH 7, OH 8, OH 9. Oldowan & Acheulean tools. Leakeys excavated 1931–1984.',rank:5},
+  {id:'hadar',name:'Hadar (Afar)',lat:11.0960,lng:40.5920,country:'Ethiopia',
+   age:'3.9–2.9 Ma',species:['Australopithecus afarensis'],
+   key:'Lucy (AL 288-1) 1974. AL 333 "First Family" ~13 individuals. Don Johanson.',rank:4},
+  {id:'laetoli',name:'Laetoli',lat:-3.2400,lng:35.3500,country:'Tanzania',
+   age:'3.66 Ma',species:['Australopithecus afarensis'],
+   key:'Laetoli footprints 1976: two hominins walking bipedally. Mary Leakey.',rank:3},
+  {id:'koobi_fora',name:'Koobi Fora',lat:4.1800,lng:36.1600,country:'Kenya',
+   age:'2.5–1.3 Ma',species:['Homo habilis','Homo rudolfensis','Homo ergaster','Paranthropus boisei'],
+   key:'KNM-ER 1470, KNM-ER 1813, KNM-ER 3733. Lake Turkana. Richard Leakey & Kamoya Kimeu.',rank:5},
+  {id:'nariokotome',name:'Nariokotome',lat:4.1300,lng:35.8700,country:'Kenya',
+   age:'1.6 Ma',species:['Homo ergaster'],
+   key:'Turkana Boy KNM-WT 15000 (1984). Most complete early Homo skeleton; 8–11 yr old male.',rank:4},
+  {id:'sterkfontein',name:'Sterkfontein',lat:-26.0200,lng:27.7400,country:'South Africa',
+   age:'3.5–1.5 Ma',species:['Australopithecus africanus','Homo habilis'],
+   key:'Mrs Ples Sts 5; Little Foot StW 573 (~3.67 Ma). Cradle of Humankind UNESCO site.',rank:5},
+  {id:'swartkrans',name:'Swartkrans',lat:-26.0100,lng:27.7500,country:'South Africa',
+   age:'1.8–1.0 Ma',species:['Paranthropus robustus','Homo ergaster'],
+   key:'Evidence of fire use. Bone tools. Contemporary Paranthropus and early Homo.',rank:3},
+  {id:'malapa',name:'Malapa',lat:-26.0100,lng:27.8000,country:'South Africa',
+   age:'1.977 Ma',species:['Australopithecus sediba'],
+   key:'MH1 & MH2 (2008 discovery by Matthew Berger, 9 yrs old). Lee Berger team.',rank:4},
+  {id:'rising_star',name:'Rising Star Cave',lat:-26.0270,lng:27.7200,country:'South Africa',
+   age:'335–236 ka',species:['Homo naledi'],
+   key:'~1,550 specimens from ~15 individuals (2013–). Small-brained. Possible mortuary behaviour.',rank:4},
+  {id:'dmanisi',name:'Dmanisi',lat:41.3300,lng:44.7000,country:'Georgia',
+   age:'1.85–1.77 Ma',species:['Homo erectus'],
+   key:'Oldest hominins outside Africa. D4500 skull 2013: extraordinary morphological variation within H. erectus.',rank:5},
+  {id:'zhoukoudian',name:'Zhoukoudian',lat:39.6900,lng:115.9300,country:'China',
+   age:'780–230 ka',species:['Homo erectus'],
+   key:'"Peking Man". 40+ individuals. Fire use. Excavated 1920s–30s. Fossils lost in WWII.',rank:4},
+  {id:'atapuerca',name:'Sierra de Atapuerca',lat:42.3620,lng:-3.5100,country:'Spain',
+   age:'1.4 Ma – 43 ka',species:['Homo antecessor','Homo heidelbergensis','Homo neanderthalensis'],
+   key:'Gran Dolina TD6; Sima de los Huesos (>28 individuals, 430 ka); Sima del Elefante (1.4 Ma face 2025).',rank:5},
+  {id:'neander_valley',name:'Neander Valley',lat:51.2200,lng:7.0000,country:'Germany',
+   age:'40 ka',species:['Homo neanderthalensis'],
+   key:'Type specimen found 1856. Named the species. Limestone quarry workers found the bones.',rank:3},
+  {id:'shanidar',name:'Shanidar Cave',lat:36.8380,lng:44.2220,country:'Iraq',
+   age:'100–35 ka',species:['Homo neanderthalensis'],
+   key:'9 Neanderthals. Flower burial hypothesis (Shanidar IV). Recent re-excavation 2019–.',rank:4},
+  {id:'vindija',name:'Vindija Cave',lat:46.2900,lng:16.0800,country:'Croatia',
+   age:'50–32 ka',species:['Homo neanderthalensis'],
+   key:'Source of Neanderthal genome 2010 (Pääbo Nobel 2022). Vi33.16 & Vi33.25.',rank:4},
+  {id:'denisova',name:'Denisova Cave',lat:51.3970,lng:84.6760,country:'Russia',
+   age:'300–50 ka',species:['Denisovans','Homo neanderthalensis'],
+   key:'Denisovans known from finger bone + tooth + jaw. Neanderthal + Denisovan hybrids here.',rank:5},
+  {id:'jebel_irhoud',name:"Jebel Irhoud",lat:31.8200,lng:-8.5800,country:'Morocco',
+   age:'315 ka',species:['Homo sapiens'],
+   key:'Oldest Homo sapiens 2017 (Hublin et al. Nature). Pushed sapiens origins back 100 ka.',rank:5},
+  {id:'omo_kibish',name:'Omo Kibish',lat:4.8300,lng:35.9500,country:'Ethiopia',
+   age:'195 ka',species:['Homo sapiens'],
+   key:'Omo I & II (1967). Long disputed age; redated to ~195 ka. Early modern morphology.',rank:4},
+  {id:'skhul',name:'Skhul / Qafzeh',lat:32.6600,lng:35.1700,country:'Israel',
+   age:'130–90 ka',species:['Homo sapiens'],
+   key:'Earliest H. sapiens outside Africa. Ornaments, ochre, possible intentional burial.',rank:4},
+  {id:'liang_bua',name:'Liang Bua',lat:-8.5310,lng:120.4430,country:'Indonesia',
+   age:'100–50 ka',species:['Homo floresiensis'],
+   key:'"Hobbit" LB1 (2004). 1 m tall; 380cc brain. Tools found with extinct dwarf elephant.',rank:4},
+  {id:'sangiran',name:'Sangiran',lat:-7.4500,lng:110.8900,country:'Indonesia',
+   age:'1.5–0.5 Ma',species:['Homo erectus'],
+   key:'~50 individual crania. UNESCO World Heritage. Most important H. erectus site in Asia.',rank:4},
+  {id:'middle_awash',name:'Middle Awash',lat:10.9500,lng:40.6500,country:'Ethiopia',
+   age:'5.8–0.16 Ma',species:['Ardipithecus ramidus','Ardipithecus kadabba','Homo sapiens'],
+   key:'Ardi (ARA-VP-6/500) 2009. Herto H. sapiens 160 ka. Continuous record 6 Ma.',rank:5},
+  {id:'toros_menalla',name:'Toros-Menalla',lat:16.0000,lng:17.5000,country:'Chad',
+   age:'7.0–6.0 Ma',species:['Sahelanthropus tchadensis'],
+   key:'Toumaï (TM 266) 2001. Michel Brunet. Oldest potential hominin. ~7 Ma.',rank:3},
+  {id:'tugen_hills',name:'Tugen Hills',lat:0.5300,lng:35.8700,country:'Kenya',
+   age:'6.1–5.7 Ma',species:['Orrorin tugenensis'],
+   key:'"Millennium Man" BAR 1000\'00. Femur morphology suggests bipedalism. Brigitte Senut.',rank:3},
+  {id:'krapina',name:'Krapina',lat:46.1700,lng:15.8800,country:'Croatia',
+   age:'130 ka',species:['Homo neanderthalensis'],
+   key:'900+ specimens from ~75 Neanderthals. Gorjanović-Kramberger 1899–1905. Natural deposit.',rank:4},
+  {id:'harbin',name:'Harbin',lat:45.7500,lng:126.6500,country:'China',
+   age:'146 ka',species:['Homo longi / Dragon Man'],
+   key:'Harbin cranium (2021). Largest hominin cranium known. Proposed sister group to H. sapiens.',rank:3},
+  {id:'callao',name:'Callao Cave',lat:18.1800,lng:121.6800,country:'Philippines',
+   age:'67–50 ka',species:['Homo luzonensis'],
+   key:'7 teeth + foot bone from 3+ individuals (2019). Mosaic primitive/derived. Florent Détroit.',rank:3},
+  {id:'xiahe',name:'Xiahe',lat:35.1900,lng:102.5100,country:'China',
+   age:'160 ka',species:['Denisovans'],
+   key:'Denisovan mandible on Tibetan Plateau. Altitude adaptation (EPAS1) in modern Tibetans.',rank:3},
+];
+
+// ════════════════════════════════════════════════════════════════
+// TAB LOGIC
+// ════════════════════════════════════════════════════════════════
+let timelineBuilt = false, mapBuilt = false;
+function setTab(el, id) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  if (id==='timeline' && !timelineBuilt) { buildTimeline(); timelineBuilt=true; }
+  if (id==='sites' && !mapBuilt) { buildFossilMap(); mapBuilt=true; }
+}
+
+// ════════════════════════════════════════════════════════════════
+// SECTION 1: JOURNAL FEED — PubMed eUtils
+// ════════════════════════════════════════════════════════════════
+const EUTILS = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
+let allArticles = [], currentJournal = 'ALL', feedPage = 1;
+const PER_PAGE = 15;
+
+async function fetchJournal(code) {
+  const j = JOURNALS[code];
+  const searchUrl = `${EUTILS}/esearch.fcgi?db=pubmed&term=${encodeURIComponent(j.query)}&retmax=25&sort=date&retmode=json`;
+  const sr = await fetch(searchUrl);
+  if (!sr.ok) return [];
+  const sd = await sr.json();
+  const ids = sd.esearchresult?.idlist || [];
+  if (!ids.length) return [];
+
+  const summUrl = `${EUTILS}/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`;
+  const smr = await fetch(summUrl);
+  if (!smr.ok) return [];
+  const smd = await smr.json();
+  const result = smd.result || {};
+
+  return ids.map(id => {
+    const r = result[id] || {};
+    const authors = (r.authors||[]).slice(0,3).map(a=>a.name).join(', ');
+    const more = (r.authors||[]).length > 3 ? ` et al.` : '';
+    return {
+      pmid: id, journal: code,
+      title: r.title || '(no title)',
+      authors: authors + more,
+      date: r.pubdate || r.epubdate || '',
+      doi: (r.elocationid||'').replace('doi: ',''),
+      source: r.source || j.full,
+    };
+  });
+}
+
+async function fetchAbstract(pmid) {
+  const url = `${EUTILS}/efetch.fcgi?db=pubmed&id=${pmid}&retmode=text&rettype=abstract`;
+  const r = await fetch(url);
+  if (!r.ok) return null;
+  const text = await r.text();
+  const match = text.match(/Abstract\n([\s\S]+?)(?:\n\n|\nCopyright|$)/);
+  return match ? match[1].trim().replace(/\n/g,' ') : null;
+}
+
+async function loadFeed() {
+  document.getElementById('feed-status').textContent = 'Loading…';
+  document.getElementById('feed-container').innerHTML = '<div class="feed-loading">Fetching from PubMed</div>';
+  try {
+    const codes = Object.keys(JOURNALS);
+    const results = await Promise.all(codes.map(c => fetchJournal(c).catch(()=>[])));
+    allArticles = [];
+    codes.forEach((c,i) => { allArticles.push(...results[i]); });
+    // Sort by date descending (approximate)
+    allArticles.sort((a,b) => b.date.localeCompare(a.date));
+    document.getElementById('feed-status').textContent = `${allArticles.length} articles loaded`;
+    feedPage = 1;
+    renderFeed();
+  } catch(e) {
+    document.getElementById('feed-container').innerHTML = `<div class="feed-loading" style="color:var(--rust-lt)">Error loading feed: ${e.message}</div>`;
+    document.getElementById('feed-status').textContent = 'Error';
+  }
+}
+
+function setJournal(btn, code) {
+  document.querySelectorAll('.journal-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  currentJournal = code;
+  feedPage = 1;
+  renderFeed();
+}
+
+function getFiltered() {
+  return currentJournal === 'ALL' ? allArticles : allArticles.filter(a=>a.journal===currentJournal);
+}
+
+function renderFeed() {
+  const filtered = getFiltered();
+  const total = filtered.length;
+  const start = (feedPage-1)*PER_PAGE;
+  const page = filtered.slice(start, start+PER_PAGE);
+  const container = document.getElementById('feed-container');
+
+  if (!page.length) {
+    container.innerHTML = '<div class="feed-loading">No articles found.</div>';
+    document.getElementById('feed-pagination').style.display = 'none';
+    return;
+  }
+
+  container.innerHTML = page.map(a => `
+    <div class="article-card" onclick="toggleAbstract(this,'${a.pmid}')">
+      <div class="ac-top">
+        <span class="ac-journal jb-${a.journal}">${JOURNALS[a.journal].name}</span>
+        <div class="ac-title">${a.title.replace(/<[^>]+>/g,'')}</div>
+      </div>
+      <div class="ac-meta">
+        <span class="ac-authors">${a.authors}</span>
+        <span class="ac-date">${a.date}</span>
+      </div>
+      <div class="ac-abstract" id="abs-${a.pmid}">Loading abstract…</div>
+      <div class="ac-links" style="display:none" id="links-${a.pmid}">
+        <a class="ac-link" href="https://pubmed.ncbi.nlm.nih.gov/${a.pmid}/" target="_blank" rel="noopener">PubMed →</a>
+        ${a.doi ? `<a class="ac-link" href="https://doi.org/${a.doi}" target="_blank" rel="noopener">DOI →</a>` : ''}
+      </div>
+    </div>`).join('');
+
+  // Pagination
+  const pages = Math.ceil(total/PER_PAGE);
+  const pag = document.getElementById('feed-pagination');
+  if (pages <= 1) { pag.style.display='none'; return; }
+  pag.style.display = 'flex';
+  pag.innerHTML = [
+    `<button class="pg-btn" ${feedPage===1?'disabled':''} onclick="goPage(${feedPage-1})">‹</button>`,
+    ...[...Array(Math.min(pages,8))].map((_,i)=>{const p=i+1;return`<button class="pg-btn ${p===feedPage?'active':''}" onclick="goPage(${p})">${p}</button>`;}),
+    `<button class="pg-btn" ${feedPage===pages?'disabled':''} onclick="goPage(${feedPage+1})">›</button>`,
+  ].join('');
+}
+
+function goPage(p) { feedPage=p; renderFeed(); window.scrollTo({top:document.getElementById('sec-feed').offsetTop+100,behavior:'smooth'}); }
+
+const abstractCache = {};
+async function toggleAbstract(card, pmid) {
+  const abs = document.getElementById('abs-'+pmid);
+  const links = document.getElementById('links-'+pmid);
+  const isOpen = abs.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.ac-abstract').forEach(a=>a.classList.remove('open'));
+  document.querySelectorAll('.ac-links').forEach(l=>l.style.display='none');
+  if (isOpen) return;
+  abs.classList.add('open');
+  links.style.display = 'flex';
+  if (!abstractCache[pmid]) {
+    abs.textContent = 'Loading…';
+    const text = await fetchAbstract(pmid);
+    abstractCache[pmid] = text || 'Abstract not available. Click PubMed link to read full record.';
+    abs.textContent = abstractCache[pmid];
+  } else {
+    abs.textContent = abstractCache[pmid];
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// SECTION 2: HOMININ TIMELINE
+// ════════════════════════════════════════════════════════════════
+function buildTimeline() {
+  const svg = document.getElementById('timeline');
+  const W = 1000, H = 640;
+  const LEFT = 200, RIGHT = 40, TOP = 40, BOTTOM = 60;
+  const chartW = W - LEFT - RIGHT;
+  const chartH = H - TOP - BOTTOM;
+
+  const maxMya = 7.2, minMya = -0.05;
+  const myaToX = mya => LEFT + (maxMya - mya) / (maxMya - minMya) * chartW;
+  const rowH = (chartH - 20) / TAXA.length;
+
+  // Grid lines + time axis
+  const times = [7, 6, 5, 4, 3, 2, 1.5, 1, 0.5, 0.3, 0.1, 0];
+  let s = '';
+
+  // Background bands — alternating epochs
+  const epochs = [{start:7.2,end:5.3,label:'Miocene',col:'rgba(200,216,240,.015)'},{start:5.3,end:2.58,label:'Pliocene',col:'rgba(200,216,240,.025)'},{start:2.58,end:0.012,label:'Pleistocene',col:'rgba(200,216,240,.02)'},{start:0.012,end:0,label:'Holocene',col:'rgba(192,90,48,.03)'}];
+  epochs.forEach(e=>{
+    const x1=myaToX(e.start), x2=myaToX(e.end);
+    s+=`<rect x="${x1}" y="${TOP}" width="${x2-x1}" height="${chartH}" fill="${e.col}"/>`;
+    s+=`<text x="${(x1+x2)/2}" y="${TOP-8}" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="rgba(200,216,240,.2)">${e.label}</text>`;
+  });
+
+  // Grid
+  times.forEach(t=>{
+    const x=myaToX(t);
+    s+=`<line x1="${x}" y1="${TOP}" x2="${x}" y2="${TOP+chartH}" stroke="rgba(200,216,240,.06)" stroke-width="1"/>`;
+    s+=`<text x="${x}" y="${TOP+chartH+16}" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="rgba(200,216,240,.3)">${t>0?t+'Ma':'Now'}</text>`;
+  });
+
+  // Axis label
+  s+=`<text x="${LEFT+chartW/2}" y="${H-8}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(200,216,240,.2)" letter-spacing="2">MILLIONS OF YEARS AGO</text>`;
+
+  // Taxa bars
+  TAXA.forEach(([id,name,start,end,colour,cat,sites,desc],i)=>{
+    const x1=myaToX(start), x2=myaToX(end);
+    const y=TOP+10+i*rowH;
+    const barH=Math.max(rowH*0.55,6);
+    const barY=y+(rowH-barH)/2;
+
+    // Uncertainty extension (dashed)
+    if (start > 0.5) {
+      s+=`<line x1="${x1}" y1="${barY+barH/2}" x2="${x1+12}" y2="${barY+barH/2}" stroke="${colour}" stroke-width="1.5" stroke-dasharray="3,2" opacity=".4"/>`;
+    }
+
+    // Main bar
+    s+=`<rect x="${x2}" y="${barY}" width="${Math.max(x1-x2,4)}" height="${barH}" fill="${colour}" fill-opacity=".7" rx="1"
+      class="taxa-bar" data-id="${id}" style="cursor:pointer"
+      onmouseover="this.setAttribute('fill-opacity','1')" onmouseout="this.setAttribute('fill-opacity','.7')"
+      onclick="showSpecies('${id}')"/>`;
+
+    // Label
+    const labelX = Math.min(x2-4, LEFT-4);
+    s+=`<text x="${labelX}" y="${barY+barH/2+3}" text-anchor="end" font-family="Source Serif 4,Georgia,serif" font-size="9.5" fill="rgba(200,216,240,.65)" font-style="italic" style="cursor:pointer" onclick="showSpecies('${id}')">${name}</text>`;
+  });
+
+  svg.innerHTML = s;
+}
+
+function showSpecies(id) {
+  const taxon = TAXA.find(t=>t[0]===id);
+  if (!taxon) return;
+  const [,name,start,end,colour,cat,sites,desc] = taxon;
+  const panel = document.getElementById('species-panel');
+  document.getElementById('sp-name').textContent = name;
+  const dur = start === 0 ? `${Math.round(end*1000)} ka – present` : end === 0 ? `${start} Ma – present` : `${start} – ${end} Ma`;
+  document.getElementById('sp-meta').innerHTML = `
+    <span class="sp-badge" style="background:${colour}22;color:${colour};border:1px solid ${colour}44">${dur}</span>
+    <span class="sp-badge" style="background:rgba(200,216,240,.06);color:rgba(200,216,240,.5);border:1px solid rgba(200,216,240,.1)">${cat.replace('_',' ')}</span>`;
+  document.getElementById('sp-desc').textContent = desc;
+  document.getElementById('sp-sites').innerHTML = sites.map(s=>
+    `<span class="sp-tag" onclick="goToSite('${s}')">${s}</span>`
+  ).join('');
+  panel.classList.add('open');
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function goToSite(siteName) {
+  // Switch to sites tab and highlight
+  document.querySelectorAll('.tab')[2].click();
+  setTimeout(() => {
+    const match = SITES.find(s=>s.name.includes(siteName)||siteName.includes(s.name.split(',')[0]));
+    if (match) highlightSite(match.id);
+  }, 300);
+}
+
+// ════════════════════════════════════════════════════════════════
+// SECTION 3: FOSSIL SITES MAP
+// ════════════════════════════════════════════════════════════════
+let fossilMap, fossilMarkers = {};
+function buildFossilMap() {
+  fossilMap = L.map('fossil-map',{center:[15,25],zoom:2,zoomControl:false,attributionControl:false});
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',
+    {attribution:'© Esri',maxZoom:12}).addTo(fossilMap);
+  L.control.zoom({position:'bottomright'}).addTo(fossilMap);
+  L.control.attribution({position:'bottomright',prefix:'PubMed · CC0'}).addTo(fossilMap);
+
+  SITES.forEach(site => {
+    const r = 4 + site.rank * 2;
+    const icon = L.divIcon({
+      html:`<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+4}" height="${r*2+4}">
+        <circle cx="${r+2}" cy="${r+2}" r="${r}" fill="#c05a30" fill-opacity=".75" stroke="#c8d8f0" stroke-width="1" stroke-opacity=".5"/>
+      </svg>`,
+      className:'', iconSize:[r*2+4,r*2+4], iconAnchor:[r+2,r+2]
+    });
+    const marker = L.marker([site.lat,site.lng],{icon})
+      .bindPopup(`
+        <div class="fp-name">${site.name}</div>
+        <div class="fp-sp">${site.species.join(' · ')}</div>
+        <div class="fp-age">${site.age}</div>
+        <div style="margin-top:.4rem;font-size:.62rem;color:rgba(200,216,240,.4);line-height:1.5">${site.key}</div>`)
+      .on('click', () => highlightSite(site.id));
+    marker.addTo(fossilMap);
+    fossilMarkers[site.id] = marker;
+  });
+
+  // Site list
+  document.getElementById('site-list').innerHTML = SITES.map(s=>`
+    <div class="fs-card" id="fsc-${s.id}" onclick="highlightSite('${s.id}')">
+      <div class="fsc-name">${s.name}</div>
+      <div class="fsc-sub">${s.country} · ${s.age}</div>
+      <div class="fsc-species">${s.species.map(sp=>`<span class="fsc-sp">${sp}</span>`).join('')}</div>
+    </div>`).join('');
+}
+
+function highlightSite(id) {
+  document.querySelectorAll('.fs-card').forEach(c=>c.classList.remove('active'));
+  const card = document.getElementById('fsc-'+id);
+  if (card) { card.classList.add('active'); card.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+  const marker = fossilMarkers[id];
+  if (marker && fossilMap) { fossilMap.flyTo(marker.getLatLng(),7,{duration:1}); marker.openPopup(); }
+}
+
+// ════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════
+loadFeed();
+</script>
+</body>
+</html>
