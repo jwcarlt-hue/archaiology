@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>LuwianSiteAtlas — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{
+  --night:#050810;--star:#c8d8f0;--horizon:#1a3a5c;
+  --ochre:#b8892a;--ochre-lt:#d4a84b;
+  --bone:#e8dfc8;--bone-dim:rgba(232,223,200,.45);
+  --rust:#8a3a1a;--rust-lt:#c05a30;
+  /* Luwian accent — terracotta bronze */
+  --luw:#c07840;--luw-lt:#e09050;--luw-dk:#804820;
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --mono:'DM Mono',monospace;--sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--night);color:var(--star);min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+
+/* ── Masthead ── */
+.masthead{position:fixed;top:0;left:0;right:0;z-index:1000;height:48px;
+  background:rgba(5,8,16,.96);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(200,216,240,.06);
+  display:flex;align-items:center;padding:0 1.5rem;gap:1.5rem;overflow-x:auto;}
+.logo{font-family:var(--serif);font-size:1.15rem;font-weight:900;color:var(--star);flex-shrink:0;}
+.logo span{color:var(--ochre-lt);font-style:italic;}
+.nav-link{font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.32);transition:color .2s;white-space:nowrap;}
+.nav-link:hover,.nav-link.active{color:var(--star);}
+
+/* ── Hero ── */
+.hero{padding:88px 2rem 3rem;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 80% at 80% 50%,rgba(192,120,64,.07),transparent 65%),
+    radial-gradient(ellipse 50% 60% at 20% 30%,rgba(26,58,92,.12),transparent 55%),
+    linear-gradient(180deg,rgba(12,8,4,.7) 0%,transparent 80%);
+}
+/* Subtle cuneiform-style dot pattern */
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(1px 1px at 8% 15%,rgba(192,120,64,.4),transparent),
+    radial-gradient(1px 1px at 22% 72%,rgba(200,216,240,.3),transparent),
+    radial-gradient(1.5px 1.5px at 38% 28%,rgba(192,120,64,.5),transparent),
+    radial-gradient(1px 1px at 55% 65%,rgba(200,216,240,.25),transparent),
+    radial-gradient(2px 2px at 68% 12%,rgba(192,120,64,.4),transparent),
+    radial-gradient(1px 1px at 82% 48%,rgba(200,216,240,.35),transparent),
+    radial-gradient(1px 1px at 91% 80%,rgba(192,120,64,.3),transparent);
+}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;}
+.hero-eyebrow{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--luw-lt);margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem;}
+.hero-eyebrow::before{content:'';width:22px;height:1px;background:var(--luw-lt);}
+.hero-title{font-family:var(--serif);font-size:clamp(2rem,5.5vw,4rem);font-weight:900;
+  color:var(--bone);line-height:1.05;margin-bottom:.7rem;letter-spacing:-.01em;}
+.hero-title em{color:var(--luw-lt);font-style:italic;}
+.hero-sub{font-family:var(--body);font-size:.92rem;color:rgba(200,216,240,.45);
+  max-width:600px;line-height:1.85;margin-bottom:1.8rem;font-weight:300;}
+.hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.hs-n{font-family:var(--serif);font-size:1.6rem;font-weight:900;color:var(--luw-lt);}
+.hs-l{font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,216,240,.3);}
+.hero-credit{font-family:var(--mono);font-size:.58rem;color:rgba(200,216,240,.22);
+  display:flex;align-items:center;gap:.5rem;}
+.hero-credit a{color:rgba(192,120,64,.6);transition:color .2s;}
+.hero-credit a:hover{color:var(--luw-lt);}
+
+/* ── Tab bar ── */
+.tab-bar{background:rgba(200,216,240,.02);border-bottom:1px solid rgba(200,216,240,.06);
+  display:flex;padding:0 2rem;position:sticky;top:48px;z-index:90;}
+.tab{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.3);padding:.9rem 1.2rem;cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .2s;}
+.tab:hover{color:rgba(200,216,240,.6);}
+.tab.active{color:var(--bone);border-bottom-color:var(--luw-lt);}
+
+/* ── Section ── */
+.section{display:none;}
+.section.active{display:block;}
+
+/* ── Loading state ── */
+.loading-wrap{display:flex;align-items:center;justify-content:center;
+  height:420px;flex-direction:column;gap:.8rem;}
+.loading-spinner{width:32px;height:32px;border:2px solid rgba(200,216,240,.1);
+  border-top-color:var(--luw-lt);border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(200,216,240,.3);}
+.error-msg{text-align:center;padding:2rem;font-size:.8rem;color:rgba(200,216,240,.35);}
+.error-msg a{color:var(--luw-lt);}
+
+/* ════════════════════════════
+   TAB 1: MAP
+════════════════════════════ */
+.map-shell{display:flex;height:calc(100vh - 112px);min-height:500px;}
+
+/* Filter sidebar */
+.map-sidebar{width:260px;flex-shrink:0;border-right:1px solid rgba(200,216,240,.06);
+  overflow-y:auto;padding:1rem;}
+@media(max-width:700px){.map-sidebar{display:none;}}
+.sb-title{font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(200,216,240,.3);margin-bottom:.6rem;padding-bottom:.4rem;
+  border-bottom:1px solid rgba(200,216,240,.05);}
+.sb-count{font-family:var(--serif);font-size:1.4rem;font-weight:900;color:var(--luw-lt);
+  margin-bottom:.1rem;}
+.sb-count-label{font-size:.58rem;color:rgba(200,216,240,.3);margin-bottom:1rem;}
+
+.filter-label{font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.35);margin:.8rem 0 .3rem;}
+.filter-input{width:100%;background:rgba(200,216,240,.04);border:1px solid rgba(200,216,240,.1);
+  color:var(--star);font-family:var(--sans);font-size:.75rem;padding:.35rem .5rem;
+  outline:none;transition:border-color .2s;}
+.filter-input:focus{border-color:rgba(192,120,64,.4);}
+.filter-input::placeholder{color:rgba(200,216,240,.2);}
+select.filter-input option{background:#0e0c09;}
+.period-chips{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.2rem;}
+.period-chip{font-size:.52rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  padding:.15rem .4rem;border:1px solid rgba(200,216,240,.1);background:none;
+  color:rgba(200,216,240,.3);cursor:pointer;transition:all .15s;}
+.period-chip:hover{color:var(--star);}
+.period-chip.active{color:var(--luw-lt);border-color:rgba(192,120,64,.45);background:rgba(192,120,64,.08);}
+.reset-btn{width:100%;margin-top:1rem;padding:.35rem;border:1px solid rgba(200,216,240,.1);
+  background:none;color:rgba(200,216,240,.3);font-size:.6rem;letter-spacing:.08em;
+  text-transform:uppercase;cursor:pointer;transition:all .15s;}
+.reset-btn:hover{color:var(--star);border-color:rgba(200,216,240,.25);}
+
+/* Map container */
+.map-main{flex:1;position:relative;}
+#luwian-map{width:100%;height:100%;}
+.map-badge{position:absolute;top:.6rem;right:.6rem;z-index:400;
+  background:rgba(5,8,16,.88);border:1px solid rgba(200,216,240,.08);
+  padding:.3rem .6rem;font-family:var(--mono);font-size:.55rem;
+  color:rgba(200,216,240,.4);pointer-events:none;}
+
+/* Leaflet popup overrides */
+.leaflet-popup-content-wrapper{background:rgba(5,8,16,.95);border:1px solid rgba(192,120,64,.25);
+  border-radius:2px;color:var(--star);box-shadow:0 4px 24px rgba(0,0,0,.5);}
+.leaflet-popup-tip{background:rgba(5,8,16,.95);}
+.leaflet-popup-content{margin:.7rem .9rem;font-family:var(--sans);}
+.lp-id{font-family:var(--mono);font-size:.5rem;color:var(--luw-lt);letter-spacing:.08em;margin-bottom:.25rem;}
+.lp-name{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--bone);margin-bottom:.15rem;}
+.lp-alt{font-size:.65rem;color:rgba(200,216,240,.4);margin-bottom:.4rem;font-style:italic;}
+.lp-desc{font-family:var(--body);font-size:.73rem;color:rgba(200,216,240,.55);line-height:1.6;
+  margin-bottom:.5rem;max-height:100px;overflow-y:auto;}
+.lp-meta{display:flex;flex-wrap:wrap;gap:.25rem;margin-bottom:.4rem;}
+.lp-badge{font-size:.5rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:.1rem .35rem;border-radius:1px;}
+.lp-links{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.4rem;}
+.lp-link{font-size:.55rem;padding:.12rem .35rem;border:1px solid rgba(192,120,64,.25);
+  color:rgba(192,120,64,.7);transition:all .14s;}
+.lp-link:hover{color:var(--luw-lt);border-color:rgba(192,120,64,.5);}
+
+/* ════════════════════════════
+   TAB 2: BROWSER
+════════════════════════════ */
+.browser-wrap{max-width:1200px;margin:0 auto;padding:1.5rem 1.5rem 4rem;}
+.browser-controls{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem;}
+.br-search{flex:1;min-width:200px;background:rgba(200,216,240,.04);
+  border:1px solid rgba(200,216,240,.1);color:var(--star);font-family:var(--sans);
+  font-size:.8rem;padding:.45rem .7rem;outline:none;transition:border-color .2s;}
+.br-search:focus{border-color:rgba(192,120,64,.4);}
+.br-search::placeholder{color:rgba(200,216,240,.2);}
+.br-select{background:rgba(200,216,240,.04);border:1px solid rgba(200,216,240,.1);
+  color:var(--star);font-family:var(--sans);font-size:.72rem;padding:.4rem .6rem;outline:none;}
+.br-select option{background:#0e0c09;}
+.br-count{font-family:var(--mono);font-size:.58rem;color:rgba(200,216,240,.3);margin-left:auto;}
+
+.site-table{width:100%;border-collapse:collapse;}
+.site-table th{font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.3);padding:.5rem .6rem;text-align:left;
+  border-bottom:1px solid rgba(200,216,240,.08);white-space:nowrap;cursor:pointer;}
+.site-table th:hover{color:rgba(200,216,240,.6);}
+.site-table th.sort-asc::after{content:' ↑';}
+.site-table th.sort-desc::after{content:' ↓';}
+.site-table td{font-size:.75rem;padding:.5rem .6rem;border-bottom:1px solid rgba(200,216,240,.04);
+  vertical-align:top;}
+.site-table tr{cursor:pointer;transition:background .12s;}
+.site-table tr:hover{background:rgba(200,216,240,.025);}
+.td-id{font-family:var(--mono);font-size:.6rem;color:var(--luw-lt);}
+.td-name{color:var(--bone);font-weight:500;}
+.td-alt{font-size:.65rem;color:rgba(200,216,240,.35);font-style:italic;}
+.td-period{display:flex;flex-wrap:wrap;gap:.2rem;}
+.td-badge{font-size:.48rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  padding:.08rem .28rem;border-radius:1px;}
+.td-coords{font-family:var(--mono);font-size:.58rem;color:rgba(200,216,240,.3);}
+.td-ext{display:flex;gap:.3rem;flex-wrap:wrap;}
+.td-extlink{font-size:.5rem;padding:.08rem .28rem;border:1px solid rgba(192,120,64,.2);
+  color:rgba(192,120,64,.6);transition:all .12s;}
+.td-extlink:hover{color:var(--luw-lt);}
+
+/* Pagination */
+.br-pagination{display:flex;justify-content:center;gap:.3rem;padding:1.5rem 0;}
+.pg-btn{font-family:var(--mono);font-size:.6rem;padding:.28rem .55rem;
+  border:1px solid rgba(200,216,240,.1);background:none;color:rgba(200,216,240,.35);
+  cursor:pointer;transition:all .14s;}
+.pg-btn:hover,.pg-btn.active{color:var(--luw-lt);border-color:rgba(192,120,64,.35);}
+.pg-btn:disabled{opacity:.25;cursor:default;}
+
+/* ════════════════════════════
+   TAB 3: CONTEXT
+════════════════════════════ */
+.context-wrap{max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+.ctx-block{margin-bottom:2.5rem;}
+.ctx-eyebrow{font-family:var(--mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--luw-lt);margin-bottom:.5rem;}
+.ctx-title{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:var(--bone);
+  margin-bottom:.8rem;line-height:1.2;}
+.ctx-body{font-family:var(--body);font-size:.88rem;color:rgba(200,216,240,.55);
+  line-height:1.85;font-weight:300;}
+.ctx-body p{margin-bottom:.9rem;}
+.ctx-body strong{color:rgba(200,216,240,.75);font-weight:400;}
+.ctx-divider{border:none;border-top:1px solid rgba(200,216,240,.06);margin:2rem 0;}
+.ctx-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:.8rem;margin:1.2rem 0;}
+.ctx-stat{background:rgba(192,120,64,.05);border:1px solid rgba(192,120,64,.12);
+  padding:.8rem 1rem;}
+.ctx-stat-n{font-family:var(--serif);font-size:1.5rem;font-weight:900;color:var(--luw-lt);}
+.ctx-stat-l{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.35);margin-top:.1rem;}
+.ctx-cite{background:rgba(200,216,240,.02);border-left:2px solid rgba(192,120,64,.4);
+  padding:.7rem 1rem;margin:1.2rem 0;font-family:var(--mono);font-size:.65rem;
+  color:rgba(200,216,240,.4);line-height:1.7;}
+.ctx-link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:.5rem;margin-top:1rem;}
+.ctx-link-card{background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.07);
+  padding:.7rem .9rem;transition:all .15s;border-left:2px solid transparent;}
+.ctx-link-card:hover{border-left-color:var(--luw-lt);background:rgba(192,120,64,.04);}
+.ctx-link-card-title{font-size:.78rem;color:var(--bone);margin-bottom:.15rem;}
+.ctx-link-card-sub{font-family:var(--mono);font-size:.55rem;color:rgba(200,216,240,.3);}
+
+/* Ore deposits sidebar note */
+.ore-note{background:rgba(192,120,64,.04);border:1px solid rgba(192,120,64,.1);
+  padding:.9rem 1.1rem;margin:1.2rem 0;font-size:.78rem;color:rgba(200,216,240,.5);
+  line-height:1.65;}
+.ore-note strong{color:var(--luw-lt);}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <a class="nav-link " href="index.html">Home</a>
+  <a class="nav-link " href="news.html">Feed</a>
+  <a class="nav-link " href="map.html">Map</a>
+  <a class="nav-link " href="sky.html">Sky Archive</a>
+  <a class="nav-link " href="maritime.html">Maritime</a>
+  <a class="nav-link " href="linguistics.html">Linguistics</a>
+  <a class="nav-link " href="inscriptions.html">Inscriptions</a>
+  <a class="nav-link " href="maya_inscriptions.html">Maya</a>
+  <a class="nav-link " href="bioanthro.html">Bioanthro</a>
+  <a class="nav-link active " href="luwian.html">Luwian</a>
+  <a class="nav-link " href="upload.html">Upload</a>
+  <a class="nav-link " href="conferences.html">Conferences</a>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">LuwianSiteAtlas · Aşınmaz, Mutlu & Zangger 2025</div>
+    <h1 class="hero-title">483 Bronze Age<br><em>Settlements</em></h1>
+    <p class="hero-sub">The complete LuwianSiteAtlas — every Middle and Late Bronze Age settlement site (2000–1200 BCE) larger than 100m diameter in western Anatolia, compiled over a decade and published in <em>Nature Scientific Data</em> Dec 2025. Linked to Pleiades, Wikidata, iDAI.gazetteer, and ancient ore deposits.</p>
+    <div class="hero-stats">
+      <div><div class="hs-n">483</div><div class="hs-l">Settlement sites</div></div>
+      <div><div class="hs-n">800yr</div><div class="hs-l">Record span (2000–1200 BCE)</div></div>
+      <div><div class="hs-n">250K km²</div><div class="hs-l">Survey area</div></div>
+      <div><div class="hs-n">CC BY-NC 4.0</div><div class="hs-l">Open license</div></div>
+    </div>
+    <div class="hero-credit">
+      <span>Data: Luwian Studies Foundation, Zurich</span>
+      <span>·</span>
+      <a href="https://doi.org/10.1038/s41597-025-06241-9" target="_blank" rel="noopener">Nature Sci. Data 12, 1804 (2025)</a>
+      <span>·</span>
+      <a href="https://doi.org/10.5281/zenodo.17128262" target="_blank" rel="noopener">Zenodo</a>
+      <span>·</span>
+      <a href="https://luwianstudies.org/siteatlas/luwiansitemap/" target="_blank" rel="noopener">LuwianSiteMap ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- Tab bar -->
+<div class="tab-bar">
+  <div class="tab active" onclick="setTab(this,'map')">🗺 Site Map</div>
+  <div class="tab" onclick="setTab(this,'browser')">📋 Site Browser</div>
+  <div class="tab" onclick="setTab(this,'context')">📖 Research Context</div>
+</div>
+
+<!-- ═══════ TAB 1: MAP ═══════ -->
+<div class="section active" id="sec-map">
+  <div class="map-shell">
+    <div class="map-sidebar">
+      <div class="sb-count" id="sb-count">—</div>
+      <div class="sb-count-label">sites visible</div>
+      <div class="sb-title">Filters</div>
+
+      <div class="filter-label">Search name / toponym</div>
+      <input class="filter-input" id="f-name" type="text" placeholder="e.g. Troy, Beycesultan…" oninput="applyFilters()">
+
+      <div class="filter-label">Chronological period</div>
+      <div class="period-chips" id="period-chips">
+        <span class="period-chip active" data-period="all" onclick="setPeriod(this,'all')">All</span>
+        <span class="period-chip" data-period="MBA" onclick="setPeriod(this,'MBA')">Middle BA</span>
+        <span class="period-chip" data-period="LBA" onclick="setPeriod(this,'LBA')">Late BA</span>
+        <span class="period-chip" data-period="MLBA" onclick="setPeriod(this,'MLBA')">MBA+LBA</span>
+      </div>
+
+      <div class="filter-label">Province (il)</div>
+      <select class="filter-input" id="f-province" onchange="applyFilters()">
+        <option value="">All provinces</option>
+      </select>
+
+      <div class="filter-label">External links</div>
+      <select class="filter-input" id="f-ext" onchange="applyFilters()">
+        <option value="">Any</option>
+        <option value="pleiades">Has Pleiades ID</option>
+        <option value="wikidata">Has Wikidata</option>
+        <option value="idai">Has iDAI.gazetteer</option>
+      </select>
+
+      <button class="reset-btn" onclick="resetFilters()">Reset all filters</button>
+
+      <div style="margin-top:1.2rem;padding-top:.8rem;border-top:1px solid rgba(200,216,240,.05);">
+        <div class="sb-title">Ore deposits</div>
+        <div style="font-size:.65rem;color:rgba(200,216,240,.28);line-height:1.6;">
+          ◆ markers show ancient mineral resource deposits (copper, tin, iron, gold) linked to site proximity.
+        </div>
+        <label style="display:flex;align-items:center;gap:.4rem;margin-top:.5rem;cursor:pointer;">
+          <input type="checkbox" id="show-ore" onchange="toggleOre()" style="accent-color:var(--luw-lt);">
+          <span style="font-size:.62rem;color:rgba(200,216,240,.4);">Show ore deposits</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="map-main">
+      <div id="sec-map-loading" class="loading-wrap">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading LuwianSiteAtlas from Zenodo…</div>
+      </div>
+      <div id="luwian-map" style="display:none;"></div>
+      <div class="map-badge" id="map-badge" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ TAB 2: BROWSER ═══════ -->
+<div class="section" id="sec-browser">
+  <div class="browser-wrap">
+    <div style="margin-bottom:1.2rem;">
+      <div style="font-family:var(--mono);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--luw-lt);margin-bottom:.3rem;">Site Catalogue</div>
+      <div style="font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--bone);">All 483 Settlements</div>
+    </div>
+    <div class="browser-controls">
+      <input class="br-search" id="br-search" type="text" placeholder="Search name, description, toponym…" oninput="brSearch()">
+      <select class="br-select" id="br-period" onchange="brSearch()">
+        <option value="">All periods</option>
+        <option value="MBA">Middle Bronze Age</option>
+        <option value="LBA">Late Bronze Age</option>
+        <option value="MLBA">MBA + LBA</option>
+      </select>
+      <select class="br-select" id="br-sort" onchange="brSearch()">
+        <option value="id_asc">ID ↑</option>
+        <option value="name_asc">Name A→Z</option>
+        <option value="name_desc">Name Z→A</option>
+      </select>
+      <div class="br-count" id="br-count"></div>
+    </div>
+    <div id="br-loading" class="loading-wrap" style="height:200px;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Loading…</div>
+    </div>
+    <div id="br-table-wrap" style="display:none;overflow-x:auto;">
+      <table class="site-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Toponym / Alt name</th>
+            <th>Period</th>
+            <th>Coordinates</th>
+            <th>External</th>
+          </tr>
+        </thead>
+        <tbody id="br-tbody"></tbody>
+      </table>
+    </div>
+    <div class="br-pagination" id="br-pagination" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ═══════ TAB 3: CONTEXT ═══════ -->
+<div class="section" id="sec-context">
+  <div class="context-wrap">
+
+    <div class="ctx-block">
+      <div class="ctx-eyebrow">Research Background</div>
+      <div class="ctx-title">Western Anatolia's Missing Chapter</div>
+      <div class="ctx-body">
+        <p>When Arthur Evans defined the cultures of the Aegean Bronze Age at Knossos in the 1920s, he drew the boundary at the European shore. Troy and its vast Anatolian hinterland were left outside the canonical frame — a political and disciplinary exclusion that shaped Western archaeology for a century. The region between Mycenaean Greece and the Hittite heartland was treated, in Evans's wake, as a <strong>cultural void</strong>.</p>
+        <p>The LuwianSiteAtlas dismantles that framing with data. Compiled over more than a decade by archaeologist Serdal Mutlu, geoarchaeologist Eberhard Zangger, and geospatial scientist Alper Aşınmaz, it documents <strong>483 major settlement sites</strong> — each at least 100 metres in diameter — across the western third of modern Türkiye. Many were inhabited continuously for 5,000 years. The settlement density matches Mycenaean Greece, Hittite Anatolia, and Minoan Crete combined. The Luwian territory, at roughly 250,000 km², was larger than all three.</p>
+        <p>Published in <em>Nature Scientific Data</em> in December 2025 (vol. 12, article 1804), the dataset is the first interoperable, georeferenced catalogue of its kind for this region. Each entry is linked to Pleiades, Wikidata, iDAI.gazetteer, Nomisma, Arachne, and GeoNames — enabling machine-readable cross-queries across the global archaeological Linked Data ecosystem.</p>
+      </div>
+
+      <div class="ctx-stat-grid">
+        <div class="ctx-stat"><div class="ctx-stat-n">483</div><div class="ctx-stat-l">Settlement sites ≥100m diam.</div></div>
+        <div class="ctx-stat"><div class="ctx-stat-n">10+ yr</div><div class="ctx-stat-l">Compilation span (2014–2025)</div></div>
+        <div class="ctx-stat"><div class="ctx-stat-n">250K km²</div><div class="ctx-stat-l">Survey territory</div></div>
+        <div class="ctx-stat"><div class="ctx-stat-n">30 + 33</div><div class="ctx-stat-l">Excavations + surveys synthesized</div></div>
+        <div class="ctx-stat"><div class="ctx-stat-n">5,000 yr</div><div class="ctx-stat-l">Longest site occupation spans</div></div>
+        <div class="ctx-stat"><div class="ctx-stat-n">6</div><div class="ctx-stat-l">Linked external databases</div></div>
+      </div>
+    </div>
+
+    <hr class="ctx-divider">
+
+    <div class="ctx-block">
+      <div class="ctx-eyebrow">The Luwians</div>
+      <div class="ctx-title">Who Were They?</div>
+      <div class="ctx-body">
+        <p>The Luwians were an Indo-European-speaking people occupying western and southern Anatolia throughout the Bronze Age. They spoke Luwian — a language closely related to Hittite — and used both cuneiform script (for administrative texts) and their own Anatolian hieroglyphic system (for monumental inscriptions), the latter in continuous use for over <strong>1,000 years</strong>.</p>
+        <p>They are named in Hittite texts as the inhabitants of the western Anatolian kingdoms: Arzawa, Mira, Wilusa (likely ancient Troy's kingdom), the Seha River Land, and the Lukka Lands. The Hittite Great King corresponded with Luwian rulers; the <em>Tawagalawa Letter</em> records diplomatic friction over a renegade Luwian commander. Egyptian texts from the reign of Ramesses III name the <strong>Sea Peoples</strong> — whose catastrophic raids ended the Bronze Age palatial systems — using ethnonyms now identified with Anatolian Luwian groups.</p>
+        <p>The Luwian hieroglyphic script was replaced by the Phoenician-derived alphabet around 700 BCE. Luwian cultural continuity persisted into the 6th century BCE, when it was absorbed by the Persian Empire.</p>
+      </div>
+      <div class="ore-note">
+        <strong>Ore deposits and economic geography:</strong> The dataset includes proximity data for ancient copper, tin, iron, and gold deposits across western Anatolia. Each settlement's relationship to mineral resources is encoded — a crucial key to understanding the trade networks that made this region an economic engine of the Late Bronze Age world system.
+      </div>
+    </div>
+
+    <hr class="ctx-divider">
+
+    <div class="ctx-block">
+      <div class="ctx-eyebrow">Dataset Architecture</div>
+      <div class="ctx-title">Interoperable by Design</div>
+      <div class="ctx-body">
+        <p>The Zenodo release (DOI 10.5281/zenodo.17128262) is structured as relational tables in both CSV and JSON formats. Core files include <strong>site_descriptions</strong> (prose accounts of each settlement), <strong>site_period</strong> (Middle BA / Late BA / both attributions), <strong>site_categories</strong> (function: tell, mound, fortified settlement, coastal harbour, etc.), and separate crosswalk tables to each external authority file — Pleiades, Wikidata, iDAI.gazetteer (DAI), Nomisma, Arachne, and GeoNames.</p>
+        <p>The three enrichment scripts uploaded here — <code>wikidata_api.py</code>, <code>pleiades_api.py</code>, and <code>geonames.py</code> — are the actual production code used by the Luwian Studies team to build those crosswalks. They perform geospatial nearest-neighbour queries within a 5km radius against each external gazetteer, then resolve the closest match by geodesic distance. They are included in the Zenodo repository under CC BY-NC 4.0.</p>
+      </div>
+      <div class="ctx-cite">
+        Aşınmaz, A., Mutlu, S. &amp; Zangger, E. "An interoperable catalogue of Middle and Late Bronze Age settlements in western Anatolia (c. 2000–1200 BCE)." <em>Scientific Data</em> 12, 1804 (2025). https://doi.org/10.1038/s41597-025-06241-9<br><br>
+        Dataset: LuwianSiteAtlas: A Spatial and Semantic Dataset of Bronze Age Settlements in Western Anatolia. Zenodo https://doi.org/10.5281/zenodo.17128262 (2025).
+      </div>
+    </div>
+
+    <hr class="ctx-divider">
+
+    <div class="ctx-block">
+      <div class="ctx-eyebrow">External Resources</div>
+      <div class="ctx-title">Links</div>
+      <div class="ctx-link-grid">
+        <a class="ctx-link-card" href="https://luwianstudies.org/siteatlas/luwiansitemap/" target="_blank" rel="noopener">
+          <div class="ctx-link-card-title">LuwianSiteMap ↗</div>
+          <div class="ctx-link-card-sub">Official interactive map · luwianstudies.org</div>
+        </a>
+        <a class="ctx-link-card" href="https://luwianstudies.org/siteatlas/luwiansiteatlas/" target="_blank" rel="noopener">
+          <div class="ctx-link-card-title">LuwianSiteAtlas ↗</div>
+          <div class="ctx-link-card-sub">Advanced search interface</div>
+        </a>
+        <a class="ctx-link-card" href="https://doi.org/10.1038/s41597-025-06241-9" target="_blank" rel="noopener">
+          <div class="ctx-link-card-title">Nature Sci. Data paper ↗</div>
+          <div class="ctx-link-card-sub">Aşınmaz, Mutlu & Zangger 2025</div>
+        </a>
+        <a class="ctx-link-card" href="https://doi.org/10.5281/zenodo.17128262" target="_blank" rel="noopener">
+          <div class="ctx-link-card-title">Zenodo dataset ↗</div>
+          <div class="ctx-link-card-sub">CSV + JSON · CC BY-NC 4.0</div>
+        </a>
+        <a class="ctx-link-card" href="https://anetoday.org/geospatial-data-western-anatolia/" target="_blank" rel="noopener">
+          <div class="ctx-link-card-title">ANET article ↗</div>
+          <div class="ctx-link-card-sub">Aşınmaz & Zangger methodology</div>
+        </a>
+        <a class="ctx-link-card" href="https://luwianstudies.org/culture/who-were-the-luwians/" target="_blank" rel="noopener">
+          <div class="ctx-link-card-title">Who were the Luwians? ↗</div>
+          <div class="ctx-link-card-sub">luwianstudies.org</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// ════════════════════════════════════════════════════════════════
+// DATA LAYER — load from Zenodo
+// ════════════════════════════════════════════════════════════════
+const ZENODO = 'https://zenodo.org/records/17128262/files';
+
+let SITES = [];        // master array, built after all fetches
+let PLEIADES = {};     // site_id → pleiades_uri
+let WIKIDATA = {};     // site_id → wikidata_uri (from geonames crosswalk)
+let IDAI = {};         // site_id → idai_uri
+let PERIODS = {};      // site_id → ['MBA'|'LBA'|'MLBA']
+let DESCRIPTIONS = {}; // site_id → description text
+let ORE_DEPOSITS = []; // array of ore deposit objects
+let PROVINCES = new Set();
+
+let mapInstance = null;
+let allMarkers = [];
+let oreMarkers = [];
+let oreVisible = false;
+let currentPeriodFilter = 'all';
+
+async function fetchJSON(file) {
+  const r = await fetch(`${ZENODO}/${file}?download=1`);
+  if (!r.ok) throw new Error(`${file}: ${r.status}`);
+  return r.json();
+}
+async function fetchCSV(file) {
+  const r = await fetch(`${ZENODO}/${file}?download=1`);
+  if (!r.ok) throw new Error(`${file}: ${r.status}`);
+  const text = await r.text();
+  return parseCSV(text);
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = parseCSVRow(lines[0]);
+  return lines.slice(1).filter(l => l.trim()).map(l => {
+    const vals = parseCSVRow(l);
+    const obj = {};
+    headers.forEach((h, i) => obj[h.trim()] = (vals[i] || '').trim());
+    return obj;
+  });
+}
+function parseCSVRow(line) {
+  const result = []; let cur = ''; let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQ = !inQ; }
+    else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+    else { cur += c; }
+  }
+  result.push(cur);
+  return result;
+}
+
+async function loadAllData() {
+  // Load core files in parallel
+  const [siteDesc, sitePeriod, pleiades, geonames, daiGaz, oreDeposits] = await Promise.all([
+    fetchCSV('site_descriptions.csv'),
+    fetchCSV('site_period.csv'),
+    fetchCSV('pleiades.csv'),
+    fetchCSV('geonames.csv'),
+    fetchCSV('dai_gazetteer.csv'),
+    fetchCSV('ore_deposits_WA.csv'),
+  ]);
+
+  // Build descriptions index
+  siteDesc.forEach(r => {
+    const id = r.site_id || r.id || r.ID;
+    if (id) DESCRIPTIONS[id] = r.description || r.text || r.Description || '';
+  });
+
+  // Build period index
+  sitePeriod.forEach(r => {
+    const id = r.site_id || r.id || r.ID;
+    const per = r.period_id || r.period || r.Period || '';
+    if (id) PERIODS[id] = per;
+  });
+
+  // Build Pleiades index
+  pleiades.forEach(r => {
+    const id = r.site_id || r.id;
+    const uri = r.pleiades_uri || r.uri || r.pleiades_url || r.pleiades_id;
+    if (id && uri) PLEIADES[id] = uri;
+  });
+
+  // Build iDAI index
+  daiGaz.forEach(r => {
+    const id = r.site_id || r.id;
+    const uri = r.idai_uri || r.gazetteer_uri || r.uri || r.idai_id;
+    if (id && uri) IDAI[id] = uri;
+  });
+
+  // Build Wikidata from geonames crosswalk (includes wikidata_uri sometimes)
+  geonames.forEach(r => {
+    const id = r.site_id || r.id;
+    const wdUri = r.wikidata_uri || r.wikidata;
+    if (id && wdUri) WIKIDATA[id] = wdUri;
+    // Also collect provinces
+    const prov = r.province || r.adminName1;
+    if (prov) PROVINCES.add(prov);
+  });
+
+  // Province lookup by site_id for filtering
+  const provinceById = {};
+  geonames.forEach(r => {
+    const id = r.site_id || r.id;
+    const prov = r.province || r.adminName1 || '';
+    if (id) provinceById[id] = prov;
+  });
+
+  // Build master SITES array from site_descriptions (has coords + names)
+  SITES = siteDesc.map(r => {
+    const id = r.site_id || r.id || r.ID || '';
+    return {
+      id,
+      name:       r.name || r.site_name || r.Name || r.toponym || '(unnamed)',
+      alt_name:   r.alt_name || r.alternative_name || r.toponym_alt || r.alt_toponym || '',
+      lat:        parseFloat(r.latitude || r.lat || r.Latitude || 0),
+      lng:        parseFloat(r.longitude || r.lon || r.long || r.Longitude || 0),
+      description: DESCRIPTIONS[id] || '',
+      period:     PERIODS[id] || '',
+      province:   provinceById[id] || '',
+      pleiades:   PLEIADES[id] || '',
+      wikidata:   WIKIDATA[id] || '',
+      idai:       IDAI[id] || '',
+    };
+  }).filter(s => s.lat !== 0 && s.lng !== 0);
+
+  // Ore deposits
+  ORE_DEPOSITS = oreDeposits.map(r => ({
+    name:  r.name || r.Name || r.deposit_name || '(ore deposit)',
+    type:  r.type || r.material || r.Type || 'mineral',
+    lat:   parseFloat(r.latitude || r.lat || 0),
+    lng:   parseFloat(r.longitude || r.lon || r.long || 0),
+  })).filter(o => o.lat !== 0);
+
+  // Populate province filter
+  const provSel = document.getElementById('f-province');
+  [...PROVINCES].sort().forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p; opt.textContent = p;
+    provSel.appendChild(opt);
+  });
+
+  return SITES;
+}
+
+// ════════════════════════════════════════════════════════════════
+// MAP
+// ════════════════════════════════════════════════════════════════
+const PERIOD_COLOUR = {
+  'MBA':  '#e09050', // terracotta
+  'LBA':  '#60a0d0', // blue
+  'MLBA': '#b070c0', // purple
+  '':     '#888888',
+};
+
+function periodLabel(p) {
+  return {MBA:'Middle BA', LBA:'Late BA', MLBA:'MBA + LBA'}[p] || p || 'Unknown';
+}
+
+function makeIcon(period, size=7) {
+  const c = PERIOD_COLOUR[period] || PERIOD_COLOUR[''];
+  return L.divIcon({
+    html: `<svg xmlns="http://www.w3.org/2000/svg" width="${size*2+4}" height="${size*2+4}">
+      <circle cx="${size+2}" cy="${size+2}" r="${size}" fill="${c}" fill-opacity=".75" stroke="rgba(200,216,240,.45)" stroke-width="1"/>
+    </svg>`,
+    className:'', iconSize:[size*2+4,size*2+4], iconAnchor:[size+2,size+2]
+  });
+}
+
+function buildMap() {
+  mapInstance = L.map('luwian-map', {
+    center:[39.0,29.5], zoom:7,
+    zoomControl:false, attributionControl:false
+  });
+
+  // OpenTopoMap — closest to Luwian Studies' own preferred layer
+  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    maxZoom:17, attribution:'© OpenTopoMap (CC-BY-SA)'
+  }).addTo(mapInstance);
+
+  L.control.zoom({position:'bottomright'}).addTo(mapInstance);
+  L.control.attribution({position:'bottomright',
+    prefix:'LuwianSiteAtlas · Aşınmaz, Mutlu & Zangger 2025 · CC BY-NC 4.0'
+  }).addTo(mapInstance);
+
+  // Plot all sites
+  SITES.forEach(site => {
+    const icon = makeIcon(site.period);
+    const marker = L.marker([site.lat, site.lng], {icon})
+      .bindPopup(() => buildPopup(site), {maxWidth:320, minWidth:240});
+    marker.siteData = site;
+    marker.addTo(mapInstance);
+    allMarkers.push(marker);
+  });
+
+  // Ore deposit markers (hidden by default)
+  ORE_DEPOSITS.forEach(ore => {
+    const icon = L.divIcon({
+      html:`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+        <polygon points="7,1 13,13 1,13" fill="#d4a84b" fill-opacity=".7" stroke="rgba(200,216,240,.4)" stroke-width="1"/>
+      </svg>`,
+      className:'', iconSize:[14,14], iconAnchor:[7,13]
+    });
+    const m = L.marker([ore.lat, ore.lng], {icon})
+      .bindPopup(`<div style="font-size:.7rem;color:var(--star)"><strong style="color:#d4a84b">⬥ ${ore.name}</strong><br><span style="color:rgba(200,216,240,.5)">${ore.type}</span></div>`);
+    oreMarkers.push(m);
+  });
+
+  updateBadge();
+}
+
+function buildPopup(site) {
+  const links = [];
+  if (site.pleiades) links.push(`<a class="lp-link" href="${site.pleiades}" target="_blank" rel="noopener">Pleiades ↗</a>`);
+  if (site.wikidata) links.push(`<a class="lp-link" href="${site.wikidata}" target="_blank" rel="noopener">Wikidata ↗</a>`);
+  if (site.idai)     links.push(`<a class="lp-link" href="${site.idai}" target="_blank" rel="noopener">iDAI ↗</a>`);
+
+  const pCol = PERIOD_COLOUR[site.period] || '#888';
+  const desc = site.description ? `<div class="lp-desc">${site.description.slice(0,280)}${site.description.length>280?'…':''}</div>` : '';
+
+  return `<div>
+    <div class="lp-id">LS #${site.id}</div>
+    <div class="lp-name">${site.name}</div>
+    ${site.alt_name ? `<div class="lp-alt">${site.alt_name}</div>` : ''}
+    ${desc}
+    <div class="lp-meta">
+      <span class="lp-badge" style="background:${pCol}22;color:${pCol};border:1px solid ${pCol}44">${periodLabel(site.period)}</span>
+      ${site.province ? `<span class="lp-badge" style="background:rgba(200,216,240,.06);color:rgba(200,216,240,.45);border:1px solid rgba(200,216,240,.1)">${site.province}</span>` : ''}
+    </div>
+    ${links.length ? `<div class="lp-links">${links.join('')}</div>` : ''}
+  </div>`;
+}
+
+function applyFilters() {
+  const nameQ = document.getElementById('f-name').value.toLowerCase().trim();
+  const province = document.getElementById('f-province').value;
+  const extFilter = document.getElementById('f-ext').value;
+
+  let count = 0;
+  allMarkers.forEach(m => {
+    const s = m.siteData;
+    const matchName = !nameQ || s.name.toLowerCase().includes(nameQ) || s.alt_name.toLowerCase().includes(nameQ);
+    const matchPeriod = currentPeriodFilter === 'all' || s.period === currentPeriodFilter;
+    const matchProv = !province || s.province === province;
+    const matchExt = !extFilter ||
+      (extFilter === 'pleiades' && s.pleiades) ||
+      (extFilter === 'wikidata' && s.wikidata) ||
+      (extFilter === 'idai' && s.idai);
+
+    if (matchName && matchPeriod && matchProv && matchExt) {
+      m.addTo(mapInstance); count++;
+    } else {
+      mapInstance.removeLayer(m);
+    }
+  });
+  document.getElementById('sb-count').textContent = count;
+  updateBadge(count);
+}
+
+function updateBadge(count) {
+  const b = document.getElementById('map-badge');
+  b.textContent = `${count ?? SITES.length} / 483 sites`;
+  b.style.display = 'block';
+}
+
+function setPeriod(el, val) {
+  document.querySelectorAll('.period-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentPeriodFilter = val;
+  applyFilters();
+}
+function resetFilters() {
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-province').value = '';
+  document.getElementById('f-ext').value = '';
+  currentPeriodFilter = 'all';
+  document.querySelectorAll('.period-chip').forEach((c,i)=>c.classList.toggle('active',i===0));
+  applyFilters();
+}
+function toggleOre() {
+  oreVisible = document.getElementById('show-ore').checked;
+  oreMarkers.forEach(m => oreVisible ? m.addTo(mapInstance) : mapInstance.removeLayer(m));
+}
+
+// ════════════════════════════════════════════════════════════════
+// BROWSER
+// ════════════════════════════════════════════════════════════════
+let brFiltered = [], brPage = 1;
+const BR_PER_PAGE = 50;
+
+function brSearch() {
+  const q = document.getElementById('br-search').value.toLowerCase();
+  const period = document.getElementById('br-period').value;
+  const sort = document.getElementById('br-sort').value;
+
+  brFiltered = SITES.filter(s =>
+    (!q || s.name.toLowerCase().includes(q) || s.alt_name.toLowerCase().includes(q) || s.description.toLowerCase().includes(q)) &&
+    (!period || s.period === period)
+  );
+
+  if (sort === 'name_asc') brFiltered.sort((a,b) => a.name.localeCompare(b.name));
+  else if (sort === 'name_desc') brFiltered.sort((a,b) => b.name.localeCompare(a.name));
+  else brFiltered.sort((a,b) => Number(a.id||0) - Number(b.id||0));
+
+  brPage = 1;
+  renderBrowser();
+}
+
+function renderBrowser() {
+  const start = (brPage-1)*BR_PER_PAGE;
+  const page = brFiltered.slice(start, start+BR_PER_PAGE);
+  document.getElementById('br-count').textContent = `${brFiltered.length} sites`;
+
+  const tbody = document.getElementById('br-tbody');
+  tbody.innerHTML = page.map(s => {
+    const pCol = PERIOD_COLOUR[s.period] || '#888';
+    const extLinks = [
+      s.pleiades ? `<a class="td-extlink" href="${s.pleiades}" target="_blank" rel="noopener">Pleiades</a>` : '',
+      s.wikidata ? `<a class="td-extlink" href="${s.wikidata}" target="_blank" rel="noopener">WD</a>` : '',
+      s.idai     ? `<a class="td-extlink" href="${s.idai}" target="_blank" rel="noopener">iDAI</a>` : '',
+    ].filter(Boolean).join('');
+
+    return `<tr onclick="focusSite('${s.id}')">
+      <td class="td-id">${s.id}</td>
+      <td><div class="td-name">${s.name}</div></td>
+      <td><div class="td-alt">${s.alt_name || '—'}</div></td>
+      <td><div class="td-period"><span class="td-badge" style="background:${pCol}22;color:${pCol};border:1px solid ${pCol}44">${periodLabel(s.period)}</span></div></td>
+      <td class="td-coords">${s.lat.toFixed(4)}, ${s.lng.toFixed(4)}</td>
+      <td><div class="td-ext">${extLinks || '—'}</div></td>
+    </tr>`;
+  }).join('');
+
+  // Pagination
+  const pages = Math.ceil(brFiltered.length / BR_PER_PAGE);
+  const pag = document.getElementById('br-pagination');
+  if (pages <= 1) { pag.style.display='none'; return; }
+  pag.style.display='flex';
+  const maxShow = 10;
+  let html = `<button class="pg-btn" ${brPage===1?'disabled':''} onclick="brGo(${brPage-1})">‹</button>`;
+  for (let p = 1; p <= Math.min(pages,maxShow); p++) {
+    html += `<button class="pg-btn ${p===brPage?'active':''}" onclick="brGo(${p})">${p}</button>`;
+  }
+  if (pages > maxShow) html += `<span class="pg-btn" style="cursor:default">…${pages}</span>`;
+  html += `<button class="pg-btn" ${brPage===pages?'disabled':''} onclick="brGo(${brPage+1})">›</button>`;
+  pag.innerHTML = html;
+}
+
+function brGo(p) { brPage=p; renderBrowser(); window.scrollTo({top:document.getElementById('sec-browser').offsetTop+60,behavior:'smooth'}); }
+
+function focusSite(id) {
+  const site = SITES.find(s=>s.id===id);
+  if (!site) return;
+  // Switch to map tab and fly to site
+  const mapTab = document.querySelector('.tab');
+  mapTab.click();
+  setTimeout(()=>{
+    if (mapInstance) {
+      mapInstance.flyTo([site.lat,site.lng],12,{duration:1.2});
+      const marker = allMarkers.find(m=>m.siteData.id===id);
+      if (marker) marker.openPopup();
+    }
+  },200);
+}
+
+// ════════════════════════════════════════════════════════════════
+// TAB SWITCHING
+// ════════════════════════════════════════════════════════════════
+let mapLoaded = false;
+function setTab(el, id) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  if (id==='map' && !mapLoaded) { /* handled on init */ }
+  if ((id==='browser') && SITES.length && !document.getElementById('br-table-wrap').style.display.includes('none') === false) {
+    // already rendered
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════
+async function init() {
+  try {
+    await loadAllData();
+
+    // Map
+    document.getElementById('sec-map-loading').style.display = 'none';
+    document.getElementById('luwian-map').style.display = 'block';
+    buildMap();
+    applyFilters();
+    mapLoaded = true;
+
+    // Browser — init table once loaded
+    document.getElementById('br-loading').style.display = 'none';
+    document.getElementById('br-table-wrap').style.display = 'block';
+    brFiltered = [...SITES].sort((a,b)=>Number(a.id||0)-Number(b.id||0));
+    document.getElementById('br-pagination').style.display = 'flex';
+    renderBrowser();
+
+  } catch(e) {
+    document.getElementById('sec-map-loading').innerHTML = `
+      <div class="error-msg">
+        <div style="font-size:1.2rem;margin-bottom:.5rem;">⚠</div>
+        Could not load from Zenodo: ${e.message}<br><br>
+        <a href="https://zenodo.org/records/17128262" target="_blank" rel="noopener">Download directly from Zenodo →</a><br>
+        <a href="https://luwianstudies.org/siteatlas/luwiansitemap/" target="_blank" rel="noopener" style="margin-top:.3rem;display:inline-block">View official LuwianSiteMap →</a>
+      </div>`;
+    document.getElementById('br-loading').innerHTML = `<div class="error-msg">Data unavailable. <a href="https://zenodo.org/records/17128262" target="_blank" rel="noopener">Zenodo →</a></div>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
