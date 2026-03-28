@@ -533,9 +533,102 @@ function renderSynthesisTabs(tabs, site, corpus) {
 let renderer, camera, sceneThree, animating = true, autoRotate = true;
 const ORBIT_SPEED = 0.003;
 
+// ── External curated views — keyed by site name (case-insensitive) ──────────
+// Add any site here to replace the procedural scene with an embedded map/viewer.
+// url: the page to iframe  |  label: badge text  |  credit: attribution line
+const SITE_EXTERNAL_VIEWS = {
+  'tenochtitlan': {
+    url:    'https://www.retratodetenochtitlan.mx/?lang=en',
+    label:  'Retrato de Tenochtitlan',
+    credit: '© retratodetenochtitlan.mx — Interactive historical map',
+  },
+};
+
 function initScene(recon, site) {
   const canvas = document.getElementById("sceneCanvas");
   const wrap   = document.getElementById("sceneWrap");
+
+  // ── Check for a curated external view first ─────────────────────────────
+  const extKey = (site.name ?? '').toLowerCase().trim();
+  const ext = SITE_EXTERNAL_VIEWS[extKey];
+  if (ext) {
+    // Replace canvas with iframe; keep same .scene-wrap shell for styling
+    canvas.style.display = 'none';
+    document.getElementById('btnRotate').style.display = 'none';
+    document.getElementById('btnReset').style.display  = 'none';
+    document.getElementById('sceneLabel').textContent  = ext.label;
+    document.getElementById('sceneAttr').textContent   = ext.credit;
+
+    const iframe = document.createElement('iframe');
+    iframe.src    = ext.url;
+    iframe.style.cssText = 'width:100%;height:420px;border:none;display:block;';
+    iframe.allow  = 'fullscreen';
+    iframe.title  = ext.label;
+
+    // Fallback: if iframe is blocked by X-Frame-Options, show a friendly message
+    // We detect this by listening for the load event and checking contentDocument
+    const fallback = document.createElement('div');
+    fallback.style.cssText = `
+      display:none;width:100%;height:420px;
+      background:rgba(15,13,10,.9);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:1rem;text-align:center;padding:2rem;
+    `;
+    fallback.innerHTML = `
+      <div style="font-size:2rem;opacity:.4">🗺</div>
+      <div style="font-family:var(--serif);font-size:1.1rem;color:var(--cream)">${ext.label}</div>
+      <div style="font-size:.75rem;color:var(--ash);max-width:340px;line-height:1.6">
+        This map cannot be embedded due to the site's security policy.
+      </div>
+      <a href="${ext.url}" target="_blank" rel="noopener"
+         style="font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+                padding:.45rem 1rem;border:1px solid rgba(184,137,42,.5);
+                color:var(--ochre-lt);text-decoration:none;transition:all .2s;"
+         onmouseover="this.style.background='rgba(184,137,42,.12)'"
+         onmouseout="this.style.background='none'">
+        Open full interactive map ↗
+      </a>
+      <div style="font-size:.58rem;color:rgba(138,128,112,.4)">${ext.credit}</div>
+    `;
+
+    // Add an "open in new tab" button to controls regardless
+    const openBtn = document.createElement('button');
+    openBtn.className   = 'scene-btn';
+    openBtn.textContent = '↗ Open full map';
+    openBtn.onclick     = () => window.open(ext.url, '_blank', 'noopener');
+    document.querySelector('.scene-controls').appendChild(openBtn);
+
+    // Try iframe first; detect block via sandbox + error
+    iframe.style.display = 'block';
+    fallback.style.display = 'none';
+
+    // If the iframe fails to load (X-Frame-Options), swap to fallback
+    // We use a timer: if contentDocument is null/blank after load, it was blocked
+    iframe.onload = () => {
+      try {
+        // Accessing contentDocument throws if cross-origin blocked
+        const doc = iframe.contentDocument || iframe.contentWindow?.document;
+        // If we get here with an about:blank or null body, it was blocked
+        if (!doc || !doc.body || doc.body.innerHTML === '') {
+          iframe.style.display = 'none';
+          fallback.style.display = 'flex';
+        }
+      } catch {
+        // Cross-origin block — the iframe loaded but we can't inspect it.
+        // This actually means it DID embed successfully (just cross-origin).
+        // Leave iframe visible.
+      }
+    };
+
+    iframe.onerror = () => {
+      iframe.style.display = 'none';
+      fallback.style.display = 'flex';
+    };
+
+    wrap.insertBefore(iframe, canvas);
+    wrap.appendChild(fallback);
+    return; // skip Three.js scene
+  }
 
   sceneThree = new THREE.Scene();
   camera     = new THREE.PerspectiveCamera(55, canvas.clientWidth / canvas.clientHeight, 0.1, 200);
