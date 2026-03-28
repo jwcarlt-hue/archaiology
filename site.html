@@ -185,11 +185,16 @@ a{text-decoration:none;color:inherit;}
       <!-- 3D Scene -->
       <div class="scene-wrap" id="sceneWrap">
         <canvas class="scene-canvas" id="sceneCanvas"></canvas>
+        <!-- Image overlay — hidden until user attaches an image -->
+        <img id="sceneImg" style="display:none;width:100%;height:420px;object-fit:contain;background:#0a0806;" alt="Site image">
         <div class="scene-label" id="sceneLabel">Procedural Reconstruction</div>
         <div class="scene-attribution" id="sceneAttr"></div>
         <div class="scene-controls">
-          <button class="scene-btn" id="btnRotate">⟳ Auto-rotate</button>
+          <button class="scene-btn" id="btnRotate">&#x27F3; Auto-rotate</button>
           <button class="scene-btn" id="btnReset">Reset view</button>
+          <input type="file" id="imgUploadInput" accept="image/jpeg,image/png,image/webp" style="display:none">
+          <button class="scene-btn" id="btnAttach" onclick="document.getElementById('imgUploadInput').click()" title="Attach site map, aerial photo, or illustration">&#x1F4CE; Attach image</button>
+          <button class="scene-btn" id="btnClearImg" style="display:none" onclick="clearSceneImage()">&#x2715; Clear image</button>
         </div>
       </div>
       <!-- Overview synthesis -->
@@ -409,6 +414,7 @@ async function loadSite() {
   const tabs = await sb(`site_synthesis?site_id=eq.${site.id}&select=*`);
   renderSynthesisTabs(tabs, site, allPapers);
 
+  window._currentSite = site;
   return site;
 }
 
@@ -541,6 +547,11 @@ const SITE_EXTERNAL_VIEWS = {
     url:    'https://www.retratodetenochtitlan.mx/?lang=en',
     label:  'Retrato de Tenochtitlan',
     credit: '© retratodetenochtitlan.mx — Interactive historical map',
+  },
+  'athens': {
+    url:    'https://map.mappingancientathens.org/',
+    label:  'Mapping Ancient Athens',
+    credit: '© Mapping Ancient Athens — Interactive topographic map',
   },
 };
 
@@ -750,6 +761,54 @@ loadSite().catch(err => {
   document.getElementById("siteName").textContent = "Error loading site";
   console.error(err);
 });
+
+// ── Image attach / clear ─────────────────────────────────────
+const imgInput = document.getElementById('imgUploadInput');
+if (imgInput) {
+  imgInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img   = document.getElementById('sceneImg');
+      const canvas = document.getElementById('sceneCanvas');
+      img.src = e.target.result;
+      img.style.display = 'block';
+      canvas.style.display = 'none';
+      if (renderer) { animating = false; }
+      document.getElementById('btnClearImg').style.display = 'inline-block';
+      document.getElementById('btnAttach').style.display = 'none';
+      document.getElementById('btnRotate').style.display = 'none';
+      document.getElementById('btnReset').style.display = 'none';
+      // Update label to show filename
+      const lbl = document.getElementById('sceneLabel');
+      if (lbl) lbl.textContent = file.name.replace(/\.[^.]+$/, '');
+      const attr = document.getElementById('sceneAttr');
+      if (attr) attr.textContent = 'User-attached image · ' + (file.size / 1024).toFixed(0) + ' KB';
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function clearSceneImage() {
+  const img   = document.getElementById('sceneImg');
+  const canvas = document.getElementById('sceneCanvas');
+  const input = document.getElementById('imgUploadInput');
+  img.src = ''; img.style.display = 'none';
+  canvas.style.display = 'block';
+  if (renderer) { animating = true; }
+  document.getElementById('btnClearImg').style.display = 'none';
+  document.getElementById('btnAttach').style.display = 'inline-block';
+  document.getElementById('btnRotate').style.display = 'inline-block';
+  document.getElementById('btnReset').style.display = 'inline-block';
+  if (input) input.value = '';
+  // Restore label
+  const site = window._currentSite;
+  if (site) {
+    document.getElementById('sceneLabel').textContent = site.name + ' — Procedural Reconstruction';
+    document.getElementById('sceneAttr').textContent = 'Default model · Refines as corpus grows';
+  }
+}
 </script>
 </body>
 </html>
