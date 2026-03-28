@@ -372,12 +372,34 @@ async function loadSite() {
     document.getElementById("toposBtn").href = site.topostext_url;
   }
 
-  // Load corpus mentions
-  const corpus = await sb(
-    `archaeology_corpus?site_id=eq.${site.id}&select=title,source_url,content_type,published_at,source,author,summary&order=published_at.desc&limit=20`
-  );
-  renderStats(site, corpus.length, site.ancient_refs ?? 0);
-  renderPapers(corpus);
+  // Load corpus mentions (news/RSS) AND uploaded PDFs in parallel
+  const [corpus, pdfLinks] = await Promise.all([
+    sb(`archaeology_corpus?site_id=eq.${site.id}&select=title,source_url,content_type,published_at,source,author,summary&order=published_at.desc&limit=20`),
+    sb(`pdf_site_links?site_id=eq.${site.id}&select=pdf_id,confidence&limit=50`),
+  ]);
+
+  // Resolve PDF records from pdf_corpus
+  let pdfPapers = [];
+  if (pdfLinks.length) {
+    const ids = pdfLinks.map(l => l.pdf_id).join(',');
+    const pdfs = await sb(`pdf_corpus?id=in.(${ids})&select=id,title,filename,author,year,journal,doi,summary,uploaded_at,word_count&order=uploaded_at.desc`);
+    pdfPapers = pdfs.map(p => ({
+      title:        p.title || p.filename,
+      source_url:   p.doi ? `https://doi.org/${p.doi}` : null,
+      content_type: 'pdf',
+      published_at: p.uploaded_at,
+      source:       p.journal || 'Uploaded PDF',
+      author:       p.author,
+      summary:      p.summary,
+      year:         p.year,
+      word_count:   p.word_count,
+      confidence:   pdfLinks.find(l => l.pdf_id === p.id)?.confidence,
+    }));
+  }
+
+  const allPapers = [...pdfPapers, ...corpus];
+  renderStats(site, allPapers.length, site.ancient_refs ?? 0);
+  renderPapers(allPapers);
 
   // Load reconstruction
   const recons = await sb(`site_reconstructions?site_id=eq.${site.id}&select=*`);
@@ -385,7 +407,7 @@ async function loadSite() {
 
   // Load synthesis tabs
   const tabs = await sb(`site_synthesis?site_id=eq.${site.id}&select=*`);
-  renderSynthesisTabs(tabs, site, corpus);
+  renderSynthesisTabs(tabs, site, allPapers);
 
   return site;
 }
@@ -443,22 +465,35 @@ function renderExtLinks(site) {
     </a>`).join("");
 }
 
-function renderPapers(corpus) {
+function renderPapers(papers) {
   const list = document.getElementById("papersList");
-  if (!corpus.length) {
-    list.innerHTML = `<p class="placeholder-text">No papers in corpus yet for this site. The pipeline will add items as they are published.</p>`;
+  if (!papers.length) {
+    list.innerHTML = `<p class="placeholder-text">No papers in corpus yet for this site. Upload PDFs via the <a href="upload.html" style="color:var(--ochre-lt)">Upload portal</a> to populate this section.</p>`;
     return;
   }
-  list.innerHTML = corpus.map(p => `
+  list.innerHTML = papers.map(p => {
+    const isPdf = p.content_type === 'pdf';
+    const tag = isPdf
+      ? `📄 PDF · ${p.source ?? 'Uploaded'}`
+      : `📰 ${p.content_type === 'paper' ? 'Paper' : 'News'} · ${p.source ?? ''}`;
+    const dateStr = isPdf && p.year
+      ? p.year
+      : relDate(p.published_at);
+    const conf = p.confidence ? ` <span style="opacity:.4;font-size:.6rem">${(p.confidence*100).toFixed(0)}% match</span>` : '';
+    const words = p.word_count ? ` · ${p.word_count.toLocaleString()} words` : '';
+    return `
     <div class="paper-item">
-      <div class="paper-tag">${p.content_type === "paper" ? "📄 Paper" : "📰 News"} · ${p.source ?? ""}</div>
-      <div class="paper-title"><a href="${p.source_url ?? '#'}" target="_blank">${p.title}</a></div>
-      ${p.summary ? `<div class="paper-summary">${p.summary}</div>` : ""}
+      <div class="paper-tag">${tag}${words}</div>
+      <div class="paper-title">${p.source_url
+        ? `<a href="${p.source_url}" target="_blank" rel="noopener">${p.title}</a>`
+        : p.title}</div>
+      ${p.summary ? `<div class="paper-summary">${p.summary}</div>` : ''}
       <div class="paper-meta">
-        ${p.author ? `<strong>${p.author.slice(0,60)}</strong>` : ""}
-        <span>${relDate(p.published_at)}</span>
+        ${p.author ? `<strong>${p.author.slice(0,60)}</strong>` : ''}
+        <span>${dateStr}${conf}</span>
       </div>
-    </div>`).join("");
+    </div>`;
+  }).join('');
 }
 
 function renderSynthesisTabs(tabs, site, corpus) {

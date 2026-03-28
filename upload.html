@@ -376,34 +376,39 @@ async function uploadFiles() {
 
 // ── Show result ───────────────────────────────────────────────
 async function showResult(pdfId) {
-  // Fetch pdf + links
-  const [pdf, links] = await Promise.all([
-    fetch(`${SB_URL}/rest/v1/pdf_corpus?id=eq.${pdfId}&limit=1`, {headers:{'apikey':SB_ANON}}).then(r=>r.json()),
-    fetch(`${SB_URL}/rest/v1/pdf_site_links?pdf_id=eq.${pdfId}&select=site_id,confidence`, {headers:{'apikey':SB_ANON}}).then(r=>r.json()),
+  // Fetch pdf record + site links in parallel
+  const [pdfArr, links] = await Promise.all([
+    fetch(`${SB_URL}/rest/v1/pdf_corpus?id=eq.${pdfId}&limit=1`,
+      {headers:{'apikey':SB_ANON}}).then(r=>r.json()).catch(()=>[]),
+    fetch(`${SB_URL}/rest/v1/pdf_site_links?pdf_id=eq.${pdfId}&select=site_id,confidence`,
+      {headers:{'apikey':SB_ANON}}).then(r=>r.json()).catch(()=>[]),
   ]);
-  const p = pdf[0];
-  const card = document.getElementById('result-card');
+
+  if (!pdfArr.length) return;
+  const p = pdfArr[0];
   document.getElementById('rc-title').textContent = p.title || p.filename;
   document.getElementById('rc-meta').textContent = [
     p.author, p.year, p.journal, p.doi ? `doi:${p.doi}` : ''
   ].filter(Boolean).join(' · ');
   document.getElementById('rc-summary').textContent = p.summary || '';
 
-  // Fetch site names for linked sites
-  if (links.length) {
-    const siteIds = links.map(l=>l.site_id).join(',');
-    const sites = await fetch(
+  // Only fetch site names if we actually have links
+  const validLinks = Array.isArray(links) ? links.filter(l => l.site_id) : [];
+  if (validLinks.length) {
+    const siteIds = validLinks.map(l => l.site_id).join(',');
+    const sitesRes = await fetch(
       `${SB_URL}/rest/v1/archaeology_sites?id=in.(${siteIds})&select=id,name`,
       {headers:{'apikey':SB_ANON}}
-    ).then(r=>r.json());
-    const siteMap = Object.fromEntries(sites.map(s=>[s.id,s.name]));
-    document.getElementById('rc-sites').innerHTML = links.map(l=>`
-      <span class="rc-site">${siteMap[l.site_id]||l.site_id.slice(0,8)} <span style="opacity:.5">${(l.confidence*100).toFixed(0)}%</span></span>
-    `).join('');
+    ).catch(() => null);
+    const sites = sitesRes?.ok ? await sitesRes.json() : [];
+    const siteMap = Object.fromEntries((sites||[]).map(s=>[s.id,s.name]));
+    document.getElementById('rc-sites').innerHTML = validLinks.map(l=>
+      `<span class="rc-site">${siteMap[l.site_id]||l.site_id.slice(0,8)} <span style="opacity:.5">${(l.confidence*100).toFixed(0)}%</span></span>`
+    ).join('');
   } else {
     document.getElementById('rc-sites').innerHTML = '<span class="rc-none">No sites matched in gazetteer</span>';
   }
-  card.classList.add('visible');
+  document.getElementById('result-card').classList.add('visible');
 }
 
 // ── Load recent uploads queue ─────────────────────────────────
