@@ -3469,5 +3469,883 @@ function calcTimeline() {
 })();
 </script>
 
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- BABYLONIAN STAR CATALOGUE  (MUL.APIN Tablet I)            -->
+<!-- Hunger & Steele 2018 edition, Taylor & Francis            -->
+<!-- Three Paths of Enlil, Anu, Ea · Heliacal risings ·        -->
+<!-- Rising/setting pairs · Ziqpu culminating stars            -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<style>
+.bab-section {
+  background: var(--night);
+  border-top: 1px solid rgba(200,216,240,.06);
+  padding: 3rem 2rem 4rem;
+}
+.bab-inner { max-width: 1100px; margin: 0 auto; }
+
+.bab-eyebrow {
+  font-family:var(--sans); font-size:.6rem; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:var(--ochre-lt); margin-bottom:.7rem;
+  display:flex; align-items:center; gap:.5rem;
+}
+.bab-eyebrow::before {
+  content:''; display:inline-block; width:20px; height:1px;
+  background:var(--ochre-lt);
+}
+.bab-title {
+  font-family:var(--serif); font-size:clamp(1.8rem,4vw,3rem);
+  font-weight:900; color:var(--star); line-height:1.1; margin-bottom:.6rem;
+}
+.bab-title em { color:var(--ochre-lt); font-style:italic; }
+.bab-intro {
+  font-size:.88rem; color:rgba(200,216,240,.55); line-height:1.75;
+  max-width:680px; margin-bottom:2rem;
+}
+
+/* ── Path tabs ── */
+.bab-path-tabs {
+  display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1.5rem; align-items:center;
+}
+.bab-path-btn {
+  font-family:var(--sans); font-size:.62rem; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase;
+  border:1px solid rgba(200,216,240,.12); background:none;
+  color:rgba(200,216,240,.45); padding:.35rem .9rem;
+  cursor:pointer; transition:all .18s;
+}
+.bab-path-btn:hover { color:var(--star); border-color:rgba(200,216,240,.3); }
+.bab-path-btn.active { color:var(--ochre-lt); border-color:var(--ochre-lt); background:rgba(212,168,75,.08); }
+.bab-path-btn.enlil.active { color:#90c8ff; border-color:#90c8ff; background:rgba(100,180,255,.07); }
+.bab-path-btn.anu.active   { color:#c0b0f0; border-color:#c0b0f0; background:rgba(180,160,240,.07); }
+.bab-path-btn.ea.active    { color:#70d8a0; border-color:#70d8a0; background:rgba(80,200,140,.07); }
+
+/* ── Search ── */
+.bab-search-row {
+  display:flex; gap:.7rem; align-items:center; margin-bottom:1.2rem; flex-wrap:wrap;
+}
+.bab-search {
+  background:rgba(200,216,240,.04); border:1px solid rgba(200,216,240,.1);
+  color:var(--star); font-family:var(--sans); font-size:.78rem;
+  padding:.42rem .8rem; outline:none; transition:border-color .2s; width:220px;
+}
+.bab-search:focus { border-color:rgba(212,168,75,.5); }
+.bab-search::placeholder { color:rgba(200,216,240,.2); }
+.bab-filter-sel {
+  background:rgba(200,216,240,.04); border:1px solid rgba(200,216,240,.1);
+  color:var(--star); font-family:var(--sans); font-size:.75rem;
+  padding:.42rem .7rem; outline:none; -webkit-appearance:none; width:170px;
+}
+.bab-count {
+  font-family:var(--sans); font-size:.6rem; color:rgba(200,216,240,.3);
+  letter-spacing:.06em;
+}
+
+/* ── Star grid ── */
+.bab-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(310px, 1fr));
+  gap:.6rem;
+  margin-bottom:2rem;
+}
+.bab-star-card {
+  background:rgba(200,216,240,.025); border:1px solid rgba(200,216,240,.07);
+  padding:.8rem 1rem; cursor:pointer; transition:all .15s;
+  position:relative; overflow:hidden;
+}
+.bab-star-card::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+}
+.bab-star-card.enlil::before { background:#90c8ff; }
+.bab-star-card.anu::before   { background:#c0b0f0; }
+.bab-star-card.ea::before    { background:#70d8a0; }
+.bab-star-card:hover { background:rgba(212,168,75,.05); border-color:rgba(212,168,75,.25); }
+.bab-star-card.selected { border-color:var(--ochre); background:rgba(212,168,75,.08); }
+
+.bab-star-header {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  margin-bottom:.35rem;
+}
+.bab-star-name {
+  font-family:var(--serif); font-size:.92rem; font-weight:700;
+  color:var(--star); line-height:1.2;
+}
+.bab-path-pip {
+  font-family:var(--sans); font-size:.5rem; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase;
+  padding:.15rem .45rem; border-radius:1px; white-space:nowrap; flex-shrink:0;
+}
+.bab-path-pip.enlil { background:rgba(100,180,255,.12); color:#90c8ff; }
+.bab-path-pip.anu   { background:rgba(180,160,240,.12); color:#c0b0f0; }
+.bab-path-pip.ea    { background:rgba(80,200,140,.12);  color:#70d8a0; }
+
+.bab-star-cuneiform {
+  font-family:'DM Mono',monospace; font-size:.58rem;
+  color:rgba(200,216,240,.3); margin-bottom:.3rem; line-height:1.4;
+}
+.bab-star-god {
+  font-family:var(--sans); font-size:.65rem; color:var(--ochre-lt);
+  margin-bottom:.3rem; opacity:.8;
+}
+.bab-star-modern {
+  font-family:var(--sans); font-size:.68rem; color:rgba(200,216,240,.55);
+  margin-bottom:.3rem;
+}
+.bab-star-meta {
+  display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.4rem;
+}
+.bab-tag {
+  font-family:var(--sans); font-size:.52rem; font-weight:700;
+  letter-spacing:.07em; text-transform:uppercase;
+  padding:.12rem .4rem; background:rgba(200,216,240,.05);
+  border:1px solid rgba(200,216,240,.08); color:rgba(200,216,240,.4);
+}
+.bab-tag.rising { border-color:rgba(212,168,75,.25); color:var(--ochre-lt); background:rgba(212,168,75,.06); }
+.bab-tag.zodiac { border-color:rgba(180,100,220,.25); color:#d090f0; background:rgba(180,100,220,.06); }
+.bab-tag.ziqpu  { border-color:rgba(100,180,255,.2); color:#90c8ff; background:rgba(100,180,255,.05); }
+
+/* ── Detail panel ── */
+.bab-detail-wrap {
+  display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:2rem;
+}
+@media(max-width:700px){ .bab-detail-wrap{ grid-template-columns:1fr; } }
+
+.bab-detail-card {
+  background:rgba(200,216,240,.03); border:1px solid rgba(200,216,240,.08);
+  padding:1.2rem 1.3rem;
+}
+.bab-detail-title {
+  font-family:var(--sans); font-size:.58rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ochre-lt);
+  margin-bottom:.8rem; padding-bottom:.5rem;
+  border-bottom:1px solid rgba(200,216,240,.06);
+}
+.bab-detail-name {
+  font-family:var(--serif); font-size:1.4rem; font-weight:900;
+  color:var(--star); margin-bottom:.2rem;
+}
+.bab-detail-cuneiform {
+  font-family:'DM Mono',monospace; font-size:.7rem;
+  color:rgba(200,216,240,.3); margin-bottom:.6rem;
+}
+.bab-info-row {
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding:.3rem 0; border-bottom:1px dotted rgba(200,216,240,.06);
+  font-family:var(--sans);
+}
+.bab-info-row:last-child { border-bottom:none; }
+.bab-info-k { font-size:.63rem; color:rgba(200,216,240,.35); }
+.bab-info-v { font-size:.7rem; font-weight:600; color:var(--star); text-align:right; max-width:65%; }
+
+.bab-quote {
+  background:rgba(212,168,75,.05); border-left:2px solid rgba(212,168,75,.3);
+  padding:.6rem .9rem; margin:.8rem 0;
+  font-family:var(--body); font-size:.78rem;
+  color:rgba(200,216,240,.55); font-style:italic; line-height:1.6;
+}
+
+/* ── Rising/setting pairs panel ── */
+.bab-pairs-card {
+  background:rgba(200,216,240,.03); border:1px solid rgba(200,216,240,.08);
+  padding:1.2rem 1.3rem; margin-bottom:1rem;
+}
+.bab-pairs-grid {
+  display:grid; grid-template-columns:1fr auto 1fr; gap:.4rem .8rem;
+  align-items:center; margin-top:.5rem;
+}
+.bab-pair-rising { font-family:var(--sans); font-size:.72rem; color:var(--star); font-weight:600; }
+.bab-pair-arrow  { font-size:.8rem; color:rgba(200,216,240,.25); text-align:center; }
+.bab-pair-setting{ font-family:var(--sans); font-size:.72rem; color:rgba(200,216,240,.45); text-align:right; }
+.bab-pair-row { display:contents; cursor:pointer; }
+.bab-pair-row:hover .bab-pair-rising,
+.bab-pair-row:hover .bab-pair-setting { color:var(--ochre-lt); }
+
+/* ── Stellarium link btn ── */
+.bab-stellarium-btn {
+  display:inline-flex; align-items:center; gap:.5rem; margin-top:.8rem;
+  background:rgba(212,168,75,.1); border:1px solid rgba(212,168,75,.25);
+  color:var(--ochre-lt); font-family:var(--sans); font-size:.62rem;
+  font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  padding:.4rem .9rem; cursor:pointer; transition:all .2s; text-decoration:none;
+}
+.bab-stellarium-btn:hover { background:rgba(212,168,75,.2); }
+
+.bab-source {
+  font-family:var(--sans); font-size:.58rem; color:rgba(200,216,240,.22);
+  margin-top:.5rem; line-height:1.5;
+}
+</style>
+
+<section class="bab-section">
+<div class="bab-inner">
+
+  <div class="bab-eyebrow">MUL.APIN · Tablet I · Hunger &amp; Steele 2018 · Taylor &amp; Francis</div>
+  <h2 class="bab-title">Babylonian <em>Star Catalogue</em></h2>
+  <p class="bab-intro">The three star paths of MUL.APIN — the most widely copied astronomical text in ancient Mesopotamia, composed before the 8th century BCE. 71 stars and constellations assigned to the paths of Enlil (north, &gt;+17° dec.), Anu (equatorial, ±17°), and Ea (south, &lt;−17°), with their Babylonian names, associated deities, heliacal rising months, and modern identifications. Rising/setting pairs from Tablet I section iii.</p>
+
+  <!-- Path tabs + search -->
+  <div class="bab-path-tabs">
+    <button class="bab-path-btn active" data-path="all" onclick="filterPath('all',this)">All Paths</button>
+    <button class="bab-path-btn enlil" data-path="enlil" onclick="filterPath('enlil',this)">⬆ Path of Enlil (N)</button>
+    <button class="bab-path-btn anu"   data-path="anu"   onclick="filterPath('anu',this)">↔ Path of Anu (Eq.)</button>
+    <button class="bab-path-btn ea"    data-path="ea"    onclick="filterPath('ea',this)">⬇ Path of Ea (S)</button>
+  </div>
+
+  <div class="bab-search-row">
+    <input class="bab-search" id="babSearch" placeholder="Search star, deity, modern name…" oninput="renderCatalogue()">
+    <select class="bab-filter-sel" id="babMonthFilter" onchange="renderCatalogue()">
+      <option value="">All heliacal months</option>
+      <option value="I">Month I (spring)</option>
+      <option value="II">Month II</option>
+      <option value="III">Month III</option>
+      <option value="IV">Month IV (summer solstice)</option>
+      <option value="V">Month V</option>
+      <option value="VI">Month VI</option>
+      <option value="VII">Month VII (autumnal eq.)</option>
+      <option value="VIII">Month VIII</option>
+      <option value="IX">Month IX</option>
+      <option value="X">Month X (winter solstice)</option>
+      <option value="XI">Month XI</option>
+      <option value="XII">Month XII</option>
+      <option value="ziqpu">Ziqpu stars only</option>
+      <option value="zodiac">Zodiac path only</option>
+    </select>
+    <span class="bab-count" id="babCount"></span>
+  </div>
+
+  <!-- Star grid -->
+  <div class="bab-grid" id="babGrid"></div>
+
+  <!-- Detail panel -->
+  <div class="bab-detail-wrap" id="babDetail" style="display:none">
+    <div class="bab-detail-card">
+      <div class="bab-detail-title">Star Record</div>
+      <div class="bab-detail-name" id="detName"></div>
+      <div class="bab-detail-cuneiform" id="detCuneiform"></div>
+      <div id="detRows"></div>
+      <div class="bab-quote" id="detQuote"></div>
+      <a class="bab-stellarium-btn" id="detStellariumBtn" href="#" target="_blank" rel="noopener">
+        ✦ View in Stellarium Web
+      </a>
+    </div>
+    <div class="bab-detail-card">
+      <div class="bab-detail-title">Astronomical Notes</div>
+      <div id="detNotes" style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.5);line-height:1.7;"></div>
+    </div>
+  </div>
+
+  <!-- Rising / Setting pairs -->
+  <div class="bab-pairs-card">
+    <div class="bab-detail-title">Simultaneously Rising &amp; Setting Stars — MUL.APIN I iii 13–33</div>
+    <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.4);margin-bottom:1rem;line-height:1.5;">
+      When one star rises on the eastern horizon, its paired star sets in the west. These 21 pairings encode Babylonian knowledge of the sky's symmetry across the meridian. Click a row to highlight both stars in the catalogue above.
+    </p>
+    <div class="bab-pairs-grid" id="babPairsGrid"></div>
+  </div>
+
+  <p class="bab-source">Source: Hunger, H. &amp; Steele, J. (2018). <em>The Babylonian Astronomical Compendium MUL.APIN.</em> Taylor &amp; Francis. Edition based on all sources known as of September 2017. Heliacal rising dates are in the Babylonian 360-day schematic calendar; Month I = Nisannu (spring). Modern identifications follow standard Assyriological scholarship (Pingree, Hunger, Koch-Westenholz). Babylonian months placed in the 360-day schematic calendar, not the observed lunar calendar.</p>
+
+</div>
+</section>
+
+<script>
+// ============================================================
+// BABYLONIAN STAR CATALOGUE — MUL.APIN Tablet I
+// Data: Hunger & Steele 2018, Taylor & Francis
+// Three paths: Enlil (north), Anu (equatorial), Ea (south)
+// Fields: name, cuneiform (transliteration), path, deity, modern,
+//         heliacal (month, day), ziqpu, zodiac, quote, notes
+// ============================================================
+
+const BAB_MONTHS = ['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+
+// Babylonian schematic month → approximate modern month for Stellarium
+// Month I = Nisannu ≈ late March/April (vernal equinox on Month I day 15)
+// Dates approximate for ~700 BCE Babylon (32°N)
+const MONTH_TO_DATE = {
+  'I':'0401','II':'0501','III':'0601','IV':'0701',
+  'V':'0801','VI':'0901','VII':'1001','VIII':'1101',
+  'IX':'1201','X':'0101','XI':'0201','XII':'0301'
+};
+
+function babStellariumURL(ra, dec, month) {
+  // Babylon coordinates: 32.54°N, 44.42°E
+  const date = month ? `-0700-${MONTH_TO_DATE[month]}T03:00` : '-0700-04-01T03:00';
+  const params = new URLSearchParams({
+    date, lat:'32.5400', lng:'44.4200', fov:'90'
+  });
+  return 'https://stellarium-web.org/?' + params.toString();
+}
+
+// ── Complete star data ────────────────────────────────────────
+// path: 'enlil' | 'anu' | 'ea'
+// heliacal: {month, day} — from MUL.APIN I ii 36 – I iii 12
+// ziqpu: true if in the culminating star list (I iv 4–6)
+// zodiac: true if in the path of the Moon (I iv 33–37)
+// ra/dec: approximate J2000 for Stellarium link (modern identification)
+const BAB_STARS = [
+// ── PATH OF ENLIL (33 stars, I i 1–39) ──────────────────────
+{
+  name:'The Plow (MUL.APIN)', cuneiform:'mul giš APIN', path:'enlil',
+  deity:'Enlil', modern:'Triangulum + γ Andromedae',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:'01h54m', dec:'+29°',
+  quote:'¶ The Plow, Enlil, who goes in front of the stars of Enlil.',
+  notes:'The eponymous first star of MUL.APIN — literally "the plow star." Identified with stars in Triangulum and neighboring Andromeda. As the leading star of the Enlil path it has great symbolic weight: all Enlil stars follow it.'
+},{
+  name:'The Wolf', cuneiform:'mul UR.BAR.RA', path:'enlil',
+  deity:'(companion of the Plow)', modern:'β Andromedae area',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:'01h10m', dec:'+35°',
+  quote:'¶ The Wolf, the seed-funnel of the Plough.',
+  notes:'Described as the "seed-funnel" (giš NÍNDA) of the preceding Plow star — a part of the same agricultural complex. Likely β Andromedae or nearby stars.'
+},{
+  name:'The Old Man', cuneiform:'mul ŠU.GI', path:'enlil',
+  deity:'Enmešarra', modern:'Perseus',
+  heliacal:{month:'XII',day:15}, ziqpu:true, zodiac:false,
+  ra:'03h30m', dec:'+45°',
+  quote:'¶ The Old Man, Enmešarra.',
+  notes:'One of the most important Enlil stars. Identified with Perseus. Its heliacal rising in Month XII (late winter/early spring) marks the end of the schematic year. Listed among the ziqpu (culminating) stars — used for telling time at night.'
+},{
+  name:'The Crook', cuneiform:'mul GÀM', path:'enlil',
+  deity:'Gamlu', modern:'Auriga area',
+  heliacal:{month:'I',day:20}, ziqpu:true, zodiac:false,
+  ra:'05h30m', dec:'+43°',
+  quote:'[¶] The Crook, Gamlu.',
+  notes:'Heliacal rising on Month I day 20 — three weeks into spring. Listed among the ziqpu stars. Identified with the constellation Auriga or part thereof.'
+},{
+  name:'The Great Twins', cuneiform:'mul MAŠ.TAB.BA.GAL.GAL', path:'enlil',
+  deity:'Lugalirra and Meslamtaea', modern:'Gemini (Castor & Pollux)',
+  heliacal:{month:'III',day:10}, ziqpu:false, zodiac:true,
+  ra:'07h35m', dec:'+28°',
+  quote:'¶ The Great Twins, Lugalirra and Meslamtaea.',
+  notes:'The bright twins Castor and Pollux, identified with twin warrior gods. In the path of the Moon (zodiac). Heliacal rising in Month III. The Small Twins (next entry) are fainter stars in the same region.'
+},{
+  name:'The Small Twins', cuneiform:'mul MAŠ.TAB.BA.TUR.TUR', path:'enlil',
+  deity:'Alammuš and Nin-gublaga', modern:'ζ/λ Geminorum area',
+  heliacal:{month:'IV',day:5}, ziqpu:false, zodiac:false,
+  ra:'07h10m', dec:'+27°',
+  quote:'¶ The Small Twins, Alammuš and Nin-gublaga.',
+  notes:'Fainter stars near the Great Twins. Rising in Month IV (summer), shortly before the solstice. Distinct from the Great Twins in deity associations.'
+},{
+  name:'The Crab', cuneiform:'mul AL.LUL', path:'enlil',
+  deity:'Anu', modern:'Cancer',
+  heliacal:{month:'IV',day:5}, ziqpu:false, zodiac:true,
+  ra:'08h40m', dec:'+20°',
+  quote:'¶ The Crab, the seat of Anu.',
+  notes:'Cancer, described as the "seat of Anu" — a point of divine authority on the ecliptic. In the zodiac path. Rises with the Small Twins in Month IV. The summer solstice stood in Cancer around 2000 BCE.'
+},{
+  name:'The Lion', cuneiform:'mul UR.GU.LA', path:'enlil',
+  deity:'Latarak', modern:'Leo',
+  heliacal:{month:'IV',day:15}, ziqpu:true, zodiac:true,
+  ra:'10h40m', dec:'+11°',
+  quote:'¶ The Lion, Latarak.',
+  notes:'Leo, one of the most prominent zodiacal constellations. Listed as both a ziqpu star and in the lunar path. Several additional stars are described as standing "in the chest," "in the tail," etc. of the Lion.'
+},{
+  name:'The King', cuneiform:'mul LUGAL', path:'enlil',
+  deity:'(in chest of Lion)', modern:'Regulus (α Leonis)',
+  heliacal:{month:'IV',day:15}, ziqpu:false, zodiac:false,
+  ra:'10h08m', dec:'+12°',
+  quote:'¶ The star which stands in the chest of the Lion: the King.',
+  notes:'Regulus, the brightest star of Leo, described as standing "in the chest of the Lion." Its name — the King (LUGAL) — reflects its association with royal power. Regulus lies almost exactly on the ecliptic.'
+},{
+  name:'The Frond of Eru', cuneiform:'mul E₄-ru₆', path:'enlil',
+  deity:'Zarpanitu', modern:'Coma Berenices area',
+  heliacal:null, ziqpu:true, zodiac:false,
+  ra:'12h20m', dec:'+25°',
+  quote:'¶ The scintillating stars which stand in the tail of the Lion: The Frond (of the date palm) of Eru, Zarpanitu.',
+  notes:'Stars in the tail of Leo / Coma Berenices area. Described as "scintillating" (um-mu-lu-tu) — probably variable or faint stars. Listed among the ziqpu culminating stars.'
+},{
+  name:'ŠU.PA', cuneiform:'mul ŠU.PA', path:'enlil',
+  deity:'Enlil', modern:'Arcturus (α Boötis)',
+  heliacal:{month:'VI',day:15}, ziqpu:true, zodiac:false,
+  ra:'14h16m', dec:'+19°',
+  quote:'¶ ŠU.PA, Enlil who decrees the fate of the land.',
+  notes:'Identified with Arcturus, the fourth-brightest star in the sky. Its role as the star of Enlil "who decrees fate" gives it enormous religious importance. Heliacal rising in Month VI. A key ziqpu star — when it culminates, precise time-keeping entries activate.'
+},{
+  name:'The Abundant One', cuneiform:'mul Ḫé-gál-a-a-ú', path:'enlil',
+  deity:'minister of Ninlil', modern:'η Boötis area',
+  heliacal:null, ziqpu:true, zodiac:false,
+  ra:'13h55m', dec:'+18°',
+  quote:'¶ The star which stands in front of it: the Abundant One, the minister of Ninlil.',
+  notes:'Star "in front of" ŠU.PA (further east, rising before it). Described as a minister of Ninlil, Enlil\'s consort. Likely η Boötis (Muphrid).'
+},{
+  name:'The Star of Dignity', cuneiform:'MUL BAL.TÉŠ.A', path:'enlil',
+  deity:'minister of Tišpak', modern:'α Coronae Borealis area',
+  heliacal:null, ziqpu:true, zodiac:false,
+  ra:'15h34m', dec:'+27°',
+  quote:'¶ The star which stands behind it: the Star of Dignity, the minister of Tišpak.',
+  notes:'Star "behind" ŠU.PA (further west). Likely Alphecca (α CrB) or nearby. A ziqpu star.'
+},{
+  name:'The Wagon', cuneiform:'mul MAR.GÍD.DA', path:'enlil',
+  deity:'Ninlil', modern:'Ursa Major (Big Dipper)',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:'11h00m', dec:'+56°',
+  quote:'¶ The Wagon, Ninlil.',
+  notes:'The Big Dipper / Ursa Major — a circumpolar constellation visible all year from Babylon (32°N). Its circumpolar nature is noted in MUL.APIN: it "circles around the sky." Several companion stars are described in its shaft, front part, and forehead.'
+},{
+  name:'The Fox', cuneiform:'mul KA₅.A', path:'enlil',
+  deity:'Erra', modern:'Alcor / δ UMa area',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:'12h15m', dec:'+57°',
+  quote:'¶ the Fox, Erra, the strong one of the gods.',
+  notes:'A star in the shaft of the Wagon (Big Dipper), identified with the war god Erra. Likely Alcor or a nearby star in UMa.'
+},{
+  name:'The Ewe', cuneiform:'mul U₈', path:'enlil',
+  deity:'Aja', modern:'α UMa (Dubhe) area',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:'11h04m', dec:'+62°',
+  quote:'¶ The star which stands in the front part of the Wagon: the Ewe, Aja.',
+  notes:'A star in the "front part" of the Wagon. The Ewe (U₈) is a female sheep, associated with the dawn goddess Aja.'
+},{
+  name:'The Hitched Yoke', cuneiform:'mul MU.BU.KÉŠ.DA', path:'enlil',
+  deity:'great Anu of heaven', modern:'Boötes area / κ Dra',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:'14h00m', dec:'+65°',
+  quote:'¶ The Hitched Yoke, great Anu of heaven.',
+  notes:'Stars near the Wagon pole, possibly near κ Draconis. Described as "great Anu of heaven" despite being in the Enlil path — reflecting overlapping theological categories.'
+},{
+  name:'The Wagon of Heaven', cuneiform:'mul MAR.GÍD.DA.AN.NA', path:'enlil',
+  deity:'Damkianna', modern:'possibly Ursa Minor',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:'15h40m', dec:'+78°',
+  quote:'¶ The Wagon of Heaven, Damkianna.',
+  notes:'A second "Wagon" — possibly Ursa Minor. The "knot" in which the Heir of the Sublime Temple stands may refer to the pole star region.'
+},{
+  name:'The Standing Gods of Ekur', cuneiform:'mul DINGIR.GUB.BA', path:'enlil',
+  deity:'gods of Ekur (Enlil\'s temple)', modern:'possibly η/ζ Herculis area',
+  heliacal:null, ziqpu:true, zodiac:false,
+  ra:'16h40m', dec:'+31°',
+  quote:'¶ The Standing Gods of Ekur. ¶ The Sitting Gods of Ekur.',
+  notes:'Two groups of stars associated with the temple gods of Nippur. Listed among the ziqpu stars. Their exact identification is uncertain; likely stars in Hercules.'
+},{
+  name:'The Goat', cuneiform:'mul ÙZ', path:'enlil',
+  deity:'Gula', modern:'Lyra (Vega)',
+  heliacal:{month:'VIII',day:15}, ziqpu:true, zodiac:false,
+  ra:'18h37m', dec:'+39°',
+  quote:'¶ The Goat, Gula.',
+  notes:'Likely Vega (α Lyrae), the fifth-brightest star in the sky. Associated with the healing goddess Gula. A ziqpu star. Heliacal rising in Month VIII (autumn). Its description — the goat with stars in front, behind, and beside — matches the Lyra/Hercules region.'
+},{
+  name:'The Dog', cuneiform:'mul UR.KU', path:'enlil',
+  deity:'(in front of the Goat)', modern:'ε Herculis area',
+  heliacal:{month:'VII',day:15}, ziqpu:true, zodiac:false,
+  ra:'17h00m', dec:'+31°',
+  quote:'¶ The star which stands in front of the Goat: the Dog.',
+  notes:'A star "in front of" (east of) the Goat/Vega, rising before it. A ziqpu star. Heliacal rising in Month VII (autumnal equinox month).'
+},{
+  name:'The Panther', cuneiform:'mul UD.KA.DUḪ.A', path:'enlil',
+  deity:'Nergal', modern:'Cygnus (the Swan)',
+  heliacal:{month:'IX',day:15}, ziqpu:true, zodiac:false,
+  ra:'20h41m', dec:'+45°',
+  quote:'¶ The Panther, Nergal.',
+  notes:'Identified with Cygnus, the Swan. Nergal is the god of war and the underworld. Multiple companion stars are described: a pig on its right, a horse on its left, a stag behind it. A key ziqpu star.'
+},{
+  name:'The Stag', cuneiform:'mul lu-lim', path:'enlil',
+  deity:'minister of the Stars', modern:'Cepheus area',
+  heliacal:{month:'XI',day:5}, ziqpu:false, zodiac:false,
+  ra:'22h00m', dec:'+65°',
+  quote:'¶ The star which stands behind it: the Stag, the minister of the Stars.',
+  notes:'Companion to the Panther/Cygnus, identified with stars in Cepheus. The scintillating stars in its "chest" (the Vole) and the bright red star in its "kidney" (the Deleter) are separately listed.'
+},{
+  name:'The Wagon (Ursa Major total)', cuneiform:'mul MAR.GÍD.DA complex', path:'enlil',
+  deity:'various', modern:'Ursa Major complex',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:'11h00m', dec:'+56°',
+  quote:'When the stars of Enlil have been finished, one big star – (although) its light is dim – divides the sky in half and stands there: (that is) the star of Marduk, the Ford.',
+  notes:'The Ford (Nēberu) divides the Enlil list from the Anu list. It is one of the most debated identifications in MUL.APIN — sometimes identified with Jupiter (as a wandering star), sometimes with Mizar or another fixed star. Its unique description sets it apart from all other entries.'
+},
+
+// ── PATH OF ANU (23 stars, I i 40 – I ii 18) ─────────────────
+{
+  name:'The Field', cuneiform:'mul AŠ.IKU', path:'anu',
+  deity:'Ea', modern:'Pegasus (Great Square)',
+  heliacal:{month:'XI',day:5}, ziqpu:true, zodiac:false,
+  ra:'23h00m', dec:'+20°',
+  quote:'¶ The Field, the seat of Ea, who goes in front of the stars of Anu.',
+  notes:'The Great Square of Pegasus — the leading star of the Anu path. Called the "seat of Ea." When the Field (Pegasus) culminates, the Arrow (Sirius) rises — a key correlation in the ziqpu list. Heliacal rising in Month XI (late winter).'
+},{
+  name:'The Swallow', cuneiform:'mul Ši-nu-nu-tu₄', path:'anu',
+  deity:'(opposite the Field)', modern:'southern Pisces / Piscis Austrinus area',
+  heliacal:{month:'XII',day:15}, ziqpu:false, zodiac:true,
+  ra:'22h30m', dec:'-15°',
+  quote:'¶ The star which stands opposite the Field: the Swallow.',
+  notes:'Stars opposite (west of) the Field/Pegasus, in southern Pisces. In the zodiac (lunar path). Also appears as "SIM.MAḪ / IM.ŠEŠ" in the heliacal rising list (Month X day 15), where Sirius\'s first visibility is also recorded.'
+},{
+  name:'Anunitu', cuneiform:'mul A-nu-ni-tu₄', path:'anu',
+  deity:'Anunitu', modern:'northern Pisces / Aries border',
+  heliacal:{month:'XI',day:25}, ziqpu:false, zodiac:true,
+  ra:'01h10m', dec:'+15°',
+  quote:'¶ The star which stands behind the Field: Anunitu.',
+  notes:'Stars east of the Field/Pegasus, in Pisces/Aries border region. In the zodiac path. The tails of Anunitu and the Swallow cross one another, a relationship explicitly noted in the uranology text MLC 1866.'
+},{
+  name:'The Hired Man', cuneiform:'mul lú ḪUN.GÁ', path:'anu',
+  deity:'Dumuzi', modern:'Aries',
+  heliacal:{month:'I',day:1}, ziqpu:false, zodiac:true,
+  ra:'02h20m', dec:'+20°',
+  quote:'¶ The star which stands behind it: the Hired Man, Dumuzi.',
+  notes:'Aries — the Hired Man (seasonal agricultural laborer). Associated with Dumuzi, the dying-and-rising shepherd god. Its heliacal rising on Month I Day 1 — the first day of the schematic year — makes it the marker of the new year. In the zodiac path.'
+},{
+  name:'The Stars (Pleiades)', cuneiform:'MUL.MUL', path:'anu',
+  deity:'The Seven, the great gods', modern:'Pleiades (M45)',
+  heliacal:{month:'II',day:1}, ziqpu:false, zodiac:true,
+  ra:'03h47m', dec:'+24°',
+  quote:'¶ The Stars, the Seven, the great gods.',
+  notes:'The Pleiades — the most important star cluster in Babylonian astronomy. Called simply "the Stars" (MUL.MUL, star of stars). Their heliacal rising in Month II marks a major calendar point. The Moon\'s conjunction with the Pleiades is used as an intercalation criterion. When the Stars rise, the Scorpion sets — the most famous of the rising/setting pairs.'
+},{
+  name:'The Bull of Heaven (Jaw of the Bull)', cuneiform:'mul GU₄.AN.NA', path:'anu',
+  deity:'Anu', modern:'Taurus / Hyades (Aldebaran)',
+  heliacal:{month:'II',day:20}, ziqpu:false, zodiac:true,
+  ra:'04h36m', dec:'+16°',
+  quote:'¶ The Bull of Heaven, the Jaw of the Bull, the crown of Anu.',
+  notes:'Taurus, specifically the Hyades cluster and Aldebaran. Described as "the crown of Anu" and the most exalted of the Anu stars. In the zodiac path. The Arrow (Sirius) rises heliacally on the same date as the summer solstice (Month IV day 15).'
+},{
+  name:'The True Shepherd of Anu', cuneiform:'mul SIPA.ZI.AN.NA', path:'anu',
+  deity:'Papsukal', modern:'Orion',
+  heliacal:{month:'III',day:10}, ziqpu:false, zodiac:true,
+  ra:'05h35m', dec:'+0°',
+  quote:'¶ The True Shepherd of Anu, Papsukal, the minister of Anu and Ištar.',
+  notes:'Orion — the most prominent constellation in the sky. Papsukal is the divine messenger. In the zodiac path. The True Shepherd rises in Month III; when it rises, Pabilsag (Sagittarius) sets. One of the most frequently cited stars in all of Mesopotamian astral science.'
+},{
+  name:'The Arrow', cuneiform:'mul KAK.SI.SÁ', path:'anu',
+  deity:'Ninurta', modern:'Sirius (α CMa)',
+  heliacal:{month:'IV',day:15}, ziqpu:false, zodiac:false,
+  ra:'06h45m', dec:'-17°',
+  quote:'¶ The Arrow, the arrow of the great warrior Ninurta.',
+  notes:'Sirius — the brightest star in the sky. Its heliacal rising on Month IV day 15 (the summer solstice in the schematic calendar) is deliberately aligned: MUL.APIN\'s author made a conscious decision to place Sirius\'s first visibility on the solstice. Its acronychal rising (last visibility) is placed exactly 6 months later on Month X day 15 (winter solstice). Associated with Ninurta, the warrior god.'
+},{
+  name:'The Bow', cuneiform:'mul BAN', path:'anu',
+  deity:'Ištar of Elam', modern:'Canis Major / Puppis stars',
+  heliacal:{month:'V',day:5}, ziqpu:false, zodiac:false,
+  ra:'07h00m', dec:'-25°',
+  quote:'¶ The Bow, the Elamite Ištar, the daughter of Enlil.',
+  notes:'Stars in Canis Major and Puppis forming a bow shape. Associated with the Elamite form of Ištar (Inanna), the goddess of war and love. When the Bow and King rise together, the Goat (Vega) sets.'
+},{
+  name:'The King (Regulus context)', cuneiform:'mul LUGAL', path:'anu',
+  deity:'(also in Leo)', modern:'Regulus context — see Enlil path',
+  heliacal:{month:'V',day:5}, ziqpu:false, zodiac:false,
+  ra:'10h08m', dec:'+12°',
+  quote:'¶ On the 5th of Month V, the Bow and the King become visible.',
+  notes:'The King appears in both the Enlil star list (in the chest of the Lion = Regulus) and in the heliacal rising list rising with the Bow. This is one of the entries with two variants in the manuscripts (5th vs. 15th of Month V).'
+},{
+  name:'The Snake', cuneiform:'mul d MUŠ', path:'anu',
+  deity:'Ningizzida', modern:'Hydra',
+  heliacal:{month:'IV',day:15}, ziqpu:false, zodiac:false,
+  ra:'10h00m', dec:'-20°',
+  quote:'¶ The Snake, Ningizzida, lord of the Netherworld.',
+  notes:'Hydra — the great serpent. Associated with Ningizzida, a chthonic deity whose emblem was the horned serpent. Rises with the Arrow (Sirius) and Lion in Month IV.'
+},{
+  name:'The Raven', cuneiform:'mul UGA', path:'anu',
+  deity:'Adad', modern:'Corvus',
+  heliacal:{month:'VI',day:10}, ziqpu:false, zodiac:false,
+  ra:'12h25m', dec:'-18°',
+  quote:'¶ The Raven, the star of Adad.',
+  notes:'Corvus, the Crow/Raven. Associated with Adad, the storm god. Rises with Eridu in Month VI.'
+},{
+  name:'The Furrow', cuneiform:'mul AB.SÍN', path:'anu',
+  deity:'Šala', modern:'Spica (α Virginis) / Virgo',
+  heliacal:{month:'VI',day:25}, ziqpu:false, zodiac:true,
+  ra:'13h25m', dec:'-11°',
+  quote:'¶ The Furrow, Šala, the ear of grain.',
+  notes:'Spica and/or the broader Virgo constellation, depicted as an ear of grain. Associated with Šala, the grain goddess. In the zodiac path. Rises in Month VI.'
+},{
+  name:'The Scales', cuneiform:'mul ZI.BA.AN.NA', path:'anu',
+  deity:'(horn of Scorpion)', modern:'Libra',
+  heliacal:{month:'VII',day:15}, ziqpu:false, zodiac:true,
+  ra:'15h00m', dec:'-15°',
+  quote:'¶ The Scales, the horn of the Scorpion.',
+  notes:'Libra — in Babylonian astronomy these stars were still conceived as the "horn" or "claws" of the Scorpion rather than a separate balance scale. In the zodiac path. Rises in Month VII (autumnal equinox month).'
+},{
+  name:'The Eagle', cuneiform:'mul TI₈ mušen', path:'anu',
+  deity:'Zababa', modern:'Aquila',
+  heliacal:{month:'IX',day:15}, ziqpu:false, zodiac:false,
+  ra:'19h51m', dec:'+9°',
+  quote:'¶ The star of Zababa, the Eagle, and the Corpse.',
+  notes:'Aquila, the Eagle — associated with Zababa, a war deity. The Corpse (AD₆) is listed alongside it, likely the star Altair or nearby stars. Rises with the Panther and Pabilsag in Month IX.'
+},{
+  name:'Venus', cuneiform:'mul Dili-bat', path:'anu',
+  deity:'Ištar', modern:'Venus (planet)',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:null, dec:null,
+  quote:'¶ Venus keeps changing its position and crosses the sky.',
+  notes:'Placed at the end of the Anu star list because planets move through all three paths. The phrase "keeps changing its position and crosses the sky" distinguishes planets from fixed stars. Venus is the star of Ištar, the most important planet in Babylonian astral science.'
+},{
+  name:'Mars', cuneiform:'mul Ṣal-bat-a-nu', path:'anu',
+  deity:'Nergal', modern:'Mars (planet)',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:null, dec:null,
+  quote:'¶ Mars keeps changing its position and crosses the sky.',
+  notes:'Mars — Ṣalbatānu, meaning approximately "the one who completes the heavens." Its name relates to its reddish color and connection with Nergal, the war/underworld god.'
+},{
+  name:'Saturn', cuneiform:'mul UDU.IDIM.SAG.UŠ', path:'anu',
+  deity:'Ninurta', modern:'Saturn (planet)',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:null, dec:null,
+  quote:'¶ Saturn keeps changing its position and crosses the sky.',
+  notes:'Saturn — also called "the steady star" (SAG.UŠ). Associated with Ninurta, the agricultural hero. Later in MUL.APIN (II i 44–67) the visibility periods of all five planets are given.'
+},{
+  name:'Mercury', cuneiform:'mul UDU.IDIM.GU₄.UD', path:'anu',
+  deity:'Ninurta (alternate name)', modern:'Mercury (planet)',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:null, dec:null,
+  quote:'¶ Mercury, whose name is Ninurta, rises or sets in the East or in the West within a month.',
+  notes:'Mercury receives a special note — unlike the other planets, it is described as appearing on either horizon (east or west) within a single month, reflecting its swift motion. Sharing a name with Saturn (both sometimes called Ninurta) reflects the complexity of Babylonian divine assignments.'
+},
+
+// ── PATH OF EA (15 stars, I ii 19–35) ────────────────────────
+{
+  name:'The Fish', cuneiform:'mul KU₆', path:'ea',
+  deity:'Ea', modern:'southern Pisces / Piscis Austrinus',
+  heliacal:{month:'XII',day:15}, ziqpu:false, zodiac:true,
+  ra:'22h55m', dec:'-30°',
+  quote:'¶ The Fish, Ea, who goes in front of the stars of Ea.',
+  notes:'The leading star of the Ea path — Piscis Austrinus or southern Pisces, associated with Ea, the god of wisdom and the subterranean waters. In the zodiac path. Heliacal rising in Month XII, at year\'s end.'
+},{
+  name:'The Great One', cuneiform:'mul GU.LA', path:'ea',
+  deity:'Ea', modern:'Aquarius',
+  heliacal:{month:'XI',day:5}, ziqpu:false, zodiac:true,
+  ra:'22h05m', dec:'-10°',
+  quote:'¶ The Great One, Ea; Eridu, Ea.',
+  notes:'Aquarius — the Great One (GU.LA = Gula in a different context, but here Ea). Listed with Eridu as two separate stars on one line. In the zodiac path. Rises with the Field (Pegasus) in Month XI.'
+},{
+  name:'Eridu', cuneiform:'mul NUN ki', path:'ea',
+  deity:'Ea', modern:'α Aquarii (Sadalsuud) area',
+  heliacal:{month:'VI',day:10}, ziqpu:false, zodiac:false,
+  ra:'21h32m', dec:'-5°',
+  quote:'¶ The Great One, Ea; Eridu, Ea.',
+  notes:'Named after the sacred city of Eridu, the oldest city in Mesopotamia and the seat of Ea\'s cult. Listed with the Great One. Rises with the Raven in Month VI.'
+},{
+  name:'Ninmaḫ', cuneiform:'mul Nin-maḫ', path:'ea',
+  deity:'Ninmaḫ', modern:'northern Aquarius stars',
+  heliacal:{month:'VII',day:15}, ziqpu:false, zodiac:false,
+  ra:'22h10m', dec:'-2°',
+  quote:'¶ The star which stands at its right: Ninmaḫ.',
+  notes:'A star to the right of the Great One/Aquarius. Ninmaḫ is a mother goddess. Rises in Month VII. When it rises, Anunitu sets.'
+},{
+  name:'The Mouse', cuneiform:'mul EN.TE.NA.BAR.ḪUM', path:'ea',
+  deity:'Ningirsu', modern:'possibly Capricorn / Microscopium area',
+  heliacal:{month:'VII',day:15}, ziqpu:false, zodiac:false,
+  ra:'21h00m', dec:'-30°',
+  quote:'¶ The Mouse, Ningirsu.',
+  notes:'Associated with Ningirsu, the warrior aspect of Ninurta at Lagaš. Rises in Month VII. Listed with the Wild Dog and Dog rising together on Month VII day 15.'
+},{
+  name:'The Harrow', cuneiform:'mul giš GÁN.ÙR', path:'ea',
+  deity:'Mār-bīti', modern:'near Pisces Austrinus',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:'22h30m', dec:'-35°',
+  quote:'¶ The star which stands at its side: the Harrow, the weapon of Mār-bīti, by means of which he sees the subterranean waters.',
+  notes:'An agricultural implement (harrow), connected to the subterranean waters (apsû) of Ea. The phrase "by means of which he sees the subterranean waters" links the star to divination and the mythological underground ocean.'
+},{
+  name:'Šullat and Ḫaniš', cuneiform:'d Šúllat u d Ḫániš', path:'ea',
+  deity:'Šamaš and Adad', modern:'Canis Minor area',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:'07h35m', dec:'+5°',
+  quote:'¶ The two stars stand behind it: Šullat and Ḫaniš, Šamaš and Adad.',
+  notes:'Two messenger gods of the sun (Šamaš) and storm (Adad). Likely Gemini or Canis Minor stars. They are described as standing "behind" the Harrow.'
+},{
+  name:'Numušda', cuneiform:'mul Nu-muš-da', path:'ea',
+  deity:'Adad', modern:'Sagittarius / Scorpius border area',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:'18h30m', dec:'-30°',
+  quote:'¶ The star which stands behind them, rises like Ea and sets like Ea: Numušda, Adad.',
+  notes:'Described with the remarkable phrase "rises like Ea and sets like Ea" — meaning it rises and sets in the southern quarter of the sky, like the Ea-path stars generally. A local deity associated with Adad.'
+},{
+  name:'The Wild Dog', cuneiform:'mul UR.IDIM', path:'ea',
+  deity:'Kusu', modern:'Lupus',
+  heliacal:{month:'VII',day:15}, ziqpu:false, zodiac:false,
+  ra:'15h10m', dec:'-40°',
+  quote:'¶ The star which stands at the left of the Scorpion: the Wild Dog, Kusu.',
+  notes:'Lupus — the Wolf or Wild Dog, standing to the left (south) of the Scorpion. Rises with the Scales, Mouse, and Dog in Month VII.'
+},{
+  name:'The Scorpion', cuneiform:'mul GÍR.TAB', path:'ea',
+  deity:'Išḫara', modern:'Scorpius',
+  heliacal:{month:'VIII',day:5}, ziqpu:false, zodiac:true,
+  ra:'16h45m', dec:'-35°',
+  quote:'¶ The Scorpion, Išḫara, lady of all inhabited regions.',
+  notes:'Scorpius — one of the most prominent southern constellations. Išḫara is a goddess of oaths and the marriage bed. In the zodiac path. When the Scorpion rises, the Pleiades set — the most important antipodal pairing. Four separate entries describe stars in the chest, sting, and flanks of the Scorpion.'
+},{
+  name:'The Chest of the Scorpion', cuneiform:'mul GABA GÍR.TAB', path:'ea',
+  deity:'Lisi, Nabû', modern:'δ/π Scorpii area',
+  heliacal:{month:'VIII',day:15}, ziqpu:false, zodiac:false,
+  ra:'16h00m', dec:'-20°',
+  quote:'¶ The Chest of the Scorpion: Lisi, Nabû.',
+  notes:'Stars in the chest/head of Scorpius. Associated with Nabû, the god of writing. Rises in Month VIII.'
+},{
+  name:'Šarur and Šargaz', cuneiform:'d Šár-ur₄ u d Šár-gaz', path:'ea',
+  deity:'divine weapons', modern:'λ/ν Scorpii (sting stars)',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:'17h47m', dec:'-37°',
+  quote:'¶ The two stars which stand in the sting of the Scorpion: Šarur and Šargaz.',
+  notes:'The two bright stars in the Scorpion\'s sting — λ and ν Scorpii. Šarur and Šargaz are the divine maces/weapons of Ninurta. Behind them stands Pabilsag (Sagittarius).'
+},{
+  name:'Pabilsag', cuneiform:'mul Pa-bil-sag', path:'ea',
+  deity:'Pabilsag', modern:'Sagittarius',
+  heliacal:{month:'IX',day:15}, ziqpu:false, zodiac:true,
+  ra:'18h55m', dec:'-25°',
+  quote:'¶ The star(s) which stand(s) behind them: Pabilsag.',
+  notes:'Sagittarius — Pabilsag is a warrior deity, the forefather of Ninurta. In the zodiac path. When the True Shepherd (Orion) rises, Pabilsag sets.'
+},{
+  name:'The Barge', cuneiform:'mul MÁ.GUR₈', path:'ea',
+  deity:'(associated with Ea waters)', modern:'Argo Navis area',
+  heliacal:null, ziqpu:false, zodiac:false,
+  ra:'08h00m', dec:'-40°',
+  quote:'¶ The Barge, and the Goat-Fish.',
+  notes:'Stars in the ancient constellation Argo Navis (now divided into Puppis, Vela, Carina). A sacred barge used in Babylonian religious processions.'
+},{
+  name:'The Goat-Fish', cuneiform:'mul SUḪUR MÁŠ', path:'ea',
+  deity:'(Ea\'s emblem)', modern:'Capricornus',
+  heliacal:null, ziqpu:false, zodiac:true,
+  ra:'21h00m', dec:'-20°',
+  quote:'¶ The Barge, and the Goat-Fish.',
+  notes:'Capricornus — the Goat-Fish is the emblem of Ea, a creature with the forepart of a goat and the tail of a fish, dwelling in the apsû (subterranean ocean). In the zodiac path. One of the most recognizable Babylonian astral symbols, surviving in the modern zodiac sign of Capricorn.'
+}
+];
+
+// Rising / setting pairs (I iii 13–33)
+const BAB_PAIRS = [
+  {rises:'The Stars (Pleiades)',     sets:'The Scorpion'},
+  {rises:'The Scorpion',            sets:'The Stars (Pleiades)'},
+  {rises:'The Bull of Heaven',      sets:'ŠU.PA'},
+  {rises:'The True Shepherd of Anu',sets:'Pabilsag'},
+  {rises:'The Arrow, Snake & Lion', sets:'The Great One & Eagle'},
+  {rises:'The Bow & King',          sets:'The Goat'},
+  {rises:'Eridu & the Raven',       sets:'The Panther'},
+  {rises:'ŠU.PA (Enlil)',           sets:'The Field (Pegasus)'},
+  {rises:'Ninmaḫ',                  sets:'Anunitu'},
+  {rises:'The Scales, Wild Dog & Mouse', sets:'The Hired Man'},
+  {rises:'The Scorpion & Dog',      sets:'Eridu & Stars (Pleiades)'},
+  {rises:'Chest of Scorpion & Goat',sets:'Old Man & True Shepherd'},
+  {rises:'Pabilsag, Zababa & Standing Gods', sets:'Arrow, Bow & Crook'},
+  {rises:'Panther & Eagle',         sets:'Great & Small Twins'},
+  {rises:'Field, Great One & Stag', sets:'Lion, Snake & Mouse'},
+  {rises:'Fish & Old Man',          sets:'Furrow & Wild Dog'},
+];
+
+// ── State ─────────────────────────────────────────────────────
+let babActivePath = 'all';
+let babSelected   = null;
+
+function filterPath(path, btn) {
+  babActivePath = path;
+  document.querySelectorAll('.bab-path-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCatalogue();
+}
+
+function renderCatalogue() {
+  const search = (document.getElementById('babSearch').value || '').toLowerCase();
+  const mf     = document.getElementById('babMonthFilter').value;
+
+  const filtered = BAB_STARS.filter(s => {
+    if (babActivePath !== 'all' && s.path !== babActivePath) return false;
+    if (mf === 'ziqpu')  return s.ziqpu;
+    if (mf === 'zodiac') return s.zodiac;
+    if (mf) return s.heliacal?.month === mf;
+    if (search) {
+      return [s.name, s.deity, s.modern, s.cuneiform, s.notes]
+        .join(' ').toLowerCase().includes(search);
+    }
+    return true;
+  });
+
+  document.getElementById('babCount').textContent =
+    filtered.length + ' star' + (filtered.length !== 1 ? 's' : '');
+
+  document.getElementById('babGrid').innerHTML = filtered.map(s => {
+    const tags = [];
+    if (s.heliacal) tags.push(`<span class="bab-tag rising">Month ${s.heliacal.month}</span>`);
+    if (s.zodiac)   tags.push('<span class="bab-tag zodiac">Zodiac path</span>');
+    if (s.ziqpu)    tags.push('<span class="bab-tag ziqpu">Ziqpu ★</span>');
+
+    return `<div class="bab-star-card ${s.path} ${babSelected===s.name?'selected':''}"
+                 onclick="selectStar(${JSON.stringify(s.name).replace(/</g,'&lt;')})">
+      <div class="bab-star-header">
+        <div class="bab-star-name">${s.name}</div>
+        <div class="bab-path-pip ${s.path}">${s.path.charAt(0).toUpperCase()+s.path.slice(1)}</div>
+      </div>
+      <div class="bab-star-cuneiform">${s.cuneiform}</div>
+      <div class="bab-star-god">${s.deity}</div>
+      <div class="bab-star-modern">${s.modern}</div>
+      <div class="bab-star-meta">${tags.join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function selectStar(name) {
+  babSelected = name;
+  const s = BAB_STARS.find(x => x.name === name);
+  renderCatalogue(); // re-render to show selected state
+
+  if (!s) return;
+
+  document.getElementById('babDetail').style.display = 'grid';
+
+  document.getElementById('detName').textContent      = s.name;
+  document.getElementById('detCuneiform').textContent = s.cuneiform;
+  document.getElementById('detQuote').textContent     = s.quote;
+
+  const path = {enlil:'Path of Enlil (northern, >+17° dec.)',
+                anu:  'Path of Anu (equatorial, ±17° dec.)',
+                ea:   'Path of Ea (southern, <−17° dec.)'}[s.path];
+
+  document.getElementById('detRows').innerHTML = [
+    ['Path',          path],
+    ['Associated deity', s.deity],
+    ['Modern identification', s.modern],
+    ['Heliacal rising', s.heliacal ? `Month ${s.heliacal.month}, Day ${s.heliacal.day}` : '—'],
+    ['Ziqpu (culminating)', s.ziqpu ? '✓ Yes' : '—'],
+    ['Zodiac (lunar path)', s.zodiac ? '✓ Yes' : '—'],
+  ].map(([k,v]) => `<div class="bab-info-row">
+    <span class="bab-info-k">${k}</span>
+    <span class="bab-info-v">${v}</span>
+  </div>`).join('');
+
+  document.getElementById('detNotes').innerHTML =
+    s.notes.replace(/\n/g,'<br>') +
+    (s.heliacal ? `<br><br><em>Schematic calendar note:</em> Month ${s.heliacal.month} = approximately ${
+      {I:'late March–April',II:'April–May',III:'May–June',
+       IV:'June–July (summer solstice month)',V:'July–August',
+       VI:'August–September',VII:'September–October (autumnal equinox month)',
+       VIII:'October–November',IX:'November–December',
+       X:'December–January (winter solstice month)',
+       XI:'January–February',XII:'February–March'}[s.heliacal.month]
+    } in the Babylonian 360-day schematic calendar.` : '');
+
+  // Stellarium link
+  const stelUrl = babStellariumURL(s.ra, s.dec, s.heliacal?.month);
+  const btn = document.getElementById('detStellariumBtn');
+  btn.href = stelUrl;
+  btn.style.display = s.ra ? 'inline-flex' : 'none';
+
+  document.getElementById('babDetail').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function renderPairs() {
+  const rows = BAB_PAIRS.map(p => `
+    <div class="bab-pair-row" onclick="highlightPair('${p.rises.split('(')[0].trim()}','${p.sets.split('(')[0].trim()}')">
+      <div class="bab-pair-rising">${p.rises}</div>
+      <div class="bab-pair-arrow">↑ → ↓</div>
+      <div class="bab-pair-setting">${p.sets}</div>
+    </div>`).join('');
+  document.getElementById('babPairsGrid').innerHTML = rows;
+}
+
+function highlightPair(rises, sets) {
+  // Clear path filter, search for rising star
+  babActivePath = 'all';
+  document.querySelectorAll('.bab-path-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.bab-path-btn[data-path="all"]').classList.add('active');
+  document.getElementById('babSearch').value = rises;
+  renderCatalogue();
+  document.getElementById('babGrid').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ── Init ───────────────────────────────────────────────────────
+(function initBab() {
+  renderCatalogue();
+  renderPairs();
+})();
+</script>
+
 </body>
 </html>
