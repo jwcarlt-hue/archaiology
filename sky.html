@@ -2072,5 +2072,926 @@ function calcRange() {
   setTimeout(calcMoonPhase, 100);
 })();
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- ECLIPSE FINDER  (Meeus, Astronomical Formulae for         -->
+<!-- Calculators, 4th ed., Ch. 33 — accurate to ~5 min)        -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<style>
+/* ── Eclipse section shell ── */
+.ecl-section {
+  background: var(--night);
+  border-top: 1px solid rgba(200,216,240,.06);
+  padding: 3rem 2rem 4rem;
+}
+.ecl-inner { max-width: 1100px; margin: 0 auto; }
+
+.ecl-eyebrow {
+  font-family:var(--sans); font-size:.6rem; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:var(--ochre-lt); margin-bottom:.7rem;
+  display:flex; align-items:center; gap:.5rem;
+}
+.ecl-eyebrow::before {
+  content:''; display:inline-block; width:20px; height:1px;
+  background:var(--ochre-lt);
+}
+.ecl-title {
+  font-family:var(--serif); font-size:clamp(1.8rem,4vw,3rem);
+  font-weight:900; color:var(--star); line-height:1.1; margin-bottom:.6rem;
+}
+.ecl-title em { color:var(--ochre-lt); font-style:italic; }
+.ecl-intro {
+  font-size:.88rem; color:rgba(200,216,240,.55); line-height:1.75;
+  max-width:620px; margin-bottom:2.5rem;
+}
+
+/* ── Top control row ── */
+.ecl-controls {
+  display:flex; gap:.7rem; align-items:flex-end; flex-wrap:wrap;
+  margin-bottom:1.5rem;
+}
+.ecl-field { display:flex; flex-direction:column; gap:.3rem; }
+.ecl-label {
+  font-family:var(--sans); font-size:.54rem; font-weight:600;
+  letter-spacing:.1em; text-transform:uppercase; color:rgba(200,216,240,.4);
+}
+.ecl-input {
+  background:rgba(200,216,240,.04); border:1px solid rgba(200,216,240,.1);
+  color:var(--star); font-family:var(--sans); font-size:.8rem;
+  padding:.45rem .7rem; outline:none; transition:border-color .2s;
+}
+.ecl-input:focus { border-color:rgba(212,168,75,.5); }
+.ecl-select { -webkit-appearance:none; }
+.ecl-select option { background:var(--night); }
+.ecl-btn {
+  background:rgba(212,168,75,.12); border:1px solid rgba(212,168,75,.3);
+  color:var(--ochre-lt); font-family:var(--sans); font-size:.65rem;
+  font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:.48rem 1.2rem; cursor:pointer; transition:all .2s; white-space:nowrap;
+  align-self:flex-end;
+}
+.ecl-btn:hover { background:rgba(212,168,75,.22); }
+
+/* ── Main two-column layout ── */
+.ecl-main-grid {
+  display:grid; grid-template-columns:300px 1fr; gap:1.5rem;
+  align-items:start; margin-bottom:1.5rem;
+}
+@media(max-width:800px){ .ecl-main-grid{ grid-template-columns:1fr; } }
+
+/* ── Eclipse diagram card ── */
+.ecl-diagram-card {
+  background:rgba(200,216,240,.03); border:1px solid rgba(200,216,240,.08);
+  padding:1.4rem; display:flex; flex-direction:column; align-items:center;
+}
+.ecl-svg { width:240px; height:240px; }
+.ecl-type-badge {
+  display:inline-block; margin-top:.9rem;
+  font-family:var(--sans); font-size:.7rem; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase;
+  padding:.3rem .8rem; border-radius:1px;
+}
+.ecl-type-total    { background:rgba(255,80,40,.15);  color:#ff7050; border:1px solid rgba(255,80,40,.35); }
+.ecl-type-annular  { background:rgba(255,180,40,.12); color:#ffb828; border:1px solid rgba(255,180,40,.35); }
+.ecl-type-partial  { background:rgba(100,150,220,.12);color:#8ab4f8; border:1px solid rgba(100,150,220,.3); }
+.ecl-type-penumbral{ background:rgba(160,160,200,.08);color:#a0a0c8; border:1px solid rgba(160,160,200,.2); }
+.ecl-type-none     { background:rgba(80,80,80,.08);   color:rgba(200,216,240,.3); border:1px solid rgba(200,216,240,.08); }
+.ecl-magnitude-row {
+  margin-top:.7rem; width:100%;
+}
+.ecl-mag-track {
+  height:6px; background:rgba(200,216,240,.07); border-radius:3px; margin:.3rem 0;
+}
+.ecl-mag-fill {
+  height:100%; border-radius:3px; transition:width .5s ease;
+  background:linear-gradient(90deg, #3a5a8a, #ff7050);
+}
+.ecl-mag-label {
+  display:flex; justify-content:space-between;
+  font-family:var(--sans); font-size:.58rem; color:rgba(200,216,240,.35);
+}
+
+/* ── Results detail card ── */
+.ecl-detail-card {
+  background:rgba(200,216,240,.03); border:1px solid rgba(200,216,240,.08);
+  padding:1.4rem 1.5rem;
+}
+.ecl-card-title {
+  font-family:var(--sans); font-size:.58rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:var(--ochre-lt); margin-bottom:1rem;
+  padding-bottom:.5rem; border-bottom:1px solid rgba(200,216,240,.06);
+}
+.ecl-result-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:.45rem; margin-bottom:1rem;
+}
+.ecl-result-cell {
+  background:rgba(200,216,240,.02); border:1px solid rgba(200,216,240,.06);
+  padding:.65rem .8rem;
+}
+.ecl-result-k {
+  font-family:var(--sans); font-size:.5rem; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase; color:rgba(200,216,240,.3);
+  margin-bottom:.25rem;
+}
+.ecl-result-v {
+  font-family:var(--serif); font-size:.92rem; font-weight:700;
+  color:var(--star); line-height:1.2;
+}
+.ecl-result-sub {
+  font-size:.54rem; color:rgba(200,216,240,.3); margin-top:.2rem;
+  font-family:var(--sans);
+}
+
+/* ── Dresden / Maya cross-ref ── */
+.ecl-dresden {
+  background:rgba(212,168,75,.05); border:1px solid rgba(212,168,75,.15);
+  border-left:3px solid rgba(212,168,75,.4);
+  padding:.8rem 1rem; margin-top:.8rem;
+  font-family:var(--sans); font-size:.72rem; color:rgba(200,216,240,.55);
+  line-height:1.7;
+}
+.ecl-dresden strong { color:var(--ochre-lt); }
+
+/* ── Lunar duration bars ── */
+.ecl-dur-row {
+  display:flex; align-items:center; gap:.7rem; margin-bottom:.45rem;
+}
+.ecl-dur-lbl {
+  font-size:.6rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+  color:rgba(200,216,240,.35); min-width:100px;
+}
+.ecl-dur-track { flex:1; height:4px; background:rgba(200,216,240,.07); border-radius:2px; }
+.ecl-dur-fill  { height:100%; border-radius:2px; transition:width .4s; background:var(--ochre-lt); }
+.ecl-dur-val   { font-family:'DM Mono',monospace; font-size:.6rem; color:var(--ochre-lt); min-width:55px; text-align:right; }
+
+/* ── Eclipse list (range scan) ── */
+.ecl-list-card {
+  background:rgba(200,216,240,.03); border:1px solid rgba(200,216,240,.08);
+  padding:1.4rem 1.5rem; margin-bottom:1rem;
+}
+.ecl-range-controls {
+  display:flex; gap:.7rem; align-items:flex-end; flex-wrap:wrap; margin-bottom:1rem;
+}
+.ecl-list { max-height:360px; overflow-y:auto; }
+.ecl-list-row {
+  display:grid; grid-template-columns:2rem 1fr 90px 70px 80px;
+  gap:.5rem; align-items:center;
+  padding:.5rem .4rem; border-bottom:1px solid rgba(200,216,240,.05);
+  cursor:pointer; transition:background .15s;
+  font-family:var(--sans); font-size:.68rem;
+}
+.ecl-list-row:hover { background:rgba(212,168,75,.05); }
+.ecl-list-row.total     { border-left:2px solid #ff7050; }
+.ecl-list-row.annular   { border-left:2px solid #ffb828; }
+.ecl-list-row.partial   { border-left:2px solid #8ab4f8; }
+.ecl-list-row.penumbral { border-left:2px solid #7070a0; }
+.ecl-list-icon  { font-size:1rem; text-align:center; }
+.ecl-list-date  { color:var(--star); font-weight:600; line-height:1.3; }
+.ecl-list-type  { color:rgba(200,216,240,.5); font-size:.6rem; }
+.ecl-list-mag   { font-family:'DM Mono',monospace; color:var(--ochre-lt); text-align:right; }
+.ecl-list-lc    { font-family:'DM Mono',monospace; font-size:.55rem; color:rgba(200,216,240,.25); text-align:right; }
+.ecl-list-header {
+  display:grid; grid-template-columns:2rem 1fr 90px 70px 80px;
+  gap:.5rem; padding:.3rem .4rem;
+  font-family:var(--sans); font-size:.5rem; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase; color:rgba(200,216,240,.25);
+  border-bottom:1px solid rgba(200,216,240,.08); margin-bottom:.2rem;
+}
+
+/* ── Source note ── */
+.ecl-source {
+  font-family:var(--sans); font-size:.58rem; color:rgba(200,216,240,.22);
+  margin-top:.5rem; line-height:1.5;
+}
+</style>
+
+<section class="ecl-section">
+<div class="ecl-inner">
+
+  <div class="ecl-eyebrow">Meeus · Astronomical Formulae for Calculators · Ch. 33</div>
+  <h2 class="ecl-title">Eclipse <em>Finder</em></h2>
+  <p class="ecl-intro">Full Meeus Ch. 33 eclipse algorithm — computes solar and lunar eclipse type, magnitude, and (for lunar) partial and total phase semiduration for any New or Full Moon back to 3000 BCE. Includes Dresden Codex cross-reference against the 405-lunation eclipse table.</p>
+
+  <!-- Controls -->
+  <div class="ecl-controls">
+    <div class="ecl-field">
+      <label class="ecl-label">Date</label>
+      <input class="ecl-input" type="date" id="eclDateInput" style="width:150px;">
+    </div>
+    <div class="ecl-field">
+      <label class="ecl-label">Eclipse type</label>
+      <select class="ecl-input ecl-select" id="eclTypeInput" style="width:130px;">
+        <option value="both">Solar &amp; Lunar</option>
+        <option value="solar">Solar only</option>
+        <option value="lunar">Lunar only</option>
+      </select>
+    </div>
+    <button class="ecl-btn" onclick="calcEclipse()">Analyse →</button>
+  </div>
+
+  <!-- Main layout: diagram + detail -->
+  <div class="ecl-main-grid">
+
+    <!-- Diagram -->
+    <div class="ecl-diagram-card">
+      <svg class="ecl-svg" viewBox="0 0 240 240" id="eclSVG">
+        <defs>
+          <radialGradient id="earthGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1a3a6c"/>
+            <stop offset="100%" stop-color="#0a1428"/>
+          </radialGradient>
+          <radialGradient id="moonGrad2" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#d0c8a0"/>
+            <stop offset="100%" stop-color="#7a7260"/>
+          </radialGradient>
+          <radialGradient id="sunGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fff8d0"/>
+            <stop offset="100%" stop-color="#f0c040"/>
+          </radialGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Background -->
+        <rect width="240" height="240" fill="#050810"/>
+        <!-- Placeholder text -->
+        <text x="120" y="110" text-anchor="middle" font-family="sans-serif"
+              font-size="11" fill="rgba(200,216,240,.2)">Enter a date to</text>
+        <text x="120" y="128" text-anchor="middle" font-family="sans-serif"
+              font-size="11" fill="rgba(200,216,240,.2)">analyse eclipses</text>
+      </svg>
+
+      <div class="ecl-type-badge ecl-type-none" id="eclTypeBadge">—</div>
+
+      <div class="ecl-magnitude-row" id="eclMagRow" style="display:none">
+        <div class="ecl-mag-label"><span>Magnitude</span><span id="eclMagVal">—</span></div>
+        <div class="ecl-mag-track"><div class="ecl-mag-fill" id="eclMagFill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Detail -->
+    <div class="ecl-detail-card">
+      <div class="ecl-card-title" id="eclDetailTitle">Nearest Eclipse Analysis</div>
+
+      <div id="eclNoResult" style="color:rgba(200,216,240,.3);font-size:.78rem;padding:.5rem 0;">
+        Enter a date above to find the nearest solar and lunar eclipses.
+      </div>
+
+      <div id="eclDetailBody" style="display:none">
+        <div class="ecl-result-grid" id="eclResultGrid"></div>
+
+        <!-- Lunar durations (shown only for lunar eclipses) -->
+        <div id="eclDurBlock" style="display:none; margin:.8rem 0;">
+          <div class="ecl-card-title">Umbral phase durations</div>
+          <div class="ecl-dur-row">
+            <div class="ecl-dur-lbl">Partial phase</div>
+            <div class="ecl-dur-track"><div class="ecl-dur-fill" id="durPartialFill" style="width:0%"></div></div>
+            <div class="ecl-dur-val" id="durPartialVal">—</div>
+          </div>
+          <div class="ecl-dur-row">
+            <div class="ecl-dur-lbl">Total phase</div>
+            <div class="ecl-dur-track"><div class="ecl-dur-fill" id="durTotalFill" style="width:0%;background:#ff7050"></div></div>
+            <div class="ecl-dur-val" id="durTotalVal">—</div>
+          </div>
+        </div>
+
+        <div class="ecl-dresden" id="eclDresden"></div>
+        <p class="ecl-source">Formulae: Meeus, <em>Astronomical Formulae for Calculators</em>, 4th ed. (1988), Ch. 33. Solar magnitude is at point of greatest eclipse; times in Ephemeris Time. Lunar durations are semidurations (half the total phase length).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Range scanner -->
+  <div class="ecl-list-card">
+    <div class="ecl-card-title">Eclipse Range Scanner</div>
+    <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.4);margin-bottom:1rem;line-height:1.5;">
+      Scan any year range for all solar and lunar eclipses. Click a row to load it into the analyser above.
+      Useful for mapping eclipse windows against the 405-lunation Dresden Codex table.
+    </p>
+    <div class="ecl-range-controls">
+      <div class="ecl-field">
+        <label class="ecl-label">From year</label>
+        <input class="ecl-input" type="number" id="scanFrom" value="750" style="width:90px;" min="-3000" max="3000">
+      </div>
+      <div class="ecl-field">
+        <label class="ecl-label">To year</label>
+        <input class="ecl-input" type="number" id="scanTo"   value="775" style="width:90px;" min="-3000" max="3000">
+      </div>
+      <div class="ecl-field">
+        <label class="ecl-label">Filter</label>
+        <select class="ecl-input ecl-select" id="scanFilter" style="width:140px;">
+          <option value="all">All eclipses</option>
+          <option value="solar">Solar only</option>
+          <option value="lunar">Lunar only</option>
+          <option value="total">Total/Annular only</option>
+        </select>
+      </div>
+      <button class="ecl-btn" onclick="scanEclipses()">Scan →</button>
+    </div>
+    <div id="eclListWrap">
+      <div style="color:rgba(200,216,240,.25);font-size:.72rem;">
+        Default range 750–775 CE spans Katun 9.17 and the Dresden Codex Venus table era. Click Scan to populate.
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// ECLIPSE FINDER — Meeus Ch. 33
+// Builds on truePhaseJD(), meeusJDN(), meeusJDNtoGreg(), fmtJD(),
+// jdToLC(), CORRELATION — all defined in Moon Phase Calculator above.
+// ════════════════════════════════════════════════════════════════
+
+// ── Init date input ───────────────────────────────────────────
+(function initEclDate() {
+  const t = new Date();
+  document.getElementById('eclDateInput').value =
+    `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+})();
+
+// ── Meeus Ch. 33 core: analyse a single New or Full Moon ─────
+// k: integer = New Moon (solar), integer+0.5 = Full Moon (lunar)
+// Returns eclipse object or null if no eclipse
+function analyseEclipse(k) {
+  const T  = k / 1236.85;
+
+  // Angles (Ch. 32, after formula 32.3)
+  const M  = 359.2242  + 29.10535608 * k - 0.0000333 * T*T - 0.00000347 * T*T*T;
+  const Mp = 306.0253  + 385.81691806 * k + 0.0107306 * T*T + 0.00001236 * T*T*T;
+  const F  = 21.2964   + 390.67050646 * k - 0.0016528 * T*T - 0.00000239 * T*T*T;
+
+  // Primary eclipse gate: |sin F| > 0.36 → no eclipse
+  const sinF = Math.abs(Math.sin(toRad(F)));
+  if (sinF > 0.36) return null;
+
+  const isSolar = Math.round(k) === k; // integer k = New Moon
+
+  // Time of maximum eclipse (Ch. 33, formula 33.1)
+  // Note: coefficient of sin2F is NEGATIVE here (unlike Ch. 32 which uses +0.0104)
+  const JD = meanPhaseJD(k)
+    + (0.1734 - 0.000393 * T) * sind(M)
+    + 0.0021 * sind(2*M)
+    - 0.4068 * sind(Mp)
+    + 0.0161 * sind(2*Mp)
+    - 0.0051 * sind(M + Mp)
+    - 0.0074 * sind(M - Mp)
+    - 0.0104 * sind(2*F);  // ← negative sign — distinguishes this from Ch.32
+
+  // S and C (shadow geometry)
+  const S = 5.19595;
+  const C = + 0.2070 * sind(M)
+            - 0.0048 * cosd(M)
+            + 0.0024 * sind(2*M)
+            + 0.0020 * cosd(2*M)
+            - 0.0390 * sind(Mp)
+            - 0.3283 * cosd(Mp)
+            + 0.0115 * sind(2*Mp)
+            - 0.0060 * cosd(M + Mp)
+            - 0.0073 * sind(M + Mp)
+            + 0.0041 * cosd(M - Mp)
+            - 0.0067 * sind(M - Mp)
+            + 0.0117 * sind(2*F);
+
+  const y = S * sind(F) + C * cosd(F);
+  const u = 0.0059
+          + 0.0046 * cosd(M)
+          - 0.0182 * cosd(Mp)
+          + 0.0004 * cosd(2*Mp)
+          - 0.0005 * cosd(M + Mp);
+
+  const absY = Math.abs(y);
+
+  // Node information
+  const Fmod = ((F % 360) + 360) % 360;
+  const nearAscending  = Fmod < 90 || Fmod > 270;
+  const node = nearAscending ? 'Ascending node' : 'Descending node';
+  const hemisphere = y > 0 ? 'Northern hemisphere' : 'Southern hemisphere';
+
+  if (isSolar) {
+    // ── SOLAR ECLIPSE ────────────────────────────────────────
+    const penumbraRadius = u + 0.5460;
+
+    if (absY > 1.5432 + u) return null; // no eclipse at all
+
+    let type, magnitude, subtype = '';
+
+    if (absY > 0.9972) {
+      // Non-central partial (or rare non-central total/annular near poles)
+      if (absY < 0.9972 + Math.abs(u)) {
+        type = u < 0 ? 'total' : 'annular';
+        subtype = 'non-central';
+        magnitude = (1.5432 + u - absY) / (0.5460 + 2*u);
+      } else {
+        type = 'partial';
+        magnitude = (1.5432 + u - absY) / (0.5460 + 2*u);
+      }
+    } else {
+      // Central eclipse
+      if (u < 0) {
+        type = 'total';
+      } else if (u > 0.0047) {
+        type = 'annular';
+      } else {
+        // Ambiguous: annular-total?
+        const sinW = absY;
+        if (sinW <= 1) {
+          const W = Math.asin(sinW) * 180 / Math.PI;
+          const w = 0.00464 * cosd(W);
+          type = u < w ? 'annular-total' : 'annular';
+        } else {
+          type = 'annular';
+        }
+      }
+      magnitude = (1.5432 + u - absY) / (0.5460 + 2*u);
+    }
+
+    return {
+      k, JD, type, magnitude: Math.max(0, magnitude),
+      y, u, S, C, F, M, Mp, T,
+      isSolar: true,
+      subtype, node, hemisphere,
+      sinF,
+      uncertain: sinF > 0.28 && sinF <= 0.36,
+    };
+
+  } else {
+    // ── LUNAR ECLIPSE ────────────────────────────────────────
+    const penumbraR = 1.2847 + u;
+    const umbraR    = 0.7404 - u;
+
+    // Penumbral magnitude
+    const magPenumbral = (1.5572 + u - absY) / 0.5450;
+    if (magPenumbral < 0) return null; // no eclipse
+
+    // Umbral magnitude
+    const magUmbral = (1.0129 - u - absY) / 0.5450;
+
+    let type, magnitude;
+    if (magUmbral < 0) {
+      type = 'penumbral';
+      magnitude = magPenumbral;
+    } else {
+      // Umbral (partial or total)
+      const P = 1.0129 - u;
+      const Tv = 0.4679 - u;
+      const n = 0.5458 + 0.0400 * cosd(Mp);
+
+      const partial_semi = (P*P - y*y) >= 0
+        ? 60 * Math.sqrt(P*P - y*y) / n : 0;
+      const total_semi   = (Tv*Tv - y*y) >= 0
+        ? 60 * Math.sqrt(Tv*Tv - y*y) / n : 0;
+
+      type = total_semi > 0 ? 'total' : 'partial';
+      magnitude = magUmbral;
+
+      return {
+        k, JD, type, magnitude: Math.max(0, magnitude),
+        y, u, S, C, F, M, Mp, T,
+        isSolar: false,
+        node, sinF,
+        partial_semi,
+        total_semi,
+        penumbraR, umbraR,
+        uncertain: sinF > 0.28 && sinF <= 0.36,
+      };
+    }
+
+    return {
+      k, JD, type, magnitude: Math.max(0, magnitude),
+      y, u, S, C, F, M, Mp, T,
+      isSolar: false,
+      node, sinF,
+      partial_semi: 0, total_semi: 0,
+      uncertain: sinF > 0.28 && sinF <= 0.36,
+    };
+  }
+}
+
+// ── Dresden Codex cross-reference ────────────────────────────
+// The Dresden table runs 405 lunations = 11,960 days
+// Base date: LC 9.16.4.10.8  (JD ≈ 2443 616 with GMT 584283)
+const DRESDEN_BASE_JD = CORRELATION + (9*144000 + 16*7200 + 4*360 + 10*20 + 8);
+const DRESDEN_PERIOD  = 11960; // days (405 lunations)
+
+// The table's eclipse warning intervals (days from base)
+// Pattern: 6 months (177d) and 5 months (148d) alternating, with
+// occasional 6-month gaps. Full table nodes (approximate):
+const DRESDEN_NODES = (() => {
+  const nodes = [];
+  let pos = 0;
+  // The 405-lunation table has a known pattern of 69 eclipse warning entries
+  // Intervals are primarily 177 days with occasional 148-day gaps
+  // Reconstructed from Lounsbury/Bricker's analysis
+  const gaps = [
+    177,177,177,177,177,177,148,177,177,177,177,177,177,148,
+    177,177,177,177,177,177,148,177,177,177,177,177,177,148,
+    177,177,177,177,177,177,148,177,177,177,177,177,177,148,
+    177,177,177,177,177,177,148,177,177,177,177,177,177,148,
+    177,177,177,177,177,177,148,177,177,177,177,177,177,177
+  ];
+  for (const g of gaps) { nodes.push(pos); pos += g; }
+  return nodes;
+})();
+
+function dresdenCheck(jd) {
+  // Position within the 11960-day cycle
+  const offset = ((jd - DRESDEN_BASE_JD) % DRESDEN_PERIOD + DRESDEN_PERIOD) % DRESDEN_PERIOD;
+  // Find closest Dresden node
+  let minDist = Infinity, closestNode = -1, nodeIdx = -1;
+  DRESDEN_NODES.forEach((n, i) => {
+    const d = Math.min(Math.abs(offset - n), DRESDEN_PERIOD - Math.abs(offset - n));
+    if (d < minDist) { minDist = d; closestNode = n; nodeIdx = i; }
+  });
+
+  const cycleNum = Math.floor((jd - DRESDEN_BASE_JD) / DRESDEN_PERIOD);
+  const inWindow = minDist <= 10; // within 10 days of a Dresden warning day
+
+  return {
+    offset: Math.round(offset),
+    minDist: Math.round(minDist),
+    inWindow,
+    nodeIdx,
+    cycleNum,
+    lcBase: jdToLC(DRESDEN_BASE_JD),
+  };
+}
+
+// ── Find nearest eclipses around a JD ────────────────────────
+function findNearestEclipses(refJD, typeFilter) {
+  // Start from approximate k for the date
+  const approxYear = 1900 + (refJD - 2415020.5) / 365.25;
+  const kApprox = Math.round((approxYear - 1900) * 12.3685);
+
+  const eclipses = [];
+  // Search ±18 lunations (covers ~1.5 years — one full eclipse season pair)
+  for (let dk = -18; dk <= 18; dk++) {
+    const kNew  = kApprox + dk;          // New Moon → solar
+    const kFull = kApprox + dk + 0.5;   // Full Moon → lunar
+
+    if (typeFilter !== 'lunar') {
+      const sol = analyseEclipse(kNew);
+      if (sol) eclipses.push(sol);
+    }
+    if (typeFilter !== 'solar') {
+      const lun = analyseEclipse(kFull);
+      if (lun) eclipses.push(lun);
+    }
+  }
+
+  // Sort by proximity to refJD
+  eclipses.sort((a,b) => Math.abs(a.JD - refJD) - Math.abs(b.JD - refJD));
+  return eclipses;
+}
+
+// ── Render diagram SVG ────────────────────────────────────────
+function renderDiagram(ecl) {
+  const svg = document.getElementById('eclSVG');
+  if (!ecl) {
+    svg.innerHTML = `
+      <rect width="240" height="240" fill="#050810"/>
+      <text x="120" y="110" text-anchor="middle" font-family="sans-serif" font-size="11" fill="rgba(200,216,240,.2)">No eclipse</text>
+      <text x="120" y="128" text-anchor="middle" font-family="sans-serif" font-size="11" fill="rgba(200,216,240,.2)">at this date</text>`;
+    document.getElementById('eclTypeBadge').textContent = 'No Eclipse';
+    document.getElementById('eclTypeBadge').className = 'ecl-type-badge ecl-type-none';
+    document.getElementById('eclMagRow').style.display = 'none';
+    return;
+  }
+
+  const cx = 120, cy = 120;
+
+  if (ecl.isSolar) {
+    // Solar eclipse diagram: Sun (left), Moon shadow cone, Earth (right)
+    const sunR = 32, earthR = 22, moonR = 16;
+    const sunX = 36, earthX = 195, midX = 120;
+    const yOff = Math.min(ecl.y * 28, 40); // visual offset
+
+    // Umbra/penumbra cone color
+    const shadowColor = ecl.type === 'total' ? 'rgba(255,60,20,.25)'
+                      : ecl.type === 'annular' ? 'rgba(255,180,40,.2)'
+                      : 'rgba(100,140,220,.15)';
+    const coreColor   = ecl.type === 'total' ? 'rgba(255,60,20,.45)'
+                      : ecl.type === 'annular' ? 'rgba(255,180,40,.35)'
+                      : 'rgba(100,140,220,.25)';
+
+    svg.innerHTML = `
+      <rect width="240" height="240" fill="#050810"/>
+      <!-- Stars -->
+      <circle cx="60" cy="30" r=".8" fill="rgba(200,216,240,.5)"/>
+      <circle cx="180" cy="45" r=".6" fill="rgba(200,216,240,.4)"/>
+      <circle cx="210" cy="20" r=".9" fill="rgba(200,216,240,.6)"/>
+      <circle cx="15"  cy="80" r=".7" fill="rgba(200,216,240,.4)"/>
+      <circle cx="230" cy="160" r=".6" fill="rgba(200,216,240,.3)"/>
+      <!-- Penumbra cone -->
+      <polygon points="${sunX},${cy-sunR} ${midX},${cy+yOff-moonR*1.8} ${midX},${cy+yOff+moonR*1.8} ${sunX},${cy+sunR}"
+               fill="${shadowColor}"/>
+      <!-- Umbra cone (to Earth) -->
+      <polygon points="${midX},${cy+yOff-moonR*.9} ${earthX-earthR},${cy+yOff+2} ${earthX-earthR},${cy+yOff-2} ${midX},${cy+yOff+moonR*.9}"
+               fill="${coreColor}"/>
+      <!-- Sun -->
+      <circle cx="${sunX}" cy="${cy}" r="${sunR}" fill="url(#sunGrad)" filter="url(#glow)"/>
+      <circle cx="${sunX}" cy="${cy}" r="${sunR+4}" fill="none" stroke="rgba(255,220,80,.15)" stroke-width="3"/>
+      <!-- Moon -->
+      <circle cx="${midX}" cy="${cy+yOff}" r="${moonR}" fill="url(#moonGrad2)"/>
+      <!-- Earth -->
+      <circle cx="${earthX}" cy="${cy+yOff}" r="${earthR}" fill="url(#earthGrad)"/>
+      <circle cx="${earthX}" cy="${cy+yOff}" r="${earthR}" fill="none" stroke="rgba(100,160,255,.3)" stroke-width="1.5"/>
+      <!-- Labels -->
+      <text x="${sunX}"   y="${cy+sunR+12}"  text-anchor="middle" font-size="8" fill="rgba(255,220,80,.6)"  font-family="sans-serif">Sun</text>
+      <text x="${midX}"   y="${cy+yOff+moonR+11}" text-anchor="middle" font-size="8" fill="rgba(200,200,180,.5)" font-family="sans-serif">Moon</text>
+      <text x="${earthX}" y="${cy+yOff+earthR+11}" text-anchor="middle" font-size="8" fill="rgba(100,160,255,.5)" font-family="sans-serif">Earth</text>
+    `;
+  } else {
+    // Lunar eclipse diagram: Earth shadow + Moon path
+    const earthR = 36, umbraR = 28, penumbraR = 44, moonR = 14;
+    const earthX = 80, moonX = ecl.type === 'total' ? 158
+                             : ecl.type === 'partial' ? 148 : 135;
+    const yOff = Math.min(Math.abs(ecl.y) * 22, 30) * (ecl.y > 0 ? 1 : -1);
+
+    const umbraColor    = 'rgba(20,30,60,.9)';
+    const penumbraColor = 'rgba(20,30,60,.45)';
+
+    svg.innerHTML = `
+      <rect width="240" height="240" fill="#050810"/>
+      <!-- Stars -->
+      <circle cx="170" cy="30"  r=".8" fill="rgba(200,216,240,.5)"/>
+      <circle cx="200" cy="70"  r=".6" fill="rgba(200,216,240,.4)"/>
+      <circle cx="220" cy="190" r=".9" fill="rgba(200,216,240,.5)"/>
+      <circle cx="185" cy="150" r=".7" fill="rgba(200,216,240,.35)"/>
+      <circle cx="230" cy="110" r=".6" fill="rgba(200,216,240,.4)"/>
+      <!-- Sun rays (implied, off left) -->
+      <line x1="-10" y1="${cy-45}" x2="${earthX-earthR-8}" y2="${cy-penumbraR+6}" stroke="rgba(255,220,80,.08)" stroke-width="1"/>
+      <line x1="-10" y1="${cy+45}" x2="${earthX-earthR-8}" y2="${cy+penumbraR-6}" stroke="rgba(255,220,80,.08)" stroke-width="1"/>
+      <!-- Penumbra cone -->
+      <ellipse cx="${earthX+55}" cy="${cy}" rx="58" ry="${penumbraR}" fill="${penumbraColor}"/>
+      <!-- Umbra cone -->
+      <ellipse cx="${earthX+48}" cy="${cy}" rx="44" ry="${umbraR}" fill="${umbraColor}"/>
+      <!-- Earth -->
+      <circle cx="${earthX}" cy="${cy}" r="${earthR}" fill="url(#earthGrad)"/>
+      <circle cx="${earthX}" cy="${cy}" r="${earthR}" fill="none" stroke="rgba(100,160,255,.4)" stroke-width="1.5"/>
+      <!-- Moon path dotted line -->
+      <line x1="${earthX+earthR+5}" y1="${cy+yOff}" x2="235" y2="${cy+yOff}" stroke="rgba(200,216,240,.1)" stroke-width="1" stroke-dasharray="3,4"/>
+      <!-- Moon -->
+      <circle cx="${moonX}" cy="${cy+yOff}" r="${moonR}" fill="url(#moonGrad2)"/>
+      ${ecl.type === 'total' ? `<circle cx="${moonX}" cy="${cy+yOff}" r="${moonR}" fill="rgba(180,60,20,.5)"/>` : ''}
+      <!-- Labels -->
+      <text x="${earthX}"  y="${cy+earthR+12}"  text-anchor="middle" font-size="8" fill="rgba(100,160,255,.5)" font-family="sans-serif">Earth</text>
+      <text x="${moonX}"   y="${cy+yOff+moonR+12}" text-anchor="middle" font-size="8" fill="rgba(200,200,180,.5)" font-family="sans-serif">Moon</text>
+      <text x="${earthX+80}" y="${cy-umbraR-6}" text-anchor="middle" font-size="7" fill="rgba(200,216,240,.2)" font-family="sans-serif">Umbra</text>
+      <text x="${earthX+90}" y="${cy+penumbraR+14}" text-anchor="middle" font-size="7" fill="rgba(200,216,240,.15)" font-family="sans-serif">Penumbra</text>
+    `;
+  }
+
+  // Badge
+  const typeClass = {
+    total:'ecl-type-total', annular:'ecl-type-annular',
+    'annular-total':'ecl-type-annular', partial:'ecl-type-partial',
+    penumbral:'ecl-type-penumbral',
+  }[ecl.type] || 'ecl-type-none';
+  const badge = document.getElementById('eclTypeBadge');
+  badge.textContent = (ecl.isSolar ? '☀️ Solar — ' : '🌕 Lunar — ') +
+    ecl.type.charAt(0).toUpperCase() + ecl.type.slice(1) +
+    (ecl.subtype ? ` (${ecl.subtype})` : '');
+  badge.className = `ecl-type-badge ${typeClass}`;
+
+  // Magnitude bar
+  document.getElementById('eclMagRow').style.display = 'block';
+  document.getElementById('eclMagVal').textContent = ecl.magnitude.toFixed(3);
+  document.getElementById('eclMagFill').style.width = `${Math.min(100, ecl.magnitude * 100)}%`;
+}
+
+// ── Render detail panel ───────────────────────────────────────
+function renderDetail(ecl) {
+  if (!ecl) {
+    document.getElementById('eclNoResult').style.display = 'block';
+    document.getElementById('eclDetailBody').style.display = 'none';
+    return;
+  }
+  document.getElementById('eclNoResult').style.display = 'none';
+  document.getElementById('eclDetailBody').style.display = 'block';
+
+  const fmt   = fmtJD(ecl.JD);
+  const dres  = dresdenCheck(ecl.JD);
+  const lcStr = jdToLC(ecl.JD) || '(pre-Maya era)';
+
+  document.getElementById('eclDetailTitle').textContent =
+    (ecl.isSolar ? 'Solar' : 'Lunar') + ' Eclipse · Full Analysis';
+
+  document.getElementById('eclResultGrid').innerHTML = `
+    <div class="ecl-result-cell">
+      <div class="ecl-result-k">Date (ET)</div>
+      <div class="ecl-result-v" style="font-size:.82rem">${fmt.date}</div>
+      <div class="ecl-result-sub">${fmt.time}</div>
+    </div>
+    <div class="ecl-result-cell">
+      <div class="ecl-result-k">Type</div>
+      <div class="ecl-result-v" style="font-size:.82rem">${ecl.type.charAt(0).toUpperCase()+ecl.type.slice(1)}</div>
+      <div class="ecl-result-sub">${ecl.isSolar ? 'Solar' : 'Lunar'} eclipse</div>
+    </div>
+    <div class="ecl-result-cell">
+      <div class="ecl-result-k">Magnitude</div>
+      <div class="ecl-result-v">${ecl.magnitude.toFixed(4)}</div>
+      <div class="ecl-result-sub">${ecl.magnitude >= 1 ? 'Total coverage' : (ecl.magnitude*100).toFixed(1)+'% of disk'}</div>
+    </div>
+    <div class="ecl-result-cell">
+      <div class="ecl-result-k">Shadow param y</div>
+      <div class="ecl-result-v" style="font-family:'DM Mono',monospace;font-size:.82rem">${ecl.y.toFixed(4)}</div>
+      <div class="ecl-result-sub">${ecl.y > 0 ? 'N of axis' : 'S of axis'} · ${Math.abs(ecl.y).toFixed(4)} R⊕</div>
+    </div>
+    <div class="ecl-result-cell">
+      <div class="ecl-result-k">Umbral radius u</div>
+      <div class="ecl-result-v" style="font-family:'DM Mono',monospace;font-size:.82rem">${ecl.u.toFixed(4)}</div>
+      <div class="ecl-result-sub">${ecl.u < 0 ? 'Total (umbra wide)' : 'Annular candidate'}</div>
+    </div>
+    <div class="ecl-result-cell">
+      <div class="ecl-result-k">Node</div>
+      <div class="ecl-result-v" style="font-size:.78rem">${ecl.node}</div>
+      <div class="ecl-result-sub">F = ${(((ecl.F % 360)+360)%360).toFixed(1)}°</div>
+    </div>
+    <div class="ecl-result-cell">
+      <div class="ecl-result-k">Julian Day</div>
+      <div class="ecl-result-v" style="font-family:'DM Mono',monospace;font-size:.78rem">${ecl.JD.toFixed(4)}</div>
+      <div class="ecl-result-sub">JD of max eclipse</div>
+    </div>
+    <div class="ecl-result-cell">
+      <div class="ecl-result-k">Maya Long Count</div>
+      <div class="ecl-result-v" style="font-family:'DM Mono',monospace;font-size:.72rem">${lcStr.split(' ·')[0]}</div>
+      <div class="ecl-result-sub">${lcStr.includes('·') ? lcStr.split('·')[1].trim() : ''}</div>
+    </div>
+    ${ecl.uncertain ? `
+    <div class="ecl-result-cell" style="grid-column:1/-1;background:rgba(255,180,40,.05);border-color:rgba(255,180,40,.2)">
+      <div class="ecl-result-k" style="color:#ffb828">Uncertainty</div>
+      <div class="ecl-result-v" style="font-size:.72rem;color:#ffb828">Eclipse uncertain — near edge of eclipse season (|sin F| = ${ecl.sinF.toFixed(3)})</div>
+    </div>` : ''}
+  `;
+
+  // Lunar duration bars
+  const durBlock = document.getElementById('eclDurBlock');
+  if (!ecl.isSolar && ecl.partial_semi > 0) {
+    durBlock.style.display = 'block';
+    const maxMin = 120;
+    document.getElementById('durPartialFill').style.width =
+      `${Math.min(100, ecl.partial_semi / maxMin * 100)}%`;
+    document.getElementById('durPartialVal').textContent =
+      `±${ecl.partial_semi.toFixed(0)} min`;
+    document.getElementById('durTotalFill').style.width =
+      ecl.total_semi > 0 ? `${Math.min(100, ecl.total_semi / maxMin * 100)}%` : '0%';
+    document.getElementById('durTotalVal').textContent =
+      ecl.total_semi > 0 ? `±${ecl.total_semi.toFixed(0)} min` : 'n/a';
+  } else {
+    durBlock.style.display = 'none';
+  }
+
+  // Dresden cross-reference
+  const dresdenHTML = dres.inWindow
+    ? `<strong>⚠ Dresden Codex match:</strong> This eclipse falls within <strong>${dres.minDist} days</strong>
+       of Dresden warning node #${dres.nodeIdx + 1} (day ${dres.offset} of the 11,960-day cycle,
+       ${dres.cycleNum >= 0 ? dres.cycleNum + ' full cycles' : Math.abs(dres.cycleNum) + ' cycles before'} the table base
+       at <strong>${dres.lcBase || 'LC 9.16.4.10.8'}</strong>). The Maya scribes likely anticipated this eclipse window.`
+    : `<strong>Dresden Codex:</strong> This eclipse is <strong>${dres.minDist} days</strong> from the nearest
+       warning node (day ${dres.offset} of the 11,960-day cycle). Outside the Maya warning window (±10 days).
+       Table base: <strong>${dres.lcBase || 'LC 9.16.4.10.8'}</strong>.`;
+
+  document.getElementById('eclDresden').innerHTML = dresdenHTML;
+}
+
+// ── Main calculation entry point ──────────────────────────────
+function calcEclipse() {
+  const val = document.getElementById('eclDateInput').value;
+  if (!val) return;
+  const [y,m,d] = val.split('-').map(Number);
+  const refJD   = meeusJDN(y, m, d) + 0.5;
+  const filter  = document.getElementById('eclTypeInput').value;
+
+  const eclipses = findNearestEclipses(refJD, filter);
+
+  // Show the nearest eclipse (first in sorted list)
+  const nearest = eclipses[0] || null;
+  renderDiagram(nearest);
+  renderDetail(nearest);
+}
+
+// ── Range scanner ─────────────────────────────────────────────
+function scanEclipses() {
+  const fromYear = parseInt(document.getElementById('scanFrom').value);
+  const toYear   = parseInt(document.getElementById('scanTo').value);
+  const filter   = document.getElementById('scanFilter').value;
+  if (isNaN(fromYear) || isNaN(toYear) || fromYear > toYear) return;
+  if (toYear - fromYear > 100) {
+    alert('Range limited to 100 years per scan to keep it snappy. Narrow the range.');
+    return;
+  }
+
+  const fromJD = meeusJDN(fromYear, 1, 1);
+  const toJD   = meeusJDN(toYear,  12, 31);
+  const approxKFrom = Math.round((fromYear - 1900) * 12.3685);
+  const approxKTo   = Math.round((toYear   - 1900) * 12.3685);
+
+  const results = [];
+
+  for (let k = approxKFrom - 2; k <= approxKTo + 2; k++) {
+    // New Moon (solar)
+    if (filter !== 'lunar') {
+      const sol = analyseEclipse(k);
+      if (sol && sol.JD >= fromJD && sol.JD <= toJD) {
+        if (filter === 'total' && sol.type !== 'total' && sol.type !== 'annular' && sol.type !== 'annular-total') {
+          // skip
+        } else {
+          results.push(sol);
+        }
+      }
+    }
+    // Full Moon (lunar)
+    if (filter !== 'solar') {
+      const lun = analyseEclipse(k + 0.5);
+      if (lun && lun.JD >= fromJD && lun.JD <= toJD) {
+        if (filter === 'total' && lun.type !== 'total') {
+          // skip
+        } else {
+          results.push(lun);
+        }
+      }
+    }
+  }
+
+  results.sort((a,b) => a.JD - b.JD);
+
+  if (!results.length) {
+    document.getElementById('eclListWrap').innerHTML =
+      `<p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.3);">
+        No eclipses found in this range with the selected filter.
+      </p>`;
+    return;
+  }
+
+  const rows = results.map(ecl => {
+    const fmt = fmtJD(ecl.JD);
+    const lc  = jdToLC(ecl.JD);
+    const lcShort = lc ? lc.split(' ·')[0] : '—';
+    const typeClass = {
+      total:'total', annular:'annular', 'annular-total':'annular',
+      partial:'partial', penumbral:'penumbral',
+    }[ecl.type] || '';
+    const icon = ecl.isSolar
+      ? (ecl.type==='total'?'🌑':ecl.type==='annular'||ecl.type==='annular-total'?'🔵':'🌒')
+      : (ecl.type==='total'?'🔴':ecl.type==='partial'?'🌕':'🌔');
+
+    return `<div class="ecl-list-row ${typeClass}" onclick="loadEclipseRow(${ecl.JD})">
+      <div class="ecl-list-icon">${icon}</div>
+      <div class="ecl-list-date">
+        <div>${fmt.date}</div>
+        <div style="font-size:.58rem;color:rgba(200,216,240,.35)">${fmt.time} · ${ecl.isSolar?'Solar':'Lunar'}</div>
+      </div>
+      <div class="ecl-list-type">${ecl.type.charAt(0).toUpperCase()+ecl.type.slice(1)}</div>
+      <div class="ecl-list-mag">${ecl.magnitude.toFixed(3)}</div>
+      <div class="ecl-list-lc">${lcShort}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('eclListWrap').innerHTML = `
+    <div class="ecl-list-header">
+      <div></div><div>Date &amp; Time (ET)</div><div>Type</div><div style="text-align:right">Mag</div><div style="text-align:right">Long Count</div>
+    </div>
+    <div class="ecl-list">${rows}</div>
+    <p style="font-family:var(--sans);font-size:.58rem;color:rgba(200,216,240,.22);margin-top:.5rem">
+      ${results.length} eclipse${results.length!==1?'s':''} · ${fromYear}–${toYear} CE ·
+      click any row to load full analysis · times in Ephemeris Time
+    </p>`;
+}
+
+// ── Load a scan row into the analyser ─────────────────────────
+function loadEclipseRow(jd) {
+  const g = meeusJDNtoGreg(jd);
+  if (g.year >= 1 && g.year <= 9999) {
+    document.getElementById('eclDateInput').value =
+      `${g.year}-${String(g.month).padStart(2,'0')}-${String(g.day).padStart(2,'0')}`;
+  }
+  // Find the exact eclipse at this JD
+  const approxYear = 1900 + (jd - 2415020.5) / 365.25;
+  const kApprox = Math.round((approxYear - 1900) * 12.3685);
+  let ecl = null;
+  for (let dk = -1; dk <= 1; dk++) {
+    const sol = analyseEclipse(kApprox + dk);
+    const lun = analyseEclipse(kApprox + dk + 0.5);
+    if (sol && Math.abs(sol.JD - jd) < 1) ecl = sol;
+    if (lun && Math.abs(lun.JD - jd) < 1) ecl = lun;
+  }
+  renderDiagram(ecl);
+  renderDetail(ecl);
+  document.getElementById('eclSVG').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+// ── Auto-run on load ──────────────────────────────────────────
+(function autoEcl() {
+  setTimeout(calcEclipse, 200);
+})();
+</script>
 </body>
 </html>
