@@ -1298,5 +1298,779 @@ function loadNotable(lc) {
 })();
 </script>
 
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- MOON PHASE CALCULATOR  (Meeus, Astronomical Formulae      -->
+<!-- for Calculators, 4th ed., Ch. 32 — accurate to ~2 min)    -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<style>
+.moon-section {
+  background: var(--night);
+  border-top: 1px solid rgba(200,216,240,.06);
+  padding: 3rem 2rem 4rem;
+}
+.moon-section-inner { max-width: 1100px; margin: 0 auto; }
+
+.moon-eyebrow {
+  font-family: var(--sans); font-size:.6rem; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase;
+  color: var(--ochre-lt); margin-bottom:.7rem;
+  display:flex; align-items:center; gap:.5rem;
+}
+.moon-eyebrow::before {
+  content:''; display:inline-block; width:20px; height:1px;
+  background: var(--ochre-lt);
+}
+.moon-title {
+  font-family: var(--serif); font-size: clamp(1.8rem,4vw,3rem);
+  font-weight:900; color: var(--star); line-height:1.1;
+  margin-bottom:.6rem;
+}
+.moon-title em { color: var(--ochre-lt); font-style:italic; }
+.moon-intro {
+  font-size:.88rem; color:rgba(200,216,240,.55); line-height:1.75;
+  max-width:620px; margin-bottom:2.5rem;
+}
+
+/* ── Phase dial ── */
+.moon-main-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  margin-bottom: 1.5rem;
+}
+@media(max-width:800px){ .moon-main-grid{ grid-template-columns:1fr; } }
+
+.moon-dial-card {
+  background: rgba(200,216,240,.03);
+  border: 1px solid rgba(200,216,240,.08);
+  padding: 1.5rem;
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+}
+
+/* SVG moon disc */
+.moon-svg { width:180px; height:180px; margin: 0 auto 1rem; }
+
+.moon-phase-name-lg {
+  font-family: var(--serif); font-size:1.3rem; font-weight:700;
+  color:var(--star); margin-bottom:.3rem;
+}
+.moon-age-text {
+  font-family: var(--sans); font-size:.68rem; color:rgba(200,216,240,.45);
+  letter-spacing:.04em; margin-bottom:.8rem;
+}
+.moon-illumination {
+  font-family: var(--sans); font-size:.6rem; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--ochre);
+}
+
+/* ── Input card ── */
+.moon-input-card {
+  background: rgba(200,216,240,.03);
+  border: 1px solid rgba(200,216,240,.08);
+  padding: 1.4rem 1.5rem;
+}
+.moon-card-title {
+  font-family: var(--sans); font-size:.58rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase;
+  color: var(--ochre-lt); margin-bottom:1rem;
+  padding-bottom:.5rem; border-bottom:1px solid rgba(200,216,240,.06);
+}
+.moon-field { display:flex; flex-direction:column; gap:.3rem; margin-bottom:.9rem; }
+.moon-label {
+  font-family:var(--sans); font-size:.54rem; font-weight:600;
+  letter-spacing:.1em; text-transform:uppercase; color:rgba(200,216,240,.4);
+}
+.moon-input {
+  background: rgba(200,216,240,.04); border: 1px solid rgba(200,216,240,.1);
+  color: var(--star); font-family: var(--sans); font-size:.82rem;
+  padding:.5rem .75rem; outline:none; transition:border-color .2s; width:100%;
+}
+.moon-input:focus { border-color: rgba(212,168,75,.5); }
+.moon-btn {
+  background: rgba(212,168,75,.12); border: 1px solid rgba(212,168,75,.3);
+  color: var(--ochre-lt); font-family:var(--sans); font-size:.65rem;
+  font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:.5rem 1.2rem; cursor:pointer; transition:all .2s; width:100%;
+  margin-top:.3rem;
+}
+.moon-btn:hover { background:rgba(212,168,75,.22); }
+.moon-btn-sm {
+  width:auto; padding:.35rem .8rem; font-size:.58rem; margin-top:0;
+}
+
+/* ── Phase sequence strip ── */
+.phase-strip {
+  display:grid; grid-template-columns: repeat(8,1fr); gap:.4rem;
+  margin-bottom:1.5rem;
+}
+.phase-cell {
+  background: rgba(200,216,240,.02); border:1px solid rgba(200,216,240,.06);
+  padding:.6rem .3rem; text-align:center; cursor:pointer; transition:all .15s;
+}
+.phase-cell:hover { border-color:rgba(212,168,75,.3); }
+.phase-cell.active { border-color:var(--ochre); background:rgba(212,168,75,.08); }
+.phase-cell-icon { font-size:1.3rem; line-height:1; margin-bottom:.3rem; }
+.phase-cell-label { font-size:.5rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:rgba(200,216,240,.4); margin-bottom:.2rem; }
+.phase-cell-date  { font-size:.55rem; color:var(--star); line-height:1.3; }
+.phase-cell-time  { font-size:.52rem; color:rgba(200,216,240,.35); }
+
+/* ── Results table ── */
+.moon-results-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:.5rem; margin-bottom:1rem;
+}
+.moon-result-cell {
+  background:rgba(200,216,240,.02); border:1px solid rgba(200,216,240,.06);
+  padding:.7rem .9rem;
+}
+.moon-result-k {
+  font-family:var(--sans); font-size:.5rem; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase; color:rgba(200,216,240,.3);
+  margin-bottom:.3rem;
+}
+.moon-result-v {
+  font-family:var(--serif); font-size:.95rem; font-weight:700;
+  color:var(--star); line-height:1.2;
+}
+.moon-result-sub {
+  font-size:.56rem; color:rgba(200,216,240,.3); margin-top:.2rem;
+  font-family:var(--sans);
+}
+
+/* ── Maya cross-ref box ── */
+.moon-maya-xref {
+  background:rgba(212,168,75,.05); border:1px solid rgba(212,168,75,.15);
+  border-left:3px solid rgba(212,168,75,.4);
+  padding:.8rem 1rem; margin-top:.8rem;
+  font-family:var(--sans); font-size:.72rem; color:rgba(200,216,240,.55);
+  line-height:1.6;
+}
+.moon-maya-xref strong { color:var(--ochre-lt); }
+
+/* ── Range finder ── */
+.moon-range-card {
+  background: rgba(200,216,240,.03);
+  border: 1px solid rgba(200,216,240,.08);
+  padding: 1.4rem 1.5rem;
+  margin-bottom:1rem;
+}
+.moon-range-grid {
+  display:flex; gap:.7rem; align-items:flex-end; flex-wrap:wrap;
+}
+.moon-range-field { display:flex; flex-direction:column; gap:.3rem; }
+.moon-mini-input {
+  background: rgba(200,216,240,.04); border: 1px solid rgba(200,216,240,.1);
+  color: var(--star); font-family: var(--sans); font-size:.78rem;
+  padding:.4rem .65rem; outline:none; transition:border-color .2s;
+}
+.moon-mini-input:focus { border-color: rgba(212,168,75,.5); }
+
+/* ── Source note ── */
+.moon-source {
+  font-family:var(--sans); font-size:.58rem; color:rgba(200,216,240,.25);
+  margin-top:.5rem; line-height:1.5;
+}
+</style>
+
+<section class="moon-section">
+<div class="moon-section-inner">
+
+  <div class="moon-eyebrow">Meeus · Astronomical Formulae for Calculators · Ch. 32</div>
+  <h2 class="moon-title">Moon <em>Phase</em> Calculator</h2>
+  <p class="moon-intro">Precise lunar phase times computed from Meeus (1988) Ch. 32 formulae — accurate to within ~2 minutes over thousands of years. Enter any date to find the nearest New Moon, First Quarter, Full Moon, and Last Quarter, with Julian Day numbers and Maya Long Count cross-references.</p>
+
+  <!-- MAIN: dial + input -->
+  <div class="moon-main-grid">
+
+    <!-- Phase dial -->
+    <div class="moon-dial-card">
+      <svg class="moon-svg" viewBox="0 0 180 180" id="moonSVG">
+        <defs>
+          <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#e8d8b0" stop-opacity=".12"/>
+            <stop offset="100%" stop-color="#050810" stop-opacity="0"/>
+          </radialGradient>
+          <clipPath id="moonClip">
+            <circle cx="90" cy="90" r="72"/>
+          </clipPath>
+        </defs>
+        <!-- Glow -->
+        <circle cx="90" cy="90" r="84" fill="url(#moonGlow)"/>
+        <!-- Dark disc -->
+        <circle cx="90" cy="90" r="72" fill="#0a0e1a" stroke="rgba(200,216,240,.12)" stroke-width="1"/>
+        <!-- Illuminated portion — drawn by JS -->
+        <g id="moonIllum" clip-path="url(#moonClip)"></g>
+        <!-- Subtle crater marks -->
+        <g clip-path="url(#moonClip)" opacity=".08">
+          <circle cx="74" cy="80" r="8" fill="none" stroke="#c8d8f0" stroke-width="1.5"/>
+          <circle cx="102" cy="68" r="5" fill="none" stroke="#c8d8f0" stroke-width="1"/>
+          <circle cx="88" cy="108" r="6" fill="none" stroke="#c8d8f0" stroke-width="1"/>
+          <circle cx="115" cy="95" r="4" fill="none" stroke="#c8d8f0" stroke-width="1"/>
+        </g>
+      </svg>
+
+      <div class="moon-phase-name-lg" id="dialPhaseName">—</div>
+      <div class="moon-age-text" id="dialAgeText">Enter a date to calculate</div>
+      <div class="moon-illumination" id="dialIllum"></div>
+    </div>
+
+    <!-- Input -->
+    <div class="moon-input-card">
+      <div class="moon-card-title">Calculate Phase for Date</div>
+
+      <div class="moon-field">
+        <label class="moon-label">Date</label>
+        <input class="moon-input" type="date" id="moonDateInput">
+      </div>
+
+      <button class="moon-btn" onclick="calcMoonPhase()">Calculate Lunar Phase →</button>
+
+      <div id="moonResults" style="display:none; margin-top:1.2rem;">
+        <div class="moon-results-grid" id="moonResultGrid"></div>
+        <div class="moon-maya-xref" id="moonMayaXref"></div>
+        <p class="moon-source">Formulae: Meeus, <em>Astronomical Formulae for Calculators</em>, 4th ed. (1988), Ch. 32. Accuracy ~2 min over 3000 BCE–3000 CE.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase sequence strip — nearest 4 phases -->
+  <div class="moon-card-title" style="margin-bottom:.6rem;">Nearest phases from selected date</div>
+  <div class="phase-strip" id="phaseStrip">
+    <div class="phase-cell" style="grid-column:span 8;color:rgba(200,216,240,.3);font-size:.72rem;text-align:center;padding:1rem;">
+      Enter a date above to see the phase sequence.
+    </div>
+  </div>
+
+  <!-- Range finder -->
+  <div class="moon-range-card">
+    <div class="moon-card-title">Phase Range Finder</div>
+    <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.4);margin-bottom:1rem;line-height:1.5;">
+      Find all New Moons, Full Moons, or all phases within a year — useful for
+      locating eclipse windows and cross-referencing with the Dresden Codex.
+    </p>
+    <div class="moon-range-grid">
+      <div class="moon-range-field">
+        <label class="moon-label">Year</label>
+        <input class="moon-mini-input" type="number" id="rangeYear" value="771" min="-3000" max="3000" style="width:90px;">
+      </div>
+      <div class="moon-range-field">
+        <label class="moon-label">Phase</label>
+        <select class="moon-mini-input" id="rangePhase" style="width:140px;">
+          <option value="0">New Moon</option>
+          <option value="0.25">First Quarter</option>
+          <option value="0.5">Full Moon</option>
+          <option value="0.75">Last Quarter</option>
+          <option value="all">All phases</option>
+        </select>
+      </div>
+      <button class="moon-btn moon-btn-sm" onclick="calcRange()">Find →</button>
+    </div>
+    <div id="rangeResults" style="margin-top:1rem;"></div>
+  </div>
+
+</div>
+</section>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// MOON PHASE CALCULATOR — Meeus, Astronomical Formulae for
+// Calculators, 4th ed. (1988), Chapter 32.
+// Formula 32.1: JD of mean phase
+// Formulae 32.4/32.5: corrections to true phase
+// Accuracy: ~2 minutes over the range 3000 BCE – 3000 CE
+// ════════════════════════════════════════════════════════════════
+
+// ── Init date input to today ─────────────────────────────────
+(function initMoonDate() {
+  const t = new Date();
+  const y = t.getFullYear(), m = t.getMonth()+1, d = t.getDate();
+  document.getElementById('moonDateInput').value =
+    `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+})();
+
+// ── Gregorian → Julian Day Number (integer, noon epoch) ──────
+// Uses the same gregToJDN already defined in Maya engine above.
+// Redeclare with a local name to keep this block self-contained.
+function meeusJDN(year, month, day) {
+  // Meeus Ch. 3 algorithm (handles Julian/Gregorian reform)
+  if (month <= 2) { year -= 1; month += 12; }
+  const A = Math.floor(year / 100);
+  const B = (year*10000 + month*100 + day) >= 15821015
+    ? 2 - A + Math.floor(A / 4)
+    : 0;
+  return Math.floor(365.25 * (year + 4716))
+       + Math.floor(30.6001 * (month + 1))
+       + day + B - 1524.5;
+}
+
+// ── JDN → Gregorian calendar date ────────────────────────────
+function meeusJDNtoGreg(jd) {
+  const Z = Math.floor(jd + 0.5);
+  const F = (jd + 0.5) - Z;
+  let A = Z;
+  if (Z >= 2299161) {
+    const alpha = Math.floor((Z - 1867216.25) / 36524.25);
+    A = Z + 1 + alpha - Math.floor(alpha / 4);
+  }
+  const B = A + 1524;
+  const C = Math.floor((B - 122.1) / 365.25);
+  const D = Math.floor(365.25 * C);
+  const E = Math.floor((B - D) / 30.6001);
+
+  const day   = B - D - Math.floor(30.6001 * E) + F;
+  const month = E < 14 ? E - 1 : E - 13;
+  const year  = month > 2 ? C - 4716 : C - 4715;
+  return { year, month, day: Math.floor(day), dayFrac: day - Math.floor(day) };
+}
+
+// ── Format a fractional JD as "DD Mon YYYY  HH:MM UTC" ───────
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function fmtJD(jd) {
+  const g = meeusJDNtoGreg(jd);
+  const h = g.dayFrac * 24;
+  const hh = Math.floor(h);
+  const mm = Math.round((h - hh) * 60);
+  const era = g.year < 1 ? `${Math.abs(g.year - 1)} BCE` : `${g.year} CE`;
+  return {
+    date: `${g.day} ${MON[g.month-1]} ${era}`,
+    time: `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')} ET`,
+    greg: g,
+    full: `${g.day} ${MON[g.month-1]} ${era}  ${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`
+  };
+}
+
+// ── Core: Meeus Ch. 32 formula (32.1 + corrections) ──────────
+// phaseK: 0 = New Moon, 0.25 = First Quarter, 0.5 = Full Moon, 0.75 = Last Quarter
+// k must be the appropriate integer + phaseK
+function meanPhaseJD(k) {
+  // Formula 32.1
+  const T = k / 1236.85;  // Julian centuries from 1900.0
+  const JD =
+    2415020.75933
+    + 29.53058868 * k
+    + 0.0001178 * T * T
+    - 0.000000155 * T * T * T
+    + 0.00033 * Math.sin(toRad(166.56 + 132.87 * T - 0.009173 * T * T));
+  return JD;
+}
+
+function toRad(deg) { return deg * Math.PI / 180; }
+function sind(d)    { return Math.sin(toRad(d)); }
+function cosd(d)    { return Math.cos(toRad(d)); }
+
+function truePhaseJD(k) {
+  const frac = k - Math.floor(k); // fractional part tells us which phase
+  const T = k / 1236.85;
+
+  // Angles — Meeus Ch. 32 (after formula 32.3)
+  const M  = 359.2242  + 29.10535608 * k - 0.0000333 * T * T - 0.00000347 * T * T * T;
+  const Mp = 306.0253  + 385.81691806 * k + 0.0107306 * T * T + 0.00001236 * T * T * T;
+  const F  = 21.2964   + 390.67050646 * k - 0.0016528 * T * T - 0.00000239 * T * T * T;
+
+  let JD = meanPhaseJD(k);
+
+  const isNewOrFull = Math.abs(frac) < 0.01 || Math.abs(frac - 0.5) < 0.01;
+
+  if (isNewOrFull) {
+    // Formula 32.4 — New and Full Moon corrections
+    JD += (0.1734 - 0.000393 * T) * sind(M)
+        + 0.0021 * sind(2 * M)
+        - 0.4068 * sind(Mp)
+        + 0.0161 * sind(2 * Mp)
+        - 0.0004 * sind(3 * Mp)
+        + 0.0104 * sind(2 * F)
+        - 0.0051 * sind(M + Mp)
+        - 0.0074 * sind(M - Mp)
+        + 0.0004 * sind(2 * F + M)
+        - 0.0004 * sind(2 * F - M)
+        - 0.0006 * sind(2 * F + Mp)
+        + 0.0010 * sind(2 * F - Mp)
+        + 0.0005 * sind(M + 2 * Mp);
+  } else {
+    // Formula 32.5 — First and Last Quarter corrections
+    JD += (0.1721 - 0.0004 * T) * sind(M)
+        + 0.0021 * sind(2 * M)
+        - 0.6280 * sind(Mp)
+        + 0.0089 * sind(2 * Mp)
+        - 0.0004 * sind(3 * Mp)
+        + 0.0079 * sind(2 * F)
+        - 0.0119 * sind(M + Mp)
+        - 0.0047 * sind(M - Mp)
+        + 0.0003 * sind(2 * F + M)
+        - 0.0004 * sind(2 * F - M)
+        - 0.0006 * sind(2 * F + Mp)
+        + 0.0021 * sind(2 * F - Mp)
+        + 0.0003 * sind(M + 2 * Mp)
+        + 0.0004 * sind(M - 2 * Mp)
+        - 0.0003 * sind(2 * M + Mp);
+
+    // Additional term for quarters
+    const fracRounded = Math.round(frac * 4) / 4;
+    if (Math.abs(frac - 0.25) < 0.01) {
+      JD += 0.0028 - 0.0004 * cosd(M) + 0.0003 * cosd(Mp);
+    } else if (Math.abs(frac - 0.75) < 0.01) {
+      JD += -0.0028 + 0.0004 * cosd(M) - 0.0003 * cosd(Mp);
+    }
+  }
+
+  return JD;
+}
+
+// ── Find the nearest k for a given JD and phase fraction ─────
+// phaseOffset: 0, 0.25, 0.5, or 0.75
+function nearestK(jd, phaseOffset) {
+  // Approx k from JD: k ≈ (year - 1900) × 12.3685
+  // First get approximate year from JD
+  const approxYear = 1900 + (jd - 2415020.5) / 365.25;
+  const kApprox = (approxYear - 1900) * 12.3685;
+  // Round to nearest whole + phase offset
+  const kBase = Math.round(kApprox - phaseOffset);
+  return kBase + phaseOffset;
+}
+
+// ── Given a JD, find the 4 nearest phases ────────────────────
+// Returns array of {k, jd, name, icon, offset}
+function nearestPhases(refJD) {
+  const phases = [
+    {offset:0,    name:'New Moon',     icon:'🌑'},
+    {offset:0.25, name:'First Quarter',icon:'🌓'},
+    {offset:0.5,  name:'Full Moon',    icon:'🌕'},
+    {offset:0.75, name:'Last Quarter', icon:'🌗'},
+  ];
+
+  // For each phase, find the nearest occurrence to refJD
+  const results = [];
+  for (const ph of phases) {
+    let k = nearestK(refJD, ph.offset);
+    // Try k-1, k, k+1 and find the one whose true JD is nearest to refJD
+    let best = null;
+    for (let dk = -1; dk <= 2; dk++) {
+      const kk = k + dk; // dk in integer steps (full lunations)
+      // k must have the right fractional part
+      const kTry = Math.floor(kk - ph.offset) + ph.offset;
+      const jdTry = truePhaseJD(kTry);
+      if (!best || Math.abs(jdTry - refJD) < Math.abs(best.jd - refJD)) {
+        best = {k: kTry, jd: jdTry, name: ph.name, icon: ph.icon, offset: ph.offset};
+      }
+    }
+    results.push(best);
+  }
+
+  // Sort chronologically
+  results.sort((a,b) => a.jd - b.jd);
+  return results;
+}
+
+// ── Illumination fraction from age ────────────────────────────
+function illumination(age) {
+  // fraction of moon disk illuminated = (1 - cos(2π·age/29.53)) / 2
+  return (1 - Math.cos(2 * Math.PI * age / 29.53058868)) / 2;
+}
+
+// ── Draw moon SVG ─────────────────────────────────────────────
+function drawMoon(age) {
+  const illum = document.getElementById('moonIllum');
+  const pct   = illumination(age);
+  const normAge = age / 29.53058868; // 0→1
+
+  // Waxing: 0–0.5   Waning: 0.5–1
+  const waxing = normAge < 0.5;
+
+  // The illuminated side is always a full semicircle on one side.
+  // The terminator is an ellipse whose x-radius varies from 1→0→1.
+  // When waxing: right side lit, terminator sweeps left to right
+  // When waning: left side lit, terminator sweeps right to left
+
+  const r = 72;
+  const cx = 90, cy = 90;
+
+  // Ellipse x-radius of the terminator (0 = straight line = half phase)
+  const ex = Math.abs(Math.cos(Math.PI * normAge)) * r;
+  const litRight = waxing; // new→full: right lit; full→new: left lit
+
+  let path;
+  if (pct < 0.02) {
+    // Essentially new moon — no path
+    path = '';
+  } else if (pct > 0.98) {
+    // Essentially full
+    path = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#e8d8b0" opacity=".85"/>`;
+  } else {
+    // Build the illuminated crescent/gibbous shape
+    // We draw the illuminated semicircle + terminator ellipse
+    const sweep_outer = litRight ? 0 : 1;
+    const sweep_inner = litRight ? 1 : 0;
+
+    // Outer arc: the lit semicircle (always a straight half-circle)
+    // Top to bottom along the lit side
+    const sign = litRight ? 1 : -1;
+
+    path = `<path d="
+      M ${cx} ${cy - r}
+      A ${r} ${r} 0 0 ${sweep_outer} ${cx} ${cy + r}
+      A ${ex} ${r} 0 0 ${sweep_inner} ${cx} ${cy - r}
+      Z"
+      fill="#e8d8b0" opacity=".85"/>`;
+  }
+
+  illum.innerHTML = path;
+
+  // Update text
+  const phases = [
+    {max:1.85,  name:'New Moon',      icon:'🌑'},
+    {max:7.38,  name:'Waxing Crescent',icon:'🌒'},
+    {max:9.22,  name:'First Quarter', icon:'🌓'},
+    {max:14.77, name:'Waxing Gibbous',icon:'🌔'},
+    {max:16.61, name:'Full Moon',     icon:'🌕'},
+    {max:22.15, name:'Waning Gibbous',icon:'🌖'},
+    {max:23.99, name:'Last Quarter',  icon:'🌗'},
+    {max:29.53, name:'Waning Crescent',icon:'🌘'},
+  ];
+  const ph = phases.find(p => age <= p.max) || phases[phases.length-1];
+  document.getElementById('dialPhaseName').textContent = ph.icon + ' ' + ph.name;
+  document.getElementById('dialAgeText').textContent =
+    `Day ${age.toFixed(1)} of ${(29.53).toFixed(2)}-day synodic month`;
+  document.getElementById('dialIllum').textContent =
+    `${(pct * 100).toFixed(1)}% illuminated`;
+}
+
+// ── Long Count from JD (reuses existing correlation) ─────────
+function jdToLC(jd) {
+  const jdn = Math.round(jd);
+  const d = jdn - CORRELATION;
+  if (d < 0) return null;
+  const baktun = Math.floor(d / 144000);
+  const rem1   = d % 144000;
+  const katun  = Math.floor(rem1 / 7200);
+  const rem2   = rem1 % 7200;
+  const tun    = Math.floor(rem2 / 360);
+  const rem3   = rem2 % 360;
+  const winal  = Math.floor(rem3 / 20);
+  const kin    = rem3 % 20;
+  const tzd = tzolkin(d);
+  const hbd = haab(d);
+  return `${baktun}.${katun}.${tun}.${winal}.${kin} · ${tzd.emoji} ${tzd.label} ${hbd.label}`;
+}
+
+// ── Main calculation ──────────────────────────────────────────
+function calcMoonPhase() {
+  const val = document.getElementById('moonDateInput').value;
+  if (!val) return;
+  const [y, m, d] = val.split('-').map(Number);
+  const refJD = meeusJDN(y, m, d) + 0.5; // noon of the date
+
+  // Current lunar age on this date
+  // Find the most recent New Moon JD before refJD
+  const kNew = nearestK(refJD, 0);
+  let newMoonJD = truePhaseJD(kNew);
+  if (newMoonJD > refJD) {
+    newMoonJD = truePhaseJD(kNew - 1);
+  }
+  const age = refJD - newMoonJD;
+
+  // Draw the moon
+  drawMoon(Math.max(0, Math.min(29.53, age)));
+
+  // Find the 4 nearest phases centered on refJD
+  const nearPhases = nearestPhases(refJD);
+
+  // Show results panel
+  document.getElementById('moonResults').style.display = 'block';
+
+  // Identify which phase is the current/nearest one
+  let closestIdx = 0, closestDiff = Infinity;
+  nearPhases.forEach((ph, i) => {
+    const diff = Math.abs(ph.jd - refJD);
+    if (diff < closestDiff) { closestDiff = diff; closestIdx = i; }
+  });
+
+  const closest = nearPhases[closestIdx];
+  const closestFmt = fmtJD(closest.jd);
+
+  // Days until / since
+  const diffDays = closest.jd - refJD;
+  const diffText = diffDays > 0.5
+    ? `in ${diffDays.toFixed(1)} days`
+    : diffDays < -0.5
+    ? `${Math.abs(diffDays).toFixed(1)} days ago`
+    : 'today';
+
+  document.getElementById('moonResultGrid').innerHTML = `
+    <div class="moon-result-cell">
+      <div class="moon-result-k">Lunar Age</div>
+      <div class="moon-result-v">${age.toFixed(2)} days</div>
+      <div class="moon-result-sub">since last New Moon</div>
+    </div>
+    <div class="moon-result-cell">
+      <div class="moon-result-k">Illumination</div>
+      <div class="moon-result-v">${(illumination(age)*100).toFixed(1)}%</div>
+      <div class="moon-result-sub">of lunar disk lit</div>
+    </div>
+    <div class="moon-result-cell">
+      <div class="moon-result-k">Nearest Phase</div>
+      <div class="moon-result-v" style="font-size:.82rem">${closest.icon} ${closest.name}</div>
+      <div class="moon-result-sub">${diffText}</div>
+    </div>
+    <div class="moon-result-cell">
+      <div class="moon-result-k">Phase Date (ET)</div>
+      <div class="moon-result-v" style="font-size:.78rem">${closestFmt.date}</div>
+      <div class="moon-result-sub">${closestFmt.time}</div>
+    </div>
+    <div class="moon-result-cell">
+      <div class="moon-result-k">Julian Day</div>
+      <div class="moon-result-v" style="font-size:.82rem; font-family:'DM Mono',monospace">${closest.jd.toFixed(4)}</div>
+      <div class="moon-result-sub">JD of nearest phase</div>
+    </div>
+    <div class="moon-result-cell">
+      <div class="moon-result-k">Synodic Month</div>
+      <div class="moon-result-v" style="font-size:.82rem">29.53059 days</div>
+      <div class="moon-result-sub">mean lunation length</div>
+    </div>
+  `;
+
+  // Maya cross-reference
+  const lcStr = jdToLC(closest.jd);
+  const lcInput = jdToLC(refJD);
+  document.getElementById('moonMayaXref').innerHTML =
+    `<strong>Maya cross-reference:</strong> The input date falls on Long Count
+    <strong>${lcInput || '(pre-Maya era)'}</strong>.
+    ${closest.icon} ${closest.name} falls on
+    <strong>${lcStr || '(pre-Maya era)'}</strong>.
+    <span style="opacity:.6">— Click any date card in the Maya Calendar Engine above to load it.</span>`;
+
+  // Render phase strip
+  renderPhaseStrip(nearPhases, refJD, closestIdx);
+}
+
+// ── Phase strip ───────────────────────────────────────────────
+function renderPhaseStrip(phases, refJD, activeIdx) {
+  // Show prev phase (before first) + 4 nearest + next 3
+  const allPhases = [];
+
+  // Get 2 before and 5 after the first in our set
+  const firstK = phases[0].k;
+  for (let di = -1; di <= 6; di++) {
+    // step through all 4 phase types within this window
+    const offsets = [0, 0.25, 0.5, 0.75];
+    for (const off of offsets) {
+      const kBase = Math.round(firstK) + di;
+      const kTry = kBase + off;
+      const jdTry = truePhaseJD(kTry);
+      allPhases.push({
+        k: kTry, jd: jdTry,
+        name: ['New Moon','First Quarter','Full Moon','Last Quarter'][[0,0.25,0.5,0.75].indexOf(off)],
+        icon: ['🌑','🌓','🌕','🌗'][[0,0.25,0.5,0.75].indexOf(off)],
+        offset: off,
+      });
+    }
+  }
+
+  // Sort and pick 8 nearest to refJD
+  allPhases.sort((a,b) => a.jd - b.jd);
+  const nearest8 = allPhases
+    .filter(p => p.jd > refJD - 30 && p.jd < refJD + 60)
+    .slice(0, 8);
+
+  document.getElementById('phaseStrip').innerHTML = nearest8.map(ph => {
+    const fmt = fmtJD(ph.jd);
+    const isRef = Math.abs(ph.jd - refJD) < 1;
+    const isPast = ph.jd < refJD;
+    return `
+      <div class="phase-cell ${isRef ? 'active' : ''}"
+           style="${isPast ? 'opacity:.45' : ''}"
+           onclick="loadPhaseDate(${ph.jd})">
+        <div class="phase-cell-icon">${ph.icon}</div>
+        <div class="phase-cell-label">${ph.name.replace(' Moon','').replace(' Quarter','¼')}</div>
+        <div class="phase-cell-date">${fmt.date}</div>
+        <div class="phase-cell-time">${fmt.time}</div>
+      </div>`;
+  }).join('');
+}
+
+// ── Click a phase strip cell to load that date ────────────────
+function loadPhaseDate(jd) {
+  const g = meeusJDNtoGreg(jd);
+  if (g.year < 1 || g.year > 9999) return;
+  const dateStr = `${g.year}-${String(g.month).padStart(2,'0')}-${String(g.day).padStart(2,'0')}`;
+  document.getElementById('moonDateInput').value = dateStr;
+  calcMoonPhase();
+}
+
+// ── Range finder ──────────────────────────────────────────────
+function calcRange() {
+  const year = parseInt(document.getElementById('rangeYear').value);
+  const phaseVal = document.getElementById('rangePhase').value;
+  if (isNaN(year)) return;
+
+  const offsets = phaseVal === 'all'
+    ? [0, 0.25, 0.5, 0.75]
+    : [parseFloat(phaseVal)];
+
+  const phaseNames = {
+    '0':'New Moon', '0.25':'First Quarter', '0.5':'Full Moon', '0.75':'Last Quarter'
+  };
+  const phaseIcons = {'0':'🌑','0.25':'🌓','0.5':'🌕','0.75':'🌗'};
+
+  // Find approximate k for Jan 1 of the year
+  const janJD = meeusJDN(year, 1, 1);
+  const results = [];
+
+  for (const off of offsets) {
+    let k = nearestK(janJD, off);
+    // Walk forward through the year
+    for (let attempts = 0; attempts < 15; attempts++) {
+      const jd = truePhaseJD(k);
+      const g  = meeusJDNtoGreg(jd);
+      if (g.year > year) break;
+      if (g.year === year) {
+        results.push({jd, k, off, name: phaseNames[off], icon: phaseIcons[off]});
+      }
+      k += 1; // next lunation
+    }
+  }
+
+  results.sort((a,b) => a.jd - b.jd);
+
+  if (!results.length) {
+    document.getElementById('rangeResults').innerHTML =
+      `<p style="font-size:.72rem;color:rgba(200,216,240,.4)">No results found.</p>`;
+    return;
+  }
+
+  const html = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.4rem;max-height:320px;overflow-y:auto;">
+    ${results.map(r => {
+      const fmt = fmtJD(r.jd);
+      const lc  = jdToLC(r.jd);
+      return `
+        <div style="background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.06);
+                    padding:.5rem .7rem;cursor:pointer;transition:border-color .15s;"
+             onmouseover="this.style.borderColor='rgba(212,168,75,.3)'"
+             onmouseout="this.style.borderColor='rgba(200,216,240,.06)'"
+             onclick="loadPhaseDate(${r.jd})">
+          <div style="font-size:.6rem;color:var(--ochre-lt);font-weight:700;letter-spacing:.06em;margin-bottom:.2rem">${r.icon} ${r.name}</div>
+          <div style="font-family:var(--sans);font-size:.72rem;color:var(--star)">${fmt.date}</div>
+          <div style="font-size:.58rem;color:rgba(200,216,240,.35)">${fmt.time}</div>
+          ${lc ? `<div style="font-family:'DM Mono',monospace;font-size:.52rem;color:rgba(200,216,240,.25);margin-top:.2rem">${lc.split(' ·')[0]}</div>` : ''}
+        </div>`;
+    }).join('')}
+    </div>
+    <p style="font-family:var(--sans);font-size:.58rem;color:rgba(200,216,240,.25);margin-top:.5rem">
+      ${results.length} phase${results.length !== 1 ? 's' : ''} in ${year} CE · click any card to load into calculator · times in Ephemeris Time
+    </p>`;
+
+  document.getElementById('rangeResults').innerHTML = html;
+}
+
+// ── Auto-calculate on page load ───────────────────────────────
+(function autoCalcMoon() {
+  // Small delay so Maya engine inits first
+  setTimeout(calcMoonPhase, 100);
+})();
+</script>
 </body>
 </html>
