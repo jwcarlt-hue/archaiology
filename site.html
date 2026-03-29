@@ -115,6 +115,18 @@ a{text-decoration:none;color:inherit;}
 .topos-btn{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ochre);border:1px solid rgba(184,137,42,.4);padding:.35rem .8rem;white-space:nowrap;transition:all .2s;}
 .topos-btn:hover{background:rgba(184,137,42,.15);}
 
+/* ── SKETCHFAB ATTRIBUTION ── */
+.sketchfab-attr{
+  position:absolute;bottom:.8rem;left:.8rem;
+  background:rgba(15,13,10,.75);
+  border:1px solid rgba(184,137,42,.2);
+  color:var(--ash);font-family:var(--sans);font-size:.55rem;
+  letter-spacing:.04em;padding:.22rem .55rem;border-radius:2px;
+  backdrop-filter:blur(4px);
+}
+.sketchfab-attr a{color:var(--ochre-lt);text-decoration:none;}
+.sketchfab-attr a:hover{text-decoration:underline;}
+
 /* ── LOADING ── */
 .loading-state{padding:3rem 0;text-align:center;}
 .loading-dots span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ochre);margin:0 2px;animation:ldot 1.2s ease infinite;}
@@ -540,18 +552,32 @@ let renderer, camera, sceneThree, animating = true, autoRotate = true;
 const ORBIT_SPEED = 0.003;
 
 // ── External curated views — keyed by site name (case-insensitive) ──────────
-// Add any site here to replace the procedural scene with an embedded map/viewer.
-// url: the page to iframe  |  label: badge text  |  credit: attribution line
+// type:'iframe'     → embed a webpage (existing behaviour)
+// type:'sketchfab'  → embed a Sketchfab 3D model (no ads, no recommendations)
+//
+// iframe fields:   url, label, credit
+// sketchfab fields: modelId, title, author, authorUrl, label, credit
 const SITE_EXTERNAL_VIEWS = {
   'tenochtitlan': {
+    type:   'iframe',
     url:    'https://www.retratodetenochtitlan.mx/?lang=en',
     label:  'Retrato de Tenochtitlan',
     credit: '© retratodetenochtitlan.mx — Interactive historical map',
   },
   'athens': {
+    type:   'iframe',
     url:    'https://map.mappingancientathens.org/',
     label:  'Mapping Ancient Athens',
     credit: '© Mapping Ancient Athens — Interactive topographic map',
+  },
+  'moundville': {
+    type:      'sketchfab',
+    modelId:   '5e421fad45fb4121b9ac3af969e3562e',
+    label:     'Moundville, Alabama — 3D Model',
+    title:     'Moundville, Alabama',
+    author:    'rmark',
+    authorUrl: 'https://sketchfab.com/rmark',
+    credit:    '3D model by rmark on Sketchfab',
   },
 };
 
@@ -563,35 +589,90 @@ function initScene(recon, site) {
   const extKey = (site.name ?? '').toLowerCase().trim();
   const ext = SITE_EXTERNAL_VIEWS[extKey];
   if (ext) {
-    // Replace canvas with iframe; keep same .scene-wrap shell for styling
+    // Hide canvas and 3D controls — shared by both iframe and sketchfab paths
     canvas.style.display = 'none';
     document.getElementById('btnRotate').style.display = 'none';
     document.getElementById('btnReset').style.display  = 'none';
     document.getElementById('sceneLabel').textContent  = ext.label;
-    document.getElementById('sceneAttr').textContent   = ext.credit;
+    document.getElementById('sceneAttr').textContent   = '';
+
+    // ── SKETCHFAB path ────────────────────────────────────────────────────
+    if (ext.type === 'sketchfab') {
+      // Build embed URL with clean parameters (no ads, no recommendations,
+      // dark theme to match platform, autostart so model loads immediately)
+      const sfSrc = [
+        `https://sketchfab.com/models/${ext.modelId}/embed`,
+        `?autostart=1`,
+        `&autospin=0`,
+        `&ui_theme=dark`,
+        `&ui_infos=0`,
+        `&ui_watermark=0`,
+        `&ui_controls=1`,
+        `&ui_annotations=0`,
+        `&dnt=1`,           // Sketchfab Do-Not-Track — disables personalised recommendations
+      ].join('');
+
+      const sfIframe = document.createElement('iframe');
+      sfIframe.src   = sfSrc;
+      sfIframe.title = ext.title ?? ext.label;
+      sfIframe.setAttribute('frameborder', '0');
+      sfIframe.setAttribute('allowfullscreen', '');
+      sfIframe.setAttribute('mozallowfullscreen', 'true');
+      sfIframe.setAttribute('webkitallowfullscreen', 'true');
+      sfIframe.setAttribute('allow', 'autoplay; fullscreen; xr-spatial-tracking');
+      sfIframe.style.cssText = 'width:100%;height:420px;border:none;display:block;';
+
+      // Sketchfab attribution — required by their terms; styled to match platform
+      const sfAttr = document.createElement('div');
+      sfAttr.className = 'sketchfab-attr';
+      sfAttr.innerHTML = `
+        <a href="https://sketchfab.com/3d-models/${ext.modelId}?utm_medium=embed"
+           target="_blank" rel="noopener">${ext.title ?? ext.label}</a>
+        by
+        <a href="${ext.authorUrl ?? 'https://sketchfab.com'}"
+           target="_blank" rel="noopener">${ext.author ?? 'author'}</a>
+        on Sketchfab
+      `;
+
+      // "Open in Sketchfab" button in controls bar
+      const sfBtn = document.createElement('button');
+      sfBtn.className   = 'scene-btn';
+      sfBtn.textContent = '⬡ View on Sketchfab';
+      sfBtn.onclick = () => window.open(
+        `https://sketchfab.com/3d-models/${ext.modelId}`, '_blank', 'noopener'
+      );
+      document.querySelector('.scene-controls').appendChild(sfBtn);
+
+      wrap.insertBefore(sfIframe, canvas);
+      wrap.appendChild(sfAttr);
+      return; // skip Three.js scene
+    }
+
+    // ── IFRAME path (existing behaviour for maps/external sites) ──────────
+    const iframeUrl = ext.url;
+    document.getElementById('sceneAttr').textContent = ext.credit ?? '';
 
     const iframe = document.createElement('iframe');
-    iframe.src    = ext.url;
+    iframe.src    = iframeUrl;
     iframe.style.cssText = 'width:100%;height:420px;border:none;display:block;';
     iframe.allow  = 'fullscreen';
     iframe.title  = ext.label;
 
-    // Fallback: if iframe is blocked by X-Frame-Options, show a friendly message
-    // We detect this by listening for the load event and checking contentDocument
+    // Fallback panel shown if X-Frame-Options blocks the embed
     const fallback = document.createElement('div');
-    fallback.style.cssText = `
-      display:none;width:100%;height:420px;
-      background:rgba(15,13,10,.9);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      gap:1rem;text-align:center;padding:2rem;
-    `;
+    fallback.style.cssText = [
+      'display:none;width:100%;height:420px;',
+      'background:rgba(15,13,10,.9);',
+      'flex-direction:column;align-items:center;justify-content:center;',
+      'gap:1rem;text-align:center;padding:2rem;',
+    ].join('');
     fallback.innerHTML = `
       <div style="font-size:2rem;opacity:.4">🗺</div>
       <div style="font-family:var(--serif);font-size:1.1rem;color:var(--cream)">${ext.label}</div>
       <div style="font-size:.75rem;color:var(--ash);max-width:340px;line-height:1.6">
         This map cannot be embedded due to the site's security policy.
       </div>
-      <a href="${ext.url}" target="_blank" rel="noopener"
+      <a href="${iframeUrl}" target="_blank" rel="noopener"
          style="font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
                 padding:.45rem 1rem;border:1px solid rgba(184,137,42,.5);
                 color:var(--ochre-lt);text-decoration:none;transition:all .2s;"
@@ -599,40 +680,33 @@ function initScene(recon, site) {
          onmouseout="this.style.background='none'">
         Open full interactive map ↗
       </a>
-      <div style="font-size:.58rem;color:rgba(138,128,112,.4)">${ext.credit}</div>
+      <div style="font-size:.58rem;color:rgba(138,128,112,.4)">${ext.credit ?? ''}</div>
     `;
 
-    // Add an "open in new tab" button to controls regardless
+    // "Open full map" button always visible in controls
     const openBtn = document.createElement('button');
     openBtn.className   = 'scene-btn';
     openBtn.textContent = '↗ Open full map';
-    openBtn.onclick     = () => window.open(ext.url, '_blank', 'noopener');
+    openBtn.onclick     = () => window.open(iframeUrl, '_blank', 'noopener');
     document.querySelector('.scene-controls').appendChild(openBtn);
 
-    // Try iframe first; detect block via sandbox + error
-    iframe.style.display = 'block';
+    iframe.style.display   = 'block';
     fallback.style.display = 'none';
 
-    // If the iframe fails to load (X-Frame-Options), swap to fallback
-    // We use a timer: if contentDocument is null/blank after load, it was blocked
+    // Detect X-Frame-Options block after load
     iframe.onload = () => {
       try {
-        // Accessing contentDocument throws if cross-origin blocked
         const doc = iframe.contentDocument || iframe.contentWindow?.document;
-        // If we get here with an about:blank or null body, it was blocked
         if (!doc || !doc.body || doc.body.innerHTML === '') {
-          iframe.style.display = 'none';
+          iframe.style.display   = 'none';
           fallback.style.display = 'flex';
         }
       } catch {
-        // Cross-origin block — the iframe loaded but we can't inspect it.
-        // This actually means it DID embed successfully (just cross-origin).
-        // Leave iframe visible.
+        // Cross-origin — means it loaded successfully; leave visible
       }
     };
-
     iframe.onerror = () => {
-      iframe.style.display = 'none';
+      iframe.style.display   = 'none';
       fallback.style.display = 'flex';
     };
 
