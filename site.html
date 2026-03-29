@@ -586,7 +586,11 @@ function initScene(recon, site) {
   const wrap   = document.getElementById("sceneWrap");
 
   // ── Check for a curated external view first ─────────────────────────────
-  const extKey = (site.name ?? '').toLowerCase().trim();
+  // Use the URL ?id= param as the lookup key (reliable, user-controlled),
+  // falling back to site.name for sites matched by UUID.
+  const extKey = (
+    new URLSearchParams(window.location.search).get('id') ?? site.name ?? ''
+  ).toLowerCase().trim();
   const ext = SITE_EXTERNAL_VIEWS[extKey];
   if (ext) {
     // Hide canvas and 3D controls — shared by both iframe and sketchfab paths
