@@ -2993,5 +2993,481 @@ function loadEclipseRow(jd) {
   setTimeout(calcEclipse, 200);
 })();
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SOLAR STATIONS PANEL  (Meeus, Ch. 20 — equinoxes &        -->
+<!-- solstices, accurate to ~15 min; Ch. 18 obliquity)          -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<style>
+.sol-section {
+  background: var(--night);
+  border-top: 1px solid rgba(200,216,240,.06);
+  padding: 3rem 2rem 4rem;
+}
+.sol-inner { max-width: 1100px; margin: 0 auto; }
+.sol-eyebrow {
+  font-family:var(--sans); font-size:.6rem; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:var(--ochre-lt); margin-bottom:.7rem;
+  display:flex; align-items:center; gap:.5rem;
+}
+.sol-eyebrow::before {
+  content:''; display:inline-block; width:20px; height:1px;
+  background:var(--ochre-lt);
+}
+.sol-title {
+  font-family:var(--serif); font-size:clamp(1.8rem,4vw,3rem);
+  font-weight:900; color:var(--star); line-height:1.1; margin-bottom:.6rem;
+}
+.sol-title em { color:var(--ochre-lt); font-style:italic; }
+.sol-intro {
+  font-size:.88rem; color:rgba(200,216,240,.55); line-height:1.75;
+  max-width:640px; margin-bottom:2.5rem;
+}
+.sol-controls {
+  display:flex; gap:.7rem; align-items:flex-end; flex-wrap:wrap;
+  margin-bottom:1.8rem;
+}
+.sol-field { display:flex; flex-direction:column; gap:.3rem; }
+.sol-label {
+  font-family:var(--sans); font-size:.54rem; font-weight:600;
+  letter-spacing:.1em; text-transform:uppercase; color:rgba(200,216,240,.4);
+}
+.sol-input {
+  background:rgba(200,216,240,.04); border:1px solid rgba(200,216,240,.1);
+  color:var(--star); font-family:var(--sans); font-size:.8rem;
+  padding:.45rem .7rem; outline:none; transition:border-color .2s;
+}
+.sol-input:focus { border-color:rgba(212,168,75,.5); }
+.sol-btn {
+  background:rgba(212,168,75,.12); border:1px solid rgba(212,168,75,.3);
+  color:var(--ochre-lt); font-family:var(--sans); font-size:.65rem;
+  font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:.48rem 1.2rem; cursor:pointer; transition:all .2s;
+  align-self:flex-end;
+}
+.sol-btn:hover { background:rgba(212,168,75,.22); }
+.sol-btn-sm { padding:.32rem .8rem; font-size:.58rem; }
+.sol-station-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:1rem;
+  margin-bottom:2rem;
+}
+@media(max-width:820px){ .sol-station-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:480px){ .sol-station-grid{ grid-template-columns:1fr; } }
+.sol-card {
+  background:rgba(200,216,240,.03); border:1px solid rgba(200,216,240,.08);
+  padding:1.2rem 1rem; position:relative; overflow:hidden;
+  transition:border-color .2s; cursor:pointer;
+}
+.sol-card:hover { border-color:rgba(212,168,75,.3); }
+.sol-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+}
+.sol-card.spring::before { background:linear-gradient(90deg,#4a8,#8d8); }
+.sol-card.summer::before { background:linear-gradient(90deg,#e8a020,#f0c840); }
+.sol-card.autumn::before { background:linear-gradient(90deg,#b85020,#d07030); }
+.sol-card.winter::before { background:linear-gradient(90deg,#4070c0,#80b0f0); }
+.sol-card-icon { font-size:2rem; line-height:1; margin-bottom:.6rem; }
+.sol-card-name {
+  font-family:var(--sans); font-size:.58rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ochre-lt);
+  margin-bottom:.25rem;
+}
+.sol-card-date {
+  font-family:var(--serif); font-size:.95rem; font-weight:700;
+  color:var(--star); margin-bottom:.15rem; line-height:1.2;
+}
+.sol-card-time { font-family:var(--sans); font-size:.62rem; color:rgba(200,216,240,.4); margin-bottom:.5rem; }
+.sol-card-jd { font-family:'DM Mono',monospace; font-size:.56rem; color:rgba(200,216,240,.25); margin-bottom:.4rem; }
+.sol-card-lc { font-family:'DM Mono',monospace; font-size:.6rem; color:var(--ochre-lt); opacity:.7; }
+.sol-card-lc-cr { font-family:var(--sans); font-size:.55rem; color:rgba(200,216,240,.3); margin-top:.15rem; }
+.sol-context-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:2rem;
+}
+@media(max-width:700px){ .sol-context-grid{ grid-template-columns:1fr; } }
+.sol-context-card {
+  background:rgba(200,216,240,.03); border:1px solid rgba(200,216,240,.08);
+  padding:1.2rem 1.3rem;
+}
+.sol-context-title {
+  font-family:var(--sans); font-size:.58rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ochre-lt);
+  margin-bottom:.8rem; padding-bottom:.5rem;
+  border-bottom:1px solid rgba(200,216,240,.06);
+}
+.sol-obliq-gauge {
+  position:relative; height:8px; background:rgba(200,216,240,.07);
+  border-radius:4px; margin:.5rem 0 .3rem;
+}
+.sol-obliq-fill {
+  position:absolute; left:0; top:0; height:100%; border-radius:4px;
+  transition:width .6s ease;
+  background:linear-gradient(90deg, var(--ochre), var(--ochre-lt));
+}
+.sol-obliq-marker {
+  position:absolute; top:-3px; width:2px; height:14px;
+  background:rgba(200,216,240,.4); border-radius:1px;
+}
+.sol-obliq-labels {
+  display:flex; justify-content:space-between;
+  font-family:var(--sans); font-size:.52rem; color:rgba(200,216,240,.25);
+}
+.sol-obliq-value {
+  font-family:var(--serif); font-size:1.4rem; font-weight:900;
+  color:var(--star); margin:.4rem 0 .1rem;
+}
+.sol-obliq-sub { font-family:var(--sans); font-size:.62rem; color:rgba(200,216,240,.4); line-height:1.5; }
+.sol-info-row {
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding:.32rem 0; border-bottom:1px dotted rgba(200,216,240,.06);
+  font-family:var(--sans);
+}
+.sol-info-row:last-child { border-bottom:none; }
+.sol-info-k { font-size:.63rem; color:rgba(200,216,240,.35); }
+.sol-info-v { font-size:.7rem; font-weight:600; color:var(--star); text-align:right; }
+.sol-timeline-card {
+  background:rgba(200,216,240,.03); border:1px solid rgba(200,216,240,.08);
+  padding:1.2rem 1.3rem; margin-bottom:1rem;
+}
+.sol-range-controls {
+  display:flex; gap:.7rem; align-items:flex-end; flex-wrap:wrap; margin-bottom:1rem;
+}
+.sol-timeline-grid {
+  display:grid; grid-template-columns:80px repeat(4,1fr);
+  gap:.3rem .5rem; font-family:var(--sans); font-size:.6rem;
+}
+.sol-tl-header {
+  font-size:.52rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:rgba(200,216,240,.3);
+  padding:.2rem 0; border-bottom:1px solid rgba(200,216,240,.06);
+}
+.sol-tl-year {
+  font-family:'DM Mono',monospace; font-size:.62rem; color:rgba(200,216,240,.5);
+  padding:.28rem 0; border-bottom:1px dotted rgba(200,216,240,.04);
+  cursor:pointer; transition:color .15s;
+}
+.sol-tl-year:hover { color:var(--ochre-lt); }
+.sol-tl-cell {
+  padding:.28rem 0; color:var(--star);
+  border-bottom:1px dotted rgba(200,216,240,.04); font-size:.62rem;
+}
+.sol-tl-lc { font-family:'DM Mono',monospace; font-size:.52rem; color:rgba(200,216,240,.28); }
+.sol-maya-note {
+  background:rgba(212,168,75,.05); border:1px solid rgba(212,168,75,.15);
+  border-left:3px solid rgba(212,168,75,.4);
+  padding:.8rem 1rem; margin-top:.8rem;
+  font-family:var(--sans); font-size:.72rem; color:rgba(200,216,240,.55);
+  line-height:1.7;
+}
+.sol-maya-note strong { color:var(--ochre-lt); }
+.sol-source {
+  font-family:var(--sans); font-size:.58rem; color:rgba(200,216,240,.22);
+  margin-top:.5rem; line-height:1.5;
+}
+</style>
+
+<section class="sol-section">
+<div class="sol-inner">
+
+  <div class="sol-eyebrow">Meeus &middot; Astronomical Formulae for Calculators &middot; Ch. 20 &amp; 18</div>
+  <h2 class="sol-title">Solar <em>Stations</em> Panel</h2>
+  <p class="sol-intro">The four solar turning points &mdash; vernal equinox, summer solstice, autumnal equinox, winter solstice &mdash; computed to ~15-minute accuracy from Meeus (1988) Ch. 20 polynomial formulae for any year 3000 BCE&ndash;3000 CE. Includes obliquity of the ecliptic (Ch. 18), Maya Long Count cross-references, and a multi-year timeline for archaeoastronomical range studies.</p>
+
+  <div class="sol-controls">
+    <div class="sol-field">
+      <label class="sol-label">Year</label>
+      <input class="sol-input" type="number" id="solYear" value="771" min="-3000" max="3000" style="width:110px;">
+    </div>
+    <button class="sol-btn" onclick="calcStations()">Calculate &rarr;</button>
+    <button class="sol-btn sol-btn-sm" onclick="setSolYear(new Date().getFullYear())">Today</button>
+    <button class="sol-btn sol-btn-sm" onclick="setSolYear(-3113)">Maya Creation</button>
+    <button class="sol-btn sol-btn-sm" onclick="setSolYear(771)">9.17.0.0.0</button>
+    <button class="sol-btn sol-btn-sm" onclick="setSolYear(-2780)">Giza Era</button>
+    <button class="sol-btn sol-btn-sm" onclick="setSolYear(-559)">Athens Classical</button>
+  </div>
+
+  <div class="sol-station-grid" id="solStationGrid">
+    <div class="sol-card spring" style="grid-column:1/-1">
+      <div style="color:rgba(200,216,240,.2);font-size:.75rem;padding:.5rem 0;">Enter a year above to calculate solar stations.</div>
+    </div>
+  </div>
+
+  <div class="sol-context-grid">
+    <div class="sol-context-card">
+      <div class="sol-context-title">Obliquity of the Ecliptic &mdash; &epsilon;</div>
+      <div class="sol-obliq-value" id="solObliqVal">&mdash;</div>
+      <div class="sol-obliq-sub" id="solObliqSub">The tilt of Earth's axis to the ecliptic plane</div>
+      <div class="sol-obliq-gauge">
+        <div class="sol-obliq-fill" id="solObliqFill" style="width:50%"></div>
+        <div class="sol-obliq-marker" id="solObliqMarker" style="left:48%"></div>
+      </div>
+      <div class="sol-obliq-labels"><span>22.0&deg;</span><span>23.0&deg;</span><span>24.0&deg;</span><span>25.0&deg;</span></div>
+      <div style="margin-top:.8rem">
+        <div class="sol-info-row"><span class="sol-info-k">Current value (2026)</span><span class="sol-info-v">23&deg;26&prime;13&Prime;</span></div>
+        <div class="sol-info-row"><span class="sol-info-k">Maya creation (3114 BCE)</span><span class="sol-info-v" id="solMayaObliq">&mdash;</span></div>
+        <div class="sol-info-row"><span class="sol-info-k">Giza pyramid era (~2780 BCE)</span><span class="sol-info-v" id="solGizaObliq">&mdash;</span></div>
+        <div class="sol-info-row"><span class="sol-info-k">Range over 40,000 years</span><span class="sol-info-v">22.1&deg; &ndash; 24.5&deg;</span></div>
+      </div>
+    </div>
+    <div class="sol-context-card">
+      <div class="sol-context-title">Year Summary</div>
+      <div id="solYearSummary" style="color:rgba(200,216,240,.25);font-size:.72rem;">
+        Calculate a year to see its solar calendar summary.
+      </div>
+    </div>
+  </div>
+
+  <div class="sol-timeline-card">
+    <div class="sol-context-title">Multi-Year Solar Station Timeline</div>
+    <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.4);margin-bottom:1rem;line-height:1.5;">
+      Generate a timeline of solstice and equinox dates for any year range. Click any year to load it into the main calculator. Useful for correlating architectural alignments and Long Count period endings.
+    </p>
+    <div class="sol-range-controls">
+      <div class="sol-field">
+        <label class="sol-label">From year</label>
+        <input class="sol-input" type="number" id="solRangeFrom" value="768" style="width:90px;" min="-3000" max="3000">
+      </div>
+      <div class="sol-field">
+        <label class="sol-label">To year</label>
+        <input class="sol-input" type="number" id="solRangeTo" value="775" style="width:90px;" min="-3000" max="3000">
+      </div>
+      <div class="sol-field">
+        <label class="sol-label">Show</label>
+        <select class="sol-input" id="solRangeShow" style="width:160px;-webkit-appearance:none;">
+          <option value="all">All four stations</option>
+          <option value="equinox">Equinoxes only</option>
+          <option value="solstice">Solstices only</option>
+          <option value="march">March equinox only</option>
+          <option value="june">June solstice only</option>
+          <option value="sept">September equinox only</option>
+          <option value="dec">December solstice only</option>
+        </select>
+      </div>
+      <button class="sol-btn sol-btn-sm" onclick="calcTimeline()">Generate &rarr;</button>
+    </div>
+    <div id="solTimeline">
+      <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.25);">
+        Default range 768&ndash;775 CE spans the Katun 9.17 era. Click Generate to populate.
+      </p>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<script>
+// ============================================================
+// SOLAR STATIONS PANEL -- Meeus Ch. 20 + Ch. 18
+// Builds on meeusJDN, meeusJDNtoGreg, fmtJD, jdToLC,
+// tzolkin, haab, CORRELATION -- all defined above.
+// ============================================================
+
+const STATION_POLYS = {
+  march: { a0:1721139.2855, a1:365.24213761, a2: 0.0679190, a3:-0.0027879,
+    name:'March Equinox',     icon:'🌱', season:'spring', lon:  0,
+    desc:'Vernal equinox — Sun crosses celestial equator northward. Day = night.' },
+  june:  { a0:1721233.2486, a1:365.24172841, a2:-0.0530180, a3: 0.0093320,
+    name:'June Solstice',     icon:'☀️', season:'summer', lon: 90,
+    desc:'Summer solstice — Sun at maximum northern declination. Longest day in NH.' },
+  sept:  { a0:1721325.6978, a1:365.24250551, a2:-0.1266890, a3: 0.0019401,
+    name:'September Equinox', icon:'🍂', season:'autumn', lon:180,
+    desc:'Autumnal equinox — Sun crosses equator southward. Day = night.' },
+  dec:   { a0:1721414.3920, a1:365.24288980, a2:-0.0109650, a3:-0.0084885,
+    name:'December Solstice', icon:'❄️', season:'winter', lon:270,
+    desc:'Winter solstice — Sun at maximum southern declination. Shortest day in NH.' },
+};
+
+function stationJD(key, year) {
+  const p = STATION_POLYS[key];
+  const y = year / 1000;
+  return p.a0 + p.a1 * year + p.a2 * y * y + p.a3 * y * y * y;
+}
+
+// Obliquity -- Meeus Ch. 18 formula 18.4
+function obliquity(year) {
+  const JD = meeusJDN(year, 1, 1) - 0.5;
+  const T  = (JD - 2415020.0) / 36525.0;
+  return 23.452294 - 0.0130125*T - 0.00000164*T*T + 0.000000503*T*T*T;
+}
+
+function fmtDMS(deg) {
+  const d = Math.floor(deg);
+  const m = Math.floor((deg - d) * 60);
+  const s = Math.round(((deg - d) * 60 - m) * 60);
+  return d + '\u00b0' + String(m).padStart(2,'0') + '\u2032' + String(s).padStart(2,'0') + '\u2033';
+}
+
+function computeStations(year) {
+  return Object.entries(STATION_POLYS).map(([key, p]) => {
+    const jd  = stationJD(key, year);
+    const fmt = fmtJD(jd);
+    const lc  = jdToLC(jd);
+    return { key, ...p, jd, fmt, lc };
+  });
+}
+
+function renderStationCards(stations) {
+  document.getElementById('solStationGrid').innerHTML = stations.map(s => {
+    const lcShort = s.lc ? s.lc.split(' \u00b7')[0] : '(pre-Maya era)';
+    const lcCR    = s.lc && s.lc.includes('\u00b7') ? s.lc.split('\u00b7')[1].trim() : '';
+    return '<div class="sol-card ' + s.season + '" onclick="setSolYear(' + Math.floor(s.jd) + ', ' + s.jd + ')">'
+      + '<div class="sol-card-icon">' + s.icon + '</div>'
+      + '<div class="sol-card-name">' + s.name + '</div>'
+      + '<div class="sol-card-date">' + s.fmt.date + '</div>'
+      + '<div class="sol-card-time">' + s.fmt.time + '</div>'
+      + '<div class="sol-card-jd">JD ' + s.jd.toFixed(3) + '</div>'
+      + '<div class="sol-card-lc">' + lcShort + '</div>'
+      + '<div class="sol-card-lc-cr">' + lcCR + '</div>'
+      + '<div style="font-family:var(--sans);font-size:.56rem;color:rgba(200,216,240,.2);margin-top:.5rem;line-height:1.4">' + s.desc + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function renderObliquity(year) {
+  const eps = obliquity(year);
+  document.getElementById('solObliqVal').textContent = fmtDMS(eps);
+  const eraStr = year < 1 ? Math.abs(year - 1) + ' BCE' : year + ' CE';
+  document.getElementById('solObliqSub').textContent = '\u03b5 for ' + eraStr + ' \u2014 Meeus Ch. 18';
+  const pct = ((eps - 22.0) / 3.0) * 100;
+  document.getElementById('solObliqFill').style.width = Math.max(0, Math.min(100, pct)) + '%';
+  if (!document.getElementById('solMayaObliq').dataset.set) {
+    document.getElementById('solMayaObliq').textContent = fmtDMS(obliquity(-3113));
+    document.getElementById('solGizaObliq').textContent  = fmtDMS(obliquity(-2780));
+    document.getElementById('solMayaObliq').dataset.set  = '1';
+    document.getElementById('solGizaObliq').dataset.set  = '1';
+  }
+}
+
+function renderYearSummary(year, stations) {
+  const eps      = obliquity(year);
+  const nextJune = stationJD('june', year + 1);
+  const tropYear = nextJune - stations[1].jd;
+  const mToJ    = stations[1].jd - stations[0].jd;
+  const jToS    = stations[2].jd - stations[1].jd;
+  const sToD    = stations[3].jd - stations[2].jd;
+  const dToM    = (stations[0].jd + tropYear) - stations[3].jd;
+  const eraStr  = year < 1 ? Math.abs(year - 1) + ' BCE' : year + ' CE';
+
+  // Maya archaeoastronomy context
+  const creationJD = CORRELATION;
+  const noteLines  = [];
+  stations.forEach(s => {
+    const d = Math.round(s.jd) - creationJD;
+    if (d < 0) return;
+    const katunDist = Math.min(d % 7200, 7200 - d % 7200);
+    if (katunDist <= 18)
+      noteLines.push('<strong>' + s.name + '</strong> within ' + katunDist + ' day' + (katunDist !== 1 ? 's' : '') + ' of a katun ending');
+    const tunDist = Math.min(d % 360, 360 - d % 360);
+    if (tunDist <= 4)
+      noteLines.push('<strong>' + s.name + '</strong> coincides within ' + tunDist + ' day' + (tunDist !== 1 ? 's' : '') + ' of a tun ending');
+  });
+
+  const epsMaya = obliquity(-3113);
+  const epsDiff = (epsMaya - eps).toFixed(3);
+  let noteHTML  = '<strong>Archaeoastronomical context \u2014 ' + eraStr + ':</strong> ';
+  if (noteLines.length) noteHTML += noteLines.join('; ') + '. ';
+  noteHTML += 'Obliquity \u03b5 = <strong>' + fmtDMS(eps) + '</strong>. ';
+  if (Math.abs(parseFloat(epsDiff)) > 0.01) {
+    const dir = parseFloat(epsDiff) > 0 ? Math.abs(epsDiff) + '\u00b0 less' : Math.abs(epsDiff) + '\u00b0 greater';
+    noteHTML += dir + ' than at the Maya creation epoch (3114 BCE \u03b5 = ' + fmtDMS(epsMaya) + '). ';
+    noteHTML += 'Solstice sunrise azimuths shift by ~' + (Math.abs(parseFloat(epsDiff)) * 60).toFixed(0) + ' arcminutes at mid-latitudes.';
+  }
+  const march = stations[0];
+  if (march.lc) {
+    noteHTML += ' March equinox falls on <strong>' + march.lc.split(' \u00b7')[0] + '</strong>';
+    if (march.lc.includes('\u00b7')) noteHTML += ' (' + march.lc.split('\u00b7')[1].trim() + ')';
+    noteHTML += '.';
+  }
+
+  document.getElementById('solYearSummary').innerHTML =
+    '<div class="sol-info-row"><span class="sol-info-k">Year</span><span class="sol-info-v">' + eraStr + '</span></div>'
+    + '<div class="sol-info-row"><span class="sol-info-k">Tropical year</span><span class="sol-info-v">' + tropYear.toFixed(4) + ' days</span></div>'
+    + '<div class="sol-info-row"><span class="sol-info-k">Spring (Mar\u2192Jun)</span><span class="sol-info-v">' + mToJ.toFixed(1) + ' days</span></div>'
+    + '<div class="sol-info-row"><span class="sol-info-k">Summer (Jun\u2192Sep)</span><span class="sol-info-v">' + jToS.toFixed(1) + ' days</span></div>'
+    + '<div class="sol-info-row"><span class="sol-info-k">Autumn (Sep\u2192Dec)</span><span class="sol-info-v">' + sToD.toFixed(1) + ' days</span></div>'
+    + '<div class="sol-info-row"><span class="sol-info-k">Winter (Dec\u2192Mar)</span><span class="sol-info-v">' + dToM.toFixed(1) + ' days</span></div>'
+    + '<div class="sol-info-row"><span class="sol-info-k">Obliquity \u03b5</span><span class="sol-info-v">' + fmtDMS(eps) + '</span></div>'
+    + '<div class="sol-maya-note">' + noteHTML + '</div>'
+    + '<p class="sol-source" style="margin-top:.5rem">Seasonal lengths vary because Earth\'s orbit is elliptical. Spring and Summer are longer than Autumn and Winter in the NH.</p>';
+}
+
+function calcStations() {
+  const year = parseInt(document.getElementById('solYear').value);
+  if (isNaN(year)) return;
+  const stations = computeStations(year);
+  renderStationCards(stations);
+  renderObliquity(year);
+  renderYearSummary(year, stations);
+
+  // Source note below card grid
+  let src = document.getElementById('solStationSrc');
+  if (!src) {
+    src = document.createElement('p');
+    src.id = 'solStationSrc';
+    src.className = 'sol-source';
+    src.style.cssText = 'margin-top:-.5rem;margin-bottom:1rem';
+    document.getElementById('solStationGrid').insertAdjacentElement('afterend', src);
+  }
+  src.textContent = 'Meeus Ch. 20 polynomial formulae, accurate ~15 min. Times in Ephemeris Time. Click any card to jump to that date.';
+}
+
+function setSolYear(year, jd) {
+  if (jd !== undefined && jd !== null) {
+    const g = meeusJDNtoGreg(jd);
+    year = g.year;
+  }
+  if (year !== null) document.getElementById('solYear').value = year;
+  calcStations();
+}
+
+function calcTimeline() {
+  const from  = parseInt(document.getElementById('solRangeFrom').value);
+  const to    = parseInt(document.getElementById('solRangeTo').value);
+  const show  = document.getElementById('solRangeShow').value;
+  if (isNaN(from) || isNaN(to) || from > to) return;
+  if (to - from > 50) { alert('Timeline range limited to 50 years.'); return; }
+
+  const keys = show === 'all'     ? ['march','june','sept','dec']
+             : show === 'equinox' ? ['march','sept']
+             : show === 'solstice'? ['june','dec']
+             : [show];
+
+  const p = STATION_POLYS;
+  let hdr = '<div class="sol-tl-header">Year</div>';
+  keys.forEach(k => { hdr += '<div class="sol-tl-header">' + p[k].icon + ' ' + p[k].name.replace(' Equinox','Eq.').replace(' Solstice','Sol.') + '</div>'; });
+
+  let rows = '';
+  for (let y = from; y <= to; y++) {
+    const eraStr = y < 1 ? Math.abs(y-1) + ' BCE' : y;
+    rows += '<div class="sol-tl-year" onclick="setSolYear(' + y + ')">' + eraStr + '</div>';
+    keys.forEach(k => {
+      const jd  = stationJD(k, y);
+      const fmt = fmtJD(jd);
+      const lc  = jdToLC(jd);
+      const lcShort = lc ? lc.split(' \u00b7')[0] : '\u2014';
+      rows += '<div class="sol-tl-cell">'
+        + '<div>' + fmt.date.replace(/ \d+ (CE|BCE)/,'') + '</div>'
+        + '<div style="font-size:.56rem;color:rgba(200,216,240,.3)">' + fmt.time + '</div>'
+        + '<div class="sol-tl-lc">' + lcShort + '</div>'
+        + '</div>';
+    });
+  }
+
+  // Adjust grid columns for actual number of keys
+  const cols = '80px ' + 'repeat(' + keys.length + ',1fr)';
+  document.getElementById('solTimeline').innerHTML =
+    '<div class="sol-timeline-grid" style="grid-template-columns:' + cols + '">'
+    + hdr + rows + '</div>'
+    + '<p class="sol-source" style="margin-top:.6rem">'
+    + (to-from+1) + ' years \u00b7 ' + keys.length + ' station' + (keys.length>1?'s':'') + ' \u00b7 click any year to load \u00b7 times in ET'
+    + '</p>';
+}
+
+(function autoSol() {
+  setTimeout(calcStations, 300);
+})();
+</script>
+
 </body>
 </html>
