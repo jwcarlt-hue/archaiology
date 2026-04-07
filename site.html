@@ -564,8 +564,14 @@ function renderSynthesisTabs(tabs, site, corpus) {
   const tabMap   = {};
   tabs.forEach(t => { tabMap[t.tab] = t; });
 
-  // Count PDF papers with usable summaries
-  const pdfPapers = corpus.filter(p => p.content_type === 'pdf' && p.summary?.length > 50);
+  // Show button if any papers exist — the Edge Function fetches corpus itself
+  const pdfCount  = corpus.filter(p => p.content_type === 'pdf').length;
+  const anyPapers = corpus.length > 0;
+  const btnLabel  = pdfCount > 0
+    ? `✦ Generate from ${pdfCount} PDF${pdfCount > 1 ? 's' : ''}`
+    : corpus.length > 0
+    ? `✦ Generate synthesis`
+    : '';
 
   tabNames.forEach(tabName => {
     const el  = document.getElementById(`synthesis${tabName.charAt(0).toUpperCase()+tabName.slice(1)}`);
@@ -590,9 +596,9 @@ function renderSynthesisTabs(tabs, site, corpus) {
         linguistic:     `Linguistic data for ${name} — epigraphy, glyphic inscriptions, language affiliations.`,
       };
 
-      const generateBtn = pdfPapers.length > 0
+      const generateBtn = anyPapers
         ? `<button class="synth-generate-btn" onclick="generateSynthesisFromPDFs('${tabName}')">
-             ✦ Generate from ${pdfPapers.length} PDF${pdfPapers.length > 1 ? 's' : ''}
+             ${btnLabel}
            </button>`
         : '';
 
@@ -694,6 +700,250 @@ async function generateSynthesisFromPDFs(_requestedTab) {
     });
   }
 }
+
+function initScene(recon, site) {
+  const canvas = document.getElementById("sceneCanvas");
+  const wrap   = document.getElementById("sceneWrap");
+
+  // ── Check for a curated external view first ─────────────────────────────
+  // Use the URL ?id= param as the lookup key (reliable, user-controlled),
+  // falling back to site.name for sites matched by UUID.
+  const extKey = (
+    new URLSearchParams(window.location.search).get('id') ?? site.name ?? ''
+  ).toLowerCase().trim();
+  const ext = SITE_EXTERNAL_VIEWS[extKey];
+  if (ext) {
+    // Hide canvas and 3D controls — shared by both iframe and sketchfab paths
+    canvas.style.display = 'none';
+    document.getElementById('btnRotate').style.display = 'none';
+    document.getElementById('btnReset').style.display  = 'none';
+    document.getElementById('sceneLabel').textContent  = ext.label;
+    document.getElementById('sceneAttr').textContent   = '';
+
+    // ── SKETCHFAB path ────────────────────────────────────────────────────
+    if (ext.type === 'sketchfab') {
+      // Build embed URL with clean parameters (no ads, no recommendations,
+      // dark theme to match platform, autostart so model loads immediately)
+      const sfSrc = [
+        `https://sketchfab.com/models/${ext.modelId}/embed`,
+        `?autostart=1`,
+        `&autospin=0`,
+        `&ui_theme=dark`,
+        `&ui_infos=0`,
+        `&ui_watermark=0`,
+        `&ui_controls=1`,
+        `&ui_annotations=0`,
+        `&dnt=1`,           // Sketchfab Do-Not-Track — disables personalised recommendations
+      ].join('');
+
+      const sfIframe = document.createElement('iframe');
+      sfIframe.src   = sfSrc;
+      sfIframe.title = ext.title ?? ext.label;
+      sfIframe.setAttribute('frameborder', '0');
+      sfIframe.setAttribute('allowfullscreen', '');
+      sfIframe.setAttribute('mozallowfullscreen', 'true');
+      sfIframe.setAttribute('webkitallowfullscreen', 'true');
+      sfIframe.setAttribute('allow', 'autoplay; fullscreen; xr-spatial-tracking');
+      sfIframe.style.cssText = 'width:100%;height:420px;border:none;display:block;';
+
+      // Sketchfab attribution — required by their terms; styled to match platform
+      const sfAttr = document.createElement('div');
+      sfAttr.className = 'sketchfab-attr';
+      sfAttr.innerHTML = `
+        <a href="https://sketchfab.com/3d-models/${ext.modelId}?utm_medium=embed"
+           target="_blank" rel="noopener">${ext.title ?? ext.label}</a>
+        by
+        <a href="${ext.authorUrl ?? 'https://sketchfab.com'}"
+           target="_blank" rel="noopener">${ext.author ?? 'author'}</a>
+        on Sketchfab
+      `;
+
+      // "Open in Sketchfab" button in controls bar
+      const sfBtn = document.createElement('button');
+      sfBtn.className   = 'scene-btn';
+      sfBtn.textContent = '⬡ View on Sketchfab';
+      sfBtn.onclick = () => window.open(
+        `https://sketchfab.com/3d-models/${ext.modelId}`, '_blank', 'noopener'
+      );
+      document.querySelector('.scene-controls').appendChild(sfBtn);
+
+      wrap.insertBefore(sfIframe, canvas);
+      wrap.appendChild(sfAttr);
+      return; // skip Three.js scene
+    }
+
+    // ── IFRAME path (existing behaviour for maps/external sites) ──────────
+    const iframeUrl = ext.url;
+    document.getElementById('sceneAttr').textContent = ext.credit ?? '';
+
+    const iframe = document.createElement('iframe');
+    iframe.src    = iframeUrl;
+    iframe.style.cssText = 'width:100%;height:420px;border:none;display:block;';
+    iframe.allow  = 'fullscreen';
+    iframe.title  = ext.label;
+
+    // Fallback panel shown if X-Frame-Options blocks the embed
+    const fallback = document.createElement('div');
+    fallback.style.cssText = [
+      'display:none;width:100%;height:420px;',
+      'background:rgba(15,13,10,.9);',
+      'flex-direction:column;align-items:center;justify-content:center;',
+      'gap:1rem;text-align:center;padding:2rem;',
+    ].join('');
+    fallback.innerHTML = `
+      <div style="font-size:2rem;opacity:.4">🗺</div>
+      <div style="font-family:var(--serif);font-size:1.1rem;color:var(--cream)">${ext.label}</div>
+      <div style="font-size:.75rem;color:var(--ash);max-width:340px;line-height:1.6">
+        This map cannot be embedded due to the site's security policy.
+      </div>
+      <a href="${iframeUrl}" target="_blank" rel="noopener"
+         style="font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+                padding:.45rem 1rem;border:1px solid rgba(184,137,42,.5);
+                color:var(--ochre-lt);text-decoration:none;transition:all .2s;"
+         onmouseover="this.style.background='rgba(184,137,42,.12)'"
+         onmouseout="this.style.background='none'">
+        Open full interactive map ↗
+      </a>
+      <div style="font-size:.58rem;color:rgba(138,128,112,.4)">${ext.credit ?? ''}</div>
+    `;
+
+    // "Open full map" button always visible in controls
+    const openBtn = document.createElement('button');
+    openBtn.className   = 'scene-btn';
+    openBtn.textContent = '↗ Open full map';
+    openBtn.onclick     = () => window.open(iframeUrl, '_blank', 'noopener');
+    document.querySelector('.scene-controls').appendChild(openBtn);
+
+    iframe.style.display   = 'block';
+    fallback.style.display = 'none';
+
+    // Detect X-Frame-Options block after load
+    iframe.onload = () => {
+      try {
+        const doc = iframe.contentDocument || iframe.contentWindow?.document;
+        if (!doc || !doc.body || doc.body.innerHTML === '') {
+          iframe.style.display   = 'none';
+          fallback.style.display = 'flex';
+        }
+      } catch {
+        // Cross-origin — means it loaded successfully; leave visible
+      }
+    };
+    iframe.onerror = () => {
+      iframe.style.display   = 'none';
+      fallback.style.display = 'flex';
+    };
+
+    wrap.insertBefore(iframe, canvas);
+    wrap.appendChild(fallback);
+    return; // skip Three.js scene
+  }
+
+  sceneThree = new THREE.Scene();
+  camera     = new THREE.PerspectiveCamera(55, canvas.clientWidth / canvas.clientHeight, 0.1, 200);
+  camera.position.set(18, 12, 18);
+  camera.lookAt(0, 3, 0);
+
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+
+  // Lighting
+  const ambient = new THREE.AmbientLight(0xfff8e8, 0.6);
+  sceneThree.add(ambient);
+  const sun = new THREE.DirectionalLight(0xfff0cc, 1.2);
+  sun.position.set(20, 30, 10);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(1024, 1024);
+  sceneThree.add(sun);
+  const fill = new THREE.DirectionalLight(0xc8e8ff, 0.3);
+  fill.position.set(-15, 10, -10);
+  sceneThree.add(fill);
+
+  // Build scene from reconstruction params or defaults
+  const sceneParams = recon?.scene_json ?? {
+    culture:    (site.culture ?? "maya").toLowerCase(),
+    period:     site.period ?? "Classic",
+    structures: [],
+    scale:      "large",
+  };
+  sceneParams.culture = sceneParams.culture ?? (site.culture ?? "maya").toLowerCase();
+
+  ArchaiologyEngine.buildScene(THREE, sceneThree, sceneParams);
+
+  // Labels
+  document.getElementById("sceneLabel").textContent =
+    `${site.name} — Procedural Reconstruction`;
+  document.getElementById("sceneAttr").textContent =
+    recon ? `Based on ${recon.source_count ?? 0} corpus papers` :
+            "Default model · Refines as corpus grows";
+
+  // Mouse orbit
+  let dragging = false, lastX = 0, lastY = 0;
+  let theta = Math.PI/4, phi = Math.PI/4, radius = 26;
+
+  function updateCamera() {
+    camera.position.set(
+      radius * Math.sin(phi) * Math.sin(theta),
+      radius * Math.cos(phi),
+      radius * Math.sin(phi) * Math.cos(theta)
+    );
+    camera.lookAt(0, 3, 0);
+  }
+
+  canvas.addEventListener("mousedown", e => { dragging = true; lastX=e.clientX; lastY=e.clientY; autoRotate=false; });
+  window.addEventListener("mouseup",   () => { dragging = false; });
+  window.addEventListener("mousemove", e => {
+    if (!dragging) return;
+    theta += (e.clientX - lastX) * 0.008;
+    phi    = Math.max(0.2, Math.min(Math.PI/2, phi + (e.clientY - lastY) * 0.005));
+    lastX  = e.clientX; lastY = e.clientY;
+    updateCamera();
+  });
+  canvas.addEventListener("wheel", e => {
+    radius = Math.max(10, Math.min(50, radius + e.deltaY * 0.04));
+    updateCamera();
+  });
+
+  // Touch support
+  let lastTouchX = 0;
+  canvas.addEventListener("touchstart", e => { lastTouchX = e.touches[0].clientX; autoRotate=false; });
+  canvas.addEventListener("touchmove",  e => {
+    theta += (e.touches[0].clientX - lastTouchX) * 0.01;
+    lastTouchX = e.touches[0].clientX;
+    updateCamera();
+  });
+
+  // Buttons
+  document.getElementById("btnRotate").addEventListener("click", function() {
+    autoRotate = !autoRotate;
+    this.textContent = autoRotate ? "⟳ Auto-rotate" : "⏸ Paused";
+  });
+  document.getElementById("btnReset").addEventListener("click", () => {
+    theta = Math.PI/4; phi = Math.PI/4; radius = 26;
+    autoRotate = true;
+    updateCamera();
+  });
+
+  // Resize
+  window.addEventListener("resize", () => {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  });
+
+  // Render loop
+  function animate() {
+    if (!animating) return;
+    requestAnimationFrame(animate);
+    if (autoRotate) { theta += ORBIT_SPEED; updateCamera(); }
+    renderer.render(sceneThree, camera);
+  }
+  animate();
+}
+
 
 // ── Tab switching ─────────────────────────────────────────
 document.querySelectorAll(".tab-btn").forEach(btn => {
