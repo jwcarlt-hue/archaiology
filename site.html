@@ -458,6 +458,7 @@ async function loadSite() {
   }
 
   const allPapers = [...pdfPapers, ...corpus];
+  window._allPapers = allPapers; // expose for on-demand synthesis
   renderStats(site, allPapers.length, site.ancient_refs ?? 0);
   renderPapers(allPapers);
 
@@ -563,6 +564,9 @@ function renderSynthesisTabs(tabs, site, corpus) {
   const tabMap   = {};
   tabs.forEach(t => { tabMap[t.tab] = t; });
 
+  // Count PDF papers with usable summaries
+  const pdfPapers = corpus.filter(p => p.content_type === 'pdf' && p.summary?.length > 50);
+
   tabNames.forEach(tabName => {
     const el  = document.getElementById(`synthesis${tabName.charAt(0).toUpperCase()+tabName.slice(1)}`);
     if (!el) return;
@@ -577,18 +581,202 @@ function renderSynthesisTabs(tabs, site, corpus) {
         <div class="synthesis-content">${renderMarkdown(syn.content)}</div>
       `;
     } else {
-      // Show placeholder with site info
       const name = site.name;
       const placeholders = {
-        overview:       `Overview synthesis for ${name} will be generated from corpus papers. ${corpus.length} papers currently in corpus.`,
-        archaeological: `Archaeological analysis for ${name} — covering stratigraphy, material culture, architecture, and chronology — will be drafted from corpus papers.`,
-        biological:     `Biological anthropology data for ${name} — skeletal analysis, paleopathology, diet, migration patterns — will be synthesized when relevant papers are available.`,
-        cultural:       `Cultural analysis for ${name} — ritual practices, social organization, iconography, exchange networks — will be drafted from corpus.`,
-        linguistic:     `Linguistic data for ${name} — epigraphy, glyphic inscriptions, language affiliations — will be synthesized from relevant scholarship.`,
+        overview:       `Overview synthesis for ${name} will be generated from corpus papers.`,
+        archaeological: `Archaeological analysis for ${name} — stratigraphy, material culture, architecture, chronology.`,
+        biological:     `Biological anthropology data for ${name} — skeletal analysis, paleopathology, diet, migration.`,
+        cultural:       `Cultural analysis for ${name} — ritual practices, social organization, iconography, exchange networks.`,
+        linguistic:     `Linguistic data for ${name} — epigraphy, glyphic inscriptions, language affiliations.`,
       };
-      el.innerHTML = `<p class="placeholder-text">${placeholders[tabName] ?? "Content pending."}</p>`;
+
+      const generateBtn = pdfPapers.length > 0
+        ? `<button class="synth-generate-btn" onclick="generateSynthesisFromPDFs('${tabName}')">
+             ✦ Generate from ${pdfPapers.length} PDF${pdfPapers.length > 1 ? 's' : ''}
+           </button>`
+        : '';
+
+      el.innerHTML = `
+        <p class="placeholder-text">${placeholders[tabName] ?? "Content pending."}</p>
+        ${generateBtn}
+      `;
     }
   });
+}
+
+// ── CSS for generate button (injected once) ─────────────────────
+(function addSynthStyles() {
+  if (document.getElementById('synthStyles')) return;
+  const s = document.createElement('style');
+  s.id = 'synthStyles';
+  s.textContent = `
+    .synth-generate-btn {
+      display: inline-flex; align-items: center; gap: .45rem;
+      margin-top: 1rem;
+      background: rgba(184,137,42,.1); border: 1px solid rgba(184,137,42,.35);
+      color: var(--ochre); font-family: var(--sans); font-size: .65rem;
+      font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      padding: .42rem 1rem; cursor: pointer; transition: all .2s;
+    }
+    .synth-generate-btn:hover { background: rgba(184,137,42,.2); }
+    .synth-generate-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .synth-generating {
+      display: flex; align-items: center; gap: .6rem;
+      font-family: var(--sans); font-size: .78rem; color: var(--ash);
+      padding: 1rem 0;
+    }
+    .synth-spinner {
+      width: 14px; height: 14px; border: 2px solid rgba(184,137,42,.2);
+      border-top-color: var(--ochre); border-radius: 50%;
+      animation: spin .7s linear infinite; flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  `;
+  document.head.appendChild(s);
+})();
+
+// ── Generate synthesis from uploaded PDFs via Claude API ────────
+async function generateSynthesisFromPDFs(requestedTab) {
+  const site     = window._currentSite;
+  const allPapers = window._allPapers ?? [];
+  const pdfPapers = allPapers.filter(p => p.content_type === 'pdf' && p.summary?.length > 50);
+
+  if (!pdfPapers.length) return;
+
+  // Show spinner in all tab panels immediately so user sees activity
+  const tabNames = ["overview","archaeological","biological","cultural","linguistic"];
+  tabNames.forEach(t => {
+    const el = document.getElementById(`synthesis${t.charAt(0).toUpperCase()+t.slice(1)}`);
+    if (el && !el.querySelector('.confidence-fill')) {
+      el.innerHTML = `<div class="synth-generating">
+        <div class="synth-spinner"></div>
+        Analysing ${pdfPapers.length} PDF${pdfPapers.length>1?'s':''}…
+      </div>`;
+    }
+  });
+
+  // Build corpus block — title, author, year + full summary per PDF
+  const corpusBlock = pdfPapers.map((p, i) => {
+    const ref = [p.title, p.author, p.year, p.source].filter(Boolean).join(' · ');
+    return `[PDF ${i+1}] ${ref}\n${p.summary}`;
+  }).join('\n\n---\n\n');
+
+  const systemPrompt = `You are an expert archaeological research synthesiser for archaiology.org.
+Given a set of PDF summaries about an archaeological site, produce structured synthesis content
+for four specialist tabs. Return ONLY valid JSON with no markdown fences or preamble.`;
+
+  const userPrompt = `Site: ${site.name}
+Culture: ${site.culture ?? 'unknown'} | Period: ${site.period ?? 'unknown'} | Region: ${site.region ?? 'unknown'}
+
+PDF corpus summaries:
+${corpusBlock}
+
+Analyse these summaries and populate whichever of the four tabs are actually supported by the material.
+For tabs with insufficient evidence, return an empty string "".
+
+Return JSON exactly like this:
+{
+  "overview": "2-4 paragraph markdown overview synthesising the main findings across all PDFs...",
+  "archaeological": "Markdown covering excavation results, stratigraphy, architecture, material culture, chronology...",
+  "biological": "Markdown covering skeletal/faunal/botanical analysis, paleopathology, diet, demography — only if the PDFs contain relevant data...",
+  "cultural": "Markdown covering ritual, iconography, political organisation, exchange networks, epigraphy as cultural data...",
+  "linguistic": "Markdown covering epigraphy, glyphic analysis, language identification, text translations — only if directly in the PDFs..."
+}
+
+Rules:
+- Write in clear academic prose suitable for a research platform
+- Cite specific findings from the PDFs (e.g. "Tsukamoto & Esparza (2014) demonstrate…")
+- Use ## subheadings within longer tabs
+- If a tab topic is genuinely absent from the PDFs, return "" for that key
+- Never invent data not supported by the summaries`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userPrompt }],
+      }),
+    });
+
+    if (!resp.ok) throw new Error(`Claude API ${resp.status}`);
+    const data = await resp.json();
+    const raw  = data.content?.find(b => b.type === 'text')?.text ?? '';
+
+    // Strip any accidental markdown fences
+    const clean = raw.replace(/^```[a-z]*\n?/,'').replace(/```\s*$/,'').trim();
+    const result = JSON.parse(clean);
+
+    // Write populated tabs to Supabase site_synthesis and render immediately
+    const populated = Object.entries(result).filter(([,v]) => v?.trim().length > 20);
+
+    await Promise.all(populated.map(([tab, content]) =>
+      fetch(`${SUPABASE_URL}/rest/v1/site_synthesis`, {
+        method: 'POST',
+        headers: {
+          'apikey':        SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type':  'application/json',
+          'Prefer':        'resolution=merge-duplicates',
+        },
+        body: JSON.stringify({
+          site_id:    site.id,
+          tab:        tab,
+          content:    content,
+          confidence: 0.75,
+          approved:   false,
+        }),
+      })
+    ));
+
+    // Re-render all tabs with the new content
+    const synthMap = {};
+    populated.forEach(([tab, content]) => {
+      synthMap[tab] = { tab, content, confidence: 0.75, approved: false };
+    });
+
+    tabNames.forEach(tabName => {
+      const el  = document.getElementById(`synthesis${tabName.charAt(0).toUpperCase()+tabName.slice(1)}`);
+      if (!el) return;
+      const syn = synthMap[tabName];
+      if (syn) {
+        el.innerHTML = `
+          <div class="ai-badge">🤖 AI Draft · Generated from ${pdfPapers.length} PDF${pdfPapers.length>1?'s':''}</div>
+          <div class="confidence-bar">
+            <div class="confidence-fill" style="width:75%"></div>
+          </div>
+          <div class="synthesis-content">${renderMarkdown(syn.content)}</div>
+        `;
+      } else {
+        const name = site.name;
+        const placeholders = {
+          overview:'Overview synthesis pending.',
+          archaeological:'Archaeological analysis pending.',
+          biological:'Biological data not present in current PDF corpus.',
+          cultural:'Cultural analysis pending.',
+          linguistic:'Linguistic data not present in current PDF corpus.',
+        };
+        el.innerHTML = `<p class="placeholder-text">${placeholders[tabName]}</p>`;
+      }
+    });
+
+  } catch (err) {
+    console.error('[synthesis] Generation failed:', err);
+    tabNames.forEach(t => {
+      const el = document.getElementById(`synthesis${t.charAt(0).toUpperCase()+t.slice(1)}`);
+      if (el?.querySelector('.synth-spinner')) {
+        el.innerHTML = `<p class="placeholder-text" style="color:var(--terra)">
+          Generation failed: ${err.message}. Check console for details.
+        </p>
+        <button class="synth-generate-btn" onclick="generateSynthesisFromPDFs('${t}')">
+          ↺ Retry
+        </button>`;
+      }
+    });
+  }
 }
 
 // ── Three.js Scene ────────────────────────────────────────
