@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
 <style>
 :root {
@@ -114,6 +115,26 @@ a{text-decoration:none;color:inherit;}
 .topos-lbl{font-family:var(--sans);font-size:.58rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(232,224,208,.6);line-height:1.4;}
 .topos-btn{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ochre);border:1px solid rgba(184,137,42,.4);padding:.35rem .8rem;white-space:nowrap;transition:all .2s;}
 .topos-btn:hover{background:rgba(184,137,42,.15);}
+
+/* ── NATIVE LAND ── */
+.nl-card { background:white; border:1px solid var(--rule); padding:1.2rem 1.3rem; margin-bottom:1.2rem; }
+.nl-loading { display:flex; align-items:center; gap:.5rem; font-family:var(--sans); font-size:.7rem; color:var(--ash); }
+.nl-loading-dot { width:5px; height:5px; border-radius:50%; background:var(--ochre); animation:ldot 1.2s ease infinite; }
+.nl-loading-dot:nth-child(2){animation-delay:.2s;} .nl-loading-dot:nth-child(3){animation-delay:.4s;}
+.nl-group { margin-bottom:.85rem; }
+.nl-group:last-of-type { margin-bottom:.5rem; }
+.nl-group-label { font-family:var(--sans); font-size:.52rem; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--ash); margin-bottom:.4rem; }
+.nl-pills { display:flex; flex-wrap:wrap; gap:.35rem; }
+.nl-pill { font-family:var(--sans); font-size:.65rem; font-weight:600; padding:.25rem .6rem; border-radius:2px; cursor:pointer; transition:opacity .15s; text-decoration:none; display:inline-block; }
+.nl-pill:hover { opacity:.75; }
+.nl-pill-territory { background:rgba(122,62,26,.12); color:var(--terra); border:1px solid rgba(122,62,26,.2); }
+.nl-pill-language  { background:rgba(42,61,46,.12);  color:#2a5c38;   border:1px solid rgba(42,61,46,.2); }
+.nl-pill-treaty    { background:rgba(58,74,92,.12);  color:var(--slate); border:1px solid rgba(58,74,92,.2); }
+.nl-none { font-family:var(--sans); font-size:.7rem; color:var(--ash); font-style:italic; }
+.nl-disclaimer { font-family:var(--sans); font-size:.58rem; color:var(--ash); line-height:1.45; margin-top:.7rem; padding-top:.6rem; border-top:1px dotted var(--linen); opacity:.75; }
+.nl-disclaimer a { color:var(--ochre); }
+.nl-map-link { display:flex; align-items:center; justify-content:space-between; padding:.35rem 0 0; font-family:var(--sans); font-size:.68rem; color:var(--ash); transition:color .2s; }
+.nl-map-link:hover { color:var(--ochre); }
 
 /* ── SKETCHFAB ATTRIBUTION ── */
 .sketchfab-attr{
@@ -275,6 +296,17 @@ a{text-decoration:none;color:inherit;}
       <div id="extLinks"></div>
     </div>
 
+    <div class="sidebar-card nl-card" id="nativeLandCard" style="display:none">
+      <div class="sidebar-label">Indigenous Territories</div>
+      <div id="nativeLandBody">
+        <div class="nl-loading">
+          <div class="nl-loading-dot"></div>
+          <div class="nl-loading-dot"></div>
+          <div class="nl-loading-dot"></div>
+        </div>
+      </div>
+    </div>
+
   </aside>
 </div>
 
@@ -427,6 +459,7 @@ async function loadSite() {
   renderSynthesisTabs(tabs, site, allPapers);
 
   window._currentSite = site;
+  if (site.lat && site.lng) loadNativeLand(site.lat, site.lng);
   return site;
 }
 
@@ -962,6 +995,141 @@ function initScene(recon, site) {
     return; // skip Three.js scene
   }
 
+  // ── GLB model path — fires if site has a model_url in Supabase ────────────
+  if (site.model_url) {
+    canvas.style.display = 'block';
+    document.getElementById('btnRotate').style.display = 'none'; // no autorotate btn needed
+    document.getElementById('sceneLabel').textContent  = `${site.name} — 3D Model`;
+    document.getElementById('sceneAttr').textContent   = site.model_credit ?? 'Uploaded 3D model';
+
+    // Stand up a minimal Three.js scene to host the GLB
+    sceneThree = new THREE.Scene();
+    sceneThree.background = new THREE.Color(0x0f0d0a);
+
+    camera   = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 500);
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping    = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+
+    // Lighting tuned for photogrammetry / AI-generated models
+    sceneThree.add(new THREE.AmbientLight(0xffffff, 0.6));
+    const key = new THREE.DirectionalLight(0xfff8e8, 1.4);
+    key.position.set(20, 30, 15); key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    sceneThree.add(key);
+    sceneThree.add(Object.assign(new THREE.DirectionalLight(0xc8d8ff, 0.4),
+      { position: new THREE.Vector3(-15, 10, -10) }));
+
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      site.model_url,
+      gltf => {
+        const model = gltf.scene;
+
+        // Auto-centre and auto-scale the model to fit the viewport
+        const box    = new THREE.Box3().setFromObject(model);
+        const centre = box.getCenter(new THREE.Vector3());
+        const size   = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const scale  = 12 / maxDim;           // fit within a ~12-unit cube
+        model.scale.setScalar(scale);
+        model.position.sub(centre.multiplyScalar(scale));
+
+        // Sit model on the ground plane
+        const box2 = new THREE.Box3().setFromObject(model);
+        model.position.y -= box2.min.y;
+
+        sceneThree.add(model);
+
+        // Position camera to see the whole model
+        const dist = maxDim * scale * 1.8;
+        camera.position.set(dist, dist * 0.6, dist);
+        camera.lookAt(0, (size.y * scale) / 2, 0);
+        camera.near = dist * 0.01;
+        camera.far  = dist * 10;
+        camera.updateProjectionMatrix();
+
+        // Store initial camera state for reset
+        const initPos = camera.position.clone();
+        const initTarget = new THREE.Vector3(0, (size.y * scale) / 2, 0);
+
+        // Orbit controls (reuse existing mouse/touch handlers below)
+        let dragging = false, lastX = 0, lastY = 0;
+        let theta = Math.PI / 4, phi = Math.PI / 3;
+        let orbitRadius = camera.position.length();
+
+        function updateGLBCamera() {
+          const target = new THREE.Vector3(0, (size.y * scale) / 2, 0);
+          camera.position.set(
+            orbitRadius * Math.sin(phi) * Math.sin(theta),
+            orbitRadius * Math.cos(phi) + target.y,
+            orbitRadius * Math.sin(phi) * Math.cos(theta)
+          );
+          camera.lookAt(target);
+        }
+
+        canvas.addEventListener('mousedown', e => { dragging=true; lastX=e.clientX; lastY=e.clientY; });
+        window.addEventListener('mouseup',   () => { dragging=false; });
+        window.addEventListener('mousemove', e => {
+          if (!dragging) return;
+          theta -= (e.clientX - lastX) * 0.008;
+          phi    = Math.max(0.15, Math.min(Math.PI/2, phi + (e.clientY - lastY) * 0.005));
+          lastX  = e.clientX; lastY = e.clientY;
+          updateGLBCamera();
+        });
+        canvas.addEventListener('wheel', e => {
+          orbitRadius = Math.max(dist * 0.3, Math.min(dist * 3, orbitRadius + e.deltaY * 0.04));
+          updateGLBCamera();
+        });
+
+        document.getElementById('btnReset').style.display = 'inline-block';
+        document.getElementById('btnReset').onclick = () => {
+          theta = Math.PI/4; phi = Math.PI/3; orbitRadius = dist * 1.8;
+          updateGLBCamera();
+        };
+
+        // Touch
+        let lastTX = 0;
+        canvas.addEventListener('touchstart', e => { lastTX = e.touches[0].clientX; });
+        canvas.addEventListener('touchmove',  e => {
+          theta -= (e.touches[0].clientX - lastTX) * 0.01;
+          lastTX = e.touches[0].clientX; updateGLBCamera();
+        });
+
+        window.addEventListener('resize', () => {
+          const w = canvas.clientWidth, h = canvas.clientHeight;
+          renderer.setSize(w, h); camera.aspect = w/h; camera.updateProjectionMatrix();
+        });
+
+        function animateGLB() {
+          if (!animating) return;
+          requestAnimationFrame(animateGLB);
+          renderer.render(sceneThree, camera);
+        }
+        animateGLB();
+      },
+      // Progress callback
+      xhr => {
+        const pct = xhr.total ? Math.round(xhr.loaded / xhr.total * 100) : '?';
+        document.getElementById('sceneAttr').textContent = `Loading model… ${pct}%`;
+      },
+      // Error callback — fall through to procedural
+      err => {
+        console.warn('GLB load failed, falling back to procedural:', err);
+        document.getElementById('sceneLabel').textContent = `${site.name} — Procedural Reconstruction`;
+        document.getElementById('sceneAttr').textContent  = 'Default model · Refines as corpus grows';
+        site.model_url = null; // prevent re-entry
+        initScene(null, site); // re-run without model_url
+      }
+    );
+    return; // wait for async loader; don't run procedural path
+  }
+
+  // ── Procedural Three.js scene (default, no model_url) ───────────────────
   sceneThree = new THREE.Scene();
   camera     = new THREE.PerspectiveCamera(55, canvas.clientWidth / canvas.clientHeight, 0.1, 200);
   camera.position.set(18, 12, 18);
@@ -1130,6 +1298,142 @@ function clearSceneImage() {
     document.getElementById('sceneAttr').textContent = 'Default model · Refines as corpus grows';
   }
 }
+// ── NATIVE LAND DIGITAL ───────────────────────────────────
+// API: https://api-docs.native-land.ca
+// CC0 licensed. Queries territories, languages, and treaties
+// for the site's lat/lng coordinates.
+// ── NATIVE LAND DIGITAL ───────────────────────────────────
+// API: https://api-docs.native-land.ca  (CC0)
+// Set your key from native-land.ca/auth/signup → API tab
+const NATIVE_LAND_API_KEY = "YOUR_NATIVE_LAND_API_KEY";
+
+async function loadNativeLand(lat, lng) {
+  const card = document.getElementById("nativeLandCard");
+  const body = document.getElementById("nativeLandBody");
+  card.style.display = "block";
+
+  // Normalise response — API returns a bare array of GeoJSON features
+  function toFeatures(raw) {
+    if (Array.isArray(raw)) return raw;
+    if (raw && Array.isArray(raw.features)) return raw.features;
+    return [];
+  }
+
+  // Properties use capital-case keys: Name, Slug
+  const getName = f => f.properties?.Name || f.properties?.name || f.properties?.NAME || "";
+  const getSlug = f => f.properties?.Slug || f.properties?.slug || f.properties?.SLUG || "";
+
+  const dedup = arr => {
+    const seen = new Set();
+    return arr.filter(f => {
+      const k = getSlug(f) || getName(f);
+      if (!k || seen.has(k)) return false;
+      seen.add(k); return true;
+    });
+  };
+
+  try {
+    const base = `https://native-land.ca/api/index.php?position=${lat},${lng}&key=${NATIVE_LAND_API_KEY}`;
+
+    // Three parallel fetches — one per category so typing is unambiguous
+    const [rT, rL, rTr] = await Promise.all([
+      fetch(`${base}&maps=territories`),
+      fetch(`${base}&maps=languages`),
+      fetch(`${base}&maps=treaties`),
+    ]);
+
+    if (!rT.ok && !rL.ok && !rTr.ok) {
+      throw new Error(`API error: ${rT.status} / ${rL.status} / ${rTr.status}`);
+    }
+
+    const [rawT, rawL, rawTr] = await Promise.all([
+      rT.ok  ? rT.json()  : null,
+      rL.ok  ? rL.json()  : null,
+      rTr.ok ? rTr.json() : null,
+    ]);
+
+    // Debug — open DevTools console to see raw API output
+    console.log("[NativeLand] territories:", rawT);
+    console.log("[NativeLand] languages:",   rawL);
+    console.log("[NativeLand] treaties:",    rawTr);
+
+    const territories = dedup(toFeatures(rawT));
+    const languages   = dedup(toFeatures(rawL));
+    const treaties    = dedup(toFeatures(rawTr));
+
+    if (!territories.length && !languages.length && !treaties.length) {
+      body.innerHTML =
+        `<p class="nl-none">No Indigenous territory data for these coordinates.</p>
+         <a class="nl-map-link"
+            href="https://native-land.ca/maps/?lat=${lat}&lng=${lng}"
+            target="_blank" rel="noopener">
+           View on Native Land map <span class="ext-link-arrow">↗</span>
+         </a>
+         <div class="nl-disclaimer">Data: <a href="https://native-land.ca" target="_blank"
+           rel="noopener">Native Land Digital</a> (CC0). Not official or legal boundaries.</div>`;
+      return;
+    }
+
+    const renderGroup = (label, items, cls) => {
+      if (!items.length) return "";
+      const pills = items.map(f => {
+        const name = getName(f);
+        const slug = getSlug(f);
+        if (!name) return "";
+        const href = slug
+          ? `https://native-land.ca/maps/indigenous-territory/${encodeURIComponent(slug)}`
+          : "https://native-land.ca/";
+        return `<a class="nl-pill nl-pill-${cls}"
+                   href="${href}" target="_blank" rel="noopener">${name}</a>`;
+      }).filter(Boolean).join("");
+      return pills
+        ? `<div class="nl-group">
+             <div class="nl-group-label">${label}</div>
+             <div class="nl-pills">${pills}</div>
+           </div>`
+        : "";
+    };
+
+    body.innerHTML =
+      renderGroup("Territories", territories, "territory") +
+      renderGroup("Languages",   languages,   "language")  +
+      renderGroup("Treaties",    treaties,    "treaty")    +
+      `<a class="nl-map-link"
+          href="https://native-land.ca/maps/?lat=${lat}&lng=${lng}"
+          target="_blank" rel="noopener">
+        View on Native Land map <span class="ext-link-arrow">↗</span>
+      </a>
+      <div class="nl-disclaimer">
+        Data: <a href="https://native-land.ca" target="_blank" rel="noopener">Native Land Digital</a> (CC0).
+        Not official or legal boundaries. Reflects Indigenous self-identification.
+      </div>`;
+
+  } catch (err) {
+    console.error("[NativeLand] error:", err);
+
+    // CORS / network failure → fall back to official iframe embed
+    const isCORS = err.message === "Failed to fetch"
+                || err.message?.includes("NetworkError")
+                || err.name === "TypeError";
+    if (isCORS) {
+      body.innerHTML =
+        `<iframe
+           src="https://native-land.ca/api/embed/embed.html?maps=territories,languages&lat=${lat}&lng=${lng}"
+           style="width:100%;height:220px;border:none;display:block;"
+           title="Native Land territories" loading="lazy"></iframe>
+         <div class="nl-disclaimer" style="margin-top:.5rem">
+           Data: <a href="https://native-land.ca" target="_blank" rel="noopener">Native Land Digital</a> (CC0).
+           Not official or legal boundaries.
+         </div>`;
+    } else {
+      body.innerHTML =
+        `<p class="nl-none">Could not load territory data.</p>
+         <a class="nl-map-link" href="https://native-land.ca" target="_blank" rel="noopener">
+           Native Land Digital ↗</a>`;
+    }
+  }
+}
+
 </script>
 </body>
 </html>
