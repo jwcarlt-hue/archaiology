@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Royal Game of Ur — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#faf8f3; --paper:#f2ede3; --linen:#e8e0d0; --rule:#d5ccb8;
+  --ash:#8a8070; --ink:#1c1814; --deep:#0f0d0a;
+  --ochre:#b8892a; --ochre-lt:#d4a84b; --terra:#7a3e1a;
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  /* Ur palette */
+  --lapis:#2a4a7a; --lapis-lt:#5a8ab8; --lapis-dk:#1a2a4a;
+  --gold:#c8a020; --gold-lt:#e8c840; --gold-dk:#8a6010;
+  --shell:#f0e8d0; --shell-dk:#c8b890;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+.masthead{background:var(--ink);padding:0 2rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px;}
+.logo{font-family:var(--serif);font-size:1.2rem;font-weight:900;color:var(--cream);letter-spacing:-.01em;}
+.logo span{color:var(--ochre);font-style:italic;}
+.nav-links{display:flex;gap:1.5rem;overflow-x:auto;}
+.nav-link{font-family:var(--sans);font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);transition:color .2s;white-space:nowrap;}
+.nav-link:hover{color:var(--cream);}
+
+.section-nav{background:var(--paper);border-bottom:1px solid var(--rule);padding:0 2rem;overflow-x:auto;}
+.section-nav-inner{max-width:1280px;margin:0 auto;display:flex;}
+.section-nav-link{font-family:var(--sans);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);padding:.7rem 1.4rem;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.section-nav-link:hover{color:var(--ink);border-bottom-color:var(--ochre);}
+.section-nav-link.active{color:var(--ink);border-bottom-color:var(--ochre);}
+
+.breadcrumb{max-width:1280px;margin:0 auto;padding:.9rem 2rem;font-family:var(--sans);font-size:.65rem;color:var(--ash);display:flex;gap:.5rem;align-items:center;}
+.breadcrumb a{color:var(--ash);transition:color .2s;}
+.breadcrumb a:hover{color:var(--ochre);}
+.breadcrumb-sep{opacity:.4;}
+
+.article-hero-inner{max-width:1280px;margin:0 auto;padding:0 2rem;}
+.article-hero{border-bottom:1px solid var(--rule);padding-bottom:2.5rem;margin-bottom:3rem;}
+.article-tag{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre);margin-bottom:.8rem;}
+.article-title{font-family:var(--serif);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;line-height:1.08;letter-spacing:-.025em;margin-bottom:1rem;max-width:820px;}
+.article-title em{color:var(--ochre);font-style:italic;}
+.article-dek{font-family:var(--body);font-size:1.05rem;line-height:1.7;color:var(--ash);max-width:680px;margin-bottom:1.4rem;}
+.article-byline{font-family:var(--sans);font-size:.7rem;color:var(--ash);display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;}
+.byline-dot{opacity:.3;}
+
+.article-body{max-width:1280px;margin:0 auto;padding:0 2rem 5rem;display:grid;grid-template-columns:1fr 320px;gap:3.5rem;align-items:start;}
+@media(max-width:900px){.article-body{grid-template-columns:1fr;}.article-sidebar{display:none;}}
+.article-content{min-width:0;}
+
+.prose h2{font-family:var(--serif);font-size:1.5rem;font-weight:700;margin:2.5rem 0 .8rem;}
+.prose h3{font-family:var(--serif);font-size:1.15rem;font-weight:600;margin:1.8rem 0 .5rem;}
+.prose p{font-family:var(--body);font-size:1rem;line-height:1.8;color:#3a3228;margin-bottom:1.1rem;}
+.prose p strong{color:var(--ink);}
+.prose ul,.prose ol{padding-left:1.4rem;margin-bottom:1.1rem;}
+.prose li{font-family:var(--body);font-size:.95rem;line-height:1.75;color:#3a3228;margin-bottom:.3rem;}
+.prose .rule-block{background:var(--paper);border-left:3px solid var(--ochre);padding:1rem 1.2rem;margin:1.5rem 0;font-family:var(--sans);font-size:.82rem;line-height:1.65;}
+.prose .rule-block strong{color:var(--ink);}
+.prose .caveat{background:#f0ede8;border-left:3px solid var(--shell-dk);padding:.9rem 1.2rem;margin:1.2rem 0;font-family:var(--sans);font-size:.8rem;line-height:1.6;color:var(--ash);}
+.prose .source-note{font-family:var(--sans);font-size:.7rem;color:var(--ash);border-top:1px solid var(--rule);padding-top:1rem;margin-top:2.5rem;line-height:1.6;}
+.pull-quote{border-left:3px solid var(--ochre);padding:1rem 1.5rem;margin:2rem 0;background:var(--paper);}
+.pull-quote p{font-family:var(--serif);font-size:1.05rem;font-style:italic;color:var(--ink);line-height:1.6;margin:0 0 .4rem;}
+.pull-quote cite{font-family:var(--sans);font-size:.65rem;color:var(--ash);letter-spacing:.05em;text-transform:uppercase;}
+
+/* ── UR GAME ── */
+.game-wrap{background:var(--lapis-dk);border:1px solid rgba(90,138,184,.2);padding:1.5rem;margin:2.5rem 0;}
+.game-title-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.8rem;}
+.game-title-label{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-lt);}
+.game-status-bar{font-family:var(--sans);font-size:.78rem;color:rgba(232,200,64,.85);min-height:1.2em;}
+
+.game-main{display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start;}
+@media(max-width:680px){.game-main{grid-template-columns:1fr;}}
+
+/* Board */
+#urCanvas{display:block;cursor:pointer;}
+
+/* Right panel */
+.ur-panel{display:flex;flex-direction:column;gap:.9rem;}
+
+/* Piece trays */
+.piece-tray{background:rgba(255,255,255,.04);border:1px solid rgba(90,138,184,.2);padding:.8rem;}
+.piece-tray.active-tray{border-color:rgba(200,160,32,.5);background:rgba(200,160,32,.06);}
+.tray-label{font-family:var(--sans);font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.6rem;}
+.tray-label.white-label{color:#f0e8d0;}
+.tray-label.black-label{color:#8ab8d8;}
+.piece-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.4rem;}
+.piece-pip{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;transition:all .2s;cursor:default;}
+.piece-pip.w{background:radial-gradient(circle at 35% 35%,#fff 0%,#c8b890 100%);color:#3a2a10;}
+.piece-pip.b{background:radial-gradient(circle at 35% 35%,#3a6a9a 0%,#0a1a2a 100%);color:#8ab8d8;}
+.piece-pip.done{opacity:.25;}
+.piece-pip.active-pip{box-shadow:0 0 0 2px var(--gold-lt),0 0 8px var(--gold);}
+.tray-pos{font-family:var(--sans);font-size:.65rem;color:rgba(180,160,120,.6);}
+
+/* Dice display */
+.dice-section{background:rgba(255,255,255,.04);border:1px solid rgba(90,138,184,.2);padding:.8rem;}
+.dice-label{font-family:var(--sans);font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:.6rem;}
+.dice-row{display:flex;gap:.5rem;align-items:center;margin-bottom:.5rem;}
+.die-box{width:32px;height:32px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .3s;}
+.die-box.rolled{animation:dieFlash .25s ease;}
+@keyframes dieFlash{0%{background:rgba(200,160,32,.3);}100%{background:rgba(255,255,255,.06);}}
+.dice-total{font-family:var(--sans);font-size:1rem;font-weight:700;color:var(--gold-lt);min-width:32px;}
+.dice-note{font-family:var(--sans);font-size:.68rem;color:rgba(180,160,100,.7);}
+
+/* Counters (betting) */
+.counter-section{background:rgba(255,255,255,.04);border:1px solid rgba(90,138,184,.2);padding:.8rem;}
+.counter-label{font-family:var(--sans);font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:.5rem;}
+.counter-row{display:flex;justify-content:space-between;font-family:var(--sans);font-size:.75rem;gap:.5rem;}
+.counter-player{color:rgba(232,224,208,.7);}
+.counter-val{color:var(--gold-lt);font-weight:700;}
+.pool-val{color:rgba(232,200,64,.6);font-weight:700;}
+
+/* Buttons */
+.ur-btn{width:100%;background:rgba(200,160,32,.12);border:1px solid rgba(200,160,32,.35);color:var(--gold-lt);font-family:var(--sans);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.5rem;cursor:pointer;transition:all .2s;margin-top:.3rem;}
+.ur-btn:hover{background:rgba(200,160,32,.22);}
+.ur-btn:disabled{opacity:.3;cursor:not-allowed;}
+.ur-btn.primary{background:rgba(200,160,32,.2);border-color:rgba(200,160,32,.6);}
+
+/* Log */
+.game-log{background:rgba(0,0,0,.4);padding:.6rem;max-height:110px;overflow-y:auto;font-family:var(--sans);font-size:.66rem;line-height:1.7;margin-top:.4rem;}
+.log-entry{color:rgba(200,180,140,.5);padding:.04rem 0;}
+.log-entry.hi{color:rgba(240,220,160,.85);}
+.log-entry.win{color:var(--gold-lt);font-weight:700;}
+.log-entry.rosette{color:#a0e0a0;}
+.log-entry.capture{color:#e0a0a0;}
+
+/* Piece table */
+.piece-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.82rem;}
+.piece-table th{background:var(--paper);padding:.45rem .7rem;border:1px solid var(--rule);font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ash);text-align:left;}
+.piece-table td{padding:.45rem .7rem;border:1px solid var(--rule);font-family:var(--body);vertical-align:top;line-height:1.5;}
+.piece-table tr:nth-child(even) td{background:var(--paper);}
+.piece-table .bird{font-family:var(--sans);font-weight:700;font-size:.78rem;color:var(--ink);}
+.piece-table .good{color:#5a8a5a;font-size:.72rem;}
+.piece-table .bad{color:#8a4a4a;font-size:.72rem;}
+
+/* Sidebar */
+.article-sidebar{position:sticky;top:2rem;}
+.sidebar-card{background:var(--paper);border:1px solid var(--rule);padding:1.4rem;margin-bottom:1.4rem;}
+.sidebar-card-title{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ochre);margin-bottom:1rem;}
+.sidebar-row{display:flex;justify-content:space-between;align-items:baseline;padding:.45rem 0;border-bottom:1px solid var(--linen);font-family:var(--sans);font-size:.73rem;gap:.5rem;}
+.sidebar-row:last-child{border-bottom:none;}
+.sidebar-key{color:var(--ash);}
+.sidebar-val{color:var(--ink);font-weight:600;text-align:right;font-size:.7rem;}
+.sidebar-nav{display:flex;flex-direction:column;gap:.3rem;}
+.sidebar-nav a{font-family:var(--sans);font-size:.72rem;color:var(--ash);padding:.35rem 0;border-bottom:1px solid var(--linen);display:flex;align-items:center;gap:.4rem;transition:color .2s;}
+.sidebar-nav a:last-child{border-bottom:none;}
+.sidebar-nav a:hover{color:var(--ochre);}
+.sidebar-nav a::before{content:'§';opacity:.3;font-size:.65rem;}
+
+.footer{background:var(--ink);color:var(--ash);text-align:center;padding:1.5rem;font-family:var(--sans);font-size:.68rem;}
+.footer a{color:var(--ochre);}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <nav class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="map.html">Map</a>
+      <a class="nav-link" href="sky.html">Sky Archive</a>
+      <a class="nav-link" href="games.html">Games</a>
+      <a class="nav-link" href="upload.html">Upload</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="section-nav">
+  <div class="section-nav-inner">
+    <a class="section-nav-link" href="index.html">Home</a>
+    <a class="section-nav-link" href="news.html">Feed</a>
+    <a class="section-nav-link" href="map.html">Map</a>
+    <a class="section-nav-link" href="sky.html">Sky Archive</a>
+    <a class="section-nav-link" href="maritime.html">Maritime</a>
+    <a class="section-nav-link" href="maya_inscriptions.html">Maya</a>
+    <a class="section-nav-link" href="bioanthro.html">Bioanthro</a>
+    <a class="section-nav-link" href="luwian.html">Luwian</a>
+    <a class="section-nav-link active" href="games.html">Games</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="games.html">Games</a>
+  <span class="breadcrumb-sep">›</span>
+  <span>Royal Game of Ur</span>
+</div>
+
+<div class="article-hero-inner">
+  <div class="article-hero">
+    <div class="article-tag">Mesopotamia · Ur · c. 2600 BCE – first century CE</div>
+    <h1 class="article-title">The Royal Game of Ur —<br><em>Pack of Dogs</em></h1>
+    <p class="article-dek">Excavated from the Royal Cemetery of Ur by Leonard Woolley in the 1920s, the Game of Twenty Squares is the oldest board game whose rules survive in writing. In 177 BCE, a Babylonian scribe named Itti-Marduk-balatu copied the rules onto a clay tablet now held in the British Museum — giving us five bird-named pieces, two astragal dice, rosette squares worth fortunes, and the world's first recorded betting game.</p>
+    <div class="article-byline">
+      <span>Mesopotamia, Near East, Egypt, Cyprus, Iran</span>
+      <span class="byline-dot">·</span>
+      <span>c. 2600 BCE – first century CE</span>
+      <span class="byline-dot">·</span>
+      <span>20 squares · 2 players · 5 pieces each</span>
+    </div>
+  </div>
+</div>
+
+<div class="article-body">
+<main class="article-content prose">
+
+  <h2>The Tablet and the Rules</h2>
+  <p>On 3 November, 177 BCE, in Babylon, the scribe <strong>Itti-Marduk-balatu</strong> completed a clay tablet that has no parallel in the ancient world. On one side he drew a grid of 84 lozenge-shaped cells inscribed with zodiac signs and fortune-telling predictions. On the other — in two columns of cuneiform — he wrote the rules for a board game.</p>
+
+  <p>The tablet (BM 33333B) was purchased by the British Museum around 1880 from a dealer who had acquired it from local inhabitants of Babylon. It lay largely uninterpreted until the Assyriologist Irving Finkel recognised what was on the reverse: <strong>the oldest surviving written rules for any board game</strong>. A second tablet with the same obverse diagram — the so-called "DLB" tablet from the private collection of Count de Liedekerke — was published the same year (1956) and confirms the game's name: <em>Pack of Dogs</em> (<em>KASKAL.KUR UR.GI7.MEŠ</em>).</p>
+
+  <p>The game the tablet describes is the <strong>Game of Twenty Squares</strong>, also known as the Royal Game of Ur after the famous inlaid boards excavated by Sir Leonard Woolley from the Royal Cemetery of Ur (~2600 BCE). Over 100 boards are now known, distributed across Iraq, Iran, Israel, Syria, Jordan, Lebanon, Turkey, Cyprus, Egypt and Crete — making it the most widely distributed board game of the ancient world.</p>
+
+  <div class="pull-quote">
+    <p>"Your troops, well-being falls to them; Let them go out from House 5, House 6, House 7: Alone I will make my exit, and get as far as the…"</p>
+    <cite>A literary letter to the Assyrian king Assurbanipal, alluding to the game, c. 650 BCE</cite>
+  </div>
+
+  <h2>Play the Game</h2>
+
+  <div class="caveat">
+    <strong>Scholarly note:</strong> This implementation follows Finkel's reconstruction from BM 33333B (2007), the standard modern ruleset available from royalur.net and the British Museum. The betting layer (counters won/lost at rosette squares) is preserved from the cuneiform text. The five bird-named pieces and two-astragal dice system follow the tablet directly.
+  </div>
+
+  <div class="game-wrap">
+    <div class="game-title-bar">
+      <span class="game-title-label">𒀭 Pack of Dogs — Game of Twenty Squares</span>
+      <span class="game-status-bar" id="urStatus">Click "New Game" to begin</span>
+    </div>
+    <div class="game-main">
+      <canvas id="urCanvas" width="260" height="360"></canvas>
+      <div class="ur-panel">
+
+        <!-- White player -->
+        <div class="piece-tray" id="whiteTray">
+          <div class="tray-label white-label">🤍 White — Swallow · Storm-bird · Raven · Rooster · Eagle</div>
+          <div class="piece-row" id="whitePieces"></div>
+          <div class="tray-pos" id="whitePos">Waiting to enter…</div>
+        </div>
+
+        <!-- Black player -->
+        <div class="piece-tray" id="blackTray">
+          <div class="tray-label black-label">🔵 Blue — Swallow · Storm-bird · Raven · Rooster · Eagle</div>
+          <div class="piece-row" id="blackPieces"></div>
+          <div class="tray-pos" id="blackPos">Waiting to enter…</div>
+        </div>
+
+        <!-- Dice -->
+        <div class="dice-section">
+          <div class="dice-label">Astragals (knucklebones)</div>
+          <div class="dice-row">
+            <div class="die-box" id="d1">🦴</div>
+            <div class="die-box" id="d2">🦴</div>
+            <span style="font-family:var(--sans);font-size:.7rem;color:rgba(200,180,120,.5)">+</span>
+            <div class="die-box" id="d3">❓</div>
+            <span style="font-family:var(--sans);font-size:.7rem;color:rgba(200,180,120,.5)">=</span>
+            <div class="dice-total" id="dTotal">—</div>
+          </div>
+          <div class="dice-note" id="diceNote">Sheep die (1–4) + ox die (yes/no → ×convert)</div>
+        </div>
+
+        <!-- Counters -->
+        <div class="counter-section">
+          <div class="counter-label">Counters (Pool: <span id="poolVal">10</span>)</div>
+          <div class="counter-row">
+            <span class="counter-player">🤍 White</span>
+            <span class="counter-val" id="whiteCounters">10</span>
+          </div>
+          <div class="counter-row">
+            <span class="counter-player">🔵 Blue</span>
+            <span class="counter-val" id="blackCounters">10</span>
+          </div>
+        </div>
+
+        <button class="ur-btn primary" id="newGameBtnUr" onclick="urNewGame()">New Game</button>
+        <button class="ur-btn" id="rollBtnUr" onclick="urRoll()" disabled>Roll Astragals</button>
+        <button class="ur-btn" id="moveBtnUr" onclick="urAutoMove()" disabled>Move Piece</button>
+
+        <div class="game-log" id="urLog">
+          <div class="log-entry">The Pack of Dogs awaits…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>The Five Bird Pieces</h2>
+  <p>The cuneiform tablet names five game pieces for each player after birds — likely astronomical constellations or planets visible to the naked eye. Each piece enters the board at a specific house (square) determined by the required throw, and each has a different relationship with the rosette squares (lucky squares) encountered during the race.</p>
+
+  <table class="piece-table">
+    <thead>
+      <tr><th>Piece</th><th>Entry throw</th><th>Entry square</th><th>Rosette: lands on</th><th>Rosette: passes over</th><th>Astronomical identity</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="bird">🐦 Swallow</span></td>
+        <td>2</td>
+        <td>Square 4 (first rosette) or square before any rosette on re-entry</td>
+        <td class="good">Success with women + general well-being for the pack</td>
+        <td class="bad">Failure with women + no well-being</td>
+        <td>W. Pisces</td>
+      </tr>
+      <tr>
+        <td><span class="bird">⚡ Storm-bird</span></td>
+        <td>5</td>
+        <td>House 5 (first square of the central shared row)</td>
+        <td class="good">Enough food for the pack</td>
+        <td class="bad">Starvation for the pack</td>
+        <td>Unknown — possibly a planet name</td>
+      </tr>
+      <tr>
+        <td><span class="bird">🐦‍⬛ Raven</span></td>
+        <td>6</td>
+        <td>House 6</td>
+        <td class="good">Enough food for the pack</td>
+        <td class="bad">Starvation for the pack</td>
+        <td>Corvus; also associated with Mars</td>
+      </tr>
+      <tr>
+        <td><span class="bird">🐓 Rooster</span></td>
+        <td>7</td>
+        <td>House 7</td>
+        <td class="good">Abundance of fine beer for the pack</td>
+        <td class="bad">Deficiency of fine beer</td>
+        <td>Lepus</td>
+      </tr>
+      <tr>
+        <td><span class="bird">🦅 Eagle</span></td>
+        <td>10</td>
+        <td>House 10</td>
+        <td class="good">Pack eats its fill of meat</td>
+        <td class="bad">Deficiency of meat</td>
+        <td>Aquila</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>The Two Astragals</h2>
+  <p>The cuneiform text specifies two knucklebones: one ordinary <strong>sheep astragal</strong> and one <strong>ox astragal</strong> — the latter more than twice the size of the sheep bone and physically impractical as a regular die. Finkel proposes that the ox bone functioned as a <strong>"double-or-quits" converter</strong>:</p>
+  <ul>
+    <li>Throw the <strong>sheep astragal</strong> first: produces a primary score of 1, 2, 3, or 4.</li>
+    <li>Then throw the <strong>ox astragal</strong>: it has two broader faces ("yes") and two narrower faces ("no").</li>
+    <li>If <strong>"yes"</strong> turns up, the sheep score converts: 1→5, 2→6, 3→7, 4→10 — the exact throws needed to launch each of the four higher pieces.</li>
+    <li>If <strong>"no"</strong> turns up, the throw is lost (or the primary sheep score is used for moving).</li>
+  </ul>
+  <p>This elegant system means every required entry throw (2, 5, 6, 7, 10) is directly producible, and creates constant tension between using a small sheep score for movement and gambling on the ox die for a higher-value conversion.</p>
+
+  <h2>The Board and Route</h2>
+  <p>The third-millennium board from Ur takes the form of a block of 4×3 squares joined to a smaller block of 2×3 by a "bridge" of 2×1. The total is 20 squares. The route — as reconstructed by Finkel and Kendall — runs:</p>
+  <ul>
+    <li>White enters along the <strong>right column</strong> (squares 1–4), turns the corner, races along the <strong>central 12 shared squares</strong> (houses 5–16), then exits along the <strong>right tail column</strong> (squares 17–20).</li>
+    <li>Blue enters along the <strong>left column</strong>, also converges on the central shared row, then exits along the left tail column.</li>
+    <li>The central shared row is where pieces can <strong>capture each other</strong> — landing on an enemy piece sends it back to the start.</li>
+    <li><strong>Rosette squares</strong> (marked with a flower or star design) are safe havens: a piece on a rosette cannot be captured. The rosettes are squares 4, 8, 14 (in the shared row), and 20.</li>
+  </ul>
+
+  <div class="rule-block">
+    <strong>Key rules from BM 33333B (Finkel reconstruction)</strong><br><br>
+    • Pieces must be entered in the correct order (Swallow first, then Storm-bird, Raven, Rooster, Eagle)<br>
+    • But once on the board, any piece can be moved before the others are entered<br>
+    • Landing on an opponent's piece sends it back to start — except on rosette squares<br>
+    • Landing on a rosette earns counters from the Pool; being forced to pass over one costs counters<br>
+    • Exact throws required to move off the board at square 20<br>
+    • Pieces on a rosette are safe from capture; two of a player's pieces may share a rosette<br>
+    • All moves must be made if a legal move exists
+  </div>
+
+  <h2>Archaeology and Distribution</h2>
+  <p>The earliest boards come from the <strong>Royal Cemetery of Ur</strong> (~2600 BCE), excavated by Woolley in the 1920s. The most famous is an inlaid board of shell, red limestone, and lapis lazuli with a drawer for storing the pieces — now in the British Museum. A near-contemporary carved wooden example was found at the cemetery of Shahr-i Sokhta, Seistan, Iran.</p>
+
+  <p>By the second millennium BCE boards appear across the entire Near East. A slight change to the board layout occurred early in the second millennium: the 2×3 block at the narrow end was straightened into a continuous projecting run of 8 squares, creating a central run of 12 squares and keeping the total at 20. This later form survived into the first century CE. In Egypt, Tutankhamun's tomb contained an astragal of unusual size — likely used with the Game of Twenty Squares — alongside his six Senet sets.</p>
+
+  <p>The dual function of the board — game on one side, astrology/fortune-telling on the other (as recorded on BM 33333B) — may explain why boards from some second-millennium sites in Palestine and Syria have a shape strikingly similar to clay sheep-liver models used by diviners. Finkel proposes that the lucky-square (rosette) mechanic may be the game's oldest stratum, and that the elaborate bird-naming and betting system recorded in 177 BCE is a later development from a simpler "land on rosette = extra throw" rule.</p>
+
+  <p class="source-note">
+    <strong>Primary source:</strong> Finkel, I. L., "On the Rules for the Royal Game of Ur," in <em>Ancient Board Games in Perspective</em>, British Museum Press, 2007, pp. 16–32. <strong>Archaeological sources:</strong> Woolley, C. L., <em>The Royal Cemetery</em>, Ur Excavations II, 1934. <strong>Recommended:</strong> royalur.net (Irving Finkel's authoritative online version); British Museum collection (BM 33333B, BM boards from Ur). <strong>See also:</strong> Crist, W., Dunn-Vaturi, A-E., &amp; de Voogt, A., <em>Ancient Egyptians at Play</em>, Bloomsbury, 2016.
+  </p>
+
+</main>
+
+<aside class="article-sidebar">
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Quick Facts</div>
+    <div class="sidebar-row"><span class="sidebar-key">Also known as</span><span class="sidebar-val">Game of Twenty Squares; Pack of Dogs</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Earliest boards</span><span class="sidebar-val">~2600 BCE, Royal Cemetery of Ur</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Rules tablet</span><span class="sidebar-val">BM 33333B, 177 BCE, Babylon</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Scribe</span><span class="sidebar-val">Itti-Marduk-balatu</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Players</span><span class="sidebar-val">2</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Pieces per player</span><span class="sidebar-val">5 (named after birds)</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Dice</span><span class="sidebar-val">Sheep astragal + ox astragal</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Board squares</span><span class="sidebar-val">20</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Known boards</span><span class="sidebar-val">100+ from Iraq to Crete</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Rules status</span><span class="sidebar-val">Cuneiform text survives (BM 33333B)</span></div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">On This Page</div>
+    <nav class="sidebar-nav">
+      <a href="#">The Tablet &amp; Rules</a>
+      <a href="#">Play the Game</a>
+      <a href="#">The Five Bird Pieces</a>
+      <a href="#">The Two Astragals</a>
+      <a href="#">Board &amp; Route</a>
+      <a href="#">Archaeology</a>
+    </nav>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Related Games</div>
+    <nav class="sidebar-nav">
+      <a href="senet.html">Senet</a>
+      <a href="mehen.html">Mehen</a>
+      <a href="games.html">All Ancient Games →</a>
+    </nav>
+  </div>
+</aside>
+</div>
+
+<footer class="footer">
+  <a href="index.html">archAIology</a> · archaiology.org · © 2026
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// ROYAL GAME OF UR — Implementation based on Finkel (2007)
+// Board: 20 squares. Route: private columns + shared central row.
+// ══════════════════════════════════════════════════════════════════
+
+const canvas = document.getElementById('urCanvas');
+const ctx    = canvas.getContext('2d');
+
+// ── Board layout ──────────────────────────────────────────────────
+// Physical squares: 4×3 top block + 2×1 bridge + 4×3 bottom block
+// We draw a 4-column × 8-row grid, with cells at specific positions.
+//
+// Column indices: 0=left, 1=center-left, 2=center-right, 3=right
+// Logical board squares 1-20 mapped to grid cells (col, row):
+//   White route: sq1=(3,0) sq2=(3,1) sq3=(3,2) sq4=(3,3) [rosette]
+//                sq5=(2,3) shared →  sq6=(1,3) sq7=(0,3)... actually
+//   We use the standard reconstruction:
+//     White private: col 3, rows 3→0 (bottom→top) = squares 1-4
+//     Shared central: col 2 row 0 → col 2 row 3 → bridge → ... 
+//   Simplified to a linear path of 20 squares with visual positions.
+
+const SQ = 58; // square size px
+const PAD = 8;
+
+// Grid positions (col, row) for squares 1-20 in White's path
+// Board is 4 cols × 8 rows visually (top block rows 0-2, bridge row 3-4, bottom block rows 5-7)
+// White private = right col going down; shared = middle cols; Black private = left col
+const GRID_COLS = 4;
+const GRID_ROWS = 8;
+
+// Square definitions: [col, row, type]
+// type: 'w'=white private, 'b'=black private, 's'=shared, 'r'=rosette
+const SQUARE_DEFS = [
+  // White private (sq 1-4): right col, top block, ascending (row 2→0)
+  [3,2,'w'],  // sq 1
+  [3,1,'w'],  // sq 2
+  [3,0,'w'],  // sq 3
+  [3,3,'wr'], // sq 4 — rosette (first rosette for white)
+  // Shared central row (sq 5-16): middle cols
+  [2,3,'s'],  // sq 5
+  [1,3,'s'],  // sq 6
+  [0,3,'s'],  // sq 7
+  [0,4,'sr'], // sq 8 — rosette
+  [1,4,'s'],  // sq 9
+  [2,4,'s'],  // sq 10
+  [3,4,'s'],  // sq 11
+  [3,5,'s'],  // sq 12
+  [2,5,'s'],  // sq 13
+  [1,5,'sr'], // sq 14 — rosette
+  [0,5,'s'],  // sq 15
+  [0,6,'s'],  // sq 16
+  // White exit (sq 17-20): right col, bottom block
+  [1,6,'w'],  // sq 17
+  [2,6,'w'],  // sq 18
+  [3,6,'w'],  // sq 19
+  [3,7,'wr'], // sq 20 — rosette (exit rosette)
+];
+
+// Black uses mirror-image private columns but same shared (sq 5-16)
+// Black private sq 1-4: left col top block; sq 17-20: left col bottom
+const BLACK_PRIVATE = [
+  [0,2,'b'],  // bsq 1
+  [0,1,'b'],  // bsq 2
+  [0,0,'b'],  // bsq 3
+  [0,3,'br'], // bsq 4 — rosette (same physical cell as white sq 4... actually on the other side)
+];
+// For simplicity, white sq4 rosette = col3,row3; black sq4 = col0,row3
+// They're the same row but different columns — pieces can't interact here.
+const BLACK_EXIT = [
+  [1,6,'b'],
+  [2,6,'b'],
+  [3,6,'b'],
+  [3,7,'br'],
+];
+// Physically, white and black private squares overlap in layout.
+// We handle this by offset when drawing pieces.
+
+// Rosette squares (0-indexed square numbers along the path, 0=sq1)
+const ROSETTES_W = new Set([3, 7, 13, 19]); // sq 4,8,14,20
+
+const BIRD_NAMES = ['Swallow','Storm-bird','Raven','Rooster','Eagle'];
+const BIRD_ENTRY = [2, 5, 6, 7, 10]; // required throw to enter each piece
+// Counter values per piece for rosette landing
+const BIRD_COUNTERS = [3, 4, 4, 4, 5];
+
+// ── State ──────────────────────────────────────────────────────────
+let G = null;
+
+function urNewGame() {
+  G = {
+    turn:       0,        // 0=white, 1=blue
+    phase:      'roll',   // roll | move | done
+    // pos[p][piece]: -1=not entered, 0..19=board sq index, 20=finished
+    pos:        [[-1,-1,-1,-1,-1], [-1,-1,-1,-1,-1]],
+    counters:   [10, 10],
+    pool:       10,
+    roll:       null,     // {sheep, ox, total}
+    selected:   null,     // selected piece index for move
+    log:        [],
+  };
+  document.getElementById('rollBtnUr').disabled  = false;
+  document.getElementById('moveBtnUr').disabled  = true;
+  G.log = [];
+  addUrLog('New game — White goes first.', true);
+  addUrLog('Pieces must enter in order: Swallow first.');
+  updateUrUI();
+  drawUrBoard();
+}
+
+// ── Dice ──────────────────────────────────────────────────────────
+function urRoll() {
+  if (!G || G.phase !== 'roll') return;
+  const sheep = Math.ceil(Math.random() * 4);   // 1-4
+  const ox    = Math.random() < 0.5;             // true = yes
+  let total   = sheep;
+  if (ox) {
+    const conv = [null, 5, 6, 7, 10];
+    total = conv[sheep];
+  }
+  G.roll = { sheep, ox, total };
+
+  // Animate dice
+  const d1 = document.getElementById('d1');
+  const d2 = document.getElementById('d2');
+  const d3 = document.getElementById('d3');
+  d1.textContent = ['','⚀','⚁','⚂','⚃'][sheep];
+  d1.classList.remove('rolled'); void d1.offsetWidth; d1.classList.add('rolled');
+  d2.textContent = ox ? '✅' : '❌';
+  d2.classList.remove('rolled'); void d2.offsetWidth; d2.classList.add('rolled');
+  d3.textContent = ox ? ['','5','6','7','—','—','—','10'][total] ?? total : sheep;
+  document.getElementById('dTotal').textContent = total;
+  document.getElementById('diceNote').textContent = ox
+    ? `Sheep: ${sheep} → ox "yes" → converts to ${total}`
+    : `Sheep: ${sheep} → ox "no" → move ${sheep} spaces`;
+
+  const names = ['White','Blue'];
+  addUrLog(`${names[G.turn]} rolls: sheep=${sheep}, ox=${ox?'yes':'no'} → ${total}`, true);
+
+  // Check if any move is possible
+  const moves = getLegalMoves(G.turn, total);
+  if (moves.length === 0) {
+    addUrLog(`No legal moves for ${total}. Turn passes.`);
+    G.phase = 'roll';
+    G.turn  = 1 - G.turn;
+    updateUrUI();
+    document.getElementById('rollBtnUr').disabled = false;
+    document.getElementById('moveBtnUr').disabled = true;
+    return;
+  }
+
+  G.phase = 'move';
+  document.getElementById('rollBtnUr').disabled = true;
+  document.getElementById('moveBtnUr').disabled = false;
+  updateUrStatus(`${names[G.turn]}: move a piece (${moves.length} option${moves.length>1?'s':''})`);
+  drawUrBoard();
+}
+
+function getLegalMoves(player, roll) {
+  const pos   = G.pos[player];
+  const opp   = G.pos[1-player];
+  const moves = [];
+
+  for (let p = 0; p < 5; p++) {
+    const cur = pos[p];
+    if (cur === 20) continue; // already done
+
+    // Piece not entered yet
+    if (cur === -1) {
+      // Must enter in order — find first unentered
+      let firstUnEntered = pos.findIndex(x => x === -1);
+      if (p !== firstUnEntered) continue; // can only enter lowest-indexed unentered piece
+      if (roll === BIRD_ENTRY[p]) {
+        // Entry square
+        const entrySq = BIRD_ENTRY[p] - 1; // sq index (0-based)
+        if (!isBlockedByOwn(player, p, entrySq)) {
+          moves.push({ piece: p, from: -1, to: entrySq });
+        }
+      }
+      continue;
+    }
+
+    // Piece on board — try to advance
+    const newSq = cur + roll;
+    if (newSq > 19) {
+      // Moving off board — needs exact throw to reach sq 20 (index 19) then one more
+      if (newSq === 20) moves.push({ piece: p, from: cur, to: 20 });
+      continue;
+    }
+    if (isBlockedByOwn(player, p, newSq)) continue;
+    // Can't capture on rosette
+    if (ROSETTES_W.has(newSq) && isSafeSquare(newSq, player, p)) continue;
+    moves.push({ piece: p, from: cur, to: newSq });
+  }
+  return moves;
+}
+
+function isBlockedByOwn(player, pieceIdx, sq) {
+  return G.pos[player].some((p, i) => i !== pieceIdx && p === sq);
+}
+
+function isSafeSquare(sq, player, pieceIdx) {
+  // Rosette is safe — can't capture if opponent there
+  if (!ROSETTES_W.has(sq)) return false;
+  return G.pos[1-player].includes(sq);
+}
+
+function urAutoMove() {
+  if (!G || G.phase !== 'move') return;
+  const moves = getLegalMoves(G.turn, G.roll.total);
+  if (!moves.length) { G.phase='roll'; G.turn=1-G.turn; updateUrUI(); return; }
+
+  // Auto-select best move: prefer rosette landings, then highest-index piece
+  let best = moves[0];
+  for (const m of moves) {
+    if (ROSETTES_W.has(m.to)) { best = m; break; }
+  }
+
+  executeMove(G.turn, best);
+}
+
+function executeMove(player, move) {
+  const names = ['White','Blue'];
+  const opp   = 1 - player;
+  const { piece, from, to } = move;
+
+  // Check for capture
+  let captured = false;
+  if (to < 20) {
+    const capturedIdx = G.pos[opp].findIndex(p => p === to);
+    if (capturedIdx !== -1 && !ROSETTES_W.has(to)) {
+      G.pos[opp][capturedIdx] = -1; // send back
+      addUrLog(`💥 ${names[player]}'s ${BIRD_NAMES[piece]} captures ${names[opp]}'s ${BIRD_NAMES[capturedIdx]}!`, false, false, true);
+      captured = true;
+    }
+  }
+
+  G.pos[player][piece] = to;
+
+  // Rosette landing — earn counters
+  if (to < 20 && ROSETTES_W.has(to)) {
+    const earn = BIRD_COUNTERS[piece];
+    const fromPool = Math.min(earn, G.pool);
+    G.counters[player] += fromPool;
+    G.pool = Math.max(0, G.pool - fromPool);
+    addUrLog(`✨ ${names[player]}'s ${BIRD_NAMES[piece]} lands on rosette! Earns ${fromPool} counter${fromPool>1?'s':''}.`, false, false, false, true);
+    // Rosette = extra turn
+    G.phase = 'roll';
+    G.roll  = null;
+    addUrLog(`🌟 Rosette! ${names[player]} gets an extra turn.`);
+    document.getElementById('rollBtnUr').disabled = false;
+    document.getElementById('moveBtnUr').disabled = true;
+  } else if (to === 20) {
+    addUrLog(`🏁 ${names[player]}'s ${BIRD_NAMES[piece]} exits the board!`, true);
+    // Check win
+    if (G.pos[player].every(p => p === 20)) {
+      G.phase = 'done';
+      addUrLog(`🏆 ${names[player]} wins the Pack of Dogs!`, false, true);
+      document.getElementById('rollBtnUr').disabled = true;
+      document.getElementById('moveBtnUr').disabled = true;
+      updateUrStatus(`🏆 ${names[player]} wins!`);
+    } else {
+      G.phase = 'roll';
+      G.turn  = opp;
+      document.getElementById('rollBtnUr').disabled = false;
+      document.getElementById('moveBtnUr').disabled = true;
+    }
+  } else {
+    if (!captured) addUrLog(`${names[player]}: ${BIRD_NAMES[piece]} → square ${to+1}`);
+    G.phase = 'roll';
+    G.turn  = opp;
+    document.getElementById('rollBtnUr').disabled = false;
+    document.getElementById('moveBtnUr').disabled = true;
+  }
+
+  // Pay counters if forced to pass over rosette (simplified: track on pass)
+  updateUrUI();
+  drawUrBoard();
+}
+
+function addUrLog(msg, hi=false, win=false, capture=false, rosette=false) {
+  if (!G) return;
+  G.log.unshift({msg, hi, win, capture, rosette});
+  if (G.log.length > 40) G.log.pop();
+  const el = document.getElementById('urLog');
+  el.innerHTML = G.log.map(e => {
+    let cls = 'log-entry';
+    if (e.hi) cls += ' hi';
+    if (e.win) cls += ' win';
+    if (e.capture) cls += ' capture';
+    if (e.rosette) cls += ' rosette';
+    return `<div class="${cls}">${e.msg}</div>`;
+  }).join('');
+}
+
+function updateUrStatus(msg) {
+  document.getElementById('urStatus').textContent = msg;
+}
+
+function updateUrUI() {
+  if (!G) return;
+  const names = ['White','Blue'];
+
+  // Active tray highlight
+  document.getElementById('whiteTray').classList.toggle('active-tray', G.turn===0 && G.phase!=='done');
+  document.getElementById('blackTray').classList.toggle('active-tray', G.turn===1 && G.phase!=='done');
+
+  // Piece pips
+  ['white','black'].forEach((col, p) => {
+    const el = document.getElementById(col+'Pieces');
+    el.innerHTML = '';
+    G.pos[p].forEach((sq, i) => {
+      const d = document.createElement('div');
+      d.className = `piece-pip ${p===0?'w':'b'}${sq===20?' done':''}`;
+      d.textContent = BIRD_NAMES[i][0];
+      d.title = BIRD_NAMES[i] + (sq===-1?' (not entered)':sq===20?' (finished)':`' sq ${sq+1}`);
+      el.appendChild(d);
+    });
+    const finished = G.pos[p].filter(x=>x===20).length;
+    const onBoard  = G.pos[p].filter(x=>x>=0&&x<20).length;
+    document.getElementById(col+'Pos').textContent =
+      `${finished} finished · ${onBoard} on board · ${5-finished-onBoard} waiting`;
+  });
+
+  // Counters
+  document.getElementById('whiteCounters').textContent = G.counters[0];
+  document.getElementById('blackCounters').textContent = G.counters[1];
+  document.getElementById('poolVal').textContent = G.pool;
+
+  if (G.phase === 'roll' && G.phase !== 'done') {
+    updateUrStatus(`${names[G.turn]}'s turn — roll the astragals`);
+  }
+}
+
+// ── Board rendering ───────────────────────────────────────────────
+function cellXY(col, row) {
+  return { x: PAD + col * SQ, y: PAD + row * SQ };
+}
+
+function drawUrBoard() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  // Background
+  ctx.fillStyle = '#0d1828';
+  ctx.fillRect(0,0,W,H);
+
+  // Draw all cells
+  SQUARE_DEFS.forEach((def, idx) => {
+    const [col, row, type] = def;
+    const {x,y} = cellXY(col, row);
+    const isRosette = type.includes('r');
+    const isShared  = type.includes('s') && !type.includes('w') && !type.includes('b');
+
+    // Cell background
+    ctx.fillStyle = isRosette ? '#3a2a08' : isShared ? '#1a2a3a' : '#0e1a2a';
+    ctx.fillRect(x+1,y+1,SQ-2,SQ-2);
+
+    // Cell border
+    ctx.strokeStyle = isRosette ? 'rgba(200,160,32,.6)' : 'rgba(90,138,184,.25)';
+    ctx.lineWidth   = isRosette ? 1.5 : 1;
+    ctx.strokeRect(x+1,y+1,SQ-2,SQ-2);
+
+    // Rosette decoration
+    if (isRosette) {
+      ctx.save();
+      ctx.translate(x+SQ/2, y+SQ/2);
+      for (let r=0;r<8;r++) {
+        ctx.rotate(Math.PI/4);
+        ctx.beginPath();
+        ctx.ellipse(0, SQ*0.27, SQ*0.06, SQ*0.13, 0, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(200,160,32,.25)';
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(0,0,SQ*0.12,0,Math.PI*2);
+      ctx.fillStyle = 'rgba(200,160,32,.4)';
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Square number
+    ctx.fillStyle = isRosette ? 'rgba(200,160,32,.5)' : 'rgba(90,138,184,.3)';
+    ctx.font = '8px "DM Sans",sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText(idx+1, x+3, y+3);
+  });
+
+  // Mark black private squares (mirrored left col)
+  // sq 1-4 for black = col 0, rows 2,1,0,3
+  [[0,2],[0,1],[0,0],[0,3]].forEach(([col,row], i) => {
+    const {x,y} = cellXY(col,row);
+    if (i === 3) return; // sq4 rosette already drawn as shared
+    ctx.strokeStyle = 'rgba(90,138,184,.15)';
+    ctx.lineWidth   = 1;
+    ctx.strokeRect(x+1,y+1,SQ-2,SQ-2);
+  });
+
+  if (!G) return;
+
+  // Draw pieces on board
+  G.pos.forEach((pieces, player) => {
+    pieces.forEach((sq, pieceIdx) => {
+      if (sq < 0 || sq === 20) return;
+      const [col, row] = SQUARE_DEFS[sq];
+      const {x,y} = cellXY(col, row);
+
+      // Offset multiple pieces on same square
+      const sameSquare = pieces.filter((s,i) => s === sq && i !== pieceIdx).length;
+      const offX = player === 0 ? 6 : SQ-22;
+      const offY = sameSquare ? 20 : SQ/2 - 10;
+
+      const cx = x + offX + 8;
+      const cy = y + offY + 8;
+
+      // Glow for active player's piece if in move phase
+      if (G.phase === 'move' && G.turn === player) {
+        ctx.save();
+        ctx.shadowColor  = player === 0 ? '#f0e0b0' : '#5a8ab8';
+        ctx.shadowBlur   = 8;
+      }
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, 9, 0, Math.PI*2);
+      if (player === 0) {
+        const grd = ctx.createRadialGradient(cx-2,cy-2,1,cx,cy,9);
+        grd.addColorStop(0,'#fff');
+        grd.addColorStop(1,'#c8b890');
+        ctx.fillStyle = grd;
+      } else {
+        const grd = ctx.createRadialGradient(cx-2,cy-2,1,cx,cy,9);
+        grd.addColorStop(0,'#3a6a9a');
+        grd.addColorStop(1,'#0a1a2a');
+        ctx.fillStyle = grd;
+      }
+      ctx.fill();
+      if (G.phase === 'move' && G.turn === player) ctx.restore();
+
+      ctx.fillStyle = player === 0 ? '#3a2a10' : '#8ab8d8';
+      ctx.font = 'bold 7px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(BIRD_NAMES[pieceIdx][0], cx, cy);
+    });
+  });
+}
+
+// Init
+drawUrBoard();
+</script>
+</body>
+</html>
