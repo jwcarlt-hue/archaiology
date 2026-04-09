@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senet — The Ancient Egyptian Game — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#faf8f3; --paper:#f2ede3; --linen:#e8e0d0; --rule:#d5ccb8;
+  --ash:#8a8070; --ink:#1c1814; --deep:#0f0d0a;
+  --ochre:#b8892a; --ochre-lt:#d4a84b; --terra:#7a3e1a;
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  /* Senet-specific */
+  --sand:#d4b896; --sand-dk:#b8965a; --sand-lt:#ede0c8;
+  --lapis:#2a4a7a; --lapis-lt:#4a7ab8;
+  --hieratic:#1a1208;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+/* ── MASTHEAD ── */
+.masthead{background:var(--ink);padding:0 2rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px;}
+.logo{font-family:var(--serif);font-size:1.2rem;font-weight:900;color:var(--cream);letter-spacing:-.01em;}
+.logo span{color:var(--ochre);font-style:italic;}
+.nav-links{display:flex;gap:1.5rem;overflow-x:auto;}
+.nav-link{font-family:var(--sans);font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);transition:color .2s;white-space:nowrap;}
+.nav-link:hover{color:var(--cream);}
+
+/* ── SECTION NAV ── */
+.section-nav{background:var(--paper);border-bottom:1px solid var(--rule);padding:0 2rem;overflow-x:auto;}
+.section-nav-inner{max-width:1280px;margin:0 auto;display:flex;gap:0;}
+.section-nav-link{font-family:var(--sans);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);padding:.7rem 1.4rem;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.section-nav-link:hover{color:var(--ink);border-bottom-color:var(--ochre);}
+.section-nav-link.active{color:var(--ink);border-bottom-color:var(--ochre);}
+
+/* ── BREADCRUMB ── */
+.breadcrumb{max-width:1280px;margin:0 auto;padding:.9rem 2rem;font-family:var(--sans);font-size:.65rem;color:var(--ash);display:flex;gap:.5rem;align-items:center;}
+.breadcrumb a{color:var(--ash);transition:color .2s;}
+.breadcrumb a:hover{color:var(--ochre);}
+.breadcrumb-sep{opacity:.4;}
+
+/* ── ARTICLE HERO ── */
+.article-hero{border-bottom:1px solid var(--rule);padding-bottom:2.5rem;margin-bottom:3rem;}
+.article-hero-inner{max-width:1280px;margin:0 auto;padding:0 2rem;}
+.article-tag{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre);margin-bottom:.8rem;}
+.article-title{font-family:var(--serif);font-size:clamp(2.4rem,5vw,4rem);font-weight:900;line-height:1.08;letter-spacing:-.025em;margin-bottom:1rem;max-width:820px;}
+.article-title em{color:var(--ochre);font-style:italic;}
+.article-dek{font-family:var(--body);font-size:1.05rem;line-height:1.7;color:var(--ash);max-width:680px;margin-bottom:1.4rem;}
+.article-byline{font-family:var(--sans);font-size:.7rem;color:var(--ash);display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;}
+.byline-dot{opacity:.3;}
+
+/* ── LAYOUT ── */
+.article-body{max-width:1280px;margin:0 auto;padding:0 2rem 5rem;display:grid;grid-template-columns:1fr 340px;gap:3.5rem;align-items:start;}
+@media(max-width:900px){.article-body{grid-template-columns:1fr;}.article-sidebar{display:none;}}
+.article-content{min-width:0;}
+
+/* ── PROSE ── */
+.prose h2{font-family:var(--serif);font-size:1.5rem;font-weight:700;margin:2.5rem 0 .8rem;color:var(--ink);}
+.prose h3{font-family:var(--serif);font-size:1.15rem;font-weight:600;margin:1.8rem 0 .5rem;color:var(--ink);}
+.prose p{font-family:var(--body);font-size:1rem;line-height:1.8;color:#3a3228;margin-bottom:1.1rem;}
+.prose p strong{color:var(--ink);}
+.prose ul,.prose ol{padding-left:1.4rem;margin-bottom:1.1rem;}
+.prose li{font-family:var(--body);font-size:.95rem;line-height:1.75;color:#3a3228;margin-bottom:.3rem;}
+.prose .rule-block{background:var(--paper);border-left:3px solid var(--ochre);padding:1rem 1.2rem;margin:1.5rem 0;font-family:var(--sans);font-size:.82rem;line-height:1.65;}
+.prose .rule-block strong{color:var(--ink);font-size:.85rem;}
+.prose .source-note{font-family:var(--sans);font-size:.7rem;color:var(--ash);border-top:1px solid var(--rule);padding-top:1rem;margin-top:2.5rem;line-height:1.6;}
+
+/* ── SENET BOARD ── */
+.board-wrap{background:var(--ink);padding:2rem;margin:2.5rem 0;border:1px solid rgba(212,184,150,.15);}
+.board-title{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre);margin-bottom:1.2rem;}
+.senet-board{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;max-width:600px;}
+.sq{
+  aspect-ratio:1;background:var(--sand-lt);border:1px solid var(--sand-dk);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;font-family:var(--sans);font-size:.55rem;font-weight:700;
+  color:var(--hieratic);cursor:default;transition:background .15s;
+  min-width:0;
+}
+.sq-num{position:absolute;top:2px;left:3px;font-size:.45rem;opacity:.45;line-height:1;}
+.sq-sym{font-size:1rem;line-height:1;}
+/* Square types */
+.sq.special{background:var(--sand);}
+.sq.safety{background:linear-gradient(135deg,var(--sand-lt) 0%,#c8d4a8 100%);border-color:#8a9a68;}
+.sq.trap{background:linear-gradient(135deg,var(--sand-lt) 0%,#c8a8a0 100%);border-color:#9a6858;}
+/* Row reversal — row 2 reads right to left */
+.sq.r2{order:0;}
+/* Direction arrows at row ends */
+.board-arrows{display:flex;justify-content:space-between;max-width:600px;margin-top:4px;}
+.board-arrow{font-family:var(--sans);font-size:.6rem;color:rgba(232,224,208,.3);letter-spacing:.05em;}
+/* Legend */
+.board-legend{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1rem;}
+.legend-item{display:flex;align-items:center;gap:.4rem;font-family:var(--sans);font-size:.6rem;color:rgba(232,224,208,.5);}
+.legend-swatch{width:12px;height:12px;border:1px solid rgba(255,255,255,.1);}
+.ls-plain{background:var(--sand-lt);}
+.ls-special{background:var(--sand);}
+.ls-safety{background:linear-gradient(135deg,var(--sand-lt),#c8d4a8);}
+.ls-trap{background:linear-gradient(135deg,var(--sand-lt),#c8a8a0);}
+
+/* ── PADDLE THROW DIAGRAM ── */
+.paddle-table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-family:var(--sans);font-size:.8rem;}
+.paddle-table th{background:var(--paper);font-weight:700;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;padding:.5rem .8rem;border:1px solid var(--rule);color:var(--ash);text-align:left;}
+.paddle-table td{padding:.45rem .8rem;border:1px solid var(--rule);vertical-align:middle;}
+.paddle-table tr:nth-child(even) td{background:var(--paper);}
+.paddle-table .extra{color:var(--ochre);font-weight:700;font-size:.7rem;}
+.paddle-visual{display:flex;gap:3px;align-items:center;}
+.paddle{width:14px;height:28px;border-radius:7px;border:1px solid var(--rule);display:inline-block;}
+.paddle.w{background:var(--cream);}
+.paddle.b{background:var(--ink);}
+
+/* ── SIDEBAR ── */
+.article-sidebar{position:sticky;top:2rem;}
+.sidebar-card{background:var(--paper);border:1px solid var(--rule);padding:1.4rem;margin-bottom:1.4rem;}
+.sidebar-card-title{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ochre);margin-bottom:1rem;}
+.sidebar-row{display:flex;justify-content:space-between;align-items:baseline;padding:.45rem 0;border-bottom:1px solid var(--linen);font-family:var(--sans);font-size:.75rem;gap:.5rem;}
+.sidebar-row:last-child{border-bottom:none;}
+.sidebar-key{color:var(--ash);}
+.sidebar-val{color:var(--ink);font-weight:600;text-align:right;}
+.sidebar-nav{display:flex;flex-direction:column;gap:.3rem;}
+.sidebar-nav a{font-family:var(--sans);font-size:.72rem;color:var(--ash);padding:.35rem 0;border-bottom:1px solid var(--linen);display:flex;align-items:center;gap:.4rem;transition:color .2s;}
+.sidebar-nav a:last-child{border-bottom:none;}
+.sidebar-nav a:hover{color:var(--ochre);}
+.sidebar-nav a::before{content:'§';opacity:.3;font-size:.65rem;}
+
+/* ── VARIANTS TABLE ── */
+.variants-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.82rem;}
+.variants-table th{background:var(--paper);padding:.5rem .7rem;border:1px solid var(--rule);font-family:var(--sans);font-size:.63rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ash);text-align:left;}
+.variants-table td{padding:.5rem .7rem;border:1px solid var(--rule);font-family:var(--body);vertical-align:top;line-height:1.55;}
+.variants-table tr:nth-child(even) td{background:var(--paper);}
+.variants-table .scholar{font-family:var(--sans);font-weight:700;font-size:.75rem;color:var(--ink);}
+
+/* ── PULL QUOTE ── */
+.pull-quote{border-left:3px solid var(--ochre);padding:1rem 1.5rem;margin:2rem 0;background:var(--paper);}
+.pull-quote p{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--ink);line-height:1.6;margin:0 0 .4rem;}
+.pull-quote cite{font-family:var(--sans);font-size:.65rem;color:var(--ash);letter-spacing:.05em;text-transform:uppercase;}
+
+/* ── FOOTER ── */
+.footer{background:var(--ink);color:var(--ash);text-align:center;padding:1.5rem;font-family:var(--sans);font-size:.68rem;}
+.footer a{color:var(--ochre);}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <nav class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="news.html">Feed</a>
+      <a class="nav-link" href="map.html">Map</a>
+      <a class="nav-link" href="sky.html">Sky Archive</a>
+      <a class="nav-link" href="maritime.html">Maritime</a>
+      <a class="nav-link" href="maya_inscriptions.html">Maya</a>
+      <a class="nav-link" href="bioanthro.html">Bioanthro</a>
+      <a class="nav-link" href="luwian.html">Luwian</a>
+      <a class="nav-link" href="games.html">Games</a>
+      <a class="nav-link" href="upload.html">Upload</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="section-nav">
+  <div class="section-nav-inner">
+    <a class="section-nav-link" href="index.html">Home</a>
+    <a class="section-nav-link" href="news.html">Feed</a>
+    <a class="section-nav-link" href="map.html">Map</a>
+    <a class="section-nav-link" href="sky.html">Sky Archive</a>
+    <a class="section-nav-link" href="maritime.html">Maritime</a>
+    <a class="section-nav-link" href="maya_inscriptions.html">Maya</a>
+    <a class="section-nav-link" href="bioanthro.html">Bioanthro</a>
+    <a class="section-nav-link" href="luwian.html">Luwian</a>
+    <a class="section-nav-link active" href="games.html">Games</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="games.html">Games</a>
+  <span class="breadcrumb-sep">›</span>
+  <span>Senet</span>
+</div>
+
+<div class="article-hero-inner">
+  <div class="article-hero">
+    <div class="article-tag">Ancient Egypt · Board Games · ~3500 BCE – present</div>
+    <h1 class="article-title">Senet — <em>The Passage</em><br>Through the Duat</h1>
+    <p class="article-dek">One of the oldest and best-attested board games in the world, Senet evolved from an ordinary race game into a sacred map of the soul's journey through the Egyptian underworld. Six sets were buried with Tutankhamun. The rules survive only in fragments — but the board endures.</p>
+    <div class="article-byline">
+      <span>Egypt &amp; Nubia</span>
+      <span class="byline-dot">·</span>
+      <span>~3500 BCE – Late Antique period</span>
+      <span class="byline-dot">·</span>
+      <span>30 squares · 2 players · 5 pieces each</span>
+    </div>
+  </div>
+</div>
+
+<div class="article-body">
+
+  <!-- MAIN CONTENT -->
+  <main class="article-content prose">
+
+    <h2>The Board</h2>
+    <p>Senet is played on a grid of <strong>30 squares</strong> arranged in three rows of ten. Pieces travel in a reversed S-path: left to right along row 1 (squares 1–10), right to left along row 2 (squares 20–11), and left to right again along row 3 (squares 21–30). The final five squares of row 3 are marked with hieroglyphic symbols and carry special rules.</p>
+
+    <!-- INTERACTIVE BOARD -->
+    <div class="board-wrap">
+      <div class="board-title">Senet Board — 30 Squares</div>
+      <div class="senet-board" id="senetBoard"></div>
+      <div class="board-arrows">
+        <span class="board-arrow">→ Row 1: squares 1–10</span>
+        <span class="board-arrow">Row 2: squares 20–11 ←</span>
+        <span class="board-arrow">→ Row 3: squares 21–30</span>
+      </div>
+      <div class="board-legend">
+        <div class="legend-item"><div class="legend-swatch ls-plain"></div>Plain square</div>
+        <div class="legend-item"><div class="legend-swatch ls-special"></div>Special square</div>
+        <div class="legend-item"><div class="legend-swatch ls-safety"></div>Safety (cannot be attacked)</div>
+        <div class="legend-item"><div class="legend-swatch ls-trap"></div>Trap (send back to sq. 15)</div>
+      </div>
+    </div>
+
+    <p>The five named squares at the end of the board appear across multiple surviving sets and are the most securely attested element of Senet's rules:</p>
+    <ul>
+      <li><strong>Square 26 — House of Beauty (nfr):</strong> A safety square; pieces cannot be attacked here. In some rule sets pieces must land here exactly before proceeding.</li>
+      <li><strong>Square 27 — House of Waters (mw):</strong> The trap. Pieces landing here are sent back to square 15 (or the first open square before it).</li>
+      <li><strong>Square 28 — House of Three Judges (ḥmt nṯrw):</strong> Safety; marked with one vertical stroke (|). Some variants require an exact throw of 3 to exit.</li>
+      <li><strong>Square 29 — House of Two Judges:</strong> Safety; marked with two strokes (||). Some variants require an exact throw of 2 to exit.</li>
+      <li><strong>Square 30 — House of Horus (ḥrw):</strong> Marked with three strokes (|||). Reaching and exiting here wins the piece.</li>
+    </ul>
+    <p>Square 15 — sometimes called the <strong>House of Second Life (ankh)</strong> — is also marked on surviving boards and functions as a safe haven or rebirth square to which displaced pieces return.</p>
+
+    <h2>Throwing Sticks</h2>
+    <p>Movement is determined by throwing <strong>four two-sided sticks</strong> (or knucklebones in some variants), each with one decorated face (white) and one plain face (black). The number of white faces up determines how far a piece moves.</p>
+
+    <table class="paddle-table">
+      <thead>
+        <tr>
+          <th>Throw</th>
+          <th>White up</th>
+          <th>Move</th>
+          <th>Extra turn?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="paddle-visual"><div class="paddle w"></div><div class="paddle b"></div><div class="paddle b"></div><div class="paddle b"></div></div></td>
+          <td>1</td>
+          <td>1 square</td>
+          <td class="extra">✦ Throw again</td>
+        </tr>
+        <tr>
+          <td><div class="paddle-visual"><div class="paddle w"></div><div class="paddle w"></div><div class="paddle b"></div><div class="paddle b"></div></div></td>
+          <td>2</td>
+          <td>2 squares</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><div class="paddle-visual"><div class="paddle w"></div><div class="paddle w"></div><div class="paddle w"></div><div class="paddle b"></div></div></td>
+          <td>3</td>
+          <td>3 squares</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><div class="paddle-visual"><div class="paddle w"></div><div class="paddle w"></div><div class="paddle w"></div><div class="paddle w"></div></div></td>
+          <td>4</td>
+          <td>4 squares</td>
+          <td class="extra">✦ Throw again</td>
+        </tr>
+        <tr>
+          <td><div class="paddle-visual"><div class="paddle b"></div><div class="paddle b"></div><div class="paddle b"></div><div class="paddle b"></div></div></td>
+          <td>0 (all black)</td>
+          <td>5 or 6 squares</td>
+          <td class="extra">✦ Throw again</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:.85rem;color:var(--ash);font-family:var(--sans)">Note: the all-black throw (0 white) moves 5 squares in some rule sets and 6 in others. Both Jequier and the Make Your Own Senet variant diverge here.</p>
+
+    <h2>How to Play — Jequier Rules</h2>
+    <p>The rules presented here follow <strong>Jequier's reconstruction</strong>, the most widely used modern form, with notes on variants where rules sets differ significantly.</p>
+
+    <div class="rule-block">
+      <strong>Setup</strong><br>
+      Each player has 5 pieces. Pieces begin alternating on squares 1–10: one player's pieces on squares 1, 3, 5, 7, 9 and the other's on 2, 4, 6, 8, 10. The first throw of the game must move the piece on square 10.
+    </div>
+
+    <div class="rule-block">
+      <strong>Attack</strong><br>
+      Landing on an opponent's piece is an attack — the two pieces swap positions. You may not land on your own pieces.
+    </div>
+
+    <div class="rule-block">
+      <strong>Defense — 2 in a row</strong><br>
+      Two or more consecutive opponent pieces cannot be attacked. They protect each other.
+    </div>
+
+    <div class="rule-block">
+      <strong>Blockade — 3 in a row</strong><br>
+      Three or more consecutive opponent pieces cannot be passed. However, blockades do not wrap corners (squares 10→11 or 20→21 do not count as consecutive for this rule).
+    </div>
+
+    <div class="rule-block">
+      <strong>Trap — Square 27</strong><br>
+      Land on square 27 and return to square 15 (or the first empty square before it).
+    </div>
+
+    <div class="rule-block">
+      <strong>Exit — Square 30</strong><br>
+      You may not move past 30. A piece on square 30 can be removed at the start of your turn only if all your other pieces are already past row 1. Win by removing all five pieces.
+    </div>
+
+    <div class="rule-block">
+      <strong>No move</strong><br>
+      If you cannot move forward, you must move backward under the same rules. If no move is possible at all, your turn ends.
+    </div>
+
+    <h2>Scholarly Rule Variants</h2>
+    <p>Because no rulebook survives from antiquity, multiple scholars have proposed reconstructions based on iconographic evidence, surviving boards, and comparative game analysis. The four principal reconstructions differ in significant ways:</p>
+
+    <table class="variants-table">
+      <thead>
+        <tr><th>Scholar</th><th>Pieces</th><th>Start</th><th>Square 27</th><th>Notable feature</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="scholar">Jequier</span></td>
+          <td>5 each</td>
+          <td>Alternating, squares 1–10</td>
+          <td>Return to sq. 15</td>
+          <td>Most widely used modern reconstruction; forms basis of commercial sets</td>
+        </tr>
+        <tr>
+          <td><span class="scholar">Kendall</span></td>
+          <td>7 each</td>
+          <td>Squares 1–14</td>
+          <td>Varies</td>
+          <td>Larger piece count; emphasises astronomical and religious symbolism of squares</td>
+        </tr>
+        <tr>
+          <td><span class="scholar">Bell</span></td>
+          <td>10 each</td>
+          <td>Off board; thrown on</td>
+          <td>Varies</td>
+          <td>Pieces start off board; winning requires arranging pieces in alternating pattern in rows 1–2; calls the game "Senat"</td>
+        </tr>
+        <tr>
+          <td><span class="scholar">Tait</span></td>
+          <td>5 each</td>
+          <td>Off board; thrown on</td>
+          <td>Return to lowest empty</td>
+          <td>Entry mechanic via throw; backward moves may only land on empty squares</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pull-quote">
+      <p>"King Tut was buried with several Senet boards, including one standing on legs."</p>
+      <cite>J. A. Storer, <em>The Ancient Egyptian Game of Senet</em></cite>
+    </div>
+
+    <h2>History and Religious Significance</h2>
+    <p>Senet is first attested in pre-dynastic Egypt, around 3500 BCE — making it one of the earliest board games yet identified. Images of the game appear in Old Kingdom tomb paintings and reliefs, and game boxes from the New Kingdom have survived intact. Tutankhamun was buried with <strong>six Senet sets</strong>, including one mounted on a stand with legs. The game also spread beyond Egypt: it was played in Nubia by royalty, and adopted in the Levant and Cyprus.</p>
+
+    <p>Over time Senet acquired profound religious significance. The 30 squares came to map the soul's journey through the <strong>Duat</strong> — the Egyptian underworld — mirroring the path described in the Book of the Dead. Special squares referenced specific stations of the afterlife: rebirth (square 15), judgement (squares 28–29), and final passage to Horus (square 30). Playing Senet was itself considered an act of spiritual preparation; Chapter 17 of the Book of the Dead depicts a deceased person playing senet alone as a demonstration of their worthiness.</p>
+
+    <p>The game was played on a variety of surfaces: carved wooden boxes with drawer storage for pieces, faience slabs, and scratched directly into stone or plaster as graffiti — evidence of its penetration across social classes.</p>
+
+    <h2>How to Make Your Own Set</h2>
+    <p>A functional Senet set requires only simple materials:</p>
+    <ul>
+      <li><strong>Board:</strong> Print or draw a 3×10 grid. Mark squares 15, 26, 27, 28, 29, 30 with their symbols (ankh, nfr, water-wave, single stroke, double stroke, triple stroke).</li>
+      <li><strong>Pieces:</strong> Five tokens of one colour, five of another — coins, stones, or beads work well. Pieces should fit within a square.</li>
+      <li><strong>Throwing sticks:</strong> Four popsicle sticks, each decorated on one face and left plain on the other. Alternatively, cut four strips of cardboard (~1 × 6 inches).</li>
+    </ul>
+
+    <p class="source-note">
+      <strong>Sources:</strong> Storer, J. A., <em>The Ancient Egyptian Game of Senet</em> (rules and board description, Jequier variant); <em>Make and Play Your Own Senet Game</em> (educational ruleset and board template); Bell, R. C., <em>Board and Table Games from Many Civilizations</em>, Oxford University Press, 1960; Murray, H. J. R., <em>A History of Board Games Other Than Chess</em>, Hacker Art Books, 1978. Board square naming follows the conventions of the Make Your Own Senet educational edition and Kendall's archaeologically grounded reconstruction.
+    </p>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="article-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-card-title">Quick Facts</div>
+      <div class="sidebar-row"><span class="sidebar-key">Origin</span><span class="sidebar-val">Pre-dynastic Egypt</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Earliest evidence</span><span class="sidebar-val">~3500 BCE</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Players</span><span class="sidebar-val">2</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Pieces per player</span><span class="sidebar-val">5 (Jequier) · 7 (Kendall)</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Board</span><span class="sidebar-val">30 squares · 3×10 grid</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Randomiser</span><span class="sidebar-val">4 throwing sticks</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Known from</span><span class="sidebar-val">Tomb art, surviving boards, Book of the Dead</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Distribution</span><span class="sidebar-val">Egypt, Nubia, Levant, Cyprus</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Tut's sets</span><span class="sidebar-val">6 (incl. one on legs)</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Rules status</span><span class="sidebar-val">Reconstructed · 4 competing versions</span></div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-title">On This Page</div>
+      <nav class="sidebar-nav">
+        <a href="#board">The Board</a>
+        <a href="#throwing">Throwing Sticks</a>
+        <a href="#rules">How to Play</a>
+        <a href="#variants">Scholarly Variants</a>
+        <a href="#history">History &amp; Religion</a>
+        <a href="#make">Make Your Own</a>
+      </nav>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-title">Related Games</div>
+      <nav class="sidebar-nav">
+        <a href="games.html#mehen">Mehen</a>
+        <a href="games.html#ur">Royal Game of Ur</a>
+        <a href="games.html#hounds">Hounds &amp; Jackals</a>
+        <a href="games.html">All Ancient Games →</a>
+      </nav>
+    </div>
+  </aside>
+
+</div><!-- /.article-body -->
+
+<footer class="footer">
+  <a href="index.html">archAIology</a> · archaiology.org · © 2026
+</footer>
+
+<script>
+// ── Build the Senet board ─────────────────────────────────
+const SQUARE_DATA = {
+  15: { sym: '𓋹', label: 'ankh — House of Second Life', cls: 'safety' },
+  26: { sym: '𓄤', label: 'nfr — House of Beauty',       cls: 'safety' },
+  27: { sym: '≋',  label: 'mw — House of Waters',        cls: 'trap'   },
+  28: { sym: '|',  label: 'Three Judges',                 cls: 'safety' },
+  29: { sym: '||', label: 'Two Judges',                   cls: 'safety' },
+  30: { sym: '|||',label: 'House of Horus',               cls: 'special'},
+};
+
+function buildBoard() {
+  const board = document.getElementById('senetBoard');
+  if (!board) return;
+
+  // Row 1: squares 1-10 (left to right)
+  const row1 = Array.from({length:10},(_,i)=>i+1);
+  // Row 2: squares 11-20, displayed right to left (20 down to 11)
+  const row2 = Array.from({length:10},(_,i)=>20-i);
+  // Row 3: squares 21-30 (left to right)
+  const row3 = Array.from({length:10},(_,i)=>i+21);
+
+  [...row1,...row2,...row3].forEach(n => {
+    const d = SQUARE_DATA[n] || {};
+    const sq = document.createElement('div');
+    sq.className = 'sq' + (d.cls ? ' ' + d.cls : '');
+    if (d.label) sq.title = d.label;
+
+    const num = document.createElement('span');
+    num.className = 'sq-num';
+    num.textContent = n;
+    sq.appendChild(num);
+
+    if (d.sym) {
+      const sym = document.createElement('span');
+      sym.className = 'sq-sym';
+      sym.textContent = d.sym;
+      sq.appendChild(sym);
+    }
+    board.appendChild(sq);
+  });
+}
+
+buildBoard();
+</script>
+
+</body>
+</html>
