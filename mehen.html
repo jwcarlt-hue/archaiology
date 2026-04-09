@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mehen — The Ancient Egyptian Serpent Game — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#faf8f3; --paper:#f2ede3; --linen:#e8e0d0; --rule:#d5ccb8;
+  --ash:#8a8070; --ink:#1c1814; --deep:#0f0d0a;
+  --ochre:#b8892a; --ochre-lt:#d4a84b; --terra:#7a3e1a;
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --sand:#d4b896; --sand-dk:#b8965a; --sand-lt:#ede0c8;
+  --lapis:#2a4a7a; --lapis-lt:#4a7ab8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+.masthead{background:var(--ink);padding:0 2rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px;}
+.logo{font-family:var(--serif);font-size:1.2rem;font-weight:900;color:var(--cream);letter-spacing:-.01em;}
+.logo span{color:var(--ochre);font-style:italic;}
+.nav-links{display:flex;gap:1.5rem;overflow-x:auto;}
+.nav-link{font-family:var(--sans);font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);transition:color .2s;white-space:nowrap;}
+.nav-link:hover{color:var(--cream);}
+
+.section-nav{background:var(--paper);border-bottom:1px solid var(--rule);padding:0 2rem;overflow-x:auto;}
+.section-nav-inner{max-width:1280px;margin:0 auto;display:flex;gap:0;}
+.section-nav-link{font-family:var(--sans);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);padding:.7rem 1.4rem;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.section-nav-link:hover{color:var(--ink);border-bottom-color:var(--ochre);}
+.section-nav-link.active{color:var(--ink);border-bottom-color:var(--ochre);}
+
+.breadcrumb{max-width:1280px;margin:0 auto;padding:.9rem 2rem;font-family:var(--sans);font-size:.65rem;color:var(--ash);display:flex;gap:.5rem;align-items:center;}
+.breadcrumb a{color:var(--ash);transition:color .2s;}
+.breadcrumb a:hover{color:var(--ochre);}
+.breadcrumb-sep{opacity:.4;}
+
+.article-hero-inner{max-width:1280px;margin:0 auto;padding:0 2rem;}
+.article-hero{border-bottom:1px solid var(--rule);padding-bottom:2.5rem;margin-bottom:3rem;}
+.article-tag{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre);margin-bottom:.8rem;}
+.article-title{font-family:var(--serif);font-size:clamp(2.4rem,5vw,4rem);font-weight:900;line-height:1.08;letter-spacing:-.025em;margin-bottom:1rem;max-width:820px;}
+.article-title em{color:var(--ochre);font-style:italic;}
+.article-dek{font-family:var(--body);font-size:1.05rem;line-height:1.7;color:var(--ash);max-width:680px;margin-bottom:1.4rem;}
+.article-byline{font-family:var(--sans);font-size:.7rem;color:var(--ash);display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;}
+.byline-dot{opacity:.3;}
+
+.article-body{max-width:1280px;margin:0 auto;padding:0 2rem 5rem;display:grid;grid-template-columns:1fr 340px;gap:3.5rem;align-items:start;}
+@media(max-width:900px){.article-body{grid-template-columns:1fr;}.article-sidebar{display:none;}}
+.article-content{min-width:0;}
+
+.prose h2{font-family:var(--serif);font-size:1.5rem;font-weight:700;margin:2.5rem 0 .8rem;color:var(--ink);}
+.prose h3{font-family:var(--serif);font-size:1.15rem;font-weight:600;margin:1.8rem 0 .5rem;color:var(--ink);}
+.prose p{font-family:var(--body);font-size:1rem;line-height:1.8;color:#3a3228;margin-bottom:1.1rem;}
+.prose p strong{color:var(--ink);}
+.prose ul,.prose ol{padding-left:1.4rem;margin-bottom:1.1rem;}
+.prose li{font-family:var(--body);font-size:.95rem;line-height:1.75;color:#3a3228;margin-bottom:.3rem;}
+.prose .rule-block{background:var(--paper);border-left:3px solid var(--ochre);padding:1rem 1.2rem;margin:1.5rem 0;font-family:var(--sans);font-size:.82rem;line-height:1.65;}
+.prose .rule-block strong{color:var(--ink);font-size:.85rem;}
+.prose .caveat{background:#f8f0e0;border-left:3px solid var(--sand-dk);padding:.9rem 1.2rem;margin:1.2rem 0;font-family:var(--sans);font-size:.8rem;line-height:1.6;color:var(--ash);}
+.prose .source-note{font-family:var(--sans);font-size:.7rem;color:var(--ash);border-top:1px solid var(--rule);padding-top:1rem;margin-top:2.5rem;line-height:1.6;}
+
+.pull-quote{border-left:3px solid var(--ochre);padding:1rem 1.5rem;margin:2rem 0;background:var(--paper);}
+.pull-quote p{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--ink);line-height:1.6;margin:0 0 .4rem;}
+.pull-quote cite{font-family:var(--sans);font-size:.65rem;color:var(--ash);letter-spacing:.05em;text-transform:uppercase;}
+
+/* ── GAME WRAPPER ── */
+.game-wrap{background:var(--ink);padding:1.5rem;margin:2.5rem 0;}
+.game-title-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.8rem;}
+.game-title-label{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre);}
+.game-status{font-family:var(--sans);font-size:.75rem;color:var(--sand-lt);min-height:1.2em;}
+
+.game-layout{display:grid;grid-template-columns:1fr 220px;gap:1.2rem;align-items:start;}
+@media(max-width:700px){.game-layout{grid-template-columns:1fr;}}
+
+#mehenCanvas{display:block;width:100%;max-width:420px;cursor:pointer;}
+
+/* ── GAME PANEL ── */
+.game-panel{display:flex;flex-direction:column;gap:.8rem;}
+.player-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:.9rem;}
+.player-card.active{border-color:rgba(184,137,42,.5);background:rgba(184,137,42,.06);}
+.player-name{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;}
+.player-name.lion{color:#e8c870;}
+.player-name.lioness{color:#d4a0d0;}
+.player-marbles{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:.5rem;}
+.marble{width:16px;height:16px;border-radius:50%;border:1px solid rgba(255,255,255,.2);transition:all .2s;}
+.marble.white{background:radial-gradient(circle at 35% 35%,#fff 0%,#d0c8b8 100%);}
+.marble.black{background:radial-gradient(circle at 35% 35%,#5a5248 0%,#1a1410 100%);}
+.marble.red{background:radial-gradient(circle at 35% 35%,#d07050 0%,#7a2810 100%);}
+.marble.on-board{box-shadow:0 0 0 2px var(--ochre);}
+.player-pos{font-family:var(--sans);font-size:.7rem;color:rgba(232,224,208,.5);}
+
+/* Marble guess UI */
+.guess-section{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:.9rem;}
+.guess-label{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);margin-bottom:.6rem;}
+.guess-prompt{font-family:var(--sans);font-size:.75rem;color:rgba(232,224,208,.7);margin-bottom:.7rem;line-height:1.5;}
+.guess-btns{display:flex;gap:4px;flex-wrap:wrap;}
+.guess-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(232,224,208,.8);font-family:var(--sans);font-size:.72rem;font-weight:700;padding:.35rem .7rem;cursor:pointer;transition:all .18s;}
+.guess-btn:hover{background:rgba(184,137,42,.2);border-color:rgba(184,137,42,.5);color:var(--ochre-lt);}
+.guess-btn.correct{background:rgba(80,160,80,.2);border-color:rgba(80,160,80,.5);color:#8ce88c;}
+.guess-btn.wrong{background:rgba(160,60,60,.2);border-color:rgba(160,60,60,.4);color:#e88c8c;}
+
+.action-btn{width:100%;background:rgba(184,137,42,.12);border:1px solid rgba(184,137,42,.35);color:var(--ochre);font-family:var(--sans);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.5rem;cursor:pointer;transition:all .2s;margin-top:.4rem;}
+.action-btn:hover{background:rgba(184,137,42,.22);}
+.action-btn:disabled{opacity:.35;cursor:not-allowed;}
+
+.game-log{background:rgba(0,0,0,.3);padding:.7rem;max-height:120px;overflow-y:auto;font-family:var(--sans);font-size:.68rem;line-height:1.7;}
+.log-entry{color:rgba(232,224,208,.55);padding:.08rem 0;}
+.log-entry.hi{color:rgba(232,224,208,.85);}
+.log-entry.win{color:#e8d870;font-weight:700;}
+
+/* ── BOARD TYPES TABLE ── */
+.boards-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.82rem;}
+.boards-table th{background:var(--paper);padding:.5rem .7rem;border:1px solid var(--rule);font-family:var(--sans);font-size:.63rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ash);text-align:left;}
+.boards-table td{padding:.5rem .7rem;border:1px solid var(--rule);font-family:var(--body);vertical-align:top;line-height:1.55;}
+.boards-table tr:nth-child(even) td{background:var(--paper);}
+.boards-table .museum{font-family:var(--sans);font-weight:700;font-size:.75rem;color:var(--ink);}
+
+.article-sidebar{position:sticky;top:2rem;}
+.sidebar-card{background:var(--paper);border:1px solid var(--rule);padding:1.4rem;margin-bottom:1.4rem;}
+.sidebar-card-title{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ochre);margin-bottom:1rem;}
+.sidebar-row{display:flex;justify-content:space-between;align-items:baseline;padding:.45rem 0;border-bottom:1px solid var(--linen);font-family:var(--sans);font-size:.75rem;gap:.5rem;}
+.sidebar-row:last-child{border-bottom:none;}
+.sidebar-key{color:var(--ash);}
+.sidebar-val{color:var(--ink);font-weight:600;text-align:right;}
+.sidebar-nav{display:flex;flex-direction:column;gap:.3rem;}
+.sidebar-nav a{font-family:var(--sans);font-size:.72rem;color:var(--ash);padding:.35rem 0;border-bottom:1px solid var(--linen);display:flex;align-items:center;gap:.4rem;transition:color .2s;}
+.sidebar-nav a:last-child{border-bottom:none;}
+.sidebar-nav a:hover{color:var(--ochre);}
+.sidebar-nav a::before{content:'§';opacity:.3;font-size:.65rem;}
+
+.footer{background:var(--ink);color:var(--ash);text-align:center;padding:1.5rem;font-family:var(--sans);font-size:.68rem;}
+.footer a{color:var(--ochre);}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <nav class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="map.html">Map</a>
+      <a class="nav-link" href="sky.html">Sky Archive</a>
+      <a class="nav-link" href="games.html">Games</a>
+      <a class="nav-link" href="upload.html">Upload</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="section-nav">
+  <div class="section-nav-inner">
+    <a class="section-nav-link" href="index.html">Home</a>
+    <a class="section-nav-link" href="news.html">Feed</a>
+    <a class="section-nav-link" href="map.html">Map</a>
+    <a class="section-nav-link" href="sky.html">Sky Archive</a>
+    <a class="section-nav-link" href="maritime.html">Maritime</a>
+    <a class="section-nav-link" href="maya_inscriptions.html">Maya</a>
+    <a class="section-nav-link" href="bioanthro.html">Bioanthro</a>
+    <a class="section-nav-link" href="luwian.html">Luwian</a>
+    <a class="section-nav-link active" href="games.html">Games</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="games.html">Games</a>
+  <span class="breadcrumb-sep">›</span>
+  <span>Mehen</span>
+</div>
+
+<div class="article-hero-inner">
+  <div class="article-hero">
+    <div class="article-tag">Ancient Egypt · Old Kingdom · c. 3650 BCE – c. 2200 BCE</div>
+    <h1 class="article-title">Mehen — <em>The Serpent Game</em><br>of the Egyptian Underworld</h1>
+    <p class="article-dek">Played on a coiled stone board with lion and lioness figurines and tiny stone marbles, Mehen may be the oldest board game yet identified. The rules are lost — but new ludological research by James Masters (2023) has eliminated most proposed rule sets and brought the game's likely mechanics into sharper focus than ever before.</p>
+    <div class="article-byline">
+      <span>Egypt · First–Sixth Dynasty</span>
+      <span class="byline-dot">·</span>
+      <span>Earliest evidence c. 3650 BCE</span>
+      <span class="byline-dot">·</span>
+      <span>Spiral board · marbles · lion &amp; lioness pieces</span>
+      <span class="byline-dot">·</span>
+      <span>2 players or 2 teams</span>
+    </div>
+  </div>
+</div>
+
+<div class="article-body">
+<main class="article-content prose">
+
+  <h2>The Board</h2>
+  <p>Mehen is played on a <strong>segmented spiral board</strong> depicting a coiled snake with the head at the centre. The track runs from the tail at the outer edge inward to the serpent's head, and the objective — insofar as it is understood — is to move game-pieces along the track from tail to head. The number of spaces varies across surviving boards; direction of coil rotation was apparently unimportant to the game's design.</p>
+
+  <p>Three distinct board types survive in museum collections, along with depictions in Old Kingdom tombs:</p>
+
+  <table class="boards-table">
+    <thead><tr><th>Type</th><th>Description</th><th>Key examples</th><th>Playability with marbles</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="museum">Pitted</span></td>
+        <td>Raised dividers between spaces; marbles rest securely in pits</td>
+        <td>British Museum 19,610,408.10; Peribsen fragments (Louvre, Brussels, Mariemont)</td>
+        <td>Easily playable — marbles sit naturally in spaces</td>
+      </tr>
+      <tr>
+        <td><span class="museum">Grooved</span></td>
+        <td>Spiral channel cut between raised coils; cross-bar divisions</td>
+        <td>Petrie UC20453; Chicago E16590; Berlin ÄM13868; Fitzwilliam E.GA.4464.19</td>
+        <td>Not directly playable — channel too irregular; requires cord or clay divider filling channel</td>
+      </tr>
+      <tr>
+        <td><span class="museum">Hesy / Sahure type</span></td>
+        <td>Wooden board with ebony snake head and tail; spaces delineated by raised dividers (depicted in tombs, not preserved)</td>
+        <td>Tomb of Hesy (Saqqara LS16); Causeway of Sahure</td>
+        <td>Easily playable — construction identical to known Senet boards</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Masters (2023) argues that all three types are <strong>morphologically equivalent</strong> — the grooved boards were likely augmented with cord or wooden strips pressed into the spiral channel, transforming them functionally into the same surface as pitted boards. Evidence for this includes: brown pigment in the Chicago board's channel (possibly adhesive), red pigment traces in the grooves of the Berlin and Petrie boards, a cord pattern depicted around the rim of the Hesy board, and a 4.5 cm Mehen amulet in which four holes are drilled precisely on cross-bars at the correct relative size for marbles.</p>
+
+  <!-- PLAYABLE GAME -->
+  <h2>Play Mehen</h2>
+
+  <div class="caveat">
+    <strong>Scholarly note:</strong> No rulebook survives for Mehen. The playable version below uses the most archaeologically supportable reconstruction, based on Masters (2023): marbles are raced along the spiral track from tail to head; movement is determined by <strong>marble guessing</strong>. All proposed rule sets are speculative.
+  </div>
+
+  <div class="game-wrap">
+    <div class="game-title-bar">
+      <span class="game-title-label">Mehen — Interactive Game</span>
+      <span class="game-status" id="gameStatus">Click "New Game" to begin</span>
+    </div>
+    <div class="game-layout">
+      <canvas id="mehenCanvas" width="420" height="420"></canvas>
+      <div class="game-panel">
+
+        <div class="player-card" id="lionCard">
+          <div class="player-name lion">🦁 Lion (Player 1)</div>
+          <div class="player-marbles" id="lionMarbles"></div>
+          <div class="player-pos" id="lionPos">Position: tail (start)</div>
+        </div>
+
+        <div class="player-card" id="lionessCard">
+          <div class="player-name lioness">🐱 Lioness (Player 2)</div>
+          <div class="player-marbles" id="lionessMarbles"></div>
+          <div class="player-pos" id="lionessPos">Position: tail (start)</div>
+        </div>
+
+        <div class="guess-section" id="guessSection" style="display:none">
+          <div class="guess-label">Marble Guess</div>
+          <div class="guess-prompt" id="guessPrompt"></div>
+          <div class="guess-btns" id="guessBtns"></div>
+        </div>
+
+        <button class="action-btn" id="newGameBtn" onclick="newGame()">New Game</button>
+        <button class="action-btn" id="hideMarbleBtn" onclick="hideMarbles()" disabled>Hide Marbles &amp; Challenge</button>
+
+        <div class="game-log" id="gameLog">
+          <div class="log-entry">Mehen awaits…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>How to Play — Reconstructed Rules</h2>
+  <p>The version implemented above follows the reconstruction that best survives Masters' (2023) ludological analysis. It is a <strong>two-player marble race</strong> with movement determined by marble guessing.</p>
+
+  <div class="rule-block">
+    <strong>Setup</strong><br>
+    Each player receives six marbles of their colour. One marble per player is placed at the tail (start) of the spiral track. The remaining five marbles are held in reserve — they serve both as guessing tokens and scoring material.
+  </div>
+
+  <div class="rule-block">
+    <strong>Taking a turn — Marble Guessing</strong><br>
+    The active player secretly takes between 1 and 5 marbles from their reserve and conceals them in a closed fist. The opponent guesses how many marbles are hidden. If the opponent <strong>guesses wrong</strong>, the active player moves their board piece forward that many spaces. If the opponent <strong>guesses correctly</strong>, the active player does not move and loses one reserve marble (penalty).
+  </div>
+
+  <div class="rule-block">
+    <strong>Reaching the Head</strong><br>
+    The first player to reach the serpent's head wins. The spiral track has 30 spaces in this implementation; the head occupies the centre.
+  </div>
+
+  <div class="rule-block">
+    <strong>The Lion and Lioness</strong><br>
+    Each player's piece is represented by their figurine — lion or lioness. Tomb depictions (Rashepses, Kaemankh) show lions placed at the board's centre pointing at pieces on the track, suggesting they may have served as hazards or markers. In this implementation they are purely positional markers.
+  </div>
+
+  <div class="rule-block">
+    <strong>Running out of marbles</strong><br>
+    If a player's reserve reaches zero they can no longer hide marbles. Their opponent wins by default — having no marbles to guess with means the guessing mechanic collapses. This rarely occurs in practice.
+  </div>
+
+  <h2>The Marble Guessing Mechanic</h2>
+  <p>The proposal that <strong>marble guessing</strong> (rather than throwing sticks or dice) determined movement has been debated since Ranke (1920). Masters (2023) gives it the most rigorous treatment to date, combining textual, iconographic, and practical ludological evidence:</p>
+  <ul>
+    <li>No dice or throwing sticks appear in any identified Mehen game-piece set. The tomb of Hesy shows dice within the Senet set but not the Mehen set.</li>
+    <li>Mehen marbles average 8–11 mm diameter — substantially smaller than the 14–16 mm standard for marbles used only for moving on game boards. Masters' play-testing showed that smaller marbles are significantly easier to conceal in a fist; up to twelve 9.5 mm marbles could be hidden where only six 15 mm marbles would fit.</li>
+    <li>Multiple tomb reliefs — Rashepses, Kaemankh, Ibi, Ankhefensakhmet — depict players with one hand closed in a fist held toward the opponent and the other extended, palm up. Play-testing of marble guessing reproduced this hand position instinctively.</li>
+    <li>The tomb of Ibi caption reads "enjoying the game on the Mehen board, on the Senet board, and the marble game" — suggesting marbles had a specific game function beyond being moved pieces.</li>
+  </ul>
+
+  <div class="pull-quote">
+    <p>"Marble guessing with eighteen marbles was conceivable but highly unlikely. Manipulating twelve marbles was also unwieldy but was practical — marbles were easily disguised within a fist."</p>
+    <cite>Masters, J.F.R., Birmingham Egyptology Journal 10, 2023</cite>
+  </div>
+
+  <h2>What the Research Has Eliminated</h2>
+  <p>Masters' (2023) analysis — combining physical examination of boards at the Ägyptisches Museum Berlin, Petrie, Fitzwilliam, Ashmolean, and British Museums with practical play-testing and computational analysis — has shown several long-held theories to be untenable:</p>
+  <ul>
+    <li><strong>Simple lion race (Quibell, Montet, Bell, Piccione, Pusch):</strong> Lion pieces averaged 70 mm long but track spaces averaged only 12–22 mm. A lion consistently spans 3–5 spaces, making piece position inherently ambiguous. No board game in 5,000 years of documented history has workable rules when piece position is ambiguous.</li>
+    <li><strong>Six independent lion players:</strong> Lions were never coloured and were distinguished only by gender — never in six ways. A six-player independent race requires six distinguishable pieces.</li>
+    <li><strong>Marbles rolled along the spiral groove:</strong> Physical testing of a replica board showed marbles could not be held against cross-bars reliably. Balls rolled unpredictably; on five of seven known grooved boards the channel variation renders this completely impractical.</li>
+    <li><strong>Hyena-derived rules (Kendall):</strong> Popular online rule sets model Mehen on the Sudanese game of Li'b el-merafib (Hyena). Masters shows the parallels are superficial, the tail-head-tail path is textually unsupported, and a 36-marble Hyena-style race would take many hours — inconsistent with Mehen's depiction alongside dancing and singing as light entertainment.</li>
+  </ul>
+
+  <h2>Religious Significance</h2>
+  <p>The serpent deity <strong>Mehen</strong> — whose name means "the coiled one" — coiled protectively around the sun god Ra during his nightly journey through the Duat underworld, warding off the chaos serpent Apophis. Peter Piccione (1990) proposed that the game enacted this cosmological journey: moving a game-piece from tail to head symbolised a deceased person's ascent through the underworld to rebirth. This narrative underlies the direction of play — always from the outer tail toward the inner head — and is consistent with the single-marble interpretation (one piece = one soul).</p>
+
+  <p>Mehen is depicted in seven independent Old Kingdom tomb scenes alongside other entertainment — Hesy, Rashepses, Kaemankh, Nimaatre, Idu, Ibi, and Ankhefensakhmet. Captions use the word "play." The game was exclusive to elite burials and disappears from the archaeological record after the Sixth Dynasty (c. 2200 BCE), coinciding with the decline of the Old Kingdom.</p>
+
+  <p class="source-note">
+    <strong>Primary source:</strong> Masters, J.F.R., "Mehen, The Ancient Egyptian Serpent Game: A Reappraisal of Game-play Theories," <em>Birmingham Egyptology Journal</em> 10: 52–87, 2023. <strong>Additional sources:</strong> Piccione, P., "Mehen, mysteries and resurrection from the coiled serpent," <em>JARCE</em> 27, 1990; Bell, R.C., <em>Board and Table Games from Many Civilizations</em>, 1960; Murray, H.J.R., <em>A History of Board Games other than Chess</em>, 1952; Quibell, J., <em>Excavations at Saqqara: The Tomb of Hesy</em>, 1913; Crist, W. et al., <em>Ancient Egyptians at Play</em>, 2016. <strong>Recommended:</strong> Metropolitan Museum of Art essay on board games from ancient Egypt and the Near East; royalur.net; Otago Museum guide to Mehen.
+  </p>
+
+</main>
+
+<aside class="article-sidebar">
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Quick Facts</div>
+    <div class="sidebar-row"><span class="sidebar-key">Name</span><span class="sidebar-val">Mehen ("the coiled one")</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Earliest evidence</span><span class="sidebar-val">c. 3650–3300 BCE</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Active period</span><span class="sidebar-val">First–Sixth Dynasty (c. 3000–2200 BCE)</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Board form</span><span class="sidebar-val">Coiled spiral, head at centre</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Game-pieces</span><span class="sidebar-val">Marbles (8–11 mm) + lion &amp; lioness figurines (~70 mm)</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Players</span><span class="sidebar-val">2 or 2 teams</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Movement</span><span class="sidebar-val">Marble guessing (most likely)</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Rules status</span><span class="sidebar-val">Entirely reconstructed; no surviving rulebook</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Key boards</span><span class="sidebar-val">British Museum, Petrie, Chicago ISAC, Berlin, Louvre, Fitzwilliam, Ashmolean</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Deity connection</span><span class="sidebar-val">Mehen — protector of Ra in the Duat</span></div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">On This Page</div>
+    <nav class="sidebar-nav">
+      <a href="#">The Board</a>
+      <a href="#">Play Mehen</a>
+      <a href="#">Reconstructed Rules</a>
+      <a href="#">Marble Guessing</a>
+      <a href="#">What Research Eliminated</a>
+      <a href="#">Religious Significance</a>
+    </nav>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Related Games</div>
+    <nav class="sidebar-nav">
+      <a href="senet.html">Senet</a>
+      <a href="games.html#ur">Royal Game of Ur</a>
+      <a href="games.html#hounds">Hounds &amp; Jackals</a>
+      <a href="games.html">All Ancient Games →</a>
+    </nav>
+  </div>
+</aside>
+</div>
+
+<footer class="footer">
+  <a href="index.html">archAIology</a> · archaiology.org · © 2026
+</footer>
+
+<script>
+// ── MEHEN GAME ENGINE ─────────────────────────────────────────────────────
+const canvas  = document.getElementById('mehenCanvas');
+const ctx     = canvas.getContext('2d');
+const W = 420, H = 420, CX = W/2, CY = H/2;
+
+// Spiral geometry — 30 spaces, 4.5 coils from outer tail to inner head
+const TOTAL_SPACES = 30;
+const COILS        = 4.5;
+
+// Pre-compute space centre points along the Archimedean spiral
+function computeSpaces(n, coils) {
+  const pts = [];
+  const rMax = W * 0.46;
+  const rMin = W * 0.06;
+  for (let i = 0; i < n; i++) {
+    const t     = i / (n - 1);          // 0 = tail (outer), 1 = head (inner)
+    const angle = -Math.PI/2 + t * coils * Math.PI * 2;
+    const r     = rMax - (rMax - rMin) * t;
+    pts.push({ x: CX + r * Math.cos(angle), y: CY + r * Math.sin(angle), i });
+  }
+  return pts;
+}
+
+const SPACES = computeSpaces(TOTAL_SPACES, COILS);
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let state = null;
+
+function newGame() {
+  state = {
+    phase:    'hide',   // hide | guess | result | won
+    turn:     0,        // 0 = lion, 1 = lioness
+    pos:      [0, 0],   // space index (0 = tail)
+    reserve:  [5, 5],   // marbles in hand (off board)
+    hidden:   null,     // marbles hidden this turn
+    lastMove: null,
+    log:      [],
+  };
+  document.getElementById('hideMarbleBtn').disabled = false;
+  document.getElementById('guessSection').style.display = 'none';
+  renderAll();
+  addLog('New game. Lion goes first.', true);
+  updateStatus(`🦁 Lion's turn — choose marbles to hide`);
+}
+
+function addLog(msg, hi=false, win=false) {
+  if (!state) return;
+  state.log.unshift({ msg, hi, win });
+  if (state.log.length > 30) state.log.pop();
+  const el = document.getElementById('gameLog');
+  el.innerHTML = state.log.map(e =>
+    `<div class="log-entry${e.hi?' hi':''}${e.win?' win':''}">${e.msg}</div>`
+  ).join('');
+}
+
+function updateStatus(msg) {
+  document.getElementById('gameStatus').textContent = msg;
+}
+
+// ── MARBLE GUESS FLOW ─────────────────────────────────────────────────────
+function hideMarbles() {
+  if (!state || state.phase !== 'hide') return;
+  const max = Math.min(5, state.reserve[state.turn]);
+  if (max < 1) { addLog('No marbles to hide!'); return; }
+
+  // Pick a random number of marbles to hide (1–max)
+  state.hidden = Math.floor(Math.random() * max) + 1;
+  state.phase  = 'guess';
+
+  const names   = ['🦁 Lion', '🐱 Lioness'];
+  const oppTurn = 1 - state.turn;
+
+  document.getElementById('hideMarbleBtn').disabled = true;
+  document.getElementById('guessSection').style.display = 'block';
+
+  const prompt = document.getElementById('guessPrompt');
+  prompt.textContent = `${names[state.turn]} has hidden 1–${max} marbles. ${names[oppTurn]}: guess how many!`;
+
+  const btns = document.getElementById('guessBtns');
+  btns.innerHTML = '';
+  for (let g = 1; g <= max; g++) {
+    const b = document.createElement('button');
+    b.className   = 'guess-btn';
+    b.textContent = g;
+    b.onclick     = () => resolveGuess(g);
+    btns.appendChild(b);
+  }
+  updateStatus(`${names[oppTurn]}'s guess — how many marbles hidden?`);
+}
+
+function resolveGuess(guess) {
+  if (!state || state.phase !== 'guess') return;
+  const hidden  = state.hidden;
+  const names   = ['🦁 Lion', '🐱 Lioness'];
+  const mover   = state.turn;
+  const guesser = 1 - state.turn;
+
+  // Highlight the button
+  const btns = document.querySelectorAll('.guess-btn');
+  btns.forEach(b => {
+    if (parseInt(b.textContent) === hidden)  b.classList.add('correct');
+    if (parseInt(b.textContent) === guess && guess !== hidden) b.classList.add('wrong');
+    b.disabled = true;
+  });
+
+  let moved = 0;
+  if (guess !== hidden) {
+    // Wrong guess — mover advances by hidden amount
+    moved = hidden;
+    state.pos[mover] = Math.min(TOTAL_SPACES - 1, state.pos[mover] + moved);
+    addLog(`${names[guesser]} guessed ${guess}, was ${hidden}. ${names[mover]} moves ${moved} spaces!`, true);
+  } else {
+    // Correct guess — mover loses a marble (penalty)
+    state.reserve[mover] = Math.max(0, state.reserve[mover] - 1);
+    addLog(`${names[guesser]} guessed correctly (${guess})! ${names[mover]} loses a marble.`);
+  }
+
+  // Check win
+  if (state.pos[mover] >= TOTAL_SPACES - 1) {
+    state.phase = 'won';
+    addLog(`${names[mover]} reached the serpent's head! 🐍 Victory!`, false, true);
+    updateStatus(`🐍 ${names[mover]} wins!`);
+    document.getElementById('hideMarbleBtn').disabled = true;
+    document.getElementById('guessSection').style.display = 'none';
+    renderAll();
+    return;
+  }
+
+  state.phase = 'hide';
+  // Next turn after short delay
+  setTimeout(() => {
+    document.getElementById('guessSection').style.display = 'none';
+    state.turn = 1 - state.turn;
+    document.getElementById('hideMarbleBtn').disabled = false;
+    const next = names[state.turn];
+    updateStatus(`${next}'s turn — hide marbles`);
+    addLog(`Turn passes to ${next}.`);
+    renderAll();
+  }, 1200);
+
+  renderAll();
+}
+
+// ── RENDERING ─────────────────────────────────────────────────────────────
+function renderAll() {
+  drawBoard();
+  renderPlayers();
+}
+
+function drawBoard() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Background
+  ctx.fillStyle = '#0d0b08';
+  ctx.fillRect(0, 0, W, H);
+
+  // Draw spiral coil lines (decorative)
+  ctx.save();
+  for (let c = 0; c < COILS + 0.5; c += 0.02) {
+    const t     = c / COILS;
+    const angle = -Math.PI/2 + c * Math.PI * 2;
+    const rOuter= W*0.46 - (W*0.46 - W*0.06) * Math.min(t,1);
+    // thin sand line
+    ctx.strokeStyle = `rgba(180,140,80,${0.06 + Math.min(t,1)*0.04})`;
+    ctx.lineWidth   = 0.5;
+    if (c === 0) { ctx.beginPath(); ctx.moveTo(CX + rOuter*Math.cos(angle), CY + rOuter*Math.sin(angle)); }
+    else ctx.lineTo(CX + rOuter*Math.cos(angle), CY + rOuter*Math.sin(angle));
+  }
+  ctx.stroke();
+  ctx.restore();
+
+  // Draw spaces
+  SPACES.forEach((sp, i) => {
+    const isHead  = i === TOTAL_SPACES - 1;
+    const isTail  = i === 0;
+    const frac    = i / (TOTAL_SPACES - 1);
+
+    // Space circle
+    const r = isHead ? 14 : isTail ? 11 : 9;
+    ctx.beginPath();
+    ctx.arc(sp.x, sp.y, r, 0, Math.PI*2);
+
+    if (isHead) {
+      // Serpent head — gold
+      const grd = ctx.createRadialGradient(sp.x-3, sp.y-3, 1, sp.x, sp.y, r);
+      grd.addColorStop(0, '#e8c840');
+      grd.addColorStop(1, '#8a6010');
+      ctx.fillStyle = grd;
+    } else if (isTail) {
+      ctx.fillStyle = '#4a3820';
+    } else {
+      // Gradient from sand-dark (outer) to sand-light (inner)
+      const l = Math.round(60 + frac * 30);
+      ctx.fillStyle = `hsl(34,${30+frac*20}%,${l}%)`;
+    }
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(180,140,80,0.3)';
+    ctx.lineWidth   = 0.8;
+    ctx.stroke();
+
+    // Space number
+    if (!isHead && !isTail) {
+      ctx.fillStyle = 'rgba(28,20,10,0.5)';
+      ctx.font      = '5px "DM Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(i+1, sp.x, sp.y);
+    }
+
+    // Head label
+    if (isHead) {
+      ctx.fillStyle = '#e8c840';
+      ctx.font      = 'bold 8px "DM Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('HEAD', sp.x, sp.y);
+    }
+    if (isTail) {
+      ctx.fillStyle = 'rgba(180,150,100,0.7)';
+      ctx.font      = 'bold 6px "DM Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('TAIL', sp.x, sp.y);
+    }
+  });
+
+  // Draw player pieces
+  if (!state) return;
+
+  const COLOURS = ['#e8c870', '#d4a0d0'];  // lion gold, lioness purple
+  const SYMBOLS = ['♂', '♀'];
+
+  state.pos.forEach((pos, p) => {
+    const sp     = SPACES[Math.min(pos, TOTAL_SPACES-1)];
+    const offset = p === 0 ? -7 : 7;
+    const px     = sp.x + offset * Math.cos(Math.PI/4);
+    const py     = sp.y + offset * Math.sin(Math.PI/4);
+
+    // Glow if active player
+    if (state.turn === p && state.phase !== 'won') {
+      ctx.save();
+      ctx.shadowColor  = COLOURS[p];
+      ctx.shadowBlur   = 10;
+      ctx.beginPath();
+      ctx.arc(px, py, 8, 0, Math.PI*2);
+      ctx.fillStyle = COLOURS[p];
+      ctx.fill();
+      ctx.restore();
+    } else {
+      ctx.beginPath();
+      ctx.arc(px, py, 7, 0, Math.PI*2);
+      ctx.fillStyle = COLOURS[p];
+      ctx.globalAlpha = 0.75;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
+    ctx.fillStyle    = '#1a1208';
+    ctx.font         = 'bold 8px sans-serif';
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(SYMBOLS[p], px, py);
+  });
+}
+
+function renderPlayers() {
+  if (!state) return;
+  const names  = ['lion', 'lioness'];
+  const labels = ['🦁 Lion (Player 1)', '🐱 Lioness (Player 2)'];
+  const cols   = ['white', 'red'];
+
+  names.forEach((n, p) => {
+    // Marbles UI
+    const el = document.getElementById(n + 'Marbles');
+    el.innerHTML = '';
+    for (let m = 0; m < 5; m++) {
+      const d = document.createElement('div');
+      d.className = `marble ${cols[p]}${m < state.reserve[p] ? '' : ''}`;
+      d.style.opacity = m < state.reserve[p] ? '1' : '0.2';
+      el.appendChild(d);
+    }
+
+    // Position
+    const pos   = state.pos[p];
+    const posEl = document.getElementById(n + 'Pos');
+    posEl.textContent = pos === 0 ? 'Position: tail (start)'
+      : pos >= TOTAL_SPACES-1 ? 'Position: head (won!)'
+      : `Position: space ${pos+1} of ${TOTAL_SPACES}`;
+
+    // Active card highlight
+    const card = document.getElementById(n + 'Card');
+    card.classList.toggle('active', state.turn === p && state.phase !== 'won');
+  });
+}
+
+// Init
+drawBoard();
+</script>
+</body>
+</html>
