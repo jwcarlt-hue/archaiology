@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ancient Games — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#faf8f3; --paper:#f2ede3; --linen:#e8e0d0; --rule:#d5ccb8;
+  --ash:#8a8070; --ink:#1c1814; --deep:#0f0d0a;
+  --ochre:#b8892a; --ochre-lt:#d4a84b; --terra:#7a3e1a;
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+/* ── MASTHEAD ── */
+.masthead{background:var(--ink);padding:0 2rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px;}
+.logo{font-family:var(--serif);font-size:1.2rem;font-weight:900;color:var(--cream);letter-spacing:-.01em;}
+.logo span{color:var(--ochre);font-style:italic;}
+.nav-links{display:flex;gap:1.5rem;overflow-x:auto;}
+.nav-link{font-family:var(--sans);font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);transition:color .2s;white-space:nowrap;}
+.nav-link:hover{color:var(--cream);}
+.nav-link.active{color:var(--cream);}
+
+/* ── SECTION NAV ── */
+.section-nav{background:var(--paper);border-bottom:1px solid var(--rule);padding:0 2rem;overflow-x:auto;}
+.section-nav-inner{max-width:1280px;margin:0 auto;display:flex;gap:0;}
+.section-nav-link{font-family:var(--sans);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);padding:.7rem 1.4rem;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.section-nav-link:hover{color:var(--ink);border-bottom-color:var(--ochre);}
+.section-nav-link.active{color:var(--ink);border-bottom-color:var(--ochre);}
+
+/* ── PAGE HERO ── */
+.page-hero{background:var(--ink);padding:3rem 2rem 2.5rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.page-hero-inner{max-width:1280px;margin:0 auto;}
+.page-eyebrow{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre);margin-bottom:.7rem;}
+.page-title{font-family:var(--serif);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;color:var(--cream);line-height:1.1;letter-spacing:-.02em;margin-bottom:.8rem;}
+.page-title em{color:var(--ochre-lt);font-style:italic;}
+.page-dek{font-family:var(--body);font-size:1rem;color:rgba(232,224,208,.65);line-height:1.65;max-width:640px;}
+
+/* ── MAIN LAYOUT ── */
+.page-wrap{max-width:1280px;margin:0 auto;padding:3rem 2rem 5rem;}
+
+/* ── GAME CARDS ── */
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.8rem;}
+
+.game-card{background:white;border:1px solid var(--rule);overflow:hidden;transition:box-shadow .2s,border-color .2s;}
+.game-card:hover{box-shadow:0 4px 24px rgba(28,24,20,.08);border-color:var(--ochre);}
+
+.game-card-img{height:220px;overflow:hidden;background:var(--ink);position:relative;}
+.game-card-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;opacity:.35;}
+.game-card-body{padding:1.5rem;}
+
+.game-card-tag{font-family:var(--sans);font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);margin-bottom:.5rem;}
+.game-card-title{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:.7rem;}
+.game-card-dek{font-family:var(--body);font-size:.88rem;color:var(--ash);line-height:1.65;margin-bottom:1.1rem;}
+
+.game-card-meta{display:flex;gap:1rem;flex-wrap:wrap;padding-top:.9rem;border-top:1px solid var(--linen);}
+.game-meta-item{font-family:var(--sans);font-size:.62rem;}
+.game-meta-label{color:var(--ash);display:block;margin-bottom:.1rem;letter-spacing:.05em;text-transform:uppercase;}
+.game-meta-value{color:var(--ink);font-weight:600;}
+
+.game-card-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:1rem;font-family:var(--sans);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre);border-bottom:1px solid rgba(184,137,42,.3);padding-bottom:.1rem;transition:all .2s;}
+.game-card-link:hover{color:var(--terra);border-bottom-color:var(--terra);}
+
+/* ── ACCENT STRIPES ── */
+.game-card:nth-child(1) .game-card-img-placeholder{color:var(--terra);}
+.game-card:nth-child(2) .game-card-img-placeholder{color:#5a7a4a;}
+.game-card:nth-child(3) .game-card-img-placeholder{color:#4a6a8a;}
+.game-card:nth-child(4) .game-card-img-placeholder{color:#7a5a3a;}
+.game-card:nth-child(5) .game-card-img-placeholder{color:#6a4a7a;}
+
+/* ── INTRO TEXT ── */
+.games-intro{max-width:720px;margin-bottom:3rem;}
+.games-intro p{font-family:var(--body);font-size:1rem;color:var(--ash);line-height:1.75;margin-bottom:1rem;}
+
+/* ── FOOTER ── */
+.footer{background:var(--ink);color:var(--ash);text-align:center;padding:1.5rem;font-family:var(--sans);font-size:.68rem;}
+.footer a{color:var(--ochre);}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <nav class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="news.html">Feed</a>
+      <a class="nav-link" href="map.html">Map</a>
+      <a class="nav-link" href="sky.html">Sky Archive</a>
+      <a class="nav-link" href="maritime.html">Maritime</a>
+      <a class="nav-link" href="linguistics.html">Linguistics</a>
+      <a class="nav-link" href="inscriptions.html">Inscriptions</a>
+      <a class="nav-link" href="maya_inscriptions.html">Maya</a>
+      <a class="nav-link" href="bioanthro.html">Bioanthro</a>
+      <a class="nav-link" href="luwian.html">Luwian</a>
+      <a class="nav-link" href="upload.html">Upload</a>
+      <a class="nav-link" href="conferences.html">Conferences</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="section-nav">
+  <div class="section-nav-inner">
+    <a class="section-nav-link" href="index.html">Home</a>
+    <a class="section-nav-link" href="news.html">Feed</a>
+    <a class="section-nav-link" href="map.html">Map</a>
+    <a class="section-nav-link" href="sky.html">Sky Archive</a>
+    <a class="section-nav-link" href="maritime.html">Maritime</a>
+    <a class="section-nav-link" href="maya_inscriptions.html">Maya</a>
+    <a class="section-nav-link" href="bioanthro.html">Bioanthro</a>
+    <a class="section-nav-link" href="luwian.html">Luwian</a>
+    <a class="section-nav-link active" href="games.html">Games</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-eyebrow">Ancient Athletics &amp; Games</div>
+    <h1 class="page-title">Play, Ritual, and <em>Contest</em><br>in the Ancient World</h1>
+    <p class="page-dek">From the rubber-ball courts of the Maya to the chariot tracks of Rome, ancient peoples across every continent invented games that were simultaneously sport, ritual, and cosmological theatre.</p>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="games-intro">
+    <p>Games are among the most revealing windows into ancient cultures — they encode cosmology, social hierarchy, diplomacy, and theology in their rules, arenas, and equipment. The five traditions surveyed here span 3,000 years and four continents, yet share a common thread: play as a form of world-making.</p>
+  </div>
+
+  <div class="games-grid">
+
+    <!-- MESOAMERICAN BALLGAME -->
+    <article class="game-card">
+      <div class="game-card-img">
+        <div class="game-card-img-placeholder">⚽</div>
+      </div>
+      <div class="game-card-body">
+        <div class="game-card-tag">Mesoamerica · Olmec–Maya–Aztec</div>
+        <h2 class="game-card-title">The Mesoamerican Ballgame</h2>
+        <p class="game-card-dek">The oldest team sport in the world, played continuously for over 3,000 years across Mesoamerica. Heavy rubber balls were driven through stone rings using hips and forearms on stone-paved courts aligned to astronomical sight lines. At least some matches ended in ritual sacrifice — though whether it was winners or losers who died remains debated. More than 1,500 ballcourts survive, from the massive Great Ballcourt at Chichén Itzá to modest village courts throughout the Maya lowlands.</p>
+        <div class="game-card-meta">
+          <div class="game-meta-item">
+            <span class="game-meta-label">Earliest evidence</span>
+            <span class="game-meta-value">~1400 BCE (Paso de la Amada)</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Region</span>
+            <span class="game-meta-value">Mexico, Guatemala, Belize, Honduras</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Equipment</span>
+            <span class="game-meta-value">Solid rubber ball, yoke, hacha, palma</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Key sites</span>
+            <span class="game-meta-value">Chichén Itzá, Monte Albán, Copán, Cantona</span>
+          </div>
+        </div>
+        <a href="map.html?id=chichen+itza" class="game-card-link">View Chichén Itzá on map →</a>
+      </div>
+    </article>
+
+    <!-- ANCIENT BOARD GAMES -->
+    <article class="game-card">
+      <div class="game-card-img">
+        <div class="game-card-img-placeholder">♟</div>
+      </div>
+      <div class="game-card-body">
+        <div class="game-card-tag">Near East · Egypt · South Asia</div>
+        <h2 class="game-card-title">Ancient Board Games</h2>
+        <p class="game-card-dek">Board games are documented from at least 3000 BCE. The Royal Game of Ur — discovered in the Royal Cemetery of Ur and still played today using a cuneiform rulebook from 177 BCE — is the oldest game whose rules we can reconstruct. Senet, found in Egyptian tombs including Tutankhamun's, represented the journey through the underworld. Mehen, played on a coiled serpent board, connected game-play to solar mythology. In South Asia, Chaturanga (600 CE) gave rise to chess, backgammon, and pachisi.</p>
+        <div class="game-card-meta">
+          <div class="game-meta-item">
+            <span class="game-meta-label">Earliest evidence</span>
+            <span class="game-meta-value">~3000 BCE (Jiroft, Iran)</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Region</span>
+            <span class="game-meta-value">Mesopotamia, Egypt, India, East Asia</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Key games</span>
+            <span class="game-meta-value">Royal Game of Ur, Senet, Mehen, Chaturanga</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Key sites</span>
+            <span class="game-meta-value">Ur, Thebes, Mohenjo-daro</span>
+          </div>
+        </div>
+        <a href="sky.html" class="game-card-link">Explore the Sky Archive →</a>
+      </div>
+    </article>
+
+    <!-- NORTH AMERICAN STICK-AND-BALL -->
+    <article class="game-card">
+      <div class="game-card-img">
+        <div class="game-card-img-placeholder">🏑</div>
+      </div>
+      <div class="game-card-body">
+        <div class="game-card-tag">North America · Indigenous Traditions</div>
+        <h2 class="game-card-title">North American Stick-and-Ball</h2>
+        <p class="game-card-dek">The Indigenous peoples of North America developed a family of stick-and-ball games independently of European influence, of which lacrosse (Tewaarathon) is the best documented. Played across hundreds of kilometres by teams of dozens to hundreds of players, matches lasted days and served as diplomacy, military training, and spiritual practice. The Ojibwe, Haudenosaunee, Cherokee, and many other nations each maintained distinct rule systems. Archaeological evidence for related games — stickball, shinny, and double-ball — extends to at least 1000 CE.</p>
+        <div class="game-card-meta">
+          <div class="game-meta-item">
+            <span class="game-meta-label">Earliest evidence</span>
+            <span class="game-meta-value">~1000 CE (Great Lakes region)</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Region</span>
+            <span class="game-meta-value">Eastern Woodlands, Great Plains, Southeast</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Key games</span>
+            <span class="game-meta-value">Tewaarathon (lacrosse), stickball, shinny</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Nations</span>
+            <span class="game-meta-value">Haudenosaunee, Ojibwe, Cherokee, Choctaw</span>
+          </div>
+        </div>
+        <a href="map.html" class="game-card-link">View North American sites →</a>
+      </div>
+    </article>
+
+    <!-- ANCIENT OLYMPICS -->
+    <article class="game-card">
+      <div class="game-card-img">
+        <div class="game-card-img-placeholder">🏛️</div>
+      </div>
+      <div class="game-card-body">
+        <div class="game-card-tag">Greece · Panhellenic Games</div>
+        <h2 class="game-card-title">The Ancient Olympics</h2>
+        <p class="game-card-dek">The Olympic Games, held at Olympia in the sanctuary of Zeus every four years from 776 BCE to 393 CE, were the most prestigious of four great Panhellenic festivals. Events included the stadion (sprint), diaulos (double-sprint), dolichos (long-distance), wrestling, boxing, pankration, pentathlon, and chariot racing. Competitors were male citizens of Greek city-states; victors received only an olive wreath but earned lasting fame through odes by poets such as Pindar. The sanctuary at Olympia — including the temple housing Pheidias' enormous chryselephantine Zeus — drew pilgrims from across the Mediterranean.</p>
+        <div class="game-card-meta">
+          <div class="game-meta-item">
+            <span class="game-meta-label">Founded</span>
+            <span class="game-meta-value">776 BCE (traditional)</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Duration</span>
+            <span class="game-meta-value">776 BCE – 393 CE (1,169 years)</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Site</span>
+            <span class="game-meta-value">Olympia, Elis, Greece</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Other festivals</span>
+            <span class="game-meta-value">Pythian, Isthmian, Nemean Games</span>
+          </div>
+        </div>
+        <a href="map.html" class="game-card-link">View Greek sites on map →</a>
+      </div>
+    </article>
+
+    <!-- ROMAN CHARIOT RACING -->
+    <article class="game-card">
+      <div class="game-card-img">
+        <div class="game-card-img-placeholder">🐎</div>
+      </div>
+      <div class="game-card-body">
+        <div class="game-card-tag">Rome · Circus Maximus</div>
+        <h2 class="game-card-title">Roman Chariot Racing</h2>
+        <p class="game-card-dek">Chariot racing was the most popular spectator sport in the Roman world, drawing crowds of 150,000 to 250,000 at the Circus Maximus in Rome — the largest entertainment venue in history. Teams (factiones) identified by colour — Blue, Green, Red, and White — commanded passionate loyalties that cut across class lines and generated what modern historians recognise as the ancient world's first organised sports fandom. Races ran seven laps around the central spine (spina), with sharp turns at the metae producing spectacular crashes (naufragia). The sport survived the fall of the Western Empire and continued in Constantinople into the Byzantine period.</p>
+        <div class="game-card-meta">
+          <div class="game-meta-item">
+            <span class="game-meta-label">Earliest evidence</span>
+            <span class="game-meta-value">6th century BCE (Rome)</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Capacity</span>
+            <span class="game-meta-value">~250,000 (Circus Maximus)</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Teams</span>
+            <span class="game-meta-value">Blues, Greens, Reds, Whites</span>
+          </div>
+          <div class="game-meta-item">
+            <span class="game-meta-label">Key sites</span>
+            <span class="game-meta-value">Circus Maximus, Hippodrome of Constantinople</span>
+          </div>
+        </div>
+        <a href="map.html" class="game-card-link">View Roman sites on map →</a>
+      </div>
+    </article>
+
+  </div><!-- /.games-grid -->
+</div><!-- /.page-wrap -->
+
+<footer class="footer">
+  <a href="index.html">archAIology</a> · archaiology.org · © 2026
+</footer>
+
+</body>
+</html>
