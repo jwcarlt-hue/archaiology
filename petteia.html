@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Petteia / Ludus Latrunculorum — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#faf8f3; --paper:#f2ede3; --linen:#e8e0d0; --rule:#d5ccb8;
+  --ash:#8a8070; --ink:#1c1814; --deep:#0f0d0a;
+  --ochre:#b8892a; --ochre-lt:#d4a84b; --terra:#7a3e1a;
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  /* game palette — marble/stone */
+  --marble:#f4f0e8; --marble-dk:#d0c8b8; --onyx:#1a1a1a; --onyx-lt:#3a3a3a;
+  --board-lt:#c8b88a; --board-dk:#9a8860; --board-line:#7a6840;
+  --sel:#d4a84b;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+.masthead{background:var(--ink);padding:0 2rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px;}
+.logo{font-family:var(--serif);font-size:1.2rem;font-weight:900;color:var(--cream);}
+.logo span{color:var(--ochre);font-style:italic;}
+.nav-links{display:flex;gap:1.5rem;overflow-x:auto;}
+.nav-link{font-family:var(--sans);font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);transition:color .2s;white-space:nowrap;}
+.nav-link:hover{color:var(--cream);}
+
+.section-nav{background:var(--paper);border-bottom:1px solid var(--rule);padding:0 2rem;overflow-x:auto;}
+.section-nav-inner{max-width:1280px;margin:0 auto;display:flex;}
+.section-nav-link{font-family:var(--sans);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);padding:.7rem 1.4rem;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.section-nav-link:hover{color:var(--ink);border-bottom-color:var(--ochre);}
+.section-nav-link.active{color:var(--ink);border-bottom-color:var(--ochre);}
+
+.breadcrumb{max-width:1280px;margin:0 auto;padding:.9rem 2rem;font-family:var(--sans);font-size:.65rem;color:var(--ash);display:flex;gap:.5rem;align-items:center;}
+.breadcrumb a{color:var(--ash);}
+.breadcrumb a:hover{color:var(--ochre);}
+.breadcrumb-sep{opacity:.4;}
+
+.article-hero-inner{max-width:1280px;margin:0 auto;padding:0 2rem;}
+.article-hero{border-bottom:1px solid var(--rule);padding-bottom:2.5rem;margin-bottom:3rem;}
+.article-tag{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre);margin-bottom:.8rem;}
+.article-title{font-family:var(--serif);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;line-height:1.08;letter-spacing:-.025em;margin-bottom:1rem;max-width:820px;}
+.article-title em{color:var(--ochre);font-style:italic;}
+.article-dek{font-family:var(--body);font-size:1.05rem;line-height:1.7;color:var(--ash);max-width:680px;margin-bottom:1.4rem;}
+.article-byline{font-family:var(--sans);font-size:.7rem;color:var(--ash);display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;}
+.byline-dot{opacity:.3;}
+
+.article-body{max-width:1280px;margin:0 auto;padding:0 2rem 5rem;display:grid;grid-template-columns:1fr 320px;gap:3.5rem;align-items:start;}
+@media(max-width:900px){.article-body{grid-template-columns:1fr;}.article-sidebar{display:none;}}
+.article-content{min-width:0;}
+
+.prose h2{font-family:var(--serif);font-size:1.5rem;font-weight:700;margin:2.5rem 0 .8rem;}
+.prose p{font-family:var(--body);font-size:1rem;line-height:1.8;color:#3a3228;margin-bottom:1.1rem;}
+.prose p strong{color:var(--ink);}
+.prose ul{padding-left:1.4rem;margin-bottom:1.1rem;}
+.prose li{font-family:var(--body);font-size:.95rem;line-height:1.75;color:#3a3228;margin-bottom:.3rem;}
+.prose .rule-block{background:var(--paper);border-left:3px solid var(--ochre);padding:1rem 1.2rem;margin:1.5rem 0;font-family:var(--sans);font-size:.82rem;line-height:1.65;}
+.prose .rule-block strong{color:var(--ink);}
+.prose .caveat{background:#f0ede8;border-left:3px solid var(--marble-dk);padding:.9rem 1.2rem;margin:1.2rem 0;font-family:var(--sans);font-size:.8rem;line-height:1.6;color:var(--ash);}
+.prose .source-note{font-family:var(--sans);font-size:.7rem;color:var(--ash);border-top:1px solid var(--rule);padding-top:1rem;margin-top:2.5rem;line-height:1.6;}
+
+/* ── GAME ── */
+.game-wrap{background:#1c1810;border:1px solid rgba(160,140,80,.15);padding:1.5rem;margin:2.5rem 0;}
+.game-title-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.8rem;}
+.game-title-label{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--board-lt);}
+.game-status{font-family:var(--sans);font-size:.78rem;color:rgba(220,200,140,.85);min-height:1.2em;}
+
+.game-options{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.2rem;align-items:center;}
+.opt-label{font-family:var(--sans);font-size:.65rem;color:var(--board-lt);display:flex;align-items:center;gap:.4rem;cursor:pointer;}
+.opt-label input{accent-color:var(--ochre);}
+
+.game-area{display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start;}
+@media(max-width:700px){.game-area{grid-template-columns:1fr;}}
+
+#petCanvas{display:block;cursor:pointer;}
+
+.pet-panel{display:flex;flex-direction:column;gap:.9rem;}
+
+.score-card{background:rgba(255,255,255,.04);border:1px solid rgba(160,140,80,.15);padding:.85rem;}
+.score-row{display:flex;justify-content:space-between;align-items:center;font-family:var(--sans);font-size:.75rem;padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.score-row:last-child{border-bottom:none;}
+.score-key{color:rgba(200,180,130,.6);}
+.score-val{font-weight:700;color:var(--board-lt);}
+.score-val.white{color:#f4f0e8;}
+.score-val.black{color:#9ab8c8;}
+.active-indicator{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:.4rem;vertical-align:middle;}
+.active-indicator.w{background:#f4f0e8;box-shadow:0 0 6px #f4f0e8;}
+.active-indicator.b{background:#4a8ab0;box-shadow:0 0 6px #4a8ab0;}
+
+.pet-btn{width:100%;background:rgba(160,130,50,.1);border:1px solid rgba(160,130,50,.3);color:var(--board-lt);font-family:var(--sans);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.5rem;cursor:pointer;transition:all .2s;margin-top:.3rem;}
+.pet-btn:hover{background:rgba(160,130,50,.2);}
+.pet-btn:disabled{opacity:.3;cursor:not-allowed;}
+.pet-btn.primary{background:rgba(160,130,50,.18);border-color:rgba(160,130,50,.55);}
+
+.game-log{background:rgba(0,0,0,.5);padding:.6rem;max-height:130px;overflow-y:auto;font-family:var(--sans);font-size:.66rem;line-height:1.7;margin-top:.3rem;}
+.log-entry{color:rgba(200,175,120,.45);padding:.03rem 0;}
+.log-entry.hi{color:rgba(235,210,155,.85);}
+.log-entry.win{color:var(--board-lt);font-weight:700;}
+.log-entry.cap{color:#c8e8a0;}
+
+/* Sidebar */
+.article-sidebar{position:sticky;top:2rem;}
+.sidebar-card{background:var(--paper);border:1px solid var(--rule);padding:1.4rem;margin-bottom:1.4rem;}
+.sidebar-card-title{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ochre);margin-bottom:1rem;}
+.sidebar-row{display:flex;justify-content:space-between;align-items:baseline;padding:.45rem 0;border-bottom:1px solid var(--linen);font-family:var(--sans);font-size:.72rem;gap:.5rem;}
+.sidebar-row:last-child{border-bottom:none;}
+.sidebar-key{color:var(--ash);}
+.sidebar-val{color:var(--ink);font-weight:600;text-align:right;font-size:.7rem;}
+.sidebar-nav{display:flex;flex-direction:column;gap:.3rem;}
+.sidebar-nav a{font-family:var(--sans);font-size:.72rem;color:var(--ash);padding:.35rem 0;border-bottom:1px solid var(--linen);display:flex;align-items:center;gap:.4rem;transition:color .2s;}
+.sidebar-nav a:last-child{border-bottom:none;}
+.sidebar-nav a:hover{color:var(--ochre);}
+.sidebar-nav a::before{content:'§';opacity:.3;font-size:.65rem;}
+
+.footer{background:var(--ink);color:var(--ash);text-align:center;padding:1.5rem;font-family:var(--sans);font-size:.68rem;}
+.footer a{color:var(--ochre);}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <nav class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="map.html">Map</a>
+      <a class="nav-link" href="sky.html">Sky Archive</a>
+      <a class="nav-link" href="games.html">Games</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="section-nav">
+  <div class="section-nav-inner">
+    <a class="section-nav-link" href="index.html">Home</a>
+    <a class="section-nav-link" href="news.html">Feed</a>
+    <a class="section-nav-link" href="map.html">Map</a>
+    <a class="section-nav-link" href="sky.html">Sky Archive</a>
+    <a class="section-nav-link" href="maritime.html">Maritime</a>
+    <a class="section-nav-link" href="maya_inscriptions.html">Maya</a>
+    <a class="section-nav-link" href="bioanthro.html">Bioanthro</a>
+    <a class="section-nav-link" href="luwian.html">Luwian</a>
+    <a class="section-nav-link active" href="games.html">Games</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span class="breadcrumb-sep">›</span>
+  <a href="games.html">Games</a><span class="breadcrumb-sep">›</span>
+  <span>Petteia / Ludus Latrunculorum</span>
+</div>
+
+<div class="article-hero-inner">
+  <div class="article-hero">
+    <div class="article-tag">Ancient Greece &amp; Rome · Pure Strategy · c. 500 BCE – 400 CE</div>
+    <h1 class="article-title">Petteia &amp; <em>Ludus Latrunculorum</em></h1>
+    <p class="article-dek">The board game of the Greek city-states and the Roman Empire — a game of pure skill with no dice, no luck. Two armies of "pebbles" or "little soldiers" face each other across a grid; pieces capture by surrounding, not by jumping. Referenced from Homer to Ovid, played from Athens to Hadrian's Wall, and never fully reconstructed since its disappearance in the fourth century CE.</p>
+    <div class="article-byline">
+      <span>Greece, Rome, and the Roman Empire</span>
+      <span class="byline-dot">·</span>
+      <span>Before 500 BCE – c. 400 CE</span>
+      <span class="byline-dot">·</span>
+      <span>8×8 board · 2 players · custodian capture · pure strategy</span>
+    </div>
+  </div>
+</div>
+
+<div class="article-body">
+<main class="article-content prose">
+
+  <h2>History</h2>
+  <p><strong>Petteia</strong> (Greek: πεττεία, "pebbles") is attested from Homer onward and was certainly played before the fifth century BCE. Greek authors, including Plato and Aristotle, used it as a philosophical metaphor — the game was culturally ubiquitous enough that its moves and positions were common reference points in serious writing. Greek tradition held that it was of Egyptian origin, though no Egyptian antecedent has been identified with certainty.</p>
+
+  <p>By the second century BCE the Romans had adopted it as <strong>Ludus Latrunculorum</strong> — "the game of little soldiers" or "the bandit game." Roman writers from Varro to Ovid to the author of the <em>Laus Pisonis</em> describe it as a prestige game of pure skill. Boards have been found scratched into the steps of the Forum, the Colosseum, and military forts across the empire from Hadrian's Wall to Syria. Pieces survive in ivory, bone, and glass.</p>
+
+  <p>The game is last mentioned in Greek in the second century CE and in Latin at the end of the fourth. It may have survived in some Roman provinces, and a tenth-century Persian poem describing a game called <strong>Nard</strong> — not the backgammon variant but a separate strategy game — provides what may be the only clue about the function of the special <strong>dux</strong> piece found in some Roman sets.</p>
+
+  <p>The rules are reconstructed with significant uncertainty. The core custodian-capture mechanic is agreed upon by all scholars; the dux variant and starting arrangement are more debated.</p>
+
+  <h2>Play — vs AI Opponent</h2>
+
+  <div class="caveat">
+    <strong>Scholarly note:</strong> Rules follow Cyningstan's Botermans-based reconstruction. You play White (marble pieces); the AI plays Black (onyx pieces). Click a white piece to select it, then click a destination square. The AI uses minimax search with alpha-beta pruning. Enable the <em>Dux</em> variant to add one immortal commander piece per side.
+  </div>
+
+  <div class="game-wrap">
+    <div class="game-title-bar">
+      <span class="game-title-label">⬜ Petteia / Ludus Latrunculorum</span>
+      <span class="game-status" id="petStatus">Configure options and click New Game</span>
+    </div>
+
+    <div class="game-options">
+      <label class="opt-label">
+        <input type="checkbox" id="duxMode"> Enable <em>Dux</em> (Ludus Latrunculorum variant — immortal commander)
+      </label>
+      <label class="opt-label">
+        <input type="checkbox" id="aiFirst"> AI plays first (AI = White)
+      </label>
+    </div>
+
+    <div class="game-area">
+      <canvas id="petCanvas" width="360" height="360"></canvas>
+      <div class="pet-panel">
+
+        <div class="score-card">
+          <div class="score-row">
+            <span class="score-key"><span class="active-indicator w" id="wInd"></span>White (You)</span>
+            <span class="score-val white" id="wCount">—</span>
+          </div>
+          <div class="score-row">
+            <span class="score-key"><span class="active-indicator b" id="bInd"></span>Black (AI)</span>
+            <span class="score-val" id="bCount">—</span>
+          </div>
+          <div class="score-row">
+            <span class="score-key">Move</span>
+            <span class="score-val" id="moveNum">—</span>
+          </div>
+          <div class="score-row" id="duxRow" style="display:none">
+            <span class="score-key">Dux</span>
+            <span class="score-val" id="duxStatus">—</span>
+          </div>
+        </div>
+
+        <button class="pet-btn primary" onclick="petNewGame()">New Game</button>
+        <button class="pet-btn" id="undoBtn" onclick="petUndo()" disabled>Undo Last Move</button>
+        <button class="pet-btn" id="hintBtn" onclick="petHint()" disabled>Show Hint</button>
+
+        <div class="game-log" id="petLog">
+          <div class="log-entry">MILES AD BELLUM PARATUS — the soldier stands ready for war…</div>
+        </div>
+
+        <div style="font-family:var(--sans);font-size:.6rem;color:rgba(200,175,120,.3);margin-top:.4rem;line-height:1.6;">
+          Click piece to select · Click destination to move · Blue highlight = valid moves
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Rules</h2>
+
+  <div class="rule-block">
+    <strong>The board</strong><br>
+    An 8×8 grid of squares. White fills rows 1–2; Black fills rows 7–8 (all 16 pieces per side). In the Dux variant, each player has 8 pieces in row 1/8 and their Dux in the centre of row 2/7.
+  </div>
+  <div class="rule-block">
+    <strong>Movement</strong><br>
+    On your turn, move one piece any number of squares in a straight horizontal or vertical line — like a rook in chess. A piece cannot land on or jump over any other piece.
+  </div>
+  <div class="rule-block">
+    <strong>Custodian capture</strong><br>
+    An enemy piece is captured by sandwiching it between two of your pieces along a horizontal or vertical line. The captured piece is immediately removed. A single move may create multiple custodian captures simultaneously — all captured pieces are removed. It is safe to voluntarily move into a sandwich: a piece stepping between two enemies is not captured.
+  </div>
+  <div class="rule-block">
+    <strong>The Dux (Ludus Latrunculorum variant)</strong><br>
+    Each player has one Dux — a commander piece marked differently. The Dux moves and captures like any other piece, but <em>the Dux itself can never be captured</em>. It can participate in sandwiching enemies but cannot be sandwiched. Based on the Persian <em>Nard</em> description (10th century CE).
+  </div>
+  <div class="rule-block">
+    <strong>Winning</strong><br>
+    Win by reducing your opponent to a single piece (unable to wage war further), or by completely trapping them so no move is possible. A draw may be agreed if no conclusion is apparent.
+  </div>
+
+  <h2>Why the Game Tends Toward Draws</h2>
+  <p>Wally J. Kowalski observed that Petteia is prone to draws because the custodian-capture rule makes pieces very difficult to actually take — there is substantial jockeying for position before any capture is possible, and both sides can often build interlocking formations that block progress indefinitely. The voluntary sandwich rule (you can step between two enemies without harm) adds a further defensive tool.</p>
+
+  <p>It is likely that experienced Greek and Roman players developed strategic principles — offensive formation patterns, forced-march sequences, ways to break interlocked positions — that have not survived. The <em>Laus Pisonis</em> (praise poem for a Roman aristocrat, first century CE) describes a particularly skilled player who could "see a hundred moves ahead" and who played both colours simultaneously for a demonstration, suggesting the game admitted of considerable depth.</p>
+
+  <p>The commentator in the Cyningstan discussion thread raises the possibility that the objective was territorial (like Go) rather than eliminative — this is not impossible, and would resolve the drawish problem, but no ancient source supports it explicitly.</p>
+
+  <p class="source-note">
+    <strong>Sources:</strong> Cyningstan (Damian Walker), "Petteia" and "Ludus Latrunculorum," cyningstan.com (rules based on Botermans). <strong>Ancient sources:</strong> Plato, <em>Republic</em> 487c (petteia as metaphor); Varro, <em>De Lingua Latina</em> vi.64 (latrunculi); <em>Laus Pisonis</em> 190–208 (skilled Roman player); Ovid, <em>Ars Amatoria</em> ii.208 (women and the game). <strong>Archaeological evidence:</strong> boards at Hadrian's Wall forts, Corinium, and across the eastern Empire; glass, bone, and ivory pieces in Roman collections. <strong>Dux variant:</strong> derived from the Persian game Nard as described by Firdausi, <em>Shahnameh</em>, c. 1000 CE.
+  </p>
+
+</main>
+
+<aside class="article-sidebar">
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Quick Facts</div>
+    <div class="sidebar-row"><span class="sidebar-key">Greek name</span><span class="sidebar-val">Petteia ("pebbles")</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Latin name</span><span class="sidebar-val">Ludus Latrunculorum ("little soldiers")</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Period</span><span class="sidebar-val">Before 500 BCE – c. 400 CE</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Board</span><span class="sidebar-val">8×8 (or other rectangular)</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Players</span><span class="sidebar-val">2</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Pieces</span><span class="sidebar-val">16 per side (+ optional Dux)</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Capture</span><span class="sidebar-val">Custodian (sandwiching)</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Luck</span><span class="sidebar-val">None — pure strategy</span></div>
+    <div class="sidebar-row"><span class="sidebar-key">Rules status</span><span class="sidebar-val">Reconstructed; core mechanic secure</span></div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">The Arcade</div>
+    <nav class="sidebar-nav">
+      <a href="senet.html">Senet</a>
+      <a href="mehen.html">Mehen</a>
+      <a href="ur.html">Royal Game of Ur</a>
+      <a href="hounds-jackals.html">Hounds &amp; Jackals</a>
+      <a href="games.html">All Ancient Games →</a>
+    </nav>
+  </div>
+</aside>
+</div>
+
+<footer class="footer">
+  <a href="index.html">archAIology</a> · archaiology.org · © 2026
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// PETTEIA / LUDUS LATRUNCULORUM
+// 8×8 board. Custodian capture. Rook-style movement. AI with
+// minimax + alpha-beta pruning, depth 3.
+// ══════════════════════════════════════════════════════════════════
+
+const canvas = document.getElementById('petCanvas');
+const ctx    = canvas.getContext('2d');
+const N = 8;        // board dimension
+const SQ = 44;      // square size px
+const PAD = 4;      // board padding
+
+// Piece types
+const EMPTY = 0, WHITE = 1, BLACK = 2, WHITE_DUX = 3, BLACK_DUX = 4;
+
+// ── State ──────────────────────────────────────────────────────────
+let G = null;
+
+function petNewGame() {
+  const dux    = document.getElementById('duxMode').checked;
+  const aiFirst = document.getElementById('aiFirst').checked;
+
+  // board[r][c]: 0=empty, 1=white, 2=black, 3=white_dux, 4=black_dux
+  const board = Array.from({length:N}, () => Array(N).fill(EMPTY));
+
+  if (!dux) {
+    // Standard: each player fills 2 rows
+    for (let c = 0; c < N; c++) {
+      board[0][c] = WHITE; board[1][c] = WHITE;
+      board[6][c] = BLACK; board[7][c] = BLACK;
+    }
+  } else {
+    // Dux variant: 1 row of soldiers + dux in centre of next row
+    for (let c = 0; c < N; c++) {
+      board[0][c] = WHITE; board[7][c] = BLACK;
+    }
+    const dc = Math.floor(N/2); // dux column
+    board[1][dc] = WHITE_DUX;
+    board[6][dc] = BLACK_DUX;
+  }
+
+  G = {
+    board,
+    turn:     aiFirst ? BLACK : WHITE,  // whose turn (1=white,2=black)
+    human:    aiFirst ? WHITE : WHITE,  // human always plays white in this impl
+    selected: null,    // {r,c} of selected piece
+    validMoves: [],    // [{r,c}] destination squares for selected
+    dux,
+    history:  [],      // for undo
+    moveCount: 0,
+    done:     false,
+    hint:     null,
+  };
+
+  document.getElementById('undoBtn').disabled = false;
+  document.getElementById('hintBtn').disabled = false;
+  document.getElementById('duxRow').style.display = dux ? '' : 'none';
+
+  addPetLog('New game. White moves first.', true);
+  if (dux) addPetLog('Dux variant: the Dux (★) cannot be captured.');
+  updatePetUI();
+  drawPet();
+
+  // If AI goes first
+  if (G.turn === BLACK) setTimeout(aiMove, 400);
+}
+
+// ── Canvas interaction ────────────────────────────────────────────
+canvas.addEventListener('click', e => {
+  if (!G || G.done || G.turn !== WHITE) return;
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width  / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const mx = (e.clientX - rect.left) * scaleX;
+  const my = (e.clientY - rect.top)  * scaleY;
+  const c  = Math.floor((mx - PAD) / SQ);
+  const r  = Math.floor((my - PAD) / SQ);
+  if (r < 0 || r >= N || c < 0 || c >= N) return;
+
+  if (G.selected) {
+    // Try to move to (r,c)
+    const dest = G.validMoves.find(m => m.r === r && m.c === c);
+    if (dest) {
+      const move = { from: G.selected, to: {r,c} };
+      applyMove(G, move, true);
+      G.selected   = null;
+      G.validMoves = [];
+      G.hint       = null;
+      if (!G.done) {
+        updatePetUI();
+        drawPet();
+        setTimeout(aiMove, 300);
+      } else {
+        updatePetUI();
+        drawPet();
+      }
+      return;
+    }
+    // Click another own piece — reselect
+    G.selected   = null;
+    G.validMoves = [];
+  }
+
+  // Select a white piece
+  const p = G.board[r][c];
+  if (p === WHITE || p === WHITE_DUX) {
+    G.selected   = {r, c};
+    G.validMoves = getMovesForPiece(G.board, r, c);
+  }
+  drawPet();
+});
+
+// ── Move generation ───────────────────────────────────────────────
+function getMovesForPiece(board, r, c) {
+  const moves = [];
+  const dirs  = [[0,1],[0,-1],[1,0],[-1,0]];
+  for (const [dr, dc] of dirs) {
+    let nr = r + dr, nc = c + dc;
+    while (nr >= 0 && nr < N && nc >= 0 && nc < N && board[nr][nc] === EMPTY) {
+      moves.push({r: nr, c: nc});
+      nr += dr; nc += dc;
+    }
+  }
+  return moves;
+}
+
+function getAllMoves(board, player) {
+  const moves = [];
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      const p = board[r][c];
+      if ((player === WHITE && (p === WHITE || p === WHITE_DUX)) ||
+          (player === BLACK && (p === BLACK || p === BLACK_DUX))) {
+        const dests = getMovesForPiece(board, r, c);
+        for (const d of dests) moves.push({ from:{r,c}, to:d });
+      }
+    }
+  }
+  return moves;
+}
+
+// Apply a move and perform custodian captures.
+// Returns array of captured {r,c}.
+function applyMove(state, move, record) {
+  const {board, dux} = state;
+  const {from, to}   = move;
+  const piece = board[from.r][from.c];
+
+  if (record) state.history.push({ move, boardSnap: board.map(row=>[...row]) });
+
+  board[to.r][to.c]     = piece;
+  board[from.r][from.c] = EMPTY;
+
+  const captured = [];
+  const myColor  = (piece === WHITE || piece === WHITE_DUX) ? WHITE : BLACK;
+  const oppColor = myColor === WHITE ? BLACK : WHITE;
+
+  // Check custodian captures in all 4 directions from destination
+  const dirs = [[0,1],[0,-1],[1,0],[-1,0]];
+  for (const [dr, dc] of dirs) {
+    const nr = to.r + dr, nc = to.c + dc;
+    if (nr < 0 || nr >= N || nc < 0 || nc >= N) continue;
+    const target = board[nr][nc];
+    if (target !== oppColor && target !== (oppColor === WHITE ? WHITE_DUX : BLACK_DUX)) continue;
+    // Dux can't be captured
+    if (dux && (target === WHITE_DUX || target === BLACK_DUX)) continue;
+    // Check flanking piece on the other side
+    const fr = nr + dr, fc = nc + dc;
+    if (fr < 0 || fr >= N || fc < 0 || fc >= N) continue;
+    const flank = board[fr][fc];
+    if (flank === myColor || flank === (myColor === WHITE ? WHITE_DUX : BLACK_DUX)) {
+      captured.push({r:nr, c:nc});
+    }
+  }
+
+  for (const cap of captured) board[cap.r][cap.c] = EMPTY;
+
+  if (record && captured.length) {
+    const names = ['','White','Black'];
+    addPetLog(`⚔ ${names[myColor]} captures ${captured.length} piece${captured.length>1?'s':''}!`, false, false, true);
+  }
+
+  state.moveCount++;
+  state.turn = state.turn === WHITE ? BLACK : WHITE;
+
+  // Check win conditions
+  const whitePieces = countPieces(board, WHITE);
+  const blackPieces = countPieces(board, BLACK);
+  const opp = state.turn;
+  const oppMoves = getAllMoves(board, opp);
+
+  if (blackPieces <= 1 || (opp === BLACK && oppMoves.length === 0)) {
+    if (record) { addPetLog('⚪ White wins!', false, true); }
+    state.done = true;
+  } else if (whitePieces <= 1 || (opp === WHITE && oppMoves.length === 0)) {
+    if (record) { addPetLog('⚫ Black wins!', false, true); }
+    state.done = true;
+  }
+
+  return captured;
+}
+
+function countPieces(board, color) {
+  let n = 0;
+  for (let r = 0; r < N; r++)
+    for (let c = 0; c < N; c++) {
+      const p = board[r][c];
+      if (p === color || p === (color === WHITE ? WHITE_DUX : BLACK_DUX)) n++;
+    }
+  return n;
+}
+
+// ── AI — minimax + alpha-beta ─────────────────────────────────────
+function evaluate(board, dux) {
+  // Material balance: white advantage = positive
+  let score = 0;
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      const p = board[r][c];
+      if (p === WHITE) score += 10;
+      else if (p === WHITE_DUX) score += 15;
+      else if (p === BLACK) score -= 10;
+      else if (p === BLACK_DUX) score -= 15;
+    }
+  }
+  // Mobility bonus
+  score += getAllMoves(board, WHITE).length * 0.3;
+  score -= getAllMoves(board, BLACK).length * 0.3;
+  return score;
+}
+
+function cloneBoard(board) { return board.map(r => [...r]); }
+
+function minimax(board, depth, alpha, beta, maximising, dux) {
+  const player = maximising ? WHITE : BLACK;
+  const moves  = getAllMoves(board, player);
+
+  if (depth === 0 || moves.length === 0) return evaluate(board, dux);
+
+  if (maximising) {
+    let best = -Infinity;
+    for (const m of moves) {
+      const nb = cloneBoard(board);
+      nb[m.to.r][m.to.c]     = nb[m.from.r][m.from.c];
+      nb[m.from.r][m.from.c] = EMPTY;
+      // Quick custodian capture on clone
+      const p = nb[m.to.r][m.to.c];
+      const myCol = (p===WHITE||p===WHITE_DUX) ? WHITE : BLACK;
+      const oppCol= myCol===WHITE?BLACK:WHITE;
+      [[0,1],[0,-1],[1,0],[-1,0]].forEach(([dr,dc])=>{
+        const nr=m.to.r+dr,nc=m.to.c+dc;
+        if(nr<0||nr>=N||nc<0||nc>=N)return;
+        const t=nb[nr][nc];
+        if(t!==oppCol&&t!==(oppCol===WHITE?WHITE_DUX:BLACK_DUX))return;
+        if(dux&&(t===WHITE_DUX||t===BLACK_DUX))return;
+        const fr=nr+dr,fc=nc+dc;
+        if(fr<0||fr>=N||fc<0||fc>=N)return;
+        const fl=nb[fr][fc];
+        if(fl===myCol||fl===(myCol===WHITE?WHITE_DUX:BLACK_DUX))nb[nr][nc]=EMPTY;
+      });
+      best = Math.max(best, minimax(nb, depth-1, alpha, beta, false, dux));
+      alpha = Math.max(alpha, best);
+      if (beta <= alpha) break;
+    }
+    return best;
+  } else {
+    let best = +Infinity;
+    for (const m of moves) {
+      const nb = cloneBoard(board);
+      nb[m.to.r][m.to.c]     = nb[m.from.r][m.from.c];
+      nb[m.from.r][m.from.c] = EMPTY;
+      const p = nb[m.to.r][m.to.c];
+      const myCol = (p===WHITE||p===WHITE_DUX) ? WHITE : BLACK;
+      const oppCol= myCol===WHITE?BLACK:WHITE;
+      [[0,1],[0,-1],[1,0],[-1,0]].forEach(([dr,dc])=>{
+        const nr=m.to.r+dr,nc=m.to.c+dc;
+        if(nr<0||nr>=N||nc<0||nc>=N)return;
+        const t=nb[nr][nc];
+        if(t!==oppCol&&t!==(oppCol===WHITE?WHITE_DUX:BLACK_DUX))return;
+        if(dux&&(t===WHITE_DUX||t===BLACK_DUX))return;
+        const fr=nr+dr,fc=nc+dc;
+        if(fr<0||fr>=N||fc<0||fc>=N)return;
+        const fl=nb[fr][fc];
+        if(fl===myCol||fl===(myCol===WHITE?WHITE_DUX:BLACK_DUX))nb[nr][nc]=EMPTY;
+      });
+      best = Math.min(best, minimax(nb, depth-1, alpha, beta, true, dux));
+      beta = Math.min(beta, best);
+      if (beta <= alpha) break;
+    }
+    return best;
+  }
+}
+
+function bestMove(board, player, dux, depth=3) {
+  const moves = getAllMoves(board, player);
+  if (!moves.length) return null;
+  const maximising = player === WHITE;
+  let bestVal = maximising ? -Infinity : +Infinity;
+  let best    = moves[0];
+
+  for (const m of moves) {
+    const nb = cloneBoard(board);
+    nb[m.to.r][m.to.c]     = nb[m.from.r][m.from.c];
+    nb[m.from.r][m.from.c] = EMPTY;
+    // capture on clone
+    const p = nb[m.to.r][m.to.c];
+    const myCol = (p===WHITE||p===WHITE_DUX)?WHITE:BLACK;
+    const oppCol= myCol===WHITE?BLACK:WHITE;
+    [[0,1],[0,-1],[1,0],[-1,0]].forEach(([dr,dc])=>{
+      const nr=m.to.r+dr,nc=m.to.c+dc;
+      if(nr<0||nr>=N||nc<0||nc>=N)return;
+      const t=nb[nr][nc];
+      if(t!==oppCol&&t!==(oppCol===WHITE?WHITE_DUX:BLACK_DUX))return;
+      if(dux&&(t===WHITE_DUX||t===BLACK_DUX))return;
+      const fr=nr+dr,fc=nc+dc;
+      if(fr<0||fr>=N||fc<0||fc>=N)return;
+      const fl=nb[fr][fc];
+      if(fl===myCol||fl===(myCol===WHITE?WHITE_DUX:BLACK_DUX))nb[nr][nc]=EMPTY;
+    });
+    const val = minimax(nb, depth-1, -Infinity, +Infinity, !maximising, dux);
+    if ((maximising && val > bestVal) || (!maximising && val < bestVal)) {
+      bestVal = val; best = m;
+    }
+  }
+  return best;
+}
+
+function aiMove() {
+  if (!G || G.done || G.turn === WHITE) return;
+  addPetLog('AI thinking…');
+  // Use setTimeout to allow repaint before compute
+  setTimeout(() => {
+    const move = bestMove(G.board, BLACK, G.dux, 3);
+    if (!move) { G.done = true; addPetLog('⚪ White wins — AI has no moves!', false, true); return; }
+    applyMove(G, move, true);
+    updatePetUI();
+    drawPet();
+  }, 50);
+}
+
+// ── Undo ──────────────────────────────────────────────────────────
+function petUndo() {
+  if (!G || G.history.length < 2) return; // undo both AI and human move
+  // Pop AI move then human move
+  G.history.pop();
+  const snap = G.history.pop();
+  G.board = snap.boardSnap;
+  G.turn  = WHITE;
+  G.done  = false;
+  G.selected   = null;
+  G.validMoves = [];
+  G.moveCount  = Math.max(0, G.moveCount - 2);
+  addPetLog('Move undone.');
+  updatePetUI();
+  drawPet();
+}
+
+// ── Hint ──────────────────────────────────────────────────────────
+function petHint() {
+  if (!G || G.done || G.turn !== WHITE) return;
+  const move = bestMove(G.board, WHITE, G.dux, 2);
+  if (!move) return;
+  G.hint = move;
+  addPetLog(`Hint: move piece at (${move.from.r+1},${move.from.c+1}) to (${move.to.r+1},${move.to.c+1})`);
+  drawPet();
+}
+
+// ── Logging ───────────────────────────────────────────────────────
+function addPetLog(msg, hi=false, win=false, cap=false) {
+  if (!G && !msg) return;
+  const el = document.getElementById('petLog');
+  const d  = document.createElement('div');
+  d.className = 'log-entry' + (hi?' hi':'') + (win?' win':'') + (cap?' cap':'');
+  d.textContent = msg;
+  el.insertBefore(d, el.firstChild);
+  while (el.children.length > 40) el.removeChild(el.lastChild);
+}
+
+// ── UI update ─────────────────────────────────────────────────────
+function updatePetUI() {
+  if (!G) return;
+  const wc = countPieces(G.board, WHITE);
+  const bc = countPieces(G.board, BLACK);
+  document.getElementById('wCount').textContent = wc + ' pieces';
+  document.getElementById('bCount').textContent = bc + ' pieces';
+  document.getElementById('moveNum').textContent = G.moveCount;
+  if (G.dux) {
+    const wd = G.board.flat().includes(WHITE_DUX);
+    const bd = G.board.flat().includes(BLACK_DUX);
+    document.getElementById('duxStatus').textContent =
+      `White Dux ${wd?'active':'—'} · Black Dux ${bd?'active':'—'}`;
+  }
+  // Active indicators
+  document.getElementById('wInd').style.opacity = (!G.done && G.turn===WHITE) ? '1' : '0.3';
+  document.getElementById('bInd').style.opacity = (!G.done && G.turn===BLACK) ? '1' : '0.3';
+  if (G.done) {
+    document.getElementById('petStatus').textContent = '🏆 Game over';
+  } else {
+    document.getElementById('petStatus').textContent =
+      G.turn === WHITE ? '⚪ Your turn — select a white piece' : '⚫ AI is thinking…';
+  }
+}
+
+// ── Board drawing ─────────────────────────────────────────────────
+function drawPet() {
+  const W = PAD*2 + N*SQ, H = PAD*2 + N*SQ;
+  ctx.clearRect(0,0,W,H);
+
+  // Board background
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      const x = PAD + c*SQ, y = PAD + r*SQ;
+      ctx.fillStyle = (r+c)%2===0 ? '#c8b078' : '#a09058';
+      ctx.fillRect(x,y,SQ,SQ);
+    }
+  }
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(80,60,20,.3)';
+  ctx.lineWidth   = 0.5;
+  for (let i = 0; i <= N; i++) {
+    ctx.beginPath(); ctx.moveTo(PAD+i*SQ, PAD); ctx.lineTo(PAD+i*SQ, PAD+N*SQ); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(PAD, PAD+i*SQ); ctx.lineTo(PAD+N*SQ, PAD+i*SQ); ctx.stroke();
+  }
+
+  if (!G) return;
+
+  // Valid move highlights
+  if (G.selected) {
+    G.validMoves.forEach(({r,c}) => {
+      ctx.fillStyle = 'rgba(200,160,40,.35)';
+      ctx.fillRect(PAD+c*SQ, PAD+r*SQ, SQ, SQ);
+    });
+    // Hint highlight
+    if (G.hint) {
+      ctx.fillStyle = 'rgba(80,200,80,.25)';
+      ctx.fillRect(PAD+G.hint.to.c*SQ, PAD+G.hint.to.r*SQ, SQ, SQ);
+    }
+  }
+
+  // Selected highlight
+  if (G.selected) {
+    const {r,c} = G.selected;
+    ctx.strokeStyle = 'rgba(220,180,40,.9)';
+    ctx.lineWidth   = 2.5;
+    ctx.strokeRect(PAD+c*SQ+1, PAD+r*SQ+1, SQ-2, SQ-2);
+  }
+
+  // Pieces
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      const p = G.board[r][c];
+      if (p === EMPTY) continue;
+      const x = PAD + c*SQ + SQ/2;
+      const y = PAD + r*SQ + SQ/2;
+      const isWhite = (p === WHITE || p === WHITE_DUX);
+      const isDux   = (p === WHITE_DUX || p === BLACK_DUX);
+      const radius  = isDux ? SQ*0.38 : SQ*0.32;
+
+      // Shadow
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,.5)';
+      ctx.shadowBlur  = 4;
+      ctx.shadowOffsetY = 2;
+
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI*2);
+      if (isWhite) {
+        const g = ctx.createRadialGradient(x-3,y-3,1,x,y,radius);
+        g.addColorStop(0,'#ffffff'); g.addColorStop(0.6,'#e8e0d0'); g.addColorStop(1,'#c0b090');
+        ctx.fillStyle = g;
+      } else {
+        const g = ctx.createRadialGradient(x-3,y-3,1,x,y,radius);
+        g.addColorStop(0,'#4a6a88'); g.addColorStop(0.6,'#1a2a3a'); g.addColorStop(1,'#080e14');
+        ctx.fillStyle = g;
+      }
+      ctx.fill();
+      ctx.restore();
+
+      // Dux star marker
+      if (isDux) {
+        ctx.fillStyle = isWhite ? 'rgba(160,120,40,.9)' : 'rgba(200,180,120,.9)';
+        ctx.font      = `bold ${SQ*.28}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('★', x, y);
+      }
+
+      // Piece ring
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI*2);
+      ctx.strokeStyle = isWhite ? 'rgba(160,130,60,.6)' : 'rgba(100,150,200,.4)';
+      ctx.lineWidth   = 1;
+      ctx.stroke();
+    }
+  }
+
+  // Row/col labels
+  ctx.fillStyle    = 'rgba(60,40,10,.5)';
+  ctx.font         = '8px "DM Sans",sans-serif';
+  ctx.textAlign    = 'center';
+  ctx.textBaseline = 'middle';
+  for (let i = 0; i < N; i++) {
+    ctx.fillText(String.fromCharCode(65+i), PAD + i*SQ + SQ/2, PAD/2+1);  // col A-H
+    ctx.fillText(i+1, PAD/2, PAD + i*SQ + SQ/2);  // row 1-8
+  }
+}
+
+// Initial draw
+drawPet();
+</script>
+</body>
+</html>
