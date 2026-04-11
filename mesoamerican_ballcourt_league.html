@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mesoamerican Ballcourt League — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void:#08060a;
+  --stone:#1a1614;
+  --stone-lt:#252018;
+  --jade:#1a4a32;
+  --jade-lt:#2a7a50;
+  --jade-glow:#3aaa70;
+  --obsidian:#0e0c12;
+  --gold:#c8901c;
+  --gold-lt:#e8b040;
+  --red:#b82820;
+  --red-lt:#e04030;
+  --cream:#f0ebe0;
+  --ash:#8a8070;
+  --rule:rgba(255,255,255,.07);
+  --sans:'DM Sans',system-ui,sans-serif;
+  --serif:'Playfair Display',Georgia,serif;
+  --mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--void);color:var(--cream);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+
+/* ── TICKER ── */
+.ticker-wrap{background:var(--jade);border-bottom:2px solid var(--jade-glow);overflow:hidden;height:30px;display:flex;align-items:center;}
+.ticker-label{font-size:.55rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--jade-glow);padding:0 1rem;white-space:nowrap;border-right:1px solid var(--jade-lt);height:100%;display:flex;align-items:center;flex-shrink:0;background:rgba(0,0,0,.3);}
+.ticker-track{display:flex;animation:ticker 60s linear infinite;white-space:nowrap;}
+.ticker-track:hover{animation-play-state:paused;}
+.ticker-item{font-size:.6rem;font-weight:600;letter-spacing:.04em;padding:0 2rem;color:rgba(240,235,224,.8);}
+.ticker-item .score{color:var(--gold-lt);font-weight:800;font-family:var(--mono);}
+.ticker-item .live{color:var(--red-lt);font-weight:800;animation:blink 1s step-end infinite;margin-right:.3rem;}
+.ticker-sep{color:var(--jade-lt);padding:0 .5rem;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ── MASTHEAD ── */
+.masthead{background:var(--stone);padding:0 2rem;border-bottom:1px solid var(--rule);}
+.masthead-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px;}
+.logo{font-family:var(--serif);font-size:1.1rem;font-weight:900;color:var(--cream);letter-spacing:-.01em;}
+.logo span{color:var(--gold);font-style:italic;}
+.nav-links{display:flex;gap:1.5rem;overflow-x:auto;}
+.nav-link{font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);transition:color .2s;white-space:nowrap;}
+.nav-link:hover,.nav-link.active{color:var(--cream);}
+
+/* ── HERO ── */
+.hero{position:relative;background:var(--obsidian);overflow:hidden;padding:0;}
+.hero-bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse 60% 80% at 50% 120%, rgba(26,74,50,.6) 0%, transparent 70%),
+  radial-gradient(ellipse 100% 50% at 50% 0%, rgba(200,144,28,.08) 0%, transparent 60%);
+}
+/* Stone-carved geometric pattern */
+.hero-pattern{position:absolute;inset:0;opacity:.04;background-image:
+  repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px),
+  repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px);
+}
+.hero-inner{position:relative;max-width:1400px;margin:0 auto;padding:3.5rem 2rem 3rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:end;}
+@media(max-width:700px){.hero-inner{grid-template-columns:1fr;}}
+
+.hero-badge{font-size:.58rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--jade-glow);margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem;}
+.hero-badge::before{content:'';width:20px;height:2px;background:var(--jade-glow);}
+.hero-title{font-family:var(--serif);font-size:clamp(2rem,5vw,4rem);font-weight:900;line-height:1.0;letter-spacing:-.02em;margin-bottom:.5rem;}
+.hero-title .em{color:var(--gold);font-style:italic;}
+.hero-title .sub{display:block;font-size:.35em;font-weight:400;font-style:italic;color:rgba(240,235,224,.45);letter-spacing:.02em;margin-top:.3rem;}
+.hero-dek{font-size:.9rem;color:rgba(240,235,224,.5);line-height:1.6;max-width:560px;margin-top:.8rem;}
+
+.hero-stats{display:flex;gap:2px;flex-shrink:0;}
+.hero-stat{background:rgba(255,255,255,.04);border:1px solid var(--rule);padding:1rem 1.4rem;text-align:center;}
+.hero-stat-num{font-family:var(--serif);font-size:2rem;font-weight:900;color:var(--gold);line-height:1;}
+.hero-stat-lbl{font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ash);margin-top:.3rem;}
+
+/* ── LEAGUE NAV ── */
+.league-nav{background:var(--stone);border-bottom:1px solid var(--rule);padding:0 2rem;overflow-x:auto;position:sticky;top:0;z-index:50;}
+.league-nav-inner{max-width:1400px;margin:0 auto;display:flex;gap:0;}
+.league-tab{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);padding:.75rem 1.2rem;border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;transition:all .2s;}
+.league-tab:hover{color:var(--cream);}
+.league-tab.active{color:var(--jade-glow);border-bottom-color:var(--jade-glow);}
+
+/* ── MAIN LAYOUT ── */
+.page-body{max-width:1400px;margin:0 auto;padding:2rem 2rem 6rem;}
+
+/* ── SECTION HEADERS ── */
+.conf-header{display:flex;align-items:baseline;gap:1rem;margin:2.5rem 0 1rem;padding-bottom:.6rem;border-bottom:2px solid var(--rule);}
+.conf-header.first{margin-top:0;}
+.conf-name{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--cream);}
+.conf-badge{font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.2rem .6rem;border:1px solid;}
+.conf-badge.core{color:var(--jade-glow);border-color:rgba(58,170,112,.3);background:rgba(26,74,50,.3);}
+.conf-badge.strong{color:var(--gold);border-color:rgba(200,144,28,.3);background:rgba(200,144,28,.08);}
+.conf-badge.moderate{color:#7ab;border-color:rgba(100,150,180,.3);background:rgba(100,150,180,.06);}
+.conf-badge.frontier{color:var(--ash);border-color:rgba(138,128,112,.2);}
+.conf-courts{font-size:.65rem;color:var(--ash);margin-left:auto;}
+
+/* ── DIVISION GRID ── */
+.div-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:1.2rem;margin-bottom:.5rem;}
+@media(max-width:500px){.div-grid{grid-template-columns:1fr;}}
+
+/* ── STANDINGS TABLE ── */
+.standings-card{background:var(--stone);border:1px solid var(--rule);overflow:hidden;}
+.standings-card-header{padding:.7rem 1rem;background:var(--stone-lt);border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:.6rem;}
+.div-icon{font-size:.9rem;}
+.div-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cream);}
+.div-subtitle{font-size:.58rem;color:var(--ash);margin-left:auto;}
+
+.standings-table{width:100%;border-collapse:collapse;}
+.standings-table thead tr{background:rgba(0,0,0,.3);}
+.standings-table th{font-size:.52rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);padding:.4rem .7rem;text-align:left;border-bottom:1px solid var(--rule);}
+.standings-table th.num{text-align:right;}
+.standings-table tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s;}
+.standings-table tbody tr:hover{background:rgba(255,255,255,.03);}
+.standings-table tbody tr:last-child{border-bottom:none;}
+.standings-table td{font-size:.72rem;padding:.45rem .7rem;vertical-align:middle;}
+.standings-table td.num{text-align:right;font-family:var(--mono);font-size:.68rem;color:rgba(240,235,224,.6);}
+.standings-table td.pts{text-align:right;font-family:var(--mono);font-weight:700;color:var(--gold-lt);}
+
+/* rank badge */
+.rank{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;font-size:.58rem;font-weight:800;border-radius:2px;margin-right:.4rem;flex-shrink:0;}
+.rank.r1{background:var(--gold);color:var(--void);}
+.rank.r2{background:rgba(200,144,28,.3);color:var(--gold-lt);}
+.rank.r3{background:rgba(200,144,28,.15);color:var(--ash);}
+.rank.rn{background:rgba(255,255,255,.06);color:var(--ash);}
+
+/* team name */
+.team-name{font-weight:600;color:var(--cream);}
+.team-country{font-size:.58rem;color:var(--ash);display:block;margin-top:.05rem;}
+.team-courts{font-size:.58rem;color:var(--jade-glow);}
+
+/* W-L-D pills */
+.wld{display:inline-flex;gap:2px;}
+.wld span{font-family:var(--mono);font-size:.62rem;padding:.1rem .35rem;border-radius:2px;}
+.w{background:rgba(58,170,112,.2);color:var(--jade-glow);}
+.l{background:rgba(184,40,32,.2);color:var(--red-lt);}
+.d{background:rgba(255,255,255,.08);color:var(--ash);}
+
+/* major/minor league tag */
+.league-tag{font-size:.5rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.1rem .35rem;border-radius:2px;vertical-align:middle;}
+.major-tag{background:rgba(200,144,28,.2);color:var(--gold);}
+.minor-tag{background:rgba(100,100,120,.2);color:#8a9ab0;}
+
+/* ── SCHEDULE SECTION ── */
+.schedule-section{margin-top:3rem;}
+.section-title-row{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;padding-bottom:.6rem;border-bottom:2px solid var(--rule);}
+.section-title{font-family:var(--serif);font-size:1.3rem;font-weight:700;}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--red-lt);animation:blink 1s step-end infinite;flex-shrink:0;}
+
+.schedule-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1px;background:var(--rule);}
+.match-card{background:var(--stone);padding:1rem;}
+.match-meta{font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem;}
+.match-status{padding:.1rem .4rem;border-radius:2px;font-size:.52rem;}
+.status-live{background:rgba(184,40,32,.3);color:var(--red-lt);}
+.status-today{background:rgba(26,74,50,.4);color:var(--jade-glow);}
+.status-upcoming{background:rgba(255,255,255,.06);color:var(--ash);}
+.match-teams{display:flex;align-items:center;gap:.5rem;}
+.match-team{flex:1;}
+.match-team-name{font-size:.78rem;font-weight:700;color:var(--cream);}
+.match-team-sub{font-size:.58rem;color:var(--ash);margin-top:.1rem;}
+.match-vs{font-family:var(--serif);font-size:.9rem;color:var(--ash);flex-shrink:0;font-style:italic;}
+.match-score{font-family:var(--mono);font-size:1.1rem;font-weight:700;text-align:center;padding:.2rem .6rem;background:rgba(0,0,0,.3);border:1px solid var(--rule);border-radius:2px;flex-shrink:0;}
+.match-score.live-score{color:var(--gold-lt);}
+.match-score.final{color:rgba(240,235,224,.5);}
+.match-score.sched{color:var(--ash);font-size:.65rem;letter-spacing:.05em;}
+
+/* ── FOOTER ── */
+.footer{background:var(--stone);border-top:1px solid var(--rule);text-align:center;padding:1.5rem;font-size:.65rem;color:var(--ash);}
+.footer a{color:var(--gold);}
+
+/* ── TABS ── */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+</style>
+</head>
+<body>
+
+<!-- LIVE TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-label">⚽ MBL LIVE</div>
+  <div style="overflow:hidden;flex:1;">
+    <div class="ticker-track" id="ticker">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <nav class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="map.html">Map</a>
+      <a class="nav-link" href="maya_inscriptions.html">Maya Mundo</a>
+      <a class="nav-link" href="games.html">Games</a>
+      <a class="nav-link active" href="mesoamerican_ballcourt_league.html">MBL</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">Season IV · c. 800–900 CE Classic Period</div>
+      <h1 class="hero-title">
+        Mesoamerican<br><span class="em">Ballcourt League</span>
+        <span class="sub">Ōllamalīztli · 球戲 · The Ancient Game</span>
+      </h1>
+      <p class="hero-dek">81 confirmed archaeological sites across 19 geographic divisions. From Paso de la Amada (1650 BCE) to Iximche (1524 CE) — the longest-running sporting tradition in human history.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">81</div>
+        <div class="hero-stat-lbl">Sites</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">41</div>
+        <div class="hero-stat-lbl">Major</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">40</div>
+        <div class="hero-stat-lbl">Minor</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">19</div>
+        <div class="hero-stat-lbl">Divisions</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LEAGUE NAV -->
+<nav class="league-nav">
+  <div class="league-nav-inner">
+    <div class="league-tab active" onclick="showTab('standings',this)">Standings</div>
+    <div class="league-tab" onclick="showTab('schedule',this)">Schedule</div>
+    <div class="league-tab" onclick="showTab('major',this)">Major League</div>
+    <div class="league-tab" onclick="showTab('minor',this)">Minor League</div>
+  </div>
+</nav>
+
+<!-- BODY -->
+<div class="page-body">
+
+  <!-- ── STANDINGS TAB ── -->
+  <div class="tab-panel active" id="tab-standings">
+    <div id="standings-content"></div>
+  </div>
+
+  <!-- ── SCHEDULE TAB ── -->
+  <div class="tab-panel" id="tab-schedule">
+    <div class="schedule-section">
+      <div class="section-title-row">
+        <div class="live-dot"></div>
+        <div class="section-title">Today's Matches & Upcoming Schedule</div>
+        <span style="font-size:.6rem;color:var(--ash);margin-left:auto">Season IV · Classic Period</span>
+      </div>
+      <div class="schedule-grid" id="schedule-grid"></div>
+    </div>
+  </div>
+
+  <!-- ── MAJOR LEAGUE TAB ── -->
+  <div class="tab-panel" id="tab-major">
+    <div id="major-content"></div>
+  </div>
+
+  <!-- ── MINOR LEAGUE TAB ── -->
+  <div class="tab-panel" id="tab-minor">
+    <div id="minor-content"></div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <a href="index.html">archAIology</a> · archaiology.org · © 2026 ·
+  League data: Mesoamerican Ballcourt Inventory v2 · Sources: Selbitschka 2016, Daneels 2024, INAH, UNESCO
+</footer>
+
+<script>
+// ── LEAGUE DATA ─────────────────────────────────────────────────────────────
+// Generated from mesoamerican_ballcourt_inventory_recommended.xlsx
+
+const DIVISIONS = [
+  // id, name, region, density, sites, courts, major_slots, minor_slots
+  {id:"northern_lowlands",  name:"Northern Lowlands",           region:"Northern Lowlands",          density:"core",     sites:11, courts:25, major:4, minor:7},
+  {id:"belize_valley",      name:"Belize Valley",               region:"Southern Lowlands",          density:"core",     sites:9,  courts:15, major:4, minor:5},
+  {id:"central_peten",      name:"Central Petén",               region:"Southern Lowlands",          density:"core",     sites:14, courts:28, major:5, minor:9},
+  {id:"central_highlands",  name:"Central Highlands",           region:"Highlands",                  density:"core",     sites:6,  courts:36, major:3, minor:3},
+  {id:"veracruz",           name:"Veracruz",                    region:"Veracruz & Gulf",            density:"core",     sites:9,  courts:34, major:4, minor:5},
+  {id:"puebla_basin",       name:"Puebla Basin",                region:"Veracruz & Gulf",            density:"core",     sites:1,  courts:27, major:1, minor:0},
+  {id:"oaxaca_highlands",   name:"Oaxaca Highlands",            region:"Highlands",                  density:"strong",   sites:4,  courts:8,  major:2, minor:2},
+  {id:"chiapas_pacific",    name:"Chiapas Pacific",             region:"Pacific Coast",              density:"strong",   sites:6,  courts:10, major:3, minor:3},
+  {id:"postclassic_hlds",   name:"Postclassic Highlands",       region:"Pacific Coast",              density:"strong",   sites:4,  courts:9,  major:2, minor:2},
+  {id:"guatemalan_hlds",    name:"Guatemalan Highlands",        region:"Pacific Coast",              density:"strong",   sites:1,  courts:12, major:1, minor:0},
+  {id:"southeastern_maya",  name:"Southeastern Maya",           region:"Southern Lowlands",          density:"moderate", sites:3,  courts:4,  major:2, minor:1},
+  {id:"usumacinta",         name:"Usumacinta",                  region:"Southern Lowlands",          density:"moderate", sites:3,  courts:5,  major:2, minor:1},
+  {id:"southern_pacific",   name:"Southern Pacific Coast",      region:"Pacific Coast",              density:"moderate", sites:3,  courts:4,  major:2, minor:1},
+  {id:"northern_chiapas",   name:"Northern Chiapas",            region:"Southern Lowlands",          density:"frontier", sites:2,  courts:3,  major:1, minor:1},
+  {id:"mixteca_alta",       name:"Mixteca Alta",                region:"Highlands",                  density:"frontier", sites:1,  courts:3,  major:1, minor:0},
+  {id:"western_highlands",  name:"Western Highlands",           region:"Highlands",                  density:"frontier", sites:1,  courts:2,  major:1, minor:0},
+  {id:"guatemalan_adj",     name:"Guatemalan Highlands (adj.)", region:"Pacific Coast",              density:"frontier", sites:1,  courts:3,  major:1, minor:0},
+  {id:"gulf_lowlands",      name:"Gulf Lowlands",               region:"Veracruz & Gulf",            density:"frontier", sites:1,  courts:1,  major:1, minor:0},
+  {id:"ne_mesoamerica",     name:"Northeast Mesoamerica",       region:"Veracruz & Gulf",            density:"frontier", sites:1,  courts:1,  major:1, minor:0},
+];
+
+const MAJOR_TEAMS = [
+  {div:"northern_lowlands",  name:"Chichen Itza",          country:"Mexico",      courts:13, score:15.5, rank:1},
+  {div:"northern_lowlands",  name:"Uxmal",                 country:"Mexico",      courts:2,  score:3.5,  rank:2},
+  {div:"northern_lowlands",  name:"Cobá",                  country:"Mexico",      courts:2,  score:3.0,  rank:3},
+  {div:"northern_lowlands",  name:"Ek Balam",              country:"Mexico",      courts:1,  score:3.0,  rank:4},
+  {div:"usumacinta",         name:"Piedras Negras",         country:"Guatemala",   courts:2,  score:3.0,  rank:1},
+  {div:"usumacinta",         name:"Yaxchilan",              country:"Mexico",      courts:2,  score:2.5,  rank:2},
+  {div:"northern_chiapas",   name:"Tonina",                 country:"Mexico",      courts:2,  score:2.5,  rank:1},
+  {div:"belize_valley",      name:"Caracol",                country:"Belize",      courts:2,  score:6.0,  rank:1},
+  {div:"belize_valley",      name:"Lubaantun",              country:"Belize",      courts:3,  score:4.5,  rank:2},
+  {div:"belize_valley",      name:"Cahal Pech",             country:"Belize",      courts:2,  score:3.0,  rank:3},
+  {div:"belize_valley",      name:"Cerros",                 country:"Belize",      courts:2,  score:3.0,  rank:4},
+  {div:"central_peten",      name:"Nixtun-Ch'ich'",         country:"Guatemala",   courts:3,  score:10.0, rank:1},
+  {div:"central_peten",      name:"Tikal",                  country:"Guatemala",   courts:7,  score:8.5,  rank:2},
+  {div:"central_peten",      name:"Nakum",                  country:"Guatemala",   courts:3,  score:7.0,  rank:3},
+  {div:"central_peten",      name:"Yaxha",                  country:"Guatemala",   courts:2,  score:6.0,  rank:4},
+  {div:"central_peten",      name:"Naranjo",                country:"Guatemala",   courts:2,  score:5.0,  rank:5},
+  {div:"southeastern_maya",  name:"Copan",                  country:"Honduras",    courts:1,  score:7.0,  rank:1},
+  {div:"southeastern_maya",  name:"Quirigua",               country:"Guatemala",   courts:2,  score:2.5,  rank:2},
+  {div:"mixteca_alta",       name:"Etlatongo",              country:"Mexico",      courts:2,  score:4.0,  rank:1},
+  {div:"oaxaca_highlands",   name:"Monte Albán",            country:"Mexico",      courts:5,  score:7.0,  rank:1},
+  {div:"oaxaca_highlands",   name:"Yagul",                  country:"Mexico",      courts:1,  score:5.5,  rank:2},
+  {div:"central_highlands",  name:"Cantona",                country:"Mexico",      courts:26, score:13.5, rank:1},
+  {div:"central_highlands",  name:"Tula",                   country:"Mexico",      courts:4,  score:6.5,  rank:2},
+  {div:"central_highlands",  name:"Capulac Concepción",     country:"Mexico",      courts:1,  score:4.5,  rank:3},
+  {div:"western_highlands",  name:"Teopantecuanitlan",      country:"Mexico",      courts:2,  score:3.0,  rank:1},
+  {div:"veracruz",           name:"El Tajin",               country:"Mexico",      courts:19, score:16.5, rank:1},
+  {div:"veracruz",           name:"Los Ídolos",             country:"Mexico",      courts:6,  score:8.5,  rank:2},
+  {div:"veracruz",           name:"Carrizalito",            country:"Mexico",      courts:1,  score:3.0,  rank:3},
+  {div:"veracruz",           name:"Toxpan",                 country:"Mexico",      courts:1,  score:2.0,  rank:4},
+  {div:"gulf_lowlands",      name:"La Joya",                country:"Mexico",      courts:1,  score:2.0,  rank:1},
+  {div:"puebla_basin",       name:"Cantona",                country:"Mexico",      courts:26, score:16.0, rank:1},
+  {div:"ne_mesoamerica",     name:"Yohualichan",            country:"Mexico",      courts:1,  score:1.5,  rank:1},
+  {div:"chiapas_pacific",    name:"Los Horcones",           country:"Mexico",      courts:5,  score:5.5,  rank:1},
+  {div:"chiapas_pacific",    name:"Paso de la Amada",       country:"Mexico",      courts:1,  score:4.5,  rank:2},
+  {div:"chiapas_pacific",    name:"Finca Acapulco",         country:"Mexico",      courts:1,  score:4.0,  rank:3},
+  {div:"southern_pacific",   name:"Cara Sucia",             country:"El Salvador", courts:2,  score:3.0,  rank:1},
+  {div:"southern_pacific",   name:"Tazumal / Chalchuapa",   country:"El Salvador", courts:1,  score:2.5,  rank:2},
+  {div:"guatemalan_hlds",    name:"Kaminaljuyu",            country:"Guatemala",   courts:12, score:13.0, rank:1},
+  {div:"postclassic_hlds",   name:"Qʼumarkaj (Utatlán)",   country:"Guatemala",   courts:4,  score:4.5,  rank:1},
+  {div:"postclassic_hlds",   name:"Iximche",                country:"Guatemala",   courts:2,  score:3.0,  rank:2},
+  {div:"guatemalan_adj",     name:"Tenam Puente",           country:"Mexico",      courts:3,  score:6.0,  rank:1},
+];
+
+const MINOR_TEAMS = [
+  {div:"northern_lowlands",  name:"Dzibanché",              country:"Mexico",      courts:1, score:2.0},
+  {div:"northern_lowlands",  name:"Becan",                  country:"Mexico",      courts:1, score:1.5},
+  {div:"northern_lowlands",  name:"Dzibilchaltun",          country:"Mexico",      courts:1, score:1.5},
+  {div:"northern_lowlands",  name:"Edzna",                  country:"Mexico",      courts:1, score:1.5},
+  {div:"northern_lowlands",  name:"Kohunlich",              country:"Mexico",      courts:1, score:1.5},
+  {div:"northern_lowlands",  name:"Oxkintok",               country:"Mexico",      courts:1, score:1.5},
+  {div:"northern_lowlands",  name:"Yaxuna",                 country:"Mexico",      courts:1, score:1.5},
+  {div:"usumacinta",         name:"Bonampak",               country:"Mexico",      courts:1, score:1.5},
+  {div:"northern_chiapas",   name:"Palenque",               country:"Mexico",      courts:1, score:1.5},
+  {div:"belize_valley",      name:"Xunantunich",            country:"Belize",      courts:2, score:3.0},
+  {div:"belize_valley",      name:"Ka'kabish",              country:"Belize",      courts:1, score:2.0},
+  {div:"belize_valley",      name:"Lamanai",                country:"Belize",      courts:1, score:2.0},
+  {div:"belize_valley",      name:"Pacbitun",               country:"Belize",      courts:1, score:2.0},
+  {div:"belize_valley",      name:"Nim Li Punit",           country:"Belize",      courts:1, score:1.5},
+  {div:"central_peten",      name:"Nakbe",                  country:"Guatemala",   courts:1, score:4.0},
+  {div:"central_peten",      name:"Aguateca",               country:"Guatemala",   courts:1, score:3.0},
+  {div:"central_peten",      name:"Tamarindito",            country:"Guatemala",   courts:1, score:3.0},
+  {div:"central_peten",      name:"Cancuen",                country:"Guatemala",   courts:2, score:2.5},
+  {div:"central_peten",      name:"Ceibal",                 country:"Guatemala",   courts:2, score:2.5},
+  {div:"central_peten",      name:"El Mirador",             country:"Guatemala",   courts:1, score:2.0},
+  {div:"central_peten",      name:"Calakmul",               country:"Mexico",      courts:1, score:1.5},
+  {div:"central_peten",      name:"Dos Pilas",              country:"Guatemala",   courts:1, score:1.5},
+  {div:"central_peten",      name:"La Corona",              country:"Guatemala",   courts:1, score:1.5},
+  {div:"southeastern_maya",  name:"Ixkun",                  country:"Guatemala",   courts:1, score:1.5},
+  {div:"oaxaca_highlands",   name:"El Palmillo",            country:"Mexico",      courts:1, score:2.0},
+  {div:"oaxaca_highlands",   name:"Lambityeco",             country:"Mexico",      courts:1, score:2.0},
+  {div:"central_highlands",  name:"Xochicalco",             country:"Mexico",      courts:2, score:4.0},
+  {div:"central_highlands",  name:"La Laguna",              country:"Mexico",      courts:1, score:2.0},
+  {div:"central_highlands",  name:"Teotenango",             country:"Mexico",      courts:1, score:2.0},
+  {div:"veracruz",           name:"Cuajilote",              country:"Mexico",      courts:1, score:1.5},
+  {div:"veracruz",           name:"El Cuajilote",           country:"Mexico",      courts:1, score:1.5},
+  {div:"veracruz",           name:"Quiahuiztlan",           country:"Mexico",      courts:1, score:1.5},
+  {div:"veracruz",           name:"Vega de la Peña",        country:"Mexico",      courts:1, score:1.5},
+  {div:"veracruz",           name:"Xiutetelco",             country:"Mexico",      courts:1, score:1.5},
+  {div:"chiapas_pacific",    name:"El Vergel",              country:"Mexico",      courts:1, score:1.5},
+  {div:"chiapas_pacific",    name:"Fracción Mujular",       country:"Mexico",      courts:1, score:1.5},
+  {div:"chiapas_pacific",    name:"San Mateo",              country:"Mexico",      courts:1, score:1.5},
+  {div:"southern_pacific",   name:"El Baúl",                country:"Guatemala",   courts:1, score:2.0},
+  {div:"postclassic_hlds",   name:"Zaculeu",                country:"Guatemala",   courts:1, score:3.0},
+  {div:"postclassic_hlds",   name:"Mixco Viejo",            country:"Guatemala",   courts:2, score:2.5},
+];
+
+// ── SEEDED STANDINGS GENERATOR ───────────────────────────────────────────────
+// Generates deterministic W-L-D from score + courts (no actual game data — this is the ancient world)
+function seedRng(str) {
+  let h = 0;
+  for(let i=0;i<str.length;i++){h=Math.imul(31,h)+str.charCodeAt(i)|0;}
+  return ()=>{ h^=h<<13;h^=h>>17;h^=h<<5; return (h>>>0)/2**32; };
+}
+
+function genRecord(team, gamesPlayed=18) {
+  const rng = seedRng(team.name + team.div);
+  // Weight wins toward score
+  const strength = Math.min(team.score / 16, 1);
+  let w=0,l=0,d=0;
+  for(let i=0;i<gamesPlayed;i++){
+    const r = rng();
+    if(r < strength * 0.65) w++;
+    else if(r < strength * 0.65 + 0.15) d++;
+    else l++;
+  }
+  const pts = w*3 + d;
+  return {w,l,d,pts,gp:gamesPlayed};
+}
+
+// ── DIVISION ICONS ────────────────────────────────────────────────────────────
+const DIV_ICONS = {
+  northern_lowlands:"🐍", belize_valley:"🦜", central_peten:"🌿",
+  central_highlands:"🏔", veracruz:"⚡", puebla_basin:"🦅",
+  oaxaca_highlands:"☀️", chiapas_pacific:"🌊", postclassic_hlds:"⚔️",
+  guatemalan_hlds:"🗿", southeastern_maya:"🏛", usumacinta:"🌀",
+  southern_pacific:"🌺", northern_chiapas:"🔮", mixteca_alta:"🎭",
+  western_highlands:"💎", guatemalan_adj:"🌲", gulf_lowlands:"🔥",
+  ne_mesoamerica:"🌙",
+};
+
+// ── RENDER STANDINGS ─────────────────────────────────────────────────────────
+function renderStandings(leagueFilter) {
+  // Group teams by division
+  const teams = leagueFilter === 'major' ? MAJOR_TEAMS :
+                leagueFilter === 'minor' ? MINOR_TEAMS :
+                [...MAJOR_TEAMS, ...MINOR_TEAMS];
+
+  // Group by division
+  const divMap = {};
+  teams.forEach(t => {
+    if(!divMap[t.div]) divMap[t.div] = [];
+    divMap[t.div].push(t);
+  });
+
+  // Sort divisions by density then name
+  const densityOrder = {core:0,strong:1,moderate:2,frontier:3};
+  const sortedDivs = DIVISIONS
+    .filter(d => divMap[d.id])
+    .sort((a,b) => (densityOrder[a.density]||3)-(densityOrder[b.density]||3) || a.name.localeCompare(b.name));
+
+  // Group divisions by region
+  const regionMap = {};
+  sortedDivs.forEach(d => {
+    if(!regionMap[d.region]) regionMap[d.region]=[];
+    regionMap[d.region].push(d);
+  });
+
+  let html = '';
+  let first = true;
+  const regionOrder = ["Northern Lowlands","Southern Lowlands","Highlands","Pacific Coast","Veracruz & Gulf"];
+  regionOrder.forEach(region => {
+    if(!regionMap[region]) return;
+    html += `<div class="conf-header${first?' first':''}">
+      <div class="conf-name">${region} Conference</div>
+    </div>
+    <div class="div-grid">`;
+    first = false;
+
+    regionMap[region].forEach(div => {
+      const divTeams = (divMap[div.id]||[]).map(t=>{
+        return {...t, rec: genRecord(t)};
+      }).sort((a,b)=>b.rec.pts-a.rec.pts);
+
+      const icon = DIV_ICONS[div.id] || '🏟';
+      html += `<div class="standings-card">
+        <div class="standings-card-header">
+          <span class="div-icon">${icon}</span>
+          <span class="div-title">${div.name}</span>
+          <span class="conf-badge ${div.density}">${div.density}</span>
+          <span class="div-subtitle">${div.courts} courts</span>
+        </div>
+        <table class="standings-table">
+          <thead><tr>
+            <th colspan="2">Club</th>
+            <th class="num">GP</th>
+            <th class="num">W</th>
+            <th class="num">D</th>
+            <th class="num">L</th>
+            <th class="num">PTS</th>
+          </tr></thead>
+          <tbody>`;
+
+      divTeams.forEach((t,i)=>{
+        const rankClass = i===0?'r1':i===1?'r2':i===2?'r3':'rn';
+        const isMajor = MAJOR_TEAMS.some(m=>m.name===t.name&&m.div===t.div);
+        const tag = isMajor
+          ? '<span class="league-tag major-tag">MAJ</span>'
+          : '<span class="league-tag minor-tag">MIN</span>';
+        html += `<tr>
+          <td style="width:22px;padding-right:0">
+            <span class="rank ${rankClass}">${i+1}</span>
+          </td>
+          <td>
+            <span class="team-name">${t.name}</span> ${tag}
+            <span class="team-country">${t.country} · ${t.courts} court${t.courts>1?'s':''}</span>
+          </td>
+          <td class="num">${t.rec.gp}</td>
+          <td class="num">${t.rec.w}</td>
+          <td class="num">${t.rec.d}</td>
+          <td class="num">${t.rec.l}</td>
+          <td class="pts">${t.rec.pts}</td>
+        </tr>`;
+      });
+
+      html += `</tbody></table></div>`;
+    });
+
+    html += `</div>`; // div-grid
+  });
+
+  return html;
+}
+
+// ── SCHEDULE DATA ─────────────────────────────────────────────────────────────
+// Seeded deterministic schedule — feels live
+const MATCHUPS = [
+  // TODAY LIVE
+  {status:"live",  home:"Tikal",          away:"Naranjo",         score:"2 – 1", div:"Central Petén"},
+  {status:"live",  home:"El Tajin",        away:"Los Ídolos",      score:"3 – 2", div:"Veracruz"},
+  {status:"live",  home:"Monte Albán",     away:"Yagul",           score:"1 – 0", div:"Oaxaca Highlands"},
+  // TODAY SCHEDULED
+  {status:"today", home:"Chichen Itza",   away:"Cobá",            score:"KO 14:00", div:"Northern Lowlands"},
+  {status:"today", home:"Caracol",        away:"Lubaantun",       score:"KO 15:30", div:"Belize Valley"},
+  {status:"today", home:"Copan",          away:"Quirigua",        score:"KO 16:00", div:"Southeastern Maya"},
+  {status:"today", home:"Kaminaljuyu",    away:"El Baúl",         score:"KO 17:00", div:"Guatemalan Highlands"},
+  // UPCOMING
+  {status:"upcoming", home:"Cantona",     away:"Tula",            score:"Matchday 22", div:"Central Highlands"},
+  {status:"upcoming", home:"Nixtun-Ch'ich'", away:"Yaxha",        score:"Matchday 22", div:"Central Petén"},
+  {status:"upcoming", home:"Paso de la Amada", away:"Los Horcones",score:"Matchday 22", div:"Chiapas Pacific"},
+  {status:"upcoming", home:"Piedras Negras", away:"Yaxchilan",    score:"Matchday 22", div:"Usumacinta"},
+  {status:"upcoming", home:"Iximche",     away:"Qʼumarkaj",       score:"Matchday 22", div:"Postclassic Highlands"},
+  {status:"upcoming", home:"Nakum",       away:"Ceibal",          score:"Matchday 23", div:"Central Petén"},
+  {status:"upcoming", home:"Uxmal",       away:"Ek Balam",        score:"Matchday 23", div:"Northern Lowlands"},
+  {status:"upcoming", home:"Tonina",      away:"Palenque",        score:"Matchday 23", div:"Northern Chiapas"},
+];
+
+function renderSchedule() {
+  return MATCHUPS.map(m => {
+    const statusLabel = m.status==='live'?'● LIVE':m.status==='today'?'TODAY':'UPCOMING';
+    const statusClass = m.status==='live'?'status-live':m.status==='today'?'status-today':'status-upcoming';
+    const scoreClass  = m.status==='live'?'live-score':m.status==='today'?'sched':'sched';
+    return `<div class="match-card">
+      <div class="match-meta">
+        <span class="match-status ${statusClass}">${statusLabel}</span>
+        ${m.div}
+      </div>
+      <div class="match-teams">
+        <div class="match-team">
+          <div class="match-team-name">${m.home}</div>
+          <div class="match-team-sub">Home</div>
+        </div>
+        <div class="match-score ${scoreClass}">${m.score}</div>
+        <div class="match-team" style="text-align:right">
+          <div class="match-team-name">${m.away}</div>
+          <div class="match-team-sub">Away</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── TICKER ────────────────────────────────────────────────────────────────────
+function buildTicker() {
+  const items = [
+    {live:true,  text:"Tikal vs Naranjo", score:"2–1 (67')"},
+    {live:true,  text:"El Tajin vs Los Ídolos", score:"3–2 (52')"},
+    {live:true,  text:"Monte Albán vs Yagul", score:"1–0 (38')"},
+    {live:false, text:"Chichen Itza 3–0 Becan", score:"FT"},
+    {live:false, text:"Caracol 1–1 Xunantunich", score:"FT"},
+    {live:false, text:"Copan 2–0 Ixkun", score:"FT"},
+    {live:false, text:"Kaminaljuyu 4–1 Mixco Viejo", score:"FT"},
+    {live:false, text:"Cantona 3–2 Xochicalco", score:"FT"},
+    {live:false, text:"Nixtun-Ch'ich' 0–0 Nakum", score:"FT"},
+  ];
+  // Double for seamless loop
+  const all = [...items, ...items];
+  return all.map(i => `<div class="ticker-item">
+    ${i.live?'<span class="live">LIVE</span>':''}
+    ${i.text} <span class="score">${i.score}</span>
+  </div><span class="ticker-sep">|</span>`).join('');
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────────────────────────
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.league-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('ticker').innerHTML = buildTicker();
+  document.getElementById('standings-content').innerHTML = renderStandings('all');
+  document.getElementById('schedule-grid').innerHTML = renderSchedule();
+  document.getElementById('major-content').innerHTML = renderStandings('major');
+  document.getElementById('minor-content').innerHTML = renderStandings('minor');
+});
+</script>
+</body>
+</html>
