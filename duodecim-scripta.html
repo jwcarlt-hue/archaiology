@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Duodecim Scripta & Tabula — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#faf8f3; --paper:#f2ede3; --linen:#e8e0d0; --rule:#d5ccb8;
+  --ash:#8a8070; --ink:#1c1814; --deep:#0f0d0a;
+  --ochre:#b8892a; --ochre-lt:#d4a84b; --terra:#7a3e1a;
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  /* Page-specific */
+  --roman-red: #8a1c1c;
+  --roman-gold: #c8901c;
+  --stone: #c4bca8;
+  --marble: #e8e4dc;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+/* ── MASTHEAD ── */
+.masthead{background:var(--ink);padding:0 2rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px;}
+.logo{font-family:var(--serif);font-size:1.2rem;font-weight:900;color:var(--cream);letter-spacing:-.01em;}
+.logo span{color:var(--ochre);font-style:italic;}
+.nav-links{display:flex;gap:1.5rem;overflow-x:auto;}
+.nav-link{font-family:var(--sans);font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);transition:color .2s;white-space:nowrap;}
+.nav-link:hover{color:var(--cream);}
+.nav-link.active{color:var(--cream);}
+
+/* ── SECTION NAV ── */
+.section-nav{background:var(--paper);border-bottom:1px solid var(--rule);padding:0 2rem;overflow-x:auto;}
+.section-nav-inner{max-width:1280px;margin:0 auto;display:flex;gap:0;}
+.section-nav-link{font-family:var(--sans);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);padding:.7rem 1.4rem;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.section-nav-link:hover{color:var(--ink);border-bottom-color:var(--ochre);}
+.section-nav-link.active{color:var(--ink);border-bottom-color:var(--ochre);}
+
+/* ── HERO ── */
+.page-hero{background:var(--ink);padding:3.5rem 2rem 3rem;border-bottom:3px solid var(--roman-gold);position:relative;overflow:hidden;}
+.page-hero::before{
+  content:'XII';
+  position:absolute;right:3rem;top:50%;transform:translateY(-50%);
+  font-family:var(--serif);font-size:14rem;font-weight:900;
+  color:rgba(255,255,255,.03);line-height:1;pointer-events:none;
+  letter-spacing:-.05em;
+}
+.page-hero-inner{max-width:1280px;margin:0 auto;position:relative;}
+.page-eyebrow{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--roman-gold);margin-bottom:.7rem;}
+.page-title{font-family:var(--serif);font-size:clamp(2rem,4.5vw,3.6rem);font-weight:900;color:var(--cream);line-height:1.08;letter-spacing:-.02em;margin-bottom:.9rem;}
+.page-title em{color:var(--roman-gold);font-style:italic;}
+.page-title .subtitle{display:block;font-size:.55em;font-weight:400;font-style:italic;color:rgba(232,224,208,.5);letter-spacing:.01em;margin-top:.3rem;}
+.page-dek{font-family:var(--body);font-size:1rem;color:rgba(232,224,208,.65);line-height:1.7;max-width:680px;}
+.hero-meta{display:flex;gap:2rem;margin-top:1.6rem;flex-wrap:wrap;}
+.hero-meta-item{font-family:var(--sans);font-size:.62rem;}
+.hero-meta-label{color:var(--ash);letter-spacing:.08em;text-transform:uppercase;}
+.hero-meta-value{color:var(--stone);font-weight:500;margin-top:.15rem;}
+
+/* ── LAYOUT ── */
+.page-wrap{max-width:1280px;margin:0 auto;padding:3rem 2rem 5rem;display:grid;grid-template-columns:1fr 300px;gap:3rem;}
+@media(max-width:900px){.page-wrap{grid-template-columns:1fr;}}
+.main-col{display:flex;flex-direction:column;gap:3rem;}
+
+/* ── ARTICLE SECTIONS ── */
+.article-section{}
+.section-label{font-family:var(--sans);font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--roman-gold);margin-bottom:.5rem;}
+.section-title{font-family:var(--serif);font-size:1.55rem;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1px solid var(--rule);}
+.section-body p{font-family:var(--body);font-size:.97rem;color:#3a3028;line-height:1.8;margin-bottom:1rem;}
+.section-body p:last-child{margin-bottom:0;}
+.section-body strong{color:var(--ink);}
+.section-body em{font-style:italic;}
+.pull-quote{border-left:3px solid var(--roman-gold);padding:.8rem 1.2rem;margin:1.5rem 0;background:var(--paper);}
+.pull-quote p{font-family:var(--serif);font-size:1.05rem;font-style:italic;color:var(--ink);line-height:1.6;margin:0 !important;}
+.pull-quote cite{display:block;font-family:var(--sans);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);margin-top:.5rem;font-style:normal;}
+
+/* ── BOARD DIAGRAMS ── */
+.board-figure{background:var(--paper);border:1px solid var(--rule);padding:1.5rem;}
+.board-figure figcaption{font-family:var(--sans);font-size:.68rem;color:var(--ash);margin-top:.9rem;line-height:1.6;}
+.board-figure figcaption strong{color:var(--ink);}
+
+.boards-pair{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+@media(max-width:700px){.boards-pair{grid-template-columns:1fr;}}
+
+/* ── INSCRIPTION BOX ── */
+.inscription{background:var(--ink);padding:1.4rem 1.8rem;margin:1.5rem 0;}
+.inscription-latin{font-family:var(--serif);font-size:1.15rem;color:var(--roman-gold);letter-spacing:.08em;line-height:2.2;margin-bottom:.6rem;}
+.inscription-row{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;}
+.inscription-word{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--cream);letter-spacing:.1em;}
+.inscription-glyph{color:var(--roman-gold);font-size:1.1rem;}
+.inscription-trans{font-family:var(--body);font-size:.8rem;color:var(--ash);font-style:italic;}
+.inscription-note{font-family:var(--sans);font-size:.65rem;color:var(--ash);margin-top:.8rem;border-top:1px solid rgba(255,255,255,.07);padding-top:.7rem;}
+
+/* ── EVOLUTION CHART ── */
+.evolution-chart{background:var(--paper);border:1px solid var(--rule);padding:1.5rem 2rem;}
+.evolution-chart h3{font-family:var(--serif);font-size:1.1rem;font-weight:700;margin-bottom:1.2rem;color:var(--ink);}
+.evo-row{display:flex;align-items:flex-start;gap:1rem;padding:.8rem 0;border-bottom:1px solid var(--linen);}
+.evo-row:last-child{border-bottom:none;}
+.evo-date{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.05em;color:var(--roman-gold);min-width:90px;padding-top:.1rem;}
+.evo-name{font-family:var(--serif);font-size:.95rem;font-weight:700;color:var(--ink);}
+.evo-desc{font-family:var(--body);font-size:.78rem;color:var(--ash);line-height:1.55;margin-top:.15rem;}
+.evo-arrow{font-family:var(--sans);font-size:1.2rem;color:var(--rule);padding-top:.05rem;}
+
+/* ── EVIDENCE TABLE ── */
+.evidence-table{width:100%;border-collapse:collapse;margin-top:.8rem;}
+.evidence-table th{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);padding:.5rem .8rem;text-align:left;border-bottom:2px solid var(--rule);}
+.evidence-table td{font-family:var(--body);font-size:.8rem;color:#3a3028;padding:.6rem .8rem;border-bottom:1px solid var(--linen);vertical-align:top;line-height:1.55;}
+.evidence-table tr:last-child td{border-bottom:none;}
+.evidence-table td:first-child{font-style:italic;color:var(--ink);font-weight:600;}
+
+/* ── SIDEBAR ── */
+.sidebar{display:flex;flex-direction:column;gap:1.5rem;}
+.sidebar-card{background:var(--paper);border:1px solid var(--rule);padding:1.4rem;}
+.sidebar-card h3{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule);}
+.sidebar-card p,.sidebar-card li{font-family:var(--body);font-size:.82rem;color:var(--ash);line-height:1.7;}
+.sidebar-card ul{padding-left:1.1rem;margin-top:.4rem;}
+.sidebar-card li{margin-bottom:.3rem;}
+.sidebar-card strong{color:var(--ink);}
+.sidebar-card a{color:var(--ochre);}
+.arcade-links{display:flex;flex-direction:column;gap:.3rem;margin-top:.2rem;}
+.arcade-link{font-family:var(--sans);font-size:.65rem;color:var(--ash);padding:.3rem 0;border-bottom:1px solid var(--linen);display:flex;justify-content:space-between;transition:color .2s;}
+.arcade-link:hover{color:var(--ochre);}
+.arcade-link.current{color:var(--ink);font-weight:600;}
+.arcade-link .era{color:var(--ochre);font-size:.58rem;}
+.ref-list{list-style:none;padding:0;}
+.ref-list li{font-family:var(--body);font-size:.74rem;color:var(--ash);line-height:1.6;padding:.4rem 0;border-bottom:1px solid var(--linen);}
+.ref-list li:last-child{border-bottom:none;}
+
+/* ── FOOTER ── */
+.footer{background:var(--ink);color:var(--ash);text-align:center;padding:1.5rem;font-family:var(--sans);font-size:.68rem;}
+.footer a{color:var(--ochre);}
+
+/* ── ANIMATED RULE ORNAMENT ── */
+.ornament{text-align:center;color:var(--rule);font-size:1.2rem;letter-spacing:.3em;margin:1.5rem 0;}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <nav class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="news.html">Feed</a>
+      <a class="nav-link" href="map.html">Map</a>
+      <a class="nav-link" href="sky.html">Sky Archive</a>
+      <a class="nav-link" href="maritime.html">Maritime</a>
+      <a class="nav-link" href="linguistics.html">Linguistics</a>
+      <a class="nav-link" href="inscriptions.html">Inscriptions</a>
+      <a class="nav-link" href="maya_inscriptions.html">Maya</a>
+      <a class="nav-link" href="bioanthro.html">Bioanthro</a>
+      <a class="nav-link" href="luwian.html">Luwian</a>
+      <a class="nav-link" href="upload.html">Upload</a>
+      <a class="nav-link active" href="games.html">Games</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="section-nav">
+  <div class="section-nav-inner">
+    <a class="section-nav-link" href="index.html">Home</a>
+    <a class="section-nav-link" href="news.html">Feed</a>
+    <a class="section-nav-link" href="map.html">Map</a>
+    <a class="section-nav-link" href="sky.html">Sky Archive</a>
+    <a class="section-nav-link" href="maritime.html">Maritime</a>
+    <a class="section-nav-link" href="maya_inscriptions.html">Maya</a>
+    <a class="section-nav-link" href="bioanthro.html">Bioanthro</a>
+    <a class="section-nav-link" href="luwian.html">Luwian</a>
+    <a class="section-nav-link active" href="games.html">Games</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-eyebrow">Roman Board Games · c. 200 BCE – 600 CE</div>
+    <h1 class="page-title">
+      Duodecim Scripta &amp; <em>Tabula</em>
+      <span class="subtitle">The Roman race games and their road to backgammon</span>
+    </h1>
+    <p class="page-dek">From marble boards carved into Ephesus temple steps to a soldier's tavern menu scratched in stone, the Roman race game left more physical evidence than almost any ancient game — yet its rules remain partly reconstructed. This is the story of a game, its successor, and the long chain of inheritance leading to the modern backgammon board.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Game family</div>
+        <div class="hero-meta-value">Race / tables games</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Active period</div>
+        <div class="hero-meta-value">c. 200 BCE – 600 CE</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Players</div>
+        <div class="hero-meta-value">2</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Successor</div>
+        <div class="hero-meta-value">Tabula → Nard → Backgammon</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Key sources</div>
+        <div class="hero-meta-value">Schädler 1995, Murray 1952, Bell 1979</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+<div class="main-col">
+
+  <!-- SECTION 1: WHAT IS IT -->
+  <section class="article-section">
+    <div class="section-label">Overview</div>
+    <h2 class="section-title">The Game of Twelve Marks</h2>
+    <div class="section-body">
+      <p><em>Ludus Duodecim Scriptorum</em> — shortened by modern scholars to <em>duodecim scripta</em> — is conventionally translated "the game of twelve lines." Ulrich Schädler, however, argues persuasively that <em>scripta</em> here means <strong>marks</strong>, not lines, and that the name refers to the twelve-dot maximum available on two cuboid dice. The grammarian Nonius confirms this: he glosses the term as <em>puncta tesserarum</em>, "the spots of the dice-cubes." The game was a backgammon-style race for two players using fifteen pieces each, moved according to throws of three six-sided dice.</p>
+      <p>Physical evidence is abundant and geographically wide. Boards are incised into temple steps at Ephesus and Aphrodisias, scratched onto forum paving stones in Rome, and cut into the walls of military installations across Britain, the Levant, and North Africa. The game's spread mirrors the Roman legions themselves.</p>
+      <div class="pull-quote">
+        <p>"The game board of duodecim scripta is marked with two rows of twelve points divided by a central bar — the direct ancestor of the modern backgammon board."</p>
+        <cite>Murray, A History of Board Games Other Than Chess, 1952</cite>
+      </div>
+      <p>The game fell out of fashion during the first century CE, replaced by a variant called <em>tabula</em>, which reorganised the board into four sets of six points rather than the original six sets of six. Both games share the same basic mechanics: dice-driven movement, blot-hitting, and bearing-off — a family of rules that has remained essentially unchanged in backgammon today.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 2: THE BOARD -->
+  <section class="article-section">
+    <div class="section-label">Board Archaeology</div>
+    <h2 class="section-title">Reading the Boards</h2>
+    <div class="section-body">
+      <p>Surviving duodecim scripta boards take two main forms. The older type, found on bronze mirrors and stone tables from the Hellenistic period, marks the playing points with simple incised lines. A bronze mirror from Italy (c. 3rd–2nd century BCE, now in the British Museum, Room 69) bears one of the earliest known examples, with a couple apparently playing the game and an archaic Latin caption that reads <em>opeinod devincam ted</em> — "I believe I'll beat you."</p>
+      <p>The later Roman form replaces geometric marks with <strong>six-letter Latin words or phrases</strong>, each letter marking one point in a group of six. The most celebrated example, excavated from a tavern near the Praetorian camp in Rome and now in the National Museum of Rome, doubles as a dinner menu. A similar board from Ephesus in the Ephesus Museum (c. 100 BCE) shows the word-marking layout clearly.</p>
+      <p>Schädler's key insight is that on these inscribed boards, the twelve "lines" run <em>vertically</em>, cutting across the horizontal words — not along the rows of letters as one might first assume. This gives the correct count of twelve playing columns per half of the board.</p>
+    </div>
+
+    <!-- TAVERN INSCRIPTION DISPLAY -->
+    <div class="inscription" style="margin-top:1.5rem;">
+      <div style="font-family:var(--sans);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ash);margin-bottom:.9rem;">The Praetorian Tavern Board — Rome, c. 1st century BCE/CE</div>
+      <div class="inscription-latin">
+        <div class="inscription-row" style="margin-bottom:.3rem;">
+          <span class="inscription-word">ABEMUS</span>
+          <span class="inscription-glyph">♥</span>
+          <span class="inscription-word">IN&nbsp;CENA</span>
+          <span class="inscription-trans">— We have ♥ in dinner</span>
+        </div>
+        <div class="inscription-row" style="margin-bottom:.3rem;">
+          <span class="inscription-word">PULLUM</span>
+          <span class="inscription-glyph">⊕</span>
+          <span class="inscription-word">PISCEM</span>
+          <span class="inscription-trans">— Chicken · Fish</span>
+        </div>
+        <div class="inscription-row" style="margin-bottom:.3rem;">
+          <span class="inscription-word">PERNAM</span>
+          <span class="inscription-glyph">⁜</span>
+          <span class="inscription-word">PAONEM</span>
+          <span class="inscription-trans">— Ham · Bread</span>
+        </div>
+        <div class="inscription-row">
+          <span class="inscription-word">BENA</span>
+          <span class="inscription-glyph">⁜</span>
+          <span class="inscription-word">TORES</span>
+          <span class="inscription-trans">— Venatores (the Hunters)</span>
+        </div>
+      </div>
+      <div class="inscription-note">The board was owned by the <em>Venatores Immunes</em>, a unit of the Praetorian Guard responsible for the wild animals used in arena games. Each symbol between the words marks the dividing column between the two halves of the board. The twelve vertical "lines" — one per letter of each six-letter word — are the playing points. National Museum of Rome.</div>
+    </div>
+
+    <!-- BOARD DIAGRAMS -->
+    <div class="boards-pair" style="margin-top:1.8rem;">
+
+      <figure class="board-figure">
+        <svg viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg" width="100%" style="display:block;">
+          <rect width="280" height="160" fill="#2a2010"/>
+          <rect x="4" y="4" width="272" height="152" fill="none" stroke="#6a5020" stroke-width="1.5"/>
+          <!-- Title -->
+          <text x="140" y="18" font-family="'Playfair Display',serif" font-size="9" fill="#c8901c" text-anchor="middle" font-style="italic">Duodecim Scripta</text>
+          <!-- Three rows of 12+1+12 points -->
+          <!-- Row 1 (top) -->
+          <g fill="none" stroke="#6a5020" stroke-width="1">
+            <!-- Left 6 points -->
+            <rect x="14" y="26" width="17" height="17" rx="2"/>
+            <rect x="34" y="26" width="17" height="17" rx="2"/>
+            <rect x="54" y="26" width="17" height="17" rx="2"/>
+            <rect x="74" y="26" width="17" height="17" rx="2"/>
+            <rect x="94" y="26" width="17" height="17" rx="2"/>
+            <rect x="114" y="26" width="17" height="17" rx="2"/>
+            <!-- Centre separator -->
+            <ellipse cx="148" cy="34" rx="8" ry="8" stroke="#c8901c"/>
+            <!-- Right 6 points -->
+            <rect x="163" y="26" width="17" height="17" rx="2"/>
+            <rect x="183" y="26" width="17" height="17" rx="2"/>
+            <rect x="203" y="26" width="17" height="17" rx="2"/>
+            <rect x="223" y="26" width="17" height="17" rx="2"/>
+            <rect x="243" y="26" width="17" height="17" rx="2"/>
+            <rect x="263" y="26" width="3" height="17" rx="1"/>
+          </g>
+          <!-- Row 2 (middle / entry row) -->
+          <g fill="#3a2808" stroke="#c8901c" stroke-width="1.2">
+            <rect x="14" y="50" width="17" height="17" rx="2"/>
+            <rect x="34" y="50" width="17" height="17" rx="2"/>
+            <rect x="54" y="50" width="17" height="17" rx="2"/>
+            <rect x="74" y="50" width="17" height="17" rx="2"/>
+            <rect x="94" y="50" width="17" height="17" rx="2"/>
+            <rect x="114" y="50" width="17" height="17" rx="2"/>
+            <ellipse cx="148" cy="58" rx="8" ry="8" fill="#1e1610" stroke="#c8901c"/>
+            <rect x="163" y="50" width="17" height="17" rx="2"/>
+            <rect x="183" y="50" width="17" height="17" rx="2"/>
+            <rect x="203" y="50" width="17" height="17" rx="2"/>
+            <rect x="223" y="50" width="17" height="17" rx="2"/>
+            <rect x="243" y="50" width="17" height="17" rx="2"/>
+            <rect x="263" y="50" width="3" height="17" rx="1"/>
+          </g>
+          <!-- Row 3 (bottom) -->
+          <g fill="none" stroke="#6a5020" stroke-width="1">
+            <rect x="14" y="74" width="17" height="17" rx="2"/>
+            <rect x="34" y="74" width="17" height="17" rx="2"/>
+            <rect x="54" y="74" width="17" height="17" rx="2"/>
+            <rect x="74" y="74" width="17" height="17" rx="2"/>
+            <rect x="94" y="74" width="17" height="17" rx="2"/>
+            <rect x="114" y="74" width="17" height="17" rx="2"/>
+            <ellipse cx="148" cy="82" rx="8" ry="8" stroke="#6a5020"/>
+            <rect x="163" y="74" width="17" height="17" rx="2"/>
+            <rect x="183" y="74" width="17" height="17" rx="2"/>
+            <rect x="203" y="74" width="17" height="17" rx="2"/>
+            <rect x="223" y="74" width="17" height="17" rx="2"/>
+            <rect x="243" y="74" width="17" height="17" rx="2"/>
+            <rect x="263" y="74" width="3" height="17" rx="1"/>
+          </g>
+          <!-- Row labels -->
+          <text x="14" y="106" font-family="'DM Sans',sans-serif" font-size="6" fill="#c8901c" font-weight="700">C C C C C C</text>
+          <text x="163" y="106" font-family="'DM Sans',sans-serif" font-size="6" fill="#c8901c" font-weight="700">B B B B B B</text>
+          <text x="14" y="115" font-family="'DM Sans',sans-serif" font-size="6" fill="#e8c060" font-weight="700">A A A A A A</text>
+          <text x="163" y="115" font-family="'DM Sans',sans-serif" font-size="6" fill="#e8c060" font-weight="700">A A A A A A</text>
+          <text x="14" y="124" font-family="'DM Sans',sans-serif" font-size="6" fill="#c8901c" font-weight="700">D D D D D D</text>
+          <text x="163" y="124" font-family="'DM Sans',sans-serif" font-size="6" fill="#c8901c" font-weight="700">E E E E E E</text>
+          <!-- Movement arrow -->
+          <path d="M 22 135 Q 148 148 265 135" stroke="#c8901c" stroke-width="1" fill="none" stroke-dasharray="3,2"/>
+          <polygon points="265,135 260,131 260,139" fill="#c8901c"/>
+          <text x="140" y="155" font-family="'DM Sans',sans-serif" font-size="7" fill="#8a7050" text-anchor="middle">Pieces enter on A-row (centre), race outward</text>
+        </svg>
+        <figcaption><strong>Duodecim Scripta</strong> — three rows of 6+1+6 points (36 points total). Pieces enter on the middle row (A), move through B/C and D, and bear off at E. Letter-coded after the Ostia board (Murray 1952). The highlighted centre row is the entry zone; pieces there are safe from capture.</figcaption>
+      </figure>
+
+      <figure class="board-figure">
+        <svg viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg" width="100%" style="display:block;">
+          <rect width="280" height="160" fill="#1a1814"/>
+          <rect x="4" y="4" width="272" height="152" fill="none" stroke="#5a4828" stroke-width="1.5"/>
+          <text x="140" y="18" font-family="'Playfair Display',serif" font-size="9" fill="#c8901c" text-anchor="middle" font-style="italic">Tabula</text>
+
+          <!-- Tabula: 2 rows of 12 points with bar — backgammon layout -->
+          <!-- Top row: points 13–24 (left to right) -->
+          <!-- Bottom row: points 12–1 (left to right) -->
+          <!-- Bar in centre -->
+
+          <!-- Top row points (triangles) -->
+          <g>
+            <!-- left 6: 13–18 -->
+            <polygon points="14,28 21,28 17.5,68" fill="#6a3a18" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="36,28 43,28 39.5,68" fill="#2a3a5a" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="58,28 65,28 61.5,68" fill="#6a3a18" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="80,28 87,28 83.5,68" fill="#2a3a5a" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="102,28 109,28 105.5,68" fill="#6a3a18" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="124,28 131,28 127.5,68" fill="#2a3a5a" stroke="#3a2010" stroke-width=".5"/>
+            <!-- bar -->
+            <rect x="137" y="25" width="6" height="110" fill="#2a2010" stroke="#5a4020" stroke-width="1"/>
+            <!-- right 6: 19–24 -->
+            <polygon points="148,28 155,28 151.5,68" fill="#6a3a18" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="170,28 177,28 173.5,68" fill="#2a3a5a" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="192,28 199,28 195.5,68" fill="#6a3a18" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="214,28 221,28 217.5,68" fill="#2a3a5a" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="236,28 243,28 239.5,68" fill="#6a3a18" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="258,28 265,28 261.5,68" fill="#2a3a5a" stroke="#3a2010" stroke-width=".5"/>
+          </g>
+
+          <!-- Bottom row points (triangles pointing up) -->
+          <g>
+            <polygon points="14,137 21,137 17.5,97" fill="#2a3a5a" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="36,137 43,137 39.5,97" fill="#6a3a18" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="58,137 65,137 61.5,97" fill="#2a3a5a" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="80,137 87,137 83.5,97" fill="#6a3a18" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="102,137 109,137 105.5,97" fill="#2a3a5a" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="124,137 131,137 127.5,97" fill="#6a3a18" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="148,137 155,137 151.5,97" fill="#2a3a5a" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="170,137 177,137 173.5,97" fill="#6a3a18" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="192,137 199,137 195.5,97" fill="#2a3a5a" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="214,137 221,137 217.5,97" fill="#6a3a18" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="236,137 243,137 239.5,97" fill="#2a3a5a" stroke="#3a2010" stroke-width=".5"/>
+            <polygon points="258,137 265,137 261.5,97" fill="#6a3a18" stroke="#3a2010" stroke-width=".5"/>
+          </g>
+
+          <!-- Point numbers top -->
+          <text x="17.5" y="24" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">13</text>
+          <text x="39.5" y="24" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">14</text>
+          <text x="61.5" y="24" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">15</text>
+          <text x="83.5" y="24" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">16</text>
+          <text x="105.5" y="24" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">17</text>
+          <text x="127.5" y="24" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">18</text>
+          <text x="151.5" y="24" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">19</text>
+          <text x="173.5" y="24" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">20</text>
+          <text x="195.5" y="24" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">21</text>
+          <text x="217.5" y="24" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">22</text>
+          <text x="239.5" y="24" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">23</text>
+          <text x="261.5" y="24" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">24</text>
+
+          <!-- Point numbers bottom -->
+          <text x="17.5" y="152" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">12</text>
+          <text x="39.5" y="152" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">11</text>
+          <text x="61.5" y="152" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">10</text>
+          <text x="83.5" y="152" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">9</text>
+          <text x="105.5" y="152" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">8</text>
+          <text x="127.5" y="152" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">7</text>
+          <text x="151.5" y="152" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">6</text>
+          <text x="173.5" y="152" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">5</text>
+          <text x="195.5" y="152" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">4</text>
+          <text x="217.5" y="152" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">3</text>
+          <text x="239.5" y="152" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">2</text>
+          <text x="261.5" y="152" font-family="'DM Sans',sans-serif" font-size="5.5" fill="#8a6040" text-anchor="middle">1</text>
+
+          <!-- Entry label -->
+          <text x="140" y="79" font-family="'DM Sans',sans-serif" font-size="6" fill="#c8901c" text-anchor="middle" font-weight="700">BAR</text>
+        </svg>
+        <figcaption><strong>Tabula</strong> — four sets of six points (24 points total), divided by a central bar. This layout — familiar to every backgammon player — replaced duodecim scripta during the 1st century CE. Pieces enter on points 1–12 and bear off from points 13–24. Schädler (1995) identifies a transitional board type bridging the two games.</figcaption>
+      </figure>
+
+    </div><!-- /.boards-pair -->
+  </section>
+
+  <!-- SECTION 3: RULES RECONSTRUCTION -->
+  <section class="article-section">
+    <div class="section-label">Rules Reconstruction</div>
+    <h2 class="section-title">How the Games Were Played</h2>
+    <div class="section-body">
+      <p>No ancient rulebook survives for either game. The reconstruction depends on physical boards, scattered literary references, and — for tabula specifically — a detailed account of Emperor Zeno's famously unlucky dice roll in an epigram by Agathias (c. 530 CE), which describes the game's mechanics in enough detail to confirm blot-hitting and re-entry rules nearly identical to backgammon.</p>
+      <p>The scholarly consensus, drawing on Murray (1952), Bell (1979), Schädler (1995, 1998), and Finkel (2005), reconstructs duodecim scripta as follows: each player has <strong>fifteen pieces</strong>, moved by throws of <strong>three cubic dice</strong>. The three numbers may be used individually or in combination to move one, two, or three pieces respectively, but each piece must be able to land on its intermediate stopping point. Pieces enter the board on the middle row (the "A" zone in Murray's lettering scheme), race through the outer rows, and are borne off from the final row.</p>
+
+      <table class="evidence-table" style="margin-top:1.2rem;">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Duodecim Scripta</th>
+            <th>Tabula</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Board layout</td>
+            <td>3 rows × 6+1+6 points (36 points)</td>
+            <td>2 rows × 12 points with bar (24 points)</td>
+          </tr>
+          <tr>
+            <td>Pieces per player</td>
+            <td>15 (Botermans, Murray); 6 in Finkel's simplified version</td>
+            <td>15</td>
+          </tr>
+          <tr>
+            <td>Dice</td>
+            <td>Three cubic dice</td>
+            <td>Three cubic dice (as Zeno's game shows)</td>
+          </tr>
+          <tr>
+            <td>Direction</td>
+            <td>Both players travel same direction (unconfirmed)</td>
+            <td>Both players travel same direction (cf. Agathias)</td>
+          </tr>
+          <tr>
+            <td>Blot capture</td>
+            <td>Single piece can be hit and must re-enter</td>
+            <td>Same; confirmed in Agathias' epigram</td>
+          </tr>
+          <tr>
+            <td>Stack protection</td>
+            <td>Two+ pieces on a point cannot be taken</td>
+            <td>Two pieces on a point are safe</td>
+          </tr>
+          <tr>
+            <td>Entry zone</td>
+            <td>Centre row (A-points); pieces safe there</td>
+            <td>Points 1–12; all pieces enter before racing</td>
+          </tr>
+          <tr>
+            <td>Bear-off</td>
+            <td>Exact throw required; forfeit if impossible</td>
+            <td>Bear off from points 9–24 (Finkel)</td>
+          </tr>
+          <tr>
+            <td>Period</td>
+            <td>c. 200 BCE – 1st century CE</td>
+            <td>c. 1st century CE – 6th century CE</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top:1.2rem;">Schädler cautions that the direction of travel — whether both players moved in the same direction or in backgammon's characteristic contraflow — cannot be confirmed from surviving evidence. The Botermans reconstruction (both same direction) is the most widely reproduced but Schädler flags it as unverified.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 4: EVOLUTION -->
+  <section class="article-section">
+    <div class="section-label">Game History</div>
+    <h2 class="section-title">From Pente Grammai to Backgammon</h2>
+    <div class="section-body">
+      <p>The Roman race games did not emerge from nothing. Schädler's identification of a 3rd–2nd century BCE Italian bronze mirror — previously misclassified as an early duodecim scripta board — as a variant of the Greek <strong>pente grammai</strong> (five lines) suggests a direct line of descent. The Greek game's blot-hitting mechanic, attested in Aristotle and confirmed by Kidd (2017), provided the fundamental strategic vocabulary that duodecim scripta inherited and passed to tabula and ultimately backgammon.</p>
+      <p>The sixth-century CE Persian game <strong>Nard</strong> — documented in the Sasanian text <em>Wizārishn ī chatrang</em> and already playable in our Arcade — is either a parallel development or a Persian adaptation of tabula. By the time of the Arab conquests, the game was known as <em>nard</em> across the Islamic world and reached medieval Europe as <em>tables</em>, the Old English term that survives in "backgammon tables" today.</p>
+    </div>
+
+    <div class="evolution-chart" style="margin-top:1.2rem;">
+      <h3>Evolutionary Lineage of the Tables Games</h3>
+      <div class="evo-row">
+        <div class="evo-date">c. 600 BCE</div>
+        <div>
+          <div class="evo-name">Pente Grammai <span style="font-family:var(--sans);font-size:.7rem;color:var(--ash);font-weight:400;">(Greece)</span></div>
+          <div class="evo-desc">Five-line race game with single die and blot-hitting. Depicted on the Exekias amphora. Source of the "Holy Line" proverb.</div>
+        </div>
+      </div>
+      <div class="evo-row" style="padding-left:1rem;">
+        <div class="evo-date" style="color:var(--ash);">↓ c. 300–100 BCE</div>
+        <div style="color:var(--ash);font-family:var(--body);font-size:.78rem;">Expanded variants (7, 9, 11 lines) documented on Etruscan mirrors and at Epidauros. Board doubles to 5+1+5 layout.</div>
+      </div>
+      <div class="evo-row">
+        <div class="evo-date">c. 200 BCE</div>
+        <div>
+          <div class="evo-name">Duodecim Scripta <span style="font-family:var(--sans);font-size:.7rem;color:var(--ash);font-weight:400;">(Rome)</span></div>
+          <div class="evo-desc">Three-row board, 15 pieces, three dice. Wide Mediterranean spread. Board inscribed with words or symbols.</div>
+        </div>
+      </div>
+      <div class="evo-row" style="padding-left:1rem;">
+        <div class="evo-date" style="color:var(--ash);">↓ 1st century CE</div>
+        <div style="color:var(--ash);font-family:var(--body);font-size:.78rem;">Transitional boards documented by Schädler — duodecim scripta with the middle row removed, approaching the tabula layout.</div>
+      </div>
+      <div class="evo-row">
+        <div class="evo-date">c. 1–500 CE</div>
+        <div>
+          <div class="evo-name">Tabula <span style="font-family:var(--sans);font-size:.7rem;color:var(--ash);font-weight:400;">(Rome/Byzantium)</span></div>
+          <div class="evo-desc">24-point board (4 × 6), three dice. Emperor Zeno's famous unlucky game documented by Agathias, c. 530 CE. Called <em>alea</em> by Isidore of Seville.</div>
+        </div>
+      </div>
+      <div class="evo-row">
+        <div class="evo-date">c. 500–600 CE</div>
+        <div>
+          <div class="evo-name">Nard <span style="font-family:var(--sans);font-size:.7rem;color:var(--ash);font-weight:400;">(Persia/Sasanian)</span></div>
+          <div class="evo-desc">Documented in <em>Wizārishn ī chatrang</em>. No doubles rule; both players move same direction. Rules survive in Bozorgmehr's text. <a href="nard.html" style="color:var(--ochre);font-size:.75rem;">→ Play Nard</a></div>
+        </div>
+      </div>
+      <div class="evo-row">
+        <div class="evo-date">c. 800–1600 CE</div>
+        <div>
+          <div class="evo-name">Tables / Trictrac / Tavola <span style="font-family:var(--sans);font-size:.7rem;color:var(--ash);font-weight:400;">(Medieval Europe)</span></div>
+          <div class="evo-desc">Regional variants across Europe. Pieces now move in opposite directions. Doublets introduced. French <em>trictrac</em>, Italian <em>tavola reale</em>, English <em>tables</em>.</div>
+        </div>
+      </div>
+      <div class="evo-row">
+        <div class="evo-date">c. 1645 CE</div>
+        <div>
+          <div class="evo-name">Backgammon <span style="font-family:var(--sans);font-size:.7rem;color:var(--ash);font-weight:400;">(England)</span></div>
+          <div class="evo-desc">First use of the name "backgammon" in English (1645). Doublets, doubling cube (20th century), and bearing-off from home board as modern form.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: KEY EVIDENCE -->
+  <section class="article-section">
+    <div class="section-label">Material Record</div>
+    <h2 class="section-title">Key Physical Evidence</h2>
+    <div class="section-body">
+      <p>The richness of the physical record for the Roman tables games is unmatched among ancient board games. Boards appear in contexts ranging from elite burials to soldiers' barracks — evidence of a game that genuinely crossed social strata.</p>
+    </div>
+    <table class="evidence-table" style="margin-top:1rem;">
+      <thead>
+        <tr><th>Object</th><th>Date</th><th>Location</th><th>Significance</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bronze mirror engraving</td>
+          <td>c. 3rd–2nd BCE</td>
+          <td>Italy; British Museum Room 69</td>
+          <td>Earliest image of the game; archaic Latin caption "opeinod devincam ted." Schädler identifies as pente grammai 5+1+5 variant, not duodecim scripta.</td>
+        </tr>
+        <tr>
+          <td>Praetorian tavern board</td>
+          <td>c. 1st BCE–CE</td>
+          <td>Near Praetorian camp, Rome; National Museum of Rome</td>
+          <td>Board doubles as a dinner menu (chicken, fish, ham, bread). Owned by the Venatores Immunes. Best example of word-inscribed board.</td>
+        </tr>
+        <tr>
+          <td>Ephesus game board</td>
+          <td>c. 100 BCE</td>
+          <td>Ephesus Museum, Turkey</td>
+          <td>Incised into temple architecture. Shows the standard duodecim scripta layout with symbol markers.</td>
+        </tr>
+        <tr>
+          <td>Ostia letter board</td>
+          <td>c. 1st–2nd CE</td>
+          <td>Ostia Antica (Rome port)</td>
+          <td>Marked with letter groups A–E indicating the sequence of zones. Murray uses this to reconstruct movement order; Schädler calls it <em>alea</em>.</td>
+        </tr>
+        <tr>
+          <td>Qustul burial set</td>
+          <td>c. 4th CE</td>
+          <td>Nubia (now submerged, Lake Nasser)</td>
+          <td>Complete set — board, pieces, dice, and <em>fritillus</em> (dice tower) — from royal tomb. Bell links to senet; layout matches duodecim scripta.</td>
+        </tr>
+        <tr>
+          <td>Agathias' epigram on Zeno's game</td>
+          <td>c. 530 CE</td>
+          <td>Greek Anthology IX.482</td>
+          <td>Most detailed surviving ancient description of tabula/backgammon mechanics. Emperor Zeno threw an unlucky roll; the epigram describes the board state in enough detail for modern reconstruction.</td>
+        </tr>
+        <tr>
+          <td>Aphrodisias, Ephesus, Smyrna boards</td>
+          <td>Roman Imperial period</td>
+          <td>Asia Minor (Turkey)</td>
+          <td>Schädler (1998) documents large numbers of boards showing 2×5 and 2×11 square formats — the Roman-period adaptation of five-lines onto squares rather than lines.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="ornament">· · · ✦ · · ·</div>
+
+</div><!-- /.main-col -->
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+  <div class="sidebar-card">
+    <h3>Quick Facts</h3>
+    <ul>
+      <li><strong>Family:</strong> Tables / race games</li>
+      <li><strong>Players:</strong> 2</li>
+      <li><strong>Pieces:</strong> 15 per player (Botermans / Murray); 6 in Finkel's simplified version</li>
+      <li><strong>Dice:</strong> Three cubic d6 (duodecim scripta); also three for tabula</li>
+      <li><strong>Board:</strong> 3 rows of 6+1+6 (DS) → 2 rows of 12 (tabula)</li>
+      <li><strong>Win condition:</strong> Bear all pieces off the board</li>
+      <li><strong>Playable reconstruction:</strong> Not offered — see <a href="nard.html">Nard</a> for a close ancestor</li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <h3>Emperor Zeno's Bad Roll</h3>
+    <p>Around 530 CE, the poet Agathias composed an epigram describing Emperor Zeno's catastrophic dice throw in a game of tabula. The three dice came up 2, 5, and 6 — and Zeno's position was so bad that no matter how he moved, he would lose pieces to his opponent's blots. The epigram describes the board state in enough detail that modern scholars have been able to reconstruct a plausible position. It is the most precise ancient description of a race game in progress that survives from antiquity.</p>
+  </div>
+
+  <div class="sidebar-card">
+    <h3>Reconstruction Uncertainty</h3>
+    <p>Schädler warns explicitly that the direction of travel (same direction vs. contraflow as in modern backgammon) cannot be confirmed from available evidence. The Botermans reconstruction — both players moving in the same direction, entering on the centre row — is widely reproduced but unverified. The entry zone being safe from capture (confirmed by analogy with the Royal Game of Ur's rosette squares and Senet's safe squares) is better supported.</p>
+  </div>
+
+  <div class="sidebar-card">
+    <h3>Key Sources</h3>
+    <ul class="ref-list">
+      <li>Schädler, U. (1995) "XII Scripta, Alea, Tabula." <em>New Approaches to Board Games Research</em>, IIAS, pp. 73–97.</li>
+      <li>Schädler, U. (1998) "Mancala in Roman Asia Minor." <em>Board Game Studies</em> 1, pp. 10–25.</li>
+      <li>Murray, H.J.R. (1952) <em>A History of Board Games Other Than Chess.</em> Oxford, pp. 29–34.</li>
+      <li>Bell, R.C. (1979) <em>Board and Table Games from Many Civilizations.</em> Vol. 1, pp. 23–46.</li>
+      <li>Finkel, I. (2005) <em>Games: Discover and Play Five Ancient Games.</em> British Museum.</li>
+      <li>Botermans, J. (2008) <em>Book of Games.</em> Sterling, pp. 287–298.</li>
+      <li>Duggan, E. <em>Ancient Board Games 2: Duodecim Scripta &amp; Tabula.</em> UCS lecture slides (source for this page).</li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <h3>The Arcade</h3>
+    <div class="arcade-links">
+      <a class="arcade-link" href="senet.html">Senet <span class="era">Egypt, ~3500 BCE</span></a>
+      <a class="arcade-link" href="mehen.html">Mehen <span class="era">Egypt, ~3650 BCE</span></a>
+      <a class="arcade-link" href="ur.html">Royal Game of Ur <span class="era">Mesopotamia, ~2600 BCE</span></a>
+      <a class="arcade-link" href="hounds-jackals.html">Hounds &amp; Jackals <span class="era">Egypt, ~2000 BCE</span></a>
+      <a class="arcade-link" href="pente-grammai.html">Pente Grammai <span class="era">Greece, ~600 BCE</span></a>
+      <a class="arcade-link" href="petteia.html">Petteia <span class="era">Greece/Rome, ~500 BCE</span></a>
+      <a class="arcade-link current" href="duodecim-scripta.html">Duodecim Scripta <span class="era">Rome, ~200 BCE</span></a>
+      <a class="arcade-link" href="nard.html">Nard <span class="era">Persia, 6th c. CE</span></a>
+    </div>
+  </div>
+
+</div><!-- /.sidebar -->
+</div><!-- /.page-wrap -->
+
+<footer class="footer">
+  <a href="index.html">archAIology</a> · archaiology.org · © 2026 ·
+  Sources: Schädler 1995/1998, Murray 1952, Bell 1979, Finkel 2005, Duggan (UCS)
+</footer>
+
+</body>
+</html>
