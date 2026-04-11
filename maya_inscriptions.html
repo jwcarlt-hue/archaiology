@@ -235,6 +235,10 @@ h1 em{color:var(--jade-lt);font-style:italic;}
         <button class="p-chip" data-period="Classic" onclick="setPeriod(this,'Classic')">Classic</button>
         <button class="p-chip" data-period="Postclassic" onclick="setPeriod(this,'Postclassic')">Postclassic</button>
       </div>
+      <div style="margin-top:.5rem;padding-top:.5rem;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:.5rem;">
+        <button class="p-chip" id="bc-toggle" onclick="toggleBallcourts(this)" style="background:rgba(232,106,42,.1);color:#e8802a;border-color:rgba(232,106,42,.25)">&#x2B21; Ballcourts</button>
+        <span style="font-size:.52rem;color:rgba(200,216,240,.25);letter-spacing:.04em">78 confirmed</span>
+      </div>
     </div>
     <div id="site-list"></div>
   </aside>
@@ -314,6 +318,89 @@ const SITES = [
   {code:"MUL",name:"Mulchic",lat:20.7167,lng:-89.5000,country:"Mexico",morley:2,riese:3,period:"Postclassic",notes:"Northern Yucatán minor center."},
   {code:"CON",name:"Coba (north group)",lat:20.4950,lng:-87.7350,country:"Mexico",morley:5,riese:8,period:"Classic",notes:"Northern causeways and stelae cluster."},
 ];
+
+// ── MESOAMERICAN BALLCOURT SITES (78 confirmed) ───────────────────────────────
+const BALLCOURT_SITES = [
+  {name:"Becan",lat:18.5275,lng:-89.4692,country:"Mexico",region:"Northern Lowlands",courts:"1",chronology:"c. 550 BC–AD 1200",confidence:"medium",notes:"Structure XI, west plaza. Playing field 12×9 m. No stone rings preserved."},
+  {name:"Chichen Itza",lat:20.6843,lng:-88.5678,country:"Mexico",region:"Northern Lowlands",courts:"13",chronology:"c. AD 600–1200",confidence:"high",notes:"13 confirmed courts. Great Ball Court (168×70 m) largest in Mesoamerica. Feathered-serpent stone rings, decapitation relief panels."},
+  {name:"Cobá",lat:20.495,lng:-87.735,country:"Mexico",region:"Northern Lowlands",courts:"2",chronology:"c. 100 BC–AD 1450",confidence:"high",notes:"Two documented courts. Ball Court 2 has female ruler inscription dated AD 565–574."},
+  {name:"Dzibanché",lat:18.6833,lng:-88.6167,country:"Mexico",region:"Northern Lowlands",courts:"1",chronology:"c. AD 250–1000",confidence:"high",notes:"2024 INAH excavation: painted stucco reliefs of Kaanul Dynasty rulers."},
+  {name:"Dzibilchaltun",lat:21.0989,lng:-89.5964,country:"Mexico",region:"Northern Lowlands",courts:"1",chronology:"c. AD 250–1540",confidence:"medium",notes:"East of South Plaza. Sloping walls, no rings. One of longest-occupied Maya sites."},
+  {name:"Edzna",lat:19.5944,lng:-90.2294,country:"Mexico",region:"Northern Lowlands",courts:"1",chronology:"c. 400 BC–AD 1500",confidence:"medium",notes:"Structures 420-1 to 420-4. Playing alley 51×5 m. One original stone ring."},
+  {name:"Ek Balam",lat:20.8756,lng:-88.2417,country:"Mexico",region:"Northern Lowlands",courts:"1",chronology:"c. 300 BC–AD 1200",confidence:"high",notes:"Structures 8 and 9. Talud walls with decorated rooms."},
+  {name:"Kohunlich",lat:18.5067,lng:-88.9592,country:"Mexico",region:"Northern Lowlands",courts:"1",chronology:"c. 200 BC–AD 700",confidence:"medium",notes:"Unusual NW-SE axis. Temple of the Masks c. AD 500."},
+  {name:"Oxkintok",lat:20.5647,lng:-89.9369,country:"Mexico",region:"Northern Lowlands",courts:"1",chronology:"c. 500 BC–AD 1500",confidence:"medium",notes:"Among earliest surviving Maya ballcourts. Stone ring inscribed AD 713–714."},
+  {name:"Uxmal",lat:20.3593,lng:-89.7712,country:"Mexico",region:"Northern Lowlands",courts:"2",chronology:"c. AD 700–1100",confidence:"medium",notes:"Main court ring inscription dated AD 905. Feathered-serpent iconography."},
+  {name:"Yaxuna",lat:20.6667,lng:-88.7333,country:"Mexico",region:"Northern Lowlands",courts:"1",chronology:"c. 800 BC–AD 1400",confidence:"medium",notes:"Structures 6F-15/16. Playing field c. 26 m. Contested by Coba and Chichen Itza."},
+  {name:"Bonampak",lat:16.7003,lng:-91.065,country:"Mexico",region:"Southern Lowlands",courts:"1",chronology:"c. AD 580–800",confidence:"medium",notes:"Attested in site plaza layout. Famous for polychrome murals."},
+  {name:"Piedras Negras",lat:17.16,lng:-91.26,country:"Guatemala",region:"Southern Lowlands",courts:"2",chronology:"Early–Late Classic",confidence:"high",notes:"Structure K-6 boxer panels. Second court tied to deceased queen's pyramid."},
+  {name:"Yaxchilan",lat:16.8989,lng:-90.9667,country:"Mexico",region:"Southern Lowlands",courts:"2",chronology:"c. AD 600–900",confidence:"medium",notes:"Structure 14: five eroded floor markers. Structure 67: SE Group."},
+  {name:"Palenque",lat:17.4839,lng:-92.0458,country:"Mexico",region:"Southern Lowlands",courts:"1",chronology:"c. AD 432–900",confidence:"medium",notes:"Central Plaza north of Palace. N-S axis. Adjacent Temple X and Temple of the Count."},
+  {name:"Tonina",lat:16.9022,lng:-92.0083,country:"Mexico",region:"Southern Lowlands",courts:"2",chronology:"Ballcourt 1 dedicated 699 CE",confidence:"medium",notes:"Dedicated by K'inich B'aaknal Chaak marking victories over Palenque. Six vassal torso sculptures as floor markers."},
+  {name:"Cahal Pech",lat:17.2522,lng:-89.1222,country:"Belize",region:"Southern Lowlands",courts:"2",chronology:"c. 1200 BCE–AD 900",confidence:"high",notes:"Eastern court adjacent E-Group. Western court under ongoing excavation."},
+  {name:"Caracol",lat:16.7589,lng:-89.1175,country:"Belize",region:"Southern Lowlands",courts:"2",chronology:"Classic; B-Group marker c. 633 CE",confidence:"medium",notes:"Ballcourt A: cosmological markers. Ballcourt B marker dated c. 633 CE."},
+  {name:"Cerros",lat:18.15,lng:-88.3,country:"Belize",region:"Southern Lowlands",courts:"2",chronology:"c. 400 BCE–150 CE",confidence:"high",notes:"Two masonry courts contemporaneous with earliest public structures. Preclassic ballgame evidence."},
+  {name:"Ka'kabish",lat:17.8333,lng:-88.5,country:"Belize",region:"Southern Lowlands",courts:"1",chronology:"Early Classic; abandoned c. 600 CE",confidence:"high",notes:"Structures D-6 and D-7. Two Early Classic phases. Never refurbished after abandonment."},
+  {name:"Lamanai",lat:17.7667,lng:-88.65,country:"Belize",region:"Southern Lowlands",courts:"1",chronology:"c. 1500 BCE–17th century CE",confidence:"high",notes:"Small but notable court. Jade, shell, pearl and mercury offerings atop central marker."},
+  {name:"Lubaantun",lat:16.2833,lng:-88.9667,country:"Belize",region:"Southern Lowlands",courts:"3",chronology:"c. AD 700–900",confidence:"medium",notes:"Three courts. Carved cylindrical markers in British Museum. Crystal skull controversy site."},
+  {name:"Nim Li Punit",lat:16.3667,lng:-89.0,country:"Belize",region:"Southern Lowlands",courts:"1",chronology:"c. AD 5th–8th century",confidence:"medium",notes:"Well-preserved court. 26 stelae (8 carved)."},
+  {name:"Pacbitun",lat:16.9833,lng:-89.15,country:"Belize",region:"Southern Lowlands",courts:"1",chronology:"c. 100 BCE–AD 300",confidence:"high",notes:"Among earliest architectural evidence for ballgame in Southern Lowlands. Eccentric lithic cache."},
+  {name:"Xunantunich",lat:17.0897,lng:-89.1389,country:"Belize",region:"Southern Lowlands",courts:"2",chronology:"c. AD 700–900",confidence:"high",notes:"Two documented courts. Richly carved marker. El Castillo cosmological frieze."},
+  {name:"Aguateca",lat:16.45,lng:-90.0167,country:"Guatemala",region:"Southern Lowlands",courts:"1",chronology:"c. AD 700–810",confidence:"medium",notes:"Abandoned hastily c. 810. Limestone bluff on Petexbatun Lagoon."},
+  {name:"Calakmul",lat:18.1044,lng:-89.8083,country:"Mexico",region:"Southern Lowlands",courts:"1",chronology:"Late Classic",confidence:"medium",notes:"Structure XI, North Court. Unusually only one court for a site of this scale."},
+  {name:"Cancuen",lat:16.1333,lng:-90.15,country:"Guatemala",region:"Southern Lowlands",courts:"2",chronology:"c. AD 757–799",confidence:"medium",notes:"Two courts each with three floor markers. Terminal Classic river-trade capital."},
+  {name:"Ceibal",lat:16.5,lng:-90.0833,country:"Guatemala",region:"Southern Lowlands",courts:"2",chronology:"Late–Terminal Classic",confidence:"medium",notes:"Ballcourt A-19: E-W axis unusual for Maya, resembles Uxmal/Chichen Itza style."},
+  {name:"Dos Pilas",lat:16.5167,lng:-90.1,country:"Guatemala",region:"Southern Lowlands",courts:"1",chronology:"c. AD 629–761",confidence:"medium",notes:"Structures L4-16/17. Axis aligns south to Ruler 2 tomb pyramid."},
+  {name:"El Mirador",lat:17.75,lng:-89.9167,country:"Guatemala",region:"Southern Lowlands",courts:"1+",chronology:"c. 300 BCE–AD 250",confidence:"high",notes:"LiDAR surveys identified 30+ courts across Mirador-Calakmul basin. Preclassic giant."},
+  {name:"La Corona",lat:17.7167,lng:-90.45,country:"Guatemala",region:"Southern Lowlands",courts:"1",chronology:"c. AD 600–750",confidence:"medium",notes:"Known from looted ballplayer relief panels now in Chicago and Dallas."},
+  {name:"Nakbe",lat:17.6833,lng:-89.8167,country:"Guatemala",region:"Southern Lowlands",courts:"1",chronology:"c. 500–400 BCE",confidence:"medium",notes:"Structures 76/77 among oldest confirmed courts in Maya area."},
+  {name:"Nakum",lat:17.1833,lng:-89.7333,country:"Guatemala",region:"Southern Lowlands",courts:"3",chronology:"Late Preclassic–Terminal Classic",confidence:"medium",notes:"Three courts including unique double-court design. Ballcourt 2 has Preclassic origins."},
+  {name:"Naranjo",lat:17.0667,lng:-89.6833,country:"Guatemala",region:"Southern Lowlands",courts:"2",chronology:"c. 500 BCE–AD 950",confidence:"medium",notes:"Ballcourts 1 and 2. 389+ structures. Major Peten polity."},
+  {name:"Nixtun-Ch'ich'",lat:16.95,lng:-89.9,country:"Guatemala",region:"Southern Lowlands",courts:"3",chronology:"c. 300 BCE–AD 200",confidence:"medium",notes:"Ballcourt 1 possibly second-largest in Maya area. Grid-planned Preclassic city on Lake Peten Itza."},
+  {name:"Tamarindito",lat:16.4667,lng:-90.0833,country:"Guatemala",region:"Southern Lowlands",courts:"1",chronology:"Early–Late Classic",confidence:"medium",notes:"140+ structures. Prisoner Staircase. Capital of Foliated Scroll polity."},
+  {name:"Tikal",lat:17.222,lng:-89.6237,country:"Guatemala",region:"Southern Lowlands",courts:"7",chronology:"c. 700 BCE–AD 900",confidence:"medium",notes:"Seven courts including unique triple-court complex (Plaza of the Seven Temples)."},
+  {name:"Yaxha",lat:17.0833,lng:-89.3833,country:"Guatemala",region:"Southern Lowlands",courts:"2",chronology:"c. 600 BCE–AD 900",confidence:"medium",notes:"One court among largest and best-preserved in Maya world. 500+ structures."},
+  {name:"Copan",lat:14.8381,lng:-89.1439,country:"Honduras",region:"Southern Lowlands",courts:"1",chronology:"c. AD 470–738",confidence:"medium",notes:"Three sequential versions. Ballcourt A-III dedicated 10 Jan 738 CE. Axis to founder's tomb."},
+  {name:"Ixkun",lat:16.5167,lng:-89.5,country:"Guatemala",region:"Southern Lowlands",courts:"1",chronology:"c. AD 779",confidence:"medium",notes:"Structures 8 and 9. Stela 6 among tallest in Peten."},
+  {name:"Quirigua",lat:15.2667,lng:-89.0333,country:"Guatemala",region:"Southern Lowlands",courts:"2",chronology:"c. AD 650–795",confidence:"medium",notes:"Ballcourt 1 buried by Cauac Sky after defeating 18 Rabbit. Giant stelae site."},
+  {name:"Etlatongo",lat:17.4,lng:-97.3,country:"Mexico",region:"Highlands",courts:"2",chronology:"c. 1374–1102 BCE",confidence:"high",notes:"Earliest highland Mesoamerican ballcourts. Two superimposed earthen courts. Excavated GWU/INAH 2015-2017."},
+  {name:"El Palmillo",lat:16.75,lng:-96.35,country:"Mexico",region:"Highlands",courts:"1",chronology:"c. AD 600–750",confidence:"high",notes:"Small court between two palaces in high-status enclosure. Field Museum excavations."},
+  {name:"Lambityeco",lat:16.9167,lng:-96.5,country:"Mexico",region:"Highlands",courts:"1",chronology:"c. AD 500–850",confidence:"high",notes:"Closely mirrors Monte Alban court design. Modified entrance within 200 years."},
+  {name:"Monte Albán",lat:17.0433,lng:-96.7678,country:"Mexico",region:"Highlands",courts:"5",chronology:"c. 100 BCE–AD 700",confidence:"high",notes:"Principal I-shaped court 41x24 m. No stone rings (Zapotec style). Solar disk carvings."},
+  {name:"Yagul",lat:16.9667,lng:-96.4667,country:"Mexico",region:"Highlands",courts:"1",chronology:"c. AD 500–900",confidence:"high",notes:"Largest ballcourt in Valley of Oaxaca. Playing field 30x6 m. I-shaped, E-W orientation."},
+  {name:"Cantona",lat:19.5833,lng:-97.3833,country:"Mexico",region:"Highlands",courts:"24-27",chronology:"c. 350 BCE–AD 1050",confidence:"medium",notes:"Most ballcourts of any known Mesoamerican site (24-27). UNESCO Tentative List. Peak population 90,000+."},
+  {name:"Capulac Concepción",lat:18.8,lng:-98.8,country:"Mexico",region:"Highlands",courts:"1",chronology:"c. 600–500 BCE",confidence:"high",notes:"Oldest confirmed formal I-shaped ballcourt in Central Mexican Highlands. Playing alley 88x11 m."},
+  {name:"La Laguna",lat:19.1,lng:-98.75,country:"Mexico",region:"Highlands",courts:"1",chronology:"c. 600–500 BCE",confidence:"high",notes:"Contemporaneous with Capulac Concepcion. Among first securely dated full-sized ballcourts in Central Mexico."},
+  {name:"Teotenango",lat:19.1833,lng:-99.6167,country:"Mexico",region:"Highlands",courts:"1",chronology:"c. AD 900–1162",confidence:"high",notes:"Sunken ballcourt with vertical then inclined walls. Stone rings. Adjacent temazcal (sweat bath)."},
+  {name:"Tula",lat:20.0578,lng:-99.3408,country:"Mexico",region:"Highlands",courts:"4",chronology:"c. AD 950–1150",confidence:"high",notes:"Two courts at Tula Grande flanking ceremonial plaza. Skull rack platform nearby. Toltec capital."},
+  {name:"Xochicalco",lat:18.8019,lng:-99.2967,country:"Mexico",region:"Highlands",courts:"2",chronology:"c. AD 650–1000",confidence:"high",notes:"Playing alley 51x9 m. Rings above apron. Epiclassic multiethnic center. UNESCO World Heritage."},
+  {name:"Teopantecuanitlan",lat:18.0833,lng:-99.7,country:"Mexico",region:"Highlands",courts:"2",chronology:"c. 1000–800 BCE",confidence:"high",notes:"Phase II Sunken Patio. Miniature court (~7 m). Larger court 900 m NE. Olmec-affiliated Early Formative."},
+  {name:"Carrizalito",lat:20.4167,lng:-97.0833,country:"Mexico",region:"Veracruz",courts:"1",chronology:"c. 100 BCE–AD 100",confidence:"high",notes:"Earliest excavated ballcourt in central Veracruz. Protoclassic period."},
+  {name:"El Tajin",lat:20.4478,lng:-97.3786,country:"Mexico",region:"Veracruz",courts:"17-21",chronology:"c. AD 300–1200",confidence:"medium",notes:"17-21 courts. UNESCO World Heritage. Pyramid of the Niches. Ballgame capital of Veracruz."},
+  {name:"Los Ídolos",lat:20.15,lng:-97.2833,country:"Mexico",region:"Veracruz",courts:"6+",chronology:"Classic period",confidence:"medium",notes:"At least 6 courts. Nautla basin. Daneels 2024."},
+  {name:"Quiahuiztlan",lat:19.7,lng:-96.4167,country:"Mexico",region:"Veracruz",courts:"1",chronology:"c. AD 800–1520",confidence:"medium",notes:"Totonac site known primarily for mausoleum-style tombs. Small ballcourt confirmed."},
+  {name:"Toxpan",lat:20.7,lng:-97.45,country:"Mexico",region:"Veracruz",courts:"1+",chronology:"Classic period",confidence:"high",notes:"Standard Plan stone construction, excavated and confirmed. Nautla basin."},
+  {name:"Xiutetelco",lat:19.8667,lng:-97.5167,country:"Mexico",region:"Veracruz",courts:"1+",chronology:"Classic period",confidence:"medium",notes:"Elongated-plaza ballcourt layout variant. Settlement survey confirmation."},
+  {name:"La Joya",lat:17.9167,lng:-94.75,country:"Mexico",region:"Veracruz",courts:"1",chronology:"c. AD 300–500",confidence:"high",notes:"Standard Plan layout south of main pyramid. Yoke found in Early Classic stratum."},
+  {name:"Yohualichan",lat:20.0833,lng:-97.5833,country:"Mexico",region:"Veracruz",courts:"1",chronology:"c. AD 200–800",confidence:"medium",notes:"~90-100 m long, among longest in Mesoamerica. El Tajin-style niched architecture."},
+  {name:"El Vergel",lat:15.3833,lng:-92.4167,country:"Mexico",region:"Pacific Coast",courts:"1+",chronology:"c. 900–550 BCE",confidence:"medium",notes:"Middle Preclassic. Grijalva right bank, Chiapas."},
+  {name:"Finca Acapulco",lat:15.25,lng:-92.3833,country:"Mexico",region:"Pacific Coast",courts:"1+",chronology:"c. 900–550 BCE",confidence:"medium",notes:"Middle Preclassic. Grijalva right bank. Among earliest known before Paso de la Amada."},
+  {name:"Fracción Mujular",lat:15.4167,lng:-92.45,country:"Mexico",region:"Pacific Coast",courts:"1",chronology:"c. AD 200–1400",confidence:"medium",notes:"Monumental court on Cerro Bernal. Outlasted Los Horcones."},
+  {name:"Los Horcones",lat:15.5333,lng:-92.5833,country:"Mexico",region:"Pacific Coast",courts:"5",chronology:"c. AD 200–600",confidence:"medium",notes:"Five courts in Middle Classic. Strong Teotihuacan ties."},
+  {name:"Paso de la Amada",lat:14.9167,lng:-92.3333,country:"Mexico",region:"Pacific Coast",courts:"1",chronology:"c. 1650–1400 BCE",confidence:"high",notes:"OLDEST attested Mesoamerican ballcourt. Two earthen mounds ~78 m long. Discovered 1995. Mokaya culture."},
+  {name:"San Mateo",lat:15.2,lng:-92.35,country:"Mexico",region:"Pacific Coast",courts:"1+",chronology:"c. 900–550 BCE",confidence:"medium",notes:"Middle Preclassic. Co-cited with El Vergel and Finca Acapulco on Grijalva right bank."},
+  {name:"Tenam Puente",lat:16.15,lng:-92.2167,country:"Mexico",region:"Pacific Coast",courts:"3",chronology:"c. AD 600–1150",confidence:"medium",notes:"Three I-shaped courts. Comitan Valley. Terminal Classic fortified hilltop."},
+  {name:"Cara Sucia",lat:13.9833,lng:-89.9333,country:"El Salvador",region:"Pacific Coast",courts:"2",chronology:"c. AD 600–920",confidence:"high",notes:"Two enclosed courts built after Ilopango eruption (c. 540 CE). Cotzumalhuapa phase."},
+  {name:"El Baúl",lat:14.2833,lng:-91.1833,country:"Guatemala",region:"Pacific Coast",courts:"1",chronology:"c. AD 650–950",confidence:"high",notes:"Court 31x12.5 m with stone ring. 500 m north of acropolis. Cotzumalhuapa Nuclear Zone."},
+  {name:"Tazumal",lat:13.95,lng:-89.6833,country:"El Salvador",region:"Pacific Coast",courts:"1",chronology:"Classic–Postclassic",confidence:"medium",notes:"I-shaped court identified by test-pit. Structurally unexcavated."},
+  {name:"Kaminaljuyu",lat:14.6333,lng:-90.55,country:"Guatemala",region:"Pacific Coast",courts:"12",chronology:"c. AD 200–900",confidence:"high",notes:"12 confirmed courts. Esperanza phase (Teotihuacan-affiliated). Now in Guatemala City."},
+  {name:"Iximche",lat:14.7167,lng:-91.0667,country:"Guatemala",region:"Pacific Coast",courts:"2",chronology:"c. AD 1470–1524",confidence:"high",notes:"Kaqchikel capital. Ballcourt 1 has two plaster floor levels. Tenoned ballplayer head from Structure 3."},
+  {name:"Mixco Viejo",lat:14.8667,lng:-90.6667,country:"Guatemala",region:"Pacific Coast",courts:"2",chronology:"c. AD 1450–1524",confidence:"medium",notes:"Court A11: 37.21x9.46 m. Court B1: 44.5x9 m. Both I-shaped sunken. Chajoma capital."},
+  {name:"Q'umarkaj",lat:15.0333,lng:-91.1833,country:"Guatemala",region:"Pacific Coast",courts:"4",chronology:"c. AD 1400–1524",confidence:"medium",notes:"Main court 40 m long near Temple of Tohil. K'iche' capital."},
+  {name:"Zaculeu",lat:15.3167,lng:-91.5,country:"Guatemala",region:"Pacific Coast",courts:"1",chronology:"c. AD 250–1525",confidence:"medium",notes:"Structures 22-23. I-shaped sunken, 48 m long. Mam Postclassic capital."},
+];
+
+let ballcourtLayer = null, showBallcourts = false;
 
 // TWKM ConedaKOR base URL
 const KOR = "https://classicmayan.kor.de.dariah.eu";
@@ -402,6 +489,34 @@ function renderMapMarkers(){
     m.addTo(map);
     siteMarkers[s.code] = m;
   });
+}
+
+function renderBallcourtMarkers(){
+  if(!ballcourtLayer){ ballcourtLayer = L.layerGroup().addTo(map); }
+  ballcourtLayer.clearLayers();
+  if(!showBallcourts) return;
+  BALLCOURT_SITES.forEach(s => {
+    const n = parseInt(s.courts) || 1;
+    const r = n >= 13 ? 10 : n >= 5 ? 8 : n >= 2 ? 6 : 5;
+    const col = s.confidence==='high' ? '#e86a2a' : '#d4a84b';
+    const icon = L.divIcon({
+      html:`<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+6}" height="${r*2+6}">
+        <polygon points="${r+3},3 ${r*2+3},${r+3} ${r+3},${r*2+3} 3,${r+3}"
+          fill="${col}" fill-opacity=".85" stroke="#1a0a04" stroke-width="1.2"/>
+      </svg>`,
+      className:'', iconSize:[r*2+6,r*2+6], iconAnchor:[r+3,r+3]
+    });
+    L.marker([s.lat,s.lng],{icon})
+      .bindPopup(`<div class="mp-code" style="color:#e86a2a">&#x2B21; BALLCOURT</div><div class="mp-name">${s.name}</div><div style="margin-top:.3rem;font-size:.62rem;color:rgba(200,216,240,.6)">${s.courts} court${n===1?'':'s'} &middot; ${s.region}</div><div style="margin-top:.2rem;font-size:.6rem;color:rgba(200,216,240,.4)">${s.chronology}</div><div style="margin-top:.3rem;font-size:.62rem;color:rgba(200,216,240,.5)">${s.notes.substring(0,130)}${s.notes.length>130?'&hellip;':''}</div>`)
+      .addTo(ballcourtLayer);
+  });
+}
+
+function toggleBallcourts(btn){
+  showBallcourts = !showBallcourts;
+  btn.classList.toggle('active', showBallcourts);
+  btn.textContent = showBallcourts ? '&#x2B21; Hide Ballcourts' : '&#x2B21; Ballcourts';
+  renderBallcourtMarkers();
 }
 
 // ── Site list render ─────────────────────────────────────────
