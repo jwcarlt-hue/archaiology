@@ -186,6 +186,92 @@ h1 em{color:var(--jade-lt);font-style:italic;}
 .alc-title{font-size:.78rem;font-weight:600;color:var(--star);margin-bottom:.25rem;}
 .alc-sub{font-size:.63rem;color:rgba(200,216,240,.45);line-height:1.55;margin-bottom:.3rem;}
 .alc-url{font-family:var(--mono);font-size:.5rem;color:var(--jade-lt);opacity:.65;}
+
+/* ── MBL League Panel ── */
+#mbl-panel{display:none;border-bottom:1px solid rgba(200,216,240,.06);background:rgba(8,6,10,.97);}
+#mbl-panel.open{display:block;}
+.mbl-header{background:rgba(26,74,50,.25);border-bottom:1px solid rgba(58,170,112,.12);
+  padding:.7rem 1.2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.mbl-title{font-family:var(--serif);font-size:1.05rem;font-weight:900;color:#f0ebe0;}
+.mbl-title em{color:#e8802a;font-style:italic;}
+.mbl-tabs{display:flex;gap:0;margin-left:auto;}
+.mbl-tab{font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:.35rem .8rem;color:rgba(200,216,240,.35);cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .15s;}
+.mbl-tab:hover{color:#f0ebe0;}
+.mbl-tab.active{color:#3aaa70;border-bottom-color:#3aaa70;}
+.mbl-body{padding:.8rem 1.2rem 1.2rem;max-height:420px;overflow-y:auto;scrollbar-width:thin;}
+.mbl-body::-webkit-scrollbar{width:3px;}
+.mbl-body::-webkit-scrollbar-thumb{background:rgba(200,216,240,.1);}
+.mbl-tab-panel{display:none;}
+.mbl-tab-panel.active{display:block;}
+
+/* Ticker */
+.mbl-ticker{background:rgba(26,74,50,.5);border-bottom:1px solid rgba(58,170,112,.1);
+  overflow:hidden;height:26px;display:flex;align-items:center;}
+.mbl-ticker-lbl{font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:#3aaa70;padding:0 .8rem;white-space:nowrap;border-right:1px solid rgba(58,170,112,.2);
+  height:100%;display:flex;align-items:center;flex-shrink:0;}
+.mbl-ticker-track{display:flex;animation:mbl-ticker 55s linear infinite;white-space:nowrap;}
+.mbl-ticker-track:hover{animation-play-state:paused;}
+.mbl-ticker-item{font-size:.57rem;font-weight:600;padding:0 1.4rem;color:rgba(240,235,224,.7);}
+.mbl-ticker-item .ts{color:#e8b040;font-weight:800;}
+.mbl-ticker-item .tlive{color:#e04030;font-weight:800;animation:mbl-blink 1s step-end infinite;margin-right:.3rem;}
+@keyframes mbl-ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes mbl-blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* Conference / division headers */
+.mbl-conf{font-size:.58rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(200,216,240,.3);padding:.6rem 0 .3rem;margin-top:.6rem;
+  border-bottom:1px solid rgba(255,255,255,.05);}
+.mbl-conf:first-child{margin-top:0;}
+.mbl-div-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.5rem;margin:.4rem 0 .6rem;}
+.mbl-div-card{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);overflow:hidden;}
+.mbl-div-head{padding:.35rem .6rem;background:rgba(0,0,0,.3);display:flex;align-items:center;gap:.4rem;
+  border-bottom:1px solid rgba(255,255,255,.05);}
+.mbl-div-name{font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#f0ebe0;flex:1;}
+.mbl-div-badge{font-size:.48rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.1rem .35rem;border:1px solid;}
+.mbl-div-badge.core{color:#3aaa70;border-color:rgba(58,170,112,.3);}
+.mbl-div-badge.strong{color:#e8b040;border-color:rgba(232,176,64,.3);}
+.mbl-div-badge.moderate{color:#7ab;border-color:rgba(100,150,180,.3);}
+.mbl-div-badge.frontier{color:rgba(200,216,240,.3);border-color:rgba(200,216,240,.1);}
+
+/* Standings mini-table */
+.mbl-table{width:100%;border-collapse:collapse;}
+.mbl-table th{font-size:.48rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.3);padding:.3rem .5rem;text-align:left;}
+.mbl-table th.n{text-align:right;}
+.mbl-table td{font-size:.65rem;padding:.3rem .5rem;border-top:1px solid rgba(255,255,255,.03);}
+.mbl-table td.n{text-align:right;font-family:var(--mono);font-size:.6rem;color:rgba(200,216,240,.55);}
+.mbl-table td.pts{text-align:right;font-family:var(--mono);font-weight:700;color:#e8b040;}
+.mbl-rk{display:inline-flex;align-items:center;justify-content:center;
+  width:15px;height:15px;font-size:.52rem;font-weight:800;margin-right:.3rem;flex-shrink:0;}
+.mbl-rk.r1{background:#c8901c;color:#08060a;}
+.mbl-rk.r2{background:rgba(200,144,28,.3);color:#e8b040;}
+.mbl-rk.rn{background:rgba(255,255,255,.06);color:rgba(200,216,240,.4);}
+.mbl-tn{font-weight:600;color:#f0ebe0;}
+.mbl-tc{font-size:.55rem;color:rgba(200,216,240,.35);display:block;}
+.mbl-ltag{font-size:.46rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:.08rem .28rem;vertical-align:middle;}
+.mbl-ltag.maj{background:rgba(200,144,28,.2);color:#e8b040;}
+.mbl-ltag.min{background:rgba(100,100,120,.2);color:#8a9ab0;}
+
+/* Schedule cards */
+.mbl-sched-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.4rem;margin-top:.4rem;}
+.mbl-match{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);padding:.6rem .7rem;}
+.mbl-match-meta{font-size:.5rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.3);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem;}
+.mbl-ms-live{padding:.08rem .3rem;font-size:.48rem;background:rgba(184,40,32,.3);color:#e04030;}
+.mbl-ms-today{padding:.08rem .3rem;font-size:.48rem;background:rgba(26,74,50,.5);color:#3aaa70;}
+.mbl-ms-up{padding:.08rem .3rem;font-size:.48rem;background:rgba(255,255,255,.06);color:rgba(200,216,240,.4);}
+.mbl-match-teams{display:flex;align-items:center;gap:.4rem;}
+.mbl-match-team{flex:1;font-size:.68rem;font-weight:700;color:#f0ebe0;}
+.mbl-match-score{font-family:var(--mono);font-size:.85rem;font-weight:700;
+  padding:.15rem .4rem;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.06);flex-shrink:0;}
+.mbl-match-score.live{color:#e8b040;}
+.mbl-match-score.sched{color:rgba(200,216,240,.35);font-size:.58rem;letter-spacing:.03em;}
+
 </style>
 </head>
 <body>
@@ -246,6 +332,29 @@ h1 em{color:var(--jade-lt);font-style:italic;}
   <!-- Main -->
   <div class="main-content">
     <div id="maya-map"></div>
+
+    <!-- MBL League Panel — shown when ballcourt overlay is active -->
+    <div id="mbl-panel">
+      <div class="mbl-ticker">
+        <div class="mbl-ticker-lbl">&#x26BD; MBL</div>
+        <div style="overflow:hidden;flex:1;">
+          <div class="mbl-ticker-track" id="mbl-ticker-track"></div>
+        </div>
+      </div>
+      <div class="mbl-header">
+        <div class="mbl-title">Mesoamerican <em>Ballcourt League</em></div>
+        <div style="font-size:.58rem;color:rgba(200,216,240,.35);">81 sites &middot; 19 divisions &middot; Season IV</div>
+        <div class="mbl-tabs">
+          <div class="mbl-tab active" onclick="mblTab('standings',this)">Standings</div>
+          <div class="mbl-tab" onclick="mblTab('schedule',this)">Schedule</div>
+        </div>
+      </div>
+      <div class="mbl-body">
+        <div class="mbl-tab-panel active" id="mbl-standings"></div>
+        <div class="mbl-tab-panel" id="mbl-schedule"></div>
+      </div>
+    </div>
+
     <div class="site-detail" id="site-detail">
       <div style="text-align:center;padding:3rem;color:rgba(200,216,240,.25);">
         <div style="font-size:2rem;margin-bottom:.8rem;">𓏇</div>
@@ -271,7 +380,219 @@ h1 em{color:var(--jade-lt);font-style:italic;}
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js">
+// ── MBL LEAGUE DATA ──────────────────────────────────────────────────────────
+const MBL_DIVS = [
+  {id:"northern_lowlands", name:"Northern Lowlands",    region:"Northern Lowlands", density:"core"},
+  {id:"belize_valley",     name:"Belize Valley",        region:"Southern Lowlands", density:"core"},
+  {id:"central_peten",     name:"Central Petén",        region:"Southern Lowlands", density:"core"},
+  {id:"central_highlands", name:"Central Highlands",    region:"Highlands",         density:"core"},
+  {id:"veracruz",          name:"Veracruz",             region:"Veracruz & Gulf",   density:"core"},
+  {id:"puebla_basin",      name:"Puebla Basin",         region:"Veracruz & Gulf",   density:"core"},
+  {id:"oaxaca_highlands",  name:"Oaxaca Highlands",     region:"Highlands",         density:"strong"},
+  {id:"chiapas_pacific",   name:"Chiapas Pacific",      region:"Pacific Coast",     density:"strong"},
+  {id:"postclassic_hlds",  name:"Postclassic Highlands",region:"Pacific Coast",     density:"strong"},
+  {id:"guatemalan_hlds",   name:"Guatemalan Highlands", region:"Pacific Coast",     density:"strong"},
+  {id:"southeastern_maya", name:"Southeastern Maya",    region:"Southern Lowlands", density:"moderate"},
+  {id:"usumacinta",        name:"Usumacinta",           region:"Southern Lowlands", density:"moderate"},
+  {id:"southern_pacific",  name:"Southern Pacific",     region:"Pacific Coast",     density:"moderate"},
+  {id:"northern_chiapas",  name:"Northern Chiapas",     region:"Southern Lowlands", density:"frontier"},
+  {id:"mixteca_alta",      name:"Mixteca Alta",         region:"Highlands",         density:"frontier"},
+  {id:"western_highlands", name:"Western Highlands",    region:"Highlands",         density:"frontier"},
+  {id:"guatemalan_adj",    name:"Guatemalan Adj.",      region:"Pacific Coast",     density:"frontier"},
+  {id:"gulf_lowlands",     name:"Gulf Lowlands",        region:"Veracruz & Gulf",   density:"frontier"},
+  {id:"ne_mesoamerica",    name:"NE Mesoamerica",       region:"Veracruz & Gulf",   density:"frontier"},
+];
+const MBL_TEAMS = [
+  {div:"northern_lowlands", name:"Chichen Itza",     courts:13, score:15.5, maj:true},
+  {div:"northern_lowlands", name:"Uxmal",            courts:2,  score:3.5,  maj:true},
+  {div:"northern_lowlands", name:"Cobá",             courts:2,  score:3.0,  maj:true},
+  {div:"northern_lowlands", name:"Ek Balam",         courts:1,  score:3.0,  maj:true},
+  {div:"northern_lowlands", name:"Dzibanché",        courts:1,  score:2.0,  maj:false},
+  {div:"northern_lowlands", name:"Becan",            courts:1,  score:1.5,  maj:false},
+  {div:"northern_lowlands", name:"Dzibilchaltun",    courts:1,  score:1.5,  maj:false},
+  {div:"northern_lowlands", name:"Edzna",            courts:1,  score:1.5,  maj:false},
+  {div:"northern_lowlands", name:"Kohunlich",        courts:1,  score:1.5,  maj:false},
+  {div:"northern_lowlands", name:"Oxkintok",         courts:1,  score:1.5,  maj:false},
+  {div:"northern_lowlands", name:"Yaxuna",           courts:1,  score:1.5,  maj:false},
+  {div:"belize_valley",     name:"Caracol",          courts:2,  score:6.0,  maj:true},
+  {div:"belize_valley",     name:"Lubaantun",        courts:3,  score:4.5,  maj:true},
+  {div:"belize_valley",     name:"Cahal Pech",       courts:2,  score:3.0,  maj:true},
+  {div:"belize_valley",     name:"Cerros",           courts:2,  score:3.0,  maj:true},
+  {div:"belize_valley",     name:"Xunantunich",      courts:2,  score:3.0,  maj:false},
+  {div:"belize_valley",     name:"Ka'kabish",        courts:1,  score:2.0,  maj:false},
+  {div:"belize_valley",     name:"Lamanai",          courts:1,  score:2.0,  maj:false},
+  {div:"belize_valley",     name:"Pacbitun",         courts:1,  score:2.0,  maj:false},
+  {div:"belize_valley",     name:"Nim Li Punit",     courts:1,  score:1.5,  maj:false},
+  {div:"central_peten",     name:"Nixtun-Ch'ich'",   courts:3,  score:10.0, maj:true},
+  {div:"central_peten",     name:"Tikal",            courts:7,  score:8.5,  maj:true},
+  {div:"central_peten",     name:"Nakum",            courts:3,  score:7.0,  maj:true},
+  {div:"central_peten",     name:"Yaxha",            courts:2,  score:6.0,  maj:true},
+  {div:"central_peten",     name:"Naranjo",          courts:2,  score:5.0,  maj:true},
+  {div:"central_peten",     name:"Nakbe",            courts:1,  score:4.0,  maj:false},
+  {div:"central_peten",     name:"Aguateca",         courts:1,  score:3.0,  maj:false},
+  {div:"central_peten",     name:"Tamarindito",      courts:1,  score:3.0,  maj:false},
+  {div:"central_peten",     name:"Cancuen",          courts:2,  score:2.5,  maj:false},
+  {div:"central_peten",     name:"Ceibal",           courts:2,  score:2.5,  maj:false},
+  {div:"central_peten",     name:"El Mirador",       courts:1,  score:2.0,  maj:false},
+  {div:"central_peten",     name:"Calakmul",         courts:1,  score:1.5,  maj:false},
+  {div:"central_peten",     name:"Dos Pilas",        courts:1,  score:1.5,  maj:false},
+  {div:"central_peten",     name:"La Corona",        courts:1,  score:1.5,  maj:false},
+  {div:"southeastern_maya", name:"Copan",            courts:1,  score:7.0,  maj:true},
+  {div:"southeastern_maya", name:"Quirigua",         courts:2,  score:2.5,  maj:true},
+  {div:"southeastern_maya", name:"Ixkun",            courts:1,  score:1.5,  maj:false},
+  {div:"usumacinta",        name:"Piedras Negras",   courts:2,  score:3.0,  maj:true},
+  {div:"usumacinta",        name:"Yaxchilan",        courts:2,  score:2.5,  maj:true},
+  {div:"usumacinta",        name:"Bonampak",         courts:1,  score:1.5,  maj:false},
+  {div:"northern_chiapas",  name:"Tonina",           courts:2,  score:2.5,  maj:true},
+  {div:"northern_chiapas",  name:"Palenque",         courts:1,  score:1.5,  maj:false},
+  {div:"mixteca_alta",      name:"Etlatongo",        courts:2,  score:4.0,  maj:true},
+  {div:"oaxaca_highlands",  name:"Monte Albán",      courts:5,  score:7.0,  maj:true},
+  {div:"oaxaca_highlands",  name:"Yagul",            courts:1,  score:5.5,  maj:true},
+  {div:"oaxaca_highlands",  name:"El Palmillo",      courts:1,  score:2.0,  maj:false},
+  {div:"oaxaca_highlands",  name:"Lambityeco",       courts:1,  score:2.0,  maj:false},
+  {div:"central_highlands", name:"Cantona",          courts:26, score:13.5, maj:true},
+  {div:"central_highlands", name:"Tula",             courts:4,  score:6.5,  maj:true},
+  {div:"central_highlands", name:"Capulac Concepción",courts:1, score:4.5,  maj:true},
+  {div:"central_highlands", name:"Xochicalco",       courts:2,  score:4.0,  maj:false},
+  {div:"central_highlands", name:"La Laguna",        courts:1,  score:2.0,  maj:false},
+  {div:"central_highlands", name:"Teotenango",       courts:1,  score:2.0,  maj:false},
+  {div:"western_highlands", name:"Teopantecuanitlan",courts:2,  score:3.0,  maj:true},
+  {div:"veracruz",          name:"El Tajin",         courts:19, score:16.5, maj:true},
+  {div:"veracruz",          name:"Los Ídolos",       courts:6,  score:8.5,  maj:true},
+  {div:"veracruz",          name:"Carrizalito",      courts:1,  score:3.0,  maj:true},
+  {div:"veracruz",          name:"Toxpan",           courts:1,  score:2.0,  maj:true},
+  {div:"veracruz",          name:"Cuajilote",        courts:1,  score:1.5,  maj:false},
+  {div:"veracruz",          name:"El Cuajilote",     courts:1,  score:1.5,  maj:false},
+  {div:"veracruz",          name:"Quiahuiztlan",     courts:1,  score:1.5,  maj:false},
+  {div:"veracruz",          name:"Vega de la Peña",  courts:1,  score:1.5,  maj:false},
+  {div:"veracruz",          name:"Xiutetelco",       courts:1,  score:1.5,  maj:false},
+  {div:"gulf_lowlands",     name:"La Joya",          courts:1,  score:2.0,  maj:true},
+  {div:"puebla_basin",      name:"Cantona",          courts:26, score:16.0, maj:true},
+  {div:"ne_mesoamerica",    name:"Yohualichan",      courts:1,  score:1.5,  maj:true},
+  {div:"chiapas_pacific",   name:"Los Horcones",     courts:5,  score:5.5,  maj:true},
+  {div:"chiapas_pacific",   name:"Paso de la Amada", courts:1,  score:4.5,  maj:true},
+  {div:"chiapas_pacific",   name:"Finca Acapulco",   courts:1,  score:4.0,  maj:true},
+  {div:"chiapas_pacific",   name:"El Vergel",        courts:1,  score:1.5,  maj:false},
+  {div:"chiapas_pacific",   name:"Fracción Mujular", courts:1,  score:1.5,  maj:false},
+  {div:"chiapas_pacific",   name:"San Mateo",        courts:1,  score:1.5,  maj:false},
+  {div:"southern_pacific",  name:"Cara Sucia",       courts:2,  score:3.0,  maj:true},
+  {div:"southern_pacific",  name:"Tazumal",          courts:1,  score:2.5,  maj:true},
+  {div:"southern_pacific",  name:"El Baúl",          courts:1,  score:2.0,  maj:false},
+  {div:"guatemalan_hlds",   name:"Kaminaljuyu",      courts:12, score:13.0, maj:true},
+  {div:"postclassic_hlds",  name:"Qʼumarkaj",        courts:4,  score:4.5,  maj:true},
+  {div:"postclassic_hlds",  name:"Iximche",          courts:2,  score:3.0,  maj:true},
+  {div:"postclassic_hlds",  name:"Zaculeu",          courts:1,  score:3.0,  maj:false},
+  {div:"postclassic_hlds",  name:"Mixco Viejo",      courts:2,  score:2.5,  maj:false},
+  {div:"guatemalan_adj",    name:"Tenam Puente",     courts:3,  score:6.0,  maj:true},
+];
+const MBL_MATCHES = [
+  {status:"live",     home:"Tikal",          away:"Naranjo",        score:"2 – 1", div:"Central Petén"},
+  {status:"live",     home:"El Tajin",       away:"Los Ídolos",     score:"3 – 2", div:"Veracruz"},
+  {status:"live",     home:"Monte Albán",    away:"Yagul",          score:"1 – 0", div:"Oaxaca Highlands"},
+  {status:"today",    home:"Chichen Itza",   away:"Cobá",           score:"KO 14:00", div:"Northern Lowlands"},
+  {status:"today",    home:"Caracol",        away:"Lubaantun",      score:"KO 15:30", div:"Belize Valley"},
+  {status:"today",    home:"Copan",          away:"Quirigua",       score:"KO 16:00", div:"Southeastern Maya"},
+  {status:"today",    home:"Kaminaljuyu",    away:"El Baúl",        score:"KO 17:00", div:"Guatemalan Highlands"},
+  {status:"upcoming", home:"Cantona",        away:"Tula",           score:"MD 22", div:"Central Highlands"},
+  {status:"upcoming", home:"Nixtun-Ch'ich'", away:"Yaxha",          score:"MD 22", div:"Central Petén"},
+  {status:"upcoming", home:"Paso de la Amada",away:"Los Horcones",  score:"MD 22", div:"Chiapas Pacific"},
+  {status:"upcoming", home:"Piedras Negras", away:"Yaxchilan",      score:"MD 22", div:"Usumacinta"},
+  {status:"upcoming", home:"Iximche",        away:"Qʼumarkaj",      score:"MD 23", div:"Postclassic Highlands"},
+];
+
+function mblSeedRng(s){ let h=0; for(let i=0;i<s.length;i++) h=Math.imul(31,h)+s.charCodeAt(i)|0; return()=>{h^=h<<13;h^=h>>17;h^=h<<5;return(h>>>0)/2**32;}; }
+function mblRecord(t){
+  const rng=mblSeedRng(t.name+t.div), str=Math.min(t.score/16,1);
+  let w=0,l=0,d=0;
+  for(let i=0;i<18;i++){const r=rng(); if(r<str*.65)w++; else if(r<str*.65+.15)d++; else l++;}
+  return {w,l,d,pts:w*3+d};
+}
+
+function mblBuildStandings(){
+  const regionOrder=["Northern Lowlands","Southern Lowlands","Highlands","Pacific Coast","Veracruz & Gulf"];
+  const divsByRegion={};
+  MBL_DIVS.forEach(d=>{ (divsByRegion[d.region]=divsByRegion[d.region]||[]).push(d); });
+  const teamsByDiv={};
+  MBL_TEAMS.forEach(t=>{ (teamsByDiv[t.div]=teamsByDiv[t.div]||[]).push(t); });
+
+  let html='';
+  regionOrder.forEach(region=>{
+    if(!divsByRegion[region]) return;
+    html+=`<div class="mbl-conf">${region} Conference</div><div class="mbl-div-row">`;
+    divsByRegion[region].forEach(div=>{
+      const teams=(teamsByDiv[div.id]||[]).map(t=>({...t,rec:mblRecord(t)})).sort((a,b)=>b.rec.pts-a.rec.pts);
+      if(!teams.length) return;
+      html+=`<div class="mbl-div-card">
+        <div class="mbl-div-head">
+          <span class="mbl-div-name">${div.name}</span>
+          <span class="mbl-div-badge ${div.density}">${div.density}</span>
+        </div>
+        <table class="mbl-table">
+          <thead><tr><th colspan="2">Club</th><th class="n">W</th><th class="n">D</th><th class="n">L</th><th class="n">PTS</th></tr></thead>
+          <tbody>`;
+      teams.forEach((t,i)=>{
+        const rk=i===0?'r1':i===1?'r2':'rn';
+        html+=`<tr>
+          <td style="width:18px;padding-right:0"><span class="mbl-rk ${rk}">${i+1}</span></td>
+          <td><span class="mbl-tn">${t.name}</span> <span class="mbl-ltag ${t.maj?'maj':'min'}">${t.maj?'MAJ':'MIN'}</span>
+            <span class="mbl-tc">${t.courts} court${t.courts>1?'s':''}</span></td>
+          <td class="n">${t.rec.w}</td><td class="n">${t.rec.d}</td><td class="n">${t.rec.l}</td>
+          <td class="pts">${t.rec.pts}</td></tr>`;
+      });
+      html+=`</tbody></table></div>`;
+    });
+    html+=`</div>`;
+  });
+  return html;
+}
+
+function mblBuildSchedule(){
+  return '<div class="mbl-sched-grid">'+MBL_MATCHES.map(m=>{
+    const sl=m.status==='live'?'<span class="mbl-ms-live">&#9679; LIVE</span>':m.status==='today'?'<span class="mbl-ms-today">TODAY</span>':'<span class="mbl-ms-up">UPCOMING</span>';
+    const sc=m.status==='live'?'live':'sched';
+    return `<div class="mbl-match">
+      <div class="mbl-match-meta">${sl} ${m.div}</div>
+      <div class="mbl-match-teams">
+        <div class="mbl-match-team">${m.home}</div>
+        <div class="mbl-match-score ${sc}">${m.score}</div>
+        <div class="mbl-match-team" style="text-align:right">${m.away}</div>
+      </div></div>`;
+  }).join('')+'</div>';
+}
+
+function mblBuildTicker(){
+  const items=[
+    {live:true, txt:"Tikal vs Naranjo",score:"2–1 (67')"},
+    {live:true, txt:"El Tajin vs Los Ídolos",score:"3–2 (52')"},
+    {live:true, txt:"Monte Albán vs Yagul",score:"1–0 (38')"},
+    {live:false,txt:"Chichen Itza 3–0 Becan",score:"FT"},
+    {live:false,txt:"Caracol 1–1 Xunantunich",score:"FT"},
+    {live:false,txt:"Copan 2–0 Ixkun",score:"FT"},
+    {live:false,txt:"Kaminaljuyu 4–1 Mixco Viejo",score:"FT"},
+    {live:false,txt:"Cantona 3–2 Xochicalco",score:"FT"},
+  ];
+  const all=[...items,...items];
+  return all.map(i=>`<div class="mbl-ticker-item">${i.live?'<span class="tlive">LIVE</span>':''}${i.txt} <span class="ts">${i.score}</span></div><span style="color:rgba(58,170,112,.3);padding:0 .3rem">|</span>`).join('');
+}
+
+function mblTab(id, btn){
+  document.querySelectorAll('.mbl-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.mbl-tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('mbl-'+id).classList.add('active');
+}
+
+function mblInit(){
+  const tk=document.getElementById('mbl-ticker-track');
+  if(tk && !tk.dataset.built){ tk.innerHTML=mblBuildTicker(); tk.dataset.built='1'; }
+  const st=document.getElementById('mbl-standings');
+  if(st && !st.dataset.built){ st.innerHTML=mblBuildStandings(); st.dataset.built='1'; }
+  const sc=document.getElementById('mbl-schedule');
+  if(sc && !sc.dataset.built){ sc.innerHTML=mblBuildSchedule(); sc.dataset.built='1'; }
+}
+
+</script>
 <script>
 // ════════════════════════════════════════════════════════════════
 // DATA
@@ -517,6 +838,9 @@ function toggleBallcourts(btn){
   btn.classList.toggle('active', showBallcourts);
   btn.textContent = showBallcourts ? '&#x2B21; Hide Ballcourts' : '&#x2B21; Ballcourts';
   renderBallcourtMarkers();
+  const panel = document.getElementById('mbl-panel');
+  if(showBallcourts){ panel.classList.add('open'); mblInit(); }
+  else { panel.classList.remove('open'); }
 }
 
 // ── Site list render ─────────────────────────────────────────
