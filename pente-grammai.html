@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pente Grammai — Five Lines · archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#faf8f3; --paper:#f2ede3; --linen:#e8e0d0; --rule:#d5ccb8;
+  --ash:#8a8070; --ink:#1c1814; --deep:#0f0d0a;
+  --ochre:#b8892a; --ochre-lt:#d4a84b; --terra:#7a3e1a;
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  /* Game palette — archaic Greece */
+  --board-bg:#1e1610;
+  --board-line:#8a6a30;
+  --board-holy:#c8901c;
+  --p-human:#e8e0cc;
+  --p-ai:#2a4a6a;
+  --p-human-stroke:#a09070;
+  --p-ai-stroke:#1a3050;
+  --blot-glow:rgba(200,144,28,.55);
+  --ai-glow:rgba(42,74,106,.55);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+/* ── MASTHEAD ── */
+.masthead{background:var(--ink);padding:0 2rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px;}
+.logo{font-family:var(--serif);font-size:1.2rem;font-weight:900;color:var(--cream);letter-spacing:-.01em;}
+.logo span{color:var(--ochre);font-style:italic;}
+.nav-links{display:flex;gap:1.5rem;overflow-x:auto;}
+.nav-link{font-family:var(--sans);font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);transition:color .2s;white-space:nowrap;}
+.nav-link:hover{color:var(--cream);}
+.nav-link.active{color:var(--cream);}
+
+/* ── SECTION NAV ── */
+.section-nav{background:var(--paper);border-bottom:1px solid var(--rule);padding:0 2rem;overflow-x:auto;}
+.section-nav-inner{max-width:1280px;margin:0 auto;display:flex;gap:0;}
+.section-nav-link{font-family:var(--sans);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);padding:.7rem 1.4rem;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.section-nav-link:hover{color:var(--ink);border-bottom-color:var(--ochre);}
+.section-nav-link.active{color:var(--ink);border-bottom-color:var(--ochre);}
+
+/* ── PAGE HERO ── */
+.page-hero{background:var(--ink);padding:3rem 2rem 2.5rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.page-hero-inner{max-width:1280px;margin:0 auto;}
+.page-eyebrow{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre);margin-bottom:.7rem;}
+.page-title{font-family:var(--serif);font-size:clamp(2rem,4.5vw,3.4rem);font-weight:900;color:var(--cream);line-height:1.1;letter-spacing:-.02em;margin-bottom:.8rem;}
+.page-title em{color:var(--ochre-lt);font-style:italic;}
+.page-dek{font-family:var(--body);font-size:1rem;color:rgba(232,224,208,.65);line-height:1.65;max-width:640px;}
+
+/* ── MAIN LAYOUT ── */
+.page-wrap{max-width:1280px;margin:0 auto;padding:2.5rem 2rem 5rem;display:grid;grid-template-columns:1fr 320px;gap:2.5rem;}
+@media(max-width:900px){.page-wrap{grid-template-columns:1fr;}}
+
+/* ── GAME AREA ── */
+.game-area{display:flex;flex-direction:column;gap:1.5rem;}
+
+/* ── BOARD WRAPPER ── */
+.board-wrapper{background:var(--board-bg);border:1px solid #3a2e1a;padding:2rem;display:flex;flex-direction:column;align-items:center;gap:1.2rem;position:relative;}
+.board-label-row{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:560px;}
+.board-player-label{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.board-player-label.human{color:var(--p-human);}
+.board-player-label.ai{color:#6a9acc;}
+canvas#board{border:1px solid #3a2e1a;cursor:default;max-width:100%;}
+canvas#board.clickable{cursor:pointer;}
+
+/* ── CONTROL PANEL ── */
+.control-panel{background:var(--board-bg);border:1px solid #3a2e1a;padding:1.4rem 1.6rem;display:flex;flex-direction:column;gap:1rem;}
+.status-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.status-msg{font-family:var(--body);font-size:.92rem;color:var(--ochre-lt);line-height:1.5;flex:1;}
+.status-msg strong{color:var(--cream);}
+
+.die-display{display:flex;align-items:center;gap:.8rem;}
+.die-face{width:48px;height:48px;background:#f2ede3;border:2px solid var(--ochre);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.6rem;font-weight:700;color:var(--ink);flex-shrink:0;}
+.die-label{font-family:var(--sans);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);}
+
+.btn-row{display:flex;gap:.7rem;flex-wrap:wrap;}
+.btn{font-family:var(--sans);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.55rem 1.2rem;border:none;cursor:pointer;transition:all .18s;}
+.btn-primary{background:var(--ochre);color:var(--ink);}
+.btn-primary:hover{background:var(--ochre-lt);}
+.btn-primary:disabled{background:#4a3a1a;color:#6a5a3a;cursor:not-allowed;}
+.btn-secondary{background:transparent;border:1px solid #4a3a1a;color:var(--ash);}
+.btn-secondary:hover{border-color:var(--ochre);color:var(--ochre-lt);}
+
+/* ── SCORE BOARD ── */
+.score-bar{display:flex;gap:1.5rem;align-items:center;}
+.score-item{text-align:center;}
+.score-num{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:var(--ochre-lt);line-height:1;}
+.score-lbl{font-family:var(--sans);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);margin-top:.2rem;}
+.score-sep{font-family:var(--serif);font-size:1.2rem;color:#4a3a1a;}
+
+/* ── LOG ── */
+.game-log{background:var(--board-bg);border:1px solid #3a2e1a;padding:1rem 1.2rem;max-height:160px;overflow-y:auto;}
+.log-entry{font-family:var(--sans);font-size:.65rem;color:var(--ash);line-height:1.8;border-bottom:1px solid #2a2010;}
+.log-entry:last-child{border-bottom:none;}
+.log-entry.human{color:#ccc0a0;}
+.log-entry.ai{color:#6a9acc;}
+.log-entry.event{color:var(--ochre);}
+
+/* ── SIDEBAR ── */
+.sidebar{display:flex;flex-direction:column;gap:1.5rem;}
+.sidebar-card{background:var(--paper);border:1px solid var(--rule);padding:1.4rem;}
+.sidebar-card h3{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule);}
+.sidebar-card p,.sidebar-card li{font-family:var(--body);font-size:.82rem;color:var(--ash);line-height:1.7;}
+.sidebar-card ul{padding-left:1.1rem;margin-top:.4rem;}
+.sidebar-card li{margin-bottom:.3rem;}
+.sidebar-card strong{color:var(--ink);}
+
+.key-row{display:flex;gap:.6rem;align-items:center;padding:.4rem 0;border-bottom:1px solid var(--linen);}
+.key-row:last-child{border-bottom:none;}
+.key-swatch{width:16px;height:16px;border-radius:50%;flex-shrink:0;}
+.key-text{font-family:var(--sans);font-size:.68rem;color:var(--ash);}
+
+/* ── ARCADE NAV ── */
+.arcade-nav h3{font-size:.85rem;}
+.arcade-links{display:flex;flex-direction:column;gap:.3rem;margin-top:.2rem;}
+.arcade-link{font-family:var(--sans);font-size:.65rem;color:var(--ash);padding:.3rem 0;border-bottom:1px solid var(--linen);display:flex;justify-content:space-between;transition:color .2s;}
+.arcade-link:hover{color:var(--ochre);}
+.arcade-link.current{color:var(--ink);font-weight:600;}
+.arcade-link .era{color:var(--ochre);font-size:.58rem;}
+
+/* ── FOOTER ── */
+.footer{background:var(--ink);color:var(--ash);text-align:center;padding:1.5rem;font-family:var(--sans);font-size:.68rem;}
+.footer a{color:var(--ochre);}
+
+/* ── WIN OVERLAY ── */
+.win-overlay{display:none;position:fixed;inset:0;background:rgba(10,8,4,.85);z-index:100;align-items:center;justify-content:center;}
+.win-overlay.show{display:flex;}
+.win-box{background:var(--ink);border:1px solid var(--ochre);padding:3rem;text-align:center;max-width:400px;}
+.win-title{font-family:var(--serif);font-size:2rem;font-weight:900;color:var(--ochre-lt);margin-bottom:.8rem;}
+.win-sub{font-family:var(--body);color:var(--ash);margin-bottom:1.5rem;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <nav class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="news.html">Feed</a>
+      <a class="nav-link" href="map.html">Map</a>
+      <a class="nav-link" href="sky.html">Sky Archive</a>
+      <a class="nav-link" href="maritime.html">Maritime</a>
+      <a class="nav-link" href="linguistics.html">Linguistics</a>
+      <a class="nav-link" href="inscriptions.html">Inscriptions</a>
+      <a class="nav-link" href="maya_inscriptions.html">Maya</a>
+      <a class="nav-link" href="bioanthro.html">Bioanthro</a>
+      <a class="nav-link" href="luwian.html">Luwian</a>
+      <a class="nav-link" href="upload.html">Upload</a>
+      <a class="nav-link active" href="games.html">Games</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="section-nav">
+  <div class="section-nav-inner">
+    <a class="section-nav-link" href="index.html">Home</a>
+    <a class="section-nav-link" href="news.html">Feed</a>
+    <a class="section-nav-link" href="map.html">Map</a>
+    <a class="section-nav-link" href="sky.html">Sky Archive</a>
+    <a class="section-nav-link" href="maritime.html">Maritime</a>
+    <a class="section-nav-link" href="maya_inscriptions.html">Maya</a>
+    <a class="section-nav-link" href="bioanthro.html">Bioanthro</a>
+    <a class="section-nav-link" href="luwian.html">Luwian</a>
+    <a class="section-nav-link active" href="games.html">Games</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-eyebrow">Ancient Greek Board Games · c. 600 BCE</div>
+    <h1 class="page-title">Pente Grammai — <em>Five Lines</em></h1>
+    <p class="page-dek">The game of Ajax and Achilles. A backgammon-like race across five parallel lines with dice, blot-hitting strategy, and the sacred centre line — reconstructed from Alcaeus, Plato, Theocritus, and the Exekias vase.</p>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- LEFT: GAME -->
+  <div class="game-area">
+
+    <div class="board-wrapper">
+      <div class="board-label-row">
+        <span class="board-player-label ai">⬤ Ajax (AI)</span>
+        <div class="score-bar">
+          <div class="score-item">
+            <div class="score-num" id="score-human">0</div>
+            <div class="score-lbl">You</div>
+          </div>
+          <div class="score-sep">–</div>
+          <div class="score-item">
+            <div class="score-num" id="score-ai">0</div>
+            <div class="score-lbl">Ajax</div>
+          </div>
+        </div>
+        <span class="board-player-label human">⬤ Achilles (You)</span>
+      </div>
+      <canvas id="board" width="560" height="360"></canvas>
+    </div>
+
+    <div class="control-panel">
+      <div class="status-row">
+        <div class="status-msg" id="status-msg">Roll the die to begin your turn.</div>
+        <div class="die-display">
+          <div>
+            <div class="die-face" id="die-face">—</div>
+            <div class="die-label" style="text-align:center;margin-top:.3rem">Die</div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btn-roll">Roll Die</button>
+        <button class="btn btn-secondary" id="btn-new">New Game</button>
+      </div>
+    </div>
+
+    <div class="game-log" id="game-log">
+      <div class="log-entry event">— Pente Grammai loaded. You are Achilles (white). Ajax (AI) plays dark. —</div>
+    </div>
+
+  </div><!-- /.game-area -->
+
+  <!-- RIGHT: SIDEBAR -->
+  <div class="sidebar">
+
+    <div class="sidebar-card">
+      <h3>How to Play</h3>
+      <p>Race all 5 pieces counter-clockwise around the board to reach the <strong>Holy Line</strong> (centre). You are <strong>Achilles</strong> (white); Ajax (AI) plays dark blue.</p>
+      <ul>
+        <li>Click <strong>Roll Die</strong> to roll 1d6.</li>
+        <li>Click a highlighted piece to move it that many steps.</li>
+        <li>Land on the <strong>Holy Line</strong> to bring a piece home — pieces there are generally safe.</li>
+        <li>A lone piece (<em>azux</em>) is vulnerable — an opponent landing on it sends it back to start!</li>
+        <li>Two or more pieces on a point block the opponent.</li>
+        <li>First to place all 5 pieces on the Holy Line wins.</li>
+      </ul>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>The Board</h3>
+      <div class="key-row">
+        <div class="key-swatch" style="background:#c8901c;border:2px solid #e0b040;"></div>
+        <span class="key-text"><strong>Holy Line</strong> — the sacred centre (ἱερὰ γραμμή). Reach it to win.</span>
+      </div>
+      <div class="key-row">
+        <div class="key-swatch" style="background:var(--p-human);border:2px solid var(--p-human-stroke);"></div>
+        <span class="key-text"><strong>White</strong> — your pieces (Achilles). Start at bottom-right, move counter-clockwise.</span>
+      </div>
+      <div class="key-row">
+        <div class="key-swatch" style="background:var(--p-ai);border:2px solid var(--p-ai-stroke);"></div>
+        <span class="key-text"><strong>Dark blue</strong> — Ajax (AI). Starts at top-left, moves counter-clockwise.</span>
+      </div>
+      <div class="key-row">
+        <div class="key-swatch" style="background:#c04040;border:2px solid #e06060;"></div>
+        <span class="key-text"><strong>Red ring</strong> — a lone <em>azux</em> (blot). Vulnerable to capture!</span>
+      </div>
+      <div class="key-row">
+        <div class="key-swatch" style="background:#40aa40;border:2px solid #60cc60;"></div>
+        <span class="key-text"><strong>Green ring</strong> — valid move destination.</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Historical Note</h3>
+      <p>Pente grammai ("five lines") is depicted on over 160 Greek vases, most famously the <em>Exekias amphora</em> (c. 540 BCE, Vatican Museums), where Ajax and Achilles play between battles at Troy. Ajax calls "three," Achilles "four." The game featured a single cubic die and five pieces per player. The central <em>Holy Line</em> was the winning destination — "holy" because pieces there were considered inviolable, like a suppliant at a sanctuary. The proverb "to move from the Holy Line" — attested in Alcaeus, Sophron, and Plato — described a desperate or aggressive gambit: abandoning safety to knock the opponent's blots.</p>
+    </div>
+
+    <div class="sidebar-card arcade-nav">
+      <h3>The Arcade</h3>
+      <div class="arcade-links">
+        <a class="arcade-link" href="senet.html">Senet <span class="era">Egypt, ~3500 BCE</span></a>
+        <a class="arcade-link" href="mehen.html">Mehen <span class="era">Egypt, ~3650 BCE</span></a>
+        <a class="arcade-link" href="ur.html">Royal Game of Ur <span class="era">Mesopotamia, ~2600 BCE</span></a>
+        <a class="arcade-link" href="hounds-jackals.html">Hounds &amp; Jackals <span class="era">Egypt, ~2000 BCE</span></a>
+        <a class="arcade-link current" href="pente-grammai.html">Pente Grammai <span class="era">Greece, ~600 BCE</span></a>
+        <a class="arcade-link" href="petteia.html">Petteia <span class="era">Greece/Rome, ~500 BCE</span></a>
+        <a class="arcade-link" href="nard.html">Nard <span class="era">Persia, 6th c. CE</span></a>
+      </div>
+    </div>
+
+  </div><!-- /.sidebar -->
+
+</div><!-- /.page-wrap -->
+
+<footer class="footer">
+  <a href="index.html">archAIology</a> · archaiology.org · © 2026 ·
+  Game reconstruction based on Kidd (2017) and Schädler (2008)
+</footer>
+
+<!-- WIN OVERLAY -->
+<div class="win-overlay" id="win-overlay">
+  <div class="win-box">
+    <div class="win-title" id="win-title">Achilles Wins!</div>
+    <div class="win-sub" id="win-sub">You have brought all five pieces to the Holy Line.</div>
+    <div class="btn-row" style="justify-content:center">
+      <button class="btn btn-primary" onclick="newGame()">Play Again</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   PENTE GRAMMAI — FIVE LINES
+   Reconstruction after Kidd (2017) & Schädler (2008)
+
+   BOARD TOPOLOGY  (Schädler fig, Kidd rule §1)
+   ─────────────────────────────────────────────
+   10 "points": two rows of 5 across the 5 parallel lines.
+   Points numbered 0-9 (same for both players, distinct owner):
+     Top row (Player B / AI side):  5 6 7 8 9   left→right
+     Bot row (Player A / Human):    4 3 2 1 0   left→right
+   Line indices 0..4 (bottom to top); point layout per line:
+     Each line has a LEFT point and a RIGHT point.
+     The MIDDLE line (index 2) is the Holy Line (point index 5 = center).
+
+   MOVEMENT (counter-clockwise, Kidd §1)
+   ─────────────────────────────────────
+   Human (Achilles): starts at bottom-right (point 0), moves LEFT along
+     bottom row (0→1→2→3→4), then UP the left side (4→5), then RIGHT
+     along top row (5→6→7→8→9), then DOWN right side (9→0), loop.
+     To reach Holy Line the human enters from the LEFT at point 5.
+
+   Simplified 10-stop linear path for each player:
+     Human path:  [0,1,2,3,4,  5,6,7,8,9]  → goal = land on 5 (holy left)
+     AI path:     [5,6,7,8,9,  4,3,2,1,0]  → goal = land on 0 (holy right)
+   Wait — let's use a single shared 10-point loop and indicate
+   each player's entry and which side of the holy line is their target.
+
+   SIMPLIFICATION for playability:
+   We use a linear 10-stop path for each player.
+   Human pieces start OFF board. Each turn they can enter at stop 0.
+   Stop 5 = Holy Line entry for Human (goal).
+   Human path positions 0..9 → board coordinates.
+   AI path is the mirror.
+
+   BLOTS (Kidd §5): A lone piece on a non-holy stop is a blot (azux).
+   Landing on opponent blot sends it back to off-board.
+   Two+ own pieces = block; opponent cannot land there.
+   Holy Line: all pieces of both sides can coexist (Schädler §8).
+═══════════════════════════════════════════════════════════════════ */
+
+const canvas = document.getElementById('board');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+
+/* ── BOARD GEOMETRY ── */
+// 5 lines run horizontally. Points at each end.
+// Layout: board has 2 rows of 5 points + holy line centre column.
+// We'll draw it as:
+//   Top row of 5 points (AI start side):  x = P0..P4  y = TOP_Y
+//   Bot row of 5 points (Human start):    x = P4..P0  y = BOT_Y
+//   Holy Line: vertical centre line connecting midpoints.
+//   Lines are horizontal spans between left point and right point.
+
+const PAD = 40;
+const LINE_H = (H - 2*PAD) / 4; // spacing between 5 lines
+const POINT_R = 18; // radius of point circle
+const HOLY_X = W/2; // holy line x
+const PIECE_R = 13;
+
+// 5 horizontal lines, y positions bottom→top
+const lineY = []; // lineY[0] = bottom, lineY[4] = top
+for(let i=0;i<5;i++) lineY[i] = H - PAD - i * LINE_H;
+
+// Left and right x for all lines
+const LEFT_X = PAD + 10;
+const RIGHT_X = W - PAD - 10;
+
+// Points: each line has left point & right point
+// point[line][0] = left, point[line][1] = right
+function ptCoord(line, side) { // side: 0=left, 1=right
+  return { x: side===0 ? LEFT_X : RIGHT_X, y: lineY[line] };
+}
+
+// Holy Line centre points (one per line)
+function holyCoord(line) {
+  return { x: HOLY_X, y: lineY[line] };
+}
+
+/*
+  PATH DEFINITION
+  ──────────────
+  10-stop linear path for each player, representing counter-clockwise motion.
+  Each stop: { line, side } where side = 0 (left), 1 (right), 2 (holy-left), 3 (holy-right)
+  We treat the holy line as having 5 positions, one per line.
+  
+  Human (Achilles) path — starts bottom-right, moves CCW:
+    Steps 0-4: bottom row right→left (lines 0-4, right side → each line left side)
+    Actually: moves UP the right side then LEFT along top then DOWN left.
+    
+  Let's use a clean 10-stop numbered circuit:
+  
+  Stop layout (shared coordinates):
+   Stop 0: line0, RIGHT  (bottom-right)  Human start
+   Stop 1: line1, RIGHT
+   Stop 2: line2, RIGHT  ← also holy right
+   Stop 3: line3, RIGHT
+   Stop 4: line4, RIGHT  (top-right)
+   Stop 5: line4, LEFT   (top-left)      AI start
+   Stop 6: line3, LEFT
+   Stop 7: line2, LEFT   ← holy left
+   Stop 8: line1, LEFT
+   Stop 9: line0, LEFT   (bottom-left)
+
+  Human enters at stop 0, travels 0→1→2→3→4→5→6→7→...
+  Human GOAL: holy left = stop 7 (line2, LEFT = holy coord)
+  AI enters at stop 5, travels 5→6→7→8→9→0→1→2→...
+  AI GOAL: holy right = stop 2 (line2, RIGHT = holy coord)
+  
+  But "Holy Line" spans the whole middle line. We'll treat stop 7 and stop 2
+  as the holy region for each player respectively, and once there a piece is safe.
+  Actually per the reconstruction, both players race to the holy MIDDLE line
+  and pieces on it (from either side) are all safe. Let's simplify:
+  
+  FINAL DECISION:
+  - 10 regular stops (0-9 as above)
+  - Both players share the same stop numbering
+  - Stop 2 and stop 7 are "holy" — any pieces here are safe
+  - Human starts off-board, enters at stop 0
+  - AI starts off-board, enters at stop 5
+  - Human moves: 0→1→2(goal possible)→... but main goal = get to stop 7
+  - Actually let's make both players race to stop 2 OR 7 depending on entry
+  
+  SIMPLEST faithful model:
+  - Human path: 0,1,2,3,4,5,6,7  — goal = reach stop 7 (holy left, same line)
+  - AI path: 5,6,7,8,9,0,1,2 — goal = reach stop 2 (holy right)
+  - Holy positions for human = stop 7; for AI = stop 2
+  - Both are on line 2 (middle = holy line) but different sides
+  - Pieces at their goal position are HOME and safe
+  
+  This gives an 8-stop effective path for each player (matching Kidd's
+  "11 steps for a full revolution" note, roughly).
+*/
+
+// Shared stop coordinates
+const STOPS = [
+  { line:0, x:RIGHT_X }, // 0 - bottom right
+  { line:1, x:RIGHT_X }, // 1
+  { line:2, x:RIGHT_X }, // 2 - holy right (AI goal)
+  { line:3, x:RIGHT_X }, // 3
+  { line:4, x:RIGHT_X }, // 4 - top right
+  { line:4, x:LEFT_X  }, // 5 - top left (AI start side)
+  { line:3, x:LEFT_X  }, // 6
+  { line:2, x:LEFT_X  }, // 7 - holy left (Human goal)
+  { line:1, x:LEFT_X  }, // 8
+  { line:0, x:LEFT_X  }, // 9 - bottom left
+];
+
+function stopCoord(s) {
+  return { x:STOPS[s].x, y:lineY[STOPS[s].line] };
+}
+
+// Human: enters at stop 0, goal = stop 7; path length = 8 stops (0..7)
+// AI:    enters at stop 5, goal = stop 2; path length = 8 stops (5,6,7,8,9,0,1,2)
+const HUMAN_PATH = [0,1,2,3,4,5,6,7];
+const AI_PATH    = [5,6,7,8,9,0,1,2];
+const HUMAN_GOAL_STOP = 7;
+const AI_GOAL_STOP    = 2;
+const HOLY_STOPS = new Set([2,7]);
+
+/* ── GAME STATE ── */
+let state;
+
+function initState() {
+  return {
+    turn: 'human',     // 'human' | 'ai'
+    phase: 'roll',     // 'roll' | 'move' | 'gameover'
+    dieVal: null,
+    // Each player has 5 pieces.
+    // piece.pos = -1 (off board), 0-7 (path index, NOT stop number), 8 (home/won)
+    human: Array.from({length:5}, ()=>({ pos:-1 })),
+    ai:    Array.from({length:5}, ()=>({ pos:-1 })),
+    validMoves: [], // [{pieceIdx, fromStop, toStop}]
+    selected: null,
+    scores: { human:0, ai:0 },
+    rolling: false,
+  };
+}
+
+// Convert path index to stop number
+function pathToStop(player, pathIdx) {
+  const path = player==='human' ? HUMAN_PATH : AI_PATH;
+  if(pathIdx < 0 || pathIdx >= path.length) return null;
+  return path[pathIdx];
+}
+
+// Get stop number for piece (returns null if off-board or home)
+function pieceStop(player, piece) {
+  if(piece.pos < 0 || piece.pos >= 8) return null;
+  return pathToStop(player, piece.pos);
+}
+
+// Check if stop has 2+ pieces of a player (block)
+function isBlocked(player, stop) {
+  if(stop === null) return false;
+  const pieces = player==='human' ? state.human : state.ai;
+  return pieces.filter(p=>{
+    const s = pieceStop(player,p);
+    return s===stop;
+  }).length >= 2;
+}
+
+// Count pieces of player at stop
+function piecesAtStop(player, stop) {
+  const pieces = player==='human' ? state.human : state.ai;
+  return pieces.filter(p=>pieceStop(player,p)===stop).length;
+}
+
+function computeValidMoves() {
+  const die = state.dieVal;
+  const player = state.turn;
+  const myPieces = player==='human' ? state.human : state.ai;
+  const oppPlayer = player==='human' ? 'ai' : 'human';
+  const moves = [];
+
+  for(let i=0;i<5;i++){
+    const piece = myPieces[i];
+    let newPos;
+    if(piece.pos === -1) {
+      // Can enter at pos=0 if die allows (always allowed, cost = die value from entry)
+      // Entering costs 1 step (land on path[0])
+      // Actually: entering = moving to pos 0 regardless of die? 
+      // Let's say entering always possible on any roll, uses the die to place at pos=die-1
+      // But that skips squares — instead, treat entering as placing at pos=0,
+      // only possible if die=1... That's too restrictive.
+      // Faithful to race games: enter = land at pos=(die-1) from off board
+      newPos = die - 1; // 0-indexed path position
+      if(newPos > 7) continue; // can't enter beyond home in one roll
+    } else if(piece.pos === 8) {
+      continue; // already home
+    } else {
+      newPos = piece.pos + die;
+      if(newPos > 8) continue; // overshoot
+    }
+
+    // Clamp home
+    if(newPos >= 8) newPos = 8; // home
+
+    if(newPos === 8) {
+      // Moving home — always valid
+      moves.push({pieceIdx:i, fromPos:piece.pos, toPos:8});
+      continue;
+    }
+
+    const toStop = pathToStop(player, newPos);
+    // Check if destination is blocked by opponent (unless it's holy)
+    if(!HOLY_STOPS.has(toStop) && isBlocked(oppPlayer, toStop)) continue;
+    // Check if we block ourselves at holy — holy allows stacking, so OK
+
+    moves.push({pieceIdx:i, fromPos:piece.pos, toPos:newPos});
+  }
+  return moves;
+}
+
+function applyMove(player, pieceIdx, toPos) {
+  const oppPlayer = player==='human' ? 'ai' : 'human';
+  const myPieces = player==='human' ? state.human : state.ai;
+  const oppPieces = player==='human' ? state.ai : state.human;
+
+  const toStop = toPos < 8 ? pathToStop(player, toPos) : null;
+
+  // Check for blot hit
+  if(toStop !== null && !HOLY_STOPS.has(toStop)) {
+    const oppAtStop = oppPieces.filter((p,i)=>pieceStop(oppPlayer,p)===toStop);
+    if(oppAtStop.length === 1) {
+      // Hit the blot — send it home
+      oppAtStop[0].pos = -1;
+      return true; // hit occurred
+    }
+  }
+
+  myPieces[pieceIdx].pos = toPos;
+  return false;
+}
+
+function checkWin(player) {
+  const pieces = player==='human' ? state.human : state.ai;
+  return pieces.every(p=>p.pos===8);
+}
+
+/* ── RENDERING ── */
+const COLORS = {
+  board: '#1e1610',
+  line:  '#6a5020',
+  holyLine: '#9a6a10',
+  pointEmpty: '#2a2010',
+  pointHoly: '#3a2808',
+  human: '#e8e0cc',
+  humanStroke: '#a09070',
+  ai: '#2a4a6a',
+  aiStroke: '#1a3050',
+  valid: 'rgba(60,180,60,0.7)',
+  blot: 'rgba(200,60,60,0.8)',
+  home: 'rgba(200,144,28,0.9)',
+};
+
+function drawBoard() {
+  ctx.clearRect(0,0,W,H);
+
+  // Background
+  ctx.fillStyle = COLORS.board;
+  ctx.fillRect(0,0,W,H);
+
+  // Draw 5 horizontal lines
+  ctx.lineWidth = 2;
+  for(let i=0;i<5;i++){
+    ctx.beginPath();
+    ctx.moveTo(LEFT_X, lineY[i]);
+    ctx.lineTo(RIGHT_X, lineY[i]);
+    if(i===2) {
+      // Holy line — gold
+      ctx.strokeStyle = COLORS.holyLine;
+      ctx.lineWidth = 3;
+      // Subtle glow
+      ctx.shadowColor = '#c8901c';
+      ctx.shadowBlur = 8;
+    } else {
+      ctx.strokeStyle = COLORS.line;
+      ctx.lineWidth = 2;
+      ctx.shadowBlur = 0;
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  // Draw vertical left & right borders (connecting ends of lines)
+  ctx.strokeStyle = COLORS.line;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(LEFT_X, lineY[0]);
+  ctx.lineTo(LEFT_X, lineY[4]);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(RIGHT_X, lineY[0]);
+  ctx.lineTo(RIGHT_X, lineY[4]);
+  ctx.stroke();
+
+  // Holy Line vertical marker
+  ctx.strokeStyle = '#c8901c';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([4,4]);
+  ctx.globalAlpha = 0.4;
+  ctx.beginPath();
+  ctx.moveTo(HOLY_X, lineY[0]);
+  ctx.lineTo(HOLY_X, lineY[4]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.globalAlpha = 1;
+
+  // Holy line label
+  ctx.font = '600 10px DM Sans, sans-serif';
+  ctx.fillStyle = '#c8901c';
+  ctx.textAlign = 'center';
+  ctx.globalAlpha = 0.7;
+  ctx.fillText('HOLY LINE', HOLY_X, lineY[4] - 12);
+  ctx.fillText('ἱερὰ γραμμή', HOLY_X, lineY[4] - 0);
+  ctx.globalAlpha = 1;
+
+  // Player entry arrows
+  ctx.font = '500 9px DM Sans, sans-serif';
+  ctx.fillStyle = '#6a5020';
+  ctx.textAlign = 'right';
+  ctx.fillText('Achilles →', LEFT_X - 6, lineY[0] + 4);
+  ctx.textAlign = 'left';
+  ctx.fillText('← Ajax', RIGHT_X + 6, lineY[4] + 4);
+
+  // Draw point circles at all 10 stops
+  for(let s=0;s<10;s++){
+    const c = stopCoord(s);
+    const isHoly = HOLY_STOPS.has(s);
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, POINT_R, 0, Math.PI*2);
+    if(isHoly){
+      ctx.fillStyle = '#2a1c04';
+      ctx.shadowColor = '#c8901c';
+      ctx.shadowBlur = 10;
+    } else {
+      ctx.fillStyle = COLORS.pointEmpty;
+      ctx.shadowBlur = 0;
+    }
+    ctx.fill();
+    ctx.strokeStyle = isHoly ? '#c8901c' : '#4a3a18';
+    ctx.lineWidth = isHoly ? 2 : 1;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  // Highlight valid move destinations
+  if(state && state.phase === 'move') {
+    for(const mv of state.validMoves) {
+      if(mv.toPos === 8) {
+        // Home move — highlight the holy stop for that player
+        const goalStop = state.turn==='human' ? HUMAN_GOAL_STOP : AI_GOAL_STOP;
+        const c = stopCoord(goalStop);
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, POINT_R+4, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(60,180,60,0.9)';
+        ctx.lineWidth = 2.5;
+        ctx.shadowColor = '#40cc40';
+        ctx.shadowBlur = 10;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      } else {
+        const toStop = pathToStop(state.turn, mv.toPos);
+        if(toStop === null) continue;
+        const c = stopCoord(toStop);
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, POINT_R+4, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(60,180,60,0.9)';
+        ctx.lineWidth = 2.5;
+        ctx.shadowColor = '#40cc40';
+        ctx.shadowBlur = 10;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+    }
+  }
+
+  // Draw pieces
+  drawPieces('ai');
+  drawPieces('human');
+
+  // Draw piece counts in home
+  drawHomeCount();
+}
+
+function drawPieces(player) {
+  const pieces = player==='human' ? state.human : state.ai;
+  const fillColor = player==='human' ? COLORS.human : COLORS.ai;
+  const strokeColor = player==='human' ? COLORS.humanStroke : COLORS.aiStroke;
+
+  // Group pieces by stop
+  const stopGroups = {};
+  const homePieces = [];
+  for(let i=0;i<5;i++){
+    const p = pieces[i];
+    if(p.pos < 0) continue; // off board
+    if(p.pos === 8) { homePieces.push(i); continue; } // home
+    const stop = pieceStop(player, p);
+    if(stop === null) continue;
+    if(!stopGroups[stop]) stopGroups[stop] = [];
+    stopGroups[stop].push(i);
+  }
+
+  for(const [stopStr, idxArr] of Object.entries(stopGroups)) {
+    const stop = parseInt(stopStr);
+    const c = stopCoord(stop);
+    const count = idxArr.length;
+    const isBlot = count === 1;
+    const isSelected = state.selected !== null && 
+      player===state.turn && idxArr.includes(state.selected);
+
+    // Offset multiple pieces slightly
+    for(let k=0;k<count;k++){
+      const offset = count === 1 ? 0 : (k - (count-1)/2) * 6;
+      const px = c.x + (player==='human' ? offset : -offset);
+      const py = c.y + (k===0 ? 0 : k * 2);
+
+      // Blot ring
+      if(isBlot) {
+        ctx.beginPath();
+        ctx.arc(px, py, PIECE_R+4, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(200,60,60,0.8)';
+        ctx.lineWidth = 2;
+        ctx.shadowColor = '#cc3030';
+        ctx.shadowBlur = 8;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+
+      // Selected ring
+      if(isSelected) {
+        ctx.beginPath();
+        ctx.arc(px, py, PIECE_R+5, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(220,180,60,0.95)';
+        ctx.lineWidth = 3;
+        ctx.shadowColor = '#d4a84b';
+        ctx.shadowBlur = 12;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+
+      // Piece body
+      ctx.beginPath();
+      ctx.arc(px, py, PIECE_R, 0, Math.PI*2);
+      ctx.fillStyle = fillColor;
+      ctx.shadowColor = isSelected ? '#d4a84b' : (player==='human' ? 'rgba(232,224,204,0.3)' : 'rgba(42,74,106,0.5)');
+      ctx.shadowBlur = isSelected ? 15 : 5;
+      ctx.fill();
+      ctx.strokeStyle = strokeColor;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Count indicator if > 1
+      if(count > 1) {
+        ctx.font = 'bold 9px DM Sans, sans-serif';
+        ctx.fillStyle = player==='human' ? '#3a2a10' : '#c0d8f0';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(count, px, py);
+        ctx.textBaseline = 'alphabetic';
+      }
+    }
+  }
+}
+
+function drawHomeCount() {
+  // Show home piece count for each player near their goal stop
+  const humanHome = state.human.filter(p=>p.pos===8).length;
+  const aiHome    = state.ai.filter(p=>p.pos===8).length;
+
+  // Human goal = stop 7 (holy left)
+  const hc = stopCoord(HUMAN_GOAL_STOP);
+  // AI goal = stop 2 (holy right)
+  const ac = stopCoord(AI_GOAL_STOP);
+
+  // Draw stacked circles to indicate home pieces
+  function drawHomeStack(cx, cy, count, player) {
+    for(let k=0;k<count;k++){
+      const r = PIECE_R - 2;
+      const offY = -k * 4;
+      ctx.beginPath();
+      ctx.arc(cx, cy + offY, r, 0, Math.PI*2);
+      ctx.fillStyle = player==='human' ? COLORS.human : COLORS.ai;
+      ctx.globalAlpha = 0.9 - k*0.08;
+      ctx.fill();
+      ctx.strokeStyle = player==='human' ? COLORS.humanStroke : COLORS.aiStroke;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+    if(count > 0) {
+      ctx.font = 'bold 10px DM Sans, sans-serif';
+      ctx.fillStyle = '#c8901c';
+      ctx.textAlign = 'center';
+      ctx.fillText('⌂'+count, cx, cy + 24);
+    }
+  }
+
+  if(humanHome > 0) drawHomeStack(hc.x, hc.y, humanHome, 'human');
+  if(aiHome > 0)    drawHomeStack(ac.x, ac.y, aiHome, 'ai');
+}
+
+/* ── UI HELPERS ── */
+function log(msg, cls='') {
+  const el = document.getElementById('game-log');
+  const div = document.createElement('div');
+  div.className = 'log-entry ' + cls;
+  div.textContent = msg;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+}
+
+function setStatus(html) {
+  document.getElementById('status-msg').innerHTML = html;
+}
+
+function setDie(val) {
+  document.getElementById('die-face').textContent = val===null ? '—' : '⚀⚁⚂⚃⚄⚅'[val-1];
+}
+
+function updateButtons() {
+  const rollBtn = document.getElementById('btn-roll');
+  rollBtn.disabled = state.phase !== 'roll' || state.turn !== 'human' || state.rolling;
+}
+
+/* ── GAME LOGIC ── */
+function rollDie() { return Math.floor(Math.random()*6)+1; }
+
+function humanRoll() {
+  if(state.phase !== 'roll' || state.turn !== 'human' || state.rolling) return;
+  state.rolling = true;
+  updateButtons();
+
+  // Animate die
+  let count = 0;
+  const MAX = 8;
+  const interval = setInterval(()=>{
+    const v = rollDie();
+    setDie(v);
+    count++;
+    if(count >= MAX){
+      clearInterval(interval);
+      const finalVal = rollDie();
+      state.dieVal = finalVal;
+      setDie(finalVal);
+      state.rolling = false;
+      state.phase = 'move';
+      state.validMoves = computeValidMoves();
+      state.selected = null;
+
+      log(`You rolled a ${finalVal}.`, 'human');
+      if(state.validMoves.length === 0) {
+        log('No valid moves — turn passes to Ajax.', 'event');
+        setStatus('No valid moves. Ajax's turn.');
+        setTimeout(aiTurn, 1200);
+      } else {
+        setStatus(`Rolled <strong>${finalVal}</strong>. Click a piece to select, then a destination.`);
+        canvas.classList.add('clickable');
+        updateButtons();
+        drawBoard();
+      }
+    }
+  }, 60);
+}
+
+function handleClick(e) {
+  if(state.phase !== 'move' || state.turn !== 'human') return;
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = W / rect.width;
+  const mx = (e.clientX - rect.left) * scaleX;
+  const scaleY = H / rect.height;
+  const my = (e.clientY - rect.top) * scaleY;
+
+  // Check if clicked on a valid destination for selected piece
+  if(state.selected !== null) {
+    for(const mv of state.validMoves) {
+      if(mv.pieceIdx !== state.selected) continue;
+      let targetC;
+      if(mv.toPos === 8) {
+        targetC = stopCoord(HUMAN_GOAL_STOP);
+      } else {
+        const ts = pathToStop('human', mv.toPos);
+        targetC = stopCoord(ts);
+      }
+      const dist = Math.hypot(mx - targetC.x, my - targetC.y);
+      if(dist < POINT_R + 12) {
+        // Execute move
+        executeHumanMove(mv);
+        return;
+      }
+    }
+  }
+
+  // Check if clicked on a valid piece to select
+  for(const mv of state.validMoves) {
+    const piece = state.human[mv.pieceIdx];
+    let pc;
+    if(piece.pos === -1) {
+      // Off board — represent near bottom right
+      pc = { x: RIGHT_X + 30, y: lineY[0] };
+    } else if(piece.pos === 8) {
+      continue;
+    } else {
+      const s = pieceStop('human', piece);
+      pc = stopCoord(s);
+    }
+    const dist = Math.hypot(mx - pc.x, my - pc.y);
+    if(dist < POINT_R + 14) {
+      state.selected = mv.pieceIdx;
+      drawBoard();
+      setStatus(`Piece selected. Click a <span style="color:#40cc40">green-highlighted</span> stop to move.`);
+      return;
+    }
+  }
+
+  // Clicked nowhere useful — deselect
+  state.selected = null;
+  drawBoard();
+}
+
+function executeHumanMove(mv) {
+  const hit = applyMove('human', mv.pieceIdx, mv.toPos);
+  const toStop = mv.toPos < 8 ? pathToStop('human', mv.toPos) : null;
+  const stopName = mv.toPos===8 ? 'Holy Line ⭐' : (HOLY_STOPS.has(toStop) ? 'Holy Line' : `stop ${toStop}`);
+
+  log(`You move piece to ${stopName}${hit ? ' — blot hit! Ajax's piece returns to start!' : ''}.`, 'human');
+
+  if(hit) {
+    log('⚡ Ajax's piece was sent back to start!', 'event');
+  }
+  if(mv.toPos===8) {
+    log('🏛 Piece reaches the Holy Line — home!', 'event');
+  }
+
+  state.selected = null;
+  state.phase = 'roll';
+  state.validMoves = [];
+  canvas.classList.remove('clickable');
+
+  if(checkWin('human')) {
+    state.phase = 'gameover';
+    endGame('human');
+    drawBoard();
+    return;
+  }
+
+  drawBoard();
+  setStatus("Good move. Ajax's turn...");
+  setTimeout(aiTurn, 900);
+}
+
+/* ── AI TURN ── */
+function aiTurn() {
+  if(state.phase === 'gameover') return;
+  state.turn = 'ai';
+  state.phase = 'roll';
+  updateButtons();
+
+  setTimeout(()=>{
+    const val = rollDie();
+    state.dieVal = val;
+    setDie(val);
+    state.phase = 'move';
+    state.validMoves = computeValidMoves();
+    log(`Ajax rolls a ${val}.`, 'ai');
+
+    setTimeout(()=>{
+      if(state.validMoves.length === 0) {
+        log('Ajax has no valid moves — turn passes.', 'event');
+        setStatus('Ajax had no moves. Your turn — roll the die!');
+        startHumanTurn();
+        return;
+      }
+
+      // AI strategy (Kidd-inspired):
+      // Priority: 1) win (home move), 2) hit a blot, 3) land on holy, 4) advance
+      const mv = chooseAIMove(state.validMoves);
+      const hit = applyMove('ai', mv.pieceIdx, mv.toPos);
+      const toStop = mv.toPos < 8 ? pathToStop('ai', mv.toPos) : null;
+      const stopName = mv.toPos===8 ? 'Holy Line ⭐' : (toStop !== null && HOLY_STOPS.has(toStop) ? 'Holy Line' : `stop ${toStop}`);
+
+      log(`Ajax moves to ${stopName}${hit ? ' — hits your blot!' : ''}.`, 'ai');
+      if(hit) log('⚡ Your piece was sent back to start!', 'event');
+      if(mv.toPos===8) log('🏛 Ajax brings a piece home!', 'event');
+
+      state.phase = 'roll';
+      state.validMoves = [];
+
+      if(checkWin('ai')) {
+        state.phase = 'gameover';
+        endGame('ai');
+        drawBoard();
+        return;
+      }
+
+      drawBoard();
+      startHumanTurn();
+    }, 700);
+  }, 600);
+}
+
+function chooseAIMove(moves) {
+  // Score each move
+  function scoreMove(mv) {
+    // Win
+    if(mv.toPos === 8) return 100;
+    const toStop = pathToStop('ai', mv.toPos);
+    // Hit a blot
+    const oppAtStop = state.human.filter(p=>{
+      const s = pieceStop('human',p);
+      return s===toStop && piecesAtStop('human',toStop)===1;
+    });
+    if(oppAtStop.length > 0 && !HOLY_STOPS.has(toStop)) return 80;
+    // Land on holy
+    if(HOLY_STOPS.has(toStop)) return 60;
+    // Advance (prefer further along path)
+    return mv.toPos * 10;
+  }
+  return moves.reduce((best,mv)=>scoreMove(mv)>scoreMove(best)?mv:best, moves[0]);
+}
+
+function startHumanTurn() {
+  state.turn = 'human';
+  state.phase = 'roll';
+  state.dieVal = null;
+  state.selected = null;
+  setDie(null);
+  setStatus('Your turn — roll the die!');
+  updateButtons();
+  drawBoard();
+}
+
+function endGame(winner) {
+  state.scores[winner]++;
+  document.getElementById('score-human').textContent = state.scores.human;
+  document.getElementById('score-ai').textContent = state.scores.ai;
+
+  const overlay = document.getElementById('win-overlay');
+  const title   = document.getElementById('win-title');
+  const sub     = document.getElementById('win-sub');
+
+  if(winner==='human') {
+    title.textContent = 'Achilles Wins!';
+    sub.textContent = 'You have brought all five pieces to the Holy Line. As Alcaeus wrote: "now he gains the upper hand."';
+  } else {
+    title.textContent = 'Ajax Wins!';
+    sub.textContent = 'Ajax has claimed the Holy Line. A worthy opponent — challenge him again.';
+  }
+
+  log(`━━ ${winner==='human'?'ACHILLES':'AJAX'} WINS THE GAME ━━`, 'event');
+  overlay.classList.add('show');
+}
+
+function newGame() {
+  const savedScores = state ? state.scores : {human:0,ai:0};
+  state = initState();
+  state.scores = savedScores;
+  document.getElementById('score-human').textContent = state.scores.human;
+  document.getElementById('score-ai').textContent    = state.scores.ai;
+  document.getElementById('win-overlay').classList.remove('show');
+  document.getElementById('game-log').innerHTML = '<div class="log-entry event">— New game. You are Achilles (white). Roll the die! —</div>';
+  canvas.classList.remove('clickable');
+  setDie(null);
+  setStatus('Roll the die to begin your turn.');
+  updateButtons();
+  drawBoard();
+}
+
+/* ── OFF-BOARD CLICK AREA ──
+   Off-board pieces hover near their starting corner.
+   Human off-board: shown as small ghost near right edge, below board.
+   We add a small "reserve" display below the canvas. */
+
+/* ── ENTRY CLICK DETECTION ──
+   Off-board pieces don't have a stop coordinate.
+   We'll show them in the control panel area and
+   handle clicking via the valid-move system:
+   any move with fromPos=-1 is an entry move.
+   Clicking the entry zone triggers selection of an off-board piece. */
+
+function handleOffBoardClick(mx, my) {
+  // Check if click is in the off-board zone for human
+  // We'll treat clicks near the corner as selecting an off-board piece
+  const nearRightBottom = mx > RIGHT_X - 10 && my > lineY[0] - 10 && my < H - 10;
+  if(nearRightBottom && state.phase==='move' && state.turn==='human') {
+    // Select first available off-board piece
+    for(const mv of state.validMoves) {
+      if(state.human[mv.pieceIdx].pos === -1) {
+        state.selected = mv.pieceIdx;
+        drawBoard();
+        setStatus(`Off-board piece selected. Click the highlighted destination.`);
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+// Enhance click handler
+canvas.addEventListener('click', (e)=>{
+  if(state.phase !== 'move' || state.turn !== 'human') return;
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = W / rect.width;
+  const mx = (e.clientX - rect.left) * scaleX;
+  const scaleY = H / rect.height;
+  const my = (e.clientY - rect.top) * scaleY;
+
+  // Try off-board zone first if piece not selected
+  if(state.selected === null && handleOffBoardClick(mx, my)) return;
+
+  handleClick(e);
+});
+
+document.getElementById('btn-roll').addEventListener('click', humanRoll);
+document.getElementById('btn-new').addEventListener('click', newGame);
+
+/* ── DRAW OFF-BOARD RESERVE ── */
+// We need to visually show off-board pieces somewhere.
+// Add them as small icons near the corners of the board.
+const _origDrawBoard = drawBoard;
+function drawBoardFull() {
+  _origDrawBoard.call(this); // call original
+  drawReserve();
+}
+
+function drawReserve() {
+  // Human reserve (off-board pieces) — bottom right corner outside board
+  const humanOff = state.human.filter(p=>p.pos<0).length;
+  const aiOff    = state.ai.filter(p=>p.pos<0).length;
+
+  // Human reserve — shown near bottom-right, slightly off track
+  for(let i=0;i<humanOff;i++){
+    const rx = RIGHT_X + 22 + i * 2;
+    const ry = lineY[0] + 5 + i * 4;
+    ctx.beginPath();
+    ctx.arc(rx, ry, 8, 0, Math.PI*2);
+    ctx.fillStyle = COLORS.human;
+    ctx.globalAlpha = 0.5;
+    ctx.fill();
+    ctx.strokeStyle = COLORS.humanStroke;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+  // AI reserve — top-left
+  for(let i=0;i<aiOff;i++){
+    const rx = LEFT_X - 22 - i * 2;
+    const ry = lineY[4] - 5 - i * 4;
+    ctx.beginPath();
+    ctx.arc(rx, ry, 8, 0, Math.PI*2);
+    ctx.fillStyle = COLORS.ai;
+    ctx.globalAlpha = 0.5;
+    ctx.fill();
+    ctx.strokeStyle = COLORS.aiStroke;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
+  // Label
+  if(humanOff > 0) {
+    ctx.font = '500 8px DM Sans, sans-serif';
+    ctx.fillStyle = 'rgba(232,224,204,0.5)';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${humanOff} waiting`, RIGHT_X + 24, lineY[0] + 28);
+  }
+  if(aiOff > 0) {
+    ctx.font = '500 8px DM Sans, sans-serif';
+    ctx.fillStyle = 'rgba(100,154,204,0.5)';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${aiOff} waiting`, LEFT_X - 22, lineY[4] - 26);
+  }
+
+  // Highlight entry point if human has off-board pieces and we're in move phase
+  if(state.phase==='move' && state.turn==='human') {
+    const hasEntryMoves = state.validMoves.some(mv=>state.human[mv.pieceIdx].pos===-1);
+    if(hasEntryMoves) {
+      // Highlight stop 0 (human entry)
+      const ec = stopCoord(0);
+      ctx.beginPath();
+      ctx.arc(ec.x, ec.y, POINT_R+4, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(60,180,60,0.6)';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([3,3]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      // Arrow from reserve to entry
+      ctx.strokeStyle = 'rgba(60,180,60,0.3)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(RIGHT_X+22, lineY[0]+4);
+      ctx.lineTo(ec.x+POINT_R, ec.y);
+      ctx.stroke();
+    }
+  }
+}
+
+// Override drawBoard to include reserve
+const originalDraw = drawBoard;
+window.drawBoard = function() {
+  originalDraw();
+  drawReserve();
+};
+
+/* ── INIT ── */
+state = initState();
+drawBoard();
+updateButtons();
+setStatus('Roll the die to begin your turn as Achilles (white pieces).');
+</script>
+</body>
+</html>
