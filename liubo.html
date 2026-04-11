@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liubo 六博 — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#faf8f3; --paper:#f2ede3; --linen:#e8e0d0; --rule:#d5ccb8;
+  --ash:#8a8070; --ink:#1c1814; --deep:#0f0d0a;
+  --ochre:#b8892a; --ochre-lt:#d4a84b; --terra:#7a3e1a;
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --han-red:#8a1c1c;
+  --han-gold:#c8901c;
+  --han-jade:#2a5a3a;
+  --lacquer:#1a0a04;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+.masthead{background:var(--ink);padding:0 2rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px;}
+.logo{font-family:var(--serif);font-size:1.2rem;font-weight:900;color:var(--cream);letter-spacing:-.01em;}
+.logo span{color:var(--ochre);font-style:italic;}
+.nav-links{display:flex;gap:1.5rem;overflow-x:auto;}
+.nav-link{font-family:var(--sans);font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);transition:color .2s;white-space:nowrap;}
+.nav-link:hover{color:var(--cream);}
+.nav-link.active{color:var(--cream);}
+
+.section-nav{background:var(--paper);border-bottom:1px solid var(--rule);padding:0 2rem;overflow-x:auto;}
+.section-nav-inner{max-width:1280px;margin:0 auto;display:flex;}
+.section-nav-link{font-family:var(--sans);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);padding:.7rem 1.4rem;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.section-nav-link:hover{color:var(--ink);border-bottom-color:var(--ochre);}
+.section-nav-link.active{color:var(--ink);border-bottom-color:var(--ochre);}
+
+/* ── HERO ── */
+.page-hero{background:var(--lacquer);padding:3.5rem 2rem 3rem;border-bottom:3px solid var(--han-gold);position:relative;overflow:hidden;}
+.page-hero::before{
+  content:'六博';
+  position:absolute;right:2rem;top:50%;transform:translateY(-50%);
+  font-family:'Noto Serif SC',var(--serif);font-size:11rem;font-weight:700;
+  color:rgba(200,144,28,.06);line-height:1;pointer-events:none;
+  letter-spacing:-.05em;
+}
+.page-hero-inner{max-width:1280px;margin:0 auto;position:relative;}
+.page-eyebrow{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--han-gold);margin-bottom:.7rem;}
+.page-title{font-family:var(--serif);font-size:clamp(2rem,4.5vw,3.4rem);font-weight:900;color:var(--cream);line-height:1.08;letter-spacing:-.02em;margin-bottom:.4rem;}
+.page-title-chinese{font-family:'Noto Serif SC',serif;font-size:clamp(1.4rem,3vw,2.2rem);font-weight:600;color:var(--han-gold);letter-spacing:.15em;display:block;margin-bottom:.8rem;}
+.page-dek{font-family:var(--body);font-size:1rem;color:rgba(232,224,208,.65);line-height:1.7;max-width:660px;}
+.hero-meta{display:flex;gap:2rem;margin-top:1.6rem;flex-wrap:wrap;}
+.hero-meta-item .label{font-family:var(--sans);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);}
+.hero-meta-item .value{font-family:var(--sans);font-size:.78rem;color:rgba(232,224,208,.8);font-weight:500;margin-top:.15rem;}
+
+/* ── LAYOUT ── */
+.page-wrap{max-width:1280px;margin:0 auto;padding:3rem 2rem 5rem;display:grid;grid-template-columns:1fr 300px;gap:3rem;}
+@media(max-width:900px){.page-wrap{grid-template-columns:1fr;}}
+.main-col{display:flex;flex-direction:column;gap:3rem;}
+
+/* ── ARTICLE SECTIONS ── */
+.section-label{font-family:var(--sans);font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--han-gold);margin-bottom:.5rem;}
+.section-title{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1px solid var(--rule);}
+.section-body p{font-family:var(--body);font-size:.97rem;color:#3a3028;line-height:1.82;margin-bottom:1rem;}
+.section-body p:last-child{margin-bottom:0;}
+.section-body strong{color:var(--ink);}
+.section-body em{font-style:italic;}
+
+.pull-quote{border-left:3px solid var(--han-gold);padding:.8rem 1.3rem;margin:1.5rem 0;background:var(--paper);}
+.pull-quote p{font-family:var(--serif);font-size:1.05rem;font-style:italic;color:var(--ink);line-height:1.6;margin:0 !important;}
+.pull-quote cite{display:block;font-family:var(--sans);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);margin-top:.5rem;font-style:normal;}
+
+/* ── CHINESE TEXT BLOCK ── */
+.chinese-source{background:var(--lacquer);padding:1.2rem 1.6rem;margin:1.4rem 0;}
+.chinese-original{font-family:'Noto Serif SC',serif;font-size:1.1rem;color:var(--han-gold);letter-spacing:.12em;line-height:2;margin-bottom:.6rem;}
+.chinese-trans{font-family:var(--body);font-size:.85rem;color:rgba(232,224,208,.7);font-style:italic;line-height:1.65;}
+.chinese-attr{font-family:var(--sans);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(138,112,80,.7);margin-top:.6rem;padding-top:.5rem;border-top:1px solid rgba(255,255,255,.06);}
+
+/* ── BOARD FIGURE ── */
+.board-figure{background:var(--paper);border:1px solid var(--rule);padding:1.6rem;}
+.board-figure figcaption{font-family:var(--sans);font-size:.68rem;color:var(--ash);margin-top:1rem;line-height:1.65;}
+.board-figure figcaption strong{color:var(--ink);}
+
+.boards-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+@media(max-width:700px){.boards-grid{grid-template-columns:1fr;}}
+
+/* ── OBJECT CARDS ── */
+.object-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;margin-top:.8rem;}
+.object-card{background:var(--paper);border:1px solid var(--rule);padding:1.1rem;}
+.object-card .obj-tag{font-family:var(--sans);font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--han-gold);margin-bottom:.4rem;}
+.object-card .obj-title{font-family:var(--serif);font-size:.92rem;font-weight:700;color:var(--ink);margin-bottom:.35rem;line-height:1.3;}
+.object-card p{font-family:var(--body);font-size:.78rem;color:var(--ash);line-height:1.65;}
+
+/* ── TIMELINE ── */
+.timeline{margin-top:.8rem;}
+.tl-row{display:flex;gap:1rem;padding:.9rem 0;border-bottom:1px solid var(--linen);align-items:flex-start;}
+.tl-row:last-child{border-bottom:none;}
+.tl-date{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.04em;color:var(--han-gold);min-width:100px;line-height:1.4;}
+.tl-content .tl-name{font-family:var(--serif);font-size:.95rem;font-weight:700;color:var(--ink);margin-bottom:.2rem;}
+.tl-content p{font-family:var(--body);font-size:.78rem;color:var(--ash);line-height:1.6;margin:0;}
+
+/* ── EVIDENCE TABLE ── */
+.ev-table{width:100%;border-collapse:collapse;margin-top:.8rem;}
+.ev-table th{font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);padding:.5rem .8rem;text-align:left;border-bottom:2px solid var(--rule);}
+.ev-table td{font-family:var(--body);font-size:.79rem;color:#3a3028;padding:.6rem .8rem;border-bottom:1px solid var(--linen);vertical-align:top;line-height:1.55;}
+.ev-table tr:last-child td{border-bottom:none;}
+.ev-table td:first-child{font-style:italic;color:var(--ink);font-weight:600;white-space:nowrap;}
+
+/* ── SIDEBAR ── */
+.sidebar{display:flex;flex-direction:column;gap:1.5rem;}
+.sidebar-card{background:var(--paper);border:1px solid var(--rule);padding:1.4rem;}
+.sidebar-card h3{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule);}
+.sidebar-card p,.sidebar-card li{font-family:var(--body);font-size:.82rem;color:var(--ash);line-height:1.7;}
+.sidebar-card ul{padding-left:1.1rem;margin-top:.4rem;}
+.sidebar-card li{margin-bottom:.3rem;}
+.sidebar-card strong{color:var(--ink);}
+.arcade-links{display:flex;flex-direction:column;gap:.3rem;margin-top:.2rem;}
+.arcade-link{font-family:var(--sans);font-size:.65rem;color:var(--ash);padding:.3rem 0;border-bottom:1px solid var(--linen);display:flex;justify-content:space-between;transition:color .2s;}
+.arcade-link:hover{color:var(--ochre);}
+.arcade-link.current{color:var(--ink);font-weight:600;}
+.arcade-link .era{color:var(--ochre);font-size:.58rem;}
+.ref-list{list-style:none;padding:0;}
+.ref-list li{font-family:var(--body);font-size:.74rem;color:var(--ash);line-height:1.6;padding:.4rem 0;border-bottom:1px solid var(--linen);}
+.ref-list li:last-child{border-bottom:none;}
+
+.footer{background:var(--ink);color:var(--ash);text-align:center;padding:1.5rem;font-family:var(--sans);font-size:.68rem;}
+.footer a{color:var(--ochre);}
+.ornament{text-align:center;color:var(--rule);font-size:1.2rem;letter-spacing:.3em;margin:1.5rem 0;}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+    <nav class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="news.html">Feed</a>
+      <a class="nav-link" href="map.html">Map</a>
+      <a class="nav-link" href="sky.html">Sky Archive</a>
+      <a class="nav-link" href="maritime.html">Maritime</a>
+      <a class="nav-link" href="linguistics.html">Linguistics</a>
+      <a class="nav-link" href="inscriptions.html">Inscriptions</a>
+      <a class="nav-link" href="maya_inscriptions.html">Maya</a>
+      <a class="nav-link" href="bioanthro.html">Bioanthro</a>
+      <a class="nav-link" href="luwian.html">Luwian</a>
+      <a class="nav-link" href="upload.html">Upload</a>
+      <a class="nav-link active" href="games.html">Games</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="section-nav">
+  <div class="section-nav-inner">
+    <a class="section-nav-link" href="index.html">Home</a>
+    <a class="section-nav-link" href="news.html">Feed</a>
+    <a class="section-nav-link" href="map.html">Map</a>
+    <a class="section-nav-link" href="sky.html">Sky Archive</a>
+    <a class="section-nav-link" href="maritime.html">Maritime</a>
+    <a class="section-nav-link" href="maya_inscriptions.html">Maya</a>
+    <a class="section-nav-link" href="bioanthro.html">Bioanthro</a>
+    <a class="section-nav-link" href="luwian.html">Luwian</a>
+    <a class="section-nav-link active" href="games.html">Games</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-eyebrow">Ancient Chinese Board Games · c. 400 BCE – 300 CE</div>
+    <h1 class="page-title">Liubo</h1>
+    <span class="page-title-chinese">六博</span>
+    <p class="page-dek">Six sticks, twelve pieces, and the most contested game board in Chinese archaeology. For nearly a century scholars debated whether liubo was a gambling game, a divination instrument, or a ritual pathway to immortality. The archaeological record, read whole, tells a simpler and more human story: men at a feast, passing the evening.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><div class="label">Active period</div><div class="value">c. 4th century BCE – 3rd century CE</div></div>
+      <div class="hero-meta-item"><div class="label">Players</div><div class="value">2</div></div>
+      <div class="hero-meta-item"><div class="label">Equipment</div><div class="value">Board (TLV pattern), 6 sticks or die, 12 tokens, tally rods</div></div>
+      <div class="hero-meta-item"><div class="label">Key find</div><div class="value">Mawangdui Tomb No. 3, 168 BCE</div></div>
+      <div class="hero-meta-item"><div class="label">Primary study</div><div class="value">Selbitschka (2016), Oriens Extremus 55</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+<div class="main-col">
+
+  <!-- SECTION 1: THE GAME -->
+  <section>
+    <div class="section-label">Overview</div>
+    <h2 class="section-title">Six Sticks, Twelve Pieces</h2>
+    <div class="section-body">
+      <p>The name <em>liubo</em> (六博) combines <em>liu</em> 六, "six," and <em>bo</em> 博, best understood here as "sticks" or counting rods — the eponymous six throwing sticks that determined movement in the game's standard form. Two players faced each other across a lacquered wooden board marked with the distinctive <strong>TLV pattern</strong>: T-shaped elements at each side of a central square, L-shaped hooks at the corners, and V-shaped angles between them. Each player commanded six tokens. At the centre of the board sat two special pieces — the <em>fish</em> (<em>yu</em> 魚) — and the objective was to destroy the opponent's chief token, the <strong>owl</strong> (<em>xiao</em> 梟).</p>
+      <p>The 6th-century commentator Yan Zhitui distinguished two main variants: <em>da bo</em> 大博 ("larger bo"), played with the six bamboo sticks that named the game, and <em>xiao bo</em> 小博 ("smaller bo"), which used a die — either a cuboid six-sided die or, in the extraordinary Mawangdui example, an eighteen-sided wooden die. Movement was determined by the sticks' fall or the die's result. The full rules do not survive intact, and reconstructions remain partial and contested.</p>
+      <div class="pull-quote">
+        <p>"Liubo players value the owl token, while those who want to win must inevitably kill the owl. Those who kill the owl kill the things they value."</p>
+        <cite>Han Feizi 韓非子, 3rd century BCE — cited to explain why Confucians refused to play</cite>
+      </div>
+      <p>The game was socially charged. Literary sources record heated arguments, a broken neck (Duke Min of Song, struck with the board by his opponent), a fatal blow struck by the future Emperor Jing against a visiting prince. The legal text from Zhangjiashan Tomb No. 247 imposed penalties of one rank of nobility — or two years of garrison duty for commoners — on those who "rob one another of money and property at liubo games." Stakes were real and tempers flared.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 2: THE TLV BOARD -->
+  <section>
+    <div class="section-label">The Board</div>
+    <h2 class="section-title">The TLV Pattern</h2>
+    <div class="section-body">
+      <p>The defining feature of every liubo board is the <strong>TLV design</strong> — named by modern scholars for the shapes of its three elements. Four T-shapes are placed at the centre of each side of an inner square; four L-shapes (pointing counter-clockwise in authentic liubo boards, clockwise in the related game <em>saixi</em> 塞戲) appear at the corners; and four V-shapes (right angles) occupy the diagonal positions. The whole pattern is enclosed in an outer square border.</p>
+      <p>This design has generated enormous scholarly controversy. From the 1920s onward, the TLV pattern was linked to cosmological diagrams, diviner's boards (<em>shi pan</em> 式盤), and the cosmos as described in the <em>Huainanzi</em>. A wooden tablet from Yinwan Tomb No. 6 (c. 10 BCE) showing a TLV diagram annotated with divination formulae cemented this association for decades. Selbitschka's comprehensive 2016 re-evaluation demonstrates, however, that the cosmological interpretation conflates Eastern Han–period elaborations with the much earlier and more mundane reality of the Western Han game boards — and that the TLV divination tradition almost certainly post-dates the game boards themselves.</p>
+    </div>
+
+    <div class="boards-grid" style="margin-top:1.5rem;">
+
+      <!-- TLV Board SVG -->
+      <figure class="board-figure">
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="display:block;">
+          <!-- Lacquer background -->
+          <rect width="300" height="300" fill="#1a0a04"/>
+          <!-- Outer border -->
+          <rect x="8" y="8" width="284" height="284" fill="none" stroke="#8a5020" stroke-width="2"/>
+          <!-- Inner decorative band -->
+          <rect x="18" y="18" width="264" height="264" fill="none" stroke="#5a3010" stroke-width="1"/>
+
+          <!-- The TLV Pattern — all in Han gold/red lacquer style -->
+          <!-- Central square -->
+          <rect x="95" y="95" width="110" height="110" fill="none" stroke="#c8901c" stroke-width="2"/>
+
+          <!-- T-shapes: one at each side of central square -->
+          <!-- Top T -->
+          <line x1="150" y1="95" x2="150" y2="55" stroke="#c8901c" stroke-width="2.5"/>
+          <line x1="130" y1="55" x2="170" y2="55" stroke="#c8901c" stroke-width="2.5"/>
+          <!-- Bottom T -->
+          <line x1="150" y1="205" x2="150" y2="245" stroke="#c8901c" stroke-width="2.5"/>
+          <line x1="130" y1="245" x2="170" y2="245" stroke="#c8901c" stroke-width="2.5"/>
+          <!-- Left T -->
+          <line x1="95" y1="150" x2="55" y2="150" stroke="#c8901c" stroke-width="2.5"/>
+          <line x1="55" y1="130" x2="55" y2="170" stroke="#c8901c" stroke-width="2.5"/>
+          <!-- Right T -->
+          <line x1="205" y1="150" x2="245" y2="150" stroke="#c8901c" stroke-width="2.5"/>
+          <line x1="245" y1="130" x2="245" y2="170" stroke="#c8901c" stroke-width="2.5"/>
+
+          <!-- L-shapes: counter-clockwise, at corners -->
+          <!-- Top-left L -->
+          <polyline points="95,95 55,95 55,55 95,55" fill="none" stroke="#8a1c1c" stroke-width="2"/>
+          <!-- Top-right L -->
+          <polyline points="205,95 245,95 245,55 205,55" fill="none" stroke="#8a1c1c" stroke-width="2"/>
+          <!-- Bottom-left L -->
+          <polyline points="95,205 55,205 55,245 95,245" fill="none" stroke="#8a1c1c" stroke-width="2"/>
+          <!-- Bottom-right L -->
+          <polyline points="205,205 245,205 245,245 205,245" fill="none" stroke="#8a1c1c" stroke-width="2"/>
+
+          <!-- V-shapes: right-angle chevrons at diagonal positions -->
+          <!-- Top-left V -->
+          <polyline points="30,55 30,30 55,30" fill="none" stroke="#c8901c" stroke-width="1.5" opacity=".7"/>
+          <!-- Top-right V -->
+          <polyline points="270,55 270,30 245,30" fill="none" stroke="#c8901c" stroke-width="1.5" opacity=".7"/>
+          <!-- Bottom-left V -->
+          <polyline points="30,245 30,270 55,270" fill="none" stroke="#c8901c" stroke-width="1.5" opacity=".7"/>
+          <!-- Bottom-right V -->
+          <polyline points="270,245 270,270 245,270" fill="none" stroke="#c8901c" stroke-width="1.5" opacity=".7"/>
+
+          <!-- Central square fill -->
+          <rect x="95" y="95" width="110" height="110" fill="rgba(200,144,28,.06)"/>
+
+          <!-- Fish tokens at centre -->
+          <ellipse cx="135" cy="150" rx="12" ry="8" fill="#2a5a3a" stroke="#4a9a5a" stroke-width="1.2"/>
+          <ellipse cx="165" cy="150" rx="12" ry="8" fill="#2a5a3a" stroke="#4a9a5a" stroke-width="1.2"/>
+          <text x="135" y="154" font-family="serif" font-size="8" fill="#6acc8a" text-anchor="middle">魚</text>
+          <text x="165" y="154" font-family="serif" font-size="8" fill="#6acc8a" text-anchor="middle">魚</text>
+
+          <!-- Labels -->
+          <text x="150" y="35" font-family="'DM Sans',sans-serif" font-size="7" fill="#8a6040" text-anchor="middle" letter-spacing="1">T</text>
+          <text x="150" y="282" font-family="'DM Sans',sans-serif" font-size="7" fill="#8a6040" text-anchor="middle" letter-spacing="1">T</text>
+          <text x="22" y="153" font-family="'DM Sans',sans-serif" font-size="7" fill="#8a6040" text-anchor="middle">T</text>
+          <text x="278" y="153" font-family="'DM Sans',sans-serif" font-size="7" fill="#8a6040" text-anchor="middle">T</text>
+          <text x="42" y="76" font-family="'DM Sans',sans-serif" font-size="6" fill="#6a3010" text-anchor="middle">L</text>
+          <text x="258" y="76" font-family="'DM Sans',sans-serif" font-size="6" fill="#6a3010" text-anchor="middle">L</text>
+          <text x="42" y="230" font-family="'DM Sans',sans-serif" font-size="6" fill="#6a3010" text-anchor="middle">L</text>
+          <text x="258" y="230" font-family="'DM Sans',sans-serif" font-size="6" fill="#6a3010" text-anchor="middle">L</text>
+          <text x="22" y="33" font-family="'DM Sans',sans-serif" font-size="6" fill="#8a6040" opacity=".6">V</text>
+          <text x="275" y="33" font-family="'DM Sans',sans-serif" font-size="6" fill="#8a6040" opacity=".6">V</text>
+          <text x="22" y="278" font-family="'DM Sans',sans-serif" font-size="6" fill="#8a6040" opacity=".6">V</text>
+          <text x="275" y="278" font-family="'DM Sans',sans-serif" font-size="6" fill="#8a6040" opacity=".6">V</text>
+        </svg>
+        <figcaption><strong>The TLV Pattern</strong> — schematic reconstruction of a liubo board in Han lacquerware style. T-shapes (gold) at each side of the central square; L-shapes (red, counter-clockwise) at corners; V-shapes at diagonal margins. The two green <em>fish</em> (魚) tokens occupy the centre. Authentic boards are lacquered wood, typically 40–60 cm square, with the TLV design carved or painted in contrasting colours.</figcaption>
+      </figure>
+
+      <!-- Token & Equipment diagram -->
+      <figure class="board-figure">
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="display:block;">
+          <rect width="300" height="300" fill="#f0ebe0"/>
+          <rect x="6" y="6" width="288" height="288" fill="none" stroke="#d5ccb8" stroke-width="1"/>
+
+          <!-- Title -->
+          <text x="150" y="28" font-family="'Playfair Display',serif" font-size="11" fill="#8a5020" text-anchor="middle" font-style="italic">Equipment — Mawangdui Set, 168 BCE</text>
+
+          <!-- The six throwing sticks (zhu) -->
+          <text x="30" y="60" font-family="'DM Sans',sans-serif" font-size="7.5" fill="#8a7060" font-weight="700" letter-spacing=".08em">SIX STICKS (箸 zhù)</text>
+          <g stroke="#3a2a10" stroke-width="1.5">
+            <line x1="30" y1="70" x2="30" y2="105" stroke-linecap="round"/>
+            <line x1="44" y1="70" x2="44" y2="105" stroke-linecap="round"/>
+            <line x1="58" y1="70" x2="58" y2="105" stroke-linecap="round"/>
+            <line x1="72" y1="70" x2="72" y2="105" stroke-linecap="round"/>
+            <line x1="86" y1="70" x2="86" y2="105" stroke-linecap="round"/>
+            <line x1="100" y1="70" x2="100" y2="105" stroke-linecap="round"/>
+          </g>
+          <!-- Lacquer coating indication -->
+          <rect x="27" y="68" width="6" height="25" rx="2" fill="rgba(80,20,5,.4)"/>
+          <rect x="41" y="68" width="6" height="25" rx="2" fill="rgba(80,20,5,.4)"/>
+          <text x="65" y="122" font-family="'DM Sans',sans-serif" font-size="6.5" fill="#8a7060" text-anchor="middle">Bamboo, black-lacquered</text>
+
+          <!-- 18-sided die (Mawangdui) -->
+          <text x="175" y="60" font-family="'DM Sans',sans-serif" font-size="7.5" fill="#8a7060" font-weight="700" letter-spacing=".08em">18-SIDED DIE (骰子)</text>
+          <polygon points="175,75 195,68 215,75 215,100 195,107 175,100" fill="#f0e8d0" stroke="#8a5020" stroke-width="1.2"/>
+          <polygon points="195,68 215,75 215,100 195,107" fill="#e0d5c0" stroke="#8a5020" stroke-width="1.2"/>
+          <text x="193" y="92" font-family="serif" font-size="9" fill="#8a5020" text-anchor="middle">五</text>
+          <text x="193" y="122" font-family="'DM Sans',sans-serif" font-size="6.5" fill="#8a7060" text-anchor="middle">Wooden, 18 faces — unique to</text>
+          <text x="193" y="131" font-family="'DM Sans',sans-serif" font-size="6.5" fill="#8a7060" text-anchor="middle">the Mawangdui game set</text>
+
+          <!-- Tokens row 1 — larger (owl style) -->
+          <text x="30" y="152" font-family="'DM Sans',sans-serif" font-size="7.5" fill="#8a7060" font-weight="700" letter-spacing=".08em">12 TOKENS (棋 qí) — 6 per player</text>
+          <!-- Player 1 tokens (ivory coloured) -->
+          <g>
+            <ellipse cx="42" cy="172" rx="13" ry="9" fill="#e8e0c0" stroke="#a09060" stroke-width="1.2"/>
+            <ellipse cx="70" cy="172" rx="13" ry="9" fill="#e8e0c0" stroke="#a09060" stroke-width="1.2"/>
+            <ellipse cx="98" cy="172" rx="13" ry="9" fill="#e8e0c0" stroke="#a09060" stroke-width="1.2"/>
+          </g>
+          <!-- Player 1 owl (special) -->
+          <ellipse cx="130" cy="172" rx="13" ry="9" fill="#e8e0c0" stroke="#c8901c" stroke-width="2"/>
+          <text x="130" y="175" font-family="serif" font-size="8" fill="#8a5020" text-anchor="middle">梟</text>
+
+          <!-- Player 2 tokens (dark) -->
+          <ellipse cx="42" cy="195" rx="13" ry="9" fill="#2a1810" stroke="#5a4020" stroke-width="1.2"/>
+          <ellipse cx="70" cy="195" rx="13" ry="9" fill="#2a1810" stroke="#5a4020" stroke-width="1.2"/>
+          <ellipse cx="98" cy="195" rx="13" ry="9" fill="#2a1810" stroke="#5a4020" stroke-width="1.2"/>
+          <!-- Player 2 owl -->
+          <ellipse cx="130" cy="195" rx="13" ry="9" fill="#2a1810" stroke="#c8901c" stroke-width="2"/>
+          <text x="130" y="198" font-family="serif" font-size="8" fill="#c8901c" text-anchor="middle">梟</text>
+
+          <text x="80" y="214" font-family="'DM Sans',sans-serif" font-size="6.5" fill="#8a7060" text-anchor="middle">The owl 梟 (xiāo) — each player's chief piece, primary target</text>
+
+          <!-- Fish tokens (centre pieces) -->
+          <text x="30" y="240" font-family="'DM Sans',sans-serif" font-size="7.5" fill="#8a7060" font-weight="700" letter-spacing=".08em">2 FISH (魚 yú) — board centre</text>
+          <ellipse cx="55" cy="257" rx="15" ry="10" fill="#2a5a3a" stroke="#4a9a5a" stroke-width="1.5"/>
+          <text x="55" y="261" font-family="serif" font-size="9" fill="#80cc90" text-anchor="middle">魚</text>
+          <ellipse cx="90" cy="257" rx="15" ry="10" fill="#2a5a3a" stroke="#4a9a5a" stroke-width="1.5"/>
+          <text x="90" y="261" font-family="serif" font-size="9" fill="#80cc90" text-anchor="middle">魚</text>
+
+          <!-- Tally rods -->
+          <text x="175" y="152" font-family="'DM Sans',sans-serif" font-size="7.5" fill="#8a7060" font-weight="700" letter-spacing=".08em">TALLY RODS (算 suàn)</text>
+          <g stroke="#6a4a20" stroke-width="1">
+            <line x1="175" y1="162" x2="175" y2="200"/>
+            <line x1="182" y1="162" x2="182" y2="200"/>
+            <line x1="189" y1="162" x2="189" y2="200"/>
+            <line x1="196" y1="162" x2="196" y2="200"/>
+            <line x1="203" y1="162" x2="203" y2="200"/>
+            <line x1="175" y1="170" x2="203" y2="170" stroke-width="1.5"/>
+          </g>
+          <text x="190" y="214" font-family="'DM Sans',sans-serif" font-size="6" fill="#8a7060" text-anchor="middle">42 bamboo rods in</text>
+          <text x="190" y="222" font-family="'DM Sans',sans-serif" font-size="6" fill="#8a7060" text-anchor="middle">Mawangdui set — score-keeping</text>
+
+          <!-- Case note -->
+          <rect x="160" y="235" width="125" height="48" rx="2" fill="none" stroke="#d5ccb8" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="222" y="252" font-family="'DM Sans',sans-serif" font-size="6.5" fill="#8a7060" text-anchor="middle">All stored in custom lacquered</text>
+          <text x="222" y="262" font-family="'DM Sans',sans-serif" font-size="6.5" fill="#8a7060" text-anchor="middle">wooden case with ivory fitments</text>
+          <text x="222" y="272" font-family="'DM Sans',sans-serif" font-size="6.5" fill="#c8901c" text-anchor="middle">Mawangdui Tomb No. 3, 168 BCE</text>
+        </svg>
+        <figcaption><strong>Liubo equipment</strong> — schematic after the Mawangdui Tomb No. 3 set. The Mawangdui example is the most complete known: board, twelve ivory tokens, eighteen smaller ivory "upright eating" tokens (possibly the fish), forty-two bamboo tally rods, and a unique eighteen-sided die, all in a custom lacquered case. Most other sets used six bamboo sticks rather than a die.</figcaption>
+      </figure>
+
+    </div><!-- /.boards-grid -->
+  </section>
+
+  <!-- SECTION 3: ARCHAEOLOGICAL CONTEXTS -->
+  <section>
+    <div class="section-label">Archaeological Evidence</div>
+    <h2 class="section-title">Games at the Banquet Table</h2>
+    <div class="section-body">
+      <p>Forty-one tombs dating from the mid-4th through the late 1st century BCE have yielded liubo boards — the majority lacquered wood with carved TLV patterns picked out in contrasting colours. The distribution concentrates in Hubei province (around modern Jingzhou and Yunmeng), Jiangsu province (around Xuzhou), and Shandong province (around Linyi). Where tomb plans survive, the pattern is consistent: liubo boards cluster in compartments furnished as <strong>banquet rooms</strong>.</p>
+      <p>Selbitschka's systematic analysis of twenty-five tombs with legible plans shows that liubo boards are accompanied, again and again, by the same assemblage: tables and armrests, drinking vessels and ear-cups, food containers and serving utensils, and in the more elaborate burials — Mawangdui Tomb No. 3, Tianxingguan Tomb No. 2, Zhao Mo's tomb at Guangzhou — full sets of bronze bells, lithophones, and stringed instruments. The game was part of a feast, not a ritual.</p>
+      <p>Crucially, the objects <em>absent</em> from these spaces are as telling as those present. "Mountain censers" linked to immortality cults, TLV mirrors associated with divination, and daybooks (<em>rishu</em> 日書) used for determining auspicious days are <strong>largely missing</strong> from liubo assemblages. The few tombs that contain both a liubo board and a TLV mirror place the mirror in a separate compartment — a toiletry box, not a ritual space.</p>
+    </div>
+
+    <!-- Key sites -->
+    <div class="object-grid" style="margin-top:1.2rem;">
+      <div class="object-card">
+        <div class="obj-tag">Hunan · 168 BCE</div>
+        <div class="obj-title">Mawangdui Tomb No. 3</div>
+        <p>The finest known liubo set: lacquered case, twelve ivory tokens, eighteen smaller "upright eating" tokens, forty-two bamboo tally rods, and a unique eighteen-sided wooden die. Surrounded by bells, zithers, and dozens of food vessels in the northwestern compartment.</p>
+      </div>
+      <div class="object-card">
+        <div class="obj-tag">Guangdong · died 122 BCE</div>
+        <div class="obj-title">Zhao Mo, King of Nanyue</div>
+        <p>Four lacquered boards in two chambers. The eastern ancillary chamber held two boards alongside bronze bells, a lithophone, three zithers, seven mirrors (none TLV), and abundant food vessels. The only room in the tomb where music, feasting, and liubo fully converge.</p>
+      </div>
+      <div class="object-card">
+        <div class="obj-tag">Hubei · 217 BCE</div>
+        <div class="obj-title">Shuihudi Tomb No. 11</div>
+        <p>A local official's burial. One board, six lacquered-wood sticks, twelve bone tokens. The assemblage is modest by Mawangdui standards but follows the same pattern: board in the goods compartment alongside cups, food containers, and weapons — not ritual bronzes.</p>
+      </div>
+      <div class="object-card">
+        <div class="obj-tag">Hubei · c. 350–330 BCE</div>
+        <div class="obj-title">Tianxingguan Tomb No. 2</div>
+        <p>The earliest precisely dated board with a full accompanying set. Counter-clockwise L-pattern. Eighteen tokens (six stone, twelve bone). Accompanied by thirty-two bronze bells, a chime stone, and a drum rack — evidence that the game's social context was already formed by the Warring States period.</p>
+      </div>
+      <div class="object-card">
+        <div class="obj-tag">Gansu · 1st century CE</div>
+        <div class="obj-title">Mozuizi Tomb No. 48</div>
+        <p>A wooden diorama of two mustachioed liubo players was placed between the coffins of a husband and wife. The male occupant's affection for the game was represented as a miniature semiotic sign — a record of a living habit carried into the afterlife.</p>
+      </div>
+      <div class="object-card">
+        <div class="obj-tag">Guangxi · c. 3rd–2nd BCE</div>
+        <div class="obj-title">Putuo Bronze-Drum Burial</div>
+        <p>A four-legged bronze board and four seated bronze figurines (mat weights) were among roughly 270 bronze objects deposited in large bronze drums with a reburied skeleton. One of the very few bronze boards known, and one of the most unusual burial contexts for any ancient game.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: DIVINATION DEBATE -->
+  <section>
+    <div class="section-label">Historiography</div>
+    <h2 class="section-title">The Divination Debate</h2>
+    <div class="section-body">
+      <p>The claim that liubo was primarily a divination tool — or a pathway to immortality — rests on a small number of influential sources assembled selectively over nearly a century of scholarship. The bronze mirror found at Shaoxing, Zhejiang, with its inscription "immortals playing liubo" (仙人六博), was Yang Lien-sheng's point of departure in 1947 and has anchored the interpretation ever since. A wooden tablet from Yinwan Tomb No. 6 (c. 10 BCE) bearing a TLV diagram annotated as a divination chart appeared to confirm the link.</p>
+      <p>Selbitschka's 2016 study systematically dismantles the causation. Of the sixty-five liubo scenes compiled in Finsterbusch's comprehensive <em>Verzeichnis und Motivindex der Han-Darstellungen</em>, only nine depict supernatural beings — and six of those come from a single region of Sichuan in the Eastern Han period. The "immortal liubo" motif appears to have been a <strong>local Sichuanese topos</strong>, not a reflection of the game's meaning across Chinese society.</p>
+      <p>The Yinwan divination tablet demonstrates that the TLV <em>design</em> was adapted for divination, not that the game itself was divinatory. And the earliest verifiable TLV boards (from Yutaishan tombs, mid-4th century BCE) pre-date the earliest known diviner's boards by at least two centuries, inverting the direction of influence that some scholars had assumed.</p>
+    </div>
+
+    <!-- Key literary sources -->
+    <div style="margin-top:1.4rem;">
+      <div class="chinese-source">
+        <div class="chinese-original">博戲相奪錢財，若為平者：奪爵各一級，戍二歲。</div>
+        <div class="chinese-trans">Those who rob one another of money and property at liubo games, or those who act as referees at such competitions, are to be relieved of one rank of nobility; those without a noble rank are to serve two years of garrison duty.</div>
+        <div class="chinese-attr">Zhangjiashan Tomb No. 247 legal manuscript (律 lǜ), c. late 2nd century BCE — "Statute on Miscellaneous Matters"</div>
+      </div>
+
+      <div class="chinese-source" style="margin-top:.8rem;">
+        <div class="chinese-original">君獨不觀夫博者乎？或欲大投，或欲分功，此皆君之所明知也。</div>
+        <div class="chinese-trans">Lord, is it just you who does not watch the men that play liubo? They either desire the big cast or they wish to divide their achievements. All of this is clearly known to you!</div>
+        <div class="chinese-attr">Shiji 史記 79 — Cai Ze to Marquis Ying, using liubo tactics as political metaphor, c. 3rd century BCE context recorded by Sima Qian</div>
+      </div>
+    </div>
+
+    <div class="section-body" style="margin-top:1.2rem;">
+      <p>The literary record, read comprehensively rather than selectively, depicts liubo as a game people argued over, gambled at, played while drinking, and occasionally used to kill each other. Sima Qian's <em>Shiji</em> mentions it ten times; in eight of those ten instances it is simply a feasting game, a social setting for political conversations, or a backdrop to characterisation. The Han Feizi, Kongzi jiayu, and Yantie lun all criticise it as wasteful or immoral — exactly as one would criticise gambling, not as one would treat a sacred divinatory rite.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 5: TIMELINE -->
+  <section>
+    <div class="section-label">Chronology</div>
+    <h2 class="section-title">Five Centuries of Liubo</h2>
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-date">c. 350–300 BCE</div>
+        <div class="tl-content">
+          <div class="tl-name">Earliest verified boards</div>
+          <p>Yutaishan Tombs Nos. 197 and 314, Hubei province — lacquered wood boards with TLV pattern. Counter-clockwise L-elements. A possible earlier board from a late-5th-century BCE tomb at Qufu (jade and stone tokens, no board survives) may push origins back further.</p>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">217 BCE</div>
+        <div class="tl-content">
+          <div class="tl-name">Shuihudi Tomb No. 11</div>
+          <p>A local Qin-dynasty official buried with a board, six bamboo sticks, and twelve bone tokens — a minimal but complete set. A daybook (<em>rishu</em>) found elsewhere in the tomb was not associated with the liubo assemblage.</p>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">168 BCE</div>
+        <div class="tl-content">
+          <div class="tl-name">Mawangdui Tomb No. 3 — the benchmark</div>
+          <p>The most complete set ever recovered. The eighteen-sided wooden die is unique in the archaeological record. Ivory tokens, forty-two tally rods, and a custom lacquered case suggest a high-status game appreciated as a luxury object in its own right.</p>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">c. 10 BCE</div>
+        <div class="tl-content">
+          <div class="tl-name">Yinwan Tomb No. 6 divination tablet</div>
+          <p>A TLV diagram annotated with sexagenary cycle binoms and divination formulae. The most concrete evidence linking the TLV <em>design</em> to divination — but note that this post-dates the peak of actual board production by over a century.</p>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">1st–2nd century CE</div>
+        <div class="tl-content">
+          <div class="tl-name">Eastern Han proliferation in other media</div>
+          <p>Liubo scenes multiply on stone sarcophagi, pictorial bricks, and bronze mirrors — but predominantly in mortuary art contexts. Ceramic miniature dioramas of players become common grave goods. The game is still depicted as a social pastime in the vast majority of scenes.</p>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">c. 3rd century CE</div>
+        <div class="tl-content">
+          <div class="tl-name">Decline and displacement</div>
+          <p>Actual liubo boards virtually disappear from the archaeological record by the early 3rd century CE. Weiqi (Go), which had been gaining ground since the later Han, gradually displaces liubo as the prestige board game of the educated elite. The TLV pattern continues as a decorative motif on mirrors and tiles.</p>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">c. 531–591 CE</div>
+        <div class="tl-content">
+          <div class="tl-name">Yan Zhitui's retrospective distinction</div>
+          <p>Writing in the <em>Yanshi jiaxun</em> 顏氏家訓, Yan Zhitui distinguishes <em>da bo</em> (played with six sticks) from <em>xiao bo</em> (played with a die). By his time the game was already historical; his description is one of the last attempts to systematise rules that had been in common knowledge four centuries earlier.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament">· · · ✦ · · ·</div>
+
+</div><!-- /.main-col -->
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+  <div class="sidebar-card">
+    <h3>Quick Facts</h3>
+    <ul>
+      <li><strong>Chinese name:</strong> 六博 (<em>liubo</em>)</li>
+      <li><strong>Players:</strong> 2</li>
+      <li><strong>Pieces:</strong> 12 tokens (6 per player) + 2 fish at centre</li>
+      <li><strong>Movement:</strong> Six bamboo sticks (<em>da bo</em>) or die (<em>xiao bo</em>)</li>
+      <li><strong>Goal:</strong> Destroy the opponent's owl (梟) token</li>
+      <li><strong>Board:</strong> TLV pattern, typically 40–60 cm square, lacquered wood</li>
+      <li><strong>Peak period:</strong> Late Warring States through Western Han (c. 300 BCE – 9 CE)</li>
+      <li><strong>Related game:</strong> Saixi 塞戲 (clockwise L-pattern variant)</li>
+      <li><strong>Playable version:</strong> Not offered — rules are incompletely reconstructed</li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <h3>The Owl and the Fish</h3>
+    <p>The 12th-century commentary on the <em>Chuci</em> "Summons of the Soul" cites the long-lost <em>Classic of the Ancient Bo Game</em> (<em>Gubo jing</em> 古博經): each player commands six tokens, with the <strong>owl</strong> (梟 <em>xiāo</em>) as the chief piece charged with "eating" the two <strong>fish</strong> (魚 <em>yú</em>) at the board's centre. The owl's dual role — most valuable piece and primary target — generated the Han Feizi's pointed critique: to win at liubo, you must kill the thing you prize most. The Zhanguo ce identifies the owl with decisive political action: "if you wish it to eat, it eats; if you wish to grab, it grabs."</p>
+  </div>
+
+  <div class="sidebar-card">
+    <h3>Death by Board Game</h3>
+    <p>The <em>Shiji</em> records two fatal liubo incidents. Around 681 BCE, the minister Nangong Wan quarrelled with Duke Min of Song over the rules, then struck the duke with the board, breaking his neck — an overreaction triggered, the <em>Han shi waizhuan</em> adds, by the humiliation of losing in front of a female audience. Separately, the future Emperor Jing (then imperial heir apparent) killed the Prince of Wu during a game by seizing the board and striking him. Sima Qian uses both incidents not to condemn the game but to illuminate character: the victim's arrogance, the killer's cold political calculation.</p>
+  </div>
+
+  <div class="sidebar-card">
+    <h3>Key Sources</h3>
+    <ul class="ref-list">
+      <li>Selbitschka, A. (2016) "A Tricky Game: A Re-evaluation of Liubo 六博." <em>Oriens Extremus</em> 55, 105–166. <strong>Primary source for this page.</strong></li>
+      <li>Yang Lien-sheng (1947) "A Note on the So-called TLV Mirrors and the Game Liu-po." <em>Harvard Journal of Asiatic Studies</em> 9.3–4, 202–206.</li>
+      <li>Lewis, M.E. (2002) "Dicing and Divination in Early China." <em>Sino-Platonic Papers</em> 121.</li>
+      <li>Tseng, L. (2004) "Representation and Appropriation: Rethinking the TLV Mirror in Han China." <em>Early China</em> 29, 163–214.</li>
+      <li>Hunan sheng Bowuguan (2004) <em>Changsha Mawangdui er, sanhao Han mu</em>. Beijing: Wenwu.</li>
+      <li>Röllicke, H.-J. (1999) "Von 'Winkelwegen', 'Eulen' und 'Fischziehern'." <em>Board Game Studies</em> 2, 24–41.</li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <h3>The Arcade</h3>
+    <div class="arcade-links">
+      <a class="arcade-link" href="senet.html">Senet <span class="era">Egypt, ~3500 BCE</span></a>
+      <a class="arcade-link" href="mehen.html">Mehen <span class="era">Egypt, ~3650 BCE</span></a>
+      <a class="arcade-link" href="ur.html">Royal Game of Ur <span class="era">Mesopotamia, ~2600 BCE</span></a>
+      <a class="arcade-link" href="hounds-jackals.html">Hounds &amp; Jackals <span class="era">Egypt, ~2000 BCE</span></a>
+      <a class="arcade-link" href="pente-grammai.html">Pente Grammai <span class="era">Greece, ~600 BCE</span></a>
+      <a class="arcade-link" href="petteia.html">Petteia <span class="era">Greece/Rome, ~500 BCE</span></a>
+      <a class="arcade-link" href="terni-lapilli.html">Terni Lapilli <span class="era">Rome, ~100 BCE</span></a>
+      <a class="arcade-link" href="duodecim-scripta.html">Duodecim Scripta <span class="era">Rome, ~200 BCE</span></a>
+      <a class="arcade-link current" href="liubo.html">Liubo 六博 <span class="era">China, ~400 BCE</span></a>
+      <a class="arcade-link" href="nard.html">Nard <span class="era">Persia, 6th c. CE</span></a>
+    </div>
+  </div>
+
+</div><!-- /.sidebar -->
+</div><!-- /.page-wrap -->
+
+<footer class="footer">
+  <a href="index.html">archAIology</a> · archaiology.org · © 2026 ·
+  Primary source: Selbitschka, "A Tricky Game," <em>Oriens Extremus</em> 55 (2016)
+</footer>
+
+</body>
+</html>
