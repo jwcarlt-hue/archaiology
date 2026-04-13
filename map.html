@@ -161,6 +161,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   color:#e8dfc8!important; font-size:.68rem!important; padding:4px 8px!important;
   border-radius:2px!important; white-space:nowrap; max-width:280px; white-space:normal; }
 .lang-tip::before { display:none!important; }
+
+.dare-tip { background:rgba(8,11,18,.93)!important; border:1px solid rgba(192,90,48,.3)!important;
+  color:#e8dfc8!important; font-size:.68rem!important; padding:4px 8px!important;
+  border-radius:2px!important; white-space:nowrap; max-width:260px; white-space:normal; }
+.dare-tip::before { display:none!important; }
 </style>
 </head>
 <body>
@@ -299,6 +304,29 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:4px;">47 languages · Glottolog CC-BY 4.0</div>
     </div>
   </div>
+  <div class="ctrl-card">
+    <div class="ctrl-label">DARE Sacred Sites</div>
+    <div class="ctrl-row" style="display:flex;flex-direction:column;gap:4px;margin-top:.2rem;">
+      <button class="filter-chip" id="dare-mithraeum-btn" onclick="toggleDareMithraeum()">⬡ Mithraea</button>
+      <button class="filter-chip" id="dare-apollo-btn" onclick="toggleDareApollo()">☀ Apollo Temples</button>
+      <button class="filter-chip" id="dare-athena-btn" onclick="toggleDareAthena()">🦉 Athena Temples</button>
+    </div>
+    <div id="dare-legend" style="display:none;margin-top:6px;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#c05a30;flex-shrink:0"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Mithraeum <span id="dare-mithraeum-count" style="color:var(--ochre)"></span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#d4a84b;flex-shrink:0"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Temple of Apollo <span id="dare-apollo-count" style="color:var(--ochre)"></span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#7ab8c0;flex-shrink:0"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Temple of Athena <span id="dare-athena-count" style="color:var(--ochre)"></span></span>
+      </div>
+      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:4px;">DARE · CC BY-SA 3.0 · imperium.ahlfeldt.se</div>
+    </div>
+  </div>
 </div>
 
 <div class="detail-panel" id="detailPanel">
@@ -341,7 +369,7 @@ function getTier(site, mentionCount) {
   if (refs > 500 || ments > 5) return 1;
   if (refs > 50  || ments > 1) return 2;
   if (refs > 0   || ments > 0) return 3;
-  if (['mithraic','adriatic','black_sea'].includes(site.subregion)) return 4;
+  if (['adriatic','black_sea'].includes(site.subregion)) return 4;
   return 3;
 }
 
@@ -823,6 +851,130 @@ function toggleLangs() {
     langOn = true;
   }
 }
+
+
+// ── DARE Sacred Sites Layers ──────────────────────────────────
+// Each ftype fetches the full empire bbox once, then caches.
+// DARE API: CC BY-SA 3.0, imperium.ahlfeldt.se
+
+const DARE_API = 'http://imperium.ahlfeldt.se/api/geojson.php';
+// Wide bbox covering the Roman world: Atlantic → Mesopotamia, Sahara → Scotland
+const DARE_BBOX = '-15,20,55,60';
+
+const DARE_CONFIG = {
+  mithraeum: { color:'#c05a30', label:'Mithraeum',      btnId:'dare-mithraeum-btn', countId:'dare-mithraeum-count', offText:'⬡ Mithraea',       onText:'⬡ Hide Mithraea'       },
+  apollo:    { color:'#d4a84b', label:'Temple of Apollo', btnId:'dare-apollo-btn',    countId:'dare-apollo-count',    offText:'☀ Apollo Temples', onText:'☀ Hide Apollo'         },
+  athena:    { color:'#7ab8c0', label:'Temple of Athena', btnId:'dare-athena-btn',    countId:'dare-athena-count',    offText:'🦉 Athena Temples', onText:'🦉 Hide Athena'        },
+};
+
+// State per layer type
+const dareState = {
+  mithraeum: { layer:null, on:false, loading:false },
+  apollo:    { layer:null, on:false, loading:false },
+  athena:    { layer:null, on:false, loading:false },
+};
+
+function dareAnyOn() {
+  return Object.values(dareState).some(s => s.on);
+}
+
+async function fetchDareLayer(ftype) {
+  const cfg = DARE_CONFIG[ftype];
+  const st  = dareState[ftype];
+  if (st.layer) return st.layer; // cached
+  if (st.loading) return null;
+  st.loading = true;
+
+  const btn = document.getElementById(cfg.btnId);
+  btn.textContent = '⏳ Loading…';
+  btn.disabled = true;
+
+  try {
+    const url = `${DARE_API}?bbox=${DARE_BBOX}&ftype=${ftype}`;
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(`DARE API ${resp.status}`);
+    const gj = await resp.json();
+
+    const g = L.layerGroup();
+    const features = gj.features || [];
+
+    features.forEach(f => {
+      if (!f.geometry || f.geometry.type !== 'Point') return;
+      const [lng, lat] = f.geometry.coordinates;
+      const props = f.properties || {};
+      const name  = props.name || props.ancient_name || 'Unknown';
+      const anc   = props.ancient_name ? `<br><span style="color:var(--ochre);font-style:italic">${props.ancient_name}</span>` : '';
+      const ctry  = props.country ? `<br><span style="color:rgba(240,234,216,.5)">${props.country}</span>` : '';
+
+      const r = 6;
+      const icon = L.divIcon({
+        html: `<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+6}" height="${r*2+6}">
+          <circle cx="${r+3}" cy="${r+3}" r="${r}" fill="${cfg.color}" fill-opacity=".88"
+            stroke="#fff" stroke-width="1.5" stroke-opacity=".5"/>
+          <circle cx="${r+3}" cy="${r+3}" r="${r+2.5}" fill="none"
+            stroke="${cfg.color}" stroke-width="1" stroke-opacity=".3"/>
+        </svg>`,
+        className: '',
+        iconSize:   [r*2+6, r*2+6],
+        iconAnchor: [r+3, r+3],
+      });
+
+      L.marker([lat, lng], {icon})
+        .bindTooltip(
+          `<b>${name}</b>${anc}<br><span style="color:${cfg.color};font-size:.6rem">${cfg.label}</span>${ctry}`,
+          {sticky:true, className:'dare-tip'}
+        )
+        .addTo(g);
+    });
+
+    // Update count badge
+    const countEl = document.getElementById(cfg.countId);
+    if (countEl) countEl.textContent = `(${features.length})`;
+
+    st.layer = g;
+    return g;
+  } catch(err) {
+    console.error(`DARE fetch error [${ftype}]:`, err);
+    btn.textContent = cfg.offText;
+    btn.disabled = false;
+    btn.title = `Load failed: ${err.message}`;
+    return null;
+  } finally {
+    st.loading = false;
+  }
+}
+
+function _toggleDareType(ftype) {
+  const cfg = DARE_CONFIG[ftype];
+  const st  = dareState[ftype];
+  const btn = document.getElementById(cfg.btnId);
+  const leg = document.getElementById('dare-legend');
+
+  if (st.on) {
+    // Turn off
+    if (st.layer) map.removeLayer(st.layer);
+    st.on = false;
+    btn.textContent = cfg.offText;
+    btn.classList.remove('active');
+    btn.disabled = false;
+    if (!dareAnyOn()) leg.style.display = 'none';
+  } else {
+    // Turn on — fetch if needed
+    fetchDareLayer(ftype).then(layer => {
+      if (!layer) return;
+      layer.addTo(map);
+      st.on = true;
+      btn.textContent = cfg.onText;
+      btn.classList.add('active');
+      btn.disabled = false;
+      leg.style.display = 'block';
+    });
+  }
+}
+
+function toggleDareMithraeum() { _toggleDareType('mithraeum'); }
+function toggleDareApollo()    { _toggleDareType('apollo');    }
+function toggleDareAthena()    { _toggleDareType('athena');    }
 
 </script>
 </body>
