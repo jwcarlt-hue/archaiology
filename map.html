@@ -251,6 +251,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <button class="filter-chip tile-chip" data-tile="Satellite" onclick="_setTile('Satellite')">Satellite</button>
       <button class="filter-chip tile-chip" data-tile="Light" onclick="_setTile('Light')">Light</button>
       <button class="filter-chip tile-chip" data-tile="Dark" onclick="_setTile('Dark')">Dark</button>
+      <button class="filter-chip tile-chip" data-tile="DARE" onclick="_setTile('DARE')">DARE</button>
     </div>
   </div>
   <div class="ctrl-card">
@@ -627,6 +628,9 @@ async function init() {
       attribution:'© CARTO / OSM', subdomains:'abcd', maxZoom:19 }),
     'Dark':     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       attribution:'© CARTO / OSM', subdomains:'abcd', maxZoom:19 }),
+    'DARE':     L.tileLayer('https://dh.gu.se/tiles/imperium/{z}/{x}/{y}.png', {
+      attribution:'© <a href="https://imperium.ahlfeldt.se">Digital Atlas of the Roman Empire</a>, J. Åhlfeldt, Univ. of Gothenburg, CC BY 4.0',
+      minZoom:4, maxZoom:11 }),
   };
   let activeTile = TILES['Antique'];
   activeTile.addTo(map);
