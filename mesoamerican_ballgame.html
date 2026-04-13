@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ōllamalīztli — Mesoamerican Ballgame · archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── ROOT ── */
+:root {
+  --void: #060408;
+  --stone: #18130f;
+  --stone2: #221b15;
+  --stone3: #2e2418;
+  --jade: #1e5c3a;
+  --jade-lt: #2d8a56;
+  --jade-glow: #4db87a;
+  --gold: #c8881a;
+  --gold-lt: #e8a830;
+  --gold-glow: #f5c050;
+  --terra: #8b2e0c;
+  --terra-lt: #c44418;
+  --blood: #6b0f0f;
+  --blood-lt: #b01818;
+  --cream: #f0e8d8;
+  --parch: #d8c8a8;
+  --ash: #7a6a58;
+  --rule: rgba(255,255,255,.06);
+  --serif: 'Cinzel', serif;
+  --deco: 'Cinzel Decorative', serif;
+  --body: 'Crimson Pro', Georgia, serif;
+  --mono: 'DM Mono', monospace;
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--void);
+  color: var(--cream);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── CARVED STONE TEXTURE ── */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(255,255,255,.012) 47px, rgba(255,255,255,.012) 48px),
+    repeating-linear-gradient(90deg, transparent, transparent 47px, rgba(255,255,255,.008) 47px, rgba(255,255,255,.008) 48px);
+}
+
+/* ── MASTHEAD ── */
+.masthead {
+  position:relative;
+  z-index:10;
+  background:var(--stone);
+  border-bottom:1px solid var(--rule);
+  padding:0 1.5rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:48px;
+}
+.logo { font-family:var(--serif); font-size:1rem; font-weight:900; color:var(--cream); letter-spacing:.06em; text-decoration:none; }
+.logo span { color:var(--gold); font-style:italic; }
+.nav-back { font-family:var(--mono); font-size:.58rem; color:var(--ash); letter-spacing:.1em; text-decoration:none; transition:color .2s; }
+.nav-back:hover { color:var(--gold-lt); }
+
+/* ── PAGE LAYOUT ── */
+.page { position:relative; z-index:1; max-width:1400px; margin:0 auto; padding:0 1.5rem 4rem; }
+
+/* ── HERO BANNER ── */
+.game-hero {
+  text-align:center;
+  padding:3rem 2rem 2rem;
+  position:relative;
+}
+.game-hero::after {
+  content:'';
+  position:absolute;
+  bottom:0; left:10%; right:10%;
+  height:1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.hero-eyebrow {
+  font-family:var(--mono);
+  font-size:.58rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--jade-glow);
+  margin-bottom:.8rem;
+}
+.hero-title {
+  font-family:var(--deco);
+  font-size:clamp(1.8rem,5vw,3.2rem);
+  font-weight:700;
+  color:var(--gold-glow);
+  letter-spacing:.08em;
+  line-height:1.1;
+  text-shadow: 0 0 60px rgba(200,136,26,.4);
+  margin-bottom:.4rem;
+}
+.hero-subtitle {
+  font-family:var(--serif);
+  font-size:1rem;
+  color:var(--ash);
+  letter-spacing:.12em;
+  font-weight:400;
+}
+
+/* ── MAIN GAME GRID ── */
+.game-grid {
+  display:grid;
+  grid-template-columns:260px 1fr 260px;
+  gap:1.5px;
+  background:var(--rule);
+  margin-top:2rem;
+}
+@media(max-width:900px) { .game-grid { grid-template-columns:1fr; } }
+
+/* ── PANELS ── */
+.panel {
+  background:var(--stone);
+  padding:1rem;
+}
+.panel-title {
+  font-family:var(--serif);
+  font-size:.65rem;
+  font-weight:600;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--gold);
+  padding-bottom:.5rem;
+  margin-bottom:.8rem;
+  border-bottom:1px solid rgba(200,136,26,.2);
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+}
+.panel-title::before { content:''; width:12px; height:1px; background:var(--gold); }
+
+/* ── PLAYER CARD ── */
+.player-card {
+  background:var(--stone2);
+  border:1px solid rgba(255,255,255,.07);
+  margin-bottom:.6rem;
+  cursor:pointer;
+  transition:all .15s;
+  position:relative;
+  overflow:hidden;
+}
+.player-card::before {
+  content:'';
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:3px;
+  background:var(--jade-glow);
+  opacity:0;
+  transition:opacity .15s;
+}
+.player-card:hover::before,
+.player-card.active::before { opacity:1; }
+.player-card:hover { background:var(--stone3); }
+.player-card.active { background:rgba(30,92,58,.2); border-color:rgba(77,184,122,.2); }
+.player-card.exhausted { opacity:.5; }
+.player-card.injured { border-color:rgba(176,24,24,.4); }
+
+.pc-header {
+  padding:.5rem .7rem .3rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.4rem;
+}
+.pc-name {
+  font-family:var(--serif);
+  font-size:.78rem;
+  font-weight:600;
+  color:var(--cream);
+  letter-spacing:.04em;
+}
+.pc-role {
+  font-family:var(--mono);
+  font-size:.52rem;
+  color:var(--ash);
+  letter-spacing:.06em;
+}
+.pc-stats {
+  padding:.3rem .7rem .5rem;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:2px;
+}
+.pc-stat {
+  text-align:center;
+}
+.pc-stat-val {
+  font-family:var(--mono);
+  font-size:.75rem;
+  font-weight:500;
+  color:var(--gold-lt);
+  display:block;
+}
+.pc-stat-lbl {
+  font-family:var(--mono);
+  font-size:.45rem;
+  color:var(--ash);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.pc-end-bar {
+  margin:.3rem .7rem .5rem;
+  height:3px;
+  background:rgba(255,255,255,.08);
+  border-radius:2px;
+  overflow:hidden;
+}
+.pc-end-fill {
+  height:100%;
+  background:var(--jade-glow);
+  transition:width .4s;
+  border-radius:2px;
+}
+.pc-badges {
+  padding:0 .7rem .5rem;
+  display:flex;
+  gap:.3rem;
+  flex-wrap:wrap;
+}
+.badge {
+  font-family:var(--mono);
+  font-size:.48rem;
+  font-weight:500;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:.1rem .35rem;
+  border-radius:2px;
+}
+.badge-role { background:rgba(30,92,58,.35); color:var(--jade-glow); }
+.badge-special { background:rgba(200,136,26,.2); color:var(--gold-lt); }
+.badge-injury { background:rgba(176,24,24,.25); color:#e05050; }
+.badge-marked { background:rgba(107,15,15,.4); color:#ff6060; animation:pulse-red 1s ease-in-out infinite; }
+@keyframes pulse-red { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+/* ── COURT / CENTER PANEL ── */
+.court-panel {
+  background:var(--stone);
+  display:flex;
+  flex-direction:column;
+}
+
+/* scoreboard */
+.scoreboard {
+  background:var(--stone2);
+  border-bottom:1px solid var(--rule);
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  padding:.8rem 1.2rem;
+  gap:1rem;
+}
+.sb-team { text-align:center; }
+.sb-name {
+  font-family:var(--serif);
+  font-size:.7rem;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--ash);
+  margin-bottom:.3rem;
+}
+.sb-score {
+  font-family:var(--deco);
+  font-size:2.5rem;
+  font-weight:700;
+  color:var(--gold-glow);
+  line-height:1;
+  text-shadow:0 0 30px rgba(200,136,26,.5);
+}
+.sb-score.home { color:var(--jade-glow); text-shadow:0 0 30px rgba(77,184,122,.5); }
+.sb-sets {
+  font-family:var(--mono);
+  font-size:.6rem;
+  color:var(--ash);
+  margin-top:.2rem;
+  letter-spacing:.08em;
+}
+.sb-divider { text-align:center; }
+.sb-phase {
+  font-family:var(--mono);
+  font-size:.55rem;
+  color:var(--jade-glow);
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  display:block;
+  margin-bottom:.3rem;
+}
+.sb-turn {
+  font-family:var(--serif);
+  font-size:1.4rem;
+  color:var(--ash);
+}
+.sb-actions-left {
+  font-family:var(--mono);
+  font-size:.58rem;
+  color:var(--gold);
+  letter-spacing:.1em;
+  margin-top:.3rem;
+}
+
+/* court SVG area */
+.court-svg-wrap {
+  padding:1.2rem;
+  display:flex;
+  justify-content:center;
+}
+#court-svg {
+  width:100%;
+  max-width:500px;
+  height:200px;
+}
+
+/* status bar */
+.status-bar {
+  background:rgba(0,0,0,.4);
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  padding:.6rem 1.2rem;
+  font-family:var(--body);
+  font-size:.82rem;
+  font-style:italic;
+  color:var(--parch);
+  min-height:50px;
+  line-height:1.5;
+}
+
+/* action buttons */
+.action-area {
+  padding:1rem 1.2rem;
+  display:flex;
+  flex-direction:column;
+  gap:.7rem;
+}
+.action-row {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:.5rem;
+}
+.action-row.wide { grid-template-columns:repeat(2,1fr); }
+
+.action-btn {
+  background:var(--stone2);
+  border:1px solid rgba(255,255,255,.08);
+  color:var(--cream);
+  font-family:var(--serif);
+  font-size:.68rem;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:.6rem .5rem;
+  cursor:pointer;
+  transition:all .15s;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.action-btn::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:var(--gold);
+  opacity:0;
+  transition:opacity .15s;
+}
+.action-btn:hover:not(:disabled) { border-color:var(--gold); color:var(--gold-glow); }
+.action-btn:hover:not(:disabled)::after { opacity:.05; }
+.action-btn:disabled { opacity:.3; cursor:not-allowed; }
+.action-btn.primary { border-color:rgba(77,184,122,.3); color:var(--jade-glow); }
+.action-btn.primary:hover:not(:disabled) { border-color:var(--jade-glow); background:rgba(30,92,58,.2); }
+.action-btn.danger { border-color:rgba(176,24,24,.3); color:#e05050; }
+.action-btn.danger:hover:not(:disabled) { border-color:#e05050; background:rgba(107,15,15,.2); }
+.action-btn.gold { border-color:rgba(200,136,26,.4); color:var(--gold-lt); }
+.action-btn.gold:hover:not(:disabled) { border-color:var(--gold-glow); background:rgba(200,136,26,.12); }
+
+.action-btn .btn-pts {
+  display:block;
+  font-family:var(--mono);
+  font-size:.5rem;
+  color:var(--ash);
+  margin-top:.2rem;
+  letter-spacing:.06em;
+  font-weight:400;
+  text-transform:none;
+}
+
+.btn-section-label {
+  font-family:var(--mono);
+  font-size:.52rem;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--ash);
+  margin-bottom:.2rem;
+}
+
+/* ── GAME LOG ── */
+.game-log {
+  border-top:1px solid var(--rule);
+  flex:1;
+  overflow-y:auto;
+  max-height:200px;
+  padding:.6rem 1.2rem;
+  scrollbar-width:thin;
+  scrollbar-color:var(--stone3) transparent;
+}
+.log-entry {
+  font-family:var(--body);
+  font-size:.75rem;
+  color:rgba(240,232,216,.55);
+  padding:.25rem 0;
+  border-bottom:1px solid rgba(255,255,255,.03);
+  line-height:1.45;
+  display:flex;
+  gap:.5rem;
+  align-items:baseline;
+}
+.log-entry:last-child { border-bottom:none; }
+.log-turn {
+  font-family:var(--mono);
+  font-size:.5rem;
+  color:var(--ash);
+  flex-shrink:0;
+  letter-spacing:.06em;
+}
+.log-entry.score { color:var(--jade-glow); }
+.log-entry.enemy-score { color:var(--terra-lt); }
+.log-entry.critical { color:var(--gold-lt); }
+.log-entry.injury { color:#e05050; }
+.log-entry.ritual { color:#c080e0; }
+.log-entry.cosmic { color:var(--gold-glow); }
+.log-entry.phase { color:var(--gold); font-style:italic; font-size:.7rem; }
+
+/* ── RIGHT PANEL ── */
+.cosmic-track {
+  background:var(--stone2);
+  border:1px solid rgba(255,255,255,.06);
+  padding:.7rem;
+  margin-bottom:.8rem;
+}
+.ct-label {
+  font-family:var(--mono);
+  font-size:.52rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:.5rem;
+}
+.ct-bar {
+  height:6px;
+  background:rgba(255,255,255,.06);
+  border-radius:3px;
+  overflow:hidden;
+  margin-bottom:.3rem;
+}
+.ct-fill {
+  height:100%;
+  border-radius:3px;
+  transition:width .5s;
+  background: linear-gradient(90deg, var(--jade), var(--gold));
+}
+.ct-value {
+  font-family:var(--mono);
+  font-size:.6rem;
+  color:var(--ash);
+  text-align:right;
+}
+
+.stakes-card {
+  background:var(--stone2);
+  border:1px solid rgba(255,255,255,.06);
+  padding:.7rem;
+  margin-bottom:.8rem;
+}
+.stakes-type {
+  font-family:var(--serif);
+  font-size:.85rem;
+  font-weight:600;
+  color:var(--gold-lt);
+  margin-bottom:.2rem;
+}
+.stakes-desc {
+  font-family:var(--body);
+  font-size:.72rem;
+  color:var(--ash);
+  line-height:1.4;
+  font-style:italic;
+}
+
+.moon-track {
+  background:var(--stone2);
+  border:1px solid rgba(255,255,255,.06);
+  padding:.7rem;
+  margin-bottom:.8rem;
+  display:flex;
+  gap:.4rem;
+  align-items:center;
+}
+.moon-icon { font-size:1.2rem; }
+.moon-info { flex:1; }
+.moon-phase {
+  font-family:var(--serif);
+  font-size:.78rem;
+  color:var(--cream);
+  font-weight:600;
+}
+.moon-effect {
+  font-family:var(--body);
+  font-size:.65rem;
+  color:var(--ash);
+  font-style:italic;
+}
+
+.deity-card {
+  background:var(--stone2);
+  border:1px solid rgba(200,136,26,.15);
+  padding:.7rem;
+  margin-bottom:.8rem;
+}
+.deity-name {
+  font-family:var(--serif);
+  font-size:.8rem;
+  font-weight:600;
+  color:var(--gold-lt);
+  margin-bottom:.2rem;
+}
+.deity-effect {
+  font-family:var(--body);
+  font-size:.68rem;
+  color:var(--ash);
+  font-style:italic;
+}
+.deity-btn {
+  margin-top:.5rem;
+  width:100%;
+  background:rgba(200,136,26,.1);
+  border:1px solid rgba(200,136,26,.3);
+  color:var(--gold);
+  font-family:var(--serif);
+  font-size:.6rem;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:.4rem;
+  cursor:pointer;
+  transition:all .15s;
+}
+.deity-btn:hover:not(:disabled) { background:rgba(200,136,26,.2); }
+.deity-btn:disabled { opacity:.35; cursor:not-allowed; }
+
+/* opponent action display */
+.opp-turn-banner {
+  background:rgba(139,46,12,.15);
+  border:1px solid rgba(196,68,24,.2);
+  padding:.6rem 1.2rem;
+  font-family:var(--serif);
+  font-size:.82rem;
+  color:var(--terra-lt);
+  font-weight:600;
+  letter-spacing:.06em;
+  text-align:center;
+  display:none;
+}
+
+/* ── MODALS ── */
+.modal-overlay {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  z-index:1000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:var(--stone);
+  border:1px solid rgba(200,136,26,.3);
+  max-width:520px;
+  width:100%;
+  padding:2rem;
+  position:relative;
+}
+.modal-title {
+  font-family:var(--deco);
+  font-size:1.4rem;
+  color:var(--gold-glow);
+  margin-bottom:.8rem;
+  letter-spacing:.06em;
+}
+.modal-body {
+  font-family:var(--body);
+  font-size:.92rem;
+  color:var(--parch);
+  line-height:1.65;
+  margin-bottom:1.4rem;
+}
+.modal-body strong { color:var(--gold-lt); }
+.modal-body .big-roll {
+  font-family:var(--deco);
+  font-size:3rem;
+  color:var(--gold-glow);
+  text-align:center;
+  display:block;
+  margin:.8rem 0;
+  text-shadow:0 0 40px rgba(200,136,26,.6);
+}
+.modal-btns { display:flex; gap:.8rem; flex-wrap:wrap; }
+.modal-btn {
+  flex:1;
+  background:rgba(200,136,26,.15);
+  border:1px solid rgba(200,136,26,.4);
+  color:var(--gold-lt);
+  font-family:var(--serif);
+  font-size:.75rem;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:.7rem 1.2rem;
+  cursor:pointer;
+  transition:all .15s;
+  text-align:center;
+}
+.modal-btn:hover { background:rgba(200,136,26,.28); }
+.modal-btn.primary { background:rgba(30,92,58,.3); border-color:rgba(77,184,122,.4); color:var(--jade-glow); }
+.modal-btn.primary:hover { background:rgba(30,92,58,.5); }
+
+/* ── DICE ANIMATION ── */
+.dice-wrap {
+  display:flex;
+  justify-content:center;
+  gap:1rem;
+  margin:1rem 0;
+}
+.die {
+  width:52px; height:52px;
+  background:var(--stone2);
+  border:2px solid var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--deco);
+  font-size:1.6rem;
+  color:var(--gold-glow);
+  animation:roll .4s ease-out;
+}
+@keyframes roll {
+  0% { transform:rotate(0deg) scale(.6); opacity:0; }
+  60% { transform:rotate(180deg) scale(1.15); }
+  100% { transform:rotate(360deg) scale(1); opacity:1; }
+}
+
+/* result bands */
+.result-band {
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:.72rem;
+  font-weight:500;
+  padding:.2rem .6rem;
+  border-radius:2px;
+  margin:.3rem 0;
+}
+.rb-success { background:rgba(30,92,58,.4); color:var(--jade-glow); }
+.rb-fail { background:rgba(139,46,12,.4); color:var(--terra-lt); }
+.rb-critical { background:rgba(200,136,26,.3); color:var(--gold-glow); }
+.rb-fumble { background:rgba(107,15,15,.4); color:#e05050; }
+
+/* ── MATCH OVER ── */
+.match-over {
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:400px;
+  text-align:center;
+  padding:3rem;
+}
+.match-over.show { display:flex; }
+.over-title {
+  font-family:var(--deco);
+  font-size:2.5rem;
+  color:var(--gold-glow);
+  text-shadow:0 0 60px rgba(200,136,26,.6);
+  margin-bottom:.8rem;
+  letter-spacing:.1em;
+}
+.over-subtitle {
+  font-family:var(--serif);
+  font-size:1rem;
+  color:var(--ash);
+  margin-bottom:2rem;
+  letter-spacing:.08em;
+}
+.over-stakes {
+  font-family:var(--body);
+  font-size:.9rem;
+  color:var(--parch);
+  max-width:420px;
+  line-height:1.7;
+  font-style:italic;
+  margin-bottom:2rem;
+}
+
+/* ── SELECTOR ── */
+.player-select-hint {
+  font-family:var(--body);
+  font-size:.72rem;
+  color:var(--jade-glow);
+  font-style:italic;
+  margin-bottom:.5rem;
+  padding:.4rem .5rem;
+  background:rgba(30,92,58,.1);
+  border:1px solid rgba(77,184,122,.15);
+}
+
+/* misc */
+.divider {
+  height:1px;
+  background:linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity:.3;
+  margin:1rem 0;
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+  <a href="mesoamerican_ballcourt_league.html" class="nav-back">← MBL League</a>
+</header>
+
+<div class="page">
+  <div class="game-hero">
+    <div class="hero-eyebrow">Ōllamalīztli · The Sacred Game · archaiology.org</div>
+    <div class="hero-title">Mesoamerican Ballgame</div>
+    <div class="hero-subtitle">Strat-o-Matic Engine · 2d6 + Stat vs. TN</div>
+  </div>
+
+  <div class="game-grid">
+
+    <!-- LEFT: HOME TEAM (Edzna) -->
+    <div class="panel" id="home-panel">
+      <div class="panel-title" id="home-team-label">Edzna Squad</div>
+      <div id="home-roster"></div>
+    </div>
+
+    <!-- CENTER: COURT -->
+    <div class="court-panel" id="court-panel">
+
+      <!-- scoreboard -->
+      <div class="scoreboard">
+        <div class="sb-team">
+          <div class="sb-name" id="sb-home-name">Edzna</div>
+          <div class="sb-score home" id="sb-home-score">0</div>
+          <div class="sb-sets" id="sb-home-sets">Sets: 0</div>
+        </div>
+        <div class="sb-divider">
+          <span class="sb-phase" id="sb-phase">Serve</span>
+          <div class="sb-turn" id="sb-turn">⚫</div>
+          <div class="sb-actions-left" id="sb-actions">● ● ●</div>
+        </div>
+        <div class="sb-team">
+          <div class="sb-name" id="sb-away-name">Tenochtitlan</div>
+          <div class="sb-score" id="sb-away-score">0</div>
+          <div class="sb-sets" id="sb-away-sets">Sets: 0</div>
+        </div>
+      </div>
+
+      <!-- court diagram -->
+      <div class="court-svg-wrap">
+        <svg id="court-svg" viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- court outline -->
+          <rect x="20" y="20" width="460" height="160" rx="2"
+                fill="none" stroke="rgba(200,136,26,.35)" stroke-width="1.5"/>
+          <!-- center alley -->
+          <line x1="250" y1="20" x2="250" y2="180" stroke="rgba(200,136,26,.2)" stroke-width="1" stroke-dasharray="4,4"/>
+          <!-- end zones -->
+          <rect x="20" y="20" width="80" height="160" fill="rgba(200,136,26,.04)" stroke="rgba(200,136,26,.15)" stroke-width="1"/>
+          <rect x="400" y="20" width="80" height="160" fill="rgba(200,136,26,.04)" stroke="rgba(200,136,26,.15)" stroke-width="1"/>
+          <!-- ring positions -->
+          <circle cx="250" cy="100" r="18" fill="none" stroke="rgba(77,184,122,.5)" stroke-width="2"/>
+          <circle cx="250" cy="100" r="8" fill="none" stroke="rgba(77,184,122,.3)" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="250" y="104" text-anchor="middle" fill="rgba(77,184,122,.5)" font-size="9" font-family="Cinzel">RING</text>
+          <!-- markers -->
+          <text x="250" y="35" text-anchor="middle" fill="rgba(200,136,26,.6)" font-size="8" font-family="DM Mono">▲ A</text>
+          <text x="250" y="175" text-anchor="middle" fill="rgba(200,136,26,.6)" font-size="8" font-family="DM Mono">▼ A</text>
+          <text x="60" y="104" text-anchor="middle" fill="rgba(200,136,26,.5)" font-size="8" font-family="DM Mono">◆ C</text>
+          <text x="440" y="104" text-anchor="middle" fill="rgba(200,136,26,.5)" font-size="8" font-family="DM Mono">◆ C</text>
+          <!-- B markers ring zone -->
+          <text x="185" y="104" text-anchor="middle" fill="rgba(176,24,24,.5)" font-size="8" font-family="DM Mono">◉ B</text>
+          <text x="315" y="104" text-anchor="middle" fill="rgba(176,24,24,.5)" font-size="8" font-family="DM Mono">◉ B</text>
+          <!-- court labels -->
+          <text x="60" y="15" text-anchor="middle" fill="rgba(77,184,122,.4)" font-size="7" font-family="Cinzel">HOME</text>
+          <text x="440" y="15" text-anchor="middle" fill="rgba(196,68,24,.4)" font-size="7" font-family="Cinzel">AWAY</text>
+          <!-- ball position (dynamic) -->
+          <circle id="ball" cx="250" cy="100" r="7" fill="rgba(240,232,216,.85)"
+                  stroke="var(--gold)" stroke-width="1.5"
+                  style="filter:drop-shadow(0 0 6px rgba(200,136,26,.8))"/>
+          <!-- court TN label -->
+          <text x="250" y="195" text-anchor="middle" fill="rgba(200,136,26,.4)" font-size="8" font-family="DM Mono" id="court-tn-label">Court TN: 7 · Edzna · Ritual · Narrow</text>
+        </svg>
+      </div>
+
+      <!-- opponent banner -->
+      <div class="opp-turn-banner" id="opp-banner">⚔ Tenochtitlan is playing…</div>
+
+      <!-- status -->
+      <div class="status-bar" id="status-bar">
+        Select your active player, then choose an action. The ball rests at center court.
+      </div>
+
+      <!-- actions -->
+      <div class="action-area" id="action-area">
+
+        <div class="player-select-hint" id="select-hint" style="display:none">
+          Select a player from your roster to activate them ↑
+        </div>
+
+        <div class="btn-section-label">⚔ Offensive Actions</div>
+        <div class="action-row">
+          <button class="action-btn primary" onclick="G.action('shoot_ring')" id="btn-ring">
+            Ring Shot
+            <span class="btn-pts">PWR + 2d6 · 3 pts</span>
+          </button>
+          <button class="action-btn" onclick="G.action('shoot_wall')" id="btn-wall">
+            Wall Strike
+            <span class="btn-pts">AGI + 2d6 · 1 pt</span>
+          </button>
+          <button class="action-btn" onclick="G.action('pass')" id="btn-pass">
+            Wall Pass
+            <span class="btn-pts">AGI + 2d6 · setup</span>
+          </button>
+        </div>
+
+        <div class="btn-section-label">🛡 Defensive / Other</div>
+        <div class="action-row">
+          <button class="action-btn" onclick="G.action('block')" id="btn-block">
+            Block
+            <span class="btn-pts">DR + 2d6 · react</span>
+          </button>
+          <button class="action-btn gold" onclick="G.action('ritual')" id="btn-ritual">
+            Ritual Action
+            <span class="btn-pts">RF + 2d6 &gt; 10 · 2 pts</span>
+          </button>
+          <button class="action-btn" onclick="G.action('momentum')" id="btn-momentum">
+            Momentum Play
+            <span class="btn-pts">MS + 2d6 vs 9</span>
+          </button>
+        </div>
+
+        <div class="action-row wide" style="margin-top:.3rem">
+          <button class="action-btn" onclick="G.action('move')" id="btn-move">
+            Move
+            <span class="btn-pts">no roll · repositions</span>
+          </button>
+          <button class="action-btn danger" onclick="G.endTurn()" id="btn-end-turn">
+            End Turn →
+            <span class="btn-pts">pass remaining actions</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- game log -->
+      <div class="game-log" id="game-log"></div>
+
+    </div>
+
+    <!-- RIGHT: STATS / STAKES -->
+    <div class="panel" id="right-panel">
+
+      <div class="panel-title">Match Context</div>
+
+      <div class="moon-track" id="moon-track">
+        <div class="moon-icon" id="moon-icon">🌕</div>
+        <div class="moon-info">
+          <div class="moon-phase" id="moon-phase">Full Moon</div>
+          <div class="moon-effect" id="moon-effect">+1 RF · Ritual TN –1</div>
+        </div>
+      </div>
+
+      <div class="stakes-card">
+        <div class="stakes-type" id="stakes-type">Prestige Match</div>
+        <div class="stakes-desc" id="stakes-desc">Victory grants Prestige +2 and scout access. Defeat costs Prestige –1.</div>
+      </div>
+
+      <div class="cosmic-track">
+        <div class="ct-label">Cosmic Significance — Edzna</div>
+        <div class="ct-bar"><div class="ct-fill" id="cosmic-fill" style="width:60%"></div></div>
+        <div class="ct-value" id="cosmic-val">6 / 10</div>
+      </div>
+
+      <div class="panel-title" style="margin-top:.8rem">Patron Deity</div>
+
+      <div class="deity-card" id="deity-card">
+        <div class="deity-name" id="deity-name">Kukulcán</div>
+        <div class="deity-effect" id="deity-effect">Ring shots TN –1. Cosmic duality events more frequent.</div>
+        <button class="deity-btn" id="deity-btn" onclick="G.invokeDeity()">Invoke for This Set</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="panel-title">Opponent Squad</div>
+      <div id="away-roster-mini"></div>
+
+    </div>
+  </div>
+
+  <!-- match over overlay within page -->
+  <div class="match-over" id="match-over">
+    <div class="over-title" id="over-title">Victory</div>
+    <div class="over-subtitle" id="over-subtitle">Edzna defeats Tenochtitlan 2–1</div>
+    <div class="over-stakes" id="over-stakes"></div>
+    <button class="modal-btn primary" onclick="G.newMatch()" style="max-width:220px;padding:.9rem 2rem;font-size:.8rem">
+      New Match →
+    </button>
+  </div>
+</div>
+
+<!-- ROLL MODAL -->
+<div class="modal-overlay" id="roll-modal">
+  <div class="modal">
+    <div class="modal-title" id="roll-title">Roll Result</div>
+    <div class="modal-body" id="roll-body"></div>
+    <div class="modal-btns">
+      <button class="modal-btn primary" onclick="G.closeRollModal()">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- INJURY MODAL -->
+<div class="modal-overlay" id="injury-modal">
+  <div class="modal">
+    <div class="modal-title" style="color:#e05050">⚠ Injury Check</div>
+    <div class="modal-body" id="injury-body"></div>
+    <div class="modal-btns">
+      <button class="modal-btn" onclick="G.closeInjuryModal()">Continue</button>
+    </div>
+  </div>
+</div>
+
+<!-- CRITICAL EVENT MODAL -->
+<div class="modal-overlay" id="critical-modal">
+  <div class="modal">
+    <div class="modal-title" id="critical-title">★ Critical Event</div>
+    <div class="modal-body" id="critical-body"></div>
+    <div class="modal-btns">
+      <button class="modal-btn primary" onclick="G.closeCriticalModal()">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════════
+// GAME ENGINE — Mesoamerican Ballgame Strat-o-Matic
+// Implements Design Bible v0.5 faithfully
+// ════════════════════════════════════════════════════════════════════════════
+
+const VENUES = {
+  edzna: {
+    name:"Edzna", regionTag:"Maya Lowlands", courtTN:7, type:"Ritual",
+    modifier:"narrow", note:"AGI rolls +1 · RF rolls +1",
+    agiBonus:1, rfBonus:1, drBonus:0, courtTNBonus:0
+  },
+  chichen: {
+    name:"Chichen Itza", regionTag:"Maya Lowlands", courtTN:8, type:"Ritual",
+    modifier:"large", note:"Wall Strike TN +1 · Ring shots harder",
+    agiBonus:0, rfBonus:1, drBonus:0, courtTNBonus:1
+  },
+  tenochtitlan: {
+    name:"Tenochtitlan", regionTag:"Central Mexico", courtTN:6, type:"Imperial",
+    modifier:"imperial", note:"DR and CF hidden +1",
+    agiBonus:0, rfBonus:0, drBonus:1, courtTNBonus:0
+  },
+};
+
+const MOON_PHASES = [
+  { name:"New Moon",  icon:"🌑", effect:"+1 CF rolls",      cfBonus:1, rfBonus:0, eclipse:false },
+  { name:"Waxing",    icon:"🌓", effect:"No modifier",       cfBonus:0, rfBonus:0, eclipse:false },
+  { name:"Full Moon", icon:"🌕", effect:"+1 RF · Ritual TN –1", cfBonus:0, rfBonus:1, eclipse:false },
+  { name:"Waning",    icon:"🌗", effect:"No modifier",       cfBonus:0, rfBonus:0, eclipse:false },
+  { name:"Eclipse",   icon:"🌑", effect:"Cosmic Event on any Double",cfBonus:0, rfBonus:0, eclipse:true },
+];
+
+const MATCH_TYPES = [
+  { roll:[2,3,4],  type:"Friendly",    statWeight:"Standard",      winReward:"Prestige +1",        lossPenalty:"None" },
+  { roll:[5,6],    type:"Prestige",    statWeight:"MS/VP weighted", winReward:"Prestige +2; scout", lossPenalty:"Prestige –1" },
+  { roll:[7,8,9],  type:"Tribute",     statWeight:"CF/DR weighted", winReward:"Draft pick bonus",   lossPenalty:"Tribute owed" },
+  { roll:[10,11],  type:"Proxy War",   statWeight:"All stats",      winReward:"Border resolution",  lossPenalty:"Territory ceded" },
+  { roll:[12],     type:"Life & Death",statWeight:"CF only",        winReward:"Max prestige",       lossPenalty:"Captain marked" },
+];
+
+const CRITICAL_EFFECTS = [
+  "Score stands + crowd morale +1 (team MS boosted next turn)",
+  "Score stands + opponent END –1 on their active player",
+  "Score stands + Ritual Activation unlocked (no RF roll required)",
+  "Score stands + opponent loses one action next turn",
+  "Score stands + scout attention (Farm PR +0.5 noted)",
+  "Score stands + COSMIC EVENT — roll for celestial intervention!",
+];
+
+const DEITY_CARDS = {
+  home: { name:"Kukulcán", culture:"Maya", effect:"Ring shots TN –1. Cosmic duality events more frequent.", ringTNBonus:1 },
+  away: { name:"Tlaloc",   culture:"Central Mexico", effect:"DR +2 for one set. Opponent END drains 1 faster.", drBonus:2 },
+};
+
+// ── PLAYER DATA ──────────────────────────────────────────────────────────────
+function mkPlayer(name, role, age, ms, dr, cf, vp, eud, pi, tss, ec, aq, li, pwr, agi, rf, end, injury, special, hidden){
+  return { name, role, age,
+    ms, dr, cf, vp, eud,           // on-card
+    pi, tss, ec, aq, li,           // hidden
+    pwr, agi, rf,
+    end, maxEnd:end,               // endurance
+    injuryRisk: injury,
+    special, hidden,
+    injured:false, marked:false, rookieJitters:0,
+    consecutiveGoals:0             // for Sky Sacrifice
+  };
+}
+
+const HOME_SQUAD = [
+  mkPlayer("K'awiil Pakal","Playmaker",19,  8.5,6.0,9.5,9.2,7.5, 8.7,8.9,8.4,8.1,7.2, 6,9,8,7, 12,"Lightning Strike: +2 VP after wall pass",false),
+  mkPlayer("Ixchel","Captain/Mid",31,       9.0,6.7,7.8,5.9,7.2, 7.5,8.7,7.0,7.0,9.3, 6,8,7,8, 10,"Leadership: clears momentum marker 1×/match",false),
+  mkPlayer("Jaguar Paw","Striker",24,        8.2,5.1,9.0,7.8,7.1, 8.5,7.0,8.3,6.8,7.5, 7,9,6,8, 10,"Sky Sacrifice: +3 ring after 3 consec. goals",false),
+  mkPlayer("Itzel Canul","Midfielder",20,    9.0,5.5,8.7,8.8,7.0, 7.2,6.0,7.5,5.8,5.0, 6,8,6,7, 11,"Street Flair: VP+1 on 2nd action each turn",false),
+  mkPlayer("Balam Tun","Defender",24,        5.0,9.3,4.1,3.2,8.9, 6.5,7.0,6.5,7.5,6.0, 7,7,5,9, 10,"Calm Presence: reduces miscommunication chance",false),
+  mkPlayer("Ix Tz'unun","Goalkeeper",21,     8.0,6.0,8.5,4.0,7.0, 9.2,7.0,7.0,7.0,6.5, 5,7,6,8, 10,"Clutch: CF+2 when team is behind",false),
+];
+
+const AWAY_SQUAD = [
+  mkPlayer("Tlaloc Itztli","Striker",26,     6.5,9.5,6.8,5.0,8.0, 7.5,8.0,7.0,7.5,7.0, 9,7,4,9, 11,"Iron Discipline: DR checks always at +1",false),
+  mkPlayer("Quetzal Smoke","Playmaker",22,   7.5,7.0,8.0,7.0,7.5, 8.0,9.0,7.5,7.0,6.5, 7,8,5,8, 10,"Formation Hold: TSS +1 whole team when active",false),
+  mkPlayer("Itzcoatl","Defender",28,         6.0,8.5,5.5,4.0,9.0, 7.0,7.5,6.0,8.5,7.0, 8,7,5,9,  9,"Wall of Stone: block TN reduced by 1",false),
+  mkPlayer("Mextli","Midfielder",23,         7.0,7.5,7.0,6.5,7.5, 7.5,7.0,7.0,7.0,6.5, 7,7,6,8, 10,"Imperial Pace: momentum plays auto-trigger on 8+",false),
+  mkPlayer("Cipactli","Goalkeeper",30,       5.5,8.0,8.5,4.5,8.0, 9.0,7.0,6.5,7.0,8.0, 6,7,5,9, 10,"Veteran Hold: PI+1 in final period",false),
+];
+
+// ── GAME STATE ───────────────────────────────────────────────────────────────
+const G = {
+  // teams
+  home: HOME_SQUAD.map(p=>({...p})),
+  away: AWAY_SQUAD.map(p=>({...p})),
+  homeActive: null,   // index of active player
+  awayActive: 0,      // AI always uses index 0 as primary
+
+  // scores
+  homeScore:0, awayScore:0,
+  homeSets:0,  awaySets:0,
+
+  // match state
+  turn:1,
+  actionsLeft:3,
+  isHomeTurn:true,
+  phase:"serve",  // serve | action | resolution | oppturn
+
+  // venue
+  venue: VENUES.edzna,
+
+  // moon
+  moonPhase: MOON_PHASES[2],  // start Full Moon
+
+  // stakes
+  matchType: MATCH_TYPES[1],  // Prestige
+
+  // cosmic
+  cosmicSignificance: 6,
+  deityInvoked: false,
+  deityUsed: false,
+  lostActionNext: false,  // opponent penalty from critical
+
+  // tracking
+  passBonus: false,   // Lightning Strike active
+  momentumActive: false,
+  logEntries: [],
+  turnLog: [],
+  modalQueue: [],
+  processingModal: false,
+
+  // ── DICE ──────────────────────────────────────────────────────────────────
+  roll2d6() {
+    return [Math.floor(Math.random()*6)+1, Math.floor(Math.random()*6)+1];
+  },
+  rollResult(dice) {
+    const sum = dice[0]+dice[1];
+    const isDouble6 = dice[0]===6 && dice[1]===6;
+    const isDouble1 = dice[0]===1 && dice[1]===1;
+    const isEclipse = this.moonPhase.eclipse && (isDouble6||isDouble1);
+    return { sum, d1:dice[0], d2:dice[1], isDouble6, isDouble1, isEclipse,
+             isNatural11: sum===11 && !isDouble6, isNatural3: sum===3 && !isDouble1 };
+  },
+
+  // ── HELPERS ───────────────────────────────────────────────────────────────
+  statMod(p, stat) {
+    let v = p[stat] || 0;
+    // Rookie jitters
+    if(p.rookieJitters > 0) v -= 1;
+    // Fatigue
+    if(p.end <= 0) v = Math.floor(v/2);
+    // Pressure Index: game tied or trailing, final period
+    if(stat !== 'pi' && this.isHomeTurn && this.homeScore <= this.awayScore && this.turn >= 6) {
+      v += (p.pi >= 7 ? 1 : 0);
+    }
+    return Math.round(v);
+  },
+  venueMod(stat) {
+    const v = this.venue;
+    if(stat==='agi') return v.agiBonus;
+    if(stat==='rf')  return v.rfBonus;
+    if(stat==='dr')  return v.drBonus;
+    return 0;
+  },
+  moonMod(stat) {
+    if(stat==='cf') return this.moonPhase.cfBonus;
+    if(stat==='rf') return this.moonPhase.rfBonus;
+    return 0;
+  },
+  getPlayer() {
+    return this.homeActive !== null ? this.home[this.homeActive] : null;
+  },
+  getAwayPlayer() {
+    return this.away[this.awayActive];
+  },
+  getCourtTN() {
+    let tn = this.venue.courtTN;
+    if(this.deityInvoked && !this.deityUsed) tn -= 1;  // Kukulcán ring bonus
+    return tn;
+  },
+  drainEnd(p, n=1) {
+    p.end = Math.max(0, p.end - n);
+  },
+  injuryCheck(p) {
+    const chance = p.injuryRisk / 100;
+    if(Math.random() < chance) {
+      p.injured = true;
+      return true;
+    }
+    return false;
+  },
+  actionDots() {
+    return "● ".repeat(this.actionsLeft).trim() + " ○ ".repeat(3-this.actionsLeft).trim();
+  },
+
+  // ── INIT ──────────────────────────────────────────────────────────────────
+  init() {
+    this.renderRosters();
+    this.renderAwayMini();
+    this.updateScoreboard();
+    this.updateRightPanel();
+    this.log("The ball is placed at center court. Edzna Squad faces Tenochtitlan in a Prestige match.", "phase");
+    this.log("Full Moon rises — RF bonuses active. Kukulcán watches from above.", "cosmic");
+    this.setStatus("Click a player in your roster to activate them, then choose an action.");
+    this.startServePhase();
+  },
+
+  // ── RENDER ROSTER ─────────────────────────────────────────────────────────
+  renderRosters() {
+    const el = document.getElementById('home-roster');
+    el.innerHTML = this.home.map((p,i)=>this.playerCardHTML(p,i,'home')).join('');
+  },
+  renderAwayMini() {
+    const el = document.getElementById('away-roster-mini');
+    el.innerHTML = this.away.map((p,i)=>this.awayMiniHTML(p,i)).join('');
+  },
+  playerCardHTML(p, i, team) {
+    const endPct = (p.end / p.maxEnd) * 100;
+    const isActive = team==='home' && this.homeActive===i;
+    const cls = [
+      'player-card',
+      isActive ? 'active' : '',
+      p.end<=0 ? 'exhausted' : '',
+      p.injured ? 'injured' : '',
+    ].filter(Boolean).join(' ');
+    return `<div class="${cls}" onclick="G.selectPlayer(${i})" id="pc-home-${i}">
+      <div class="pc-header">
+        <span class="pc-name">${p.name}</span>
+        <span class="pc-role">${p.role}</span>
+      </div>
+      <div class="pc-stats">
+        <div class="pc-stat"><span class="pc-stat-val">${p.ms}</span><span class="pc-stat-lbl">MS</span></div>
+        <div class="pc-stat"><span class="pc-stat-val">${p.cf}</span><span class="pc-stat-lbl">CF</span></div>
+        <div class="pc-stat"><span class="pc-stat-val">${p.vp}</span><span class="pc-stat-lbl">VP</span></div>
+        <div class="pc-stat"><span class="pc-stat-val">${p.pwr}/${p.agi}</span><span class="pc-stat-lbl">PWR/AGI</span></div>
+        <div class="pc-stat"><span class="pc-stat-val" style="color:${p.end<=2?'#e05050':p.end<=4?'#e8a830':'var(--jade-glow)'}">${p.end}</span><span class="pc-stat-lbl">END</span></div>
+      </div>
+      <div class="pc-end-bar"><div class="pc-end-fill" style="width:${endPct}%"></div></div>
+      <div class="pc-badges">
+        <span class="badge badge-role">${p.role}</span>
+        ${p.special ? `<span class="badge badge-special">★</span>` : ''}
+        ${p.injured ? `<span class="badge badge-injury">INJURED</span>` : ''}
+        ${p.marked  ? `<span class="badge badge-marked">☠ MARKED</span>` : ''}
+        ${p.end<=0  ? `<span class="badge badge-injury">EXHAUSTED</span>` : ''}
+      </div>
+    </div>`;
+  },
+  awayMiniHTML(p, i) {
+    const isActive = i === this.awayActive;
+    return `<div style="padding:.4rem .5rem;background:${isActive?'rgba(139,46,12,.15)':'transparent'};border:1px solid ${isActive?'rgba(196,68,24,.2)':'transparent'};margin-bottom:3px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-family:var(--serif);font-size:.72rem;color:${p.injured?'#e05050':p.end<=0?'var(--ash)':'var(--cream)'}">${p.name}</span>
+      <span style="font-family:var(--mono);font-size:.6rem;color:${p.end<=2?'#e05050':'var(--ash)'}">END:${p.end}</span>
+    </div>`;
+  },
+
+  // ── SELECT PLAYER ─────────────────────────────────────────────────────────
+  selectPlayer(i) {
+    if(!this.isHomeTurn || this.phase !== 'action') return;
+    const p = this.home[i];
+    if(p.end <= 0) { this.setStatus(`${p.name} is exhausted — substitute or choose another player.`); return; }
+    if(p.injured) { this.setStatus(`${p.name} is injured and cannot act.`); return; }
+    this.homeActive = i;
+    this.renderRosters();
+    document.getElementById('select-hint').style.display='none';
+    this.setStatus(`${p.name} activated — ${p.role}, END: ${p.end}. Special: ${p.special}`);
+    this.updateButtons();
+  },
+
+  // ── SERVE PHASE ──────────────────────────────────────────────────────────
+  startServePhase() {
+    this.phase = 'serve';
+    this.updateScoreboard();
+    const homeP = this.home[0];
+    const awayP = this.away[0];
+    const homeDice = this.roll2d6();
+    const awayDice = this.roll2d6();
+    const homeMod = this.statMod(homeP,'agi') + this.venueMod('agi');
+    const awayMod = this.statMod(awayP,'agi');
+    const homeTotal = homeDice[0]+homeDice[1]+homeMod;
+    const awayTotal = awayDice[0]+awayDice[1]+awayMod;
+    const homeWins = homeTotal >= awayTotal;
+    this.isHomeTurn = homeWins;
+    this.log(`Serve: Edzna [${homeDice}+${homeMod}=${homeTotal}] vs Tenochtitlan [${awayDice}+${awayMod}=${awayTotal}] — ${homeWins?'Edzna wins serve':'Tenochtitlan wins serve'}!`, 'phase');
+    this.moveBall(homeWins ? 120 : 380);
+    this.startActionPhase();
+  },
+
+  // ── ACTION PHASE ─────────────────────────────────────────────────────────
+  startActionPhase() {
+    this.phase = 'action';
+    this.actionsLeft = 3;
+    if(this.lostActionNext && !this.isHomeTurn) {
+      this.actionsLeft = 2;
+      this.lostActionNext = false;
+      this.log("Tenochtitlan lost an action from previous critical!", "critical");
+    }
+    document.getElementById('opp-banner').style.display = 'none';
+    if(this.isHomeTurn) {
+      this.homeActive = null;
+      document.getElementById('select-hint').style.display = 'block';
+      this.setStatus("Your turn — select a player and choose an action.");
+      this.updateButtons();
+    } else {
+      this.setStatus("Tenochtitlan is taking their turn…");
+      this.disableButtons();
+      document.getElementById('opp-banner').style.display = 'block';
+      setTimeout(()=>this.runOpponentTurn(), 800);
+    }
+    this.updateScoreboard();
+  },
+
+  // ── PLAYER ACTION ─────────────────────────────────────────────────────────
+  action(type) {
+    if(!this.isHomeTurn || this.phase !== 'action') return;
+    const p = this.getPlayer();
+    if(!p) {
+      document.getElementById('select-hint').style.display='block';
+      this.setStatus("Select a player first!");
+      return;
+    }
+    if(p.end <= 0) { this.setStatus(`${p.name} is exhausted! Sub them out.`); return; }
+
+    this.actionsLeft--;
+    this.drainEnd(p);
+
+    let result = null;
+
+    switch(type) {
+      case 'shoot_ring':  result = this.resolveRingShot(p, false); break;
+      case 'shoot_wall':  result = this.resolveWallStrike(p); break;
+      case 'pass':        result = this.resolvePass(p); break;
+      case 'ritual':      result = this.resolveRitual(p); break;
+      case 'block':       result = this.resolveBlock(p); break;
+      case 'momentum':    result = this.resolveMomentum(p); break;
+      case 'move':        result = this.resolveMove(p); break;
+    }
+
+    this.renderRosters();
+    this.updateScoreboard();
+
+    if(result && result.needModal) {
+      // modal will call continueAfterAction
+    } else {
+      this.continueAfterAction();
+    }
+  },
+
+  continueAfterAction() {
+    if(this.checkSetOver()) return;
+    if(this.actionsLeft <= 0) {
+      this.endTurn();
+    } else {
+      this.homeActive = null;
+      document.getElementById('select-hint').style.display='block';
+      this.updateButtons();
+      this.updateScoreboard();
+    }
+  },
+
+  // ── RING SHOT ─────────────────────────────────────────────────────────────
+  resolveRingShot(p, free) {
+    const opp = this.getAwayPlayer();
+    const dice = this.roll2d6();
+    const r = this.rollResult(dice);
+    const mod = this.statMod(p,'pwr') + (this.passBonus ? 2 : 0) + (p.name==="Jaguar Paw" && p.consecutiveGoals>=3?3:0);
+    const total = r.sum + mod;
+    const tn = opp.agi + 4 + (this.deityInvoked ? -1 : 0);
+    this.passBonus = false;
+
+    let title, body, cls;
+
+    if(r.isDouble6) {
+      const effect = CRITICAL_EFFECTS[Math.floor(Math.random()*6)];
+      this.homeScore += 3;
+      if(p.name==="Jaguar Paw") p.consecutiveGoals++;
+      this.cosmicSignificance = Math.min(10, this.cosmicSignificance+0.5);
+      this.updateCosmic();
+      title = "★ DOUBLE SIX — CRITICAL SCORE!";
+      body = `<span class="big-roll">⚡ 3pts</span><strong>${p.name}</strong> drives through for a ring shot! Critical hit.<br><span class="result-band rb-critical">${effect}</span>`;
+      this.log(`${p.name}: RING SHOT CRITICAL! [${dice}+${mod}=${total}] vs TN ${tn} — 3 pts! ${effect}`, 'critical');
+      cls = 'critical';
+      this.moveBall(250);
+      this.showRollModal(title, body, ()=>{this.applyCriticalEffect(effect);this.continueAfterAction();});
+      return {needModal:true};
+    } else if(r.isDouble1) {
+      p.consecutiveGoals = 0;
+      this.checkInjury(p, true);
+      this.log(`${p.name}: FUMBLE ring shot [${dice}+${mod}=${total}] — automatic turnover + injury check!`, 'injury');
+      this.moveBall(380);
+      return null;
+    } else if(total >= tn) {
+      this.homeScore += 3;
+      if(p.name==="Jaguar Paw") p.consecutiveGoals++;
+      this.cosmicSignificance = Math.min(10, this.cosmicSignificance+0.2);
+      this.updateCosmic();
+      title = "Ring Shot — Scored!";
+      body = `<div class="dice-wrap"><div class="die">${dice[0]}</div><div class="die">${dice[1]}</div></div><strong>${p.name}</strong> [${dice[0]}+${dice[1]}+${mod}=<strong>${total}</strong>] vs TN <strong>${tn}</strong><br><br><span class="result-band rb-success">SUCCESS — 3 POINTS</span>`;
+      this.log(`${p.name}: Ring shot! [${dice}+${mod}=${total}] vs TN ${tn} — 3 pts`, 'score');
+      this.moveBall(250);
+      if(r.isNatural11) {
+        body += `<br><br><em>Natural 11 — Ritual Activation available this turn!</em>`;
+        this.log("Natural 11 — Ritual Activation unlocked!", "ritual");
+      }
+      this.showRollModal(title, body, ()=>this.continueAfterAction());
+      return {needModal:true};
+    } else {
+      p.consecutiveGoals = 0;
+      title = "Ring Shot — Blocked";
+      body = `<div class="dice-wrap"><div class="die">${dice[0]}</div><div class="die">${dice[1]}</div></div><strong>${p.name}</strong> [${dice[0]}+${dice[1]}+${mod}=<strong>${total}</strong>] vs TN <strong>${tn}</strong><br><br><span class="result-band rb-fail">FAILED — turnover</span>`;
+      this.log(`${p.name}: Ring shot [${dice}+${mod}=${total}] vs TN ${tn} — blocked`, '');
+      this.moveBall(380);
+      this.showRollModal(title, body, ()=>this.continueAfterAction());
+      return {needModal:true};
+    }
+  },
+
+  // ── WALL STRIKE ──────────────────────────────────────────────────────────
+  resolveWallStrike(p) {
+    const dice = this.roll2d6();
+    const r = this.rollResult(dice);
+    const agiMod = this.statMod(p,'agi') + this.venueMod('agi') + this.moonMod('agi');
+    const total = r.sum + agiMod;
+    const tn = this.getCourtTN();
+
+    if(r.isDouble6 || total >= tn) {
+      this.homeScore += 1;
+      const title = r.isDouble6 ? "★ Wall Strike Critical!" : "Wall Strike — Scored!";
+      const body = `<div class="dice-wrap"><div class="die">${dice[0]}</div><div class="die">${dice[1]}</div></div><strong>${p.name}</strong> [${dice[0]}+${dice[1]}+${agiMod}=<strong>${total}</strong>] vs Court TN <strong>${tn}</strong><br><br><span class="result-band rb-success">SUCCESS — 1 POINT</span>`;
+      this.log(`${p.name}: Wall strike [${dice}+${agiMod}=${total}] vs TN ${tn} — 1 pt`, 'score');
+      this.moveBall(80);
+      this.showRollModal(title, body, ()=>this.continueAfterAction());
+      return {needModal:true};
+    } else {
+      const body = `<div class="dice-wrap"><div class="die">${dice[0]}</div><div class="die">${dice[1]}</div></div><strong>${p.name}</strong> [${dice[0]}+${dice[1]}+${agiMod}=<strong>${total}</strong>] vs Court TN <strong>${tn}</strong><br><br><span class="result-band rb-fail">FAILED</span>`;
+      this.log(`${p.name}: Wall strike [${dice}+${agiMod}=${total}] vs TN ${tn} — failed`, '');
+      this.moveBall(380);
+      this.showRollModal("Wall Strike — Failed", body, ()=>this.continueAfterAction());
+      return {needModal:true};
+    }
+  },
+
+  // ── WALL PASS ────────────────────────────────────────────────────────────
+  resolvePass(p) {
+    const dice = this.roll2d6();
+    const r = this.rollResult(dice);
+    const agiMod = this.statMod(p,'agi') + this.venueMod('agi');
+    const total = r.sum + agiMod;
+    const tn = this.getCourtTN();
+
+    if(total >= tn) {
+      // Lightning Strike special ability
+      if(p.name==="K'awiil Pakal") { this.passBonus = true; }
+      const body = `<div class="dice-wrap"><div class="die">${dice[0]}</div><div class="die">${dice[1]}</div></div><strong>${p.name}</strong> [${dice[0]}+${dice[1]}+${agiMod}=<strong>${total}</strong>] vs Court TN <strong>${tn}</strong><br><br><span class="result-band rb-success">SUCCESS — positional setup${p.name==="K'awiil Pakal"?' · Lightning Strike: +2 VP on next action':''}</span>`;
+      this.log(`${p.name}: Wall pass [${dice}+${agiMod}=${total}] — setup${p.name==="K'awiil Pakal"?' (Lightning Strike active!)':''}`, '');
+      this.moveBall(200);
+      this.showRollModal("Wall Pass — Success", body, ()=>this.continueAfterAction());
+    } else {
+      const body = `<div class="dice-wrap"><div class="die">${dice[0]}</div><div class="die">${dice[1]}</div></div><strong>${p.name}</strong> [${dice[0]}+${dice[1]}+${agiMod}=<strong>${total}</strong>] vs Court TN <strong>${tn}</strong><br><br><span class="result-band rb-fail">FAILED — turnover</span>`;
+      this.log(`${p.name}: Wall pass [${dice}+${agiMod}=${total}] — failed, turnover`, '');
+      this.moveBall(380);
+      this.showRollModal("Wall Pass — Failed", body, ()=>this.continueAfterAction());
+    }
+    return {needModal:true};
+  },
+
+  // ── RITUAL ACTION ────────────────────────────────────────────────────────
+  resolveRitual(p) {
+    const dice = this.roll2d6();
+    const r = this.rollResult(dice);
+    const rfMod = this.statMod(p,'rf') + this.venueMod('rf') + this.moonMod('rf');
+    const total = r.sum + rfMod;
+    const tn = 10 - (this.moonPhase.rfBonus ? 1 : 0);
+
+    if(total >= tn || r.isDouble6) {
+      this.homeScore += 2;
+      this.cosmicSignificance = Math.min(10, this.cosmicSignificance + 1);
+      this.updateCosmic();
+      const bonus = this.ceremonialBonus();
+      const body = `<div class="dice-wrap"><div class="die">${dice[0]}</div><div class="die">${dice[1]}</div></div><strong>${p.name}</strong> [${dice[0]}+${dice[1]}+${rfMod}=<strong>${total}</strong>] vs TN <strong>${tn}</strong><br><br><span class="result-band rb-success rb-critical">SUCCESS — 2 POINTS · Ritual Completed</span><br><br><em>Ceremonial Bonus chosen: ${bonus}</em>`;
+      this.log(`${p.name}: Ritual activation! [${dice}+${rfMod}=${total}] — 2 pts. ${bonus}`, 'ritual');
+      this.showRollModal("★ Ritual Activation!", body, ()=>this.applyCeremonialBonus(bonus, p, ()=>this.continueAfterAction()));
+    } else {
+      const body = `<div class="dice-wrap"><div class="die">${dice[0]}</div><div class="die">${dice[1]}</div></div><strong>${p.name}</strong> [${dice[0]}+${dice[1]}+${rfMod}=<strong>${total}</strong>] vs TN <strong>${tn}</strong><br><br><span class="result-band rb-fail">FAILED — the gods are silent</span>`;
+      this.log(`${p.name}: Ritual failed [${dice}+${rfMod}=${total}] vs TN ${tn}`, '');
+      this.showRollModal("Ritual — Failed", body, ()=>this.continueAfterAction());
+    }
+    return {needModal:true};
+  },
+
+  ceremonialBonus() {
+    const opts = ["+2 PWR next ring shot","Clear 1 END on active player","Crowd surge: MS +1 this turn","+2 CF next clutch"];
+    return opts[Math.floor(Math.random()*opts.length)];
+  },
+  applyCeremonialBonus(bonus, p, cb) {
+    if(bonus.includes("END")) { p.end = Math.min(p.maxEnd, p.end+1); this.renderRosters(); }
+    if(bonus.includes("MS")) { this.momentumActive = true; }
+    cb();
+  },
+
+  // ── BLOCK ─────────────────────────────────────────────────────────────────
+  resolveBlock(p) {
+    const opp = this.getAwayPlayer();
+    const dice = this.roll2d6();
+    const r = this.rollResult(dice);
+    const drMod = this.statMod(p,'dr') + this.venueMod('dr');
+    const total = r.sum + drMod;
+    const tn = opp.vp + 3;
+
+    if(total >= tn) {
+      const body = `<div class="dice-wrap"><div class="die">${dice[0]}</div><div class="die">${dice[1]}</div></div><strong>${p.name}</strong> DR [${dice[0]}+${dice[1]}+${drMod}=<strong>${total}</strong>] vs TN <strong>${tn}</strong><br><br><span class="result-band rb-success">BLOCK — turnover forced!</span>`;
+      this.log(`${p.name}: Block [${dice}+${drMod}=${total}] vs TN ${tn} — turnover!`, '');
+      this.moveBall(120);
+      this.showRollModal("Block — Success", body, ()=>this.continueAfterAction());
+    } else {
+      const body = `<div class="dice-wrap"><div class="die">${dice[0]}</div><div class="die">${dice[1]}</div></div><strong>${p.name}</strong> DR [${dice[0]}+${dice[1]}+${drMod}=<strong>${total}</strong>] vs TN <strong>${tn}</strong><br><br><span class="result-band rb-fail">BLOCK FAILED</span>`;
+      this.log(`${p.name}: Block failed [${dice}+${drMod}=${total}] vs TN ${tn}`, '');
+      this.showRollModal("Block — Failed", body, ()=>this.continueAfterAction());
+    }
+    return {needModal:true};
+  },
+
+  // ── MOMENTUM PLAY ─────────────────────────────────────────────────────────
+  resolveMomentum(p) {
+    const dice = this.roll2d6();
+    const r = this.rollResult(dice);
+    const msMod = this.statMod(p,'ms') + (this.momentumActive?1:0);
+    const total = r.sum + msMod;
+    const tn = 9 - (p.name==="Mextli"?1:0);
+
+    if(total >= tn) {
+      this.momentumActive = true;
+      const body = `<div class="dice-wrap"><div class="die">${dice[0]}</div><div class="die">${dice[1]}</div></div><strong>${p.name}</strong> MS [${dice[0]}+${dice[1]}+${msMod}=<strong>${total}</strong>] vs TN <strong>${tn}</strong><br><br><span class="result-band rb-success">MOMENTUM SHIFT — rally activated!</span>`;
+      this.log(`${p.name}: Momentum play [${dice}+${msMod}=${total}] — rally active!`, 'critical');
+      this.showRollModal("Momentum Shift!", body, ()=>this.continueAfterAction());
+    } else {
+      const body = `<div class="dice-wrap"><div class="die">${dice[0]}</div><div class="die">${dice[1]}</div></div><strong>${p.name}</strong> MS [${dice[0]}+${dice[1]}+${msMod}=<strong>${total}</strong>] vs TN <strong>${tn}</strong><br><br><span class="result-band rb-fail">MOMENTUM LOST</span>`;
+      this.log(`${p.name}: Momentum play [${dice}+${msMod}=${total}] — failed`, '');
+      this.showRollModal("Momentum — Failed", body, ()=>this.continueAfterAction());
+    }
+    return {needModal:true};
+  },
+
+  // ── MOVE ─────────────────────────────────────────────────────────────────
+  resolveMove(p) {
+    this.moveBall(150 + Math.random()*100);
+    this.log(`${p.name} repositions. (No roll required.)`, '');
+    this.setStatus(`${p.name} moves to a new position.`);
+    return null;
+  },
+
+  // ── OPPONENT AI TURN ──────────────────────────────────────────────────────
+  runOpponentTurn() {
+    const actions = this.actionsLeft;
+    this.actionsLeft = 0;
+    this.runOppAction(actions, ()=>{
+      this.isHomeTurn = true;
+      this.turn++;
+      document.getElementById('opp-banner').style.display='none';
+      if(!this.checkSetOver()) this.startActionPhase();
+    });
+  },
+
+  runOppAction(remaining, done) {
+    if(remaining <= 0) { done(); return; }
+    const opp = this.getAwayPlayer();
+    // Simple AI: prefer ring shot, occasionally wall strike or momentum
+    const roll = Math.random();
+    let actionName, fn;
+    if(roll < 0.5) { actionName="Ring Shot"; fn=()=>this.oppRingShot(opp); }
+    else if(roll < 0.72) { actionName="Wall Strike"; fn=()=>this.oppWallStrike(opp); }
+    else if(roll < 0.85) { actionName="Momentum Play"; fn=()=>this.oppMomentum(opp); }
+    else { actionName="Wall Pass"; fn=()=>{this.log(`${opp.name}: Wall pass — positional setup`,''); this.moveBall(300);} }
+
+    this.drainEnd(opp);
+    setTimeout(()=>{
+      fn();
+      this.renderAwayMini();
+      this.updateScoreboard();
+      if(!this.checkSetOver()) {
+        setTimeout(()=>this.runOppAction(remaining-1, done), 600);
+      }
+    }, 700);
+  },
+
+  oppRingShot(opp) {
+    const homeDef = this.home.find(p=>p.role.includes('Goalkeeper')||p.role.includes('Defender')) || this.home[4];
+    const dice = this.roll2d6();
+    const r = this.rollResult(dice);
+    const mod = Math.round(opp.pwr);
+    const total = r.sum + mod;
+    const tn = homeDef.agi + 4;
+    if(r.isDouble6 || total >= tn) {
+      this.awayScore += 3;
+      if(r.isDouble6) this.log(`${opp.name}: CRITICAL ring shot! [${dice}+${mod}=${total}] — 3 pts!`,'enemy-score');
+      else this.log(`${opp.name}: Ring shot! [${dice}+${mod}=${total}] vs TN ${tn} — 3 pts`,'enemy-score');
+      this.moveBall(250);
+    } else {
+      this.log(`${opp.name}: Ring shot [${dice}+${mod}=${total}] vs TN ${tn} — blocked`,'');
+      this.moveBall(120);
+    }
+  },
+  oppWallStrike(opp) {
+    const dice = this.roll2d6();
+    const mod = Math.round(opp.agi);
+    const total = dice[0]+dice[1]+mod;
+    const tn = this.getCourtTN();
+    if(total >= tn) {
+      this.awayScore += 1;
+      this.log(`${opp.name}: Wall strike [${dice}+${mod}=${total}] — 1 pt`,'enemy-score');
+    } else {
+      this.log(`${opp.name}: Wall strike [${dice}+${mod}=${total}] — failed`,'');
+      this.moveBall(120);
+    }
+  },
+  oppMomentum(opp) {
+    const dice = this.roll2d6();
+    const mod = Math.round(opp.ms);
+    const total = dice[0]+dice[1]+mod;
+    if(total >= 9) this.log(`${opp.name}: Momentum play — rally active!`,'');
+    else this.log(`${opp.name}: Momentum play — failed`,'');
+  },
+
+  // ── INJURY CHECK ─────────────────────────────────────────────────────────
+  checkInjury(p, forced) {
+    if(forced || this.injuryCheck(p)) {
+      const el = document.getElementById('injury-body');
+      el.innerHTML = `<strong>${p.name}</strong> has sustained an injury!<br><br>
+        <span class="result-band rb-fumble">INJURED — cannot act this match</span><br><br>
+        A substitute may be called up. If a farm prospect is promoted, they will carry a <em>–1 Rookie Jitters</em> penalty (tapering by PI × 2 turns).`;
+      document.getElementById('injury-modal').classList.add('open');
+    }
+  },
+  closeInjuryModal() {
+    document.getElementById('injury-modal').classList.remove('open');
+    this.continueAfterAction();
+  },
+
+  // ── CRITICAL EFFECT ───────────────────────────────────────────────────────
+  applyCriticalEffect(effect) {
+    if(effect.includes("morale")) { this.momentumActive = true; }
+    if(effect.includes("END")) {
+      const opp = this.getAwayPlayer();
+      this.drainEnd(opp, 1);
+      this.renderAwayMini();
+    }
+    if(effect.includes("loses one action")) { this.lostActionNext = true; }
+    if(effect.includes("COSMIC")) { this.log("COSMIC EVENT! The heavens intervene…", 'cosmic'); }
+    this.continueAfterAction();
+  },
+
+  // ── SET CHECK ─────────────────────────────────────────────────────────────
+  checkSetOver() {
+    if(this.homeScore >= 7 || this.awayScore >= 7) {
+      const homeWon = this.homeScore >= 7;
+      if(homeWon) this.homeSets++; else this.awaySets++;
+      this.log(`SET OVER — ${homeWon?'Edzna':'Tenochtitlan'} wins the set! [${this.homeScore}–${this.awayScore}]`, 'phase');
+      this.cosmicSignificance += homeWon ? 1 : -1;
+      this.updateCosmic();
+      if(this.homeSets >= 2 || this.awaySets >= 2) {
+        this.endMatch(this.homeSets >= 2);
+        return true;
+      }
+      // reset for next set
+      setTimeout(()=>{
+        this.homeScore = 0; this.awayScore = 0;
+        this.deityInvoked = false; this.deityUsed = false;
+        document.getElementById('deity-btn').disabled = false;
+        this.home.forEach(p=>{p.end = Math.min(p.maxEnd, p.end+3);});
+        this.away.forEach(p=>{p.end = Math.min(p.maxEnd, p.end+3);});
+        this.log(`--- New Set begins. Players recover 3 END ---`, 'phase');
+        this.renderRosters(); this.renderAwayMini();
+        this.updateScoreboard();
+        this.startServePhase();
+      }, 1200);
+      return true;
+    }
+    return false;
+  },
+
+  // ── MATCH OVER ────────────────────────────────────────────────────────────
+  endMatch(homeWon) {
+    const mt = this.matchType;
+    const stakes = homeWon
+      ? `Victory in the ${mt.type} match earns Edzna: <strong>${mt.winReward}</strong>. The crowd's roar echoes through the stone ring.`
+      : `Defeat in the ${mt.type} match costs Edzna: <strong>${mt.lossPenalty}</strong>. The captain bows before the losing verdict.`;
+
+    document.getElementById('over-title').textContent = homeWon ? "Victory!" : "Defeat";
+    document.getElementById('over-subtitle').textContent = `Edzna ${this.homeSets} – ${this.awaySets} Tenochtitlan`;
+    document.getElementById('over-stakes').innerHTML = stakes;
+    document.getElementById('match-over').classList.add('show');
+    document.getElementById('court-panel').style.display='none';
+    this.log(`MATCH OVER — Edzna ${this.homeSets}–${this.awaySets} Tenochtitlan. ${homeWon?mt.winReward:mt.lossPenalty}`, 'phase');
+  },
+
+  newMatch() {
+    // Reset everything
+    this.home = HOME_SQUAD.map(p=>({...p}));
+    this.away = AWAY_SQUAD.map(p=>({...p}));
+    this.homeScore=0; this.awayScore=0;
+    this.homeSets=0; this.awaySets=0;
+    this.turn=1; this.actionsLeft=3;
+    this.isHomeTurn=true; this.phase='serve';
+    this.cosmicSignificance=6; this.deityInvoked=false; this.deityUsed=false;
+    this.passBonus=false; this.momentumActive=false;
+    this.homeActive=null;
+    // Rotate moon phase
+    const moonIdx = MOON_PHASES.indexOf(this.moonPhase);
+    this.moonPhase = MOON_PHASES[(moonIdx+1) % MOON_PHASES.length];
+    // Rotate match type
+    const mtIdx = MATCH_TYPES.indexOf(this.matchType);
+    this.matchType = MATCH_TYPES[(mtIdx+1) % MATCH_TYPES.length];
+    document.getElementById('deity-btn').disabled = false;
+    document.getElementById('match-over').classList.remove('show');
+    document.getElementById('court-panel').style.display='flex';
+    document.getElementById('court-panel').style.flexDirection='column';
+    this.renderRosters(); this.renderAwayMini();
+    this.updateRightPanel(); this.updateScoreboard();
+    this.log(`--- New Match: Edzna vs Tenochtitlan · ${this.matchType.type} · ${this.moonPhase.name} ---`, 'phase');
+    this.startServePhase();
+  },
+
+  // ── END TURN ─────────────────────────────────────────────────────────────
+  endTurn() {
+    this.actionsLeft = 0;
+    this.homeActive = null;
+    this.passBonus = false;
+    if(this.momentumActive) {
+      this.log("Momentum fades at end of turn.", '');
+      this.momentumActive = false;
+    }
+    this.log(`--- End of Edzna turn ${this.turn} ---`, 'phase');
+    this.isHomeTurn = false;
+    this.renderRosters();
+    if(!this.checkSetOver()) this.startActionPhase();
+  },
+
+  // ── DEITY INVOKE ─────────────────────────────────────────────────────────
+  invokeDeity() {
+    if(this.deityUsed) return;
+    this.deityInvoked = true;
+    this.deityUsed = true;
+    document.getElementById('deity-btn').disabled = true;
+    this.log("Kukulcán invoked! Ring shot TN –1 for this set.", 'cosmic');
+    this.cosmicSignificance = Math.min(10, this.cosmicSignificance + 0.5);
+    this.updateCosmic();
+    this.showCriticalModal("★ Kukulcán Invoked", "The feathered serpent descends upon the court. Ring shots require 1 less to succeed for this set. Cosmic duality events become more likely.", ()=>{});
+  },
+
+  // ── MODALS ───────────────────────────────────────────────────────────────
+  showRollModal(title, body, cb) {
+    document.getElementById('roll-title').textContent = title;
+    document.getElementById('roll-body').innerHTML = body;
+    document.getElementById('roll-modal').classList.add('open');
+    this._rollCb = cb;
+  },
+  closeRollModal() {
+    document.getElementById('roll-modal').classList.remove('open');
+    if(this._rollCb) { const cb=this._rollCb; this._rollCb=null; cb(); }
+  },
+  showCriticalModal(title, body, cb) {
+    document.getElementById('critical-title').textContent = title;
+    document.getElementById('critical-body').innerHTML = body;
+    document.getElementById('critical-modal').classList.add('open');
+    this._critCb = cb;
+  },
+  closeCriticalModal() {
+    document.getElementById('critical-modal').classList.remove('open');
+    if(this._critCb) { const cb=this._critCb; this._critCb=null; cb(); }
+  },
+
+  // ── UI HELPERS ────────────────────────────────────────────────────────────
+  log(msg, type='') {
+    this.logEntries.push({msg, type, turn:this.turn});
+    const el = document.getElementById('game-log');
+    const div = document.createElement('div');
+    div.className = `log-entry ${type}`;
+    div.innerHTML = `<span class="log-turn">T${this.turn}</span><span>${msg}</span>`;
+    el.appendChild(div);
+    el.scrollTop = el.scrollHeight;
+  },
+  setStatus(msg) {
+    document.getElementById('status-bar').textContent = msg;
+  },
+  moveBall(x) {
+    const ball = document.getElementById('ball');
+    ball.setAttribute('cx', Math.round(x));
+    const y = 80 + Math.random()*40;
+    ball.setAttribute('cy', Math.round(y));
+  },
+  updateScoreboard() {
+    document.getElementById('sb-home-score').textContent = this.homeScore;
+    document.getElementById('sb-away-score').textContent = this.awayScore;
+    document.getElementById('sb-home-sets').textContent  = `Sets: ${this.homeSets}`;
+    document.getElementById('sb-away-sets').textContent  = `Sets: ${this.awaySets}`;
+    document.getElementById('sb-phase').textContent      = this.isHomeTurn ? 'Your Turn' : 'Opponent';
+    document.getElementById('sb-turn').textContent       = `T${this.turn}`;
+    document.getElementById('sb-actions').textContent    = this.isHomeTurn ? this.actionDots() : '— — —';
+  },
+  updateButtons() {
+    const p = this.getPlayer();
+    const hasPlayer = !!p;
+    const canAct = hasPlayer && this.actionsLeft > 0 && this.isHomeTurn && this.phase==='action';
+    const canRitual = canAct && this.homeScore >= 3 && (this.homeScore % 3 === 0);
+    ['btn-ring','btn-wall','btn-pass','btn-block','btn-momentum','btn-move'].forEach(id=>{
+      document.getElementById(id).disabled = !canAct;
+    });
+    document.getElementById('btn-ritual').disabled = !canAct; // always available if has player
+    document.getElementById('btn-end-turn').disabled = !this.isHomeTurn || this.phase!=='action';
+  },
+  disableButtons() {
+    ['btn-ring','btn-wall','btn-pass','btn-ritual','btn-block','btn-momentum','btn-move','btn-end-turn']
+      .forEach(id=>{ document.getElementById(id).disabled = true; });
+  },
+  updateRightPanel() {
+    document.getElementById('moon-icon').textContent = this.moonPhase.icon;
+    document.getElementById('moon-phase').textContent = this.moonPhase.name;
+    document.getElementById('moon-effect').textContent = this.moonPhase.effect;
+    document.getElementById('stakes-type').textContent = this.matchType.type + ' Match';
+    document.getElementById('stakes-desc').textContent = `Win: ${this.matchType.winReward}. Lose: ${this.matchType.lossPenalty}.`;
+    document.getElementById('deity-name').textContent = DEITY_CARDS.home.name;
+    document.getElementById('deity-effect').textContent = DEITY_CARDS.home.effect;
+  },
+  updateCosmic() {
+    const cs = Math.max(0,Math.min(10,this.cosmicSignificance));
+    document.getElementById('cosmic-fill').style.width = (cs*10)+'%';
+    document.getElementById('cosmic-val').textContent = cs.toFixed(1)+' / 10';
+  },
+};
+
+// Start game
+window.addEventListener('load', ()=>G.init());
+</script>
+</body>
+</html>
