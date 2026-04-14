@@ -327,6 +327,19 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:4px;">DARE · CC BY-SA 3.0 · imperium.ahlfeldt.se</div>
     </div>
   </div>
+  <div class="ctrl-card">
+    <div class="ctrl-label">Mundo Maya</div>
+    <div class="ctrl-row" style="display:flex;flex-direction:column;gap:4px;margin-top:.2rem;">
+      <button class="filter-chip" id="cenote-btn" onclick="toggleCenotes()">💧 Yucatán Cenotes</button>
+    </div>
+    <div id="cenote-legend" style="display:none;margin-top:6px;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#4a9ec4;flex-shrink:0"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Cenote <span id="cenote-count" style="color:var(--ochre)"></span></span>
+      </div>
+      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:4px;">BWaldo8 · ArcGIS Online · public domain</div>
+    </div>
+  </div>
 </div>
 
 <div class="detail-panel" id="detailPanel">
@@ -975,6 +988,141 @@ function _toggleDareType(ftype) {
 function toggleDareMithraeum() { _toggleDareType('mithraeum'); }
 function toggleDareApollo()    { _toggleDareType('apollo');    }
 function toggleDareAthena()    { _toggleDareType('athena');    }
+
+
+// ── Yucatán Cenotes Layer ─────────────────────────────────────
+// Source: ArcGIS Online item 5d823ae7ec574613ad783631b8fdb363
+// Owner: BWaldo8 · Layer: Yuc_caves_Projected (point layer)
+// Strategy: try ArcGIS item GeoJSON export first (uses item ID only,
+// no org ID needed), then fall back to known services1 REST endpoint.
+
+const CENOTE_ITEM_ID  = '5d823ae7ec574613ad783631b8fdb363';
+const CENOTE_COLOR    = '#4a9ec4';
+
+// ArcGIS public GeoJSON export — works for any public item, no org ID
+const CENOTE_URLS = [
+  // Route 1: item data endpoint (returns raw file/GeoJSON if shared publicly)
+  `https://www.arcgis.com/sharing/rest/content/items/${CENOTE_ITEM_ID}/data?f=json`,
+  // Route 2: confirmed FeatureServer REST endpoint
+  `https://services1.arcgis.com/AXaYBvnJsB5Q7sDF/arcgis/rest/services/Yuc_caves_Projected/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson&resultRecordCount=5000`,
+  // Route 3: same org, alternate record count cap
+  `https://services1.arcgis.com/AXaYBvnJsB5Q7sDF/arcgis/rest/services/Yuc_caves_Projected/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson&resultRecordCount=2000`,
+];
+
+let cenoteLayer = null, cenoteOn = false, cenoteLoading = false;
+
+async function fetchCenoteGeoJSON() {
+  // Try each URL in sequence, return first that yields GeoJSON features
+  for (const url of CENOTE_URLS) {
+    try {
+      const resp = await fetch(url);
+      if (!resp.ok) continue;
+      const data = await resp.json();
+      // ArcGIS FeatureServer returns { features: [...] }
+      // Item data export may return the raw layer or a zip — check shape
+      if (data.features && data.features.length > 0) return data;
+      if (data.layers) continue; // service root, not a layer
+    } catch(e) { continue; }
+  }
+  return null;
+}
+
+async function buildCenoteLayer() {
+  const btn = document.getElementById('cenote-btn');
+  btn.textContent = '⏳ Loading…';
+  btn.disabled = true;
+
+  const gj = await fetchCenoteGeoJSON();
+
+  if (!gj) {
+    btn.textContent = '💧 Yucatán Cenotes';
+    btn.disabled = false;
+    btn.title = 'Could not reach ArcGIS endpoint — check console';
+    console.warn('Cenote layer: all fetch URLs failed. Verify the ArcGIS REST endpoint and CORS headers.');
+    return null;
+  }
+
+  const g = L.layerGroup();
+  const features = gj.features || [];
+
+  features.forEach(f => {
+    if (!f.geometry) return;
+    let lat, lng;
+    if (f.geometry.type === 'Point') {
+      [lng, lat] = f.geometry.coordinates;
+    } else return;
+
+    const props = f.properties || {};
+    // Field names vary — try common ArcGIS export patterns
+    const name = props.Name || props.NAME || props.name ||
+                 props.Nombre || props.NOMBRE ||
+                 props.FID_1 || props.OBJECTID || 'Cenote';
+    const type = props.Type || props.TYPE || props.Tipo || '';
+    const depth = props.Depth || props.DEPTH || props.Profundidad || '';
+
+    const r = 5;
+    const icon = L.divIcon({
+      html: `<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+6}" height="${r*2+6}">
+        <circle cx="${r+3}" cy="${r+3}" r="${r}" fill="${CENOTE_COLOR}" fill-opacity=".85"
+          stroke="#fff" stroke-width="1.5" stroke-opacity=".6"/>
+        <circle cx="${r+3}" cy="${r+3}" r="${r+2.5}" fill="none"
+          stroke="${CENOTE_COLOR}" stroke-width="1" stroke-opacity=".25"/>
+      </svg>`,
+      className: '', iconSize: [r*2+6, r*2+6], iconAnchor: [r+3, r+3]
+    });
+
+    const depthStr = depth ? `<br><span style="color:rgba(240,234,216,.5)">Depth: ${depth}m</span>` : '';
+    const typeStr  = type  ? `<br><span style="color:${CENOTE_COLOR};font-size:.6rem">${type}</span>` : '';
+
+    L.marker([lat, lng], {icon})
+      .bindTooltip(
+        `<b>${name}</b>${typeStr}${depthStr}<br><span style="color:rgba(240,234,216,.4);font-size:.6rem">Yucatán cenote</span>`,
+        {sticky: true, className: 'dare-tip'}
+      )
+      .addTo(g);
+  });
+
+  // Update count badge
+  const countEl = document.getElementById('cenote-count');
+  if (countEl) countEl.textContent = `(${features.length.toLocaleString()})`;
+
+  btn.disabled = false;
+  return g;
+}
+
+async function toggleCenotes() {
+  const btn = document.getElementById('cenote-btn');
+  const leg = document.getElementById('cenote-legend');
+
+  if (cenoteOn) {
+    if (cenoteLayer) map.removeLayer(cenoteLayer);
+    cenoteOn = false;
+    btn.textContent = '💧 Yucatán Cenotes';
+    btn.classList.remove('active');
+    leg.style.display = 'none';
+    return;
+  }
+
+  if (cenoteLoading) return;
+  cenoteLoading = true;
+
+  if (!cenoteLayer) {
+    cenoteLayer = await buildCenoteLayer();
+  }
+
+  cenoteLoading = false;
+
+  if (!cenoteLayer) return; // fetch failed
+
+  cenoteLayer.addTo(map);
+  cenoteOn = true;
+  btn.textContent = '💧 Hide Cenotes';
+  btn.classList.add('active');
+  leg.style.display = 'block';
+
+  // Pan to Yucatán on first load so the user sees the layer
+  map.flyTo([20.5, -89.0], 7, {duration: 1.2});
+}
 
 </script>
 </body>
