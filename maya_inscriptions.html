@@ -204,6 +204,8 @@ h1 em{color:var(--jade-lt);font-style:italic;}
   <a class="nav-link " href="luwian.html">Luwian</a>
   <a class="nav-link " href="upload.html">Upload</a>
   <a class="nav-link " href="conferences.html">Conferences</a>
+  <a class="nav-link " href="mesoamerican_ballcourt_league.html" style="color:var(--ochre-lt)">MBL</a>
+  <a class="nav-link " href="mesoamerican_ballgame.html" style="color:var(--ochre-lt)">▶ Play</a>
 </header>
 
 <!-- Hero -->
@@ -240,6 +242,26 @@ h1 em{color:var(--jade-lt);font-style:italic;}
           <span id="ballcourt-count">0</span> Ballcourts
         </button>
         <button class="p-chip" id="cenote-btn" onclick="toggleCenotes(this)">💧 Cenotes</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:3px;margin-top:.5rem;">
+        <a href="mesoamerican_ballcourt_league.html"
+           style="display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;
+           background:rgba(184,137,42,.06);border:1px solid rgba(184,137,42,.18);
+           font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--ochre-lt);text-decoration:none;transition:all .15s;"
+           onmouseover="this.style.background='rgba(184,137,42,.14)'"
+           onmouseout="this.style.background='rgba(184,137,42,.06)'">
+          <span style="font-size:.8rem">🏟</span> Mesoamerican Ballcourt League
+        </a>
+        <a href="mesoamerican_ballgame.html"
+           style="display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;
+           background:rgba(90,184,128,.05);border:1px solid rgba(90,184,128,.15);
+           font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--jade-lt);text-decoration:none;transition:all .15s;"
+           onmouseover="this.style.background='rgba(90,184,128,.12)'"
+           onmouseout="this.style.background='rgba(90,184,128,.05)'">
+          <span style="font-size:.8rem">▶</span> Play the Ballgame
+        </a>
       </div>
     </div>
     <div id="site-list"></div>
@@ -685,30 +707,94 @@ async function toggleCenotes(btn){
   map.flyTo([20.5,-89.0],7,{duration:1.2});
 }
 
-// ── Ballcourts overlay (UNAM · Stanton 2020 · Open) ──────────
-// 78 confirmed Maya ballcourts geocoded from published literature
+// ── Ballcourts overlay — 81 confirmed sites ───────────────────
+// Source: mesoamerican_ballcourt_confirmed_1.xlsx
+// Compiled from northern_lowlands, southern_lowlands, highlands,
+// gulf_coast, pacific_slope, el_salvador source datasets.
 const BALLCOURTS = [
-  {name:"Chichén Itzá",lat:20.6833,lng:-88.5683,site:"CHI",type:"Great"},
-  {name:"Cobá",lat:20.4886,lng:-87.7292,site:"COB",type:"Classic"},
-  {name:"Uxmal",lat:20.3592,lng:-89.7711,site:"UXM",type:"Puuc"},
-  {name:"Caracol",lat:16.7667,lng:-89.1167,site:"CRC",type:"Classic"},
-  {name:"Lubaantun",lat:16.2833,lng:-88.9667,site:"LTZ",type:"Classic"},
-  {name:"Tikal",lat:17.2220,lng:-89.6237,site:"TIK",type:"Classic"},
-  {name:"Palenque",lat:17.4839,lng:-92.0456,site:"PAL",type:"Classic"},
-  {name:"Copán",lat:14.8386,lng:-89.1414,site:"CPN",type:"Classic"},
-  {name:"Yaxchilán",lat:16.8981,lng:-90.9675,site:"YAX",type:"Classic"},
-  {name:"Piedras Negras",lat:17.1542,lng:-91.2647,site:"PIE",type:"Classic"},
-  {name:"Naranjo",lat:17.0667,lng:-89.7333,site:"NAR",type:"Classic"},
-  {name:"Quiriguá",lat:15.2667,lng:-89.0444,site:"QRG",type:"Classic"},
-  {name:"Bonampak",lat:16.7011,lng:-91.0656,site:"BPK",type:"Classic"},
-  {name:"Dos Pilas",lat:16.3833,lng:-90.1167,site:"DON",type:"Classic"},
-  {name:"Seibal",lat:16.5000,lng:-90.0833,site:"SEI",type:"Classic"},
-  {name:"Calakmul",lat:18.1037,lng:-89.8083,site:"CAL",type:"Classic"},
-  {name:"Xultun",lat:17.7167,lng:-89.6000,site:"XUL",type:"Classic"},
-  {name:"Uaxactun",lat:17.3944,lng:-89.6333,site:"UAX",type:"Classic"},
-  {name:"Aguateca",lat:16.4000,lng:-90.1833,site:"AGT",type:"Classic"},
-  {name:"Edzná",lat:19.5944,lng:-90.2294,site:"EDZ",type:"Classic"},
+  {name:'Becan',lat:18.5275,lng:-89.4692,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Chichen Itza',lat:20.6843,lng:-88.5678,courts:13,tier:'major',country:'Mexico'},
+  {name:'Cobá',lat:20.4886,lng:-87.7292,courts:2,tier:'major',country:'Mexico'},
+  {name:'Dzibanché',lat:18.65,lng:-88.9167,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Dzibilchaltun',lat:21.0731,lng:-89.5944,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Edzna',lat:19.5944,lng:-90.2294,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Ek Balam',lat:20.8861,lng:-88.2494,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Kohunlich',lat:18.5067,lng:-88.9592,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Oxkintok',lat:20.5647,lng:-89.9369,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Uxmal',lat:20.3592,lng:-89.7711,courts:2,tier:'major',country:'Mexico'},
+  {name:'Yaxuna',lat:20.6667,lng:-88.8333,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Bonampak',lat:16.7011,lng:-91.0656,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Piedras Negras',lat:17.1542,lng:-91.2647,courts:2,tier:'major',country:'Guatemala'},
+  {name:'Yaxchilan',lat:16.8981,lng:-90.9675,courts:2,tier:'major',country:'Mexico'},
+  {name:'Palenque',lat:17.4839,lng:-92.0456,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Tonina',lat:16.9,lng:-92.0167,courts:2,tier:'major',country:'Mexico'},
+  {name:'Cahal Pech',lat:17.1456,lng:-89.0769,courts:2,tier:'major',country:'Belize'},
+  {name:'Caracol',lat:16.7667,lng:-89.1167,courts:2,tier:'major',country:'Belize'},
+  {name:'Cerros',lat:18.1667,lng:-88.3167,courts:2,tier:'major',country:'Belize'},
+  {name:"Ka'kabish",lat:17.9,lng:-88.6667,courts:1,tier:'minor',country:'Belize'},
+  {name:'Lamanai',lat:17.7717,lng:-88.655,courts:1,tier:'minor',country:'Belize'},
+  {name:'Lubaantun',lat:16.2833,lng:-88.9667,courts:3,tier:'major',country:'Belize'},
+  {name:'Nim Li Punit',lat:16.1,lng:-89.0333,courts:1,tier:'minor',country:'Belize'},
+  {name:'Pacbitun',lat:17.0833,lng:-89.05,courts:1,tier:'minor',country:'Belize'},
+  {name:'Xunantunich',lat:17.0897,lng:-89.1389,courts:2,tier:'major',country:'Belize'},
+  {name:'Aguateca',lat:16.4,lng:-90.1833,courts:1,tier:'major',country:'Guatemala'},
+  {name:'Calakmul',lat:18.1037,lng:-89.8083,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Cancuen',lat:16.05,lng:-90.1,courts:2,tier:'major',country:'Guatemala'},
+  {name:'Ceibal',lat:16.5,lng:-90.0833,courts:2,tier:'major',country:'Guatemala'},
+  {name:'Dos Pilas',lat:16.3833,lng:-90.1167,courts:1,tier:'minor',country:'Guatemala'},
+  {name:'El Mirador',lat:17.75,lng:-89.9167,courts:1,tier:'minor',country:'Guatemala'},
+  {name:'La Corona',lat:17.7167,lng:-90.55,courts:1,tier:'minor',country:'Guatemala'},
+  {name:'Nakbe',lat:17.6833,lng:-89.8167,courts:1,tier:'minor',country:'Guatemala'},
+  {name:'Nakum',lat:17.1,lng:-89.2167,courts:3,tier:'major',country:'Guatemala'},
+  {name:'Naranjo',lat:17.0667,lng:-89.7333,courts:2,tier:'major',country:'Guatemala'},
+  {name:"Nixtun-Ch'ich'",lat:16.95,lng:-89.8833,courts:3,tier:'major',country:'Guatemala'},
+  {name:'Tamarindito',lat:16.4167,lng:-90.1333,courts:1,tier:'major',country:'Guatemala'},
+  {name:'Tikal',lat:17.222,lng:-89.6237,courts:7,tier:'major',country:'Guatemala'},
+  {name:'Yaxha',lat:17.0833,lng:-89.4167,courts:2,tier:'major',country:'Guatemala'},
+  {name:'Copan',lat:14.8386,lng:-89.1414,courts:1,tier:'major',country:'Honduras'},
+  {name:'Ixkun',lat:16.3,lng:-89.4667,courts:1,tier:'minor',country:'Guatemala'},
+  {name:'Quirigua',lat:15.2667,lng:-89.0444,courts:2,tier:'major',country:'Guatemala'},
+  {name:'Etlatongo',lat:17.45,lng:-97.2833,courts:1,tier:'minor',country:'Mexico'},
+  {name:'El Palmillo',lat:16.7833,lng:-96.4833,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Lambityeco',lat:16.9167,lng:-96.5,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Monte Albán',lat:17.0436,lng:-96.7669,courts:5,tier:'major',country:'Mexico'},
+  {name:'Yagul',lat:16.95,lng:-96.4667,courts:1,tier:'major',country:'Mexico'},
+  {name:'Cantona',lat:19.55,lng:-97.3833,courts:24,tier:'major',country:'Mexico'},
+  {name:'Capulac Concepción',lat:19.0833,lng:-98.05,courts:1,tier:'minor',country:'Mexico'},
+  {name:'La Laguna',lat:19.5,lng:-98.25,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Teotenango',lat:19.05,lng:-99.6333,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Tula',lat:20.0578,lng:-99.3433,courts:2,tier:'major',country:'Mexico'},
+  {name:'Xochicalco',lat:18.8011,lng:-99.2947,courts:2,tier:'major',country:'Mexico'},
+  {name:'Teopantecuanitlan',lat:17.9667,lng:-99.35,courts:2,tier:'major',country:'Mexico'},
+  {name:'Carrizalito',lat:19.5,lng:-96.9167,courts:1,tier:'minor',country:'Mexico'},
+  {name:'El Cuajilote',lat:20.0833,lng:-97.1833,courts:1,tier:'minor',country:'Mexico'},
+  {name:'El Tajin',lat:20.4478,lng:-97.3783,courts:17,tier:'major',country:'Mexico'},
+  {name:'Los Ídolos',lat:20.0,lng:-96.75,courts:6,tier:'major',country:'Mexico'},
+  {name:'Quiahuiztlan',lat:19.6,lng:-96.4333,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Toxpan',lat:20.1667,lng:-97.0,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Vega de la Peña',lat:20.1833,lng:-97.2,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Xiutetelco',lat:19.9667,lng:-97.0167,courts:1,tier:'minor',country:'Mexico'},
+  {name:'La Joya',lat:19.15,lng:-96.1833,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Yohualichan',lat:20.0333,lng:-97.5167,courts:1,tier:'minor',country:'Mexico'},
+  {name:'El Vergel',lat:16.5333,lng:-93.1167,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Finca Acapulco',lat:16.5,lng:-93.1833,courts:1,tier:'major',country:'Mexico'},
+  {name:'Fracción Mujular',lat:15.55,lng:-93.0,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Los Horcones',lat:15.5833,lng:-93.0167,courts:5,tier:'major',country:'Mexico'},
+  {name:'Paso de la Amada',lat:14.8833,lng:-92.3667,courts:1,tier:'minor',country:'Mexico'},
+  {name:'San Mateo',lat:16.5167,lng:-93.1833,courts:1,tier:'minor',country:'Mexico'},
+  {name:'Cara Sucia',lat:13.85,lng:-90.0333,courts:2,tier:'major',country:'El Salvador'},
+  {name:'El Baúl',lat:14.3,lng:-91.0667,courts:1,tier:'minor',country:'Guatemala'},
+  {name:'Tazumal',lat:13.9833,lng:-89.6833,courts:1,tier:'minor',country:'El Salvador'},
+  {name:'Kaminaljuyu',lat:14.6333,lng:-90.5333,courts:12,tier:'major',country:'Guatemala'},
+  {name:'Iximche',lat:14.6667,lng:-91.0,courts:2,tier:'major',country:'Guatemala'},
+  {name:'Mixco Viejo',lat:14.9667,lng:-90.6667,courts:2,tier:'major',country:'Guatemala'},
+  {name:"Q'umarkaj",lat:15.0333,lng:-91.1667,courts:4,tier:'major',country:'Guatemala'},
+  {name:'Zaculeu',lat:15.3167,lng:-91.4833,courts:1,tier:'major',country:'Guatemala'},
+  {name:'Tenam Puente',lat:16.1833,lng:-92.1333,courts:3,tier:'major',country:'Mexico'},
 ];
+
+// Total confirmed courts across all sites
+const TOTAL_COURTS = BALLCOURTS.reduce((s,b)=>s+b.courts,0);
 document.getElementById('ballcourt-count').textContent = BALLCOURTS.length;
 
 let ballcourtLayer=null, ballcourtOn=false;
@@ -724,18 +810,24 @@ function toggleBallcourts(btn){
   if(!ballcourtLayer){
     const g=L.layerGroup();
     BALLCOURTS.forEach(bc=>{
+      // Scale marker by court count: major=larger
+      const isMajor = bc.tier==='major';
+      const r = bc.courts >= 10 ? 9 : bc.courts >= 5 ? 7 : bc.courts >= 2 ? 6 : 5;
       const icon=L.divIcon({
-        html:`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
-          <rect x="2" y="5" width="12" height="6" rx="1"
-            fill="none" stroke="#d4a84b" stroke-width="1.8" stroke-opacity=".85"/>
-          <circle cx="8" cy="8" r="1.5" fill="#d4a84b" fill-opacity=".9"/>
+        html:`<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+4}" height="${r*2+4}">
+          <rect x="2" y="${Math.floor(r/2)}" width="${r*2}" height="${r}"
+            rx="1" fill="${isMajor?'rgba(212,168,75,.25)':'none'}"
+            stroke="#d4a84b" stroke-width="${isMajor?2:1.5}" stroke-opacity=".85"/>
+          <circle cx="${r+2}" cy="${r+2}" r="1.8" fill="#d4a84b" fill-opacity=".9"/>
         </svg>`,
-        className:'', iconSize:[16,16], iconAnchor:[8,8]
+        className:'', iconSize:[r*2+4,r*2+4], iconAnchor:[r+2,r+2]
       });
+      const courtsLabel = bc.courts===1 ? '1 ballcourt' : `${bc.courts} ballcourts`;
       L.marker([bc.lat,bc.lng],{icon})
-        .bindTooltip(`<b>${bc.name}</b><br><span style="color:#d4a84b;font-size:.6rem">${bc.type} ballcourt</span>`,
+        .bindTooltip(
+          `<b>${bc.name}</b> <span style="color:rgba(200,216,240,.4)">${bc.country}</span><br>`+
+          `<span style="color:#d4a84b;font-size:.6rem">${courtsLabel} · ${bc.tier}</span>`,
           {sticky:true})
-        .on('click',()=>loadSite(bc.site))
         .addTo(g);
     });
     ballcourtLayer=g;
@@ -743,6 +835,7 @@ function toggleBallcourts(btn){
   ballcourtLayer.addTo(map);
   ballcourtOn=true;
   btn.classList.add('active');
+  document.getElementById('ballcourt-count').textContent=`${BALLCOURTS.length} sites · ${TOTAL_COURTS} courts`;
 }
 </script>
 </body>
