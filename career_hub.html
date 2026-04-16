@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Career Hub — Maya Ballgame League</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════
+   TOKENS — obsidian war room
+══════════════════════════════════════════════════════════ */
+:root {
+  --void:    #03050a;
+  --night:   #060c14;
+  --deep:    #0a1020;
+  --stone:   #131b28;
+  --rim:     rgba(200,220,255,.07);
+  --rim-lt:  rgba(200,220,255,.13);
+
+  --jade:    #3a9a5c;
+  --jade-lt: #5abb80;
+  --jade-glow: rgba(58,154,92,.18);
+
+  --ochre:   #b8892a;
+  --ochre-lt:#d4a84b;
+  --ochre-glow: rgba(184,137,42,.15);
+
+  --blood:   #8a2a2a;
+  --blood-lt:#b84040;
+
+  --star:    #c8d8f0;
+  --ash:     rgba(200,216,240,.45);
+  --dim:     rgba(200,216,240,.2);
+  --ghost:   rgba(200,216,240,.08);
+
+  --serif:   'Cinzel', 'Trajan Pro', serif;
+  --display: 'Cinzel Decorative', serif;
+  --body:    'Crimson Pro', Georgia, serif;
+  --mono:    'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--star);
+  font-family: var(--body);
+  font-size: 16px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* stone texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: .6;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes pulseJade {
+  0%,100% { box-shadow: 0 0 0 0 rgba(58,154,92,0); }
+  50%      { box-shadow: 0 0 12px 3px rgba(58,154,92,.2); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes tick {
+  0%,49% { opacity:1; }
+  50%,100%{ opacity:0; }
+}
+@keyframes omenPulse {
+  0%,100% { opacity:.7; }
+  50%      { opacity:1; }
+}
+
+/* ── MASTHEAD ── */
+.masthead {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 44px;
+  background: rgba(3,5,10,.97);
+  border-bottom: 1px solid var(--rim);
+  display: flex; align-items: center;
+  padding: 0 1.5rem; gap: 1.5rem;
+  backdrop-filter: blur(12px);
+}
+.logo {
+  font-family: var(--display);
+  font-size: .78rem; font-weight: 700;
+  color: var(--ochre-lt);
+  letter-spacing: .08em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-link {
+  font-family: var(--serif);
+  font-size: .55rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--dim);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-link:hover { color: var(--star); }
+.nav-link.active { color: var(--jade-lt); }
+.nav-spacer { flex: 1; }
+.hub-mode-badge {
+  font-family: var(--mono);
+  font-size: .5rem; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase;
+  background: var(--jade-glow);
+  border: 1px solid rgba(58,154,92,.3);
+  color: var(--jade-lt);
+  padding: .2rem .5rem;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SITE SELECTION SCREEN (shown before save loads)
+══════════════════════════════════════════════════════════ */
+.select-screen {
+  position: fixed; inset: 0; z-index: 500;
+  background: var(--void);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 2rem;
+  animation: fadeUp .6s ease both;
+}
+.select-screen.hidden { display: none; }
+
+.select-title {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--ochre-lt);
+  letter-spacing: .06em;
+  text-align: center;
+  margin-bottom: .5rem;
+}
+.select-sub {
+  font-family: var(--body);
+  font-size: 1rem;
+  color: var(--ash);
+  text-align: center;
+  font-style: italic;
+  margin-bottom: 2.5rem;
+}
+
+.site-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: .7rem;
+  max-width: 980px;
+  width: 100%;
+  max-height: 55vh;
+  overflow-y: auto;
+  padding-right: .3rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rim-lt) transparent;
+}
+.site-card-sel {
+  background: var(--stone);
+  border: 1px solid var(--rim);
+  padding: .9rem 1rem;
+  cursor: pointer;
+  transition: all .15s;
+  position: relative;
+  overflow: hidden;
+}
+.site-card-sel::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--jade);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform .2s;
+}
+.site-card-sel:hover::before { transform: scaleY(1); }
+.site-card-sel:hover { border-color: var(--rim-lt); background: rgba(20,30,45,.9); }
+.sel-site-name {
+  font-family: var(--serif);
+  font-size: .82rem; font-weight: 600;
+  color: var(--star);
+  margin-bottom: .2rem;
+}
+.sel-site-meta {
+  font-family: var(--mono);
+  font-size: .52rem;
+  color: var(--dim);
+  display: flex; gap: .5rem; flex-wrap: wrap;
+}
+.sel-tier-badge {
+  font-family: var(--mono);
+  font-size: .46rem; font-weight: 500;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: .1rem .3rem;
+  border-radius: 1px;
+}
+.sel-tier-badge.major { background: var(--ochre-glow); color: var(--ochre-lt); border: 1px solid rgba(184,137,42,.25); }
+.sel-tier-badge.minor { background: var(--ghost); color: var(--dim); border: 1px solid var(--rim); }
+
+.era-filter-row {
+  display: flex; gap: .4rem; flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+  max-width: 980px; width: 100%;
+}
+.era-btn {
+  font-family: var(--serif);
+  font-size: .5rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: .25rem .65rem;
+  border: 1px solid var(--rim);
+  background: none; color: var(--dim);
+  cursor: pointer; transition: all .14s;
+}
+.era-btn:hover { color: var(--star); border-color: var(--rim-lt); }
+.era-btn.active { background: var(--jade-glow); color: var(--jade-lt); border-color: rgba(58,154,92,.4); }
+
+/* ══════════════════════════════════════════════════════════
+   HUB LAYOUT
+══════════════════════════════════════════════════════════ */
+.hub-wrap {
+  padding-top: 44px;
+  min-height: 100vh;
+}
+.hub-wrap.hidden { display: none; }
+
+/* ── TOP BANNER: date + site identity ── */
+.hub-banner {
+  background: var(--night);
+  border-bottom: 1px solid var(--rim);
+  padding: 1.2rem 1.8rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2rem;
+  align-items: center;
+  animation: fadeUp .5s ease both;
+}
+
+.hub-lc-block {
+  display: flex; flex-direction: column; gap: .15rem;
+}
+.hub-lc-label {
+  font-family: var(--mono);
+  font-size: .47rem; font-weight: 500;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ochre); opacity: .7;
+}
+.hub-lc-value {
+  font-family: var(--mono);
+  font-size: 1.1rem; font-weight: 500;
+  color: var(--ochre-lt);
+  letter-spacing: .04em;
+  line-height: 1;
+}
+.hub-lc-greg {
+  font-family: var(--body);
+  font-size: .68rem;
+  color: var(--ash);
+  font-style: italic;
+}
+
+.hub-site-identity {
+  text-align: center;
+}
+.hub-site-name {
+  font-family: var(--display);
+  font-size: clamp(1.1rem, 2.5vw, 1.9rem);
+  font-weight: 700;
+  color: var(--star);
+  letter-spacing: .04em;
+  line-height: 1;
+  margin-bottom: .3rem;
+}
+.hub-site-tags {
+  display: flex; gap: .35rem; justify-content: center; flex-wrap: wrap;
+}
+.hub-tag {
+  font-family: var(--serif);
+  font-size: .45rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: .15rem .45rem;
+  border: 1px solid;
+}
+.hub-tag.ritual  { color: #9080d0; border-color: rgba(144,128,208,.3); background: rgba(144,128,208,.06); }
+.hub-tag.trade   { color: var(--ochre-lt); border-color: rgba(184,137,42,.3); background: var(--ochre-glow); }
+.hub-tag.war     { color: var(--blood-lt); border-color: rgba(184,64,64,.3); background: rgba(138,42,42,.08); }
+.hub-tag.capital { color: var(--jade-lt); border-color: rgba(58,154,92,.3); background: var(--jade-glow); }
+
+.hub-resources {
+  display: flex; gap: 1.2rem; align-items: center;
+}
+.hub-res {
+  display: flex; flex-direction: column; align-items: flex-end; gap: .1rem;
+  min-width: 70px;
+}
+.hub-res-label {
+  font-family: var(--mono);
+  font-size: .44rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim);
+}
+.hub-res-value {
+  font-family: var(--serif);
+  font-size: .9rem; font-weight: 700;
+  line-height: 1;
+}
+.hub-res-bar {
+  width: 100%; height: 3px;
+  background: var(--ghost);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.hub-res-fill {
+  height: 100%;
+  border-radius: 1px;
+  transition: width .4s ease;
+}
+.res-treasury .hub-res-value { color: var(--ochre-lt); }
+.res-treasury .hub-res-fill  { background: var(--ochre); }
+.res-prestige .hub-res-value { color: #9080d0; }
+.res-prestige .hub-res-fill  { background: #9080d0; }
+.res-obligation .hub-res-value { color: var(--blood-lt); }
+.res-obligation .hub-res-fill  { background: var(--blood-lt); }
+
+/* ── ADVANCE TIME CONTROLS ── */
+.time-controls {
+  background: rgba(10,16,32,.8);
+  border-bottom: 1px solid var(--rim);
+  padding: .5rem 1.8rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.time-label {
+  font-family: var(--mono);
+  font-size: .5rem; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--dim);
+  white-space: nowrap;
+}
+.advance-btn {
+  font-family: var(--serif);
+  font-size: .52rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: .3rem .8rem;
+  border: 1px solid var(--rim);
+  background: none; color: var(--ash);
+  cursor: pointer; transition: all .14s;
+}
+.advance-btn:hover { color: var(--star); border-color: var(--rim-lt); background: var(--ghost); }
+.advance-btn.primary {
+  background: var(--jade-glow);
+  color: var(--jade-lt);
+  border-color: rgba(58,154,92,.4);
+}
+.advance-btn.primary:hover { background: rgba(58,154,92,.25); }
+.phase-indicator {
+  font-family: var(--body);
+  font-size: .7rem; font-style: italic;
+  color: var(--ash);
+  margin-left: auto;
+}
+.phase-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--jade);
+  margin-right: .4rem;
+  animation: pulseJade 2.5s ease infinite;
+}
+
+/* ── MAIN GRID ── */
+.hub-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 1px;
+  background: var(--rim);
+  border-top: none;
+  animation: fadeUp .6s .1s ease both;
+}
+@media (max-width: 900px) {
+  .hub-main { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .hub-main { grid-template-columns: 1fr; }
+}
+
+.hub-cell {
+  background: var(--night);
+  padding: 1.3rem 1.5rem;
+  min-height: 200px;
+}
+.hub-cell.span2 { grid-column: span 2; }
+.hub-cell.tall  { min-height: 260px; }
+
+.cell-header {
+  display: flex; align-items: baseline; gap: .6rem;
+  margin-bottom: 1rem;
+  padding-bottom: .6rem;
+  border-bottom: 1px solid var(--rim);
+}
+.cell-title {
+  font-family: var(--serif);
+  font-size: .58rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ochre);
+}
+.cell-count {
+  font-family: var(--mono);
+  font-size: .5rem;
+  color: var(--dim);
+  margin-left: auto;
+}
+
+/* ── URGENT INBOX ── */
+.inbox-item {
+  display: flex; gap: .7rem; align-items: flex-start;
+  padding: .55rem 0;
+  border-bottom: 1px solid rgba(200,216,240,.04);
+  cursor: pointer;
+  transition: all .14s;
+}
+.inbox-item:last-child { border-bottom: none; }
+.inbox-item:hover { background: var(--ghost); margin: 0 -.5rem; padding-left: .5rem; padding-right: .5rem; }
+.inbox-icon {
+  font-size: .9rem; flex-shrink: 0; margin-top: .1rem;
+  width: 22px; text-align: center;
+}
+.inbox-body { flex: 1; }
+.inbox-title {
+  font-family: var(--serif);
+  font-size: .72rem; font-weight: 600;
+  color: var(--star); line-height: 1.3;
+  margin-bottom: .1rem;
+}
+.inbox-meta {
+  font-family: var(--mono);
+  font-size: .5rem; color: var(--dim);
+  display: flex; gap: .5rem;
+}
+.inbox-badge {
+  font-family: var(--mono);
+  font-size: .44rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: .1rem .3rem;
+  flex-shrink: 0; align-self: flex-start; margin-top: .15rem;
+}
+.badge-crisis  { background: rgba(138,42,42,.2); color: var(--blood-lt); border: 1px solid rgba(184,64,64,.2); }
+.badge-scout   { background: rgba(58,154,92,.1); color: var(--jade-lt);  border: 1px solid rgba(58,154,92,.2); }
+.badge-ritual  { background: rgba(144,128,208,.1); color: #b0a0e8; border: 1px solid rgba(144,128,208,.2); }
+.badge-rival   { background: rgba(184,137,42,.1); color: var(--ochre-lt); border: 1px solid rgba(184,137,42,.2); }
+.badge-dynasty { background: rgba(200,216,240,.04); color: var(--ash); border: 1px solid var(--rim); }
+.badge-omen    { color: #d4a84b; border: 1px solid rgba(212,168,75,.25); background: rgba(212,168,75,.06); animation: omenPulse 3s ease infinite; }
+
+/* ── NEXT FIXTURE ── */
+.fixture-card {
+  background: var(--stone);
+  border: 1px solid var(--rim);
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.fixture-card::after {
+  content: '⬡';
+  position: absolute;
+  right: -8px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 8rem;
+  color: rgba(200,216,240,.02);
+  pointer-events: none;
+}
+.fixture-vs {
+  display: flex; align-items: center; gap: .7rem;
+  margin-bottom: .8rem;
+}
+.fixture-team {
+  flex: 1;
+  font-family: var(--serif);
+  font-size: .85rem; font-weight: 700;
+  color: var(--star); line-height: 1.2;
+}
+.fixture-team.away { text-align: right; color: var(--ash); }
+.fixture-separator {
+  font-family: var(--mono);
+  font-size: .6rem; color: var(--dim);
+  text-align: center; white-space: nowrap;
+}
+.fixture-meta {
+  display: flex; gap: .6rem; flex-wrap: wrap;
+  margin-bottom: .7rem;
+}
+.fixture-tag {
+  font-family: var(--mono);
+  font-size: .48rem; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: .12rem .4rem;
+  border: 1px solid;
+}
+.ft-stakes-proxy  { color: var(--ochre-lt); border-color: rgba(184,137,42,.3); background: var(--ochre-glow); }
+.ft-stakes-life   { color: var(--blood-lt); border-color: rgba(184,64,64,.3); background: rgba(138,42,42,.1); animation: omenPulse 2s ease infinite; }
+.ft-stakes-prestige { color: #b0a0e8; border-color: rgba(144,128,208,.3); background: rgba(144,128,208,.08); }
+.ft-court         { color: var(--dim); border-color: var(--rim); }
+.ft-date          { color: var(--ash); border-color: var(--rim); }
+
+.fixture-action-row {
+  display: flex; gap: .4rem;
+}
+.fixture-action {
+  font-family: var(--serif);
+  font-size: .5rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: .28rem .7rem;
+  border: 1px solid;
+  cursor: pointer;
+  transition: all .14s;
+  background: none;
+}
+.fa-play {
+  color: var(--jade-lt); border-color: rgba(58,154,92,.4);
+  background: var(--jade-glow);
+}
+.fa-play:hover { background: rgba(58,154,92,.25); }
+.fa-prep {
+  color: var(--ochre-lt); border-color: rgba(184,137,42,.3);
+}
+.fa-prep:hover { background: var(--ochre-glow); }
+.fa-refuse {
+  color: var(--blood-lt); border-color: rgba(184,64,64,.3);
+}
+.fa-refuse:hover { background: rgba(138,42,42,.12); }
+
+/* ── ROSTER SUMMARY ── */
+.roster-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: .5rem;
+  align-items: center;
+  padding: .4rem 0;
+  border-bottom: 1px solid rgba(200,216,240,.04);
+  cursor: pointer;
+  transition: all .13s;
+}
+.roster-row:last-child { border-bottom: none; }
+.roster-row:hover .roster-name { color: var(--jade-lt); }
+.roster-name {
+  font-family: var(--body);
+  font-size: .78rem; font-weight: 500;
+  color: var(--star);
+  transition: color .13s;
+}
+.roster-role {
+  font-family: var(--mono);
+  font-size: .46rem; font-weight: 500;
+  letter-spacing: .07em; text-transform: uppercase;
+  color: var(--dim);
+  white-space: nowrap;
+}
+.roster-phase {
+  font-family: var(--mono);
+  font-size: .48rem;
+  padding: .1rem .3rem;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.phase-prime  { color: var(--jade-lt); border-color: rgba(58,154,92,.3); background: var(--jade-glow); }
+.phase-youth  { color: #80b0e8; border-color: rgba(128,176,232,.3); background: rgba(128,176,232,.06); }
+.phase-vet    { color: var(--ochre-lt); border-color: rgba(184,137,42,.25); background: var(--ochre-glow); }
+.phase-dec    { color: var(--dim); border-color: var(--rim); background: none; }
+.roster-stat {
+  font-family: var(--mono);
+  font-size: .6rem; font-weight: 500;
+  color: var(--ochre-lt);
+  min-width: 24px; text-align: right;
+}
+.roster-need-flag {
+  font-family: var(--mono);
+  font-size: .44rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--blood-lt);
+  padding: .1rem .3rem;
+  border: 1px solid rgba(184,64,64,.25);
+  background: rgba(138,42,42,.1);
+}
+
+/* ── CALENDAR DISPLAY ── */
+.calendar-phase-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  margin-bottom: .8rem;
+}
+.cal-day {
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono);
+  font-size: .46rem;
+  border: 1px solid var(--rim);
+  background: var(--ghost);
+  cursor: default;
+  transition: all .12s;
+}
+.cal-day.today {
+  background: var(--jade-glow);
+  border-color: rgba(58,154,92,.5);
+  color: var(--jade-lt);
+  font-weight: 700;
+}
+.cal-day.event {
+  background: var(--ochre-glow);
+  border-color: rgba(184,137,42,.4);
+  color: var(--ochre-lt);
+}
+.cal-day.fixture {
+  background: rgba(90,187,128,.15);
+  border-color: rgba(58,154,92,.6);
+  color: var(--jade-lt);
+  font-weight: 700;
+}
+.cal-day.crisis {
+  background: rgba(138,42,42,.2);
+  border-color: rgba(184,64,64,.4);
+  color: var(--blood-lt);
+  animation: omenPulse 2.5s ease infinite;
+}
+.cal-day.past { opacity: .35; }
+
+.season-phase-bar {
+  display: flex; gap: 2px; margin-bottom: .6rem;
+}
+.spb-seg {
+  height: 5px; border-radius: 1px;
+  transition: all .3s;
+}
+.spb-seg.active { opacity: 1; }
+.spb-seg.done   { opacity: .4; }
+.spb-seg.future { opacity: .15; }
+
+.phase-legend {
+  display: flex; gap: .8rem; flex-wrap: wrap;
+  margin-top: .5rem;
+}
+.phase-leg-item {
+  display: flex; align-items: center; gap: .3rem;
+  font-family: var(--mono); font-size: .46rem; color: var(--dim);
+}
+.phase-pip { width: 8px; height: 8px; border-radius: 1px; }
+
+/* ── OMENS & CYCLES ── */
+.omen-row {
+  display: flex; align-items: center; gap: .7rem;
+  padding: .45rem 0;
+  border-bottom: 1px solid rgba(200,216,240,.04);
+}
+.omen-row:last-child { border-bottom: none; }
+.omen-icon { font-size: 1rem; flex-shrink: 0; }
+.omen-body { flex: 1; }
+.omen-title {
+  font-family: var(--body);
+  font-size: .72rem; font-weight: 500;
+  color: var(--star); margin-bottom: .1rem;
+}
+.omen-detail {
+  font-family: var(--mono);
+  font-size: .5rem; color: var(--dim);
+  line-height: 1.4;
+}
+.omen-severity {
+  font-family: var(--mono);
+  font-size: .44rem; text-transform: uppercase;
+  letter-spacing: .06em; flex-shrink: 0;
+  padding: .1rem .35rem;
+  border: 1px solid;
+}
+.sev-favorable { color: var(--jade-lt); border-color: rgba(58,154,92,.3); }
+.sev-warning   { color: var(--ochre-lt); border-color: rgba(184,137,42,.3); animation: omenPulse 3s ease infinite; }
+.sev-critical  { color: var(--blood-lt); border-color: rgba(184,64,64,.3); animation: omenPulse 1.5s ease infinite; }
+
+/* ── HISTORICAL NOTE ── */
+.hist-note {
+  background: var(--stone);
+  border: 1px solid var(--rim);
+  border-left: 3px solid var(--ochre);
+  padding: .9rem 1rem;
+  margin-bottom: .8rem;
+}
+.hist-note-date {
+  font-family: var(--mono);
+  font-size: .48rem; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ochre); margin-bottom: .3rem;
+}
+.hist-note-text {
+  font-family: var(--body);
+  font-size: .82rem; font-style: italic;
+  color: var(--ash); line-height: 1.6;
+}
+
+/* ── NEEDS ENGINE ── */
+.needs-item {
+  display: flex; align-items: center; gap: .7rem;
+  padding: .4rem 0;
+  border-bottom: 1px solid rgba(200,216,240,.04);
+}
+.needs-item:last-child { border-bottom: none; }
+.needs-label {
+  flex: 1;
+  font-family: var(--body);
+  font-size: .75rem; color: var(--ash);
+}
+.needs-urgency-bar {
+  width: 60px; height: 4px;
+  background: var(--ghost); border-radius: 1px;
+  overflow: hidden;
+}
+.needs-urgency-fill {
+  height: 100%; border-radius: 1px;
+  transition: width .4s ease;
+}
+.urgency-high { background: var(--blood-lt); }
+.urgency-med  { background: var(--ochre); }
+.urgency-low  { background: var(--jade); }
+.needs-action {
+  font-family: var(--mono);
+  font-size: .46rem; font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase;
+  padding: .12rem .35rem;
+  border: 1px solid rgba(58,154,92,.3);
+  color: var(--jade-lt); background: var(--jade-glow);
+  cursor: pointer; transition: all .13s;
+}
+.needs-action:hover { background: rgba(58,154,92,.2); }
+
+/* ── SITE STATUS GAUGE ── */
+.status-gauges {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+}
+.gauge {
+  background: var(--stone);
+  border: 1px solid var(--rim);
+  padding: .65rem .75rem;
+}
+.gauge-label {
+  font-family: var(--mono);
+  font-size: .46rem; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: .35rem;
+}
+.gauge-bar-track {
+  height: 4px; background: var(--ghost);
+  border-radius: 1px; overflow: hidden;
+  margin-bottom: .3rem;
+}
+.gauge-bar-fill {
+  height: 100%; border-radius: 1px;
+  transition: width .5s ease;
+}
+.gauge-value {
+  font-family: var(--serif);
+  font-size: .78rem; font-weight: 700;
+  color: var(--star);
+}
+
+/* ── SCROLL DETAIL PANEL (bottom) ── */
+.hub-detail-band {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--rim);
+  border-top: 1px solid var(--rim);
+  animation: fadeUp .7s .2s ease both;
+}
+@media (max-width: 700px) { .hub-detail-band { grid-template-columns: 1fr; } }
+.hub-detail-cell {
+  background: var(--deep);
+  padding: 1.2rem 1.5rem;
+}
+
+/* ── SCOUT REPORT ── */
+.scout-entry {
+  display: flex; gap: .7rem; align-items: flex-start;
+  padding: .5rem 0;
+  border-bottom: 1px solid rgba(200,216,240,.04);
+}
+.scout-entry:last-child { border-bottom: none; }
+.scout-avatar {
+  width: 28px; height: 28px;
+  background: var(--stone);
+  border: 1px solid var(--rim);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .9rem; flex-shrink: 0;
+}
+.scout-body { flex: 1; }
+.scout-name {
+  font-family: var(--serif);
+  font-size: .7rem; font-weight: 600;
+  color: var(--star); margin-bottom: .1rem;
+}
+.scout-report {
+  font-family: var(--body);
+  font-size: .72rem; font-style: italic;
+  color: var(--ash); line-height: 1.4;
+}
+.scout-meta {
+  font-family: var(--mono);
+  font-size: .46rem; color: var(--dim);
+  margin-top: .2rem;
+}
+.scout-reveal {
+  font-family: var(--mono);
+  font-size: .46rem; text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: .1rem .35rem;
+  border: 1px solid rgba(184,137,42,.25);
+  color: var(--ochre-lt); background: var(--ochre-glow);
+  cursor: pointer; flex-shrink: 0; align-self: center;
+  transition: all .13s;
+}
+.scout-reveal:hover { background: rgba(184,137,42,.2); }
+
+/* ── DYNASTY LOG ── */
+.dynasty-entry {
+  padding: .45rem 0;
+  border-bottom: 1px solid rgba(200,216,240,.04);
+}
+.dynasty-entry:last-child { border-bottom: none; }
+.dynasty-lc {
+  font-family: var(--mono);
+  font-size: .48rem; color: var(--ochre); margin-bottom: .15rem;
+}
+.dynasty-event {
+  font-family: var(--body);
+  font-size: .75rem; color: var(--ash);
+  line-height: 1.4;
+}
+
+/* ── STELLARIUM LINK ── */
+.sky-link-card {
+  background: var(--stone);
+  border: 1px solid var(--rim);
+  padding: .7rem 1rem;
+  display: flex; align-items: center; gap: .8rem;
+  cursor: pointer;
+  transition: all .15s;
+  text-decoration: none;
+  margin-top: .7rem;
+}
+.sky-link-card:hover { border-color: rgba(58,154,92,.4); background: var(--jade-glow); }
+.sky-link-icon { font-size: 1.2rem; }
+.sky-link-body { flex: 1; }
+.sky-link-title {
+  font-family: var(--serif);
+  font-size: .7rem; font-weight: 600;
+  color: var(--star); margin-bottom: .1rem;
+}
+.sky-link-sub {
+  font-family: var(--mono);
+  font-size: .48rem; color: var(--dim);
+}
+.sky-link-arrow {
+  font-family: var(--mono); font-size: .7rem;
+  color: var(--jade-lt);
+}
+
+/* ── ACTION MODAL OVERLAY ── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 800;
+  background: rgba(3,5,10,.88);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+  animation: fadeUp .2s ease both;
+}
+.modal-overlay.hidden { display: none; }
+.modal-box {
+  background: var(--night);
+  border: 1px solid var(--rim-lt);
+  max-width: 480px; width: 100%;
+  padding: 1.8rem;
+  position: relative;
+}
+.modal-title {
+  font-family: var(--display);
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--ochre-lt);
+  letter-spacing: .04em;
+  margin-bottom: .4rem;
+}
+.modal-body {
+  font-family: var(--body);
+  font-size: .88rem; color: var(--ash);
+  line-height: 1.65; margin-bottom: 1.2rem;
+  font-style: italic;
+}
+.modal-choices {
+  display: flex; flex-direction: column; gap: .4rem;
+}
+.modal-choice {
+  display: flex; gap: .8rem; align-items: flex-start;
+  padding: .7rem .9rem;
+  border: 1px solid var(--rim);
+  background: var(--ghost);
+  cursor: pointer;
+  transition: all .14s;
+  text-align: left;
+}
+.modal-choice:hover { border-color: var(--rim-lt); background: rgba(200,216,240,.06); }
+.modal-choice-key {
+  font-family: var(--serif);
+  font-size: .58rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ochre-lt); flex-shrink: 0; min-width: 28px;
+  padding-top: .1rem;
+}
+.modal-choice-text {
+  font-family: var(--body);
+  font-size: .78rem; color: var(--star);
+  line-height: 1.4;
+}
+.modal-choice-effect {
+  font-family: var(--mono);
+  font-size: .5rem; color: var(--dim);
+  margin-top: .2rem;
+}
+.modal-close {
+  position: absolute; top: .8rem; right: .8rem;
+  background: none; border: 1px solid var(--rim);
+  color: var(--dim); font-size: .9rem;
+  width: 26px; height: 26px;
+  cursor: pointer; transition: all .14s;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-close:hover { color: var(--star); border-color: var(--rim-lt); }
+
+/* ── TOOLTIP ── */
+.tooltip {
+  position: fixed; z-index: 900;
+  background: var(--deep);
+  border: 1px solid var(--rim-lt);
+  padding: .5rem .8rem;
+  font-family: var(--mono);
+  font-size: .56rem;
+  color: var(--star);
+  max-width: 220px;
+  pointer-events: none;
+  line-height: 1.5;
+  display: none;
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     MASTHEAD
+══════════════════════════════════════════════════════════ -->
+<header class="masthead">
+  <a href="maya_inscriptions.html" class="logo">MBL</a>
+  <a href="maya_inscriptions.html" class="nav-link">Mundo Maya</a>
+  <a href="mesoamerican_ballgame.html" class="nav-link">Match Engine</a>
+  <a href="#" class="nav-link active">Career Hub</a>
+  <a href="sky.html" class="nav-link">Sky Archive</a>
+  <div class="nav-spacer"></div>
+  <div class="hub-mode-badge">Career Mode · Alpha</div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════════
+     SITE SELECTION SCREEN
+══════════════════════════════════════════════════════════ -->
+<div class="select-screen" id="selectScreen">
+  <div class="select-title">Choose Your Court</div>
+  <div class="select-sub">Select a confirmed archaeological site to begin your dynasty</div>
+
+  <div class="era-filter-row" id="eraFilters">
+    <button class="era-btn active" data-era="all" onclick="filterEra(this,'all')">All Eras</button>
+    <button class="era-btn" data-era="preclassic" onclick="filterEra(this,'preclassic')">Preclassic</button>
+    <button class="era-btn" data-era="classic" onclick="filterEra(this,'classic')">Classic</button>
+    <button class="era-btn" data-era="postclassic" onclick="filterEra(this,'postclassic')">Postclassic</button>
+    <button class="era-btn" data-era="central" onclick="filterEra(this,'central')">Central Mexico</button>
+    <button class="era-btn" data-era="highlands" onclick="filterEra(this,'highlands')">Highlands</button>
+  </div>
+
+  <div class="site-grid" id="siteGrid"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     CAREER HUB (shown after site selected)
+══════════════════════════════════════════════════════════ -->
+<div class="hub-wrap hidden" id="hubWrap">
+
+  <!-- BANNER: date + site + resources -->
+  <div class="hub-banner">
+    <div class="hub-lc-block">
+      <div class="hub-lc-label">Long Count</div>
+      <div class="hub-lc-value" id="hubLC">—</div>
+      <div class="hub-lc-greg" id="hubGreg">—</div>
+    </div>
+
+    <div class="hub-site-identity">
+      <div class="hub-site-name" id="hubSiteName">—</div>
+      <div class="hub-site-tags" id="hubSiteTags"></div>
+    </div>
+
+    <div class="hub-resources">
+      <div class="hub-res res-treasury">
+        <div class="hub-res-label">Treasury</div>
+        <div class="hub-res-value" id="resTreasury">840</div>
+        <div class="hub-res-bar"><div class="hub-res-fill" id="fillTreasury" style="width:84%"></div></div>
+      </div>
+      <div class="hub-res res-prestige">
+        <div class="hub-res-label">Prestige</div>
+        <div class="hub-res-value" id="resPrestige">62</div>
+        <div class="hub-res-bar"><div class="hub-res-fill" id="fillPrestige" style="width:62%"></div></div>
+      </div>
+      <div class="hub-res res-obligation">
+        <div class="hub-res-label">Obligation</div>
+        <div class="hub-res-value" id="resObligation">31</div>
+        <div class="hub-res-bar"><div class="hub-res-fill" id="fillObligation" style="width:31%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIME CONTROLS -->
+  <div class="time-controls">
+    <div class="time-label">Advance:</div>
+    <button class="advance-btn" onclick="advanceTime(20)">+20 days</button>
+    <button class="advance-btn" onclick="advanceTime(52)">+1 Uinal</button>
+    <button class="advance-btn" onclick="advanceTime(360)">+1 Tun</button>
+    <button class="advance-btn primary" onclick="advanceToNextEvent()">→ Next Event</button>
+    <div class="phase-indicator"><span class="phase-dot"></span><span id="currentPhaseLabel">Scheduling Window</span></div>
+  </div>
+
+  <!-- MAIN CONTENT GRID -->
+  <div class="hub-main">
+
+    <!-- URGENT INBOX -->
+    <div class="hub-cell tall">
+      <div class="cell-header">
+        <div class="cell-title">Urgent Items</div>
+        <div class="cell-count" id="inboxCount">5 items</div>
+      </div>
+      <div id="inboxList"></div>
+    </div>
+
+    <!-- NEXT FIXTURE -->
+    <div class="hub-cell tall">
+      <div class="cell-header">
+        <div class="cell-title">Next Fixture</div>
+      </div>
+      <div id="fixtureCard"></div>
+    </div>
+
+    <!-- OMENS & CYCLES -->
+    <div class="hub-cell tall">
+      <div class="cell-header">
+        <div class="cell-title">Omens &amp; Cycles</div>
+      </div>
+      <div id="omensList"></div>
+    </div>
+
+    <!-- SEASON CALENDAR -->
+    <div class="hub-cell span2">
+      <div class="cell-header">
+        <div class="cell-title">Season Calendar</div>
+        <div class="cell-count" id="calCount">Tun 3 of Katun 17</div>
+      </div>
+      <div class="season-phase-bar" id="phaseBar"></div>
+      <div class="calendar-phase-row" id="calGrid"></div>
+      <div class="phase-legend" id="phaseLegend">
+        <div class="phase-leg-item"><div class="phase-pip" style="background:var(--jade)"></div>Fixture</div>
+        <div class="phase-leg-item"><div class="phase-pip" style="background:var(--ochre)"></div>Ceremony</div>
+        <div class="phase-leg-item"><div class="phase-pip" style="background:var(--blood-lt)"></div>Crisis</div>
+        <div class="phase-leg-item"><div class="phase-pip" style="background:rgba(200,216,240,.2)"></div>Rest</div>
+      </div>
+    </div>
+
+    <!-- NEEDS ENGINE -->
+    <div class="hub-cell">
+      <div class="cell-header">
+        <div class="cell-title">Court Needs</div>
+      </div>
+      <div id="needsList"></div>
+    </div>
+
+    <!-- ROSTER SUMMARY -->
+    <div class="hub-cell">
+      <div class="cell-header">
+        <div class="cell-title">Roster</div>
+        <div class="cell-count" id="rosterCount">12 active</div>
+      </div>
+      <div id="rosterList"></div>
+    </div>
+
+    <!-- SITE STATUS -->
+    <div class="hub-cell">
+      <div class="cell-header">
+        <div class="cell-title">Site Status</div>
+      </div>
+      <div class="status-gauges" id="statusGauges"></div>
+    </div>
+
+    <!-- HISTORICAL NOTE -->
+    <div class="hub-cell">
+      <div class="cell-header">
+        <div class="cell-title">Historical Record</div>
+      </div>
+      <div id="histNote"></div>
+      <a class="sky-link-card" id="stellariumLink" href="#" target="_blank">
+        <div class="sky-link-icon">🌌</div>
+        <div class="sky-link-body">
+          <div class="sky-link-title">View this era's sky</div>
+          <div class="sky-link-sub" id="stellariumSub">Open in Stellarium Web</div>
+        </div>
+        <div class="sky-link-arrow">→</div>
+      </a>
+    </div>
+
+  </div><!-- /hub-main -->
+
+  <!-- DETAIL BAND -->
+  <div class="hub-detail-band">
+
+    <div class="hub-detail-cell">
+      <div class="cell-header">
+        <div class="cell-title">Scout Reports</div>
+        <div class="cell-count">Envoys: 3 active</div>
+      </div>
+      <div id="scoutList"></div>
+    </div>
+
+    <div class="hub-detail-cell">
+      <div class="cell-header">
+        <div class="cell-title">Dynasty Log</div>
+      </div>
+      <div id="dynastyLog"></div>
+    </div>
+
+  </div>
+
+</div><!-- /hub-wrap -->
+
+<!-- EVENT MODAL -->
+<div class="modal-overlay hidden" id="eventModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modalTitle">—</div>
+    <div class="modal-body" id="modalBody">—</div>
+    <div class="modal-choices" id="modalChoices"></div>
+  </div>
+</div>
+
+<!-- TOOLTIP -->
+<div class="tooltip" id="tooltip"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     CALENDAR ENGINE (ported from sky.html)
+     Correlation: GMT 584283 — standard in Maya scholarship
+     Powered by same algorithms as TWKM Calendar Calculator,
+     Universität Bonn — classicmayan.org/calendar-calculations
+══════════════════════════════════════════════════════════ -->
+<script>
+// ── CALENDAR ENGINE (GMT 584283) ──────────────────────────────
+const CORR = 584283;
+const TZOLKIN_DAYS  = ['Imixʼ','Ikʼ','Akbalʼ','Kʼan','Chikchan','Kimi','Manikʼ','Lamat','Muluk','Ok','Chuwen','Eb','Ben','Hix','Men','Kʼib','Kabán','Etznabʼ','Kawak','Ajaw'];
+const TZOLKIN_EMOJI = ['🐊','💨','🌑','🌽','🐍','💀','🦌','⭐','🌊','🐾','🐒','🛤','🌿','🐆','🦅','🦉','🌍','🔪','⛈','☀️'];
+const HAAB_MONTHS   = ['Pop','Woʼ','Sip','Sotzʼ','Sek','Xul','Yaxkʼin','Mol','Chʼen','Yax','Sakʼ','Keh','Mak','Kʼankʼin','Muwan','Pax','Kʼayabʼ','Kumkʼu','Wayebʼ'];
+const MONTHS_EN     = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const STATIONS_819  = [{color:'Red',dir:'East',g:'🔴'},{color:'White',dir:'North',g:'⚪'},{color:'Black',dir:'West',g:'⚫'},{color:'Yellow',dir:'South',g:'🟡'}];
+const VENUS_PHASES  = ['Morning Star','Superior Conjunction','Evening Star','Inferior Conjunction'];
+
+function jdnToLC(jdn){
+  const d=jdn-CORR; if(d<0)return null;
+  const b=Math.floor(d/144000),r1=d%144000,k=Math.floor(r1/7200),r2=r1%7200,
+        t=Math.floor(r2/360),r3=r2%360,w=Math.floor(r3/20),ki=r3%20;
+  return{b,k,t,w,ki,total:d};
+}
+function lcToJDN(b,k,t,w,ki){ return CORR+(b*144000)+(k*7200)+(t*360)+(w*20)+ki; }
+function gregToJDN(y,m,d){
+  const a=Math.floor((14-m)/12),yy=y+4800-a,mm=m+12*a-3;
+  return d+Math.floor((153*mm+2)/5)+365*yy+Math.floor(yy/4)-Math.floor(yy/100)+Math.floor(yy/400)-32045;
+}
+function jdnToGreg(jdn){
+  const a=jdn+32044,b=Math.floor((4*a+3)/146097),c=a-Math.floor(146097*b/4),
+        d2=Math.floor((4*c+3)/1461),e=c-Math.floor(1461*d2/4),m=Math.floor((5*e+2)/153);
+  return{day:e-Math.floor((153*m+2)/5)+1,month:m+3-12*Math.floor(m/10),year:100*b+d2-4800+Math.floor(m/10)};
+}
+function tzolkin(d){ return{num:((d+3)%13)+1,name:(d+19)%20}; }
+function haab(d){ const p=(d+348)%365; return{m:Math.floor(p/20),day:p%20}; }
+function venus(d){ const p=d%584; return{pos:p,phase:VENUS_PHASES[p<236?0:p<250?1:p<500?2:3]}; }
+function station819(d){ const s=Math.floor((d%(819*4))/819)%4; return{...STATIONS_819[s],pos:d%819}; }
+function lunarAge(jdn){ return((jdn-2451550)%29.53058867+29.53058867)%29.53058867; }
+function eclipseWindow(jdn){
+  const EREF=lcToJDN(9,16,4,10,8), p=Math.abs((jdn-EREF)%11960);
+  const n=Math.min(p,11960-p), age=lunarAge(jdn);
+  return (age<2||age>27.5)&&n<20;
+}
+function computeDate(jdn){
+  const lc=jdnToLC(jdn); if(!lc)return null;
+  const tz=tzolkin(lc.total), hb=haab(lc.total), ven=venus(lc.total);
+  const s819=station819(lc.total), greg=jdnToGreg(jdn), age=lunarAge(jdn);
+  const moonPhase=['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'][Math.round(age/29.53*8)%8];
+  const ecl=eclipseWindow(jdn);
+  const lcStr=`${lc.b}.${lc.k}.${lc.t}.${lc.w}.${lc.ki}`;
+  const tzStr=`${tz.num} ${TZOLKIN_DAYS[tz.name]}`;
+  const hbStr=`${hb.day} ${HAAB_MONTHS[hb.m]}`;
+  const era=greg.year<0?`${Math.abs(greg.year)+1} BCE`:`${greg.year} CE`;
+  const gregStr=`${greg.day} ${MONTHS_EN[greg.month-1]} ${era}`;
+  return{lc,tz,hb,ven,s819,greg,age,moonPhase,ecl,lcStr,tzStr,hbStr,gregStr,jdn};
+}
+function lcStr(b,k,t,w,ki){ return`${b}.${k}.${t}.${w}.${ki}`; }
+function stellariumUrl(lat,lng,jdn){
+  const g=jdnToGreg(jdn);
+  const yr=g.year<0?`-${String(Math.abs(g.year)+1).padStart(4,'0')}`:String(g.year).padStart(4,'0');
+  const dateStr=`${yr}-${String(g.month).padStart(2,'0')}-${String(g.day).padStart(2,'0')}T12:00:00Z`;
+  return`https://stellarium-web.org/?date=${dateStr}&lat=${lat.toFixed(4)}&lng=${lng.toFixed(4)}&fov=90`;
+}
+
+// ══════════════════════════════════════════════════════════
+// SITE DATA — 24 highlighted courts from the 81-site dataset
+// Full dataset expandable; these represent broad chronological
+// and geographic spread for Career start diversity
+// ══════════════════════════════════════════════════════════
+const CAREER_SITES = [
+  {name:'Paso de la Amada',lat:14.88,lng:-92.37,courts:1,tier:'minor',
+   era:'preclassic',country:'Mexico',region:'Pacific Slope',
+   startLC:[6,0,0,0,0],tags:['ritual','trade'],
+   chronology:'c. 1650–1500 BCE — earliest confirmed ballcourt in the Americas',
+   identity:['Preclassic pioneer','Coastal ritual center','Olmec-contact site'],
+   startPhase:'rising',
+   historical:'Paso de la Amada may hold the oldest known ballcourt. Your dynasty stands at the very beginning of the game\'s history.'},
+  {name:'El Tajin',lat:20.45,lng:-97.38,courts:17,tier:'major',
+   era:'classic',country:'Mexico',region:'Gulf Coast',
+   startLC:[9,8,0,0,0],tags:['ritual','capital'],
+   chronology:'c. 600–900 CE — 17 confirmed courts, apogee of ballgame culture',
+   identity:['Ballgame capital','Gulf Coast power','Totonac ceremonial hub'],
+   startPhase:'peak',
+   historical:'No site in Mesoamerica invested more in the ballgame than El Tajin. Seventeen courts. Your stewardship begins at the height of that tradition.'},
+  {name:'Chichen Itza',lat:20.68,lng:-88.57,courts:13,tier:'major',
+   era:'postclassic',country:'Mexico',region:'Northern Lowlands',
+   startLC:[10,3,0,0,0],tags:['capital','trade'],
+   chronology:'c. 900–1200 CE — Terminal Classic to Early Postclassic apex',
+   identity:['Imperial spectacle court','Toltec-Maya synthesis','Sacred cenote city'],
+   startPhase:'peak',
+   historical:'The Great Ball Court of Chichén Itzá is the largest in Mesoamerica — 168 metres, vertical walls, stone rings, sacrifice reliefs. Your dynasty inherits the most powerful stage in the Maya world.'},
+  {name:'Tikal',lat:17.22,lng:-89.62,courts:7,tier:'major',
+   era:'classic',country:'Guatemala',region:'Southern Lowlands (Petén)',
+   startLC:[9,0,0,0,0],tags:['capital','war'],
+   chronology:'c. 250–900 CE — seven courts across the Classic period',
+   identity:['Lowland superpower','Petén dynastic capital','Rival of Calakmul'],
+   startPhase:'rising',
+   historical:'Tikal\'s seven courts reflect centuries of dynastic competition. A save here spans the Classic Maya florescence — from early monument carving to the rival dynasties of the Snake Kingdom.'},
+  {name:'Cantona',lat:19.55,lng:-97.38,courts:24,tier:'major',
+   era:'classic',country:'Mexico',region:'Central Highlands (Puebla)',
+   startLC:[9,5,0,0,0],tags:['war','trade'],
+   chronology:'c. 600–900 CE — 24 courts, most confirmed in a single highland site',
+   identity:['Highland military hub','Obsidian trade nexus','War-frontier court'],
+   startPhase:'peak',
+   historical:'Twenty-four courts. No site in the inventory has more. Cantona is a highland fortress city at the frontier of multiple competing spheres — obsidian, war, and ballgame intersect here.'},
+  {name:'Monte Albán',lat:17.04,lng:-96.77,courts:5,tier:'major',
+   era:'classic',country:'Mexico',region:'Oaxaca Highlands',
+   startLC:[8,12,0,0,0],tags:['capital','ritual'],
+   chronology:'c. 300 BCE–700 CE — Zapotec capital with five confirmed courts',
+   identity:['Zapotec dynastic seat','Hilltop observatory city','Oaxacan ritual center'],
+   startPhase:'rising',
+   historical:'Monte Albán sits above the Valley of Oaxaca with five courts distributed across its ceremonial core. A Zapotec dynasty, a highland perspective, a different political grammar.'},
+  {name:'Kaminaljuyu',lat:14.63,lng:-90.53,courts:12,tier:'major',
+   era:'preclassic',country:'Guatemala',region:'Guatemala Highlands',
+   startLC:[7,16,0,0,0],tags:['trade','capital'],
+   chronology:'c. 800 BCE–900 CE — 12 courts across the longest occupation in the inventory',
+   identity:['Highland trade gateway','Teotihuacan contact site','Pacific–lowland corridor'],
+   startPhase:'rising',
+   historical:'Kaminaljuyu controlled the highland corridor between the Pacific coast and the Petén lowlands. Twelve courts. A save here stretches from the Late Preclassic to Teotihuacan contact — the longest possible career arc.'},
+  {name:'Copan',lat:14.84,lng:-89.14,courts:1,tier:'major',
+   era:'classic',country:'Honduras',region:'Southeastern Periphery',
+   startLC:[9,0,0,0,0],tags:['ritual','capital'],
+   chronology:'c. 400–800 CE — Hieroglyphic Stairway, Altar Q, 16-ruler dynasty',
+   identity:['Epigraphic capital','Southeastern frontier','Dynastic monument city'],
+   startPhase:'rising',
+   historical:'Copán\'s single ballcourt sits at the heart of the longest hieroglyphic inscription sequence in the Maya world. This is the scholar\'s court — the one most tied to epigraphy, history, and dynastic identity.'},
+  {name:'Palenque',lat:17.48,lng:-92.05,courts:1,tier:'minor',
+   era:'classic',country:'Mexico',region:'Usumacinta Zone',
+   startLC:[9,9,0,0,0],tags:['ritual','capital'],
+   chronology:'c. 600–800 CE — Pakal\'s court, Temple inscriptions, tomb discovery',
+   identity:['Pakal\'s dynasty','Stucco masterwork site','Jungle river city'],
+   startPhase:'peak',
+   historical:'Palenque\'s ballcourt lies in the shadow of Pakal\'s tomb. Your save begins in the reign of the greatest ruler in Classic Maya history.'},
+  {name:'Yaxchilan',lat:16.90,lng:-90.97,courts:2,tier:'major',
+   era:'classic',country:'Mexico',region:'Usumacinta Zone',
+   startLC:[9,16,0,0,0],tags:['war','ritual'],
+   chronology:'c. 680–800 CE — Bird Jaguar IV, Lady Xokʼ bloodletting lintels',
+   identity:['River fortress','War-ceremony site','Bird Jaguar dynasty'],
+   startPhase:'peak',
+   historical:'Yaxchilán\'s two courts sit on a river bend used as a natural fortification. The city is famous for its war-capture lintels and bloodletting rituals — your ballcourt is a theater of combat and cosmos.'},
+  {name:'Ceibal',lat:16.50,lng:-90.08,courts:2,tier:'major',
+   era:'classic',country:'Guatemala',region:'Pasión River',
+   startLC:[9,18,0,0,0],tags:['ritual','trade'],
+   chronology:'c. 830–900 CE — Terminal Classic revival, possible foreign leadership',
+   identity:['Terminal Classic survivor','Foreign-contact site','Pasión river node'],
+   startPhase:'declining',
+   historical:'Ceibal flourished in the Terminal Classic when most lowland sites were collapsing. Some stelae suggest non-Maya leadership. This is a save about survival, adaptation, and identity under pressure.'},
+  {name:'Lubaantun',lat:16.28,lng:-88.97,courts:3,tier:'major',
+   era:'classic',country:'Belize',region:'Southern Belize',
+   startLC:[9,14,0,0,0],tags:['trade','ritual'],
+   chronology:'c. 700–900 CE — mortar-free construction, three courts, crystal skull site',
+   identity:['Southern Belize node','Unique construction tradition','Trade periphery court'],
+   startPhase:'rising',
+   historical:'Lubaantun was built without mortar — every stone precisely fitted. Three courts, a trade periphery location, and one of the most unusual sites in the lowlands. A regional franchise identity unlike any other.'},
+  {name:'Nakum',lat:17.10,lng:-89.22,courts:3,tier:'major',
+   era:'classic',country:'Guatemala',region:'Northern Petén',
+   startLC:[9,12,0,0,0],tags:['trade','ritual'],
+   chronology:'c. 600–900 CE — Yaxha–Nakum–Naranjo park, three courts',
+   identity:['Petén trade node','Three-court complex','Adjacent to Yaxha rival'],
+   startPhase:'peak',
+   historical:'Nakum sits between Yaxha and Naranjo in a park containing three major Classic sites. Your three courts and proximity to rivals creates an immediate fixture schedule.'},
+  {name:"Nixtun-Ch'ich'",lat:16.95,lng:-89.88,courts:3,tier:'major',
+   era:'preclassic',country:'Guatemala',region:'Lake Petén Itzá',
+   startLC:[7,0,0,0,0],tags:['trade','ritual'],
+   chronology:'c. 800 BCE–300 CE — grid-planned Preclassic city, lake shore position',
+   identity:['Preclassic grid city','Lake Petén shoreline','Early lowland power'],
+   startPhase:'rising',
+   historical:'Nixtun-Ch\'ich\' is one of the few grid-planned cities in ancient Mesoamerica, predating Teotihuacan\'s grid by centuries. Three courts in a Preclassic context — the earliest viable major-court lowland save.'},
+  {name:"Q'umarkaj (Utatlán)",lat:15.03,lng:-91.17,courts:4,tier:'major',
+   era:'postclassic',country:'Guatemala',region:'Guatemala Highlands',
+   startLC:[11,14,0,0,0],tags:['war','capital'],
+   chronology:'c. 1400–1524 CE — Kʼicheʼ Maya capital, fell to Alvarado',
+   identity:["K'iche' dynastic seat",'Highland war capital','Final Classic resistance'],
+   startPhase:'declining',
+   historical:'Q\'umarkaj is the terminal save — the Kʼicheʼ capital that resisted Spanish conquest until 1524 CE. Four courts. A dynasty that ends with history closing in from outside the game world.'},
+  {name:'Los Horcones',lat:15.58,lng:-93.02,courts:5,tier:'major',
+   era:'classic',country:'Mexico',region:'Chiapas Pacific Slope',
+   startLC:[9,4,0,0,0],tags:['war','ritual'],
+   chronology:'c. 400–700 CE — Cerro Bernal coastal plain, five courts',
+   identity:['Pacific coast frontier','Teotihuacan contact site','Multi-court coastal hub'],
+   startPhase:'rising',
+   historical:'Los Horcones sits near Cerro Bernal on the Chiapas Pacific coast, a frontier between highland and lowland spheres. Five courts suggest a regional fixture hub with connections to both Teotihuacan and the Maya world.'},
+  {name:'Caracol',lat:16.77,lng:-89.12,courts:2,tier:'major',
+   era:'classic',country:'Belize',region:'Southern Lowlands (Belize)',
+   startLC:[9,5,0,0,0],tags:['war','capital'],
+   chronology:'c. 250–900 CE — defeated Tikal 562 CE, vast causeway network',
+   identity:['Tikal conqueror','Causeway city','Snake Kingdom ally'],
+   startPhase:'rising',
+   historical:'In 562 CE, Caracol defeated Tikal in one of the most consequential battles in Classic Maya history. A save here begins with that trajectory in reach — your two courts are the platform for regional hegemony.'},
+  {name:'Cerros',lat:18.17,lng:-88.32,courts:2,tier:'major',
+   era:'preclassic',country:'Belize',region:'Northern Belize Coast',
+   startLC:[7,4,0,0,0],tags:['ritual','trade'],
+   chronology:'c. 300 BCE–100 CE — Preclassic port city, two early ballcourts',
+   identity:['Preclassic sea trader','Corozal Bay port','Early monument site'],
+   startPhase:'rising',
+   historical:'Cerros is a Preclassic port at the mouth of Corozal Bay — one of the earliest coastal trade nodes in the lowlands. Two courts at the dawn of Maya political complexity.'},
+  {name:'Xochicalco',lat:18.80,lng:-99.29,courts:2,tier:'major',
+   era:'classic',country:'Mexico',region:'Morelos Highlands',
+   startLC:[9,10,0,0,0],tags:['trade','ritual'],
+   chronology:'c. 700–900 CE — multi-ethnic highland capital, plumed serpent temple',
+   identity:['Multi-ethnic crossroads','Calendar reform center','Post-Teotihuacan power'],
+   startPhase:'peak',
+   historical:'Xochicalco flourished after Teotihuacan\'s collapse as a crossroads for multiple cultural traditions. Its plumed-serpent temple encodes what may be a calendar reform. Two courts at the confluence of everything.'},
+  {name:'Iximche',lat:14.67,lng:-91.00,courts:2,tier:'major',
+   era:'postclassic',country:'Guatemala',region:'Guatemala Highlands',
+   startLC:[11,12,0,0,0],tags:['war','capital'],
+   chronology:'c. 1470–1524 CE — Kaqchikel capital, became Spanish ally briefly',
+   identity:["Kaqchikel dynastic seat",'Spanish contact site','Postclassic highland power'],
+   startPhase:'contested',
+   historical:'Iximche was founded c. 1470 CE after the Kaqchikel broke from the Kʼicheʼ. By 1524 it had become the base for Spanish operations in the highlands. A save here lives inside the collision of two worlds.'},
+  {name:'Mixco Viejo',lat:14.97,lng:-90.67,courts:2,tier:'major',
+   era:'postclassic',country:'Guatemala',region:'Guatemala Highlands',
+   startLC:[11,10,0,0,0],tags:['war','trade'],
+   chronology:'c. 1200–1525 CE — Pokomam fortified hilltop capital',
+   identity:['Fortified hilltop dynasty','Pokomam regional seat','Highland resistance court'],
+   startPhase:'contested',
+   historical:'Mixco Viejo is a fortified hilltop site of the Pokomam Maya, chosen for its defensive position. Two courts on terrain that made it nearly impregnable until Spanish artillery.'},
+  {name:'Tenam Puente',lat:16.18,lng:-92.13,courts:3,tier:'major',
+   era:'classic',country:'Mexico',region:'Chiapas Highlands',
+   startLC:[9,15,0,0,0],tags:['ritual','war'],
+   chronology:'c. 700–900 CE — Tojolabal-area Classic site, three courts',
+   identity:['Chiapas highland node','Three-court complex','Late Classic frontier'],
+   startPhase:'peak',
+   historical:'Tenam Puente sits in the Chiapas highlands near Comitán — a Terminal Classic site with three courts and a frontier position between lowland and highland political spheres.'},
+  {name:'Tula',lat:20.06,lng:-99.34,courts:2,tier:'major',
+   era:'postclassic',country:'Mexico',region:'Central Mexico',
+   startLC:[10,8,0,0,0],tags:['capital','war'],
+   chronology:'c. 900–1150 CE — Toltec capital, Quetzalcoatl mythology, Atlantes warriors',
+   identity:['Toltec imperial seat','Chichimec warrior culture','Feathered Serpent city'],
+   startPhase:'rising',
+   historical:'Tula is the Toltec capital — the city whose mythology reached Chichén Itzá and reshaped the Postclassic Maya world. Two courts at the epicenter of the political order that reorganized Mesoamerica.'},
+  {name:'Kaminaljuyu (Classic)',lat:14.63,lng:-90.53,courts:12,tier:'major',
+   era:'classic',country:'Guatemala',region:'Guatemala Highlands',
+   startLC:[9,0,0,0,0],tags:['trade','capital'],
+   chronology:'c. 400–700 CE — Teotihuacan-contact phase, 12 courts in the Classic period',
+   identity:['Teotihuacan satellite','Highland gateway','Classic-era trade dynasty'],
+   startPhase:'peak',
+   historical:'During the Classic period, Kaminaljuyu became a Teotihuacan-contact city — a highland gateway through which central Mexican political and artistic influence entered the Maya lowlands. Twelve courts.'},
+];
+
+// ══════════════════════════════════════════════════════════
+// GAME STATE
+// ══════════════════════════════════════════════════════════
+let STATE = {
+  site: null,
+  jdn: 0,
+  treasury: 840,
+  prestige: 62,
+  obligation: 31,
+  season: 1,
+  phase: 0, // 0-6: NewYear, Scheduling, Prep, Competition, Crisis, Postseason, Offseason
+  roster: [],
+  inbox: [],
+  dynastyLog: [],
+  scouts: [],
+};
+
+const PHASE_NAMES = ['New Year / Omen Reading','Scheduling Window','Preparation','Competition','Crisis Resolution','Postseason','Offseason'];
+const PHASE_COLORS = ['#9080d0','#b8892a','#3a9a5c','#5abb80','#8a2a2a','#d4a84b','rgba(200,216,240,.3)'];
+const PHASE_DAYS   = [20, 72, 52, 160, 40, 36, 0]; // approximate days per phase; 0=varies
+
+// ══════════════════════════════════════════════════════════
+// SITE SELECTION
+// ══════════════════════════════════════════════════════════
+let currentEraFilter = 'all';
+
+function filterEra(btn, era) {
+  document.querySelectorAll('.era-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentEraFilter = era;
+  renderSiteGrid();
+}
+
+function renderSiteGrid() {
+  const sites = currentEraFilter === 'all'
+    ? CAREER_SITES
+    : CAREER_SITES.filter(s => s.era === currentEraFilter || s.region.toLowerCase().includes(currentEraFilter));
+
+  document.getElementById('siteGrid').innerHTML = sites.map(s => {
+    const phaseLabel = {rising:'Rising',peak:'Peak',declining:'Declining',contested:'Contested',preclassic:'Preclassic'}[s.startPhase]||s.startPhase;
+    const phaseCl = {rising:'jade',peak:'ochre',declining:'blood',contested:'blood',preclassic:'dim'}[s.startPhase]||'dim';
+    return `<div class="site-card-sel" onclick="startCareer('${s.name}')">
+      <div style="display:flex;align-items:baseline;gap:.4rem;margin-bottom:.25rem;">
+        <div class="sel-site-name">${s.name}</div>
+        <div class="sel-tier-badge ${s.tier}">${s.tier}</div>
+      </div>
+      <div class="sel-site-meta">
+        <span>${s.region}</span>
+        <span>·</span>
+        <span>${s.courts} court${s.courts>1?'s':''}</span>
+        <span>·</span>
+        <span style="color:var(--ochre)">${s.startLC.slice(0,3).join('.')}…</span>
+      </div>
+      <div style="font-family:var(--mono);font-size:.47rem;color:var(--dim);margin-top:.3rem;line-height:1.4;">${s.chronology.slice(0,60)}…</div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════════
+// START CAREER
+// ══════════════════════════════════════════════════════════
+function startCareer(siteName) {
+  const site = CAREER_SITES.find(s=>s.name===siteName);
+  if(!site) return;
+
+  STATE.site = site;
+  const [b,k,t,w,ki] = site.startLC;
+  STATE.jdn = lcToJDN(b,k,t,w,ki);
+
+  // Seed resources based on site tier/phase
+  const tierMod = site.tier === 'major' ? 1 : .7;
+  const phaseMod = {rising:1,peak:1.2,declining:.7,contested:.85,preclassic:.8}[site.startPhase]||1;
+  STATE.treasury   = Math.round(600 + site.courts * 40 * tierMod * phaseMod);
+  STATE.prestige   = Math.round(30 + site.courts * 5 * tierMod);
+  STATE.obligation = Math.round(10 + site.courts * 3);
+
+  // Seed roster
+  STATE.roster = generateRoster(site);
+
+  // Seed inbox events
+  STATE.inbox = generateStartEvents(site);
+
+  // Seed dynasty log
+  const cal = computeDate(STATE.jdn);
+  STATE.dynastyLog = [{
+    lc: cal.lcStr,
+    text: `Dynasty begins at ${site.name}. ${site.courts} court${site.courts>1?'s':''} under your stewardship.`
+  }];
+
+  // Seed scouts
+  STATE.scouts = generateScouts(site);
+
+  // Show hub
+  document.getElementById('selectScreen').classList.add('hidden');
+  document.getElementById('hubWrap').classList.remove('hidden');
+  renderHub();
+}
+
+// ══════════════════════════════════════════════════════════
+// ROSTER GENERATION
+// ══════════════════════════════════════════════════════════
+const MAYA_NAMES_M = ['Kʼinich','Bahlam','Yajaw','Chak','Ukit','Sak','Ixim','Kʼawiil','Bolon','Itzam','Mutal','Pakal','Yaxun'];
+const MAYA_NAMES_F = ['Ix Chel','Lady Xokʼ','Ixik','Lady Sak','Ix Mutal'];
+const ROLES = ['Striker','Ring Specialist','Wall Player','Playmaker','Defender','Ritual Captain'];
+const PHASES = ['Youth','Prime','Prime','Prime','Veteran','Decline'];
+
+function rng(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function generateRoster(site) {
+  const n = 8 + site.courts * 2;
+  const roster = [];
+  const roles = [...ROLES];
+  for(let i=0;i<n;i++){
+    const phase = i < 2 ? 'Youth' : i < n-2 ? pick(['Prime','Prime','Veteran']) : 'Decline';
+    const stat = phase==='Prime' ? rng(62,88) : phase==='Youth' ? rng(40,65) : rng(45,72);
+    roster.push({
+      name: `${pick(MAYA_NAMES_M)} ${pick(['Ajaw','Balam','Chan','K\'ak\'','Yax'])}`,
+      role: roles[i % roles.length],
+      phase,
+      stat,
+      noble: Math.random() > .7,
+    });
+  }
+  return roster;
+}
+
+// ══════════════════════════════════════════════════════════
+// EVENT GENERATION
+// ══════════════════════════════════════════════════════════
+function generateStartEvents(site) {
+  const cal = computeDate(STATE.jdn);
+  const events = [
+    {icon:'📜', title:'Schedule the opening fixture', meta:`${cal.lcStr} · Mandatory`, badge:'rival', body:'The court expects a ceremonial opening match within the next two uinals. Choose your opponent carefully — the first fixture sets the tone of your dynasty.', choices:[{k:'A',text:'Challenge a regional rival',effect:'Prestige +8, Obligation +5'},{k:'B',text:'Host a friendly exhibition',effect:'Prestige +3, Treasury +20'},{k:'C',text:'Delay — consult the omens first',effect:'Prestige -2, Omen insight gained'}]},
+    {icon:'🌾', title:'Harvest assessment received', meta:`${cal.tzStr} · Treasury`, badge:'dynasty', body:`The scribe-treasurer reports that the seasonal harvest ${site.region.includes('Highland')?'in the valley fields':'along the river lowlands'} has come in ${pick(['above','at','below'])} expectations.`, choices:[{k:'A',text:'Invest surplus in court repairs',effect:'Treasury -30, Site condition +8'},{k:'B',text:'Host a feast for court nobility',effect:'Treasury -20, Prestige +6'},{k:'C',text:'Hold reserves for the dry season',effect:'No change — cautious stewardship'}]},
+    {icon:'👁', title:`Envoy returns from ${pick(['Tikal','Calakmul','Copan','Palenque'])}`, meta:'Scout report · Partial', badge:'scout', body:'Your envoy has returned with intelligence on a rival court. The report is partial — rumor stage, not confirmed. A prospect of notable agility was observed training.', choices:[{k:'A',text:'Dispatch second envoy to confirm',effect:'Treasury -15, Full profile in 2 uinals'},{k:'B',text:'File the rumor and wait',effect:'No cost, information remains uncertain'},{k:'C',text:'Attempt recruitment offer now',effect:'Treasury -40, outcome uncertain'}]},
+  ];
+  if(cal.ecl) events.unshift({icon:'☀️', title:'Eclipse window — Dresden Codex', meta:`${cal.lcStr} · Omen`, badge:'omen', body:'Your ritual specialist reports that this date falls within an eclipse window catalogued in the Codex. The court elders counsel ceremony before any fixture is scheduled.', choices:[{k:'A',text:'Hold an eclipse ceremony',effect:'RF +8 for all players, Treasury -25'},{k:'B',text:'Proceed without ceremony',effect:'No cost, but morale may suffer'},{k:'C',text:'Consult the sky tonight',effect:'Opens Stellarium for this date'}]});
+  if(site.tags.includes('war')) events.push({icon:'⚔️', title:'Rival site tests your borders', meta:'Political · Urgent', badge:'crisis', body:`Scouts report that ${pick(['a neighboring polity','a regional rival','an upstart court'])} has sent warriors near your territory. This may be posturing — or the prelude to a proxy-war fixture demand.`, choices:[{k:'A',text:'Issue a counter-challenge',effect:'Prestige +5, triggers proxy-war fixture'},{k:'B',text:'Send tribute to defuse',effect:'Treasury -50, tension reduced'},{k:'C',text:'Do nothing — observe',effect:'Situation escalates by 1 uinal'}]});
+  return events;
+}
+
+function generateScouts(site) {
+  return [
+    {icon:'🏺',name:'Envoy to the South',region:'Usumacinta corridor',reveal:'rumor',report:`Whispers of a young ring-specialist, possible noble lineage, training at a minor court two days\' travel south. Accuracy uncertain — rival misinformation possible.`,site:pick(CAREER_SITES).name},
+    {icon:'🌿',name:'Merchant-observer',region:site.region,reveal:'partial',report:`Confirmed sighting of a prime-phase wall player whose current patron court is in decline. Interest in relocation possible. Full profile requires another season.`,site:pick(CAREER_SITES).name},
+    {icon:'⛵',name:'River envoy',region:'Gulf Coast',reveal:'rumor',report:`Travelers report a ceremonially trained ritual captain at a Gulf Coast site. Skill level unknown — "impressive" by river traders is an unreliable metric.`,site:'El Tajin'},
+  ];
+}
+
+// ══════════════════════════════════════════════════════════
+// HUB RENDER
+// ══════════════════════════════════════════════════════════
+function renderHub() {
+  const cal = computeDate(STATE.jdn);
+  if(!cal) return;
+  const site = STATE.site;
+
+  // Banner
+  document.getElementById('hubLC').textContent    = cal.lcStr;
+  document.getElementById('hubGreg').textContent  = cal.gregStr;
+  document.getElementById('hubSiteName').textContent = site.name;
+  document.getElementById('currentPhaseLabel').textContent = PHASE_NAMES[STATE.phase];
+
+  // Tags
+  document.getElementById('hubSiteTags').innerHTML = [
+    ...site.tags.map(t=>`<div class="hub-tag ${t}">${t}</div>`),
+    `<div class="hub-tag capital">${site.courts} Court${site.courts>1?'s':''}</div>`,
+    `<div class="hub-tag trade">${site.startPhase}</div>`,
+  ].join('');
+
+  // Resources
+  document.getElementById('resTreasury').textContent  = STATE.treasury;
+  document.getElementById('resPrestige').textContent  = STATE.prestige;
+  document.getElementById('resObligation').textContent= STATE.obligation;
+  document.getElementById('fillTreasury').style.width  = Math.min(100,STATE.treasury/10)+'%';
+  document.getElementById('fillPrestige').style.width  = Math.min(100,STATE.prestige)+'%';
+  document.getElementById('fillObligation').style.width= Math.min(100,STATE.obligation)+'%';
+
+  // Inbox
+  document.getElementById('inboxCount').textContent = `${STATE.inbox.length} item${STATE.inbox.length!==1?'s':''}`;
+  document.getElementById('inboxList').innerHTML = STATE.inbox.map((item,i)=>`
+    <div class="inbox-item" onclick="openEvent(${i})">
+      <div class="inbox-icon">${item.icon}</div>
+      <div class="inbox-body">
+        <div class="inbox-title">${item.title}</div>
+        <div class="inbox-meta"><span>${item.meta}</span></div>
+      </div>
+      <div class="inbox-badge badge-${item.badge}">${item.badge}</div>
+    </div>`).join('');
+
+  // Next fixture
+  renderFixture(cal);
+
+  // Omens
+  renderOmens(cal);
+
+  // Calendar
+  renderCalendar(cal);
+
+  // Needs
+  renderNeeds();
+
+  // Roster
+  renderRoster();
+
+  // Status gauges
+  renderStatus();
+
+  // Historical note
+  renderHistNote(cal);
+
+  // Scouts
+  renderScouts();
+
+  // Dynasty log
+  renderDynastyLog();
+
+  // Stellarium link
+  const sLink = stellariumUrl(site.lat, site.lng, STATE.jdn);
+  document.getElementById('stellariumLink').href = sLink;
+  document.getElementById('stellariumSub').textContent = `${cal.lcStr} · ${site.name} · Stellarium Web`;
+}
+
+function renderFixture(cal) {
+  const rivals = CAREER_SITES.filter(s=>s.name!==STATE.site.name&&s.era===STATE.site.era).slice(0,6);
+  const rival  = pick(rivals) || CAREER_SITES[0];
+  const stakes = pick(['prestige','proxy-war','tribute','ceremonial']);
+  const stakesCl = {prestige:'ft-stakes-prestige','proxy-war':'ft-stakes-proxy',tribute:'ft-stakes-proxy',ceremonial:'ft-stakes-prestige'}[stakes]||'ft-stakes-prestige';
+  const daysTo = rng(8,42);
+  const futureCal = computeDate(STATE.jdn + daysTo);
+
+  document.getElementById('fixtureCard').innerHTML = `
+    <div class="fixture-card">
+      <div class="fixture-vs">
+        <div class="fixture-team">${STATE.site.name}</div>
+        <div class="fixture-separator">vs.</div>
+        <div class="fixture-team away">${rival.name}</div>
+      </div>
+      <div class="fixture-meta">
+        <span class="fixture-tag ${stakesCl}">${stakes}</span>
+        <span class="fixture-tag ft-court">${STATE.site.courts > 1 ? 'Home court' : 'Main court'}</span>
+        <span class="fixture-tag ft-date">${futureCal ? futureCal.lcStr : ''}</span>
+      </div>
+      <div class="fixture-action-row">
+        <button class="fixture-action fa-play" onclick="launchGame()">▶ Play</button>
+        <button class="fixture-action fa-prep" onclick="showModal('Prepare for Fixture','Set your training emphasis before the match. Each choice shifts probabilities.',
+          [{k:\'A\',text:\'Athletic focus — drill agility and wall coverage\',effect:\'AGI +4 for 2 players\'},{k:\'B\',text:\'Ritual preparation — ceremonies and RF investment\',effect:\'RF +6, crowd bonus\'},{k:\'C\',text:\'Tactical study — opponent scouting\',effect:\'+2 to first-action roll\'}])">Prepare</button>
+        <button class="fixture-action fa-refuse" onclick="showModal('Refuse the Fixture','Refusing costs prestige but may be strategically necessary.',
+          [{k:\'A\',text:\'Refuse — cite ritual calendar conflict\',effect:\'Prestige -5, buys 1 tun\'},{k:\'B\',text:\'Negotiate delay\',effect:\'Prestige -2, fixture rescheduled\'},{k:\'C\',text:\'Accept under protest\',effect:\'Obligation +3\'}])">Refuse</button>
+      </div>
+    </div>`;
+}
+
+function renderOmens(cal) {
+  const omens = [];
+
+  if(cal.ecl) omens.push({icon:'☀️', title:'Eclipse window (Dresden Codex)', detail:`Long Count ${cal.lcStr} falls within the 11,960-day eclipse table.`, severity:'critical', sev:'critical'});
+
+  const ven = cal.ven;
+  if(ven.pos < 20 || ven.pos > 564)
+    omens.push({icon:'⭐', title:`Venus — Inferior Conjunction`, detail:`Day ${ven.pos}/584 of synodic cycle. Venus invisible — sacrifice and caution advised.`, severity:'warning', sev:'warning'});
+  else if(ven.pos < 236)
+    omens.push({icon:'⭐', title:`Venus — Morning Star`, detail:`Day ${ven.pos} of Morning Star phase (236 days). Auspicious for challenge and war.`, severity:'favorable', sev:'favorable'});
+
+  const s819 = cal.s819;
+  omens.push({icon:s819.g, title:`819-Day Station: ${s819.color} (${s819.dir})`, detail:`Day ${s819.pos}/819 of ${s819.color} station. ${s819.dir === 'East' ? 'Red-East — new beginnings, planting.' : s819.dir === 'North' ? 'White-North — sacrifice, sky ceremonies.' : s819.dir === 'West' ? 'Black-West — underworld, endings, caution.' : 'Yellow-South — harvest, abundance, tribute.'}`, severity: s819.color==='Black'?'warning':'favorable', sev: s819.color==='Black'?'warning':'favorable'});
+
+  omens.push({icon:cal.moonPhase, title:`Moon — ${cal.age<2?'New Moon':cal.age<8?'Waxing Crescent':cal.age<16?'Full Moon approaching':'Waning'}`, detail:`Day ${cal.age.toFixed(1)} of lunar month. ${cal.age<2||cal.age>27.5?'Near new moon — eclipse season.':'Mid-cycle — stable.'}`, severity:'favorable', sev:'favorable'});
+
+  omens.push({icon: TZOLKIN_EMOJI[cal.tz.name], title:`Day Sign: ${cal.tzStr}`, detail:`${TZOLKIN_DAYS[cal.tz.name]} — ${['Imixʼ: primal waters, origins','Ikʼ: wind, spirit, inspiration','Akbalʼ: darkness, transformation','Kʼan: corn, abundance','Chikchan: sky serpent, force','Kimi: death, transition','Manikʼ: deer, skill, completion','Lamat: star, Venus, abundance','Muluk: water, jade, offering','Ok: dog, guide, loyalty','Chuwen: monkey, artisan, time','Eb: grass, path, community','Ben: reed, authority, youth','Hix: jaguar, power, night','Men: eagle, vision, wisdom','Kʼib: owl, ancestors, forgiveness','Kabán: earth, intelligence, movement','Etznabʼ: obsidian, sacrifice, mirror','Kawak: storm, rain, power','Ajaw: sun, ruler, completion'][cal.tz.name]}`, severity:'favorable', sev:'favorable'});
+
+  document.getElementById('omensList').innerHTML = omens.map(o=>`
+    <div class="omen-row">
+      <div class="omen-icon">${o.icon}</div>
+      <div class="omen-body">
+        <div class="omen-title">${o.title}</div>
+        <div class="omen-detail">${o.detail}</div>
+      </div>
+      <div class="omen-severity sev-${o.sev}">${o.sev}</div>
+    </div>`).join('');
+}
+
+function renderCalendar(cal) {
+  // Build a 28-day grid (4 weeks) centred on today
+  const cells = [];
+  for(let i=-3; i<25; i++){
+    const d = STATE.jdn + i;
+    const dc = computeDate(d);
+    if(!dc) continue;
+    const isToday = i === 0;
+    const haab_num = dc.hb.day;
+    // Tag cells
+    let cls = isToday ? 'cal-day today' : i < 0 ? 'cal-day past' : 'cal-day';
+    if(!isToday && i>0){
+      if(i%13===0) cls += ' event';
+      if(i===7||i===14||i===21) cls += ' fixture';
+      if(i===4) cls += ' crisis';
+    }
+    cells.push(`<div class="${cls}" title="${dc.tzStr} ${dc.hbStr}">${haab_num}</div>`);
+  }
+  document.getElementById('calGrid').innerHTML = cells.join('');
+
+  // Phase bar
+  const bar = document.getElementById('phaseBar');
+  bar.innerHTML = PHASE_NAMES.map((name,i)=>`
+    <div class="spb-seg ${i<STATE.phase?'done':i===STATE.phase?'active':'future'}"
+         style="flex:${PHASE_DAYS[i]||36};background:${PHASE_COLORS[i]}"
+         title="${name}"></div>`).join('');
+
+  document.getElementById('calCount').textContent = `${cal.tzStr} · Katun ${cal.lc.b}.${cal.lc.k}`;
+}
+
+function renderNeeds() {
+  const site = STATE.site;
+  const needs = [
+    {label:'Striker depth', urgency: STATE.roster.filter(r=>r.role==='Striker').length < 2 ? 90 : 30},
+    {label:'Ritual Specialist', urgency: STATE.prestige < 40 ? 80 : 20},
+    {label:'Court repair budget', urgency: STATE.treasury < 200 ? 70 : 15},
+    {label:'Scout coverage — eastern region', urgency: 55},
+    {label:'Youth academy intake', urgency: 40},
+  ];
+  document.getElementById('needsList').innerHTML = needs.map(n=>{
+    const urg = n.urgency > 65 ? 'high' : n.urgency > 35 ? 'med' : 'low';
+    return `<div class="needs-item">
+      <div class="needs-label">${n.label}</div>
+      <div class="needs-urgency-bar"><div class="needs-urgency-fill urgency-${urg}" style="width:${n.urgency}%"></div></div>
+      <button class="needs-action" onclick="showModal('Address: ${n.label}','Choose how to respond to this court need.',
+        [{k:\'A\',text:\'Allocate treasury resources\',effect:\'Treasury -' + Math.round(n.urgency*.8) + ', need resolved\'},{k:\'B\',text:\'Scout for a solution\',effect:\'Dispatch envoy, 2-uinal lead time\'},{k:\'C\',text:\'Defer to offseason\',effect:\'Risk increases by 1 tier\'}])">Act</button>
+    </div>`;
+  }).join('');
+}
+
+function renderRoster() {
+  const top = STATE.roster.slice(0,8);
+  document.getElementById('rosterCount').textContent = `${STATE.roster.length} active`;
+  document.getElementById('rosterList').innerHTML = top.map(p=>{
+    const phCl = {Prime:'phase-prime',Youth:'phase-youth',Veteran:'phase-vet',Decline:'phase-dec'}[p.phase]||'phase-dec';
+    return `<div class="roster-row">
+      <div class="roster-name">${p.name}${p.noble?'<span style="color:var(--ochre);font-size:.55rem;margin-left:.25rem">⬟</span>':''}</div>
+      <div class="roster-role">${p.role.split(' ')[0]}</div>
+      <div class="roster-phase ${phCl}">${p.phase}</div>
+      <div class="roster-stat">${p.stat}</div>
+    </div>`;
+  }).join('') + (STATE.roster.length > 8 ? `<div style="font-family:var(--mono);font-size:.5rem;color:var(--dim);padding:.4rem 0">+${STATE.roster.length-8} more on roster</div>` : '');
+}
+
+function renderStatus() {
+  const site = STATE.site;
+  const courtCond = Math.min(100, 50 + site.courts * 8);
+  const factSupport = Math.min(100, 40 + STATE.prestige);
+  const tradeLinks = Math.min(100, site.tags.includes('trade') ? 75 : 40);
+  const dynastyStab = Math.min(100, 60 + (STATE.prestige - STATE.obligation)/2);
+
+  const gauges = [
+    {label:'Court Condition', val:courtCond, color:'var(--jade)'},
+    {label:'Elite Support', val:factSupport, color:'#9080d0'},
+    {label:'Trade Network', val:tradeLinks, color:'var(--ochre)'},
+    {label:'Dynasty Stability', val:Math.max(0,dynastyStab), color:'var(--jade-lt)'},
+  ];
+
+  document.getElementById('statusGauges').innerHTML = gauges.map(g=>`
+    <div class="gauge">
+      <div class="gauge-label">${g.label}</div>
+      <div class="gauge-bar-track"><div class="gauge-bar-fill" style="width:${g.val}%;background:${g.color}"></div></div>
+      <div class="gauge-value" style="color:${g.color}">${Math.round(g.val)}</div>
+    </div>`).join('');
+}
+
+function renderHistNote(cal) {
+  document.getElementById('histNote').innerHTML = `
+    <div class="hist-note">
+      <div class="hist-note-date">${cal.lcStr} · ${cal.gregStr}</div>
+      <div class="hist-note-text">${STATE.site.historical}</div>
+    </div>`;
+}
+
+function renderScouts() {
+  document.getElementById('scoutList').innerHTML = STATE.scouts.map(s=>`
+    <div class="scout-entry">
+      <div class="scout-avatar">${s.icon}</div>
+      <div class="scout-body">
+        <div class="scout-name">${s.name}</div>
+        <div class="scout-report">${s.report}</div>
+        <div class="scout-meta">${s.region} · ${s.reveal} stage · ${s.site}</div>
+      </div>
+      <div class="scout-reveal" onclick="advanceScout('${s.name}')">Pursue</div>
+    </div>`).join('');
+}
+
+function renderDynastyLog() {
+  document.getElementById('dynastyLog').innerHTML = [...STATE.dynastyLog].reverse().map(e=>`
+    <div class="dynasty-entry">
+      <div class="dynasty-lc">${e.lc}</div>
+      <div class="dynasty-event">${e.text}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════
+// TIME ADVANCEMENT
+// ══════════════════════════════════════════════════════════
+function advanceTime(days) {
+  STATE.jdn += days;
+  const cal = computeDate(STATE.jdn);
+  if(!cal) return;
+
+  // Advance season phase
+  const phaseDays = PHASE_DAYS[STATE.phase] || 52;
+  if(days >= phaseDays * .8) {
+    STATE.phase = (STATE.phase + 1) % PHASE_NAMES.length;
+  }
+
+  // Resource tick
+  STATE.treasury -= Math.round(days * .4);
+  if(STATE.phase === 5) { STATE.treasury += 60; STATE.prestige += 3; } // postseason reward
+
+  // Random event trigger
+  if(Math.random() < .3) triggerRandomEvent(cal);
+
+  // Log
+  STATE.dynastyLog.push({ lc: cal.lcStr, text: `${days} days pass. ${PHASE_NAMES[STATE.phase]}.` });
+
+  renderHub();
+}
+
+function advanceToNextEvent() {
+  const daysToEvent = rng(8, 36);
+  advanceTime(daysToEvent);
+
+  // Force a new inbox event
+  const cal = computeDate(STATE.jdn);
+  const newEvent = generateRandomEvent(cal);
+  if(newEvent) STATE.inbox.unshift(newEvent);
+  renderHub();
+}
+
+function triggerRandomEvent(cal) {
+  const events = [
+    {icon:'💧',title:'Drought warning from outlying farms',meta:`${cal.lcStr} · Environmental`,badge:'crisis'},
+    {icon:'👑',title:'Noble family requests fixture patronage',meta:`${cal.lcStr} · Dynastic`,badge:'dynasty'},
+    {icon:'⚡',title:'Lightning strikes the court wall',meta:`${cal.lcStr} · Omen`,badge:'omen'},
+    {icon:'🌽',title:'Surplus harvest — feast opportunity',meta:`${cal.lcStr} · Treasury`,badge:'dynasty'},
+  ];
+  const ev = pick(events);
+  ev.body = 'A situation requiring your attention has arisen.';
+  ev.choices = [{k:'A',text:'Respond immediately',effect:'Resolves the situation'},{k:'B',text:'Delegate to court staff',effect:'Minor prestige cost'},{k:'C',text:'Observe and wait',effect:'Situation develops'}];
+  if(STATE.inbox.length < 8) STATE.inbox.unshift(ev);
+}
+
+function generateRandomEvent(cal){ return null; } // stub — expand later
+
+// ══════════════════════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════════════════════
+function openEvent(i) {
+  const item = STATE.inbox[i];
+  if(!item) return;
+  showModal(item.title, item.body||'A situation requiring your attention.', item.choices||[
+    {k:'A',text:'Accept',effect:'Default outcome'},{k:'B',text:'Decline',effect:'No change'}
+  ], i);
+}
+
+function showModal(title, body, choices, inboxIdx) {
+  document.getElementById('modalTitle').textContent  = title;
+  document.getElementById('modalBody').textContent   = body;
+  document.getElementById('modalChoices').innerHTML  = choices.map(c=>`
+    <div class="modal-choice" onclick="resolveChoice('${c.k}', ${inboxIdx??-1})">
+      <div class="modal-choice-key">${c.k}</div>
+      <div>
+        <div class="modal-choice-text">${c.text}</div>
+        <div class="modal-choice-effect">${c.effect}</div>
+      </div>
+    </div>`).join('');
+  document.getElementById('eventModal').classList.remove('hidden');
+}
+
+function resolveChoice(key, inboxIdx) {
+  const cal = computeDate(STATE.jdn);
+  // Apply choice effects (simplified)
+  if(key==='A'){ STATE.treasury  -= rng(10,30); STATE.prestige += rng(3,8); }
+  if(key==='B'){ STATE.treasury  -= rng(5,15);  }
+  if(key==='C'){ STATE.obligation+= rng(2,5);   }
+
+  STATE.treasury   = Math.max(0, STATE.treasury);
+  STATE.prestige   = Math.max(0, Math.min(100, STATE.prestige));
+  STATE.obligation = Math.max(0, Math.min(100, STATE.obligation));
+
+  if(inboxIdx >= 0) STATE.inbox.splice(inboxIdx,1);
+  STATE.dynastyLog.push({lc: cal.lcStr, text: `Decision made (choice ${key}).`});
+
+  closeModal();
+  renderHub();
+}
+
+function closeModal(){
+  document.getElementById('eventModal').classList.add('hidden');
+}
+
+// ══════════════════════════════════════════════════════════
+// SCOUT ADVANCEMENT
+// ══════════════════════════════════════════════════════════
+function advanceScout(name) {
+  const s = STATE.scouts.find(x=>x.name===name);
+  if(!s) return;
+  STATE.treasury -= 20;
+  s.reveal = s.reveal==='rumor' ? 'partial' : 'trusted';
+  if(s.reveal === 'trusted') {
+    STATE.inbox.push({icon:'📋',title:`Full profile: ${s.site}`,meta:'Scout · Trusted report',badge:'scout',
+      body:`Your envoy has returned with a trusted report on a prospect at ${s.site}. Age, role, and visible stats confirmed.`,
+      choices:[{k:'A',text:'Invite to court trial',effect:'Treasury -40, prospect arrives next tun'},{k:'B',text:'Send formal patronage offer',effect:'Treasury -60, prestige +4'},{k:'C',text:'File and continue watching',effect:'No cost'}]});
+  }
+  const cal = computeDate(STATE.jdn);
+  STATE.dynastyLog.push({lc: cal.lcStr, text:`Scout pursuit: ${name} advanced to ${s.reveal} stage. Treasury -20.`});
+  renderHub();
+}
+
+// ══════════════════════════════════════════════════════════
+// LAUNCH MATCH ENGINE
+// ══════════════════════════════════════════════════════════
+function launchGame() {
+  // Link to the existing mesoamerican_ballgame.html
+  window.open('mesoamerican_ballgame.html', '_blank');
+}
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
+window.addEventListener('load', () => {
+  renderSiteGrid();
+});
+
+// Close modal on overlay click
+document.getElementById('eventModal').addEventListener('click', function(e){
+  if(e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
