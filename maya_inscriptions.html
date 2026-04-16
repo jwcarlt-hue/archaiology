@@ -186,6 +186,22 @@ h1 em{color:var(--jade-lt);font-style:italic;}
 .alc-title{font-size:.78rem;font-weight:600;color:var(--star);margin-bottom:.25rem;}
 .alc-sub{font-size:.63rem;color:rgba(200,216,240,.45);line-height:1.55;margin-bottom:.3rem;}
 .alc-url{font-family:var(--mono);font-size:.5rem;color:var(--jade-lt);opacity:.65;}
+
+/* ── Ballcourt popup styling ── */
+.bc-popup .leaflet-popup-content-wrapper {
+  background:rgba(6,4,10,.96);
+  border:1px solid rgba(212,168,75,.25);
+  border-radius:2px;
+  color:var(--star);
+  box-shadow:0 4px 24px rgba(0,0,0,.7);
+}
+.bc-popup .leaflet-popup-tip {
+  background:rgba(6,4,10,.96);
+}
+.bc-popup .leaflet-popup-content {
+  margin:.7rem .8rem;
+}
+
 </style>
 </head>
 <body>
@@ -405,7 +421,7 @@ const SITE_DATES = {
 let map, siteMarkers={}, currentSite=null, periodFilter='';
 
 window.addEventListener('load', () => {
-  map = L.map('maya-map',{center:[17,-89],zoom:5,minZoom:3,zoomControl:false,attributionControl:false});
+  map = L.map('maya-map',{center:[16,-89],zoom:3,minZoom:2,zoomControl:false,attributionControl:false});
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',
     {attribution:'© Esri',maxZoom:10,minZoom:3}).addTo(map);
   L.control.zoom({position:'bottomright'}).addTo(map);
@@ -712,86 +728,681 @@ async function toggleCenotes(btn){
 // Compiled from northern_lowlands, southern_lowlands, highlands,
 // gulf_coast, pacific_slope, el_salvador source datasets.
 const BALLCOURTS = [
-  {name:'Becan',lat:18.5275,lng:-89.4692,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Chichen Itza',lat:20.6843,lng:-88.5678,courts:13,tier:'major',country:'Mexico'},
-  {name:'Cobá',lat:20.4886,lng:-87.7292,courts:2,tier:'major',country:'Mexico'},
-  {name:'Dzibanché',lat:18.65,lng:-88.9167,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Dzibilchaltun',lat:21.0731,lng:-89.5944,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Edzna',lat:19.5944,lng:-90.2294,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Ek Balam',lat:20.8861,lng:-88.2494,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Kohunlich',lat:18.5067,lng:-88.9592,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Oxkintok',lat:20.5647,lng:-89.9369,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Uxmal',lat:20.3592,lng:-89.7711,courts:2,tier:'major',country:'Mexico'},
-  {name:'Yaxuna',lat:20.6667,lng:-88.8333,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Bonampak',lat:16.7011,lng:-91.0656,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Piedras Negras',lat:17.1542,lng:-91.2647,courts:2,tier:'major',country:'Guatemala'},
-  {name:'Yaxchilan',lat:16.8981,lng:-90.9675,courts:2,tier:'major',country:'Mexico'},
-  {name:'Palenque',lat:17.4839,lng:-92.0456,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Tonina',lat:16.9,lng:-92.0167,courts:2,tier:'major',country:'Mexico'},
-  {name:'Cahal Pech',lat:17.1456,lng:-89.0769,courts:2,tier:'major',country:'Belize'},
-  {name:'Caracol',lat:16.7667,lng:-89.1167,courts:2,tier:'major',country:'Belize'},
-  {name:'Cerros',lat:18.1667,lng:-88.3167,courts:2,tier:'major',country:'Belize'},
-  {name:"Ka'kabish",lat:17.9,lng:-88.6667,courts:1,tier:'minor',country:'Belize'},
-  {name:'Lamanai',lat:17.7717,lng:-88.655,courts:1,tier:'minor',country:'Belize'},
-  {name:'Lubaantun',lat:16.2833,lng:-88.9667,courts:3,tier:'major',country:'Belize'},
-  {name:'Nim Li Punit',lat:16.1,lng:-89.0333,courts:1,tier:'minor',country:'Belize'},
-  {name:'Pacbitun',lat:17.0833,lng:-89.05,courts:1,tier:'minor',country:'Belize'},
-  {name:'Xunantunich',lat:17.0897,lng:-89.1389,courts:2,tier:'major',country:'Belize'},
-  {name:'Aguateca',lat:16.4,lng:-90.1833,courts:1,tier:'major',country:'Guatemala'},
-  {name:'Calakmul',lat:18.1037,lng:-89.8083,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Cancuen',lat:16.05,lng:-90.1,courts:2,tier:'major',country:'Guatemala'},
-  {name:'Ceibal',lat:16.5,lng:-90.0833,courts:2,tier:'major',country:'Guatemala'},
-  {name:'Dos Pilas',lat:16.3833,lng:-90.1167,courts:1,tier:'minor',country:'Guatemala'},
-  {name:'El Mirador',lat:17.75,lng:-89.9167,courts:1,tier:'minor',country:'Guatemala'},
-  {name:'La Corona',lat:17.7167,lng:-90.55,courts:1,tier:'minor',country:'Guatemala'},
-  {name:'Nakbe',lat:17.6833,lng:-89.8167,courts:1,tier:'minor',country:'Guatemala'},
-  {name:'Nakum',lat:17.1,lng:-89.2167,courts:3,tier:'major',country:'Guatemala'},
-  {name:'Naranjo',lat:17.0667,lng:-89.7333,courts:2,tier:'major',country:'Guatemala'},
-  {name:"Nixtun-Ch'ich'",lat:16.95,lng:-89.8833,courts:3,tier:'major',country:'Guatemala'},
-  {name:'Tamarindito',lat:16.4167,lng:-90.1333,courts:1,tier:'major',country:'Guatemala'},
-  {name:'Tikal',lat:17.222,lng:-89.6237,courts:7,tier:'major',country:'Guatemala'},
-  {name:'Yaxha',lat:17.0833,lng:-89.4167,courts:2,tier:'major',country:'Guatemala'},
-  {name:'Copan',lat:14.8386,lng:-89.1414,courts:1,tier:'major',country:'Honduras'},
-  {name:'Ixkun',lat:16.3,lng:-89.4667,courts:1,tier:'minor',country:'Guatemala'},
-  {name:'Quirigua',lat:15.2667,lng:-89.0444,courts:2,tier:'major',country:'Guatemala'},
-  {name:'Etlatongo',lat:17.45,lng:-97.2833,courts:1,tier:'minor',country:'Mexico'},
-  {name:'El Palmillo',lat:16.7833,lng:-96.4833,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Lambityeco',lat:16.9167,lng:-96.5,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Monte Albán',lat:17.0436,lng:-96.7669,courts:5,tier:'major',country:'Mexico'},
-  {name:'Yagul',lat:16.95,lng:-96.4667,courts:1,tier:'major',country:'Mexico'},
-  {name:'Cantona',lat:19.55,lng:-97.3833,courts:24,tier:'major',country:'Mexico'},
-  {name:'Capulac Concepción',lat:19.0833,lng:-98.05,courts:1,tier:'minor',country:'Mexico'},
-  {name:'La Laguna',lat:19.5,lng:-98.25,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Teotenango',lat:19.05,lng:-99.6333,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Tula',lat:20.0578,lng:-99.3433,courts:2,tier:'major',country:'Mexico'},
-  {name:'Xochicalco',lat:18.8011,lng:-99.2947,courts:2,tier:'major',country:'Mexico'},
-  {name:'Teopantecuanitlan',lat:17.9667,lng:-99.35,courts:2,tier:'major',country:'Mexico'},
-  {name:'Carrizalito',lat:19.5,lng:-96.9167,courts:1,tier:'minor',country:'Mexico'},
-  {name:'El Cuajilote',lat:20.0833,lng:-97.1833,courts:1,tier:'minor',country:'Mexico'},
-  {name:'El Tajin',lat:20.4478,lng:-97.3783,courts:17,tier:'major',country:'Mexico'},
-  {name:'Los Ídolos',lat:20.0,lng:-96.75,courts:6,tier:'major',country:'Mexico'},
-  {name:'Quiahuiztlan',lat:19.6,lng:-96.4333,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Toxpan',lat:20.1667,lng:-97.0,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Vega de la Peña',lat:20.1833,lng:-97.2,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Xiutetelco',lat:19.9667,lng:-97.0167,courts:1,tier:'minor',country:'Mexico'},
-  {name:'La Joya',lat:19.15,lng:-96.1833,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Yohualichan',lat:20.0333,lng:-97.5167,courts:1,tier:'minor',country:'Mexico'},
-  {name:'El Vergel',lat:16.5333,lng:-93.1167,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Finca Acapulco',lat:16.5,lng:-93.1833,courts:1,tier:'major',country:'Mexico'},
-  {name:'Fracción Mujular',lat:15.55,lng:-93.0,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Los Horcones',lat:15.5833,lng:-93.0167,courts:5,tier:'major',country:'Mexico'},
-  {name:'Paso de la Amada',lat:14.8833,lng:-92.3667,courts:1,tier:'minor',country:'Mexico'},
-  {name:'San Mateo',lat:16.5167,lng:-93.1833,courts:1,tier:'minor',country:'Mexico'},
-  {name:'Cara Sucia',lat:13.85,lng:-90.0333,courts:2,tier:'major',country:'El Salvador'},
-  {name:'El Baúl',lat:14.3,lng:-91.0667,courts:1,tier:'minor',country:'Guatemala'},
-  {name:'Tazumal',lat:13.9833,lng:-89.6833,courts:1,tier:'minor',country:'El Salvador'},
-  {name:'Kaminaljuyu',lat:14.6333,lng:-90.5333,courts:12,tier:'major',country:'Guatemala'},
-  {name:'Iximche',lat:14.6667,lng:-91.0,courts:2,tier:'major',country:'Guatemala'},
-  {name:'Mixco Viejo',lat:14.9667,lng:-90.6667,courts:2,tier:'major',country:'Guatemala'},
-  {name:"Q'umarkaj",lat:15.0333,lng:-91.1667,courts:4,tier:'major',country:'Guatemala'},
-  {name:'Zaculeu',lat:15.3167,lng:-91.4833,courts:1,tier:'major',country:'Guatemala'},
-  {name:'Tenam Puente',lat:16.1833,lng:-92.1333,courts:3,tier:'major',country:'Mexico'},
+  {name:"Chichen Itza",lat:20.6843,lng:-88.5678,country:"Mexico",region:"Northern Lowlands",courts:13,taladoire:"Type III (Great Court); Type II (smaller courts)",chronology:"Late Classic–Early Postclassic (c. AD 600–1200)",evidence:"Excavated & published",tier:"major",note:"13 courts confirmed. Great Ball Court (168×70 m) largest in Mesoamerica; vertical walls, feathered-serpent stone rings, decapitation panels."},
+  {name:"Uxmal",lat:20.3593,lng:-89.7712,country:"Mexico",region:"Northern Lowlands",courts:2,taladoire:"Type II/III",chronology:"Late to Terminal Classic (c. AD 700–1100)",evidence:"Identified & documented",tier:"major",note:"Two courts. Main court ring inscription dated AD 905. Feathered-serpent imagery. UNESCO World Heritage."},
+  {name:"Cobá",lat:20.495,lng:-87.735,country:"Mexico",region:"Northern Lowlands",courts:2,taladoire:"Type II",chronology:"Classic–Postclassic (c. 100 BC–AD 1450)",evidence:"Excavated & published",tier:"major",note:"Two documented courts. Ball Court 2 has female ruler inscription dated AD 565–574."},
+  {name:"Ek Balam",lat:20.8756,lng:-88.2417,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Type II",chronology:"c. 300 BC–AD 1200",evidence:"Excavated & published",tier:"major",note:"Structures 8 and 9; talud (sloping) walls with decorated rooms."},
+  {name:"Dzibanché",lat:18.6833,lng:-88.6167,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Unclassified",chronology:"c. AD 250–1000",evidence:"Excavated & published",tier:"minor",note:"2024 INAH excavation: painted stucco reliefs of Kaanul Dynasty rulers (AD 250–650)."},
+  {name:"Becan",lat:18.5275,lng:-89.4692,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Type II",chronology:"c. 550 BC–AD 1200",evidence:"Identified & documented",tier:"minor",note:"Structure XI, west plaza. Playing field 12×9 m. No stone rings preserved."},
+  {name:"Dzibilchaltun",lat:21.0989,lng:-89.5964,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Type II",chronology:"c. AD 250–1540",evidence:"Identified & documented",tier:"minor",note:"East of South Plaza. Sloping stone walls, no rings. One of longest-occupied Maya sites."},
+  {name:"Edzna",lat:19.5944,lng:-90.2294,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Type II",chronology:"c. 400 BC–AD 1500",evidence:"Identified & documented",tier:"minor",note:"Structures 420-1 to 420-4. Playing alley 51×5 m. One original stone ring."},
+  {name:"Kohunlich",lat:18.5067,lng:-88.9592,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Unclassified",chronology:"c. 200 BC–AD 700",evidence:"Identified & documented",tier:"minor",note:"Unusual NW-SE axis. Open-end-zone design. Temple of the Masks c. AD 500."},
+  {name:"Oxkintok",lat:20.5647,lng:-89.9369,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Type II/III",chronology:"c. 500 BC–AD 1500",evidence:"Identified & documented",tier:"minor",note:"Among earliest surviving Maya ballcourts. Stone ring inscribed AD 713–714."},
+  {name:"Yaxuna",lat:20.6667,lng:-88.7333,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Type II",chronology:"c. 800 BC–AD 1400",evidence:"Identified & documented",tier:"minor",note:"Structures 6F-15/16. Playing field c. 26 m. Contested by Coba and Chichen Itza."},
+  {name:"Piedras Negras",lat:17.16,lng:-91.26,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type II/III",chronology:"Early–Late Classic",evidence:"Excavated & published",tier:"major",note:"Structure K-6 'boxer' panels. Second court tied to deceased queen's pyramid."},
+  {name:"Yaxchilan",lat:16.8989,lng:-90.9667,country:"Mexico",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type I/II",chronology:"Late Classic (c. AD 600–900)",evidence:"Identified & documented",tier:"major",note:"Structure 14: five eroded floor markers, open end zones. Structure 67: SE Group."},
+  {name:"Tonina",lat:16.9022,lng:-92.0083,country:"Mexico",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type I/II",chronology:"Classic (Ballcourt 1 dedicated 699 CE)",evidence:"Identified & documented",tier:"major",note:"Ballcourt 1 dedicated by K'inich B'aaknal Chaak. Six Palenque vassal torso sculptures as floor markers."},
+  {name:"Palenque",lat:17.4839,lng:-92.0458,country:"Mexico",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Type I/II",chronology:"Classic (c. AD 432–900)",evidence:"Identified & documented",tier:"minor",note:"Central Plaza north of Palace. N-S axis, open end zones. Adjacent Temple X."},
+  {name:"Bonampak",lat:16.7003,lng:-91.065,country:"Mexico",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Late Classic (c. AD 580–800)",evidence:"Identified & documented",tier:"minor",note:"Attested in site plaza layout. Famous for polychrome murals in Structure 1."},
+  {name:"Caracol",lat:16.7589,lng:-89.1175,country:"Belize",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type II",chronology:"Classic (B-Group marker c. 633 CE)",evidence:"Identified & documented",tier:"major",note:"Ballcourt A: cosmological markers. Ballcourt B marker dated c. 633 CE."},
+  {name:"Lubaantun",lat:16.2833,lng:-88.9667,country:"Belize",region:"Central Lowlands / Usumacinta",courts:3,taladoire:"Type I/II",chronology:"Late Classic (c. AD 700–900)",evidence:"Identified & documented",tier:"major",note:"Three courts. Carved cylindrical markers now in British Museum. Crystal skull site."},
+  {name:"Cahal Pech",lat:17.2522,lng:-89.1222,country:"Belize",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type II",chronology:"c. 1200 BCE–AD 900",evidence:"Excavated & published",tier:"major",note:"Eastern court adjacent E-Group. Western court under excavation as of 2026."},
+  {name:"Cerros",lat:18.15,lng:-88.3,country:"Belize",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Unclassified",chronology:"Late Preclassic (c. 400 BCE–150 CE)",evidence:"Excavated & published",tier:"major",note:"Two masonry courts contemporaneous with earliest public structures. Preclassic ballgame evidence."},
+  {name:"Xunantunich",lat:17.0897,lng:-89.1389,country:"Belize",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type II",chronology:"Late Classic (c. AD 700–900)",evidence:"Excavated & published",tier:"minor",note:"Two documented courts. El Castillo cosmological frieze. Mopan River position."},
+  {name:"Ka'kabish",lat:17.8333,lng:-88.5,country:"Belize",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Early Classic; abandoned c. 600 CE",evidence:"Excavated & published",tier:"minor",note:"Structures D-6 and D-7. Two Early Classic phases. Never refurbished after abandonment."},
+  {name:"Lamanai",lat:17.7667,lng:-88.65,country:"Belize",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Type II",chronology:"c. 1500 BCE–17th century CE",evidence:"Excavated & published",tier:"minor",note:"Small but notable court. Jade, shell, pearl and mercury offerings atop central marker."},
+  {name:"Pacbitun",lat:16.9833,lng:-89.15,country:"Belize",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"c. 100 BCE–AD 300",evidence:"Excavated & published",tier:"minor",note:"Among earliest architectural evidence for ballgame in Southern Lowlands. Eccentric lithic cache."},
+  {name:"Nim Li Punit",lat:16.3667,lng:-89.0,country:"Belize",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Classic (5th–8th century CE)",evidence:"Identified & documented",tier:"minor",note:"Well-preserved court. 26 stelae (8 carved). Positioned to symbolise life/death conflict."},
+  {name:"Nixtun-Ch'ich'",lat:16.95,lng:-89.9,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:3,taladoire:"Unclassified",chronology:"Late Preclassic–Postclassic (c. 300 BCE–200 CE)",evidence:"Identified & documented",tier:"major",note:"Ballcourt 1 possibly second-largest in Maya area. Grid-planned Preclassic city on Lake Petén Itzá."},
+  {name:"Tikal",lat:17.222,lng:-89.6237,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:7,taladoire:"Type I/II (most); Type III (E Plaza)",chronology:"Middle Preclassic–Late Classic (c. 700 BCE–AD 900)",evidence:"Identified & documented",tier:"major",note:"Seven courts including unique triple-court complex (Plaza of the Seven Temples)."},
+  {name:"Nakum",lat:17.1833,lng:-89.7333,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:3,taladoire:"Unclassified",chronology:"Late Preclassic–Terminal Classic",evidence:"Identified & documented",tier:"major",note:"Three courts including unique double-court design. Ballcourt 2 has Preclassic origins."},
+  {name:"Yaxha",lat:17.0833,lng:-89.3833,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Unclassified",chronology:"Late Preclassic–Terminal Classic (c. 600 BCE–AD 900)",evidence:"Identified & documented",tier:"major",note:"One court among largest and best-preserved in Maya world. 500+ structures."},
+  {name:"Naranjo",lat:17.0667,lng:-89.6833,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Unclassified",chronology:"Classic (c. 500 BCE–AD 950)",evidence:"Identified & documented",tier:"major",note:"Ballcourts 1 and 2. 389+ structures. Major Petén polity."},
+  {name:"Nakbe",lat:17.6833,lng:-89.8167,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Middle Preclassic (c. 500–400 BCE)",evidence:"Identified & documented",tier:"minor",note:"Structures 76/77 among oldest confirmed courts in Maya area."},
+  {name:"Aguateca",lat:16.45,lng:-90.0167,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Late Classic (c. AD 700–810)",evidence:"Identified & documented",tier:"minor",note:"Abandoned hastily c. 810. Limestone bluff on Petexbatún Lagoon."},
+  {name:"Tamarindito",lat:16.4667,lng:-90.0833,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Early–Late Classic",evidence:"Identified & documented",tier:"minor",note:"140+ structures. Prisoner Staircase. Capital of Foliated Scroll polity."},
+  {name:"Cancuen",lat:16.1333,lng:-90.15,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Unclassified",chronology:"Late Classic (c. AD 757–799)",evidence:"Identified & documented",tier:"minor",note:"Two courts each with three floor markers. Terminal Classic river-trade capital."},
+  {name:"Ceibal (Seibal)",lat:16.5,lng:-90.0833,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Unclassified",chronology:"Late–Terminal Classic",evidence:"Identified & documented",tier:"minor",note:"Ballcourt A-19: E-W axis unusual for Maya; resembles Uxmal/Chichen Itza style."},
+  {name:"El Mirador",lat:17.75,lng:-89.9167,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"c. 300 BCE–AD 250",evidence:"Excavated & published",tier:"minor",note:"LiDAR surveys identified 30+ courts across Mirador-Calakmul basin."},
+  {name:"Calakmul",lat:18.1044,lng:-89.8083,country:"Mexico",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Type I/II",chronology:"Classic (likely Late Classic)",evidence:"Identified & documented",tier:"minor",note:"Structure XI, North Court. Open end zones. Unusually only one court for a site of this scale."},
+  {name:"Dos Pilas",lat:16.5167,lng:-90.1,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Late Classic (c. AD 629–761)",evidence:"Identified & documented",tier:"minor",note:"Structures L4-16/17. Axis aligns south to Ruler 2 tomb pyramid."},
+  {name:"La Corona (Site Q)",lat:17.7167,lng:-90.45,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Classic (c. AD 600–750)",evidence:"Identified & documented",tier:"minor",note:"Known from looted ballplayer relief panels now in Chicago and Dallas."},
+  {name:"Copan",lat:14.8381,lng:-89.1439,country:"Honduras",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Type III (Ballcourt A-III)",chronology:"Early–Late Classic (first court c. 470 CE; final A-III dedicated 738 CE)",evidence:"Identified & documented",tier:"major",note:"Three sequential versions at same location. Ballcourt A-III dedicated 10 Jan 738 CE."},
+  {name:"Quirigua",lat:15.2667,lng:-89.0333,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type III",chronology:"Classic (Ballcourt 1 mid-7th c.; Ballcourt 2 c. 795 CE)",evidence:"Identified & documented",tier:"major",note:"Ballcourt 1 buried by Cauac Sky after defeating 18 Rabbit. Giant stelae site."},
+  {name:"Ixkun",lat:16.5167,lng:-89.5,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Type I/II",chronology:"Late Classic (c. AD 779)",evidence:"Identified & documented",tier:"minor",note:"Open end zones, N-S axis. Stela 6 among tallest in Petén."},
+  {name:"Monte Albán",lat:17.0433,lng:-96.7678,country:"Mexico",region:"Mexican Highlands",courts:5,taladoire:"Type I (open-end I-shape)",chronology:"c. 100 BCE–AD 700",evidence:"Excavated & published",tier:"major",note:"Principal I-shaped court 41×24 m. No stone rings (Zapotec style). Solar disk carvings."},
+  {name:"Cantona",lat:19.5833,lng:-97.3833,country:"Mexico",region:"Mexican Highlands",courts:24,taladoire:"Type I/II (varied)",chronology:"c. 350 BCE–AD 1050",evidence:"Identified & documented",tier:"major",note:"Most ballcourts of any known Mesoamerican site (24–27). UNESCO Tentative List."},
+  {name:"Tula (Tula Grande)",lat:20.0578,lng:-99.3408,country:"Mexico",region:"Mexican Highlands",courts:2,taladoire:"Unclassified",chronology:"c. AD 950–1150",evidence:"Excavated & published",tier:"major",note:"Two courts flanking ceremonial plaza. Skull rack platform nearby. Toltec capital."},
+  {name:"Capulac Concepción",lat:18.8,lng:-98.8,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Type VI/VII",chronology:"c. 600–500 BCE",evidence:"Excavated & published",tier:"major",note:"Oldest confirmed formal I-shaped ballcourt in Central Mexican Highlands. Playing alley 88×11 m."},
+  {name:"Xochicalco",lat:18.8019,lng:-99.2967,country:"Mexico",region:"Mexican Highlands",courts:2,taladoire:"Type II/III",chronology:"Epiclassic (c. AD 650–1000)",evidence:"Excavated & published",tier:"minor",note:"Playing alley 51×9 m. Rings above apron. Epiclassic multiethnic center. UNESCO World Heritage."},
+  {name:"Yagul",lat:16.9667,lng:-96.4667,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Type VI/VII",chronology:"c. AD 500–900",evidence:"Excavated & published",tier:"major",note:"Largest ballcourt in Valley of Oaxaca. Playing field 30×6 m. I-shaped, E-W orientation."},
+  {name:"Etlatongo",lat:17.4,lng:-97.3,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Unclassified",chronology:"c. 1374–1102 BCE",evidence:"Excavated & published",tier:"major",note:"Earliest highland Mesoamerican ballcourts. Two superimposed earthen courts. Excavated GWU/INAH 2015–2017."},
+  {name:"El Palmillo",lat:16.75,lng:-96.35,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Unclassified",chronology:"c. AD 600–750",evidence:"Excavated & published",tier:"minor",note:"Small court between two palaces. Field Museum excavations (Feinman & Nicholas)."},
+  {name:"Lambityeco",lat:16.9167,lng:-96.5,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Unclassified",chronology:"c. AD 500–850",evidence:"Excavated & published",tier:"minor",note:"Closely mirrors Monte Albán court design. Modified entrance within 200 years."},
+  {name:"Teopantecuanitlan",lat:18.0833,lng:-99.7,country:"Mexico",region:"Mexican Highlands",courts:2,taladoire:"Unclassified",chronology:"c. 1000–800 BCE",evidence:"Excavated & published",tier:"major",note:"Miniature symbolic court (~7 m) within sunken patio + larger court 900 m NE. Olmec-affiliated."},
+  {name:"La Laguna",lat:19.1,lng:-98.75,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Type VI/VII",chronology:"c. 600–500 BCE",evidence:"Excavated & published",tier:"minor",note:"I-shaped with closed end zones. Among first securely dated full-sized ballcourts in Central Mexico."},
+  {name:"Teotenango",lat:19.1833,lng:-99.6167,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Type VII",chronology:"c. AD 900–1162",evidence:"Excavated & published",tier:"minor",note:"I-shaped sunken ballcourt. Stone rings on vertical lower walls. Adjacent temazcal (sweat bath)."},
+  {name:"El Tajin",lat:20.4478,lng:-97.3786,country:"Mexico",region:"Gulf Coast / Veracruz",courts:17,taladoire:"Type I/II (most); Type III",chronology:"c. AD 300–1200",evidence:"Identified & documented",tier:"major",note:"17–21 courts. UNESCO World Heritage. Pyramid of the Niches. Ballgame capital of Veracruz."},
+  {name:"Los Ídolos",lat:20.15,lng:-97.2833,country:"Mexico",region:"Gulf Coast / Veracruz",courts:6,taladoire:"Unclassified",chronology:"Classic period",evidence:"Identified & documented",tier:"major",note:"At least 6 courts including one temazcal-associated example. Nautla basin."},
+  {name:"Carrizalito",lat:20.4167,lng:-97.0833,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"c. 100 BCE–AD 100",evidence:"Excavated & published",tier:"major",note:"Earliest excavated ballcourt in central Veracruz. Protoclassic period."},
+  {name:"Toxpan",lat:20.7,lng:-97.45,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"Classic period",evidence:"Excavated & published",tier:"major",note:"Standard Plan stone construction, excavated and confirmed. Nautla basin."},
+  {name:"La Joya",lat:17.9167,lng:-94.75,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"c. AD 300–500",evidence:"Excavated & published",tier:"major",note:"Standard Plan layout south of main pyramid. Yoke found in Early Classic stratum."},
+  {name:"Yohualichan",lat:20.0833,lng:-97.5833,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"c. AD 200–800",evidence:"Identified & documented",tier:"major",note:"~90–100 m long, among longest in Mesoamerica. El Tajín-style niched architecture."},
+  {name:"El Cuajilote",lat:20.2,lng:-97.25,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"c. AD 200–800",evidence:"Identified & documented",tier:"minor",note:"1 court on north side of main plaza. El Tajín-style influence. Filobobos zone."},
+  {name:"Quiahuiztlan",lat:19.7,lng:-96.4167,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"c. AD 800–1520",evidence:"Identified & documented",tier:"minor",note:"Totonac site. Known primarily for mausoleum-style tombs."},
+  {name:"Xiutetelco",lat:19.8667,lng:-97.5167,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"Classic period",evidence:"Identified & documented",tier:"minor",note:"Elongated-plaza ballcourt layout variant. Nautla basin."},
+  {name:"Los Horcones",lat:15.5333,lng:-92.5833,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:5,taladoire:"Type I/II",chronology:"c. AD 200–600",evidence:"Identified & documented",tier:"major",note:"Five courts in Middle Classic. Strong Teotihuacan ties."},
+  {name:"Paso de la Amada",lat:14.9167,lng:-92.3333,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Type I (earthen mounds, earliest)",chronology:"c. 1650–1400 BCE",evidence:"Excavated & published",tier:"major",note:"OLDEST attested Mesoamerican ballcourt. Two earthen mounds ~78 m long. Discovered 1995. Mokaya culture."},
+  {name:"Finca Acapulco",lat:15.25,lng:-92.3833,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Unclassified",chronology:"Middle Preclassic (c. 900–550 BCE)",evidence:"Identified & documented",tier:"major",note:"Middle Preclassic. Grijalva right bank. Among earliest known before Paso de la Amada."},
+  {name:"El Vergel",lat:15.3833,lng:-92.4167,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Unclassified",chronology:"Middle Preclassic (c. 900–550 BCE)",evidence:"Identified & documented",tier:"minor",note:"Middle Preclassic. Grijalva right bank, Chiapas."},
+  {name:"Fracción Mujular",lat:15.4167,lng:-92.45,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Unclassified",chronology:"c. AD 200–1400",evidence:"Identified & documented",tier:"minor",note:"Monumental court on Cerro Bernal. Outlasted Los Horcones."},
+  {name:"San Mateo",lat:15.2,lng:-92.35,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Unclassified",chronology:"Middle Preclassic (c. 900–550 BCE)",evidence:"Identified & documented",tier:"minor",note:"Middle Preclassic. Grijalva right bank. Co-cited with El Vergel and Finca Acapulco."},
+  {name:"Tenam Puente",lat:16.15,lng:-92.2167,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:3,taladoire:"Type VII",chronology:"c. AD 600–1150",evidence:"Identified & documented",tier:"major",note:"Three I-shaped sunken courts. Terminal Classic fortified hilltop. Comitán Valley."},
+  {name:"Cara Sucia",lat:13.9833,lng:-89.9333,country:"El Salvador",region:"Pacific Coast / Guatemalan Highlands",courts:2,taladoire:"Unclassified",chronology:"c. AD 600–920",evidence:"Excavated & published",tier:"major",note:"Two enclosed courts built after Ilopango eruption (c. 540 CE). Cotzumalhuapa phase."},
+  {name:"El Baúl (Cotzumalhuapa)",lat:14.2833,lng:-91.1833,country:"Guatemala",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Unclassified",chronology:"c. AD 650–950",evidence:"Excavated & published",tier:"minor",note:"Court 31×12.5 m with stone ring. Linked by Lehmann Causeway. Cotzumalhuapa Nuclear Zone."},
+  {name:"Tazumal / Chalchuapa",lat:13.95,lng:-89.6833,country:"El Salvador",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Type VI/VII",chronology:"Classic–Postclassic",evidence:"Identified & documented",tier:"major",note:"I-shaped court identified by test-pit mortar floor. Structurally unexcavated."},
+  {name:"Kaminaljuyu",lat:14.6333,lng:-90.55,country:"Guatemala",region:"Pacific Coast / Guatemalan Highlands",courts:12,taladoire:"Type I/II",chronology:"c. AD 200–900",evidence:"Excavated & published",tier:"major",note:"12 confirmed courts. Esperanza phase (Teotihuacan-affiliated). Now in Guatemala City."},
+  {name:"Iximche",lat:14.7167,lng:-91.0667,country:"Guatemala",region:"Pacific Coast / Guatemalan Highlands",courts:2,taladoire:"Type VII (sunken, closed)",chronology:"c. AD 1470–1524",evidence:"Excavated & published",tier:"major",note:"Kaqchikel capital. Ballcourt 1 has two plaster floor levels. Tenoned ballplayer head from Structure 3."},
+  {name:"Mixco Viejo (Jilotepeque Viejo)",lat:14.8667,lng:-90.6667,country:"Guatemala",region:"Pacific Coast / Guatemalan Highlands",courts:2,taladoire:"Type VII (sunken)",chronology:"c. AD 1450–1524",evidence:"Identified & documented",tier:"minor",note:"Court A11: 37×9 m. Court B1: 44×9 m. Both I-shaped sunken. Chajoma capital."},
+  {name:"Qʼumarkaj (Utatlán)",lat:15.0333,lng:-91.1833,country:"Guatemala",region:"Pacific Coast / Guatemalan Highlands",courts:4,taladoire:"Unclassified",chronology:"c. AD 1400–1524",evidence:"Identified & documented",tier:"major",note:"Main court 40 m near Temple of Tohil. K'iche' capital."},
+  {name:"Zaculeu (Saqulew)",lat:15.3167,lng:-91.5,country:"Guatemala",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Type VII",chronology:"c. AD 250–1525",evidence:"Identified & documented",tier:"minor",note:"I-shaped sunken, 48 m long. NW-SE orientation. Mam Postclassic capital."},
 ];
+
+
+
+// Total confirmed courts across all sites
+const TOTAL_COURTS = BALLCOURTS.reduce((s,b)=>s+b.courts,0);
+document.getElementById('ballcourt-count').textContent = BALLCOURTS.length;
+
+let ballcourtLayer=null, ballcourtOn=false;
+
+// Evidence quality → colour
+function evidenceColour(ev){
+  if(ev==='Excavated & published') return '#4db87a';   // jade
+  if(ev==='Identified & documented') return '#d4a84b'; // gold
+  return '#8a7868';                                     // ash
+}
+
+function tierIcon(tier){
+  if(tier==='major') return '★';
+  if(tier==='minor') return '◆';
+  return '◇';
+}
+
+function buildBallcourtPopup(bc){
+  const evCol  = evidenceColour(bc.evidence);
+  const tierLbl= bc.tier==='major' ? 'Major League' : bc.tier==='minor' ? 'Minor League' : 'Ceremonial';
+  const talFmt = bc.taladoire==='Unclassified' ? '<em style="color:rgba(200,216,240,.35)">Unclassified</em>' : `<span style="color:#d4a84b">${bc.taladoire}</span>`;
+  return `
+<div style="font-family:'DM Sans',sans-serif;min-width:230px;max-width:270px">
+  <div style="font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:#f0e8d8;margin-bottom:.3rem">${bc.name}</div>
+  <div style="font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#d4a84b;margin-bottom:.6rem">${bc.country}</div>
+  <table style="width:100%;border-collapse:collapse;font-size:.68rem;line-height:1.5">
+    <tr>
+      <td style="color:rgba(200,216,240,.45);padding:.15rem 0;width:42%;vertical-align:top">Region</td>
+      <td style="color:#f0e8d8;padding:.15rem 0">${bc.region}</td>
+    </tr>
+    <tr>
+      <td style="color:rgba(200,216,240,.45);padding:.15rem 0;vertical-align:top">Courts</td>
+      <td style="color:#4db87a;font-weight:700;padding:.15rem 0">${bc.courts}${bc.courts===1?'':''}</td>
+    </tr>
+    <tr>
+      <td style="color:rgba(200,216,240,.45);padding:.15rem 0;vertical-align:top">Taladoire type</td>
+      <td style="padding:.15rem 0">${talFmt}</td>
+    </tr>
+    <tr>
+      <td style="color:rgba(200,216,240,.45);padding:.15rem 0;vertical-align:top">Span</td>
+      <td style="color:rgba(200,216,240,.7);padding:.15rem 0;font-size:.62rem">${bc.chronology}</td>
+    </tr>
+    <tr>
+      <td style="color:rgba(200,216,240,.45);padding:.15rem 0;vertical-align:top">Evidence</td>
+      <td style="color:${evCol};padding:.15rem 0">${bc.evidence}</td>
+    </tr>
+    <tr>
+      <td style="color:rgba(200,216,240,.45);padding:.15rem 0;vertical-align:top">MBL tier</td>
+      <td style="padding:.15rem 0"><span style="font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.1rem .35rem;background:${bc.tier==='major'?'rgba(212,168,75,.2)':'rgba(100,100,120,.2)'};color:${bc.tier==='major'?'#d4a84b':'#8a9ab0'}">${tierLbl}</span></td>
+    </tr>
+  </table>
+  <div style="margin-top:.5rem;font-size:.62rem;color:rgba(200,216,240,.45);font-style:italic;line-height:1.45;border-top:1px solid rgba(255,255,255,.06);padding-top:.4rem">${bc.note}</div>
+</div>`;
+}
+
+function toggleBallcourts(btn){
+  if(ballcourtOn){
+    if(ballcourtLayer) map.removeLayer(ballcourtLayer);
+    ballcourtOn=false;
+    btn.classList.remove('active');
+    document.getElementById('ballcourt-count').textContent=BALLCOURTS.length;
+    return;
+  }
+  if(!ballcourtLayer){
+    const g=L.layerGroup();
+    BALLCOURTS.forEach(bc=>{
+      const isMajor = bc.tier==='major';
+      const r = bc.courts >= 13 ? 10 : bc.courts >= 5 ? 8 : bc.courts >= 2 ? 6 : 5;
+      const evCol = evidenceColour(bc.evidence);
+      const icon=L.divIcon({
+        html:`<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+6}" height="${r*2+6}">
+          <polygon points="${r+3},2 ${r*2+4},${r+3} ${r+3},${r*2+4} 2,${r+3}"
+            fill="${evCol}" fill-opacity="${isMajor?.8:.55}"
+            stroke="#1a1408" stroke-width="1.2"/>
+        </svg>`,
+        className:'', iconSize:[r*2+6,r*2+6], iconAnchor:[r+3,r+3]
+      });
+      L.marker([bc.lat,bc.lng],{icon})
+        .bindPopup(buildBallcourtPopup(bc),{
+          maxWidth:290,
+          className:'bc-popup'
+        })
+        .addTo(g);
+    });
+    ballcourtLayer=g;
+  }
+  ballcourtLayer.addTo(map);
+  ballcourtOn=true;
+  btn.classList.add('active');
+  const total=BALLCOURTS.reduce((s,b)=>s+b.courts,0);
+  document.getElementById('ballcourt-count').textContent=`${BALLCOURTS.length} sites · ${total} courts`;
+}
+
+</script>
+<script>
+// ════════════════════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════════════════════
+const SITES = [
+  {code:"PAL",name:"Palenque",lat:17.4839,lng:-92.0456,country:"Mexico",morley:81,riese:226,period:"Classic",notes:"Palace tablet, Temple inscriptions, Pakal's tomb. Greatest epigraphic corpus in Classic Maya."},
+  {code:"TIK",name:"Tikal",lat:17.2220,lng:-89.6237,country:"Guatemala",morley:84,riese:267,period:"Classic",notes:"Largest Classic Maya city. Six major temple-pyramids. Rivals with Calakmul (Snake Kingdom)."},
+  {code:"CPN",name:"Copán",lat:14.8386,lng:-89.1414,country:"Honduras",morley:62,riese:175,period:"Classic",notes:"Hieroglyphic Stairway (2,500 glyphs). Altar Q documents 16-ruler dynasty. Southeastern frontier."},
+  {code:"CAL",name:"Calakmul",lat:18.1037,lng:-89.8083,country:"Mexico",morley:117,riese:167,period:"Classic",notes:"Snake Kingdom capital. Greatest number of stelae (117). Rival superpower to Tikal."},
+  {code:"YAX",name:"Yaxchilán",lat:16.8981,lng:-90.9675,country:"Mexico",morley:59,riese:124,period:"Classic",notes:"Lintels 24–26 depict bloodletting rituals. Lady Xokʼ. Bird Jaguar IV. Usumacinta river position."},
+  {code:"TON",name:"Tonina",lat:16.9000,lng:-92.0167,country:"Mexico",morley:91,riese:176,period:"Classic",notes:"Last confirmed Long Count date: 10.4.0.0.0 (909 CE). Monument 101. Aggressive military history."},
+  {code:"PIE",name:"Piedras Negras",lat:17.1542,lng:-91.2647,country:"Guatemala",morley:41,riese:89,period:"Classic",notes:"Tatiana Proskouriakoff's 1960 breakthrough proving stelae record historical rulers, not calendrical priests."},
+  {code:"NAR",name:"Naranjo",lat:17.0667,lng:-89.7333,country:"Guatemala",morley:38,riese:72,period:"Classic",notes:"Lady Sixʼ Sky became regent 682 CE. Major rivalry with Tikal. 38 stelae."},
+  {code:"QRG",name:"Quiriguá",lat:15.2667,lng:-89.0444,country:"Guatemala",morley:23,riese:51,period:"Classic",notes:"Tallest Maya stela (Stela E, 10.6m). Zoomorphs. Cauac Sky defeated Copán's 18 Rabbit in 738 CE."},
+  {code:"CRC",name:"Caracol",lat:16.7667,lng:-89.1167,country:"Belize",morley:28,riese:61,period:"Classic",notes:"Defeated Tikal 562 CE. Vast causeway network. Largest site in Belize."},
+  {code:"BPK",name:"Bonampak",lat:16.7011,lng:-91.0656,country:"Mexico",morley:12,riese:25,period:"Classic",notes:"Room 1–3 murals depict battle scenes, captive presentation. Best-preserved Classic Maya murals."},
+  {code:"DON",name:"Dos Pilas",lat:16.3833,lng:-90.1167,country:"Guatemala",morley:18,riese:42,period:"Classic",notes:"Petexbatun regional capital. Bal\u00e1m Ajaw. Military expansion texts."},
+  {code:"AGT",name:"Aguateca",lat:16.4000,lng:-90.1833,country:"Guatemala",morley:14,riese:33,period:"Classic",notes:"Abandoned suddenly c.810 CE. Elite residences preserved with artifacts in situ. Elite scribal objects found."},
+  {code:"XUL",name:"Xultun",lat:17.7167,lng:-89.6000,country:"Guatemala",morley:8,riese:12,period:"Classic",notes:"2012 discovery of astronomical mural — earliest Maya astronomical tables. Planetary cycles on walls."},
+  {code:"UAX",name:"Uaxactun",lat:17.3944,lng:-89.6333,country:"Guatemala",morley:9,riese:17,period:"Classic",notes:"E-group astronomical alignment. Stela 29 (292 CE) — earliest securely dated Classic Maya monument."},
+  {code:"COB",name:"Cobá",lat:20.4886,lng:-87.7292,country:"Mexico",morley:32,riese:44,period:"Classic",notes:"Stela 1 bears one of the latest Long Count dates. 50km of sacbes (causeways). Connects Pacific to Caribbean."},
+  {code:"CHI",name:"Chichén Itzá",lat:20.6843,lng:-88.5678,country:"Mexico",morley:0,riese:28,period:"Postclassic",notes:"El Castillo alignment to Pleiades and Venus. Venus platform. Sacred cenote. Toltec-Maya synthesis."},
+  {code:"UXM",name:"Uxmal",lat:20.3592,lng:-89.7711,country:"Mexico",morley:0,riese:15,period:"Postclassic",notes:"Puuc architectural style. Governor's Palace aligned to Venus. No hieroglyphic texts survive in situ."},
+  {code:"LAM",name:"Lamanai",lat:17.7717,lng:-88.6550,country:"Belize",morley:4,riese:7,period:"Classic",notes:"Continuous occupation 1500 BCE to 1600 CE — one of the longest in the Maya world."},
+  {code:"SEI",name:"Seibal",lat:16.5000,lng:-90.0833,country:"Guatemala",morley:16,riese:29,period:"Classic",notes:"Fine Stucco group. Tepeu 3 monuments show Terminal Classic revival under foreign (non-Maya?) leadership."},
+  {code:"ELP",name:"El Perú-Waka'",lat:17.4000,lng:-90.3833,country:"Guatemala",morley:14,riese:22,period:"Classic",notes:"Snake Kingdom ally. Lady Katun Ahaw. Royal tomb with jade mosaic mask discovered 2012."},
+  {code:"KOH",name:"Kohunlich",lat:18.5067,lng:-88.9592,country:"Mexico",morley:6,riese:9,period:"Classic",notes:"Temple of the Masks: giant stucco solar deity masks c.500 CE. Discovered by looters, rescued by INAH."},
+  {code:"EDZ",name:"Edzná",lat:19.5944,lng:-90.2294,country:"Mexico",morley:4,riese:8,period:"Classic",notes:"Temple of the Five Stories. Stelae with hieroglyphic texts. Canal system for water management."},
+  {code:"OXK",name:"Oxkintok",lat:20.5647,lng:-89.9369,country:"Mexico",morley:4,riese:9,period:"Classic",notes:"Earliest dated Classic Maya monument in Yucatán. Proto-Pure Florescent architectural style."},
+  {code:"MRD",name:"Moral-Reforma",lat:17.9167,lng:-91.5833,country:"Mexico",morley:8,riese:13,period:"Classic",notes:"Usumacinta/Gulf Coast lowlands. Large stelae program. Under-excavated site with major monuments."},
+  {code:"XNA",name:"Xunantunich",lat:17.0897,lng:-89.1389,country:"Belize",morley:8,riese:14,period:"Classic",notes:"El Castillo frieze with cosmological imagery. Carved hieroglyphic monuments. Mopan River position."},
+  {code:"ALT",name:"Altun Ha",lat:17.7639,lng:-88.3458,country:"Belize",morley:3,riese:4,period:"Classic",notes:"Jade head of Kinich Ahau (largest Maya jade object). Sun God temple. Northern Belize lowlands."},
+  {code:"BEC",name:"Becán",lat:18.5275,lng:-89.4692,country:"Mexico",morley:2,riese:3,period:"Classic",notes:"Fortified city surrounded by a moat-like ditch. Central Campeche Puuc-transitional architecture."},
+  {code:"PIE2",name:"Piedras Negras (south group)",lat:17.1600,lng:-91.2600,country:"Guatemala",morley:3,riese:5,period:"Classic",notes:"South acropolis stelae. Throne scenes."},
+  {code:"POL",name:"Pólol",lat:17.0833,lng:-89.5000,country:"Guatemala",morley:5,riese:8,period:"Classic",notes:"Minor site with stelae in Petén lowlands."},
+  {code:"MQL",name:"Machaquilá",lat:16.5833,lng:-89.7000,country:"Guatemala",morley:10,riese:19,period:"Classic",notes:"Late Classic stelae with fine carving. Pasión region."},
+  {code:"POM",name:"Pomona",lat:17.8500,lng:-91.5333,country:"Mexico",morley:7,riese:11,period:"Classic",notes:"Usumacinta region lowlands. Hieroglyphic panel."},
+  {code:"LTZ",name:"Lubaantun",lat:16.2833,lng:-88.9667,country:"Belize",morley:2,riese:3,period:"Classic",notes:"Unusual construction without mortar. Ball courts. Crystal skull controversy."},
+  {code:"ITZ",name:"Itzimte",lat:20.0000,lng:-89.7500,country:"Mexico",morley:3,riese:5,period:"Postclassic",notes:"Terminal Classic/Early Postclassic. Puuc-style facades."},
+  {code:"UAX2",name:"Uaxactun (north group)",lat:17.4000,lng:-89.6400,country:"Guatemala",morley:5,riese:9,period:"Classic",notes:"Group B stelae. Astronomical E-group."},
+  {code:"ISP",name:"Isla de Piedras",lat:18.3500,lng:-90.8667,country:"Mexico",morley:2,riese:4,period:"Classic",notes:"Gulf Coast lowlands minor center."},
+  {code:"SBL",name:"Sak Bichán",lat:17.2000,lng:-91.0000,country:"Mexico",morley:4,riese:7,period:"Classic",notes:"Chiapas lowlands minor site."},
+  {code:"AGT2",name:"La Mar",lat:17.0167,lng:-91.0000,country:"Mexico",morley:8,riese:14,period:"Classic",notes:"Usumacinta tributary. Hilltop defensive position. Unpublished monuments."},
+  {code:"MUL",name:"Mulchic",lat:20.7167,lng:-89.5000,country:"Mexico",morley:2,riese:3,period:"Postclassic",notes:"Northern Yucatán minor center."},
+  {code:"CON",name:"Coba (north group)",lat:20.4950,lng:-87.7350,country:"Mexico",morley:5,riese:8,period:"Classic",notes:"Northern causeways and stelae cluster."},
+];
+
+// TWKM ConedaKOR base URL
+const KOR = "https://classicmayan.kor.de.dariah.eu";
+
+// Known image numbers from the Karl Herbert Mayer collection (sample)
+// Real integration fetches from KOR API client-side
+const SAMPLE_IMAGES = {
+  "PAL": ["KHM_1976_F01_R01_01","KHM_1976_F01_R01_02","KHM_1976_F01_R01_03","KHM_1976_F01_R02_01","KHM_1976_F01_R02_05","KHM_1976_F01_R02_08"],
+  "TIK": ["KHM_1978_F03_R01_01","KHM_1978_F03_R01_02","KHM_1978_F03_R02_01","KHM_1978_F03_R02_03"],
+  "CPN": ["KHM_1979_F05_R01_01","KHM_1979_F05_R01_02","KHM_1979_F05_R02_01","KHM_1979_F05_R03_01"],
+  "YAX": ["KHM_1980_F07_R01_01","KHM_1980_F07_R01_02","KHM_1980_F07_R02_01"],
+  "QRG": ["KHM_1981_F09_R01_01","KHM_1981_F09_R01_02"],
+};
+
+// ── Maya calendar (reuse engine from sky.html) ──────────────
+const CORR = 584283;
+const TZ_DAYS = ['Imixʼ','Ikʼ','Akbalʼ','Kʼan','Chikchan','Kimi','Manikʼ','Lamat','Muluk','Ok','Chuwen','Eb','Ben','Hix','Men','Kʼib','Kabán','Etznabʼ','Kawak','Ajaw'];
+const TZ_EMOJI = ['🐊','💨','🌑','🌽','🐍','💀','🦌','⭐','🌊','🐾','🐒','🛤','🌿','🐆','🦅','🦉','🌍','🔪','⛈','☀️'];
+const HAAB_M = ['Pop','Woʼ','Sip','Sotzʼ','Sek','Xul','Yaxkʼin','Mol','Chʼen','Yax','Sakʼ','Keh','Mak','Kʼankʼin','Muwan','Pax','Kʼayabʼ','Kumkʼu','Wayebʼ'];
+const MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function lcToJDN(b,k,t,w,ki){ return CORR+(b*144000)+(k*7200)+(t*360)+(w*20)+ki; }
+function jdnToLC(jdn){ const d=jdn-CORR; if(d<0)return null;
+  const b=Math.floor(d/144000),r1=d%144000,k=Math.floor(r1/7200),r2=r1%7200,
+    t=Math.floor(r2/360),r3=r2%360,w=Math.floor(r3/20),ki=r3%20;
+  return {b,k,t,w,ki,d}; }
+function gregToJDN(y,m,d){
+  const a=Math.floor((14-m)/12),yy=y+4800-a,mm=m+12*a-3;
+  return d+Math.floor((153*mm+2)/5)+365*yy+Math.floor(yy/4)-Math.floor(yy/100)+Math.floor(yy/400)-32045; }
+function jdnToGreg(jdn){
+  const a=jdn+32044,b=Math.floor((4*a+3)/146097),c=a-Math.floor(146097*b/4),
+    d=Math.floor((4*c+3)/1461),e=c-Math.floor(1461*d/4),m=Math.floor((5*e+2)/153);
+  return{day:e-Math.floor((153*m+2)/5)+1,month:m+3-12*Math.floor(m/10),year:100*b+d-4800+Math.floor(m/10)}; }
+function tzolkin(d){return{num:((d+3)%13)+1,name:(d+19)%20};}
+function haab(d){const p=(d+348)%365;return{m:Math.floor(p/20),day:p%20};}
+function fmtGreg(g){const e=g.year<0?` ${Math.abs(g.year)+1} BCE`:` ${g.year} CE`;return`${g.day} ${MONTHS_EN[g.month-1]}${e}`;}
+
+function calcDate(lcStr){
+  const p=lcStr.trim().split('.').map(Number);
+  if(p.length!==5||p.some(isNaN))return null;
+  const jdn=lcToJDN(...p);
+  const lc=jdnToLC(jdn); if(!lc)return null;
+  const tz=tzolkin(lc.d),hb=haab(lc.d),g=jdnToGreg(jdn);
+  return{lc:`${lc.b}.${lc.k}.${lc.t}.${lc.w}.${lc.ki}`,
+    cr:`${tz.num} ${TZ_DAYS[tz.name]} ${hb.day} ${HAAB_M[hb.m]}`,
+    greg:fmtGreg(g),emoji:TZ_EMOJI[tz.name]};
+}
+
+// ── NOTABLE DATES PER SITE ────────────────────────────────────
+const SITE_DATES = {
+  PAL:[{lc:"9.9.2.4.8",label:"Pakal born"},{lc:"9.12.11.5.18",label:"Pakal accession"},{lc:"9.13.0.0.0",label:"Temple Inscriptions katun ending"}],
+  TIK:[{lc:"8.14.3.1.12",label:"Stela 29 — earliest dated monument"},{lc:"9.15.3.6.8",label:"Tikal defeated by Dos Pilas"}],
+  CPN:[{lc:"9.0.0.0.0",label:"Early Copán occupation"},{lc:"9.17.5.0.0",label:"Altar Q completion"}],
+  QRG:[{lc:"9.14.13.4.17",label:"18 Rabbit captured by Cauac Sky"},{lc:"9.17.0.0.0",label:"Stela E erected"}],
+  TON:[{lc:"10.4.0.0.0",label:"Last Long Count date (909 CE)"}],
+  YAX:[{lc:"9.16.1.0.0",label:"Lintel 24 — Lady Xokʼ bloodletting"},{lc:"9.16.4.1.1",label:"Bird Jaguar IV accession"}],
+  CHI:[{lc:"10.8.0.0.0",label:"Estimated Chichén Itzá florescence"},{lc:"10.3.17.12.1",label:"Earliest Chichén monument"}],
+};
+
+// ── Map init ──────────────────────────────────────────────────
+let map, siteMarkers={}, currentSite=null, periodFilter='';
+
+window.addEventListener('load', () => {
+  map = L.map('maya-map',{center:[16,-89],zoom:3,minZoom:2,zoomControl:false,attributionControl:false});
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',
+    {attribution:'© Esri',maxZoom:10,minZoom:3}).addTo(map);
+  L.control.zoom({position:'bottomright'}).addTo(map);
+  // Fit to Maya world on init — guarantees tiles render
+  map.fitBounds([[13.5,-95],[22.5,-83]],{padding:[8,8]});
+
+  renderSiteList();
+  renderMapMarkers();
+});
+
+function renderMapMarkers(){
+  SITES.forEach(s => {
+    const r = s.riese > 100 ? 8 : s.riese > 50 ? 6 : s.riese > 20 ? 5 : 4;
+    const icon = L.divIcon({
+      html:`<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+4}" height="${r*2+4}">
+        <circle cx="${r+2}" cy="${r+2}" r="${r}" fill="#3a8a5a" fill-opacity=".7"
+          stroke="#c8d8f0" stroke-width="1" stroke-opacity=".5"/>
+      </svg>`,
+      className:'', iconSize:[r*2+4,r*2+4], iconAnchor:[r+2,r+2]
+    });
+    const m = L.marker([s.lat,s.lng],{icon})
+      .bindPopup(`<div class="mp-code">${s.code}</div><div class="mp-name">${s.name}</div><div style="margin-top:.2rem;font-size:.62rem;color:rgba(200,216,240,.45)">${s.riese} inscriptions (Riese)</div>`)
+      .on('click', () => loadSite(s.code));
+    m.addTo(map);
+    siteMarkers[s.code] = m;
+  });
+}
+
+// ── Site list render ─────────────────────────────────────────
+function renderSiteList(){
+  const q = document.getElementById('site-search').value.toLowerCase();
+  const list = SITES.filter(s =>
+    (!q || s.name.toLowerCase().includes(q) || s.code.toLowerCase().includes(q)) &&
+    (!periodFilter || s.period === periodFilter)
+  ).sort((a,b) => b.riese - a.riese);
+
+  document.getElementById('site-list').innerHTML = list.map(s => `
+    <div class="site-item${currentSite===s.code?' active':''}" onclick="loadSite('${s.code}')">
+      <div class="site-code">${s.code} · ${s.country}</div>
+      <div class="site-name">${s.name}</div>
+      <div class="site-meta">
+        <span>${s.period}</span>
+        <span class="insc-badge">${s.riese} inscr.</span>
+        ${s.morley > 0 ? `<span style="font-size:.5rem;color:rgba(200,216,240,.25)">${s.morley} Morley</span>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function filterSites(){ renderSiteList(); }
+function setPeriod(btn, period){
+  document.querySelectorAll('.p-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); periodFilter=period; renderSiteList();
+}
+
+// ── Load site ─────────────────────────────────────────────────
+function loadSite(code){
+  currentSite = code;
+  const s = SITES.find(x=>x.code===code);
+  if(!s) return;
+  renderSiteList();
+
+  // Fly map to site
+  map.flyTo([s.lat, s.lng], 9, {duration:1.2});
+
+  // Build site detail
+  const dates = SITE_DATES[code] || [];
+  const kor_search = `${KOR}/#/search?terms=${encodeURIComponent(s.name)}`;
+
+  document.getElementById('site-detail').innerHTML = `
+    <div class="site-detail-header">
+      <div class="site-code-lg">${s.code} · TWKM Site Register</div>
+      <div class="site-name-lg">${s.name}</div>
+      <div class="site-badges">
+        <span class="badge b-period">${s.period}</span>
+        <span class="badge b-country">${s.country}</span>
+        <span class="badge b-insc">${s.riese} inscriptions (Riese 1976)</span>
+        ${s.morley > 0 ? `<span class="badge b-insc">${s.morley} (Morley 1948)</span>` : ''}
+      </div>
+      <div class="site-coords">${s.lat.toFixed(4)}°N, ${Math.abs(s.lng).toFixed(4)}°W · <a href="map.html" style="color:var(--jade-lt)">View on archAIology map →</a></div>
+      ${s.notes ? `<div class="site-notes">${s.notes}</div>` : ''}
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+        <a href="${kor_search}" target="_blank" rel="noopener"
+          style="font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+          padding:.3rem .7rem;border:1px solid rgba(90,184,128,.25);color:var(--jade-lt);">
+          → Browse Image Archive
+        </a>
+        <a href="https://classicmayan.org/portal/db_sites" target="_blank" rel="noopener"
+          style="font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+          padding:.3rem .7rem;border:1px solid rgba(184,137,42,.2);color:var(--ochre-lt);">
+          → TWKM Site Database
+        </a>
+      </div>
+    </div>
+
+    ${dates.length ? `
+    <div class="cal-inset">
+      <div class="cal-inset-title">Key dates — Maya calendar</div>
+      <div class="cal-presets" id="cal-presets-${code}">
+        ${dates.map(d=>`<button class="cal-preset-btn" onclick="showCalDate('${d.lc}','${d.label}')">${d.label}</button>`).join('')}
+      </div>
+      <div id="cal-result-${code}" style="display:none;">
+        <div class="cal-result-mini" id="cal-mini-${code}"></div>
+      </div>
+    </div>` : ''}
+
+    <div class="section-lbl">Image archive — TWKM · CC BY 4.0</div>
+    <div id="img-grid-${code}" class="img-grid" style="display:block;margin-bottom:1rem;"></div>
+
+    <div style="margin-top:1rem;padding:.6rem .8rem;background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.05);">
+      <div style="font-size:.6rem;color:rgba(200,216,240,.3);line-height:1.6;">
+        Images © Karl Herbert Mayer / TWKM Universität Bonn. Licensed CC BY 4.0.
+        Source: <a href="${KOR}" target="_blank" style="color:var(--jade-lt)">classicmayan.kor.de.dariah.eu</a>
+      </div>
+    </div>
+  `;
+
+  loadImages(code, s.name);
+}
+
+// ── Calendar date display ─────────────────────────────────────
+function showCalDate(lc, label){
+  const data = calcDate(lc);
+  if(!data) return;
+  const code = currentSite;
+  document.getElementById(`cal-result-${code}`).style.display = 'block';
+  document.getElementById(`cal-mini-${code}`).innerHTML = `
+    <div class="crm"><div class="crm-k">Long Count</div><div class="crm-v" style="color:var(--ochre-lt)">${data.lc}</div></div>
+    <div class="crm"><div class="crm-k">Calendar Round</div><div class="crm-v">${data.emoji} ${data.cr}</div></div>
+    <div class="crm"><div class="crm-k">Gregorian</div><div class="crm-v">${data.greg}</div></div>
+  `;
+}
+
+// ── Archive link renderer ────────────────────────────────────
+function loadImages(code, siteName){
+  const grid = document.getElementById(`img-grid-${code}`);
+  if(!grid) return;
+  const KOR = "https://classicmayan.kor.de.dariah.eu";
+  const korSearch  = `${KOR}/#/search?terms=${encodeURIComponent(siteName)}`;
+  grid.innerHTML = `
+    <div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;">
+
+      <a href="${korSearch}" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">🖼</div>
+        <div class="alc-body">
+          <div class="alc-title">Image Archive — ${siteName}</div>
+          <div class="alc-sub">Karl Herbert Mayer photographs &amp; drawings. 5,700+ images.</div>
+          <div class="alc-url">classicmayan.kor.de.dariah.eu</div>
+        </div>
+      </a>
+
+      <a href="${KOR}/#/new-media" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">🆕</div>
+        <div class="alc-body">
+          <div class="alc-title">Recently Added</div>
+          <div class="alc-sub">Latest additions — continuously expanded by Bonn researchers.</div>
+          <div class="alc-url">classicmayan.kor.de.dariah.eu/#/new-media</div>
+        </div>
+      </a>
+
+      <a href="https://classicmayan.org/portal/db_sites" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">📍</div>
+        <div class="alc-body">
+          <div class="alc-title">TWKM Site Register</div>
+          <div class="alc-sub">Geocoded register with Getty IDs, GeoNames, inscription counts.</div>
+          <div class="alc-url">classicmayan.org/portal/db_sites</div>
+        </div>
+      </a>
+
+      <a href="https://digitale-sammlungen.ulb.uni-bonn.de/maya" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">📜</div>
+        <div class="alc-body">
+          <div class="alc-title">Hieroglyphic Text Archive</div>
+          <div class="alc-sub">Full-text hieroglyphic corpus. Sign-level search. ULB Bonn.</div>
+          <div class="alc-url">digitale-sammlungen.ulb.uni-bonn.de</div>
+        </div>
+      </a>
+
+      <a href="https://www.zotero.org/idiom_bibliography" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">📚</div>
+        <div class="alc-body">
+          <div class="alc-title">IDIOM Bibliography</div>
+          <div class="alc-sub">Curated Zotero bibliography of Maya epigraphy and archaeology.</div>
+          <div class="alc-url">zotero.org/idiom_bibliography</div>
+        </div>
+      </a>
+
+      <a href="https://sketchfab.com/idiom-project" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">🗿</div>
+        <div class="alc-body">
+          <div class="alc-title">Artefacts in 3D</div>
+          <div class="alc-sub">Photogrammetric 3D models of stelae, altars, portable objects. CC BY.</div>
+          <div class="alc-url">sketchfab.com/idiom-project</div>
+        </div>
+      </a>
+
+      <a href="https://classicmayan.org/portal/signcatalog" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">𓀀</div>
+        <div class="alc-body">
+          <div class="alc-title">Sign Catalog</div>
+          <div class="alc-sub">1,000+ glyphs with readings, variants, and attestations.</div>
+          <div class="alc-url">classicmayan.org/portal/signcatalog</div>
+        </div>
+      </a>
+
+      <a href="https://classicmayan.org/calendar-calculations/" target="_blank" rel="noopener" class="alc">
+        <div class="alc-icon">📅</div>
+        <div class="alc-body">
+          <div class="alc-title">Calendar Calculator</div>
+          <div class="alc-sub">Long Count ↔ Gregorian with eclipse prediction and 819-day count.</div>
+          <div class="alc-url">classicmayan.org/calendar-calculations</div>
+        </div>
+      </a>
+
+    </div>`;
+}
+// ── Lightbox ──────────────────────────────────────────────────
+function openLightbox(id, title, desc, imgUrl, resolveUrl){
+  document.getElementById('lb-img').src = imgUrl;
+  document.getElementById('lb-id').textContent = id;
+  document.getElementById('lb-title').textContent = title;
+  document.getElementById('lb-desc').textContent = desc || 'TWKM Maya Image Archive · CC BY 4.0 · Universität Bonn';
+  document.getElementById('lb-links').innerHTML = [
+    resolveUrl ? `<a class="lb-link" href="${resolveUrl}" target="_blank">→ Full record in archive</a>` : '',
+    `<a class="lb-link" href="${KOR}" target="_blank">→ Browse full archive</a>`,
+    `<a class="lb-link" href="sky.html">→ Maya calendar</a>`,
+  ].join('');
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(e){
+  if(!e || e.target===document.getElementById('lightbox')||e.currentTarget!==document.getElementById('lightbox')){
+    document.getElementById('lightbox').classList.remove('open');
+    document.getElementById('lb-img').src = '';
+  }
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
+
+// Init: load Palenque on start
+window.addEventListener('load', () => setTimeout(() => loadSite('PAL'), 300));
+
+// ── Cenotes overlay (ArcGIS · BWaldo8 · Yuc_caves_Projected) ─
+const CENOTE_ITEM  = '5d823ae7ec574613ad783631b8fdb363';
+const CENOTE_URLS  = [
+  `https://services1.arcgis.com/AXaYBvnJsB5Q7sDF/arcgis/rest/services/Yuc_caves_Projected/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson&resultRecordCount=5000`,
+  `https://www.arcgis.com/sharing/rest/content/items/${CENOTE_ITEM}/data?f=json`,
+];
+let cenoteLayer=null, cenoteOn=false;
+
+async function toggleCenotes(btn){
+  if(cenoteOn){
+    if(cenoteLayer) map.removeLayer(cenoteLayer);
+    cenoteOn=false;
+    btn.classList.remove('active');
+    btn.textContent='💧 Cenotes';
+    return;
+  }
+  if(!cenoteLayer){
+    btn.textContent='⏳…';
+    btn.disabled=true;
+    let gj=null;
+    for(const url of CENOTE_URLS){
+      try{
+        const r=await fetch(url); if(!r.ok) continue;
+        const d=await r.json();
+        if(d.features&&d.features.length) { gj=d; break; }
+      } catch(e){ continue; }
+    }
+    btn.disabled=false;
+    if(!gj){ btn.textContent='💧 Cenotes'; console.warn('Cenote fetch failed'); return; }
+
+    const g=L.layerGroup();
+    gj.features.forEach(f=>{
+      if(!f.geometry||f.geometry.type!=='Point') return;
+      const [lng,lat]=f.geometry.coordinates;
+      const p=f.properties||{};
+      const name=p.Name||p.NAME||p.name||p.Nombre||p.FID_1||'Cenote';
+      const icon=L.divIcon({
+        html:`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+          <circle cx="7" cy="7" r="5" fill="#4a9ec4" fill-opacity=".8"
+            stroke="#c8d8f0" stroke-width="1" stroke-opacity=".5"/>
+        </svg>`,
+        className:'', iconSize:[14,14], iconAnchor:[7,7]
+      });
+      L.marker([lat,lng],{icon})
+        .bindTooltip(`<b>${name}</b><br><span style="color:#4a9ec4;font-size:.6rem">Yucatán cenote</span>`,
+          {sticky:true})
+        .addTo(g);
+    });
+    cenoteLayer=g;
+    // Update count badge
+    const c=document.getElementById('cenote-btn');
+    if(c) c.setAttribute('data-count', gj.features.length);
+  }
+  cenoteLayer.addTo(map);
+  cenoteOn=true;
+  btn.classList.add('active');
+  const n=btn.getAttribute('data-count');
+  btn.textContent=`💧 Cenotes${n?` (${parseInt(n).toLocaleString()})`:''} ✕`;
+  // Pan to Yucatán
+  map.flyTo([20.5,-89.0],7,{duration:1.2});
+}
+
+// ── Ballcourts overlay — 81 confirmed sites ───────────────────
+// Source: mesoamerican_ballcourt_confirmed_1.xlsx
+// Compiled from northern_lowlands, southern_lowlands, highlands,
+// gulf_coast, pacific_slope, el_salvador source datasets.
+const BALLCOURTS = [
+  {name:"Chichen Itza",lat:20.6843,lng:-88.5678,country:"Mexico",region:"Northern Lowlands",courts:13,taladoire:"Type III (Great Court); Type II (smaller courts)",chronology:"Late Classic–Early Postclassic (c. AD 600–1200)",evidence:"Excavated & published",tier:"major",note:"13 courts confirmed. Great Ball Court (168×70 m) largest in Mesoamerica; vertical walls, feathered-serpent stone rings, decapitation panels."},
+  {name:"Uxmal",lat:20.3593,lng:-89.7712,country:"Mexico",region:"Northern Lowlands",courts:2,taladoire:"Type II/III",chronology:"Late to Terminal Classic (c. AD 700–1100)",evidence:"Identified & documented",tier:"major",note:"Two courts. Main court ring inscription dated AD 905. Feathered-serpent imagery. UNESCO World Heritage."},
+  {name:"Cobá",lat:20.495,lng:-87.735,country:"Mexico",region:"Northern Lowlands",courts:2,taladoire:"Type II",chronology:"Classic–Postclassic (c. 100 BC–AD 1450)",evidence:"Excavated & published",tier:"major",note:"Two documented courts. Ball Court 2 has female ruler inscription dated AD 565–574."},
+  {name:"Ek Balam",lat:20.8756,lng:-88.2417,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Type II",chronology:"c. 300 BC–AD 1200",evidence:"Excavated & published",tier:"major",note:"Structures 8 and 9; talud (sloping) walls with decorated rooms."},
+  {name:"Dzibanché",lat:18.6833,lng:-88.6167,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Unclassified",chronology:"c. AD 250–1000",evidence:"Excavated & published",tier:"minor",note:"2024 INAH excavation: painted stucco reliefs of Kaanul Dynasty rulers (AD 250–650)."},
+  {name:"Becan",lat:18.5275,lng:-89.4692,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Type II",chronology:"c. 550 BC–AD 1200",evidence:"Identified & documented",tier:"minor",note:"Structure XI, west plaza. Playing field 12×9 m. No stone rings preserved."},
+  {name:"Dzibilchaltun",lat:21.0989,lng:-89.5964,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Type II",chronology:"c. AD 250–1540",evidence:"Identified & documented",tier:"minor",note:"East of South Plaza. Sloping stone walls, no rings. One of longest-occupied Maya sites."},
+  {name:"Edzna",lat:19.5944,lng:-90.2294,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Type II",chronology:"c. 400 BC–AD 1500",evidence:"Identified & documented",tier:"minor",note:"Structures 420-1 to 420-4. Playing alley 51×5 m. One original stone ring."},
+  {name:"Kohunlich",lat:18.5067,lng:-88.9592,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Unclassified",chronology:"c. 200 BC–AD 700",evidence:"Identified & documented",tier:"minor",note:"Unusual NW-SE axis. Open-end-zone design. Temple of the Masks c. AD 500."},
+  {name:"Oxkintok",lat:20.5647,lng:-89.9369,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Type II/III",chronology:"c. 500 BC–AD 1500",evidence:"Identified & documented",tier:"minor",note:"Among earliest surviving Maya ballcourts. Stone ring inscribed AD 713–714."},
+  {name:"Yaxuna",lat:20.6667,lng:-88.7333,country:"Mexico",region:"Northern Lowlands",courts:1,taladoire:"Type II",chronology:"c. 800 BC–AD 1400",evidence:"Identified & documented",tier:"minor",note:"Structures 6F-15/16. Playing field c. 26 m. Contested by Coba and Chichen Itza."},
+  {name:"Piedras Negras",lat:17.16,lng:-91.26,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type II/III",chronology:"Early–Late Classic",evidence:"Excavated & published",tier:"major",note:"Structure K-6 'boxer' panels. Second court tied to deceased queen's pyramid."},
+  {name:"Yaxchilan",lat:16.8989,lng:-90.9667,country:"Mexico",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type I/II",chronology:"Late Classic (c. AD 600–900)",evidence:"Identified & documented",tier:"major",note:"Structure 14: five eroded floor markers, open end zones. Structure 67: SE Group."},
+  {name:"Tonina",lat:16.9022,lng:-92.0083,country:"Mexico",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type I/II",chronology:"Classic (Ballcourt 1 dedicated 699 CE)",evidence:"Identified & documented",tier:"major",note:"Ballcourt 1 dedicated by K'inich B'aaknal Chaak. Six Palenque vassal torso sculptures as floor markers."},
+  {name:"Palenque",lat:17.4839,lng:-92.0458,country:"Mexico",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Type I/II",chronology:"Classic (c. AD 432–900)",evidence:"Identified & documented",tier:"minor",note:"Central Plaza north of Palace. N-S axis, open end zones. Adjacent Temple X."},
+  {name:"Bonampak",lat:16.7003,lng:-91.065,country:"Mexico",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Late Classic (c. AD 580–800)",evidence:"Identified & documented",tier:"minor",note:"Attested in site plaza layout. Famous for polychrome murals in Structure 1."},
+  {name:"Caracol",lat:16.7589,lng:-89.1175,country:"Belize",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type II",chronology:"Classic (B-Group marker c. 633 CE)",evidence:"Identified & documented",tier:"major",note:"Ballcourt A: cosmological markers. Ballcourt B marker dated c. 633 CE."},
+  {name:"Lubaantun",lat:16.2833,lng:-88.9667,country:"Belize",region:"Central Lowlands / Usumacinta",courts:3,taladoire:"Type I/II",chronology:"Late Classic (c. AD 700–900)",evidence:"Identified & documented",tier:"major",note:"Three courts. Carved cylindrical markers now in British Museum. Crystal skull site."},
+  {name:"Cahal Pech",lat:17.2522,lng:-89.1222,country:"Belize",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type II",chronology:"c. 1200 BCE–AD 900",evidence:"Excavated & published",tier:"major",note:"Eastern court adjacent E-Group. Western court under excavation as of 2026."},
+  {name:"Cerros",lat:18.15,lng:-88.3,country:"Belize",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Unclassified",chronology:"Late Preclassic (c. 400 BCE–150 CE)",evidence:"Excavated & published",tier:"major",note:"Two masonry courts contemporaneous with earliest public structures. Preclassic ballgame evidence."},
+  {name:"Xunantunich",lat:17.0897,lng:-89.1389,country:"Belize",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type II",chronology:"Late Classic (c. AD 700–900)",evidence:"Excavated & published",tier:"minor",note:"Two documented courts. El Castillo cosmological frieze. Mopan River position."},
+  {name:"Ka'kabish",lat:17.8333,lng:-88.5,country:"Belize",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Early Classic; abandoned c. 600 CE",evidence:"Excavated & published",tier:"minor",note:"Structures D-6 and D-7. Two Early Classic phases. Never refurbished after abandonment."},
+  {name:"Lamanai",lat:17.7667,lng:-88.65,country:"Belize",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Type II",chronology:"c. 1500 BCE–17th century CE",evidence:"Excavated & published",tier:"minor",note:"Small but notable court. Jade, shell, pearl and mercury offerings atop central marker."},
+  {name:"Pacbitun",lat:16.9833,lng:-89.15,country:"Belize",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"c. 100 BCE–AD 300",evidence:"Excavated & published",tier:"minor",note:"Among earliest architectural evidence for ballgame in Southern Lowlands. Eccentric lithic cache."},
+  {name:"Nim Li Punit",lat:16.3667,lng:-89.0,country:"Belize",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Classic (5th–8th century CE)",evidence:"Identified & documented",tier:"minor",note:"Well-preserved court. 26 stelae (8 carved). Positioned to symbolise life/death conflict."},
+  {name:"Nixtun-Ch'ich'",lat:16.95,lng:-89.9,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:3,taladoire:"Unclassified",chronology:"Late Preclassic–Postclassic (c. 300 BCE–200 CE)",evidence:"Identified & documented",tier:"major",note:"Ballcourt 1 possibly second-largest in Maya area. Grid-planned Preclassic city on Lake Petén Itzá."},
+  {name:"Tikal",lat:17.222,lng:-89.6237,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:7,taladoire:"Type I/II (most); Type III (E Plaza)",chronology:"Middle Preclassic–Late Classic (c. 700 BCE–AD 900)",evidence:"Identified & documented",tier:"major",note:"Seven courts including unique triple-court complex (Plaza of the Seven Temples)."},
+  {name:"Nakum",lat:17.1833,lng:-89.7333,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:3,taladoire:"Unclassified",chronology:"Late Preclassic–Terminal Classic",evidence:"Identified & documented",tier:"major",note:"Three courts including unique double-court design. Ballcourt 2 has Preclassic origins."},
+  {name:"Yaxha",lat:17.0833,lng:-89.3833,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Unclassified",chronology:"Late Preclassic–Terminal Classic (c. 600 BCE–AD 900)",evidence:"Identified & documented",tier:"major",note:"One court among largest and best-preserved in Maya world. 500+ structures."},
+  {name:"Naranjo",lat:17.0667,lng:-89.6833,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Unclassified",chronology:"Classic (c. 500 BCE–AD 950)",evidence:"Identified & documented",tier:"major",note:"Ballcourts 1 and 2. 389+ structures. Major Petén polity."},
+  {name:"Nakbe",lat:17.6833,lng:-89.8167,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Middle Preclassic (c. 500–400 BCE)",evidence:"Identified & documented",tier:"minor",note:"Structures 76/77 among oldest confirmed courts in Maya area."},
+  {name:"Aguateca",lat:16.45,lng:-90.0167,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Late Classic (c. AD 700–810)",evidence:"Identified & documented",tier:"minor",note:"Abandoned hastily c. 810. Limestone bluff on Petexbatún Lagoon."},
+  {name:"Tamarindito",lat:16.4667,lng:-90.0833,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Early–Late Classic",evidence:"Identified & documented",tier:"minor",note:"140+ structures. Prisoner Staircase. Capital of Foliated Scroll polity."},
+  {name:"Cancuen",lat:16.1333,lng:-90.15,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Unclassified",chronology:"Late Classic (c. AD 757–799)",evidence:"Identified & documented",tier:"minor",note:"Two courts each with three floor markers. Terminal Classic river-trade capital."},
+  {name:"Ceibal (Seibal)",lat:16.5,lng:-90.0833,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Unclassified",chronology:"Late–Terminal Classic",evidence:"Identified & documented",tier:"minor",note:"Ballcourt A-19: E-W axis unusual for Maya; resembles Uxmal/Chichen Itza style."},
+  {name:"El Mirador",lat:17.75,lng:-89.9167,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"c. 300 BCE–AD 250",evidence:"Excavated & published",tier:"minor",note:"LiDAR surveys identified 30+ courts across Mirador-Calakmul basin."},
+  {name:"Calakmul",lat:18.1044,lng:-89.8083,country:"Mexico",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Type I/II",chronology:"Classic (likely Late Classic)",evidence:"Identified & documented",tier:"minor",note:"Structure XI, North Court. Open end zones. Unusually only one court for a site of this scale."},
+  {name:"Dos Pilas",lat:16.5167,lng:-90.1,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Late Classic (c. AD 629–761)",evidence:"Identified & documented",tier:"minor",note:"Structures L4-16/17. Axis aligns south to Ruler 2 tomb pyramid."},
+  {name:"La Corona (Site Q)",lat:17.7167,lng:-90.45,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Unclassified",chronology:"Classic (c. AD 600–750)",evidence:"Identified & documented",tier:"minor",note:"Known from looted ballplayer relief panels now in Chicago and Dallas."},
+  {name:"Copan",lat:14.8381,lng:-89.1439,country:"Honduras",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Type III (Ballcourt A-III)",chronology:"Early–Late Classic (first court c. 470 CE; final A-III dedicated 738 CE)",evidence:"Identified & documented",tier:"major",note:"Three sequential versions at same location. Ballcourt A-III dedicated 10 Jan 738 CE."},
+  {name:"Quirigua",lat:15.2667,lng:-89.0333,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:2,taladoire:"Type III",chronology:"Classic (Ballcourt 1 mid-7th c.; Ballcourt 2 c. 795 CE)",evidence:"Identified & documented",tier:"major",note:"Ballcourt 1 buried by Cauac Sky after defeating 18 Rabbit. Giant stelae site."},
+  {name:"Ixkun",lat:16.5167,lng:-89.5,country:"Guatemala",region:"Central Lowlands / Usumacinta",courts:1,taladoire:"Type I/II",chronology:"Late Classic (c. AD 779)",evidence:"Identified & documented",tier:"minor",note:"Open end zones, N-S axis. Stela 6 among tallest in Petén."},
+  {name:"Monte Albán",lat:17.0433,lng:-96.7678,country:"Mexico",region:"Mexican Highlands",courts:5,taladoire:"Type I (open-end I-shape)",chronology:"c. 100 BCE–AD 700",evidence:"Excavated & published",tier:"major",note:"Principal I-shaped court 41×24 m. No stone rings (Zapotec style). Solar disk carvings."},
+  {name:"Cantona",lat:19.5833,lng:-97.3833,country:"Mexico",region:"Mexican Highlands",courts:24,taladoire:"Type I/II (varied)",chronology:"c. 350 BCE–AD 1050",evidence:"Identified & documented",tier:"major",note:"Most ballcourts of any known Mesoamerican site (24–27). UNESCO Tentative List."},
+  {name:"Tula (Tula Grande)",lat:20.0578,lng:-99.3408,country:"Mexico",region:"Mexican Highlands",courts:2,taladoire:"Unclassified",chronology:"c. AD 950–1150",evidence:"Excavated & published",tier:"major",note:"Two courts flanking ceremonial plaza. Skull rack platform nearby. Toltec capital."},
+  {name:"Capulac Concepción",lat:18.8,lng:-98.8,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Type VI/VII",chronology:"c. 600–500 BCE",evidence:"Excavated & published",tier:"major",note:"Oldest confirmed formal I-shaped ballcourt in Central Mexican Highlands. Playing alley 88×11 m."},
+  {name:"Xochicalco",lat:18.8019,lng:-99.2967,country:"Mexico",region:"Mexican Highlands",courts:2,taladoire:"Type II/III",chronology:"Epiclassic (c. AD 650–1000)",evidence:"Excavated & published",tier:"minor",note:"Playing alley 51×9 m. Rings above apron. Epiclassic multiethnic center. UNESCO World Heritage."},
+  {name:"Yagul",lat:16.9667,lng:-96.4667,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Type VI/VII",chronology:"c. AD 500–900",evidence:"Excavated & published",tier:"major",note:"Largest ballcourt in Valley of Oaxaca. Playing field 30×6 m. I-shaped, E-W orientation."},
+  {name:"Etlatongo",lat:17.4,lng:-97.3,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Unclassified",chronology:"c. 1374–1102 BCE",evidence:"Excavated & published",tier:"major",note:"Earliest highland Mesoamerican ballcourts. Two superimposed earthen courts. Excavated GWU/INAH 2015–2017."},
+  {name:"El Palmillo",lat:16.75,lng:-96.35,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Unclassified",chronology:"c. AD 600–750",evidence:"Excavated & published",tier:"minor",note:"Small court between two palaces. Field Museum excavations (Feinman & Nicholas)."},
+  {name:"Lambityeco",lat:16.9167,lng:-96.5,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Unclassified",chronology:"c. AD 500–850",evidence:"Excavated & published",tier:"minor",note:"Closely mirrors Monte Albán court design. Modified entrance within 200 years."},
+  {name:"Teopantecuanitlan",lat:18.0833,lng:-99.7,country:"Mexico",region:"Mexican Highlands",courts:2,taladoire:"Unclassified",chronology:"c. 1000–800 BCE",evidence:"Excavated & published",tier:"major",note:"Miniature symbolic court (~7 m) within sunken patio + larger court 900 m NE. Olmec-affiliated."},
+  {name:"La Laguna",lat:19.1,lng:-98.75,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Type VI/VII",chronology:"c. 600–500 BCE",evidence:"Excavated & published",tier:"minor",note:"I-shaped with closed end zones. Among first securely dated full-sized ballcourts in Central Mexico."},
+  {name:"Teotenango",lat:19.1833,lng:-99.6167,country:"Mexico",region:"Mexican Highlands",courts:1,taladoire:"Type VII",chronology:"c. AD 900–1162",evidence:"Excavated & published",tier:"minor",note:"I-shaped sunken ballcourt. Stone rings on vertical lower walls. Adjacent temazcal (sweat bath)."},
+  {name:"El Tajin",lat:20.4478,lng:-97.3786,country:"Mexico",region:"Gulf Coast / Veracruz",courts:17,taladoire:"Type I/II (most); Type III",chronology:"c. AD 300–1200",evidence:"Identified & documented",tier:"major",note:"17–21 courts. UNESCO World Heritage. Pyramid of the Niches. Ballgame capital of Veracruz."},
+  {name:"Los Ídolos",lat:20.15,lng:-97.2833,country:"Mexico",region:"Gulf Coast / Veracruz",courts:6,taladoire:"Unclassified",chronology:"Classic period",evidence:"Identified & documented",tier:"major",note:"At least 6 courts including one temazcal-associated example. Nautla basin."},
+  {name:"Carrizalito",lat:20.4167,lng:-97.0833,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"c. 100 BCE–AD 100",evidence:"Excavated & published",tier:"major",note:"Earliest excavated ballcourt in central Veracruz. Protoclassic period."},
+  {name:"Toxpan",lat:20.7,lng:-97.45,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"Classic period",evidence:"Excavated & published",tier:"major",note:"Standard Plan stone construction, excavated and confirmed. Nautla basin."},
+  {name:"La Joya",lat:17.9167,lng:-94.75,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"c. AD 300–500",evidence:"Excavated & published",tier:"major",note:"Standard Plan layout south of main pyramid. Yoke found in Early Classic stratum."},
+  {name:"Yohualichan",lat:20.0833,lng:-97.5833,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"c. AD 200–800",evidence:"Identified & documented",tier:"major",note:"~90–100 m long, among longest in Mesoamerica. El Tajín-style niched architecture."},
+  {name:"El Cuajilote",lat:20.2,lng:-97.25,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"c. AD 200–800",evidence:"Identified & documented",tier:"minor",note:"1 court on north side of main plaza. El Tajín-style influence. Filobobos zone."},
+  {name:"Quiahuiztlan",lat:19.7,lng:-96.4167,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"c. AD 800–1520",evidence:"Identified & documented",tier:"minor",note:"Totonac site. Known primarily for mausoleum-style tombs."},
+  {name:"Xiutetelco",lat:19.8667,lng:-97.5167,country:"Mexico",region:"Gulf Coast / Veracruz",courts:1,taladoire:"Unclassified",chronology:"Classic period",evidence:"Identified & documented",tier:"minor",note:"Elongated-plaza ballcourt layout variant. Nautla basin."},
+  {name:"Los Horcones",lat:15.5333,lng:-92.5833,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:5,taladoire:"Type I/II",chronology:"c. AD 200–600",evidence:"Identified & documented",tier:"major",note:"Five courts in Middle Classic. Strong Teotihuacan ties."},
+  {name:"Paso de la Amada",lat:14.9167,lng:-92.3333,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Type I (earthen mounds, earliest)",chronology:"c. 1650–1400 BCE",evidence:"Excavated & published",tier:"major",note:"OLDEST attested Mesoamerican ballcourt. Two earthen mounds ~78 m long. Discovered 1995. Mokaya culture."},
+  {name:"Finca Acapulco",lat:15.25,lng:-92.3833,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Unclassified",chronology:"Middle Preclassic (c. 900–550 BCE)",evidence:"Identified & documented",tier:"major",note:"Middle Preclassic. Grijalva right bank. Among earliest known before Paso de la Amada."},
+  {name:"El Vergel",lat:15.3833,lng:-92.4167,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Unclassified",chronology:"Middle Preclassic (c. 900–550 BCE)",evidence:"Identified & documented",tier:"minor",note:"Middle Preclassic. Grijalva right bank, Chiapas."},
+  {name:"Fracción Mujular",lat:15.4167,lng:-92.45,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Unclassified",chronology:"c. AD 200–1400",evidence:"Identified & documented",tier:"minor",note:"Monumental court on Cerro Bernal. Outlasted Los Horcones."},
+  {name:"San Mateo",lat:15.2,lng:-92.35,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Unclassified",chronology:"Middle Preclassic (c. 900–550 BCE)",evidence:"Identified & documented",tier:"minor",note:"Middle Preclassic. Grijalva right bank. Co-cited with El Vergel and Finca Acapulco."},
+  {name:"Tenam Puente",lat:16.15,lng:-92.2167,country:"Mexico",region:"Pacific Coast / Guatemalan Highlands",courts:3,taladoire:"Type VII",chronology:"c. AD 600–1150",evidence:"Identified & documented",tier:"major",note:"Three I-shaped sunken courts. Terminal Classic fortified hilltop. Comitán Valley."},
+  {name:"Cara Sucia",lat:13.9833,lng:-89.9333,country:"El Salvador",region:"Pacific Coast / Guatemalan Highlands",courts:2,taladoire:"Unclassified",chronology:"c. AD 600–920",evidence:"Excavated & published",tier:"major",note:"Two enclosed courts built after Ilopango eruption (c. 540 CE). Cotzumalhuapa phase."},
+  {name:"El Baúl (Cotzumalhuapa)",lat:14.2833,lng:-91.1833,country:"Guatemala",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Unclassified",chronology:"c. AD 650–950",evidence:"Excavated & published",tier:"minor",note:"Court 31×12.5 m with stone ring. Linked by Lehmann Causeway. Cotzumalhuapa Nuclear Zone."},
+  {name:"Tazumal / Chalchuapa",lat:13.95,lng:-89.6833,country:"El Salvador",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Type VI/VII",chronology:"Classic–Postclassic",evidence:"Identified & documented",tier:"major",note:"I-shaped court identified by test-pit mortar floor. Structurally unexcavated."},
+  {name:"Kaminaljuyu",lat:14.6333,lng:-90.55,country:"Guatemala",region:"Pacific Coast / Guatemalan Highlands",courts:12,taladoire:"Type I/II",chronology:"c. AD 200–900",evidence:"Excavated & published",tier:"major",note:"12 confirmed courts. Esperanza phase (Teotihuacan-affiliated). Now in Guatemala City."},
+  {name:"Iximche",lat:14.7167,lng:-91.0667,country:"Guatemala",region:"Pacific Coast / Guatemalan Highlands",courts:2,taladoire:"Type VII (sunken, closed)",chronology:"c. AD 1470–1524",evidence:"Excavated & published",tier:"major",note:"Kaqchikel capital. Ballcourt 1 has two plaster floor levels. Tenoned ballplayer head from Structure 3."},
+  {name:"Mixco Viejo (Jilotepeque Viejo)",lat:14.8667,lng:-90.6667,country:"Guatemala",region:"Pacific Coast / Guatemalan Highlands",courts:2,taladoire:"Type VII (sunken)",chronology:"c. AD 1450–1524",evidence:"Identified & documented",tier:"minor",note:"Court A11: 37×9 m. Court B1: 44×9 m. Both I-shaped sunken. Chajoma capital."},
+  {name:"Qʼumarkaj (Utatlán)",lat:15.0333,lng:-91.1833,country:"Guatemala",region:"Pacific Coast / Guatemalan Highlands",courts:4,taladoire:"Unclassified",chronology:"c. AD 1400–1524",evidence:"Identified & documented",tier:"major",note:"Main court 40 m near Temple of Tohil. K'iche' capital."},
+  {name:"Zaculeu (Saqulew)",lat:15.3167,lng:-91.5,country:"Guatemala",region:"Pacific Coast / Guatemalan Highlands",courts:1,taladoire:"Type VII",chronology:"c. AD 250–1525",evidence:"Identified & documented",tier:"minor",note:"I-shaped sunken, 48 m long. NW-SE orientation. Mam Postclassic capital."},
+];
+
+
 
 // Total confirmed courts across all sites
 const TOTAL_COURTS = BALLCOURTS.reduce((s,b)=>s+b.courts,0);
