@@ -4347,5 +4347,660 @@ function highlightPair(rises, sets) {
 })();
 </script>
 
+<!-- ═══════════════════════════════════════════════════════════════
+     EGYPTIAN DECAN SECTION
+     Data: AEA McMaster (aea.physics.mcmaster.ca), Neugebauer &
+     Parker 1960/1969, Symons 2002/2007/2013.
+     36 canonical decans (T-family list), 12 family groups,
+     calendar wheel, deep-links to AEA per decan.
+     Stellar identifications marked with certainty level per
+     current Egyptological consensus.
+═══════════════════════════════════════════════════════════════ -->
+
+<style>
+.egy-section {
+  background: var(--night);
+  border-top: 1px solid rgba(200,216,240,.06);
+  padding: 3rem 2rem 4rem;
+}
+.egy-inner { max-width: 1100px; margin: 0 auto; }
+
+.egy-eyebrow {
+  font-family:var(--sans); font-size:.6rem; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:#c09050; margin-bottom:.7rem;
+  display:flex; align-items:center; gap:.5rem;
+}
+.egy-eyebrow::before {
+  content:''; display:inline-block; width:20px; height:1px;
+  background:#c09050;
+}
+.egy-title {
+  font-family:var(--serif); font-size:clamp(1.8rem,4vw,3rem);
+  font-weight:900; color:var(--star); line-height:1.1; margin-bottom:.6rem;
+}
+.egy-title em { color:#c09050; font-style:italic; }
+.egy-intro {
+  font-size:.88rem; color:rgba(200,216,240,.55); line-height:1.75;
+  max-width:700px; margin-bottom:.4rem;
+}
+.egy-caveat {
+  font-family:var(--mono); font-size:.62rem;
+  color:rgba(200,216,240,.28); line-height:1.6;
+  border-left:2px solid rgba(192,144,80,.25);
+  padding-left:.8rem; margin-bottom:2rem; max-width:640px;
+}
+
+/* ── Calendar wheel ── */
+.egy-wheel-wrap {
+  display:flex; gap:2rem; align-items:flex-start;
+  flex-wrap:wrap; margin-bottom:2.5rem;
+}
+.egy-wheel-svg-wrap {
+  flex-shrink:0; width:260px;
+}
+.egy-wheel-legend {
+  flex:1; min-width:220px;
+}
+.egy-wheel-legend-title {
+  font-family:var(--sans); font-size:.6rem; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase;
+  color:rgba(200,216,240,.35); margin-bottom:.8rem;
+}
+.egy-wheel-legend-item {
+  display:flex; align-items:center; gap:.6rem;
+  font-family:var(--sans); font-size:.72rem;
+  color:rgba(200,216,240,.6); margin-bottom:.4rem;
+}
+.egy-wheel-swatch {
+  width:10px; height:10px; border-radius:2px; flex-shrink:0;
+}
+
+/* ── Family tabs ── */
+.egy-family-tabs {
+  display:flex; gap:.4rem; flex-wrap:wrap; margin-bottom:1.4rem;
+}
+.egy-fam-btn {
+  font-family:var(--sans); font-size:.6rem; font-weight:700;
+  letter-spacing:.09em; text-transform:uppercase;
+  border:1px solid rgba(200,216,240,.1); background:none;
+  color:rgba(200,216,240,.4); padding:.3rem .75rem;
+  cursor:pointer; transition:all .18s;
+}
+.egy-fam-btn:hover { color:var(--star); border-color:rgba(200,216,240,.25); }
+.egy-fam-btn.active { color:#c09050; border-color:#c09050; background:rgba(192,144,80,.07); }
+
+/* ── Search row ── */
+.egy-search-row {
+  display:flex; gap:.7rem; align-items:center;
+  margin-bottom:1.2rem; flex-wrap:wrap;
+}
+.egy-search {
+  background:rgba(200,216,240,.04); border:1px solid rgba(200,216,240,.1);
+  color:var(--star); font-family:var(--sans); font-size:.78rem;
+  padding:.42rem .8rem; outline:none; transition:border-color .2s; width:220px;
+}
+.egy-search:focus { border-color:rgba(192,144,80,.5); }
+.egy-search::placeholder { color:rgba(200,216,240,.2); }
+.egy-cert-sel {
+  background:rgba(200,216,240,.04); border:1px solid rgba(200,216,240,.1);
+  color:var(--star); font-family:var(--sans); font-size:.75rem;
+  padding:.42rem .7rem; outline:none; -webkit-appearance:none; width:190px;
+}
+.egy-count {
+  font-family:var(--sans); font-size:.6rem;
+  color:rgba(200,216,240,.3); letter-spacing:.06em;
+}
+
+/* ── Decan grid ── */
+.egy-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));
+  gap:.55rem; margin-bottom:2rem;
+}
+.egy-card {
+  background:rgba(200,216,240,.022);
+  border:1px solid rgba(200,216,240,.065);
+  padding:.75rem 1rem; cursor:pointer;
+  transition:all .15s; position:relative; overflow:hidden;
+}
+.egy-card::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+}
+.egy-card:hover { background:rgba(200,216,240,.04); border-color:rgba(200,216,240,.14); }
+.egy-card.selected { border-color:rgba(192,144,80,.4); background:rgba(192,144,80,.05); }
+.egy-card-top {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  margin-bottom:.3rem;
+}
+.egy-card-num {
+  font-family:var(--mono); font-size:.58rem;
+  color:rgba(200,216,240,.25); letter-spacing:.05em;
+}
+.egy-card-cert {
+  font-family:var(--mono); font-size:.55rem; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase; padding:.1rem .35rem;
+  border-radius:2px;
+}
+.cert-confirmed { background:rgba(80,200,140,.12); color:#50c88c; border:1px solid rgba(80,200,140,.25); }
+.cert-probable  { background:rgba(192,144,80,.12);  color:#c09050; border:1px solid rgba(192,144,80,.25); }
+.cert-uncertain { background:rgba(200,216,240,.06);  color:rgba(200,216,240,.35); border:1px solid rgba(200,216,240,.12); }
+
+.egy-card-name {
+  font-family:var(--mono); font-size:.82rem; font-weight:700;
+  color:var(--star); margin-bottom:.15rem; letter-spacing:.03em;
+}
+.egy-card-trans {
+  font-family:var(--sans); font-size:.72rem;
+  color:rgba(200,216,240,.45); font-style:italic; margin-bottom:.25rem;
+}
+.egy-card-modern {
+  font-family:var(--sans); font-size:.72rem; color:rgba(200,216,240,.6);
+}
+.egy-card-modern strong { color:var(--star); font-weight:600; }
+.egy-card-meta {
+  display:flex; gap:.8rem; margin-top:.4rem; flex-wrap:wrap;
+}
+.egy-card-pill {
+  font-family:var(--mono); font-size:.58rem;
+  color:rgba(200,216,240,.3); letter-spacing:.04em;
+  background:rgba(200,216,240,.04); padding:.1rem .4rem;
+  border:1px solid rgba(200,216,240,.08);
+}
+
+/* ── Detail panel ── */
+.egy-detail {
+  background:rgba(200,216,240,.025);
+  border:1px solid rgba(200,216,240,.1);
+  padding:1.5rem; margin-bottom:2rem; display:none;
+}
+.egy-detail.open { display:block; }
+.egy-det-header {
+  display:flex; justify-content:space-between;
+  align-items:flex-start; margin-bottom:1rem; gap:1rem;
+  flex-wrap:wrap;
+}
+.egy-det-name {
+  font-family:var(--mono); font-size:1.5rem; font-weight:900;
+  color:var(--star); letter-spacing:.04em;
+}
+.egy-det-trans {
+  font-family:var(--serif); font-size:.95rem;
+  color:#c09050; font-style:italic; margin-top:.2rem;
+}
+.egy-det-links { display:flex; gap:.6rem; flex-wrap:wrap; }
+.egy-det-btn {
+  display:inline-flex; align-items:center; gap:.4rem;
+  font-family:var(--sans); font-size:.65rem; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase;
+  border:1px solid rgba(200,216,240,.18);
+  color:rgba(200,216,240,.6); padding:.35rem .9rem;
+  text-decoration:none; transition:all .18s;
+}
+.egy-det-btn:hover { color:var(--star); border-color:rgba(200,216,240,.4); }
+.egy-det-btn.primary { color:#c09050; border-color:rgba(192,144,80,.4); }
+.egy-det-btn.primary:hover { background:rgba(192,144,80,.08); }
+.egy-det-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:1rem; margin-bottom:1rem;
+}
+@media(max-width:600px){ .egy-det-grid { grid-template-columns:1fr; } }
+.egy-det-field { margin-bottom:.6rem; }
+.egy-det-label {
+  font-family:var(--sans); font-size:.58rem; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase;
+  color:rgba(200,216,240,.3); margin-bottom:.2rem;
+}
+.egy-det-val {
+  font-family:var(--sans); font-size:.8rem; color:rgba(200,216,240,.75);
+  line-height:1.55;
+}
+.egy-det-val a { color:#c09050; text-decoration:none; }
+.egy-det-val a:hover { text-decoration:underline; }
+.egy-det-desc {
+  font-family:var(--serif); font-size:.88rem;
+  color:rgba(200,216,240,.55); line-height:1.8;
+  border-top:1px solid rgba(200,216,240,.07); padding-top:1rem;
+}
+
+/* ── Calendar strip ── */
+.egy-cal-strip {
+  margin-top:1.5rem;
+  display:grid; grid-template-columns:repeat(36,1fr);
+  height:28px; border:1px solid rgba(200,216,240,.08); overflow:hidden;
+}
+.egy-cal-cell {
+  height:100%; cursor:pointer; transition:opacity .15s;
+  border-right:1px solid rgba(0,0,0,.2);
+  position:relative;
+}
+.egy-cal-cell:last-child { border-right:none; }
+.egy-cal-cell:hover { opacity:.8; }
+.egy-cal-cell.active-cell { outline:2px solid rgba(192,144,80,.7); outline-offset:-1px; }
+.egy-cal-label {
+  font-family:var(--sans); font-size:.58rem;
+  color:rgba(200,216,240,.3); margin-top:.35rem;
+  letter-spacing:.04em; text-align:center;
+}
+
+/* family colours on card left-bar and cal cells */
+.fam-knmt    { background:#7b6cb0; }
+.fam-xaw     { background:#5b8fc0; }
+.fam-wsaty   { background:#60a878; }
+.fam-ipds    { background:#c88040; }
+.fam-xntt    { background:#b05060; }
+.fam-qdty    { background:#70a0b0; }
+.fam-wia     { background:#a06890; }
+.fam-smd     { background:#c0b040; }
+.fam-axwy    { background:#8090c0; }
+.fam-xntw    { background:#50b890; }
+.fam-sah     { background:#d07840; }
+.fam-spdt    { background:#c04040; }
+
+.egy-source {
+  font-family:var(--sans); font-size:.62rem;
+  color:rgba(200,216,240,.22); line-height:1.7;
+  border-top:1px solid rgba(200,216,240,.06); padding-top:1.2rem;
+  max-width:820px;
+}
+</style>
+
+<section class="egy-section">
+<div class="egy-inner">
+
+  <div class="egy-eyebrow">Egyptian Archaeoastronomy</div>
+  <h2 class="egy-title">The <em>Decan</em> Catalogue</h2>
+  <p class="egy-intro">
+    The 36 decans are groups of stars used by ancient Egyptians to divide the sky into 10-degree segments, each rising heliacally every ten days. Together they mark the 360-day Egyptian civil year (plus five epagomenal days). Used as a sidereal star clock from at least the 9th Dynasty (c.2100 BCE), each decan governed one hour of the night sky and carried a corresponding deity.
+  </p>
+  <p class="egy-caveat">
+    Scholarly caveat (Sarah Symons, AEA McMaster): "Although we know the names of the decans, and in some cases can translate the names, the locations of the decanal stars and their relationships to modern star names are not known." Stellar identifications below are marked CONFIRMED (broad consensus), PROBABLE (strong argument, contested), or UNCERTAIN (proposed only). Source: AEA Database · Neugebauer &amp; Parker, <em>Egyptian Astronomical Texts</em> I–III (1960–1969).
+  </p>
+
+  <!-- Calendar wheel -->
+  <div class="egy-wheel-wrap">
+    <div class="egy-wheel-svg-wrap">
+      <svg id="egyWheel" viewBox="0 0 260 260" width="260" height="260" style="display:block;">
+        <circle cx="130" cy="130" r="120" fill="none" stroke="rgba(200,216,240,.06)" stroke-width="1"/>
+        <circle cx="130" cy="130" r="80"  fill="none" stroke="rgba(200,216,240,.04)" stroke-width="1"/>
+        <circle cx="130" cy="130" r="40"  fill="rgba(200,216,240,.02)"/>
+        <text x="130" y="126" text-anchor="middle" font-family="var(--serif)" font-size="11" fill="rgba(200,216,240,.5)">Egyptian</text>
+        <text x="130" y="140" text-anchor="middle" font-family="var(--serif)" font-size="11" fill="rgba(200,216,240,.5)">Year</text>
+        <text x="130" y="155" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="rgba(200,216,240,.3)">360+5 days</text>
+      </svg>
+    </div>
+    <div class="egy-wheel-legend">
+      <div class="egy-wheel-legend-title">Decan Families (T-list order)</div>
+      <div id="egyFamilyLegend"></div>
+    </div>
+  </div>
+
+  <!-- Calendar strip -->
+  <div style="margin-bottom:.4rem;">
+    <span style="font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,216,240,.3);">Decan Calendar — click any segment</span>
+  </div>
+  <div class="egy-cal-strip" id="egyCalStrip"></div>
+  <div class="egy-cal-label" id="egyCalLabel">36 decans × 10 days = 360-day civil year · hover to identify</div>
+
+  <!-- Family tabs -->
+  <div class="egy-family-tabs" id="egyFamilyTabs" style="margin-top:1.5rem;"></div>
+
+  <!-- Search row -->
+  <div class="egy-search-row">
+    <input class="egy-search" id="egySearch" type="search" placeholder="Search decan, translation, star…" oninput="renderEgyGrid()">
+    <select class="egy-cert-sel" id="egyCertFilter" onchange="renderEgyGrid()">
+      <option value="all">All identifications</option>
+      <option value="CONFIRMED">Confirmed only</option>
+      <option value="PROBABLE">Probable &amp; above</option>
+      <option value="UNCERTAIN">Uncertain</option>
+    </select>
+    <span class="egy-count" id="egyCount"></span>
+  </div>
+
+  <!-- Detail panel -->
+  <div class="egy-detail" id="egyDetail"></div>
+
+  <!-- Grid -->
+  <div class="egy-grid" id="egyGrid"></div>
+
+  <p class="egy-source">
+    Sources: Ancient Egyptian Astronomy Database (AEA), Department of Physics &amp; Astronomy, McMaster University (Sarah Symons et al.), <a href="https://aea.physics.mcmaster.ca" target="_blank" style="color:#c09050;">aea.physics.mcmaster.ca</a>. · Neugebauer, O. &amp; Parker, R.A. (1960–1969). <em>Egyptian Astronomical Texts</em> I–III. Brown University Press. · Leitz, C. (1995). <em>Altägyptische Sternuhren</em>. Leuven. · Symons, S. (2002, 2007, 2013). Classification and analysis of the ancient Egyptian astronomical corpus. · Decan order follows the T-family canonical list. Epagomenal days (days 361–365) governed by additional deities not listed here.
+  </p>
+
+</div>
+</section>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// EGYPTIAN DECAN DATA
+// 36 canonical decans, T-family list order (Neugebauer & Parker 1960)
+// Fields: num, name (transliteration), translation, family, famKey,
+//         modern (modern stellar ID), cert (CONFIRMED/PROBABLE/UNCERTAIN),
+//         deity, calPos (1-36 = 10-day period), notes, aeaSlug
+// ═══════════════════════════════════════════════════════════════
+const FAMILIES = [
+  { key:'knmt',  label:'knmt',      color:'#7b6cb0', url:'knm' },
+  { key:'xaw',   label:'ḫꜣw / ḏꜣt, ṯmꜣt', color:'#5b8fc0', url:'xaw-dayt-tmat' },
+  { key:'wsaty', label:'wšꜣty bkꜣty', color:'#60a878', url:'wsaty-bkaty' },
+  { key:'ipds',  label:'ı͗pds, sbꜣw mḥw, sšpt, sbšsn', color:'#c88040', url:'ipds-sbaw-mhw-sbssn-sspt' },
+  { key:'xntt',  label:'ḫntt',      color:'#b05060', url:'xntt' },
+  { key:'qdty',  label:'ḳdty, spty, ḫnwy', color:'#70a0b0', url:'qdty-spty-xnwy' },
+  { key:'wia',   label:'wı͗ꜣ, sšmw, sꜣ sšm, knmw', color:'#a06890', url:'wia-ssmw-knmw' },
+  { key:'smd',   label:'smd, srt',   color:'#c0b040', url:'smd-srt' },
+  { key:'axwy',  label:'ꜣḫwy, bꜣwy', color:'#8090c0', url:'axwy-bawy' },
+  { key:'xntw',  label:'ḫntw, ḳd, ḫꜣw, ꜥrt', color:'#50b890', url:'xntw-qd-xaw-art' },
+  { key:'sah',   label:'sꜣḥ',       color:'#d07840', url:'sah' },
+  { key:'spdt',  label:'spdt, štwy, sı͗ꜣtw, sꜣbw', color:'#c04040', url:'spdt-sabw-stwy' },
+];
+
+const AEA_BASE = 'https://aea.physics.mcmaster.ca/index.php/en/database/decans/';
+
+const DECANS = [
+  // ── knmt family ──
+  { num:1,  name:'tpy-ꜥ knmt',    trans:'The one before knmt',      family:'knmt',  famKey:'knmt',  modern:'Unknown',          cert:'UNCERTAIN', deity:'Unknown', calPos:1,  notes:'Opening decan of the T-list. Identity entirely unknown.', aeaUrl:'knm/tpy-a-knmt' },
+  { num:2,  name:'knmt',           trans:'The (full) knmt',           family:'knmt',  famKey:'knmt',  modern:'Unknown',          cert:'UNCERTAIN', deity:'Unknown', calPos:2,  notes:'Central member of the knmt family. Identity unknown.', aeaUrl:'knm/knmt' },
+  { num:3,  name:'sꜣwy knmt',      trans:'Follower of knmt',          family:'knmt',  famKey:'knmt',  modern:'Unknown',          cert:'UNCERTAIN', deity:'Unknown', calPos:3,  notes:'', aeaUrl:'knm/sawy-knmt' },
+  { num:4,  name:'ẖry ḫpd n knmt', trans:'Below the tail of knmt',   family:'knmt',  famKey:'knmt',  modern:'Unknown',          cert:'UNCERTAIN', deity:'Unknown', calPos:4,  notes:'Last member of the knmt family.', aeaUrl:'knm/xry-xpd-n-knmt' },
+  // ── ḫꜣw / ḏꜣt family ──
+  { num:5,  name:'ḥꜣt ḫꜣw',        trans:'Front of ḫꜣw',             family:'ḫꜣw / ḏꜣt', famKey:'xaw', modern:'Unknown',     cert:'UNCERTAIN', deity:'Unknown', calPos:5,  notes:'', aeaUrl:'xaw-dayt-tmat/hat-xaw' },
+  { num:6,  name:'ḏꜣt',             trans:'ḏꜣt',                       family:'ḫꜣw / ḏꜣt', famKey:'xaw', modern:'Unknown',     cert:'UNCERTAIN', deity:'Unknown', calPos:6,  notes:'Variant form of the ḫꜣw decans.', aeaUrl:'xaw-dayt-tmat/dat' },
+  { num:7,  name:'ṯmꜣt ḥrt',        trans:'Upper ṯmꜣt',               family:'ḫꜣw / ḏꜣt', famKey:'xaw', modern:'Possibly Ursa Major region', cert:'UNCERTAIN', deity:'Unknown', calPos:7,  notes:'Some scholars associate this group with stars near the Big Dipper.', aeaUrl:'xaw-dayt-tmat/tmat-hrt' },
+  { num:8,  name:'ṯmꜣt ẖrt',        trans:'Lower ṯmꜣt',               family:'ḫꜣw / ḏꜣt', famKey:'xaw', modern:'Possibly Ursa Major region', cert:'UNCERTAIN', deity:'Unknown', calPos:8,  notes:'', aeaUrl:'xaw-dayt-tmat/tmat-xrt' },
+  // ── wšꜣty bkꜣty family ──
+  { num:9,  name:'wšꜣtı͗',          trans:'wšꜣtı͗ (one of the two)',   family:'wšꜣty bkꜣty', famKey:'wsaty', modern:'Unknown', cert:'UNCERTAIN', deity:'Unknown', calPos:9,  notes:'', aeaUrl:'wsaty-bkaty/wsati' },
+  { num:10, name:'bkꜣtı͗',          trans:'bkꜣtı͗ (one of the two)',   family:'wšꜣty bkꜣty', famKey:'wsaty', modern:'Unknown', cert:'UNCERTAIN', deity:'Unknown', calPos:10, notes:'Paired with wšꜣtı͗.', aeaUrl:'wsaty-bkaty/bkati' },
+  // ── ı͗pds family ──
+  { num:11, name:'ı͗pds',            trans:'ı͗pds',                      family:'ı͗pds group', famKey:'ipds', modern:'Unknown',   cert:'UNCERTAIN', deity:'Unknown', calPos:11, notes:'', aeaUrl:'ipds-sbaw-mhw-sbssn-sspt/ipds' },
+  { num:12, name:'sbꜣw mḥw',        trans:'Northern stars',             family:'ı͗pds group', famKey:'ipds', modern:'Possibly stars near Auriga', cert:'UNCERTAIN', deity:'Unknown', calPos:12, notes:'The name "northern stars" is one of few Egyptian decan names with a directional component.', aeaUrl:'ipds-sbaw-mhw-sbssn-sspt/sbaw-mhw' },
+  // ── ḫntt family ──
+  { num:13, name:'tpy-ꜣ ḫntt',      trans:'The one before ḫntt',      family:'ḫntt',  famKey:'xntt',  modern:'Unknown',          cert:'UNCERTAIN', deity:'Unknown', calPos:13, notes:'', aeaUrl:'xntt/tpy-a-xntt' },
+  { num:14, name:'ḫntt ḥrt',         trans:'Upper ḫntt',               family:'ḫntt',  famKey:'xntt',  modern:'Unknown',          cert:'UNCERTAIN', deity:'Unknown', calPos:14, notes:'', aeaUrl:'xntt/xntt-hrt' },
+  { num:15, name:'ḫntt ẖrt',         trans:'Lower ḫntt',               family:'ḫntt',  famKey:'xntt',  modern:'Unknown',          cert:'UNCERTAIN', deity:'Unknown', calPos:15, notes:'', aeaUrl:'xntt/xntt-xrt' },
+  // ── ḳdty / spty family ──
+  { num:16, name:'ḳdty',             trans:'The two tortoises',        family:'ḳdty group', famKey:'qdty', modern:'Possibly Gemini stars', cert:'UNCERTAIN', deity:'Unknown', calPos:16, notes:'', aeaUrl:'qdty-spty-xnwy/qdty' },
+  { num:17, name:'spty',             trans:'spty',                      family:'ḳdty group', famKey:'qdty', modern:'Unknown',        cert:'UNCERTAIN', deity:'Unknown', calPos:17, notes:'', aeaUrl:'qdty-spty-xnwy/spty' },
+  { num:18, name:'ḫnwy',             trans:'ḫnwy',                     family:'ḳdty group', famKey:'qdty', modern:'Unknown',        cert:'UNCERTAIN', deity:'Unknown', calPos:18, notes:'', aeaUrl:'qdty-spty-xnwy/xnwy-no-quote' },
+  // ── wı͗ꜣ / sšmw family ──
+  { num:19, name:'ḥry-ı͗b wı͗ꜣ',     trans:'In the centre of the boat', family:'wı͗ꜣ group', famKey:'wia', modern:'α Librae (probable)', cert:'PROBABLE', deity:'Unknown', calPos:19, notes:'Priskin (2019) identifies this as α Librae, the central star of the Boat constellation.', aeaUrl:'wia-ssmw-knmw/hry-ib-wia' },
+  { num:20, name:'sšmw',             trans:'sšmw (the guide)',         family:'wı͗ꜣ group', famKey:'wia', modern:'Unknown',         cert:'UNCERTAIN', deity:'Unknown', calPos:20, notes:'', aeaUrl:'wia-ssmw-knmw/ssmw' },
+  { num:21, name:'knmw',             trans:'knmw',                      family:'wı͗ꜣ group', famKey:'wia', modern:'Unknown',         cert:'UNCERTAIN', deity:'Unknown', calPos:21, notes:'', aeaUrl:'wia-ssmw-knmw/knmw' },
+  // ── smd / srt family ──
+  { num:22, name:'smd',              trans:'smd',                       family:'smd / srt', famKey:'smd', modern:'Possibly Centaurus stars', cert:'UNCERTAIN', deity:'Unknown', calPos:22, notes:'', aeaUrl:'smd-srt/smd' },
+  { num:23, name:'srt',              trans:'srt (the piglet?)',         family:'smd / srt', famKey:'smd', modern:'Unknown',          cert:'UNCERTAIN', deity:'Unknown', calPos:23, notes:'', aeaUrl:'smd-srt/srt' },
+  // ── ꜣḫwy / bꜣwy family ──
+  { num:24, name:'tpy-ꜥ ꜣḫwy',      trans:'The one before ꜣḫwy',     family:'ꜣḫwy / bꜣwy', famKey:'axwy', modern:'Unknown',     cert:'UNCERTAIN', deity:'Unknown', calPos:24, notes:'', aeaUrl:'axwy-bawy/tpy-a-axwy' },
+  { num:25, name:'ꜣḫwy',             trans:'The two luminous ones',    family:'ꜣḫwy / bꜣwy', famKey:'axwy', modern:'α and β Centauri (probable)', cert:'PROBABLE', deity:'Unknown', calPos:25, notes:'The name "the two luminous ones" and position in the list align well with α and β Centauri (Neugebauer & Parker 1960; Leitz 1995).', aeaUrl:'axwy-bawy/axwy' },
+  { num:26, name:'bꜣwy',             trans:'The two souls / ba-birds', family:'ꜣḫwy / bꜣwy', famKey:'axwy', modern:'Unknown',     cert:'UNCERTAIN', deity:'Unknown', calPos:26, notes:'', aeaUrl:'axwy-bawy/bawy' },
+  // ── ḫntw / ḳd / ḫꜣw / ꜥrt family ──
+  { num:27, name:'ḫntw ḥrw',         trans:'Upper ḫntw',               family:'ḫntw group', famKey:'xntw', modern:'Unknown',       cert:'UNCERTAIN', deity:'Unknown', calPos:27, notes:'', aeaUrl:'xntw-qd-xaw-art/xntw-hrw' },
+  { num:28, name:'ḫntw ẖrw',         trans:'Lower ḫntw',               family:'ḫntw group', famKey:'xntw', modern:'Unknown',       cert:'UNCERTAIN', deity:'Unknown', calPos:28, notes:'', aeaUrl:'xntw-qd-xaw-art/xntw-xrw' },
+  { num:29, name:'ḳd',               trans:'ḳd (the potter)',          family:'ḫntw group', famKey:'xntw', modern:'Unknown',        cert:'UNCERTAIN', deity:'Unknown', calPos:29, notes:'', aeaUrl:'xntw-qd-xaw-art/qd' },
+  { num:30, name:'ꜥrt',              trans:'The great one / claw',     family:'ḫntw group', famKey:'xntw', modern:'Possibly Scorpius stars', cert:'UNCERTAIN', deity:'Unknown', calPos:30, notes:'Position in list corresponds to Scorpius region; identification remains uncertain.', aeaUrl:'xntw-qd-xaw-art/art' },
+  // ── sꜣḥ family (= Orion region) ──
+  { num:31, name:'sꜣḥ',              trans:'sꜣḥ (Orion)',              family:'sꜣḥ',   famKey:'sah',   modern:'Orion (confirmed)', cert:'CONFIRMED', deity:'Osiris', calPos:31, notes:'sꜣḥ is the Egyptian name for the Orion constellation, universally equated with Osiris. One of the most securely identified of all decan families. Associated with the resurrection of Osiris and the souls of the dead.', aeaUrl:'sah/sah' },
+  { num:32, name:'ı͗wn sꜣḥ',         trans:'Pillar of Orion',          family:'sꜣḥ',   famKey:'sah',   modern:'Near Orion — uncertain which star', cert:'PROBABLE', deity:'Osiris', calPos:32, notes:'Part of the Orion group; the specific star is not identified with certainty.', aeaUrl:'sah/iwn-sah' },
+  { num:33, name:'rmn ḥry sꜣḥ',      trans:'Upper arm of Orion',       family:'sꜣḥ',   famKey:'sah',   modern:'Near Orion / possibly Bellatrix (γ Ori)', cert:'PROBABLE', deity:'Osiris', calPos:33, notes:'Part of the extended Orion group in the south panel of astronomical ceilings.', aeaUrl:'sah/rmn-hry-sah' },
+  // ── spdt family (= Sirius / Sopdet) ──
+  { num:34, name:'tpy-ꜥ spdt',       trans:'The one before Sirius',    family:'spdt',  famKey:'spdt',  modern:'Possibly λ Orionis or η Ori', cert:'PROBABLE', deity:'Predecessor of Sopdet', calPos:34, notes:'The decan immediately preceding Sirius in the list. Some scholars identify it with stars in Orion.', aeaUrl:'spdt-sabw-stwy/tpy-a-spdt' },
+  { num:35, name:'spdt',             trans:'Sopdet / Sirius',          family:'spdt',  famKey:'spdt',  modern:'Sirius (α Canis Majoris)', cert:'CONFIRMED', deity:'Sopdet (Sothis) / Isis', calPos:35, notes:'The most important decan. Sirius (spdt / Sopdet) anchors the entire decan system. Its heliacal rising marked the Egyptian New Year and the annual Nile flood. Identified with Isis, whose tears caused the Nile to rise. The Sothic cycle of ~1460 years is named for her.', aeaUrl:'spdt-sabw-stwy/spdt' },
+  { num:36, name:'štwy',             trans:'The two stars',            family:'spdt',  famKey:'spdt',  modern:'Possibly Procyon (α CMi) or nearby stars', cert:'PROBABLE', deity:'Unknown', calPos:36, notes:'Follows Sirius in the list. The name "the two stars" and position make Procyon or nearby stars plausible.', aeaUrl:'spdt-sabw-stwy/stwy' },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let egyActiveFam = 'all';
+let egySelected  = null;
+
+// ═══════════════════════════════════════════════════════════════
+// WHEEL
+// ═══════════════════════════════════════════════════════════════
+function buildWheel() {
+  const svg = document.getElementById('egyWheel');
+  const cx = 130, cy = 130, r = 118, ri = 82;
+  const n = 36;
+  DECANS.forEach((d, i) => {
+    const a0 = (i / n) * 2 * Math.PI - Math.PI / 2;
+    const a1 = ((i + 1) / n) * 2 * Math.PI - Math.PI / 2;
+    const fam = FAMILIES.find(f => f.key === d.famKey);
+    const color = fam ? fam.color : '#888';
+    const x0 = cx + r  * Math.cos(a0), y0 = cy + r  * Math.sin(a0);
+    const x1 = cx + r  * Math.cos(a1), y1 = cy + r  * Math.sin(a1);
+    const x2 = cx + ri * Math.cos(a1), y2 = cy + ri * Math.sin(a1);
+    const x3 = cx + ri * Math.cos(a0), y3 = cy + ri * Math.sin(a0);
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', `M${x0},${y0} A${r},${r} 0 0,1 ${x1},${y1} L${x2},${y2} A${ri},${ri} 0 0,0 ${x3},${y3} Z`);
+    path.setAttribute('fill', color);
+    path.setAttribute('fill-opacity', egySelected === i ? '0.9' : '0.45');
+    path.setAttribute('stroke', 'rgba(5,8,16,.6)');
+    path.setAttribute('stroke-width', '0.5');
+    path.style.cursor = 'pointer';
+    path.setAttribute('data-idx', i);
+    path.addEventListener('mouseenter', () => {
+      document.getElementById('egyCalLabel').textContent =
+        `Decan ${d.num}: ${d.name} — ${d.trans} (${d.modern})`;
+    });
+    path.addEventListener('mouseleave', () => {
+      document.getElementById('egyCalLabel').textContent =
+        '36 decans × 10 days = 360-day civil year · hover to identify';
+    });
+    path.addEventListener('click', () => selectDecan(d));
+    svg.appendChild(path);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CALENDAR STRIP
+// ═══════════════════════════════════════════════════════════════
+function buildCalStrip() {
+  const strip = document.getElementById('egyCalStrip');
+  DECANS.forEach(d => {
+    const fam = FAMILIES.find(f => f.key === d.famKey);
+    const cell = document.createElement('div');
+    cell.className = 'egy-cal-cell';
+    cell.style.background = fam ? fam.color : '#555';
+    cell.setAttribute('title', d.name);
+    cell.addEventListener('mouseenter', () => {
+      document.getElementById('egyCalLabel').textContent =
+        `Day ${(d.calPos - 1)*10 + 1}–${d.calPos * 10}: ${d.name} — ${d.trans}`;
+    });
+    cell.addEventListener('mouseleave', () => {
+      document.getElementById('egyCalLabel').textContent =
+        '36 decans × 10 days = 360-day civil year · hover to identify';
+    });
+    cell.addEventListener('click', () => selectDecan(d));
+    strip.appendChild(cell);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FAMILY LEGEND + TABS
+// ═══════════════════════════════════════════════════════════════
+function buildFamilyUI() {
+  const legend = document.getElementById('egyFamilyLegend');
+  const tabs   = document.getElementById('egyFamilyTabs');
+
+  // All tab
+  const allBtn = document.createElement('button');
+  allBtn.className = 'egy-fam-btn active';
+  allBtn.textContent = 'All';
+  allBtn.dataset.fam = 'all';
+  allBtn.onclick = () => setEgyFamily('all');
+  tabs.appendChild(allBtn);
+
+  FAMILIES.forEach(f => {
+    const li = document.createElement('div');
+    li.className = 'egy-wheel-legend-item';
+    li.innerHTML = `<div class="egy-wheel-swatch" style="background:${f.color}"></div>${f.label}`;
+    legend.appendChild(li);
+
+    const btn = document.createElement('button');
+    btn.className = 'egy-fam-btn';
+    btn.textContent = f.label;
+    btn.dataset.fam = f.key;
+    btn.onclick = () => setEgyFamily(f.key);
+    tabs.appendChild(btn);
+  });
+}
+
+function setEgyFamily(fam) {
+  egyActiveFam = fam;
+  document.querySelectorAll('.egy-fam-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.fam === fam));
+  renderEgyGrid();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GRID RENDERING
+// ═══════════════════════════════════════════════════════════════
+function certOrder(c) { return {CONFIRMED:0, PROBABLE:1, UNCERTAIN:2}[c] ?? 3; }
+
+function renderEgyGrid() {
+  const q    = document.getElementById('egySearch').value.toLowerCase().trim();
+  const cert = document.getElementById('egyCertFilter').value;
+
+  let list = DECANS.filter(d => {
+    if (egyActiveFam !== 'all' && d.famKey !== egyActiveFam) return false;
+    if (cert === 'CONFIRMED' && d.cert !== 'CONFIRMED') return false;
+    if (cert === 'PROBABLE'  && certOrder(d.cert) > 1)  return false;
+    if (cert === 'UNCERTAIN' && d.cert !== 'UNCERTAIN') return false;
+    if (q) {
+      const hay = `${d.name} ${d.trans} ${d.modern} ${d.family} ${d.deity} ${d.notes}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('egyCount').textContent =
+    `${list.length} of ${DECANS.length} decans`;
+
+  const html = list.map(d => {
+    const fam  = FAMILIES.find(f => f.key === d.famKey);
+    const col  = fam ? fam.color : '#888';
+    const certClass = {CONFIRMED:'cert-confirmed', PROBABLE:'cert-probable', UNCERTAIN:'cert-uncertain'}[d.cert] || 'cert-uncertain';
+    const isSelected = egySelected && egySelected.num === d.num;
+    return `
+    <div class="egy-card${isSelected ? ' selected' : ''}"
+         style="--fam-color:${col}"
+         onclick="selectDecan(DECANS[${d.num-1}])">
+      <div style="position:absolute;left:0;top:0;bottom:0;width:2px;background:${col};opacity:.7;"></div>
+      <div class="egy-card-top">
+        <span class="egy-card-num">T${String(d.num).padStart(2,'0')} · Day ${(d.calPos-1)*10+1}–${d.calPos*10}</span>
+        <span class="egy-card-cert ${certClass}">${d.cert}</span>
+      </div>
+      <div class="egy-card-name">${d.name}</div>
+      <div class="egy-card-trans">${d.trans}</div>
+      <div class="egy-card-modern">Modern ID: <strong>${d.modern}</strong></div>
+      <div class="egy-card-meta">
+        <span class="egy-card-pill">${d.family}</span>
+        ${d.deity && d.deity !== 'Unknown' ? `<span class="egy-card-pill">${d.deity}</span>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('egyGrid').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DETAIL PANEL
+// ═══════════════════════════════════════════════════════════════
+function selectDecan(d) {
+  egySelected = d;
+  const fam    = FAMILIES.find(f => f.key === d.famKey);
+  const col    = fam ? fam.color : '#888';
+  const certClass = {CONFIRMED:'cert-confirmed', PROBABLE:'cert-probable', UNCERTAIN:'cert-uncertain'}[d.cert] || 'cert-uncertain';
+  const aeaUrl  = AEA_BASE + d.aeaUrl;
+  const famUrl  = AEA_BASE + (fam ? fam.url : '');
+
+  // Stellarium link — use Luxor/Thebes coordinates, ~2100 BCE
+  const stelParams = new URLSearchParams({
+    date: '-2100-06-01T03:00',
+    lat: '25.6872', lng: '32.6396', fov: '90'
+  });
+  const stelUrl = 'https://stellarium-web.org/?' + stelParams.toString();
+
+  const detail = document.getElementById('egyDetail');
+  detail.className = 'egy-detail open';
+  detail.innerHTML = `
+    <div class="egy-det-header">
+      <div>
+        <div class="egy-det-name" style="border-left:3px solid ${col};padding-left:.6rem;">${d.name}</div>
+        <div class="egy-det-trans">"${d.trans}"</div>
+      </div>
+      <div class="egy-det-links">
+        <a class="egy-det-btn primary" href="${aeaUrl}" target="_blank" rel="noopener">AEA Entry ↗</a>
+        <a class="egy-det-btn" href="${famUrl}" target="_blank" rel="noopener">Family ↗</a>
+        <a class="egy-det-btn" href="${stelUrl}" target="_blank" rel="noopener">Sky c.2100 BCE ↗</a>
+        <button class="egy-det-btn" onclick="closeEgyDetail()">✕ Close</button>
+      </div>
+    </div>
+    <div class="egy-det-grid">
+      <div>
+        <div class="egy-det-field">
+          <div class="egy-det-label">T-list position</div>
+          <div class="egy-det-val">T${String(d.num).padStart(2,'0')} — decan ${d.num} of 36</div>
+        </div>
+        <div class="egy-det-field">
+          <div class="egy-det-label">Calendar period</div>
+          <div class="egy-det-val">Days ${(d.calPos-1)*10+1}–${d.calPos*10} of the Egyptian civil year<br>
+            <span style="color:rgba(200,216,240,.35);font-size:.72rem;">10-day decanal week ${d.calPos}</span>
+          </div>
+        </div>
+        <div class="egy-det-field">
+          <div class="egy-det-label">Family group</div>
+          <div class="egy-det-val">
+            <span style="display:inline-block;width:8px;height:8px;background:${col};border-radius:1px;margin-right:.35rem;vertical-align:middle;"></span>
+            ${d.family}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="egy-det-field">
+          <div class="egy-det-label">Modern stellar identification</div>
+          <div class="egy-det-val">
+            ${d.modern}<br>
+            <span class="egy-card-cert ${certClass}" style="margin-top:.3rem;display:inline-block;">${d.cert}</span>
+          </div>
+        </div>
+        <div class="egy-det-field">
+          <div class="egy-det-label">Associated deity</div>
+          <div class="egy-det-val">${d.deity}</div>
+        </div>
+        <div class="egy-det-field">
+          <div class="egy-det-label">AEA Database</div>
+          <div class="egy-det-val"><a href="${aeaUrl}" target="_blank" rel="noopener">${aeaUrl}</a></div>
+        </div>
+      </div>
+    </div>
+    ${d.notes ? `<div class="egy-det-desc">${d.notes}</div>` : ''}
+  `;
+
+  renderEgyGrid();
+  detail.scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+  // Highlight calendar cell
+  const cells = document.querySelectorAll('.egy-cal-cell');
+  cells.forEach((c, i) => c.classList.toggle('active-cell', i === d.num - 1));
+}
+
+function closeEgyDetail() {
+  egySelected = null;
+  document.getElementById('egyDetail').className = 'egy-detail';
+  document.querySelectorAll('.egy-cal-cell').forEach(c => c.classList.remove('active-cell'));
+  renderEgyGrid();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+(function initEgy() {
+  buildWheel();
+  buildCalStrip();
+  buildFamilyUI();
+  renderEgyGrid();
+})();
+</script>
+
+
 </body>
 </html>
