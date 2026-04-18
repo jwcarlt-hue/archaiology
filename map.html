@@ -161,11 +161,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   color:#e8dfc8!important; font-size:.68rem!important; padding:4px 8px!important;
   border-radius:2px!important; white-space:nowrap; max-width:280px; white-space:normal; }
 .lang-tip::before { display:none!important; }
-
-.dare-tip { background:rgba(8,11,18,.93)!important; border:1px solid rgba(192,90,48,.3)!important;
-  color:#e8dfc8!important; font-size:.68rem!important; padding:4px 8px!important;
-  border-radius:2px!important; white-space:nowrap; max-width:260px; white-space:normal; }
-.dare-tip::before { display:none!important; }
 </style>
 </head>
 <body>
@@ -257,6 +252,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <button class="filter-chip tile-chip" data-tile="Light" onclick="_setTile('Light')">Light</button>
       <button class="filter-chip tile-chip" data-tile="Dark" onclick="_setTile('Dark')">Dark</button>
       <button class="filter-chip tile-chip" data-tile="DARE" onclick="_setTile('DARE')">DARE</button>
+      <div id="dare-places-status" style="font-family:var(--mono);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:.3rem;letter-spacing:.04em;"></div>
     </div>
   </div>
   <div class="ctrl-card">
@@ -304,42 +300,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:4px;">47 languages · Glottolog CC-BY 4.0</div>
     </div>
   </div>
-  <div class="ctrl-card">
-    <div class="ctrl-label">DARE Sacred Sites</div>
-    <div class="ctrl-row" style="display:flex;flex-direction:column;gap:4px;margin-top:.2rem;">
-      <button class="filter-chip" id="dare-mithraeum-btn" onclick="toggleDareMithraeum()">⬡ Mithraea</button>
-      <button class="filter-chip" id="dare-apollo-btn" onclick="toggleDareApollo()">☀ Apollo Temples</button>
-      <button class="filter-chip" id="dare-athena-btn" onclick="toggleDareAthena()">🦉 Athena Temples</button>
-    </div>
-    <div id="dare-legend" style="display:none;margin-top:6px;">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#c05a30;flex-shrink:0"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Mithraeum <span id="dare-mithraeum-count" style="color:var(--ochre)"></span></span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#d4a84b;flex-shrink:0"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Temple of Apollo <span id="dare-apollo-count" style="color:var(--ochre)"></span></span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#7ab8c0;flex-shrink:0"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Temple of Athena <span id="dare-athena-count" style="color:var(--ochre)"></span></span>
-      </div>
-      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:4px;">DARE · CC BY-SA 3.0 · imperium.ahlfeldt.se</div>
-    </div>
-  </div>
-  <div class="ctrl-card">
-    <div class="ctrl-label">Mundo Maya</div>
-    <div class="ctrl-row" style="display:flex;flex-direction:column;gap:4px;margin-top:.2rem;">
-      <button class="filter-chip" id="cenote-btn" onclick="toggleCenotes()">💧 Yucatán Cenotes</button>
-    </div>
-    <div id="cenote-legend" style="display:none;margin-top:6px;">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#4a9ec4;flex-shrink:0"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Cenote <span id="cenote-count" style="color:var(--ochre)"></span></span>
-      </div>
-      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:4px;">BWaldo8 · ArcGIS Online · public domain</div>
-    </div>
-  </div>
 </div>
 
 <div class="detail-panel" id="detailPanel">
@@ -382,7 +342,7 @@ function getTier(site, mentionCount) {
   if (refs > 500 || ments > 5) return 1;
   if (refs > 50  || ments > 1) return 2;
   if (refs > 0   || ments > 0) return 3;
-  if (['adriatic','black_sea'].includes(site.subregion)) return 4;
+  if (['mithraic','adriatic','black_sea'].includes(site.subregion)) return 4;
   return 3;
 }
 
@@ -680,7 +640,190 @@ async function init() {
     activeTile = TILES[name];
     activeTile.addTo(map);
     document.querySelectorAll('.tile-chip').forEach(b => b.classList.toggle('active', b.dataset.tile===name));
+    // Toggle DARE places layer
+    if (name === 'DARE') {
+      darePlacesEnabled = true;
+      loadDarePlaces();
+    } else {
+      darePlacesEnabled = false;
+      if (darePlacesLayer) { map.removeLayer(darePlacesLayer); darePlacesLayer = null; }
+      document.getElementById('dare-places-status').textContent = '';
+    }
   };
+
+  // ── DARE Places Layer ──────────────────────────────────────────
+  const DARE_API = 'https://imperium.ahlfeldt.se/api/geojson.php';
+  let darePlacesLayer = null;
+  let darePlacesEnabled = false;
+  let dareDebounceTimer = null;
+
+  const DARE_TYPE_LABELS = {
+    '11':'City','12':'Town','13':'Village','14':'Villa','15':'Fort',
+    '16':'Road station','17':'Temple','18':'Harbour','19':'Mine',
+    '20':'Amphitheatre','21':'Theatre','22':'Bath','23':'Aqueduct',
+    '24':'Bridge','25':'Pass','26':'Lighthouse','27':'Cemetery',
+    '28':'Inscription site','29':'Vicus','30':'Sanctuary',
+    '31':'Camp','32':'Spa','33':'Unknown',
+  };
+
+  function dareTypeLabel(id) {
+    return DARE_TYPE_LABELS[String(id)] || 'Ancient site';
+  }
+
+  function darePlacesIcon() {
+    return L.divIcon({
+      html:`<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10">
+        <circle cx="5" cy="5" r="4" fill="#c09050" fill-opacity=".75" stroke="rgba(240,230,200,.5)" stroke-width="1"/>
+      </svg>`,
+      className:'', iconSize:[10,10], iconAnchor:[5,5]
+    });
+  }
+
+  async function loadDarePlaces() {
+    if (!darePlacesEnabled) return;
+    const z = map.getZoom();
+    if (z < 4) {
+      document.getElementById('dare-places-status').textContent = 'Zoom in to see DARE places';
+      return;
+    }
+    const b = map.getBounds();
+    const bbox = [
+      b.getWest().toFixed(4), b.getSouth().toFixed(4),
+      b.getEast().toFixed(4), b.getNorth().toFixed(4)
+    ].join(',');
+    // DARE tiles are capped at zoom 11; use zoom for API density control
+    const apiZoom = Math.min(z, 10);
+    const url = `${DARE_API}?bbox=${bbox}&zoom=${apiZoom}`;
+
+    document.getElementById('dare-places-status').textContent = 'Loading DARE places…';
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(res.status);
+      const data = await res.json();
+      if (!darePlacesEnabled) return; // tile switched while loading
+
+      if (darePlacesLayer) { map.removeLayer(darePlacesLayer); darePlacesLayer = null; }
+
+      const features = data.features || [];
+      darePlacesLayer = L.geoJSON(data, {
+        pointToLayer: (feature, latlng) => L.marker(latlng, { icon: darePlacesIcon() }),
+        onEachFeature: (feature, layer) => {
+          const p = feature.properties || {};
+          const coords = feature.geometry && feature.geometry.coordinates;
+          const ancientName = p.ancient_name || p.name || '(unnamed)';
+          layer.bindPopup(
+            `<div class="popup-name">${ancientName}</div>` +
+            `<div class="popup-sub">${dareTypeLabel(p.ftype)} · ${p.country || ''}</div>`,
+            { maxWidth:220, closeButton:false }
+          );
+          layer.on('click', () => showDareDetail({
+            ...p,
+            lng: coords ? coords[0] : null,
+            lat: coords ? coords[1] : null,
+          }));
+        }
+      }).addTo(map);
+
+      document.getElementById('dare-places-status').textContent =
+        `${features.length} DARE place${features.length !== 1 ? 's' : ''}${features.length === 500 ? ' (max — zoom in)' : ''}`;
+    } catch(e) {
+      document.getElementById('dare-places-status').textContent = 'DARE API error';
+      console.warn('DARE places fetch failed:', e);
+    }
+  }
+
+  async function showDareDetail(props) {
+    // If we have a DARE id, fetch extended data from the ?id= endpoint
+    const id = props.dare_id || props.id;
+    let extended = { ...props };
+    if (id) {
+      try {
+        const res = await fetch(`${DARE_API}?id=${id}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.features && data.features[0]) {
+            const fp = data.features[0].properties || {};
+            const fc = data.features[0].geometry && data.features[0].geometry.coordinates;
+            extended = {
+              ...props,
+              ...fp,
+              lng: fc ? fc[0] : props.lng,
+              lat: fc ? fc[1] : props.lat,
+            };
+          }
+        }
+      } catch(e) { /* use basic props */ }
+    }
+
+    // DARE API field names (from documented response + id endpoint)
+    const ancientName = extended.ancient_name  || extended.name || '(unnamed)';
+    const modernName  = extended.modern_name   || extended.spatial_coverage || '';
+    const country     = extended.country       || '';
+    const ftype       = dareTypeLabel(extended.ftype || extended.place_type);
+    const pleiadesId  = extended.pleiades      || extended.pleiades_id;
+    const dareId      = extended.dare_id       || extended.id || id;
+    const startDate   = extended.start_date    || extended.temporal_coverage_start;
+    const endDate     = extended.end_date      || extended.temporal_coverage_end;
+    const nuts3       = extended.nuts3         || extended.nuts_3;
+    const lau2        = extended.lau2          || extended.lau_2;
+    const lat         = extended.lat;
+    const lng         = extended.lng;
+
+    // Format date as BCE/CE
+    function fmtDate(d) {
+      if (!d && d !== 0) return null;
+      const n = parseInt(d);
+      return n < 0 ? `${Math.abs(n)} BCE` : `${n} CE`;
+    }
+
+    // Populate detail panel with DARE data
+    document.getElementById('detailTier').textContent = 'DARE · Digital Atlas of the Roman Empire';
+    document.getElementById('detailTier').style.color = '#c09050';
+    document.getElementById('detailName').textContent = ancientName;
+
+    const badges = [
+      `<span class="badge badge-culture">${ftype}</span>`,
+      country    ? `<span class="badge badge-region">${country}</span>` : '',
+      modernName ? `<span class="badge badge-period">${modernName}</span>` : '',
+    ].filter(Boolean).join('');
+    document.getElementById('detailBadges').innerHTML = badges;
+
+    const descParts = [];
+    const s = fmtDate(startDate), e = fmtDate(endDate);
+    if (s || e) descParts.push(`Active: ${s||'?'} – ${e||'?'}`);
+    if (nuts3)  descParts.push(`Region: ${nuts3}`);
+    if (lau2)   descParts.push(lau2);
+    if (lat && lng) descParts.push(`${parseFloat(lng).toFixed(5)}, ${parseFloat(lat).toFixed(5)}`);
+    document.getElementById('detailDesc').textContent = descParts.join(' · ') || '';
+
+    // Repurpose stat cells for DARE-specific data
+    const mentCell = document.getElementById('detailMentions');
+    const refsCell = document.getElementById('detailAncientRefs');
+    mentCell.closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Place type';
+    mentCell.textContent = ftype;
+    refsCell.closest('.stat-cell').querySelector('.stat-lbl').textContent = 'DARE ID';
+    refsCell.textContent = dareId || '—';
+
+    document.getElementById('detailTopos').style.display = 'none';
+    document.getElementById('detailMentionsList').style.display = 'none';
+
+    const extLinks = [
+      dareId     ? `<a class="ext-link" href="https://imperium.ahlfeldt.se/places/${dareId}" target="_blank" rel="noopener">DARE ↗</a>` : '',
+      pleiadesId ? `<a class="ext-link" href="https://pleiades.stoa.org/places/${pleiadesId}" target="_blank" rel="noopener">Pleiades ↗</a>` : '',
+      lat && lng ? `<a class="ext-link" href="https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}&zoom=14" target="_blank" rel="noopener">OSM ↗</a>` : '',
+    ].filter(Boolean).join('');
+    document.getElementById('extLinks').innerHTML = extLinks;
+
+    document.getElementById('sitePageBtn').style.display = 'none';
+    document.getElementById('detailPanel').classList.add('open');
+  }
+
+  // Debounced reload on map move (only when DARE is active)
+  map.on('moveend', () => {
+    if (!darePlacesEnabled) return;
+    clearTimeout(dareDebounceTimer);
+    dareDebounceTimer = setTimeout(loadDarePlaces, 500);
+  });
 
   try {
     await loadCorpus();
@@ -863,265 +1006,6 @@ function toggleLangs() {
     leg.style.display = 'block';
     langOn = true;
   }
-}
-
-
-// ── DARE Sacred Sites Layers ──────────────────────────────────
-// Each ftype fetches the full empire bbox once, then caches.
-// DARE API: CC BY-SA 3.0, imperium.ahlfeldt.se
-
-const DARE_API = 'https://imperium.ahlfeldt.se/api/geojson.php';
-// Wide bbox covering the Roman world: Atlantic → Mesopotamia, Sahara → Scotland
-const DARE_BBOX = '-15,20,55,60';
-
-const DARE_CONFIG = {
-  mithraeum: { color:'#c05a30', label:'Mithraeum',      btnId:'dare-mithraeum-btn', countId:'dare-mithraeum-count', offText:'⬡ Mithraea',       onText:'⬡ Hide Mithraea'       },
-  apollo:    { color:'#d4a84b', label:'Temple of Apollo', btnId:'dare-apollo-btn',    countId:'dare-apollo-count',    offText:'☀ Apollo Temples', onText:'☀ Hide Apollo'         },
-  athena:    { color:'#7ab8c0', label:'Temple of Athena', btnId:'dare-athena-btn',    countId:'dare-athena-count',    offText:'🦉 Athena Temples', onText:'🦉 Hide Athena'        },
-};
-
-// State per layer type
-const dareState = {
-  mithraeum: { layer:null, on:false, loading:false },
-  apollo:    { layer:null, on:false, loading:false },
-  athena:    { layer:null, on:false, loading:false },
-};
-
-function dareAnyOn() {
-  return Object.values(dareState).some(s => s.on);
-}
-
-async function fetchDareLayer(ftype) {
-  const cfg = DARE_CONFIG[ftype];
-  const st  = dareState[ftype];
-  if (st.layer) return st.layer; // cached
-  if (st.loading) return null;
-  st.loading = true;
-
-  const btn = document.getElementById(cfg.btnId);
-  btn.textContent = '⏳ Loading…';
-  btn.disabled = true;
-
-  try {
-    const url = `${DARE_API}?bbox=${DARE_BBOX}&ftype=${ftype}`;
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error(`DARE API ${resp.status}`);
-    const gj = await resp.json();
-
-    const g = L.layerGroup();
-    const features = gj.features || [];
-
-    features.forEach(f => {
-      if (!f.geometry || f.geometry.type !== 'Point') return;
-      const [lng, lat] = f.geometry.coordinates;
-      const props = f.properties || {};
-      const name  = props.name || props.ancient_name || 'Unknown';
-      const anc   = props.ancient_name ? `<br><span style="color:var(--ochre);font-style:italic">${props.ancient_name}</span>` : '';
-      const ctry  = props.country ? `<br><span style="color:rgba(240,234,216,.5)">${props.country}</span>` : '';
-
-      const r = 6;
-      const icon = L.divIcon({
-        html: `<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+6}" height="${r*2+6}">
-          <circle cx="${r+3}" cy="${r+3}" r="${r}" fill="${cfg.color}" fill-opacity=".88"
-            stroke="#fff" stroke-width="1.5" stroke-opacity=".5"/>
-          <circle cx="${r+3}" cy="${r+3}" r="${r+2.5}" fill="none"
-            stroke="${cfg.color}" stroke-width="1" stroke-opacity=".3"/>
-        </svg>`,
-        className: '',
-        iconSize:   [r*2+6, r*2+6],
-        iconAnchor: [r+3, r+3],
-      });
-
-      L.marker([lat, lng], {icon})
-        .bindTooltip(
-          `<b>${name}</b>${anc}<br><span style="color:${cfg.color};font-size:.6rem">${cfg.label}</span>${ctry}`,
-          {sticky:true, className:'dare-tip'}
-        )
-        .addTo(g);
-    });
-
-    // Update count badge
-    const countEl = document.getElementById(cfg.countId);
-    if (countEl) countEl.textContent = `(${features.length})`;
-
-    st.layer = g;
-    return g;
-  } catch(err) {
-    console.error(`DARE fetch error [${ftype}]:`, err);
-    btn.textContent = cfg.offText;
-    btn.disabled = false;
-    btn.title = `Load failed: ${err.message}`;
-    return null;
-  } finally {
-    st.loading = false;
-  }
-}
-
-function _toggleDareType(ftype) {
-  const cfg = DARE_CONFIG[ftype];
-  const st  = dareState[ftype];
-  const btn = document.getElementById(cfg.btnId);
-  const leg = document.getElementById('dare-legend');
-
-  if (st.on) {
-    // Turn off
-    if (st.layer) map.removeLayer(st.layer);
-    st.on = false;
-    btn.textContent = cfg.offText;
-    btn.classList.remove('active');
-    btn.disabled = false;
-    if (!dareAnyOn()) leg.style.display = 'none';
-  } else {
-    // Turn on — fetch if needed
-    fetchDareLayer(ftype).then(layer => {
-      if (!layer) return;
-      layer.addTo(map);
-      st.on = true;
-      btn.textContent = cfg.onText;
-      btn.classList.add('active');
-      btn.disabled = false;
-      leg.style.display = 'block';
-    });
-  }
-}
-
-function toggleDareMithraeum() { _toggleDareType('mithraeum'); }
-function toggleDareApollo()    { _toggleDareType('apollo');    }
-function toggleDareAthena()    { _toggleDareType('athena');    }
-
-
-// ── Yucatán Cenotes Layer ─────────────────────────────────────
-// Source: ArcGIS Online item 5d823ae7ec574613ad783631b8fdb363
-// Owner: BWaldo8 · Layer: Yuc_caves_Projected (point layer)
-// Strategy: try ArcGIS item GeoJSON export first (uses item ID only,
-// no org ID needed), then fall back to known services1 REST endpoint.
-
-const CENOTE_ITEM_ID  = '5d823ae7ec574613ad783631b8fdb363';
-const CENOTE_COLOR    = '#4a9ec4';
-
-// ArcGIS public GeoJSON export — works for any public item, no org ID
-const CENOTE_URLS = [
-  // Route 1: item data endpoint (returns raw file/GeoJSON if shared publicly)
-  `https://www.arcgis.com/sharing/rest/content/items/${CENOTE_ITEM_ID}/data?f=json`,
-  // Route 2: confirmed FeatureServer REST endpoint
-  `https://services1.arcgis.com/AXaYBvnJsB5Q7sDF/arcgis/rest/services/Yuc_caves_Projected/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson&resultRecordCount=5000`,
-  // Route 3: same org, alternate record count cap
-  `https://services1.arcgis.com/AXaYBvnJsB5Q7sDF/arcgis/rest/services/Yuc_caves_Projected/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson&resultRecordCount=2000`,
-];
-
-let cenoteLayer = null, cenoteOn = false, cenoteLoading = false;
-
-async function fetchCenoteGeoJSON() {
-  // Try each URL in sequence, return first that yields GeoJSON features
-  for (const url of CENOTE_URLS) {
-    try {
-      const resp = await fetch(url);
-      if (!resp.ok) continue;
-      const data = await resp.json();
-      // ArcGIS FeatureServer returns { features: [...] }
-      // Item data export may return the raw layer or a zip — check shape
-      if (data.features && data.features.length > 0) return data;
-      if (data.layers) continue; // service root, not a layer
-    } catch(e) { continue; }
-  }
-  return null;
-}
-
-async function buildCenoteLayer() {
-  const btn = document.getElementById('cenote-btn');
-  btn.textContent = '⏳ Loading…';
-  btn.disabled = true;
-
-  const gj = await fetchCenoteGeoJSON();
-
-  if (!gj) {
-    btn.textContent = '💧 Yucatán Cenotes';
-    btn.disabled = false;
-    btn.title = 'Could not reach ArcGIS endpoint — check console';
-    console.warn('Cenote layer: all fetch URLs failed. Verify the ArcGIS REST endpoint and CORS headers.');
-    return null;
-  }
-
-  const g = L.layerGroup();
-  const features = gj.features || [];
-
-  features.forEach(f => {
-    if (!f.geometry) return;
-    let lat, lng;
-    if (f.geometry.type === 'Point') {
-      [lng, lat] = f.geometry.coordinates;
-    } else return;
-
-    const props = f.properties || {};
-    // Field names vary — try common ArcGIS export patterns
-    const name = props.Name || props.NAME || props.name ||
-                 props.Nombre || props.NOMBRE ||
-                 props.FID_1 || props.OBJECTID || 'Cenote';
-    const type = props.Type || props.TYPE || props.Tipo || '';
-    const depth = props.Depth || props.DEPTH || props.Profundidad || '';
-
-    const r = 5;
-    const icon = L.divIcon({
-      html: `<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+6}" height="${r*2+6}">
-        <circle cx="${r+3}" cy="${r+3}" r="${r}" fill="${CENOTE_COLOR}" fill-opacity=".85"
-          stroke="#fff" stroke-width="1.5" stroke-opacity=".6"/>
-        <circle cx="${r+3}" cy="${r+3}" r="${r+2.5}" fill="none"
-          stroke="${CENOTE_COLOR}" stroke-width="1" stroke-opacity=".25"/>
-      </svg>`,
-      className: '', iconSize: [r*2+6, r*2+6], iconAnchor: [r+3, r+3]
-    });
-
-    const depthStr = depth ? `<br><span style="color:rgba(240,234,216,.5)">Depth: ${depth}m</span>` : '';
-    const typeStr  = type  ? `<br><span style="color:${CENOTE_COLOR};font-size:.6rem">${type}</span>` : '';
-
-    L.marker([lat, lng], {icon})
-      .bindTooltip(
-        `<b>${name}</b>${typeStr}${depthStr}<br><span style="color:rgba(240,234,216,.4);font-size:.6rem">Yucatán cenote</span>`,
-        {sticky: true, className: 'dare-tip'}
-      )
-      .addTo(g);
-  });
-
-  // Update count badge
-  const countEl = document.getElementById('cenote-count');
-  if (countEl) countEl.textContent = `(${features.length.toLocaleString()})`;
-
-  btn.disabled = false;
-  return g;
-}
-
-async function toggleCenotes() {
-  const btn = document.getElementById('cenote-btn');
-  const leg = document.getElementById('cenote-legend');
-
-  if (cenoteOn) {
-    if (cenoteLayer) map.removeLayer(cenoteLayer);
-    cenoteOn = false;
-    btn.textContent = '💧 Yucatán Cenotes';
-    btn.classList.remove('active');
-    leg.style.display = 'none';
-    return;
-  }
-
-  if (cenoteLoading) return;
-  cenoteLoading = true;
-
-  if (!cenoteLayer) {
-    cenoteLayer = await buildCenoteLayer();
-  }
-
-  cenoteLoading = false;
-
-  if (!cenoteLayer) return; // fetch failed
-
-  cenoteLayer.addTo(map);
-  cenoteOn = true;
-  btn.textContent = '💧 Hide Cenotes';
-  btn.classList.add('active');
-  leg.style.display = 'block';
-
-  // Pan to Yucatán on first load so the user sees the layer
-  map.flyTo([20.5, -89.0], 7, {duration: 1.2});
 }
 
 </script>
