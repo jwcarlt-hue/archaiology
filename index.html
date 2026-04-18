@@ -851,8 +851,68 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .sidebar-footer { display: none; }
 }
 
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+.skel-line {
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--linen) 25%, var(--rule) 50%, var(--linen) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease infinite;
+  margin-bottom: 0.3rem;
+}
+.skel-tag   { height: 8px;  width: 45%; }
+.skel-title { height: 12px; width: 90%; margin-bottom: 0.45rem; }
+.skel-meta  { height: 8px;  width: 30%; }
+.skel-thumb { background: linear-gradient(90deg, var(--linen) 25%, var(--rule) 50%, var(--linen) 75%);
+              background-size: 800px 100%; animation: shimmer 1.4s ease infinite; }
+.secondary-item.feed-live { cursor: pointer; }
+.secondary-thumb.type-paper  { background: rgba(42,61,46,0.08);  opacity:1; font-size:1.1rem; }
+.secondary-thumb.type-news   { background: rgba(184,137,42,0.08); opacity:1; font-size:1.1rem; }
+
 </style>
 </head>
+<script>
+(async () => {
+  const SUPABASE_URL = "https://ucsgtbpeuqeamuvuvojs.supabase.co";
+  const KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";
+  const REGIONS = { mesoamerica:"Mesoamerica", north_america:"N. America", europe:"Europe", near_east:"Near East", general:"General" };
+  const ICONS   = { paper:"📄", news:"📰" };
+  function relDate(iso) {
+    if (!iso) return "";
+    const diff = (Date.now() - new Date(iso)) / 86400000;
+    if (diff < 1) return "Today";
+    if (diff < 7) return Math.floor(diff) + "d ago";
+    if (diff < 60) return Math.floor(diff/7) + "w ago";
+    return new Date(iso).toLocaleDateString("en-US",{month:"short",year:"numeric"});
+  }
+  function trunc(s,n){if(!s)return"";s=s.replace(/\[[^\]]*\]/g," ").replace(/<[^>]+>/g," ").replace(/&[a-z#0-9]+;/gi," ").replace(/\s+/g," ").trim();return s.length>n?s.slice(0,n).replace(/\s+\S*$/,"")+"…":s;}
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/news_feed?select=title,content_type,region,published_at,source_url,publisher&order=published_at.desc&limit=5`,
+      { headers: { apikey: KEY, Authorization: `Bearer ${KEY}` } }
+    );
+    const items = await res.json();
+    const el = document.getElementById("heroFeed");
+    if (!el || !items.length) return;
+    el.innerHTML = items.map(item => {
+      const tc = item.content_type === "paper" ? "type-paper" : item.content_type === "news" ? "type-news" : "type-other";
+      const tag = [REGIONS[item.region]??item.region, trunc(item.publisher,35)].filter(Boolean).join(" · ");
+      const url = item.source_url ?? "news.html";
+      return `<a class="secondary-item feed-live" href="${url}" target="${url.startsWith('http')?'_blank':'_self'}" rel="noopener" style="text-decoration:none;color:inherit;">
+        <div class="secondary-thumb ${tc}">${ICONS[item.content_type]??"📄"}</div>
+        <div>
+          <div class="secondary-tag">${tag}</div>
+          <div class="secondary-title">${item.title??""}</div>
+          <div class="secondary-meta">${relDate(item.published_at)}</div>
+        </div>
+      </a>`;
+    }).join("") + `<a href="news.html" style="display:block;padding:.9rem 0 .2rem;font-family:var(--sans);font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ochre);text-decoration:none;">All research →</a>`;
+  } catch(e) { console.warn("Hero feed error:",e); }
+})();
+</script>
+
 <body>
 
 <!-- TOPBAR -->
@@ -951,55 +1011,19 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
       <a href="lidar-hoyuk-prism.html" class="read-btn">Read Article <span class="read-btn-arrow">→</span></a>
     </article>
 
-    <!-- SECONDARY STACK -->
-    <aside class="hero-secondary">
-
-      <div class="secondary-item">
-        <div class="secondary-thumb">🏛️</div>
-        <div>
-          <div class="secondary-tag">Europe · Minoan</div>
-          <div class="secondary-title">The Akrotiri Frescoes and Seasonal Ritual at Thera</div>
-          <div class="secondary-meta">Coming soon</div>
-        </div>
-      </div>
-
-      <div class="secondary-item">
-        <div class="secondary-thumb">🌽</div>
-        <div>
-          <div class="secondary-tag">Mesoamerica · Classic Maya</div>
-          <div class="secondary-title">Hieroglyphic Stairways and the Long Count: New Readings at Copán</div>
-          <div class="secondary-meta">Coming soon</div>
-        </div>
-      </div>
-
-      <div class="secondary-item">
-        <div class="secondary-thumb">🐦</div>
-        <div>
-          <div class="secondary-tag">North America · Mississippian</div>
-          <div class="secondary-title">Cahokia's Woodhenge and the Solstice Alignment Problem</div>
-          <div class="secondary-meta">Coming soon</div>
-        </div>
-      </div>
-
-      <div class="secondary-item">
-        <div class="secondary-thumb">🏺</div>
-        <div>
-          <div class="secondary-tag">Near East · Bronze Age</div>
-          <div class="secondary-title">The ˁAin Samiya Goblet: Chaos, Cosmos, and the Celestial Boat</div>
-          <div class="secondary-meta">Coming soon</div>
-        </div>
-      </div>
-
-      <div class="secondary-item">
-        <div class="secondary-thumb">🦅</div>
-        <div>
-          <div class="secondary-tag">Mesoamerica · Olmec</div>
-          <div class="secondary-title">San Lorenzo and the First Monumental Sculpture Tradition in the Americas</div>
-          <div class="secondary-meta">Coming soon</div>
-        </div>
-      </div>
-
-    </aside>
+    <!-- SECONDARY STACK — populated from news_feed via JS -->
+<aside class="hero-secondary" id="heroFeed">
+  <!-- skeletons shown while loading, JS replaces them -->
+  <div class="secondary-item secondary-skeleton">
+    <div class="secondary-thumb skel-thumb"></div>
+    <div style="flex:1">
+      <div class="skel-line skel-tag"></div>
+      <div class="skel-line skel-title"></div>
+      <div class="skel-line skel-meta"></div>
+    </div>
+  </div>
+  <!-- repeat x5 for 5 skeletons -->
+</aside>
   </div><!-- /hero-grid -->
 </div><!-- /page-wrap -->
 
