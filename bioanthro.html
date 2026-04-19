@@ -195,6 +195,29 @@ svg#timeline{width:100%;overflow:visible;}
 .fp-name{font-family:var(--serif);font-size:.95rem;font-weight:700;color:var(--bone);margin-bottom:.3rem;}
 .fp-sp{font-size:.62rem;color:var(--rust-lt);margin-bottom:.2rem;}
 .fp-age{font-family:var(--mono);font-size:.58rem;color:rgba(200,216,240,.4);}
+.genomics-tools{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.55fr);gap:1.2rem;align-items:start;}
+.viewer-wrap{background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.08);padding:1rem;}
+.viewer-toolbar{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:.9rem;}
+.viewer-toolbar h3{font-family:var(--serif);font-size:1.1rem;color:var(--bone);}
+.viewer-toolbar p{font-family:var(--body);font-size:.78rem;line-height:1.6;color:rgba(200,216,240,.45);max-width:44rem;}
+.viewer-shell{min-height:520px;border:1px solid rgba(200,216,240,.08);background:rgba(5,8,16,.88);}
+#ncbi-sequence-viewer{min-height:520px;}
+.viewer-note{font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(200,216,240,.32);margin-top:.7rem;}
+.tool-callout{background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.08);padding:1rem;}
+.tool-callout h3{font-family:var(--serif);font-size:1.02rem;color:var(--bone);margin-bottom:.5rem;}
+.tool-callout p{font-family:var(--body);font-size:.8rem;line-height:1.7;color:rgba(200,216,240,.48);}
+.genome-presets{display:grid;gap:.6rem;margin-top:1rem;}
+.preset-btn{width:100%;text-align:left;padding:.8rem .9rem;background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.08);color:rgba(200,216,240,.58);cursor:pointer;transition:all .16s;}
+.preset-btn:hover,.preset-btn.active{border-color:rgba(192,90,48,.35);background:rgba(192,90,48,.06);color:var(--bone);}
+.preset-title{display:block;font-family:var(--sans);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.preset-meta{display:block;margin-top:.22rem;font-family:var(--body);font-size:.76rem;line-height:1.5;color:rgba(200,216,240,.45);}
+.tool-actions{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:1rem;}
+.tool-button{display:inline-flex;align-items:center;justify-content:center;padding:.38rem .62rem;border:1px solid rgba(200,216,240,.1);font-family:var(--mono);font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(200,216,240,.48);transition:all .15s;}
+.tool-button:hover{color:var(--rust-lt);border-color:rgba(192,90,48,.32);}
+
+@media (max-width: 980px){
+  .genomics-tools{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
@@ -236,6 +259,7 @@ svg#timeline{width:100%;overflow:visible;}
   <div class="tab active" onclick="setTab(this,'feed')">📄 Journal Feed</div>
   <div class="tab" onclick="setTab(this,'timeline')">🌳 Hominin Timeline</div>
   <div class="tab" onclick="setTab(this,'sites')">📍 Fossil Sites</div>
+  <div class="tab" onclick="setTab(this,'genomics')">Genomics Tools</div>
 </div>
 
 <!-- ═══════════════ SECTION 1: FEED ═══════════════ -->
@@ -304,7 +328,55 @@ svg#timeline{width:100%;overflow:visible;}
   <div class="site-list-grid" id="site-list"></div>
 </div>
 
+<div class="section" id="sec-genomics">
+  <div class="sec-eyebrow">NCBI Sequence Viewer · Embedded</div>
+  <h2 class="sec-title">Genomics Tools</h2>
+  <p class="sec-sub">A lightweight sequence workspace for moving from fossil narratives into the molecular records that anchor ancestry, variation, and inherited lineages. The viewer loads directly from the National Center for Biotechnology Information.</p>
+
+  <div class="genomics-tools">
+    <div class="viewer-wrap">
+      <div class="viewer-toolbar">
+        <div>
+          <h3 id="genomics-title">Human mitochondrial genome</h3>
+          <p id="genomics-description">A compact reference sequence that is central to ancient DNA studies, maternal lineages, and population history.</p>
+        </div>
+        <div class="tool-actions">
+          <a class="tool-button" id="genomics-record-link" href="https://www.ncbi.nlm.nih.gov/nuccore/NC_012920.1" target="_blank" rel="noopener">Open NCBI record</a>
+          <a class="tool-button" href="https://www.ncbi.nlm.nih.gov/tools/sviewer/" target="_blank" rel="noopener">Sequence Viewer home</a>
+        </div>
+      </div>
+      <div class="viewer-shell">
+        <div id="ncbi-sequence-viewer"></div>
+      </div>
+      <div class="viewer-note" id="genomics-status">Waiting to load the official NCBI viewer.</div>
+    </div>
+
+    <aside class="tool-callout">
+      <h3>Preset views</h3>
+      <p>These presets keep the tool close to biological anthropology: mitochondrial inheritance, a speech-related transcript, and the Y chromosome as a lineage-bearing sequence scaffold. Each button reloads the same embedded viewer with a different NCBI accession.</p>
+      <div class="genome-presets">
+        <button class="preset-btn active" type="button" data-preset="mtDNA" onclick="loadGenomePreset('mtDNA', this)">
+          <span class="preset-title">Human mtDNA</span>
+          <span class="preset-meta">RefSeq NC_012920.1 · complete mitochondrial genome</span>
+        </button>
+        <button class="preset-btn" type="button" data-preset="foxp2" onclick="loadGenomePreset('foxp2', this)">
+          <span class="preset-title">FOXP2 transcript</span>
+          <span class="preset-meta">RefSeq NM_014491.4 · language and speech-associated gene transcript</span>
+        </button>
+        <button class="preset-btn" type="button" data-preset="chrY" onclick="loadGenomePreset('chrY', this)">
+          <span class="preset-title">Human Y chromosome</span>
+          <span class="preset-meta">RefSeq NC_000024.10 · lineage-bearing chromosome view</span>
+        </button>
+      </div>
+      <div class="tool-actions">
+        <a class="tool-button" href="https://www.ncbi.nlm.nih.gov/tools/sviewer/embedding-api/" target="_blank" rel="noopener">Embedding docs</a>
+      </div>
+    </aside>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://www.ncbi.nlm.nih.gov/projects/sviewer/js/sviewer.js"></script>
 <script>
 // ════════════════════════════════════════════════════════════════
 // DATA
@@ -468,7 +540,28 @@ const SITES = [
 // ════════════════════════════════════════════════════════════════
 // TAB LOGIC
 // ════════════════════════════════════════════════════════════════
-let timelineBuilt = false, mapBuilt = false;
+const GENOME_PRESETS = {
+  mtDNA: {
+    title: 'Human mitochondrial genome',
+    description: 'A compact reference sequence that is central to ancient DNA studies, maternal lineages, and population history.',
+    record: 'https://www.ncbi.nlm.nih.gov/nuccore/NC_012920.1',
+    params: 'embedded=true&noviewheader=true&appname=archaiology_bioanthro&id=NC_012920.1&v=1:16569'
+  },
+  foxp2: {
+    title: 'FOXP2 transcript',
+    description: 'A RefSeq transcript often used as an accessible entry point into speech, language, and human-evolutionary genetics.',
+    record: 'https://www.ncbi.nlm.nih.gov/nuccore/NM_014491.4',
+    params: 'embedded=true&noviewheader=true&appname=archaiology_bioanthro&id=NM_014491.4'
+  },
+  chrY: {
+    title: 'Human Y chromosome',
+    description: 'A large chromosome-scale view that lets visitors move from lineage talk into an actual reference sequence scaffold.',
+    record: 'https://www.ncbi.nlm.nih.gov/nuccore/NC_000024.10',
+    params: 'embedded=true&noviewheader=true&appname=archaiology_bioanthro&id=NC_000024.10&v=1000000:4000000'
+  }
+};
+
+let timelineBuilt = false, mapBuilt = false, genomicsBootstrapped = false, genomicsApp = null;
 function setTab(el, id) {
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
@@ -476,6 +569,7 @@ function setTab(el, id) {
   document.getElementById('sec-'+id).classList.add('active');
   if (id==='timeline' && !timelineBuilt) { buildTimeline(); timelineBuilt=true; }
   if (id==='sites' && !mapBuilt) { buildFossilMap(); mapBuilt=true; }
+  if (id==='genomics' && !genomicsBootstrapped) { initGenomicsTools(); genomicsBootstrapped=true; }
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -759,6 +853,57 @@ function highlightSite(id) {
 // ════════════════════════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════════════════════════
+function setGenomePresetState(key, btn) {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  if (btn) {
+    btn.classList.add('active');
+    return;
+  }
+  const target = document.querySelector(`.preset-btn[data-preset="${key}"]`);
+  if (target) target.classList.add('active');
+}
+
+function loadGenomePreset(key, btn) {
+  const preset = GENOME_PRESETS[key];
+  if (!preset) return;
+
+  setGenomePresetState(key, btn);
+  document.getElementById('genomics-title').textContent = preset.title;
+  document.getElementById('genomics-description').textContent = preset.description;
+  document.getElementById('genomics-record-link').href = preset.record;
+
+  const status = document.getElementById('genomics-status');
+  if (!genomicsApp) {
+    status.textContent = 'Preparing the embedded NCBI Sequence Viewer.';
+    return;
+  }
+
+  status.textContent = 'Loading ' + preset.title + ' from NCBI.';
+  genomicsApp.load(preset.params);
+  window.setTimeout(() => {
+    status.textContent = 'Viewer loaded from NCBI. Use the toolbar to zoom, pan, and inspect annotations.';
+  }, 900);
+}
+
+function initGenomicsTools() {
+  const status = document.getElementById('genomics-status');
+  status.textContent = 'Loading NCBI Sequence Viewer assets.';
+
+  if (typeof SeqViewOnReady !== 'function') {
+    status.textContent = 'NCBI Sequence Viewer did not initialize. Use the record link to open the sequence directly on NCBI.';
+    return;
+  }
+
+  SeqViewOnReady(function() {
+    try {
+      genomicsApp = new SeqView.App('ncbi-sequence-viewer');
+      loadGenomePreset('mtDNA');
+    } catch (err) {
+      status.textContent = 'NCBI Sequence Viewer could not be embedded on this page. Open the record directly on NCBI instead.';
+    }
+  });
+}
+
 loadFeed();
 </script>
 </body>
