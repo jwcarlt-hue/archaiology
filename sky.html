@@ -4603,6 +4603,65 @@ function highlightPair(rises, sets) {
   border-top:1px solid rgba(200,216,240,.06); padding-top:1.2rem;
   max-width:820px;
 }
+.senenmut-feature {
+  margin-top:2rem;
+  border:1px solid rgba(192,144,80,.22);
+  background:linear-gradient(180deg, rgba(192,144,80,.075), rgba(200,216,240,.018));
+  overflow:hidden;
+}
+.senenmut-feature-link {
+  display:block;
+  color:inherit;
+}
+.senenmut-feature-img {
+  display:block;
+  width:100%;
+  height:auto;
+  background:rgba(200,216,240,.025);
+  border-bottom:1px solid rgba(192,144,80,.18);
+}
+.senenmut-feature-body {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:1.25rem;
+  align-items:end;
+  padding:1.15rem 1.25rem 1.25rem;
+}
+.senenmut-feature-kicker {
+  font-family:var(--sans); font-size:.6rem; font-weight:800;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:#c09050; margin-bottom:.4rem;
+}
+.senenmut-feature-title {
+  font-family:var(--serif); font-size:clamp(1.25rem,2.5vw,2rem);
+  color:var(--cream); line-height:1.1; margin-bottom:.55rem;
+}
+.senenmut-feature-copy {
+  font-family:var(--sans); font-size:.82rem;
+  color:rgba(200,216,240,.64); line-height:1.7;
+  max-width:900px;
+}
+.senenmut-feature-copy strong { color:rgba(250,248,243,.86); font-weight:600; }
+.senenmut-feature-cta {
+  display:inline-flex; align-items:center; justify-content:center;
+  min-height:42px; white-space:nowrap;
+  padding:.75rem 1rem;
+  border:1px solid rgba(192,144,80,.38);
+  background:rgba(192,144,80,.08);
+  color:#c09050;
+  font-family:var(--sans); font-size:.68rem; font-weight:800;
+  letter-spacing:.1em; text-transform:uppercase;
+  transition:background .2s, border-color .2s, transform .2s;
+}
+.senenmut-feature-link:hover .senenmut-feature-cta {
+  background:rgba(192,144,80,.14);
+  border-color:rgba(192,144,80,.62);
+  transform:translateY(-1px);
+}
+@media(max-width:760px){
+  .senenmut-feature-body { grid-template-columns:1fr; }
+  .senenmut-feature-cta { width:100%; }
+}
 </style>
 
 <section class="egy-section">
@@ -4666,6 +4725,26 @@ function highlightPair(rises, sets) {
   <p class="egy-source">
     Sources: Ancient Egyptian Astronomy Database (AEA), Department of Physics &amp; Astronomy, McMaster University (Sarah Symons et al.), <a href="https://aea.physics.mcmaster.ca" target="_blank" style="color:#c09050;">aea.physics.mcmaster.ca</a>. · Neugebauer, O. &amp; Parker, R.A. (1960–1969). <em>Egyptian Astronomical Texts</em> I–III. Brown University Press. · Leitz, C. (1995). <em>Altägyptische Sternuhren</em>. Leuven. · Symons, S. (2002, 2007, 2013). Classification and analysis of the ancient Egyptian astronomical corpus. · Decan order follows the T-family canonical list. Epagomenal days (days 361–365) governed by additional deities not listed here.
   </p>
+
+  <article class="senenmut-feature">
+    <a class="senenmut-feature-link" href="./senenmut-ceiling.html">
+      <img
+        class="senenmut-feature-img"
+        src="./assets/senenmut-grab.jpg"
+        alt="Astronomical ceiling from the tomb of Senenmut, TT353"
+      >
+      <div class="senenmut-feature-body">
+        <div>
+          <div class="senenmut-feature-kicker">TT353 ceiling map</div>
+          <h3 class="senenmut-feature-title">The firmament above Thebes</h3>
+          <p class="senenmut-feature-copy">
+            The astronomical ceiling in Senenmut's tomb at Deir el-Bahari brings the decanal tradition into a painted cosmic map. Following Jose Lull and Juan Antonio Belmonte's <strong>A Firmament Above Thebes</strong>, the interactive version separates the southern decans from the northern constellation field, marking secure identifications such as Sopdet/Sirius, Sah/Orion, and the Bull's Foreleg while keeping probable and disputed readings visible.
+          </p>
+        </div>
+        <span class="senenmut-feature-cta">Open interactive ceiling</span>
+      </div>
+    </a>
+  </article>
 
 </div>
 </section>

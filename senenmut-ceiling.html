@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Senenmut Astronomical Ceiling</title>
+    <link rel="stylesheet" href="./senenmut-ceiling.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div class="title-block">
+          <p class="kicker">TT353 astronomical ceiling workspace</p>
+          <h1>Interactive Senenmut Ceiling</h1>
+        </div>
+        <a
+          class="source-link"
+          href="file:///C:/Users/johnc/Downloads/A%20FIRMAMENT%20ABOVE%20THEBES_%20UNCOVERING%20THE%20CONSTELLATIONS%20OF%20--%20Lull,%20Jos%C3%A9;Belmonte,%20Juan%20Antonio(Senenmut%20Project).pdf"
+        >
+          Open Lull and Belmonte PDF
+        </a>
+      </header>
+
+      <section class="workspace" aria-label="Senenmut ceiling explorer">
+        <div class="stage-wrap">
+          <div class="toolbar">
+            <input
+              id="search"
+              class="search"
+              type="search"
+              placeholder="Search figure, Egyptian name, modern ID, or notes"
+              autocomplete="off"
+            />
+            <div class="segmented" aria-label="Layer filter">
+              <button type="button" data-filter="all" aria-pressed="true">All</button>
+              <button type="button" data-filter="south">South</button>
+              <button type="button" data-filter="north">North</button>
+              <button type="button" data-filter="polar">Polar</button>
+              <button type="button" data-filter="disputed">Disputed</button>
+            </div>
+            <button id="calibrate" class="icon-button" type="button" title="Toggle coordinate grid" aria-pressed="false">
+              +
+            </button>
+          </div>
+          <div id="stageScroll" class="stage-scroll">
+            <div id="stage" class="stage">
+              <img src="./assets/senenmut-grab.jpg" alt="Astronomical ceiling from the tomb of Senenmut, TT353" />
+              <div class="calibration" id="calibration">x: 0, y: 0</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="panel" aria-live="polite">
+          <div class="panel-head">
+            <h2 id="detailTitle">Select a figure</h2>
+            <p id="detailSubtitle" class="sub">
+              Pins are provisional placements from the attached CSV identifications; exact bbox tracing can be added next.
+            </p>
+          </div>
+          <div class="detail">
+            <div class="badge-row" id="badges"></div>
+            <div class="meta-grid">
+              <div class="meta">
+                <span>Egyptian name</span>
+                <strong id="egyptianName">-</strong>
+              </div>
+              <div class="meta">
+                <span>Modern sky ID</span>
+                <strong id="modernId">-</strong>
+              </div>
+              <div class="meta">
+                <span>Zone</span>
+                <strong id="zoneLabel">-</strong>
+              </div>
+              <div class="meta">
+                <span>Source page</span>
+                <strong id="sourcePage">-</strong>
+              </div>
+            </div>
+            <span class="note-label">Scholarly note</span>
+            <p id="note" class="note">
+              Choose a hotspot or list item to see the Lull and Belmonte identification data.
+            </p>
+          </div>
+          <div id="figureList" class="figure-list" aria-label="Mapped figure list"></div>
+        </aside>
+      </section>
+
+      <section class="drawer" aria-label="Mapping status">
+        <h2>Mapping Status</h2>
+        <p class="sub">
+          This prototype separates the ceiling into interpretive zones and keeps confidence visible. Green is secure, gold is probable or broad, and red is disputed.
+        </p>
+        <div class="drawer-grid">
+          <div class="stat">
+            <b id="totalCount">42</b>
+            <span>identified figures imported from the CSV table</span>
+          </div>
+          <div class="stat">
+            <b>2678 x 1589</b>
+            <span>source image coordinate space for future bbox work</span>
+          </div>
+          <div class="stat">
+            <b>383</b>
+            <span>primary table page cited in the attached article data</span>
+          </div>
+          <div class="stat">
+            <b id="visibleCount">42</b>
+            <span>currently visible under search and layer filters</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./senenmut-ceiling.js"></script>
+  </body>
+</html>
