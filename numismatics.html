@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numismatics — archAIology</title>
+<meta name="description" content="A linked-data numismatics workspace for the ANS MANTIS collection, Nomisma RDF, Pelagios annotations, and archaeological coin research.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#090806;--bronze:#9b6a2f;--gold:#d4a84b;--silver:#c7c0ae;
+  --paper:#f4efe4;--bone:#fffaf0;--muted:#8b7b65;--rule:#d7c8ad;
+  --green:#2f5b47;--blue:#244f68;
+  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6}
+a{color:inherit;text-decoration:none}
+.masthead{position:sticky;top:0;z-index:50;height:46px;background:rgba(9,8,6,.96);border-bottom:1px solid rgba(255,250,240,.08);display:flex;align-items:center;gap:1.4rem;padding:0 1.4rem}
+.logo{font-family:var(--serif);font-size:1.12rem;font-weight:900;color:var(--bone)}
+.logo span{color:var(--gold);font-style:italic}
+.nav-link{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,250,240,.42)}
+.nav-link:hover,.nav-link.active{color:var(--bone)}
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#120f0a 0%,#20170d 52%,#332112 100%);color:var(--bone);padding:4.5rem 1.4rem 3rem}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 20%,rgba(212,168,75,.22),transparent 24%),radial-gradient(circle at 88% 24%,rgba(199,192,174,.18),transparent 22%);opacity:.9}
+.hero-inner{position:relative;max-width:1220px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:2rem;align-items:center}
+.eyebrow{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem}
+h1{font-family:var(--serif);font-size:clamp(2.4rem,6vw,5.2rem);line-height:.96;font-weight:900;letter-spacing:-.02em;margin-bottom:1rem}
+h1 em{color:var(--gold);font-style:italic}
+.lede{max-width:720px;color:rgba(255,250,240,.72);font-size:1rem;line-height:1.8}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.45rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:.72rem 1rem;border:1px solid rgba(212,168,75,.36);font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.btn.primary{background:var(--gold);color:#181108;border-color:var(--gold)}
+.btn.secondary{color:var(--gold);background:rgba(212,168,75,.08)}
+.coin-stack{position:relative;height:340px}
+.coin{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f1d797 0 10%,#c38a36 28%,#7d4d1f 62%,#2b1a0d 100%);box-shadow:inset 0 0 0 10px rgba(255,245,210,.08),inset 0 0 0 20px rgba(0,0,0,.12),0 28px 70px rgba(0,0,0,.45)}
+.coin::before{content:"";position:absolute;inset:23%;border-radius:50%;border:2px solid rgba(255,244,210,.32);background:linear-gradient(135deg,rgba(255,250,240,.18),transparent)}
+.coin::after{content:attr(data-mark);position:absolute;inset:0;display:grid;place-items:center;font-family:var(--serif);font-size:2.5rem;font-weight:900;color:rgba(255,245,220,.6)}
+.c1{width:210px;height:210px;left:20px;top:62px}
+.c2{width:155px;height:155px;right:28px;top:24px;background:radial-gradient(circle at 35% 30%,#fffdf4 0 8%,#c7c0ae 30%,#6f6a5f 68%,#1a1814 100%)}
+.c3{width:125px;height:125px;right:90px;bottom:20px}
+.wrap{max-width:1220px;margin:0 auto;padding:2.2rem 1.4rem}
+.section-kicker{font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bronze);margin-bottom:.5rem}
+.section-title{font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.55rem);line-height:1.1;margin-bottom:.65rem}
+.section-copy{max-width:820px;color:#5e5142;font-size:.92rem;line-height:1.8}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:1.5rem}
+.stat{background:var(--bone);padding:1.1rem}
+.stat b{display:block;font-family:var(--serif);font-size:2rem;line-height:1;color:var(--bronze)}
+.stat span{display:block;margin-top:.35rem;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.pipeline{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.35rem}
+.pipe-card,.record-card,.tool-card{background:var(--bone);border:1px solid var(--rule);padding:1rem}
+.pipe-label{font-family:var(--mono);font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:var(--bronze);margin-bottom:.45rem}
+.pipe-card h3,.tool-card h3{font-family:var(--serif);font-size:1.25rem;line-height:1.15;margin-bottom:.45rem}
+.pipe-card p,.tool-card p,.record-card p{font-size:.82rem;color:#655847;line-height:1.65}
+.query-panel{margin-top:1.4rem;background:#11100d;color:var(--bone);border:1px solid rgba(212,168,75,.26);display:grid;grid-template-columns:320px 1fr}
+.query-side{padding:1.15rem;border-right:1px solid rgba(212,168,75,.18)}
+.query-side p{font-size:.8rem;color:rgba(255,250,240,.58)}
+.search-box{display:grid;grid-template-columns:1fr auto;gap:.5rem;margin-top:1rem}
+.search-box input{min-height:42px;background:rgba(255,250,240,.06);border:1px solid rgba(255,250,240,.12);color:var(--bone);padding:.65rem .75rem;font-family:var(--sans)}
+.search-box button{min-height:42px;border:1px solid var(--gold);background:var(--gold);color:#171008;padding:0 .9rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.quick-links{display:grid;grid-template-columns:repeat(2,1fr);gap:.65rem;padding:1.15rem}
+.ql{border:1px solid rgba(255,250,240,.1);padding:.8rem;background:rgba(255,250,240,.035)}
+.ql span{display:block;font-family:var(--mono);font-size:.56rem;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:.28rem}
+.ql strong{display:block;font-size:.85rem;color:rgba(255,250,240,.88)}
+.records-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-top:2.2rem;margin-bottom:.9rem}
+.feed-status{font-family:var(--mono);font-size:.62rem;color:var(--muted);text-align:right}
+.record-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.record-card{min-height:180px;display:flex;flex-direction:column}
+.record-tag{font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--bronze);margin-bottom:.45rem}
+.record-card h3{font-family:var(--serif);font-size:1.18rem;line-height:1.22;margin-bottom:.55rem}
+.record-card a{margin-top:auto;color:var(--blue);font-size:.72rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1rem}
+.source-note{margin-top:1.3rem;padding-top:1rem;border-top:1px solid var(--rule);font-size:.72rem;color:var(--muted);line-height:1.7}
+.source-note a{color:var(--bronze);font-weight:700}
+@media(max-width:920px){
+  .hero-inner,.query-panel{grid-template-columns:1fr}
+  .coin-stack{height:230px}
+  .stat-grid,.pipeline,.record-grid,.tool-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:620px){
+  .masthead{overflow-x:auto}
+  .stat-grid,.pipeline,.record-grid,.tool-grid,.quick-links{grid-template-columns:1fr}
+  .hero{padding-top:3rem}
+}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <a class="logo" href="index.html">arch<span>AI</span>ology</a>
+  <a class="nav-link" href="index.html">Home</a>
+  <a class="nav-link" href="map.html">World Map</a>
+  <a class="nav-link active" href="numismatics.html">Numismatics</a>
+  <a class="nav-link" href="inscriptions.html">Epigraphy</a>
+  <a class="nav-link" href="sky.html">Sky</a>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Linked Data Numismatics</div>
+      <h1>Coins as <em>portable archives</em>.</h1>
+      <p class="lede">
+        A working sketch for bringing the American Numismatic Society's MANTIS collection into archAIology: object records, mint geographies, iconography, inscriptions, authorities, hoards, and linked-data graph trails through Nomisma and Pelagios.
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="https://numismatics.org/search/" target="_blank" rel="noopener">Open ANS MANTIS</a>
+        <a class="btn secondary" href="#query">Build a Query</a>
+      </div>
+    </div>
+    <div class="coin-stack" aria-hidden="true">
+      <div class="coin c1" data-mark="ANS"></div>
+      <div class="coin c2" data-mark="LD"></div>
+      <div class="coin c3" data-mark="RDF"></div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <section class="wrap">
+    <div class="section-kicker">Dataset Profile</div>
+    <h2 class="section-title">MANTIS as an archaeological data layer</h2>
+    <p class="section-copy">
+      The attached VoID files describe the ANS search endpoint as a MANTIS dataset published with an Open Database License. The same collection can be read as human-facing search results, Atom/RSS feeds, individual NUDS/XML records, RDF/XML, JSON-LD, Turtle, KML, geoJSON, Nomisma RDF dumps, and Pelagios annotations.
+    </p>
+    <div class="stat-grid">
+      <div class="stat"><b>98,528</b><span>VoID documents listed</span></div>
+      <div class="stat"><b>10</b><span>Nomisma RDF dump pages</span></div>
+      <div class="stat"><b>10</b><span>Pelagios RDF dump pages</span></div>
+      <div class="stat"><b>ODbL</b><span>Open data license</span></div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="section-kicker">Graph Model</div>
+    <h2 class="section-title">Three ways into the same coin</h2>
+    <div class="pipeline">
+      <article class="pipe-card">
+        <div class="pipe-label">Object record</div>
+        <h3>NUDS and collection IDs</h3>
+        <p>Use ANS identifiers for object pages and structured NUDS/XML, then connect record fields to chronology, inscriptions, materials, departments, and physical measurements.</p>
+      </article>
+      <article class="pipe-card">
+        <div class="pipe-label">Numismatic concepts</div>
+        <h3>Nomisma RDF</h3>
+        <p>Normalize mints, authorities, denominations, materials, hoards, and types against stable numismatic URIs so coins can be compared across collections.</p>
+      </article>
+      <article class="pipe-card">
+        <div class="pipe-label">Places and annotation</div>
+        <h3>Pelagios links</h3>
+        <p>Use place annotations to align coins with gazetteers and map layers: mint, findspot, subject place, issuing region, and movement through collections.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="wrap" id="query">
+    <div class="section-kicker">Search Workbench</div>
+    <h2 class="section-title">Jump into ANS search</h2>
+    <div class="query-panel">
+      <div class="query-side">
+        <p>Enter a keyword and open MANTIS results directly. This keeps archAIology as the interpretive layer while ANS remains the source of record.</p>
+        <form class="search-box" id="ansSearch">
+          <input id="queryInput" type="search" placeholder="e.g. Abydus drachma, Nero, Ptolemy">
+          <button type="submit">Search</button>
+        </form>
+      </div>
+      <div class="quick-links">
+        <a class="ql" href="https://numismatics.org/search/feed/?q=*:*" target="_blank" rel="noopener"><span>Atom</span><strong>Latest search feed</strong></a>
+        <a class="ql" href="https://numismatics.org/search/apis" target="_blank" rel="noopener"><span>API</span><strong>ANS data access docs</strong></a>
+        <a class="ql" href="https://numismatics.org/search/mints.geojson" target="_blank" rel="noopener"><span>GeoJSON</span><strong>Mint geography</strong></a>
+        <a class="ql" href="https://numismatics.org/search/findspots.geojson" target="_blank" rel="noopener"><span>GeoJSON</span><strong>Findspot geography</strong></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="records-head">
+      <div>
+        <div class="section-kicker">Feed Sketch</div>
+        <h2 class="section-title">Recent collection records</h2>
+      </div>
+      <div class="feed-status" id="feedStatus">Attempting Atom feed</div>
+    </div>
+    <div class="record-grid" id="recordGrid"></div>
+  </section>
+
+  <section class="wrap">
+    <div class="section-kicker">Build Next</div>
+    <h2 class="section-title">Research tools this page can grow into</h2>
+    <div class="tool-grid">
+      <article class="tool-card"><h3>Mint map</h3><p>Render ANS mint geoJSON beside Pleiades and ToposText layers already used in the site.</p></article>
+      <article class="tool-card"><h3>Authority timeline</h3><p>Stack rulers, civic authorities, dynasties, and coin types into a sortable chronological band.</p></article>
+      <article class="tool-card"><h3>Iconography index</h3><p>Cluster obverse and reverse types by deity, animal, object, inscription, and political message.</p></article>
+      <article class="tool-card"><h3>Linked-data export</h3><p>Let selected objects export as CSV, JSON-LD starter sets, or SPARQL-friendly URI lists.</p></article>
+    </div>
+    <p class="source-note">
+      Sources: local ANS VoID RDF files from <code>pelagios.void.rdf</code> and <code>nomisma.void.rdf</code>; ANS <a href="https://numismatics.org/search/" target="_blank" rel="noopener">MANTIS search</a>; ANS <a href="https://numismatics.org/search/apis" target="_blank" rel="noopener">API documentation</a>. Data belongs to the American Numismatic Society and is made available under the terms stated by ANS.
+    </p>
+  </section>
+</main>
+
+<script>
+const fallbackRecords = [
+  { title:"Silver Drachma, Abydus", summary:"A Greek coin record suitable for testing mint, date, and authority links.", url:"https://numismatics.org/search/" },
+  { title:"Roman imperial coinage", summary:"Use ANS records as a bridge to ruler authority, mint geography, legends, and portrait typology.", url:"https://numismatics.org/search/results?q=Roman" },
+  { title:"Byzantine and Islamic departments", summary:"Department facets can drive period routes and regional collection views.", url:"https://numismatics.org/search/results?q=Byzantine" }
+];
+
+function card(record, i){
+  return `<article class="record-card">
+    <div class="record-tag">Record ${String(i + 1).padStart(2, "0")}</div>
+    <h3>${record.title}</h3>
+    <p>${record.summary || "ANS collection record surfaced through the public feed."}</p>
+    <a href="${record.url}" target="_blank" rel="noopener">Open source record</a>
+  </article>`;
+}
+
+async function loadFeed(){
+  const grid = document.getElementById("recordGrid");
+  const status = document.getElementById("feedStatus");
+  grid.innerHTML = fallbackRecords.map(card).join("");
+  try {
+    const res = await fetch("https://numismatics.org/search/feed/?q=*:*");
+    if (!res.ok) throw new Error("Feed unavailable");
+    const xml = new DOMParser().parseFromString(await res.text(), "application/xml");
+    const entries = [...xml.querySelectorAll("entry")].slice(0, 6);
+    if (!entries.length) throw new Error("No entries");
+    const records = entries.map(entry => ({
+      title: entry.querySelector("title")?.textContent?.trim() || "ANS collection record",
+      summary: entry.querySelector("summary, content")?.textContent?.replace(/\s+/g, " ").trim().slice(0, 180),
+      url: entry.querySelector("link")?.getAttribute("href") || "https://numismatics.org/search/"
+    }));
+    grid.innerHTML = records.map(card).join("");
+    status.textContent = "Live Atom feed loaded";
+  } catch (err) {
+    status.textContent = "Feed may be blocked by browser CORS; showing seed records";
+  }
+}
+
+document.getElementById("ansSearch").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const q = document.getElementById("queryInput").value.trim() || "*:*";
+  window.open(`https://numismatics.org/search/results?q=${encodeURIComponent(q)}`, "_blank", "noopener");
+});
+
+loadFeed();
+</script>
+</body>
+</html>
