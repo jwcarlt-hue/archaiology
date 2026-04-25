@@ -879,47 +879,47 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   const KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";
   const REGIONS = { mesoamerica:"Mesoamerica", north_america:"N. America", europe:"Europe", near_east:"Near East", general:"General" };
 
-  // Keyword -> compact ASCII marker (first match wins)
+  // Keyword -> emoji marker (first match wins), using JS unicode escapes for encoding safety
   const KEYWORD_MAP = [
-    [/skull|cranium|crania|skeleton|burial|tomb|grave|funerary|mummy|mummif/i, "OST"],
-    [/dna|genome|genetic|ancient.?dna|paleogenomic/i, "DNA"],
-    [/bone|osteo|remains|mortuary/i, "BIO"],
-    [/inscription|epigraphy|hieroglyph|cuneiform|tablet|papyrus|manuscript/i, "TXT"],
-    [/maya|glyph|codex|stela|stele/i, "MAY"],
-    [/luwian|anatolian|hittite|prism/i, "AN"],
-    [/astronom|celestial|solar|lunar|solstice|equinox|zodiac|star|comet|eclipse|planet|parapegma/i, "SKY"],
-    [/calendar|chronolog|radiocarbon|carbon.?14/i, "CAL"],
-    [/pyramid|temple|monument|palace|citadel|acropolis|ziggurat/i, "ARC"],
-    [/megalith|stonehenge|standing.?stone|dolmen|menhir|cave|rock.?art|petroglyph|pictograph/i, "STN"],
-    [/pottery|ceramic|vessel|amphora|urn|bowl|jar|goblet/i, "POT"],
-    [/coin|numismat|currency|mint/i, "NUM"],
-    [/boat|ship|maritime|shipwreck|nautical/i, "SEA"],
-    [/game|board.?game|dice|senet|mehen/i, "GME"],
-    [/egypt|egyptian|pharaoh|nile/i, "EGY"],
-    [/greek|greece|athens|sparta|hellenistic/i, "GR"],
-    [/roman|rome|latin|caesar|imperial/i, "ROM"],
-    [/mesopotamia|babylon|assyrian|sumerian|akkadian|ur\b/i, "MES"],
-    [/india|indus|harappan|vedic/i, "IND"],
-    [/china|chinese|shang|zhou|han\b|tang\b|ming\b/i, "CHN"],
-    [/inca|andean|peru|tiwanaku/i, "AND"],
-    [/aztec|nahua|tenochtitlan|mexico|olmec|zapotec|oaxaca|monte.?alban/i, "MESO"],
-    [/mississippian|cahokia|hopewell|woodhenge/i, "NA"],
-    [/lidar|remote.?sensing|satellite|gis|geophys/i, "GIS"],
-    [/excavat|dig|fieldwork|trench/i, "DIG"],
-    [/isotope|spectrometry|xrf|chemical.?analysis/i, "LAB"],
-    [/3d|photogrammetry|scan|reconstruct/i, "3D"],
-    [/climate|environment|palynology|pollen|ice.?core/i, "ENV"],
-    [/trade|exchange|silk.?road|merchant/i, "TRD"],
-    [/war|battle|conflict|conquest|siege/i, "WAR"],
+    [/skull|cranium|crania|skeleton|burial|tomb|grave|funerary|mummy|mummif/i, "\u{1F480}"],
+    [/dna|genome|genetic|ancient.?dna|paleogenomic/i, "\u{1F9EC}"],
+    [/bone|osteo|remains|mortuary/i, "\u{1F9B4}"],
+    [/inscription|epigraphy|hieroglyph|cuneiform|tablet|papyrus|manuscript/i, "\u{13080}"],
+    [/maya|glyph|codex|stela|stele/i, "\u{133C7}"],
+    [/luwian|anatolian|hittite|prism/i, "\u{10900}"],
+    [/astronom|celestial|solar|lunar|solstice|equinox|zodiac|star|comet|eclipse|planet|parapegma/i, "\u{2726}"],
+    [/calendar|chronolog|radiocarbon|carbon.?14/i, "\u{1F4C5}"],
+    [/pyramid|temple|monument|palace|citadel|acropolis|ziggurat/i, "\u{1F3DB}"],
+    [/megalith|stonehenge|standing.?stone|dolmen|menhir|cave|rock.?art|petroglyph|pictograph/i, "\u{1FAA8}"],
+    [/pottery|ceramic|vessel|amphora|urn|bowl|jar|goblet/i, "\u{1F3FA}"],
+    [/coin|numismat|currency|mint/i, "\u{1FA99}"],
+    [/boat|ship|maritime|shipwreck|nautical/i, "\u{2693}"],
+    [/game|board.?game|dice|senet|mehen/i, "\u{1F3B2}"],
+    [/egypt|egyptian|pharaoh|nile/i, "\u{132F4}"],
+    [/greek|greece|athens|sparta|hellenistic/i, "\u{1F3DB}"],
+    [/roman|rome|latin|caesar|imperial/i, "\u{2694}"],
+    [/mesopotamia|babylon|assyrian|sumerian|akkadian|ur\b/i, "\u{1202D}"],
+    [/india|indus|harappan|vedic/i, "\u{1F589}"],
+    [/china|chinese|shang|zhou|han\b|tang\b|ming\b/i, "\u{1F409}"],
+    [/inca|andean|peru|tiwanaku/i, "\u{1F999}"],
+    [/aztec|nahua|tenochtitlan|mexico|olmec|zapotec|oaxaca|monte.?alban/i, "\u{1F40D}"],
+    [/mississippian|cahokia|hopewell|woodhenge/i, "\u{1F426}"],
+    [/lidar|remote.?sensing|satellite|gis|geophys/i, "\u{1F6F0}"],
+    [/excavat|dig|fieldwork|trench/i, "\u{26CF}"],
+    [/isotope|spectrometry|xrf|chemical.?analysis/i, "\u{1F52C}"],
+    [/3d|photogrammetry|scan|reconstruct/i, "\u{1F4D0}"],
+    [/climate|environment|palynology|pollen|ice.?core/i, "\u{1F321}"],
+    [/trade|exchange|silk.?road|merchant/i, "\u{1F5FA}"],
+    [/war|battle|conflict|conquest|siege/i, "\u{2694}"],
   ];
 
   // Region fallbacks when no keyword matches
   const REGION_EMOJI = {
-    mesoamerica:   "MESO",
-    north_america: "NA",
-    europe:        "EUR",
-    near_east:     "NE",
-    general:       "ARCH",
+    mesoamerica:   "\u{1F30B}",
+    north_america: "\u{1F985}",
+    europe:        "\u{1F3DB}",
+    near_east:     "\u{1F319}",
+    general:       "\u{1F50D}",
   };
 
   function pickEmoji(title, region) {
@@ -927,7 +927,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
     for (const [re, emoji] of KEYWORD_MAP) {
       if (re.test(hay)) return emoji;
     }
-    return REGION_EMOJI[region] ?? "ARCH";
+    return REGION_EMOJI[region] ?? "\u{1F3FA}";
   }
 
   function relDate(iso) {
@@ -1005,46 +1005,46 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
     <a href="index.html" class="sidebar-logo">arch<span>AI</span>ology</a>
     <nav class="sidebar-nav">
       <a class="sidebar-link active" href="index.html">
-        <span class="sidebar-icon">H</span>Home
+        <span class="sidebar-icon">&#x2302;</span>Home
       </a>
       <a class="sidebar-link" href="news.html">
-        <span class="sidebar-icon">N</span>News
+        <span class="sidebar-icon">&#x25C8;</span>News
       </a>
       <a class="sidebar-link" href="map.html">
-        <span class="sidebar-icon">M</span>World Map
+        <span class="sidebar-icon">&#x25CE;</span>World Map
       </a>
       <a class="sidebar-link" href="numismatics.html">
-        <span class="sidebar-icon">N</span>Numismatics
+        <span class="sidebar-icon">&#x1FA99;</span>Numismatics
       </a>
       <a class="sidebar-link" href="luwian.html">
-        <span class="sidebar-icon">L</span>Luwian Research
+        <span class="sidebar-icon">&#x10900;</span>Luwian Research
       </a>
       <a class="sidebar-link" href="maya_inscriptions.html">
-        <span class="sidebar-icon">Y</span>Maya Mundo
+        <span class="sidebar-icon">&#x133C7;</span>Maya Mundo
       </a>
       <a class="sidebar-link" href="sky.html">
-        <span class="sidebar-icon">*</span>Archaeoastronomy
+        <span class="sidebar-icon">&#x2726;</span>Archaeoastronomy
       </a>
       <a class="sidebar-link" href="maritime.html">
-        <span class="sidebar-icon">A</span>Maritime
+        <span class="sidebar-icon">&#x2693;</span>Maritime
       </a>
       <a class="sidebar-link" href="inscriptions.html">
-        <span class="sidebar-icon">E</span>Epigraphy
+        <span class="sidebar-icon">&#x13080;</span>Epigraphy
       </a>
       <a class="sidebar-link" href="bioanthro.html">
-        <span class="sidebar-icon">B</span>Bioanthropology
+        <span class="sidebar-icon">&#x25C9;</span>Bioanthropology
       </a>
       <a class="sidebar-link" href="linguistics.html">
-        <span class="sidebar-icon">G</span>Linguistics
+        <span class="sidebar-icon">&#x25CC;</span>Linguistics
       </a>
       <a class="sidebar-link" href="conferences.html">
-        <span class="sidebar-icon">C</span>Conferences
+        <span class="sidebar-icon">&#x25C8;</span>Conferences
       </a>
       <a class="sidebar-link" href="games.html">
-        <span class="sidebar-icon">P</span>Games
+        <span class="sidebar-icon">&#x2B21;</span>Games
       </a>
       <a class="sidebar-link" href="upload.html">
-        <span class="sidebar-icon">U</span>Upload
+        <span class="sidebar-icon">&#x2191;</span>Upload
       </a>
     </nav>
     <div class="sidebar-footer">archaiology.org</div>
@@ -1196,7 +1196,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
     <!-- CARD 1 - live article -->
     <article class="article-card">
-      <div class="ac-img-wrap" data-label="Near East - Archaeoastronomy">SKY</div>
+      <div class="ac-img-wrap" data-label="Near East - Archaeoastronomy">&#x1FAA8;</div>
       <div class="ac-tag ac-tag-neareast">Near East - Archaeoastronomy</div>
       <a href="lidar-hoyuk-prism.html">
         <div class="ac-title">Peg, Boat, and Quartered Sky: The Lidar Hoyuk Prism as Portable Parapegma</div>
@@ -1213,7 +1213,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
     <!-- CARD 2 -->
     <article class="article-card">
-      <div class="ac-img-wrap" data-label="Linked Data - Numismatics">N</div>
+      <div class="ac-img-wrap" data-label="Linked Data - Numismatics">&#x1FA99;</div>
       <div class="ac-tag ac-tag-europe">Linked Data - Numismatics</div>
       <a href="numismatics.html">
         <div class="ac-title">Coins as Portable Archives: ANS MANTIS and Linked Data Numismatics</div>
@@ -1228,7 +1228,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
     <!-- CARD 3 - placeholder -->
     <article class="article-card">
-      <div class="ac-img-wrap" data-label="Mesoamerica - Classic Maya">MAY</div>
+      <div class="ac-img-wrap" data-label="Mesoamerica - Classic Maya">&#x133C7;</div>
       <div class="ac-tag ac-tag-mesoamerica">Mesoamerica - Classic Maya</div>
       <div class="ac-title">Hieroglyphic Stairways and the Long Count: New Readings at Copan</div>
       <p class="ac-dek">Revised epigraphic analysis of Structure 26 challenges established dynastic sequences and opens new questions about the Classic collapse.</p>
@@ -1237,7 +1237,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
     <!-- CARD 4 - placeholder -->
     <article class="article-card">
-      <div class="ac-img-wrap" data-label="North America - Mississippian">NA</div>
+      <div class="ac-img-wrap" data-label="North America - Mississippian">&#x1F426;</div>
       <div class="ac-tag ac-tag-northamerica">North America - Mississippian</div>
       <div class="ac-title">Cahokia's Woodhenge and the Solstice Alignment Problem</div>
       <p class="ac-dek">LiDAR survey data provides new evidence for the spatial relationship between Monks Mound and the post circle alignments at the greatest pre-Columbian city north of Mexico.</p>
@@ -1246,7 +1246,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
     <!-- CARD 5 - placeholder -->
     <article class="article-card">
-      <div class="ac-img-wrap" data-label="Near East - Bronze Age">NE</div>
+      <div class="ac-img-wrap" data-label="Near East - Bronze Age">&#x1F3FA;</div>
       <div class="ac-tag ac-tag-neareast">Near East - Bronze Age</div>
       <div class="ac-title">The Ain Samiya Goblet: Cosmos, Chaos, and the Earliest Cosmological Depiction</div>
       <p class="ac-dek">A reexamination of the silver goblet from the Judean Hills reframes its imagery not as myth-illustration but as cosmogenesis - creation of order from primordial chaos.</p>
@@ -1255,7 +1255,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
     <!-- CARD 6 - placeholder -->
     <article class="article-card">
-      <div class="ac-img-wrap" data-label="Mesoamerica - Olmec">MESO</div>
+      <div class="ac-img-wrap" data-label="Mesoamerica - Olmec">&#x1F981;</div>
       <div class="ac-tag ac-tag-mesoamerica">Mesoamerica - Olmec</div>
       <div class="ac-title">San Lorenzo and the First Monumental Tradition in the Americas</div>
       <p class="ac-dek">Revisiting the colossal heads and hydraulic engineering of San Lorenzo in light of recent geophysical survey data and revised dating evidence.</p>
