@@ -113,6 +113,7 @@ h1 em{color:var(--jade-lt);font-style:italic;}
 .map-panel{position:relative;height:340px;}
 .map-pane{position:absolute;inset:0;display:none;}
 .map-pane.active{display:block;}
+#pane-dynasty{overflow-y:auto;}
 #maya-map{height:100%;}
 .corpus-frame{
   width:100%;height:100%;border:0;background:#0a1018;
@@ -211,6 +212,133 @@ h1 em{color:var(--jade-lt);font-style:italic;}
 .alc-title{font-size:.78rem;font-weight:600;color:var(--star);margin-bottom:.25rem;}
 .alc-sub{font-size:.63rem;color:rgba(200,216,240,.45);line-height:1.55;margin-bottom:.3rem;}
 .alc-url{font-family:var(--mono);font-size:.5rem;color:var(--jade-lt);opacity:.65;}
+
+/* ── Dynasty chart pane ── */
+#pane-dynasty {
+  overflow:auto;
+  background:var(--night);
+  padding:0;
+}
+.dynasty-chart-wrap {
+  padding:1.2rem 1.4rem;
+  min-width:900px;
+}
+.dynasty-chart-header {
+  display:flex;align-items:baseline;justify-content:space-between;
+  margin-bottom:1rem;padding-bottom:.6rem;
+  border-bottom:1px solid rgba(200,216,240,.07);
+}
+.dynasty-chart-title {
+  font-family:var(--serif);font-size:1.05rem;font-weight:900;color:var(--star);
+}
+.dynasty-chart-sub {
+  font-family:var(--mono);font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(200,216,240,.3);
+}
+.dynasty-chart-meta {
+  font-size:.58rem;color:rgba(200,216,240,.25);font-style:italic;
+}
+
+/* legend */
+.dynasty-legend {
+  display:flex;flex-wrap:wrap;gap:.5rem .9rem;margin-bottom:.9rem;
+}
+.dl-item {
+  display:flex;align-items:center;gap:.35rem;
+  font-size:.56rem;color:rgba(200,216,240,.45);
+}
+.dl-swatch {
+  width:10px;height:10px;border-radius:1px;flex-shrink:0;
+}
+
+/* filter chips */
+.dynasty-filters {
+  display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.8rem;
+}
+.dynasty-filter-btn {
+  font-size:.5rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.18rem .45rem;border:1px solid rgba(200,216,240,.1);background:none;
+  color:rgba(200,216,240,.32);cursor:pointer;transition:all .14s;
+}
+.dynasty-filter-btn:hover { color:var(--star); }
+.dynasty-filter-btn.active {
+  background:rgba(90,184,128,.1);color:var(--jade-lt);border-color:rgba(90,184,128,.3);
+}
+
+/* image container */
+.dynasty-img-container {
+  position:relative;border:1px solid rgba(200,216,240,.08);
+  background:rgba(200,216,240,.01);overflow:hidden;
+}
+.dynasty-img-container img {
+  width:100%;height:auto;display:block;
+  filter:saturate(.85) contrast(1.05) brightness(.92);
+  transition:filter .3s;
+}
+.dynasty-img-container:hover img {
+  filter:saturate(1) contrast(1.08) brightness(.98);
+}
+
+/* zoom controls */
+.dynasty-zoom-bar {
+  display:flex;align-items:center;gap:.4rem;margin-bottom:.6rem;
+}
+.dz-btn {
+  font-size:.7rem;font-weight:700;width:24px;height:24px;
+  background:rgba(200,216,240,.04);border:1px solid rgba(200,216,240,.1);
+  color:rgba(200,216,240,.5);cursor:pointer;transition:all .14s;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.dz-btn:hover { color:var(--star);border-color:rgba(200,216,240,.25); }
+.dz-label {
+  font-family:var(--mono);font-size:.55rem;color:rgba(200,216,240,.3);
+  min-width:32px;text-align:center;
+}
+.dz-sep { width:1px;height:16px;background:rgba(200,216,240,.07);margin:0 .1rem; }
+.dynasty-fullscreen-btn {
+  font-size:.52rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:.2rem .5rem;border:1px solid rgba(200,216,240,.1);background:none;
+  color:rgba(200,216,240,.38);cursor:pointer;transition:all .14s;margin-left:auto;
+}
+.dynasty-fullscreen-btn:hover { color:var(--star);border-color:rgba(200,216,240,.25); }
+
+/* attribution row */
+.dynasty-attribution {
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.4rem;
+  margin-top:.6rem;padding-top:.5rem;border-top:1px solid rgba(200,216,240,.05);
+  font-size:.55rem;color:rgba(200,216,240,.2);
+}
+.dynasty-attribution a { color:var(--ochre-lt); }
+
+/* fullscreen overlay */
+.dynasty-fullscreen-overlay {
+  display:none;position:fixed;inset:0;z-index:3000;
+  background:rgba(0,0,0,.96);
+  align-items:center;justify-content:center;
+  padding:1rem;
+}
+.dynasty-fullscreen-overlay.open { display:flex; }
+.dynasty-fullscreen-overlay img {
+  max-width:100%;max-height:100vh;object-fit:contain;
+  filter:saturate(.9) contrast(1.05);
+}
+.dynasty-fs-close {
+  position:fixed;top:.8rem;right:.8rem;z-index:3001;
+  width:34px;height:34px;background:rgba(200,216,240,.08);
+  border:1px solid rgba(200,216,240,.15);color:rgba(200,216,240,.6);
+  cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;
+}
+
+/* site call-outs */
+.dynasty-site-pills {
+  display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.6rem;
+}
+.dynasty-site-pill {
+  font-size:.52rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:.15rem .4rem;border-radius:1px;cursor:pointer;transition:all .14s;
+  border:1px solid;
+}
+.dynasty-site-pill:hover { opacity:.8; transform:translateY(-1px); }
 
 /* ── Ballcourt popup styling ── */
 .bc-popup .leaflet-popup-content-wrapper {
@@ -315,6 +443,7 @@ h1 em{color:var(--jade-lt);font-style:italic;}
         <div class="map-tabs" role="tablist" aria-label="Maya map layers">
           <button class="map-tab active" id="tab-arch-map" type="button" onclick="toggleMapPane('arch')" aria-selected="true">archAIology map</button>
           <button class="map-tab" id="tab-corpus-map" type="button" onclick="toggleMapPane('corpus')" aria-selected="false">Maya Corpus map</button>
+          <button class="map-tab" id="tab-dynasty-map" type="button" onclick="toggleMapPane('dynasty')" aria-selected="false">Classic Dynasties</button>
         </div>
         <div class="map-credit">
           Embedded Maya Corpus map used with permission from Benjamin Rosell.<br>
@@ -334,6 +463,72 @@ h1 em{color:var(--jade-lt);font-style:italic;}
             referrerpolicy="strict-origin-when-cross-origin"
           ></iframe>
         </div>
+        <div class="map-pane" id="pane-dynasty">
+          <div class="dynasty-chart-wrap">
+            <div class="dynasty-chart-header">
+              <div>
+                <div class="dynasty-chart-title">Maya Dynasties of the Classic Period</div>
+                <div class="dynasty-chart-sub">250 CE – 900 CE · Dynastic succession & inter-polity relations</div>
+              </div>
+              <div class="dynasty-chart-meta">Chart: AncientVine / Reddit · CC BY-SA</div>
+            </div>
+
+            <!-- site color pills linking to panel -->
+            <div class="dynasty-site-pills">
+              <span class="dynasty-site-pill" style="color:#5ab880;border-color:rgba(90,184,128,.35);background:rgba(90,184,128,.07)" onclick="selectSiteByCode('TIK')">Tikal</span>
+              <span class="dynasty-site-pill" style="color:#d4a84b;border-color:rgba(212,168,75,.35);background:rgba(212,168,75,.07)" onclick="selectSiteByCode('CAL')">Calakmul</span>
+              <span class="dynasty-site-pill" style="color:#9080d0;border-color:rgba(144,128,208,.35);background:rgba(144,128,208,.07)" onclick="selectSiteByCode('PAL')">Palenque</span>
+              <span class="dynasty-site-pill" style="color:#d06050;border-color:rgba(208,96,80,.35);background:rgba(208,96,80,.07)" onclick="selectSiteByCode('TON')">Tonina</span>
+              <span class="dynasty-site-pill" style="color:#50a8d0;border-color:rgba(80,168,208,.35);background:rgba(80,168,208,.07)" onclick="selectSiteByCode('YAX')">Yaxchilán</span>
+              <span class="dynasty-site-pill" style="color:#80c070;border-color:rgba(128,192,112,.35);background:rgba(128,192,112,.07)" onclick="selectSiteByCode('PIE')">Piedras Negras</span>
+              <span class="dynasty-site-pill" style="color:#c0a060;border-color:rgba(192,160,96,.35);background:rgba(192,160,96,.07)" onclick="selectSiteByCode('CPN')">Copán</span>
+              <span class="dynasty-site-pill" style="color:#d080c0;border-color:rgba(208,128,192,.35);background:rgba(208,128,192,.07)" onclick="selectSiteByCode('NAR')">Naranjo</span>
+              <span class="dynasty-site-pill" style="color:#80b0e0;border-color:rgba(128,176,224,.35);background:rgba(128,176,224,.07)" onclick="selectSiteByCode('QRG')">Quiriguá</span>
+              <span class="dynasty-site-pill" style="color:#e0a050;border-color:rgba(224,160,80,.35);background:rgba(224,160,80,.07)" onclick="selectSiteByCode('DON')">Dos Pilas</span>
+            </div>
+
+            <!-- zoom bar -->
+            <div class="dynasty-zoom-bar">
+              <button class="dz-btn" onclick="dynastyZoom(-0.2)" title="Zoom out">−</button>
+              <span class="dz-label" id="dz-pct">100%</span>
+              <button class="dz-btn" onclick="dynastyZoom(0.2)" title="Zoom in">+</button>
+              <button class="dz-btn" onclick="dynastyZoomReset()" title="Reset zoom" style="font-size:.55rem;width:auto;padding:0 .4rem;">Reset</button>
+              <div class="dz-sep"></div>
+              <button class="dz-btn" onclick="dynastyZoom(0)" style="font-size:.55rem;width:auto;padding:0 .4rem;" title="Fit width">Fit</button>
+              <button class="dynasty-fullscreen-btn" onclick="openDynastyFullscreen()">⛶ Fullscreen</button>
+            </div>
+
+            <!-- image -->
+            <div class="dynasty-img-container" id="dynasty-img-container">
+              <img id="dynasty-img"
+                src="maya-dynasties-of-the-classic-period-chart-by-ancient-v0-e6dne1nzv1h71.jpg"
+                alt="Maya Dynasties of the Classic Period (250–900 CE) — succession chart showing dynastic lines for Tikal, Calakmul, Palenque, Yaxchilán, Copán, Naranjo, Quiriguá, Piedras Negras, Tonina, Dos Pilas and more, with intermarriage and political ties."
+                style="transform-origin:top left;"
+                draggable="false">
+            </div>
+
+            <!-- legend -->
+            <div class="dynasty-legend" style="margin-top:.8rem;">
+              <div class="dl-item"><div class="dl-swatch" style="background:#5ab880;opacity:.7"></div>Tikal / Petén core</div>
+              <div class="dl-item"><div class="dl-swatch" style="background:#c0392b;opacity:.7"></div>Calakmul (Snake Kingdom)</div>
+              <div class="dl-item"><div class="dl-swatch" style="background:#9080d0;opacity:.7"></div>Palenque / Tonina</div>
+              <div class="dl-item"><div class="dl-swatch" style="background:#50a8d0;opacity:.7"></div>Yaxchilán / Piedras Negras</div>
+              <div class="dl-item"><div class="dl-swatch" style="background:#c0a060;opacity:.7"></div>Copán / Quiriguá</div>
+              <div class="dl-item"><div class="dl-swatch" style="background:#80c070;opacity:.7"></div>Secondary / satellite polities</div>
+              <div class="dl-item" style="gap:.5rem;">
+                <span style="display:inline-block;width:18px;height:1px;background:rgba(200,216,240,.4);margin-top:5px;border-top:1px dashed rgba(200,216,240,.4)"></span>Marriage alliance
+              </div>
+              <div class="dl-item" style="gap:.5rem;">
+                <span style="display:inline-block;width:18px;height:1px;background:rgba(200,216,240,.6);margin-top:5px;"></span>Succession / descent
+              </div>
+            </div>
+
+            <div class="dynasty-attribution">
+              <span>Source: <a href="https://www.reddit.com/r/ancienthistory/" target="_blank" rel="noopener">AncientVine via r/ancienthistory</a> · compiled from Simon Martin &amp; Nikolai Grube, <em>Chronicle of the Maya Kings and Queens</em></span>
+              <span>Click site pills above to explore inscriptions ↑</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="site-detail" id="site-detail">
@@ -343,6 +538,14 @@ h1 em{color:var(--jade-lt);font-style:italic;}
       </div>
     </div>
   </div>
+</div>
+
+<!-- Dynasty fullscreen overlay -->
+<div class="dynasty-fullscreen-overlay" id="dynasty-fs-overlay" onclick="closeDynastyFullscreen()">
+  <button class="dynasty-fs-close" onclick="closeDynastyFullscreen()">✕</button>
+  <img src="maya-dynasties-of-the-classic-period-chart-by-ancient-v0-e6dne1nzv1h71.jpg"
+    alt="Maya Classic Period Dynasty Chart — fullscreen view"
+    style="filter:saturate(.9) contrast(1.05) brightness(.95);">
 </div>
 
 <!-- Lightbox -->
@@ -483,14 +686,16 @@ window.addEventListener('load', () => {
 });
 
 function toggleMapPane(which){
-  const isArch = which === 'arch';
-  document.getElementById('pane-arch').classList.toggle('active', isArch);
-  document.getElementById('pane-corpus').classList.toggle('active', !isArch);
-  document.getElementById('tab-arch-map').classList.toggle('active', isArch);
-  document.getElementById('tab-corpus-map').classList.toggle('active', !isArch);
-  document.getElementById('tab-arch-map').setAttribute('aria-selected', String(isArch));
-  document.getElementById('tab-corpus-map').setAttribute('aria-selected', String(!isArch));
-  if(isArch && map){
+  const panes = ['arch','corpus','dynasty'];
+  panes.forEach(p => {
+    document.getElementById('pane-'+p).classList.toggle('active', p === which);
+    const tab = document.getElementById('tab-'+p+'-map');
+    if(tab){
+      tab.classList.toggle('active', p === which);
+      tab.setAttribute('aria-selected', String(p === which));
+    }
+  });
+  if(which === 'arch' && map){
     setTimeout(() => map.invalidateSize(), 80);
   }
 }
@@ -1511,6 +1716,59 @@ function toggleBallcourts(btn){
   ballcourtOn=true;
   btn.classList.add('active');
   document.getElementById('ballcourt-count').textContent=`${BALLCOURTS.length} sites · ${TOTAL_COURTS} courts`;
+}
+
+// ── Dynasty chart controls ────────────────────────────────────
+let dynastyScale = 1.0;
+
+function dynastyZoom(delta){
+  const img = document.getElementById('dynasty-img');
+  const container = document.getElementById('dynasty-img-container');
+  if(delta === 0){
+    // "Fit" — scale to container width
+    const natW = img.naturalWidth || 1200;
+    const contW = container.clientWidth || 900;
+    dynastyScale = Math.min(1, contW / natW);
+  } else {
+    dynastyScale = Math.max(0.3, Math.min(3.0, dynastyScale + delta));
+  }
+  img.style.width = (dynastyScale * 100) + '%';
+  img.style.transform = '';
+  document.getElementById('dz-pct').textContent = Math.round(dynastyScale * 100) + '%';
+}
+
+function dynastyZoomReset(){
+  dynastyScale = 1.0;
+  const img = document.getElementById('dynasty-img');
+  img.style.width = '100%';
+  img.style.transform = '';
+  document.getElementById('dz-pct').textContent = '100%';
+}
+
+function openDynastyFullscreen(){
+  document.getElementById('dynasty-fs-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDynastyFullscreen(){
+  document.getElementById('dynasty-fs-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close fullscreen on Escape
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){
+    closeDynastyFullscreen();
+    closeLightbox();
+  }
+});
+
+function selectSiteByCode(code){
+  // Switch to arch map tab so the site detail renders
+  toggleMapPane('arch');
+  loadSite(code);
+  // Scroll main content into view
+  document.querySelector('.main-content').scrollIntoView({behavior:'smooth'});
 }
 </script>
 </body>
