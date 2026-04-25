@@ -343,9 +343,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   <div class="ctrl-label">External Atlas</div>
   <div class="filter-row">
     <button class="filter-chip" id="arabia-atlas-btn" onclick="toggleArabiaAtlas()">Ancient Arabia</button>
+    <button class="filter-chip" id="armep-atlas-btn" onclick="toggleArmepAtlas()">ARMEP</button>
   </div>
   <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:6px;line-height:1.45;">
-    Open the Huma-Num public atlas in a dedicated workspace above the map.
+    Open the Huma-Num public atlas or the ARMEP map in a dedicated workspace above the map.
   </div>
 </div>
 
@@ -399,6 +400,34 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     ></iframe>
     <div class="atlas-note">
       If the atlas does not render here, the host site is likely blocking iframe embedding. Use the “Open in new tab” control above.
+    </div>
+  </div>
+</div>
+
+<div class="atlas-panel" id="armepAtlasPanel">
+  <div class="atlas-head">
+    <div class="atlas-title-wrap">
+      <div class="atlas-kicker">External atlas layer</div>
+      <div class="atlas-title">ARMEP Interactive Map</div>
+      <div class="atlas-meta">
+        Source: <a href="https://www.armep.gwi.uni-muenchen.de/#map" target="_blank" rel="noopener">www.armep.gwi.uni-muenchen.de/#map</a>
+      </div>
+    </div>
+    <div class="atlas-actions">
+      <a class="atlas-link" href="https://www.armep.gwi.uni-muenchen.de/#map" target="_blank" rel="noopener">Open in new tab</a>
+      <button class="atlas-close" type="button" onclick="toggleArmepAtlas(false)">Close</button>
+    </div>
+  </div>
+  <div class="atlas-body">
+    <iframe
+      class="atlas-frame"
+      src="https://www.armep.gwi.uni-muenchen.de/#map"
+      title="ARMEP interactive map"
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+    <div class="atlas-note">
+      If the ARMEP map does not render here, the host site is likely blocking iframe embedding. Use the “Open in new tab” control above.
     </div>
   </div>
 </div>
@@ -672,7 +701,7 @@ function showDetail(site, corpus) {
   siteBtn.href = `site.html?id=${encodeURIComponent(site.name)}`;
   siteBtn.style.display = 'block';
 
-  window.toggleArabiaAtlas(false);
+  closeExternalAtlases();
   document.getElementById('detailPanel').classList.add('open');
 }
 
@@ -681,14 +710,44 @@ function regionLabel(r) {
     north_america:'N. America',south_america:'S. America',general:'General'}[r] || r;
 }
 
+function closeExternalAtlases(){
+  const panels = [
+    ['arabiaAtlasPanel','arabia-atlas-btn','Ancient Arabia'],
+    ['armepAtlasPanel','armep-atlas-btn','ARMEP']
+  ];
+  panels.forEach(([panelId, btnId, label]) => {
+    const panel = document.getElementById(panelId);
+    const btn = document.getElementById(btnId);
+    if(panel) panel.classList.remove('open');
+    if(btn){
+      btn.classList.remove('active');
+      btn.textContent = label;
+    }
+  });
+}
+
 window.toggleArabiaAtlas = function(force){
   const panel = document.getElementById('arabiaAtlasPanel');
   const btn = document.getElementById('arabia-atlas-btn');
   const shouldOpen = typeof force === 'boolean' ? force : !panel.classList.contains('open');
-  panel.classList.toggle('open', shouldOpen);
-  btn.classList.toggle('active', shouldOpen);
-  btn.textContent = shouldOpen ? 'Hide Arabia Atlas' : 'Ancient Arabia';
+  closeExternalAtlases();
   if(shouldOpen){
+    panel.classList.add('open');
+    btn.classList.add('active');
+    btn.textContent = 'Hide Arabia Atlas';
+    document.getElementById('detailPanel').classList.remove('open');
+  }
+};
+
+window.toggleArmepAtlas = function(force){
+  const panel = document.getElementById('armepAtlasPanel');
+  const btn = document.getElementById('armep-atlas-btn');
+  const shouldOpen = typeof force === 'boolean' ? force : !panel.classList.contains('open');
+  closeExternalAtlases();
+  if(shouldOpen){
+    panel.classList.add('open');
+    btn.classList.add('active');
+    btn.textContent = 'Hide ARMEP';
     document.getElementById('detailPanel').classList.remove('open');
   }
 };
