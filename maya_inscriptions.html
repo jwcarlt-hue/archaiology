@@ -94,8 +94,33 @@ h1 em{color:var(--jade-lt);font-style:italic;}
 /* ── Main content ── */
 .main-content{min-height:calc(100vh - 48px);}
 
-/* Map */
-#maya-map{height:340px;border-bottom:1px solid rgba(200,216,240,.05);}
+/* Map workspace */
+.map-workspace{border-bottom:1px solid rgba(200,216,240,.05);}
+.map-toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.8rem 1rem;background:rgba(200,216,240,.02);border-bottom:1px solid rgba(200,216,240,.05);
+}
+.map-tabs{display:flex;gap:.35rem;flex-wrap:wrap;}
+.map-tab{
+  font-size:.56rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.28rem .55rem;border:1px solid rgba(200,216,240,.1);background:none;
+  color:rgba(200,216,240,.42);cursor:pointer;transition:all .14s;
+}
+.map-tab:hover{color:var(--star);}
+.map-tab.active{background:rgba(90,184,128,.1);border-color:rgba(90,184,128,.28);color:var(--jade-lt);}
+.map-credit{font-size:.6rem;color:rgba(200,216,240,.38);line-height:1.5;text-align:right;}
+.map-credit a{color:var(--ochre-lt);}
+.map-panel{position:relative;height:340px;}
+.map-pane{position:absolute;inset:0;display:none;}
+.map-pane.active{display:block;}
+#maya-map{height:100%;}
+.corpus-frame{
+  width:100%;height:100%;border:0;background:#0a1018;
+}
+@media(max-width:700px){
+  .map-toolbar{align-items:flex-start;flex-direction:column;}
+  .map-credit{text-align:left;}
+}
 
 /* Site detail */
 .site-detail{padding:1.5rem 1.8rem;}
@@ -285,7 +310,32 @@ h1 em{color:var(--jade-lt);font-style:italic;}
 
   <!-- Main -->
   <div class="main-content">
-    <div id="maya-map"></div>
+    <div class="map-workspace">
+      <div class="map-toolbar">
+        <div class="map-tabs" role="tablist" aria-label="Maya map layers">
+          <button class="map-tab active" id="tab-arch-map" type="button" onclick="toggleMapPane('arch')" aria-selected="true">archAIology map</button>
+          <button class="map-tab" id="tab-corpus-map" type="button" onclick="toggleMapPane('corpus')" aria-selected="false">Maya Corpus map</button>
+        </div>
+        <div class="map-credit">
+          Embedded Maya Corpus map used with permission from Benjamin Rosell.<br>
+          <a href="https://mayacorpus.org/map" target="_blank" rel="noopener">Open mayacorpus.org/map</a>
+        </div>
+      </div>
+      <div class="map-panel">
+        <div class="map-pane active" id="pane-arch">
+          <div id="maya-map"></div>
+        </div>
+        <div class="map-pane" id="pane-corpus">
+          <iframe
+            class="corpus-frame"
+            src="https://mayacorpus.org/map"
+            title="Maya Corpus map"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe>
+        </div>
+      </div>
+    </div>
     <div class="site-detail" id="site-detail">
       <div style="text-align:center;padding:3rem;color:rgba(200,216,240,.25);">
         <div style="font-size:2rem;margin-bottom:.8rem;">𓏇</div>
@@ -432,6 +482,19 @@ window.addEventListener('load', () => {
   renderMapMarkers();
 });
 
+function toggleMapPane(which){
+  const isArch = which === 'arch';
+  document.getElementById('pane-arch').classList.toggle('active', isArch);
+  document.getElementById('pane-corpus').classList.toggle('active', !isArch);
+  document.getElementById('tab-arch-map').classList.toggle('active', isArch);
+  document.getElementById('tab-corpus-map').classList.toggle('active', !isArch);
+  document.getElementById('tab-arch-map').setAttribute('aria-selected', String(isArch));
+  document.getElementById('tab-corpus-map').setAttribute('aria-selected', String(!isArch));
+  if(isArch && map){
+    setTimeout(() => map.invalidateSize(), 80);
+  }
+}
+
 function renderMapMarkers(){
   SITES.forEach(s => {
     const r = s.riese > 100 ? 8 : s.riese > 50 ? 6 : s.riese > 20 ? 5 : 4;
@@ -482,6 +545,7 @@ function loadSite(code){
   const s = SITES.find(x=>x.code===code);
   if(!s) return;
   renderSiteList();
+  toggleMapPane('arch');
 
   // Fly map to site
   map.flyTo([s.lat, s.lng], 9, {duration:1.2});
