@@ -681,8 +681,8 @@ window.addEventListener('load', init);
 
     <!-- 3D Viewer -->
     <div class="sg-viewer" id="sgViewer">
-      <div id="sgViewerInner" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
-        <div class="sg-model-placeholder" id="sgPlaceholder">
+      <div id="sgViewerInner" style="position:absolute;inset:0;">
+        <div class="sg-model-placeholder" id="sgPlaceholder" style="position:absolute;inset:0;">
           <div class="sg-anchor-icon">⚓</div>
           <p>Select a vessel from the list to load its 3D model</p>
         </div>
@@ -718,7 +718,7 @@ const SHIPS = [
     type: 'Quinquereme',
     origin: 'Carthage',
     period: 'Republic',
-    glb: '3d_models/Carthaginian_Warship.glb',
+    glb: 'Carthaginian_Warship.glb',
     specs: {
       length: '~37m',
       oarsmen: '300+',
@@ -760,8 +760,13 @@ function toggleGallery() {
   btn.classList.toggle('active', sgOpen);
 
   if (sgOpen && !sgActiveId && SHIPS.length > 0) {
-    // Auto-load first ship on first open
-    setTimeout(() => loadShip(SHIPS[0].id), 100);
+    // Wait for model-viewer to register before loading
+    const firstLoad = () => loadShip(SHIPS[0].id);
+    if (customElements.get('model-viewer')) {
+      setTimeout(firstLoad, 50);
+    } else {
+      customElements.whenDefined('model-viewer').then(firstLoad);
+    }
   }
 }
 
@@ -786,6 +791,16 @@ function buildGalleryUI() {
 }
 
 function loadShip(id) {
+  // Ensure model-viewer custom element is registered before injecting HTML
+  const doLoad = () => _loadShipNow(id);
+  if (customElements.get('model-viewer')) {
+    doLoad();
+  } else {
+    customElements.whenDefined('model-viewer').then(doLoad);
+  }
+}
+
+function _loadShipNow(id) {
   const ship = SHIPS.find(s => s.id === id);
   if (!ship) return;
   sgActiveId = id;
@@ -802,40 +817,51 @@ function loadShip(id) {
   document.getElementById('sgViewerControls').style.display = 'flex';
   document.getElementById('sgViewerLabel').textContent = `${ship.name} · drag to rotate · scroll to zoom`;
 
-  // Remove old model-viewer if any
-  const old = viewerInner.querySelector('model-viewer');
-  if (old) old.remove();
+  // Use innerHTML so the custom element registry properly upgrades the tag
+  viewerInner.innerHTML = `
+    <model-viewer
+      src="${ship.glb}"
+      alt="${ship.name}"
+      camera-controls
+      auto-rotate
+      rotation-per-second="20deg"
+      shadow-intensity="1.2"
+      environment-image="neutral"
+      exposure="0.85"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      loading="eager"
+      style="width:100%;height:100%;background:transparent;--progress-bar-color:#d4a84b;"
+    >
+      <div slot="progress-bar" style="
+        position:absolute;bottom:0;left:0;right:0;height:2px;
+        background:rgba(200,223,240,.08);
+      ">
+        <div id="sgProgressFill" style="height:100%;background:var(--amber);width:0%;transition:width .2s;"></div>
+      </div>
+      <div slot="error" style="
+        display:flex;flex-direction:column;align-items:center;justify-content:center;
+        width:100%;height:100%;gap:.6rem;color:rgba(212,168,75,.7);font-size:.72rem;
+        letter-spacing:.06em;text-align:center;padding:2rem;
+      ">
+        <div style="font-size:2rem;opacity:.5;">⚠</div>
+        <div>Could not load model<br><span style="font-size:.6rem;opacity:.6;">${ship.glb}</span></div>
+      </div>
+    </model-viewer>
+  `;
 
-  sgModelViewerEl = document.createElement('model-viewer');
-  sgModelViewerEl.setAttribute('src', ship.glb);
-  sgModelViewerEl.setAttribute('alt', ship.name);
-  sgModelViewerEl.setAttribute('camera-controls', '');
-  sgModelViewerEl.setAttribute('auto-rotate', '');
-  sgModelViewerEl.setAttribute('rotation-per-second', '20deg');
-  sgModelViewerEl.setAttribute('shadow-intensity', '1.2');
-  sgModelViewerEl.setAttribute('environment-image', 'neutral');
-  sgModelViewerEl.setAttribute('exposure', '0.85');
-  sgModelViewerEl.setAttribute('ar', '');
-  sgModelViewerEl.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
-  sgModelViewerEl.setAttribute('loading', 'eager');
-  sgModelViewerEl.style.cssText = 'width:100%;height:100%;background:transparent;--progress-bar-color:#d4a84b;';
+  sgModelViewerEl = viewerInner.querySelector('model-viewer');
 
-  // Loading state
-  const loadMsg = document.createElement('div');
-  loadMsg.id = 'sgLoadMsg';
-  loadMsg.style.cssText = 'position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);font-size:.62rem;color:rgba(200,223,240,.4);letter-spacing:.08em;';
-  loadMsg.textContent = 'Loading 3D model…';
-  viewerInner.appendChild(loadMsg);
-
+  // Progress tracking
+  sgModelViewerEl.addEventListener('progress', e => {
+    const fill = document.getElementById('sgProgressFill');
+    if (fill) fill.style.width = (e.detail.totalProgress * 100) + '%';
+  });
   sgModelViewerEl.addEventListener('load', () => {
-    document.getElementById('sgLoadMsg')?.remove();
+    const fill = document.getElementById('sgProgressFill');
+    if (fill) fill.style.width = '100%';
+    setTimeout(() => { if (fill) fill.style.opacity = '0'; }, 400);
   });
-  sgModelViewerEl.addEventListener('error', () => {
-    loadMsg.textContent = '⚠ Model file not found — check 3d_models/ path';
-    loadMsg.style.color = 'rgba(212,168,75,.6)';
-  });
-
-  viewerInner.insertBefore(sgModelViewerEl, viewerInner.firstChild);
 
   // ── Build description panel ──
   const desc = document.getElementById('sgDescPanel');
