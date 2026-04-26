@@ -6,6 +6,7 @@
 <title>Maritime Archaeology — archAIology</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
@@ -114,6 +115,134 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--d
 .pw-sub{font-size:.62rem;color:var(--amber);}
 .marker-cluster-small,.marker-cluster-medium,.marker-cluster-large{background:rgba(7,60,100,.4)!important;}
 .marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{background:rgba(10,90,150,.75)!important;color:#c8dff0!important;font-family:var(--sans)!important;font-weight:700!important;font-size:.68rem!important;}
+
+/* ── Ships Gallery Toggle Button ── */
+.gallery-toggle{
+  margin-left:auto;
+  font-size:.58rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  padding:.28rem .65rem;border:1px solid rgba(212,168,75,.35);background:rgba(212,168,75,.08);
+  color:var(--amber);cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+.gallery-toggle:hover{background:rgba(212,168,75,.18);border-color:var(--amber);}
+.gallery-toggle.active{background:rgba(212,168,75,.22);border-color:var(--amber);color:#ffe0a0;}
+
+/* ── Ships Gallery Overlay ── */
+.ships-gallery{
+  position:fixed;top:44px;left:0;right:0;bottom:0;z-index:800;
+  background:var(--deep);
+  display:flex;flex-direction:column;
+  transform:translateY(100%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
+}
+.ships-gallery.open{transform:translateY(0);pointer-events:all;}
+
+.sg-header{
+  display:flex;align-items:center;gap:1.2rem;
+  padding:.7rem 1.4rem;
+  background:rgba(5,12,26,.97);
+  border-bottom:1px solid rgba(200,223,240,.07);
+  flex-shrink:0;
+}
+.sg-title{font-family:var(--serif);font-size:1rem;font-weight:900;color:var(--foam);}
+.sg-title span{color:var(--amber);font-style:italic;}
+.sg-eyebrow{font-size:.54rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(200,223,240,.35);}
+.sg-count{font-size:.58rem;color:var(--amber);margin-left:.4rem;}
+.sg-ship-tabs{display:flex;gap:.35rem;margin-left:.5rem;flex-wrap:wrap;}
+.sg-ship-tab{
+  font-size:.55rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:.22rem .55rem;border:1px solid rgba(200,223,240,.1);background:none;
+  color:rgba(200,223,240,.38);cursor:pointer;transition:all .14s;
+}
+.sg-ship-tab:hover{color:var(--foam);}
+.sg-ship-tab.active{background:rgba(212,168,75,.12);border-color:rgba(212,168,75,.35);color:var(--amber);}
+.sg-close{
+  margin-left:auto;width:28px;height:28px;flex-shrink:0;
+  background:rgba(200,223,240,.05);border:1px solid rgba(200,223,240,.1);
+  color:rgba(200,223,240,.45);cursor:pointer;font-size:.9rem;
+  display:flex;align-items:center;justify-content:center;transition:all .14s;
+}
+.sg-close:hover{color:var(--foam);border-color:rgba(200,223,240,.25);}
+
+.sg-body{display:flex;flex:1;overflow:hidden;}
+
+/* Left: ship card list */
+.sg-sidebar{
+  width:240px;flex-shrink:0;
+  border-right:1px solid rgba(200,223,240,.07);
+  overflow-y:auto;
+  background:rgba(5,12,26,.6);
+}
+.sg-card{
+  padding:.8rem 1rem;border-bottom:1px solid rgba(200,223,240,.04);
+  cursor:pointer;transition:all .15s;border-left:2px solid transparent;
+}
+.sg-card:hover{background:rgba(200,223,240,.03);}
+.sg-card.active{border-left-color:var(--amber);background:rgba(212,168,75,.05);}
+.sg-card-era{font-size:.52rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:.2rem;}
+.sg-card-name{font-size:.82rem;font-weight:700;color:var(--foam);margin-bottom:.2rem;}
+.sg-card-sub{font-size:.6rem;color:rgba(200,223,240,.38);}
+
+/* Center: 3D viewer */
+.sg-viewer{
+  flex:1;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 60%, rgba(10,40,80,.6) 0%, var(--deep) 70%);
+}
+model-viewer{
+  width:100%;height:100%;
+  background:transparent;
+  --progress-bar-color:var(--amber);
+  --progress-mask:transparent;
+}
+.sg-viewer-label{
+  position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);
+  font-size:.54rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,223,240,.3);pointer-events:none;white-space:nowrap;
+}
+.sg-viewer-controls{
+  position:absolute;top:.8rem;right:.8rem;
+  display:flex;flex-direction:column;gap:.35rem;
+}
+.sg-vc-btn{
+  width:28px;height:28px;background:rgba(5,12,26,.7);border:1px solid rgba(200,223,240,.1);
+  color:rgba(200,223,240,.45);cursor:pointer;font-size:.75rem;
+  display:flex;align-items:center;justify-content:center;transition:all .14s;
+}
+.sg-vc-btn:hover{color:var(--foam);border-color:rgba(200,223,240,.25);}
+.sg-model-placeholder{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:100%;height:100%;gap:.8rem;color:rgba(200,223,240,.2);
+}
+.sg-model-placeholder .sg-anchor-icon{font-size:3rem;opacity:.25;}
+.sg-model-placeholder p{font-size:.72rem;text-align:center;max-width:240px;line-height:1.6;}
+
+/* Right: description panel */
+.sg-desc{
+  width:300px;flex-shrink:0;
+  border-left:1px solid rgba(200,223,240,.07);
+  overflow-y:auto;
+  background:rgba(7,20,40,.5);
+  padding:1.2rem;
+}
+.sg-desc-eyebrow{font-size:.53rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--amber);margin-bottom:.5rem;}
+.sg-desc-name{font-family:var(--serif);font-size:1.25rem;font-weight:900;color:var(--foam);line-height:1.2;margin-bottom:.6rem;}
+.sg-desc-badges{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.9rem;}
+.sg-badge{font-size:.52rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.14rem .4rem;border-radius:2px;}
+.sg-b-period{background:rgba(212,168,75,.14);color:var(--amber);}
+.sg-b-type{background:rgba(10,90,150,.25);color:#7ab8e0;}
+.sg-b-origin{background:rgba(200,223,240,.06);color:rgba(200,223,240,.6);}
+.sg-desc-body{font-size:.78rem;color:rgba(200,223,240,.62);line-height:1.75;margin-bottom:1rem;}
+.sg-spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(200,223,240,.05);margin-bottom:1rem;}
+.sg-spec-cell{background:rgba(7,20,40,.8);padding:.55rem .75rem;}
+.sg-spec-n{font-family:var(--serif);font-size:1.1rem;font-weight:900;color:var(--amber);display:block;line-height:1;}
+.sg-spec-l{font-size:.5rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:rgba(200,223,240,.35);margin-top:.12rem;}
+.sg-divider{height:1px;background:rgba(200,223,240,.05);margin:.9rem 0;}
+.sg-feature-list{list-style:none;display:flex;flex-direction:column;gap:.4rem;}
+.sg-feature-list li{font-size:.72rem;color:rgba(200,223,240,.5);display:flex;gap:.5rem;align-items:baseline;}
+.sg-feature-list li::before{content:'—';color:var(--amber);flex-shrink:0;}
+
+@media(max-width:900px){.sg-sidebar{width:180px;}.sg-desc{width:240px;}}
+@media(max-width:680px){.sg-sidebar{display:none;}.sg-desc{width:220px;}}
 </style>
 </head>
 <body>
@@ -136,6 +265,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--d
     <strong id="hdrShown">—</strong> wrecks visible &nbsp;·&nbsp;
     <strong>1,584</strong> total · OXREP v2.1
   </div>
+  <button class="gallery-toggle" id="galleryToggle" onclick="toggleGallery()">⚓ Ships Gallery</button>
 </header>
 
 <div id="map"></div>
@@ -528,6 +658,243 @@ document.querySelectorAll('[data-cargo]').forEach(btn=>{
 
 // Start after DOM + scripts ready
 window.addEventListener('load', init);
+</script>
+
+<!-- ══════════════════════════════════════════════════════════
+     ANCIENT SHIPS GALLERY
+     ══════════════════════════════════════════════════════════ -->
+<div class="ships-gallery" id="shipsGallery">
+
+  <div class="sg-header">
+    <div>
+      <div class="sg-eyebrow">Ancient Ships Gallery<span class="sg-count" id="sgCount">· 1 model</span></div>
+      <div class="sg-title">Ancient <span>Vessels</span> &amp; Warships</div>
+    </div>
+    <div class="sg-ship-tabs" id="sgTabs"></div>
+    <button class="sg-close" onclick="toggleGallery()" title="Close gallery">✕</button>
+  </div>
+
+  <div class="sg-body">
+
+    <!-- Sidebar ship list -->
+    <div class="sg-sidebar" id="sgSidebar"></div>
+
+    <!-- 3D Viewer -->
+    <div class="sg-viewer" id="sgViewer">
+      <div id="sgViewerInner" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+        <div class="sg-model-placeholder" id="sgPlaceholder">
+          <div class="sg-anchor-icon">⚓</div>
+          <p>Select a vessel from the list to load its 3D model</p>
+        </div>
+      </div>
+      <div class="sg-viewer-controls" id="sgViewerControls" style="display:none;">
+        <button class="sg-vc-btn" onclick="sgResetCamera()" title="Reset view">⟳</button>
+        <button class="sg-vc-btn" onclick="sgToggleAR()" title="View in AR (mobile)">AR</button>
+        <button class="sg-vc-btn" onclick="sgToggleAutoRotate()" id="sgRotateBtn" title="Toggle auto-rotate">↻</button>
+      </div>
+      <div class="sg-viewer-label" id="sgViewerLabel"></div>
+    </div>
+
+    <!-- Description panel -->
+    <div class="sg-desc" id="sgDescPanel">
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:rgba(200,223,240,.18);gap:.6rem;">
+        <div style="font-size:2.5rem;opacity:.3;">🚢</div>
+        <div style="font-size:.7rem;text-align:center;line-height:1.6;">Select a vessel<br>to read its description</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// SHIPS GALLERY DATA
+// ══════════════════════════════════════════════════════════
+const SHIPS = [
+  {
+    id: 'carthaginian_warship',
+    name: 'Carthaginian Warship',
+    era: 'Punic Wars · 264–146 BCE',
+    type: 'Quinquereme',
+    origin: 'Carthage',
+    period: 'Republic',
+    glb: '3d_models/Carthaginian_Warship.glb',
+    specs: {
+      length: '~37m',
+      oarsmen: '300+',
+      displacement: '~100t',
+      ram: 'Bronze'
+    },
+    features: [
+      'Long, narrow wooden hull optimised for speed and ramming',
+      'Multiple banks of oarsmen — up to 300 rowers',
+      'Bronze-sheathed ram (corvus) at the prow',
+      'Single mast with square sail for ocean passages',
+      'Deck complement of marines, archers and officers',
+      'Oar-powered in combat; sails furled before engagement',
+      'Outrigger structure to support the upper oar banks',
+    ],
+    description: `A standard Carthaginian warship of the Punic Wars was typically a quinquereme — a large oared galley designed for speed, maneuverability, and ramming. It had a long, narrow wooden hull, multiple banks or groups of rowers, a bronze-sheathed ram at the prow, and a deck carrying marines, archers, and officers.
+
+Like other Mediterranean warships, it relied primarily on human-powered oars rather than sails during combat, though it carried a mast and square sail for travel. Carthaginian ships were especially valued for their skilled crews and naval efficiency, reflecting Carthage's identity as a major maritime power.`,
+    badges: ['Punic Wars', 'Quinquereme', 'Carthage'],
+    tabLabel: 'Carthaginian',
+  },
+  // ── Add future ships here ──
+  // { id:'greek_trireme', name:'Athenian Trireme', ... }
+];
+
+// ══════════════════════════════════════════════════════════
+// GALLERY STATE & LOGIC
+// ══════════════════════════════════════════════════════════
+let sgOpen = false;
+let sgActiveId = null;
+let sgAutoRotate = true;
+let sgModelViewerEl = null;
+
+function toggleGallery() {
+  sgOpen = !sgOpen;
+  const el = document.getElementById('shipsGallery');
+  const btn = document.getElementById('galleryToggle');
+  el.classList.toggle('open', sgOpen);
+  btn.classList.toggle('active', sgOpen);
+
+  if (sgOpen && !sgActiveId && SHIPS.length > 0) {
+    // Auto-load first ship on first open
+    setTimeout(() => loadShip(SHIPS[0].id), 100);
+  }
+}
+
+function buildGalleryUI() {
+  const sidebar = document.getElementById('sgSidebar');
+  const tabs = document.getElementById('sgTabs');
+  document.getElementById('sgCount').textContent = `· ${SHIPS.length} model${SHIPS.length !== 1 ? 's' : ''}`;
+
+  // Sidebar cards
+  sidebar.innerHTML = SHIPS.map(s => `
+    <div class="sg-card" id="sgCard_${s.id}" onclick="loadShip('${s.id}')">
+      <div class="sg-card-era">${s.era}</div>
+      <div class="sg-card-name">${s.name}</div>
+      <div class="sg-card-sub">${s.type} · ${s.origin}</div>
+    </div>
+  `).join('');
+
+  // Header tabs
+  tabs.innerHTML = SHIPS.map(s => `
+    <button class="sg-ship-tab" id="sgTab_${s.id}" onclick="loadShip('${s.id}')">${s.tabLabel}</button>
+  `).join('');
+}
+
+function loadShip(id) {
+  const ship = SHIPS.find(s => s.id === id);
+  if (!ship) return;
+  sgActiveId = id;
+
+  // Update sidebar + tab active states
+  SHIPS.forEach(s => {
+    document.getElementById('sgCard_' + s.id)?.classList.toggle('active', s.id === id);
+    document.getElementById('sgTab_' + s.id)?.classList.toggle('active', s.id === id);
+  });
+
+  // ── Build model-viewer ──
+  const viewerInner = document.getElementById('sgViewerInner');
+  document.getElementById('sgPlaceholder').style.display = 'none';
+  document.getElementById('sgViewerControls').style.display = 'flex';
+  document.getElementById('sgViewerLabel').textContent = `${ship.name} · drag to rotate · scroll to zoom`;
+
+  // Remove old model-viewer if any
+  const old = viewerInner.querySelector('model-viewer');
+  if (old) old.remove();
+
+  sgModelViewerEl = document.createElement('model-viewer');
+  sgModelViewerEl.setAttribute('src', ship.glb);
+  sgModelViewerEl.setAttribute('alt', ship.name);
+  sgModelViewerEl.setAttribute('camera-controls', '');
+  sgModelViewerEl.setAttribute('auto-rotate', '');
+  sgModelViewerEl.setAttribute('rotation-per-second', '20deg');
+  sgModelViewerEl.setAttribute('shadow-intensity', '1.2');
+  sgModelViewerEl.setAttribute('environment-image', 'neutral');
+  sgModelViewerEl.setAttribute('exposure', '0.85');
+  sgModelViewerEl.setAttribute('ar', '');
+  sgModelViewerEl.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
+  sgModelViewerEl.setAttribute('loading', 'eager');
+  sgModelViewerEl.style.cssText = 'width:100%;height:100%;background:transparent;--progress-bar-color:#d4a84b;';
+
+  // Loading state
+  const loadMsg = document.createElement('div');
+  loadMsg.id = 'sgLoadMsg';
+  loadMsg.style.cssText = 'position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);font-size:.62rem;color:rgba(200,223,240,.4);letter-spacing:.08em;';
+  loadMsg.textContent = 'Loading 3D model…';
+  viewerInner.appendChild(loadMsg);
+
+  sgModelViewerEl.addEventListener('load', () => {
+    document.getElementById('sgLoadMsg')?.remove();
+  });
+  sgModelViewerEl.addEventListener('error', () => {
+    loadMsg.textContent = '⚠ Model file not found — check 3d_models/ path';
+    loadMsg.style.color = 'rgba(212,168,75,.6)';
+  });
+
+  viewerInner.insertBefore(sgModelViewerEl, viewerInner.firstChild);
+
+  // ── Build description panel ──
+  const desc = document.getElementById('sgDescPanel');
+  const specEntries = Object.entries(ship.specs);
+  desc.innerHTML = `
+    <div class="sg-desc-eyebrow">${ship.era}</div>
+    <div class="sg-desc-name">${ship.name}</div>
+    <div class="sg-desc-badges">
+      ${ship.badges.map((b, i) => `<span class="sg-badge ${i===0?'sg-b-period':i===1?'sg-b-type':'sg-b-origin'}">${b}</span>`).join('')}
+    </div>
+    <div class="sg-spec-grid">
+      ${specEntries.map(([k, v]) => `
+        <div class="sg-spec-cell">
+          <span class="sg-spec-n">${v}</span>
+          <div class="sg-spec-l">${k}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="sg-desc-body">${ship.description.replace(/\n\n/g, '</p><p style="margin-top:.75rem">').replace(/^/, '<p>').replace(/$/, '</p>')}</div>
+    <div class="sg-divider"></div>
+    <div class="sg-desc-eyebrow" style="margin-bottom:.5rem;">Key Features</div>
+    <ul class="sg-feature-list">
+      ${ship.features.map(f => `<li>${f}</li>`).join('')}
+    </ul>
+  `;
+}
+
+function sgResetCamera() {
+  if (sgModelViewerEl) {
+    sgModelViewerEl.resetTurntableRotation();
+    sgModelViewerEl.cameraOrbit = 'auto auto auto';
+  }
+}
+
+function sgToggleAutoRotate() {
+  if (!sgModelViewerEl) return;
+  sgAutoRotate = !sgAutoRotate;
+  const btn = document.getElementById('sgRotateBtn');
+  if (sgAutoRotate) {
+    sgModelViewerEl.setAttribute('auto-rotate', '');
+    btn.style.color = 'var(--amber)';
+  } else {
+    sgModelViewerEl.removeAttribute('auto-rotate');
+    btn.style.color = '';
+  }
+}
+
+function sgToggleAR() {
+  if (sgModelViewerEl) sgModelViewerEl.activateAR();
+}
+
+// Build UI on page load
+document.addEventListener('DOMContentLoaded', buildGalleryUI);
+// Keyboard shortcut: G to toggle gallery
+document.addEventListener('keydown', e => {
+  if (e.key === 'g' || e.key === 'G') {
+    if (!e.target.matches('input,textarea')) toggleGallery();
+  }
+});
 </script>
 </body>
 </html>
