@@ -268,10 +268,10 @@ h1 em{color:var(--jade-lt);font-style:italic;}
 /* image container */
 .dynasty-img-container {
   position:relative;border:1px solid rgba(200,216,240,.08);
-  background:rgba(200,216,240,.01);overflow:hidden;
+  background:rgba(200,216,240,.01);overflow:auto;
 }
 .dynasty-img-container img {
-  width:100%;height:auto;display:block;
+  display:block;max-width:none;
   filter:saturate(.85) contrast(1.05) brightness(.92);
   transition:filter .3s;
 }
@@ -503,7 +503,7 @@ h1 em{color:var(--jade-lt);font-style:italic;}
               <img id="dynasty-img"
                 src="maya-dynasties-of-the-classic-period-chart-by-ancient-v0-e6dne1nzv1h71.jpg"
                 alt="Maya Dynasties of the Classic Period (250–900 CE) — succession chart showing dynastic lines for Tikal, Calakmul, Palenque, Yaxchilán, Copán, Naranjo, Quiriguá, Piedras Negras, Tonina, Dos Pilas and more, with intermarriage and political ties."
-                style="transform-origin:top left;"
+                style="width:100%;height:auto;transform-origin:top left;"
                 draggable="false">
             </div>
 
@@ -1721,27 +1721,41 @@ function toggleBallcourts(btn){
 // ── Dynasty chart controls ────────────────────────────────────
 let dynastyScale = 1.0;
 
-function dynastyZoom(delta){
+function _applyDynastyScale(scale){
+  dynastyScale = Math.max(0.25, Math.min(4.0, scale));
   const img = document.getElementById('dynasty-img');
-  const container = document.getElementById('dynasty-img-container');
-  if(delta === 0){
-    // "Fit" — scale to container width
-    const natW = img.naturalWidth || 1200;
-    const contW = container.clientWidth || 900;
-    dynastyScale = Math.min(1, contW / natW);
-  } else {
-    dynastyScale = Math.max(0.3, Math.min(3.0, dynastyScale + delta));
-  }
-  img.style.width = (dynastyScale * 100) + '%';
-  img.style.transform = '';
+  // Keep image at natural width, scale via transform so container scrolls correctly
+  img.style.width = img.naturalWidth ? img.naturalWidth + 'px' : 'auto';
+  img.style.transformOrigin = 'top left';
+  img.style.transform = `scale(${dynastyScale})`;
+  // Expand container so scrollbars reflect the scaled size
+  const w = (img.naturalWidth || 1200) * dynastyScale;
+  const h = (img.naturalHeight || 800) * dynastyScale;
+  img.parentElement.style.minWidth = w + 'px';
+  img.parentElement.style.height = h + 'px';
   document.getElementById('dz-pct').textContent = Math.round(dynastyScale * 100) + '%';
 }
 
+function dynastyZoom(delta){
+  if(delta === 0){
+    // Fit — scale so image width matches the wrap width
+    const wrap = document.getElementById('dynasty-chart-wrap') || document.querySelector('.dynasty-chart-wrap');
+    const wrapW = wrap ? wrap.clientWidth - 56 : 900; // subtract padding
+    const img = document.getElementById('dynasty-img');
+    const natW = img.naturalWidth || 1200;
+    _applyDynastyScale(wrapW / natW);
+  } else {
+    _applyDynastyScale(dynastyScale + delta);
+  }
+}
+
 function dynastyZoomReset(){
-  dynastyScale = 1.0;
   const img = document.getElementById('dynasty-img');
   img.style.width = '100%';
-  img.style.transform = '';
+  img.style.transform = 'none';
+  img.parentElement.style.minWidth = '';
+  img.parentElement.style.height = '';
+  dynastyScale = 1.0;
   document.getElementById('dz-pct').textContent = '100%';
 }
 
