@@ -718,7 +718,7 @@ const SHIPS = [
     type: 'Quinquereme',
     origin: 'Carthage',
     period: 'Republic',
-    glb: '3d_models/Carthaginian_Warship.min.glb',
+    glb: 'Carthaginian_Warship.min.glb',
     specs: {
       length: '~37m',
       oarsmen: '300+',
@@ -819,7 +819,8 @@ function _loadShipNow(id) {
 
   // ── Build model-viewer ──
   const viewerInner = document.getElementById('sgViewerInner');
-  document.getElementById('sgPlaceholder').style.display = 'none';
+  const placeholder = document.getElementById('sgPlaceholder');
+  if (placeholder) placeholder.style.display = 'none';
   document.getElementById('sgViewerControls').style.display = 'flex';
   document.getElementById('sgViewerLabel').textContent = `${ship.name} · drag to rotate · scroll to zoom`;
 
