@@ -794,14 +794,20 @@ function loadShip(id) {
   // Ensure model-viewer custom element is registered before injecting HTML
   const doLoad = () => _loadShipNow(id);
   if (customElements.get('model-viewer')) {
+    console.log('[Ships] model-viewer already defined, loading immediately');
     doLoad();
   } else {
-    customElements.whenDefined('model-viewer').then(doLoad);
+    console.log('[Ships] waiting for model-viewer to define...');
+    customElements.whenDefined('model-viewer').then(() => {
+      console.log('[Ships] model-viewer now defined, loading ship');
+      doLoad();
+    });
   }
 }
 
 function _loadShipNow(id) {
   const ship = SHIPS.find(s => s.id === id);
+  console.log('[Ships] _loadShipNow', id, ship ? 'found' : 'NOT FOUND');
   if (!ship) return;
   sgActiveId = id;
 
@@ -851,16 +857,23 @@ function _loadShipNow(id) {
   `;
 
   sgModelViewerEl = viewerInner.querySelector('model-viewer');
+  console.log('[Ships] model-viewer el:', sgModelViewerEl);
+  console.log('[Ships] src set to:', ship.glb);
 
   // Progress tracking
   sgModelViewerEl.addEventListener('progress', e => {
+    console.log('[Ships] progress:', e.detail.totalProgress);
     const fill = document.getElementById('sgProgressFill');
     if (fill) fill.style.width = (e.detail.totalProgress * 100) + '%';
   });
   sgModelViewerEl.addEventListener('load', () => {
+    console.log('[Ships] model LOADED successfully');
     const fill = document.getElementById('sgProgressFill');
     if (fill) fill.style.width = '100%';
     setTimeout(() => { if (fill) fill.style.opacity = '0'; }, 400);
+  });
+  sgModelViewerEl.addEventListener('error', e => {
+    console.error('[Ships] model-viewer ERROR:', e.detail);
   });
 
   // ── Build description panel ──
