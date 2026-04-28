@@ -718,7 +718,7 @@ const SHIPS = [
     type: 'Quinquereme',
     origin: 'Carthage',
     period: 'Republic',
-    glb: 'Carthaginian_Warship.min.glb',
+    glb: '3d_models/Carthaginian_Warship.min.glb',
     specs: {
       length: '~37m',
       oarsmen: '300+',
@@ -742,6 +742,68 @@ Like other Mediterranean warships, it relied primarily on human-powered oars rat
   },
   // ── Add future ships here ──
   // { id:'greek_trireme', name:'Athenian Trireme', ... }
+  {
+    id: 'athenian_greek_trireme',
+    name: 'Athenian Greek Trireme',
+    era: 'Classical–Hellenistic · 480–322 BCE',
+    type: 'Trireme / Warship',
+    origin: 'Athens',
+    period: 'Classical',
+    glb: '3d_models/Athenian_Greek_Trireme.min.glb',
+    specs: {
+      fleet: '417 ships',
+      peak: '325/4 BCE',
+      oarsmen: '170',
+      ram: 'Bronze'
+    },
+    features: [
+      'Three banks of oars — 170 rowers in tight, disciplined formation',
+      'Low, narrow hull built for speed and the ramming stroke (diekplous)',
+      'Bronze ram (embolon) at the waterline, the primary weapon',
+      'Mast and sail used for transit; stepped out before battle',
+      'Crew of ~200 including marines, archers, and officers',
+      'Piraeus shipsheds held 400+ vessels by the late fourth century',
+      'Naval Arsenal of Philo at Zea served the expanded Hellenistic fleet',
+    ],
+    description: `Athens was not originally one of the major naval powers of Greece. At the end of the sixth century BC, its fleet was modest — about 50 older penteconters — while Corinth, Miletus, Samos, and Aegina possessed stronger maritime traditions. The transformation came in the early fifth century when Themistocles pushed Athens toward large-scale naval construction. This new fleet made possible the Athenian role at Salamis in 480 BC and laid the foundation for the city's sea empire.
+
+During the fifth century, Athens normally maintained around 300 triremes, crewed by Athenians, metics, mercenaries, and allied sailors. Athens also controlled the fleets of Chios, Lesbos, and Samos. After the Peloponnesian War, Sparta reduced the fleet to 12 ships in 404 BC — but the maritime culture and infrastructure of Piraeus survived. Athens rebuilt steadily: roughly 100 triremes by 370 BC, back to ~300 by mid-century, and then — under Lycurgus — beyond even the classical peak.
+
+By 325/4 BC, official records listed 417 warships: 360 triremes, 50 quadriremes, and 7 quinqueremes. This was the largest and most technically diverse Athenian fleet ever recorded. Piraeus shipshed archaeology supports the scale; total berths across Attic ports exceeded 400. The critical weakness was manpower — perhaps 200 ships could be crewed locally, 240–250 with mercenaries. At the Battle of Amorgos in 322 BC, the Macedonian fleet — drawing on Cyprus, Phoenicia, Cilicia, and heavier polyremes — ended Athenian naval supremacy. Athens never again built a fleet on that scale.`,
+    badges: ['480–322 BCE', 'Trireme', 'Athens · Piraeus'],
+    tabLabel: 'Athenian Trireme',
+  },
+  {
+    id: 'greek_trireme',
+    name: 'Greek Trireme',
+    era: 'Archaic–Classical · c. 700–300 BCE',
+    type: 'Trireme',
+    origin: 'Greece',
+    period: 'Archaic / Classical',
+    glb: '3d_models/Greek_Trireme.min.glb',
+    specs: {
+      length: '~37m',
+      beam: '~6m',
+      oarsmen: '170',
+      speed: '~9 knots'
+    },
+    features: [
+      'Trireme design — three superimposed banks of oars on each side',
+      'Thalamitai, zygitai, and thranitai formed the three oar levels',
+      'Lightweight construction using fir, pine, or cedar for speed',
+      'Outrigger (parexeiresia) extended the beam for the top oar bank',
+      'Designed to be beached overnight — no sleeping quarters',
+      'Combat relied on speed, timing, and the diekplous ramming manoeuvre',
+      'Dominant warship type across Greek poleis from c. 700 to 300 BCE',
+    ],
+    description: `The trireme was the standard Greek warship of the Archaic and Classical periods, and the vessel that shaped naval warfare across the eastern Mediterranean for four centuries. The name refers to its defining feature: three banks of oars on each side, stacked vertically and offset to allow maximum oar length without overlap. A full crew of 170 rowers — thalamitai at the lowest level, zygitai in the middle, thranitai at the top — could drive the hull to speeds of around 9 knots in short bursts.
+
+The hull was built for speed above all else: long, narrow, and lightly constructed from fir or pine, with minimal freeboard. There was no room for cargo, provisions, or sleeping, so triremes operated close to shore and were beached each night. An outrigger (parexeiresia) extended the effective beam to accommodate the top oar bank without widening the hull itself. The bronze ram at the waterline was the primary weapon, used in the diekplous — a high-speed breakthrough of the enemy line — or the periplous, a flanking sweep to shatter oars and disable enemy vessels.
+
+The trireme was developed and refined by poleis across the Greek world, and its design represents one of the most sophisticated feats of ancient naval engineering. By the late fourth century, heavier polyremes — quadriremes and quinqueremes — began to supplement and eventually replace it in major fleet actions.`,
+    badges: ['c. 700–300 BCE', 'Trireme', 'Greek World'],
+    tabLabel: 'Greek Trireme',
+  },
 ];
 
 // ══════════════════════════════════════════════════════════
