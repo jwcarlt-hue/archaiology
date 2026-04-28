@@ -1234,7 +1234,62 @@ loadSite().catch(err => {
   console.error(err);
 });
 
-// ── Image attach / clear ─────────────────────────────────────
+// ── Image attach / clear / persist ───────────────────────
+const SITE_IMG_KEY = `archaiology_site_img_${siteId}`;
+
+function applySceneImage(src, labelText, attrText) {
+  const img    = document.getElementById('sceneImg');
+  const canvas = document.getElementById('sceneCanvas');
+  img.src = src;
+  img.style.display = 'block';
+  canvas.style.display = 'none';
+  if (renderer) { animating = false; }
+  document.getElementById('btnClearImg').style.display = 'inline-block';
+  document.getElementById('btnAttach').style.display = 'none';
+  document.getElementById('btnRotate').style.display = 'none';
+  document.getElementById('btnReset').style.display = 'none';
+  const lbl = document.getElementById('sceneLabel');
+  const attr = document.getElementById('sceneAttr');
+  if (lbl && labelText) lbl.textContent = labelText;
+  if (attr && attrText)  attr.textContent = attrText;
+}
+
+// Auto-restore: check localStorage first, then try committed asset path
+(function restorePersistedImage() {
+  // 1. localStorage (user-attached, survives navigation)
+  const stored = localStorage.getItem(SITE_IMG_KEY);
+  if (stored) {
+    try {
+      const { src, label, attr } = JSON.parse(stored);
+      applySceneImage(src, label, attr);
+      return;
+    } catch(e) {
+      localStorage.removeItem(SITE_IMG_KEY);
+    }
+  }
+
+  // 2. Committed asset path (pushed to GitHub as assets/site-images/{siteId}.jpg)
+  const assetSrc = `assets/site-images/${encodeURIComponent(siteId)}.jpg`;
+  const probe = new Image();
+  probe.onload = () => {
+    applySceneImage(
+      assetSrc,
+      `${siteId} — Site Image`,
+      `assets/site-images/${siteId}.jpg`
+    );
+    // Persist the asset path too so future loads skip the probe
+    try {
+      localStorage.setItem(SITE_IMG_KEY, JSON.stringify({
+        src: assetSrc,
+        label: `${siteId} — Site Image`,
+        attr: `assets/site-images/${siteId}.jpg`
+      }));
+    } catch(e) {}
+  };
+  // probe.onerror → silently stay on canvas — nothing to do
+  probe.src = assetSrc;
+})();
+
 const imgInput = document.getElementById('imgUploadInput');
 if (imgInput) {
   imgInput.addEventListener('change', function() {
@@ -1242,30 +1297,30 @@ if (imgInput) {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = function(e) {
-      const img   = document.getElementById('sceneImg');
-      const canvas = document.getElementById('sceneCanvas');
-      img.src = e.target.result;
-      img.style.display = 'block';
-      canvas.style.display = 'none';
-      if (renderer) { animating = false; }
-      document.getElementById('btnClearImg').style.display = 'inline-block';
-      document.getElementById('btnAttach').style.display = 'none';
-      document.getElementById('btnRotate').style.display = 'none';
-      document.getElementById('btnReset').style.display = 'none';
-      // Update label to show filename
-      const lbl = document.getElementById('sceneLabel');
-      if (lbl) lbl.textContent = file.name.replace(/\.[^.]+$/, '');
-      const attr = document.getElementById('sceneAttr');
-      if (attr) attr.textContent = 'User-attached image · ' + (file.size / 1024).toFixed(0) + ' KB';
+      const label = file.name.replace(/\.[^.]+$/, '');
+      const attr  = 'User-attached image · ' + (file.size / 1024).toFixed(0) + ' KB';
+      applySceneImage(e.target.result, label, attr);
+      // Persist to localStorage so it survives navigation
+      // base64 images can be large — guard against QuotaExceededError
+      try {
+        localStorage.setItem(SITE_IMG_KEY, JSON.stringify({
+          src: e.target.result,
+          label,
+          attr
+        }));
+      } catch(err) {
+        // Storage full — still show the image this session, just won't persist
+        console.warn('[archaiology] localStorage quota exceeded; image shown but not persisted');
+      }
     };
     reader.readAsDataURL(file);
   });
 }
 
 function clearSceneImage() {
-  const img   = document.getElementById('sceneImg');
+  const img    = document.getElementById('sceneImg');
   const canvas = document.getElementById('sceneCanvas');
-  const input = document.getElementById('imgUploadInput');
+  const input  = document.getElementById('imgUploadInput');
   img.src = ''; img.style.display = 'none';
   canvas.style.display = 'block';
   if (renderer) { animating = true; }
@@ -1274,11 +1329,15 @@ function clearSceneImage() {
   document.getElementById('btnRotate').style.display = 'inline-block';
   document.getElementById('btnReset').style.display = 'inline-block';
   if (input) input.value = '';
-  // Restore label
+  // Remove persisted image for this site
+  localStorage.removeItem(SITE_IMG_KEY);
+  // Restore scene label
   const site = window._currentSite;
   if (site) {
-    document.getElementById('sceneLabel').textContent = site.name + ' — Procedural Reconstruction';
-    document.getElementById('sceneAttr').textContent = 'Default model · Refines as corpus grows';
+    const lbl = document.getElementById('sceneLabel');
+    const attr = document.getElementById('sceneAttr');
+    if (lbl) lbl.textContent = site.name + ' — Procedural Reconstruction';
+    if (attr) attr.textContent = 'Default model · Refines as corpus grows';
   }
 }
 // ── NATIVE LAND DIGITAL ───────────────────────────────────
