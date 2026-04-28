@@ -7,6 +7,7 @@
 <meta name="description" content="A linked-data numismatics workspace for the ANS MANTIS collection, Nomisma RDF, Pelagios annotations, and archaeological coin research.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 <style>
 :root{
   --ink:#090806;--bronze:#9b6a2f;--gold:#d4a84b;--silver:#c7c0ae;
@@ -121,7 +122,7 @@ h1 em{color:var(--gold);font-style:italic}
 .sg-item-name{font-family:var(--serif);font-size:.85rem;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:.18rem;}
 .sg-item-sub{font-size:.6rem;color:var(--muted);}
 .sg-viewer-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#1a140c;position:relative;}
-.sg-viewer-wrap iframe{flex:1;width:100%;border:none;display:block;}
+.sg-viewer-wrap iframe,.sg-viewer-wrap model-viewer{flex:1;width:100%;border:none;display:block;}
 .sg-viewer-bar{display:flex;align-items:center;gap:.6rem;padding:.4rem .8rem;background:rgba(9,8,6,.88);border-top:1px solid rgba(212,168,75,.12);flex-shrink:0;}
 .sg-viewer-label{font-size:.55rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,250,240,.3);}
 .sg-viewer-hint{font-size:.52rem;color:rgba(255,250,240,.2);margin-left:auto;}
@@ -406,6 +407,52 @@ Built entirely in Parian marble — one of the first Doric buildings on the main
     ],
     attribution: 'Gensheimer, M. B. 2017. "Metaphors for Marathon in the Sculptural Program of the Athenian Treasury at Delphi." <em>Hesperia</em> 86.1, pp. 1–42. · 3D model: HMU-DMA Lab / Sketchfab.',
   },
+  {
+    id: 'siphnian_treasury',
+    name: 'Siphnian Treasury at Delphi',
+    era: 'Late Archaic · c. 525 BCE',
+    type: 'Treasury / Civic Monument',
+    location: 'Delphi, Greece',
+    tabLabel: 'Siphnian Treasury',
+    sketchfabId: null,
+    glb: 'Siphnian_Treasury_at_Delphi.min.glb',
+    sketchfabEmbed: null,
+    badges: ['c. 525 BCE', 'Ionic Treasury', 'Siphnos · Cyclades'],
+    specs: { style: 'Ionic distyle', stone: 'Parian marble', frieze: 'Continuous', caryatids: '2 (porch)' },
+    summary: `The Siphnian Treasury at Delphi is one of the most securely dated and richly decorated buildings of the Archaic Greek world. Herodotus connects its construction directly to the extraordinary silver and gold mining wealth of the island of Siphnos: the islanders dedicated a tithe of their mine revenues to Apollo at Delphi, and the result was a small Ionic building of exceptional material and sculptural ambition.
+
+Richard Neer treats the treasury not simply as an aesthetic achievement but as a civic instrument. Greek treasuries were storehouses built by poleis at major Panhellenic sanctuaries, but they served above all as permanent public displays of communal identity and prestige. The Siphnian Treasury turned private mining wealth into a shared, sacred, and highly visible statement of what Siphnos was as a polis. Its carefully chosen position along the Sacred Way ensured that visitors ascending toward the Temple of Apollo would encounter it as a prominent element in the competitive landscape of Delphic dedications.
+
+The building's materials reinforce this message. Siphnian stone formed the walls, bringing a literal fragment of the island into the sanctuary. Naxian marble provided decorative bands, and Parian marble — the prestige stone of the Aegean — was used for the sculptural program, the doorway, and the frieze. The caryatids replacing the porch columns are among the earliest extant examples of female figures used as architectural supports, and they underscore the treasury's self-conscious extravagance.`,
+    figures: [
+      {
+        label: 'East Frieze — Trojan Cycle & Divine Scales',
+        desc: 'The east frieze depicted the weighing of fates (psychostasia) with Achilles and Memnon fighting over the body of Antilochos while gods — including Zeus with his scales — observe. The gods are divided into Trojan and Greek supporters, creating a scene of cosmic deliberation that frames mortal conflict as divinely superintended.'
+      },
+      {
+        label: 'North Frieze — Gigantomachy',
+        desc: 'The north frieze, the best preserved, shows the Olympian gods battling the Giants. Apollo and Artemis fight side by side, and the sculptural quality is exceptionally high. The choice of a Gigantomachy — the paradigmatic myth of divine order defeating chthonic chaos — was common at Delphi but here executed with unusual vigour and compositional sophistication.'
+      },
+      {
+        label: 'East Pediment — Apollo, Herakles & the Delphic Tripod',
+        desc: 'The east pediment showed Apollo and Herakles struggling over the Delphic tripod, with Zeus intervening between them. The scene directly engages the sanctuary\'s own mythology, asserting Apollo\'s authority at his principal oracular site and making the treasury\'s location at Delphi thematically inseparable from its sculptural content.'
+      },
+      {
+        label: 'West Frieze — Artemis and the Cycladic Reading (Neer)',
+        desc: 'Neer challenges the traditional identification of the west frieze as the Judgment of Paris. He reads the central figure as Artemis rather than Aphrodite, noting bowstrings, an arrow shaft, and a palm tree behind the horses — details pointing toward the myth of Artemis killing Orion on Delos. Because Delos was the sacred centre of Cycladic identity and the birthplace of Apollo, this reading makes the scene particularly appropriate for a Cycladic polis dedicating at the Apolline sanctuary of Delphi.'
+      }
+    ],
+    features: [
+      'One of the earliest buildings to use caryatids as architectural supports',
+      'Continuous Ionic frieze wrapping all four sides — an exceptional sculptural investment',
+      'Native Siphnian stone in the walls symbolically brought the island into the sanctuary',
+      'Herodotus dates it to Siphnian mining prosperity, making it a key chronological anchor for late Archaic sculpture',
+      'Position on the Sacred Way maximised competitive visibility among poleis',
+      'Mining tithe redirected private wealth into public, civic, sacred display — Neer\'s central argument',
+      'West frieze possibly depicts Artemis and Orion on Delos, a Cycladic theological reference',
+    ],
+    attribution: 'Neer, R. T. 2001. "Framing the Gift: The Politics of the Siphnian Treasury at Delphi." <em>Classical Antiquity</em> 20.2, pp. 273–336.',
+  },
   // ── Add future sites here ──
 ];
 
@@ -453,10 +500,38 @@ function loadSite(id) {
     document.getElementById('sgTab_' + s.id)?.classList.toggle('active', s.id === id);
   });
 
-  // ── Inject Sketchfab embed ──
+  // ── Inject viewer ──
   const mount = document.getElementById('sgViewerMount');
   mount.style.display = 'block';
-  mount.innerHTML = site.sketchfabEmbed;
+
+  if (site.sketchfabEmbed) {
+    // Sketchfab iframe
+    mount.innerHTML = site.sketchfabEmbed;
+  } else if (site.glb) {
+    // Self-hosted GLB via model-viewer
+    const doInject = () => {
+      mount.innerHTML = `<model-viewer
+        src="${site.glb}"
+        alt="${site.name}"
+        camera-controls auto-rotate rotation-per-second="18deg"
+        shadow-intensity="1.1" environment-image="neutral" exposure="0.9"
+        ar ar-modes="webxr scene-viewer quick-look" loading="eager"
+        style="width:100%;height:100%;background:transparent;--progress-bar-color:#d4a84b;">
+        <div slot="error" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(212,168,75,.6);font-size:.72rem;gap:.5rem;">
+          <div style="font-size:2rem;opacity:.5;">⚠</div>
+          <div>Model not found — check <code>${site.glb}</code></div>
+        </div>
+      </model-viewer>`;
+    };
+    if (customElements.get('model-viewer')) {
+      doInject();
+    } else {
+      customElements.whenDefined('model-viewer').then(doInject);
+    }
+  } else {
+    mount.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(255,250,240,.2);font-size:.75rem;">No 3D model available</div>`;
+  }
+
   document.getElementById('sgViewerLabel').textContent = site.name;
 
   // ── Build detail panel ──
