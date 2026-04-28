@@ -84,6 +84,73 @@ h1 em{color:var(--gold);font-style:italic}
   .stat-grid,.pipeline,.record-grid,.tool-grid,.quick-links{grid-template-columns:1fr}
   .hero{padding-top:3rem}
 }
+
+/* ── Archaeological Sites Gallery ── */
+.gallery-toggle-btn{
+  margin-left:auto;font-size:.58rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  padding:.28rem .65rem;border:1px solid rgba(155,106,47,.4);background:rgba(155,106,47,.08);
+  color:var(--bronze);cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+.gallery-toggle-btn:hover{background:rgba(155,106,47,.16);border-color:var(--bronze);}
+.gallery-toggle-btn.active{background:rgba(155,106,47,.2);border-color:var(--bronze);color:#5c3a10;}
+.sites-gallery{
+  position:fixed;top:46px;left:0;right:0;bottom:0;z-index:800;
+  background:var(--paper);display:flex;flex-direction:column;
+  transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);pointer-events:none;
+}
+.sites-gallery.open{transform:translateY(0);pointer-events:all;}
+.sg-hdr{
+  display:flex;align-items:center;gap:1.2rem;flex-shrink:0;
+  padding:.65rem 1.4rem;background:rgba(9,8,6,.97);border-bottom:1px solid rgba(212,168,75,.18);
+}
+.sg-hdr-title{font-family:var(--serif);font-size:.98rem;font-weight:900;color:var(--bone);}
+.sg-hdr-title em{color:var(--gold);font-style:italic;}
+.sg-hdr-sub{font-size:.53rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,250,240,.32);}
+.sg-site-tabs{display:flex;gap:.3rem;flex-wrap:wrap;margin-left:.5rem;}
+.sg-site-tab{font-size:.55rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.2rem .5rem;border:1px solid rgba(255,250,240,.12);background:none;color:rgba(255,250,240,.38);cursor:pointer;transition:all .14s;}
+.sg-site-tab:hover{color:var(--bone);}
+.sg-site-tab.active{background:rgba(212,168,75,.14);border-color:rgba(212,168,75,.4);color:var(--gold);}
+.sg-close-btn{margin-left:auto;width:28px;height:28px;flex-shrink:0;background:rgba(255,250,240,.05);border:1px solid rgba(255,250,240,.12);color:rgba(255,250,240,.4);cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .14s;}
+.sg-close-btn:hover{color:var(--bone);border-color:rgba(255,250,240,.28);}
+.sg-body{display:flex;flex:1;overflow:hidden;}
+.sg-list{width:230px;flex-shrink:0;overflow-y:auto;border-right:1px solid var(--rule);background:var(--bone);}
+.sg-item{padding:.75rem 1rem;border-bottom:1px solid var(--rule);cursor:pointer;transition:all .14s;border-left:3px solid transparent;}
+.sg-item:hover{background:#f0e8d8;}
+.sg-item.active{border-left-color:var(--bronze);background:#ece3d0;}
+.sg-item-era{font-size:.52rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--bronze);margin-bottom:.18rem;}
+.sg-item-name{font-family:var(--serif);font-size:.85rem;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:.18rem;}
+.sg-item-sub{font-size:.6rem;color:var(--muted);}
+.sg-viewer-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#1a140c;position:relative;}
+.sg-viewer-wrap iframe{flex:1;width:100%;border:none;display:block;}
+.sg-viewer-bar{display:flex;align-items:center;gap:.6rem;padding:.4rem .8rem;background:rgba(9,8,6,.88);border-top:1px solid rgba(212,168,75,.12);flex-shrink:0;}
+.sg-viewer-label{font-size:.55rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,250,240,.3);}
+.sg-viewer-hint{font-size:.52rem;color:rgba(255,250,240,.2);margin-left:auto;}
+.sg-detail{width:310px;flex-shrink:0;overflow-y:auto;border-left:1px solid var(--rule);background:var(--bone);padding:1.2rem 1.1rem;}
+.sg-detail-kicker{font-size:.52rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--bronze);margin-bottom:.4rem;}
+.sg-detail-name{font-family:var(--serif);font-size:1.2rem;font-weight:900;color:var(--ink);line-height:1.2;margin-bottom:.55rem;}
+.sg-detail-badges{display:flex;flex-wrap:wrap;gap:.28rem;margin-bottom:.85rem;}
+.sg-det-badge{font-size:.51rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.13rem .38rem;border-radius:2px;}
+.sg-b-date{background:rgba(155,106,47,.14);color:var(--bronze);}
+.sg-b-type{background:rgba(36,79,104,.12);color:var(--blue);}
+.sg-b-loc{background:rgba(47,91,71,.1);color:var(--green);}
+.sg-spec-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);margin-bottom:.9rem;}
+.sg-spec-cell{background:var(--bone);padding:.5rem .65rem;}
+.sg-spec-val{font-family:var(--serif);font-size:1.05rem;font-weight:900;color:var(--bronze);display:block;line-height:1;}
+.sg-spec-key{font-size:.49rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-top:.1rem;}
+.sg-divider{height:1px;background:var(--rule);margin:.85rem 0;}
+.sg-body-text{font-size:.79rem;color:#5e5142;line-height:1.76;margin-bottom:.85rem;}
+.sg-body-text p+p{margin-top:.6rem;}
+.sg-figures{display:flex;flex-direction:column;gap:.55rem;margin-bottom:.85rem;}
+.sg-figure{background:var(--paper);border:1px solid var(--rule);padding:.6rem;}
+.sg-figure-label{font-family:var(--mono);font-size:.52rem;font-weight:500;color:var(--bronze);margin-bottom:.28rem;}
+.sg-figure-desc{font-size:.72rem;color:#655847;line-height:1.6;}
+.sg-feat-list{list-style:none;display:flex;flex-direction:column;gap:.38rem;margin-bottom:.85rem;}
+.sg-feat-list li{font-size:.72rem;color:#655847;display:flex;gap:.45rem;align-items:baseline;}
+.sg-feat-list li::before{content:'—';color:var(--bronze);flex-shrink:0;}
+.sg-attribution{padding-top:.65rem;border-top:1px solid var(--rule);font-size:.6rem;color:var(--muted);line-height:1.6;}
+.sg-attribution a{color:var(--bronze);font-weight:700;}
+@media(max-width:900px){.sg-list{width:180px;}.sg-detail{width:250px;}}
+@media(max-width:680px){.sg-list{display:none;}.sg-detail{width:220px;}}
 </style>
 </head>
 <body>
@@ -94,6 +161,7 @@ h1 em{color:var(--gold);font-style:italic}
   <a class="nav-link active" href="numismatics.html">Numismatics</a>
   <a class="nav-link" href="inscriptions.html">Epigraphy</a>
   <a class="nav-link" href="sky.html">Sky</a>
+  <button class="gallery-toggle-btn" id="galleryToggle" onclick="toggleSiteGallery()">🏛 Sites Gallery</button>
 </header>
 
 <section class="hero">
@@ -245,6 +313,194 @@ document.getElementById("ansSearch").addEventListener("submit", (event) => {
 });
 
 loadFeed();
+</script>
+
+<!-- ══════════════════════════════════════════════════════════
+     ARCHAEOLOGICAL SITES GALLERY
+     ══════════════════════════════════════════════════════════ -->
+<div class="sites-gallery" id="sitesGallery">
+
+  <div class="sg-hdr">
+    <div>
+      <div class="sg-hdr-sub">Archaeological Sites Gallery <span id="siteCount" style="color:var(--gold);">· 1 site</span></div>
+      <div class="sg-hdr-title">Ancient <em>Sites &amp; Monuments</em></div>
+    </div>
+    <div class="sg-site-tabs" id="sgSiteTabs"></div>
+    <button class="sg-close-btn" onclick="toggleSiteGallery()" title="Close">✕</button>
+  </div>
+
+  <div class="sg-body">
+
+    <!-- Sidebar -->
+    <div class="sg-list" id="sgSiteList"></div>
+
+    <!-- Sketchfab viewer -->
+    <div class="sg-viewer-wrap" id="sgViewerWrap">
+      <div id="sgViewerMount" style="flex:1;display:flex;align-items:center;justify-content:center;background:#1a140c;">
+        <div style="text-align:center;color:rgba(255,250,240,.18);font-size:.75rem;letter-spacing:.08em;">
+          Select a site to load its 3D model
+        </div>
+      </div>
+      <div class="sg-viewer-bar">
+        <div class="sg-viewer-label" id="sgViewerLabel">—</div>
+        <div class="sg-viewer-hint">drag · zoom · orbit</div>
+      </div>
+    </div>
+
+    <!-- Detail panel -->
+    <div class="sg-detail" id="sgDetailPanel">
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--muted);gap:.5rem;text-align:center;">
+        <div style="font-size:2.2rem;opacity:.3;">🏛</div>
+        <div style="font-size:.72rem;line-height:1.6;">Select a site<br>to read its summary</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// SITES GALLERY DATA
+// ══════════════════════════════════════════════════════════
+const SITES = [
+  {
+    id: 'athenian_treasury',
+    name: 'Athenian Treasury at Delphi',
+    era: 'Post-Marathon · c. 490 BCE',
+    type: 'Treasury / Votive Building',
+    location: 'Delphi, Greece',
+    tabLabel: 'Athenian Treasury',
+    sketchfabId: '7e983421d9084482aee9c2e2ecba4af7',
+    sketchfabTitle: 'The Athenean Treasury at Delphi',
+    sketchfabEmbed: `<div class="sketchfab-embed-wrapper" style="width:100%;height:100%;display:flex;flex-direction:column;"><iframe title="The Athenean Treasury at Delphi" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/7e983421d9084482aee9c2e2ecba4af7/embed" style="flex:1;width:100%;border:none;"></iframe><p style="font-size:11px;color:#999;padding:4px 8px;background:#111;margin:0;flex-shrink:0;"><a href="https://sketchfab.com/3d-models/the-athenean-treasury-at-delphi-7e983421d9084482aee9c2e2ecba4af7" target="_blank" rel="nofollow" style="color:#d4a84b;font-weight:700;">The Athenean Treasury at Delphi</a> by <a href="https://sketchfab.com/marvel" target="_blank" rel="nofollow" style="color:#d4a84b;">HMU-DMA Lab</a> on <a href="https://sketchfab.com" target="_blank" rel="nofollow" style="color:#d4a84b;">Sketchfab</a></p></div>`,
+    badges: ['c. 490 BCE', 'Doric Treasury', 'Delphi · Phocis'],
+    specs: { dimensions: '9.8 × 6.8m', material: 'Parian marble', metopes: '30 carved', order: 'Doric' },
+    summary: `The Athenian Treasury at the Sanctuary of Apollo at Delphi was built after the Battle of Marathon in 490 BCE as a thanksgiving offering — a conclusion confirmed when 1989 excavations established that the building's stereobate physically supports the so-called Marathon Base, making the two structures integral. Pausanias was right all along.
+
+Built entirely in Parian marble — one of the first Doric buildings on the mainland to be so — the treasury was also the first to have marble columns in drum form and the first Doric structure to fill all four sides with carved metopes, making it an act of deliberate architectural hyperdecoration intended to announce Athenian superiority to the international audience of the sanctuary.`,
+    figures: [
+      {
+        label: 'Fig. 2 — Head of Athena, East Pediment',
+        desc: 'A female head slightly larger in scale than the surrounding figures, discovered in 1895 and subsequently placed at the centre of reconstructions of the east pediment. Its presence is thought to personify the dedicatory city of Athens — an iconographic innovation apparently inaugurated here.'
+      },
+      {
+        label: 'Fig. 3 — Metope Arrangement (La Coste-Messelière)',
+        desc: 'The earliest comprehensive reconstruction assigns the south side to the deeds of Theseus, the north to Herakles, the west to the Geryonomachy, and the east to an Amazonomachy. This arrangement assumes a narrative symmetry that later scholars have questioned.'
+      },
+      {
+        label: 'Fig. 4 — Metope Arrangement (Hoffelner 1988)',
+        desc: 'Hoffelner\'s alternative moves the Herakles cycle to the east facade — giving it greater prominence — and relocates the Amazonomachy to the north. His objections centre on Metope 17 (possibly an Amazon, not Diomedes\' horses) and Metope 18 (likely not from this treasury at all).'
+      },
+      {
+        label: 'Fig. 5 — Metope Arrangement (Marconi 2006)',
+        desc: 'Marconi places Herakles on the north long side and Theseus on the south, with both short ends carrying Amazonomachies — one each for the respective hero. This reconstruction is corroborated by the lateral akroteria (mounted Amazons) and by the known central position of Metope 5 (Athena meeting Theseus) on the south facade.'
+      }
+    ],
+    features: [
+      'First mainland building with carved metopes on all four sides',
+      'First Doric structure to feature cycles of both Theseus and Herakles',
+      'Amazonomachy doubles as a metaphor for Persian defeat at Marathon',
+      'Metopes deliberately mirror each other to create visual parity between Theseus and Herakles',
+      'Location just beyond the first bend in the Sacred Way amplified its visibility',
+      'The Marathon Base physically bonds to the stereobate, confirming a post-490 date',
+    ],
+    attribution: 'Gensheimer, M. B. 2017. "Metaphors for Marathon in the Sculptural Program of the Athenian Treasury at Delphi." <em>Hesperia</em> 86.1, pp. 1–42. · 3D model: HMU-DMA Lab / Sketchfab.',
+  },
+  // ── Add future sites here ──
+];
+
+// ══════════════════════════════════════════════════════════
+// GALLERY STATE
+// ══════════════════════════════════════════════════════════
+let sgIsOpen = false;
+let sgActiveId = null;
+
+function toggleSiteGallery() {
+  sgIsOpen = !sgIsOpen;
+  document.getElementById('sitesGallery').classList.toggle('open', sgIsOpen);
+  document.getElementById('galleryToggle').classList.toggle('active', sgIsOpen);
+  if (sgIsOpen && !sgActiveId && SITES.length > 0) {
+    setTimeout(() => loadSite(SITES[0].id), 80);
+  }
+}
+
+function buildSiteGalleryUI() {
+  const list = document.getElementById('sgSiteList');
+  const tabs = document.getElementById('sgSiteTabs');
+  document.getElementById('siteCount').textContent = `· ${SITES.length} site${SITES.length !== 1 ? 's' : ''}`;
+
+  list.innerHTML = SITES.map(s => `
+    <div class="sg-item" id="sgItem_${s.id}" onclick="loadSite('${s.id}')">
+      <div class="sg-item-era">${s.era}</div>
+      <div class="sg-item-name">${s.name}</div>
+      <div class="sg-item-sub">${s.type}</div>
+    </div>
+  `).join('');
+
+  tabs.innerHTML = SITES.map(s => `
+    <button class="sg-site-tab" id="sgTab_${s.id}" onclick="loadSite('${s.id}')">${s.tabLabel}</button>
+  `).join('');
+}
+
+function loadSite(id) {
+  const site = SITES.find(s => s.id === id);
+  if (!site) return;
+  sgActiveId = id;
+
+  // Active states
+  SITES.forEach(s => {
+    document.getElementById('sgItem_' + s.id)?.classList.toggle('active', s.id === id);
+    document.getElementById('sgTab_' + s.id)?.classList.toggle('active', s.id === id);
+  });
+
+  // ── Inject Sketchfab embed ──
+  const mount = document.getElementById('sgViewerMount');
+  mount.style.display = 'block';
+  mount.innerHTML = site.sketchfabEmbed;
+  document.getElementById('sgViewerLabel').textContent = site.name;
+
+  // ── Build detail panel ──
+  const specCells = Object.entries(site.specs).map(([k, v]) => `
+    <div class="sg-spec-cell">
+      <span class="sg-spec-val">${v}</span>
+      <div class="sg-spec-key">${k}</div>
+    </div>
+  `).join('');
+
+  const figuresHtml = site.figures.map(f => `
+    <div class="sg-figure">
+      <div class="sg-figure-label">${f.label}</div>
+      <div class="sg-figure-desc">${f.desc}</div>
+    </div>
+  `).join('');
+
+  const featuresHtml = site.features.map(f => `<li>${f}</li>`).join('');
+
+  const bodyParas = site.summary.split('\n\n').map(p => `<p>${p}</p>`).join('');
+
+  document.getElementById('sgDetailPanel').innerHTML = `
+    <div class="sg-detail-kicker">${site.era}</div>
+    <div class="sg-detail-name">${site.name}</div>
+    <div class="sg-detail-badges">
+      ${site.badges.map((b,i) => `<span class="sg-det-badge ${i===0?'sg-b-date':i===1?'sg-b-type':'sg-b-loc'}">${b}</span>`).join('')}
+    </div>
+    <div class="sg-spec-row">${specCells}</div>
+    <div class="sg-body-text">${bodyParas}</div>
+    <div class="sg-divider"></div>
+    <div class="sg-detail-kicker" style="margin-bottom:.45rem;">Scholarly Figures</div>
+    <div class="sg-figures">${figuresHtml}</div>
+    <div class="sg-divider"></div>
+    <div class="sg-detail-kicker" style="margin-bottom:.45rem;">Key Features</div>
+    <ul class="sg-feat-list">${featuresHtml}</ul>
+    <div class="sg-attribution">${site.attribution}</div>
+  `;
+}
+
+document.addEventListener('DOMContentLoaded', buildSiteGalleryUI);
+document.addEventListener('keydown', e => {
+  if ((e.key === 'g' || e.key === 'G') && !e.target.matches('input,textarea')) toggleSiteGallery();
+  if (e.key === 'Escape' && sgIsOpen) toggleSiteGallery();
+});
 </script>
 </body>
 </html>
