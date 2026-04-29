@@ -250,6 +250,7 @@ footer p{font-size:.7rem;color:rgba(240,234,216,.2);}
   <a class="tab" href="#protosinaitic" onclick="setTab(this)">Proto-Sinaitic</a>
   <a class="tab" href="#indus" onclick="setTab(this)">Indus Valley</a>
   <a class="tab" href="#maya" onclick="setTab(this)">Maya Hieroglyphs</a>
+  <a class="tab" href="#linearelamite" onclick="setTab(this)">Linear Elamite</a>
   <a class="tab" href="#endangered" onclick="setTab(this)">Endangered Languages</a>
   <a class="tab" href="#resources" onclick="setTab(this)">Tools</a>
 </nav>
@@ -747,6 +748,175 @@ footer p{font-size:.7rem;color:rgba(240,234,216,.2);}
 
 </main>
 
+
+<!-- ═══════════════════════════════════════════════ LINEAR ELAMITE -->
+<section class="script-section" id="linearelamite">
+<div class="container">
+  <div class="script-header">
+    <div>
+      <div class="script-eyebrow">Elam · Proto-historic Iran · c. 2300–1880 BCE</div>
+      <h2 class="script-name">Linear Elamite</h2>
+      <div class="script-meta">
+        <span class="badge badge-partial">Partially deciphered</span>
+        <span class="badge badge-partial">~40 inscriptions (OCLEI)</span>
+        <span class="badge badge-partial">c. 2300–1880 BCE</span>
+      </div>
+    </div>
+    <div class="script-status-block">
+      <div class="progress-label">Deciphered</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:38%;background:var(--partial)"></div></div>
+      <div class="progress-pct" style="color:var(--partial)">~38%</div>
+      <div class="progress-sub">sound values partially established · language partially known</div>
+    </div>
+  </div>
+
+  <div class="script-body">
+    <div>
+      <div class="script-prose">
+        <p>Linear Elamite is a partially deciphered writing system used in the ancient kingdom of Elam in what is now southwestern Iran, during the late third and early second millennia BCE. It is found on stone monuments, silver beakers, and administrative objects from sites including Susa, Persepolis, and Shahdad — <strong>about 40 inscriptions</strong> in total, making up the Online Corpus of Linear Elamite Inscriptions (OCLEI).</p>
+        <p>The script was long considered completely undeciphered. A significant breakthrough came in 2022 when François Desset and colleagues published a major decipherment proposal in <em>Zeitschrift für Assyriologie</em>, assigning sound values to a substantial portion of the sign inventory by cross-referencing bilingual royal inscriptions where the same ruler's name appears in both Linear Elamite and Akkadian cuneiform. This cracked open the phonological layer of the script. The underlying language — <strong>Elamite</strong> — is itself only partially understood, though it is attested in cuneiform across 2,000 years of history.</p>
+        <p>The relationship between Linear Elamite and the earlier <strong>Proto-Elamite</strong> script (~3200–2900 BCE, ~10,000 tablets, still completely undeciphered) is debated. They may share a common ancestor or one may derive from the other, but no direct continuity has been established. Linear Elamite appears abruptly, fully formed, during the Shimashki Dynasty period.</p>
+        <p>The <strong>GEAS tool</strong> (Alice Kober Gesellschaft für die Entzifferung antiker Schriftsysteme, University of Zurich) provides the most comprehensive publicly accessible Linear Elamite corpus browser, built on Desset's OCLEI dataset. It includes a Unicode character picker, dynamic syllabary, RegEx corpus search, sign frequency analysis, and per-inscription photographic documentation.</p>
+      </div>
+
+      <div class="glyph-display">
+        <div class="glyph-display-title">Linear Elamite — selected signs (OCLEI)</div>
+        <div class="glyph-chars" style="font-size:1.6rem;letter-spacing:.15em;">
+          𐬹 𐬺 𐬻 𐬼 𐬽 𐬾
+        </div>
+        <div class="glyph-caption">Syllabic signs — phonetically assigned via Desset et al. (2022) bilingual decipherment</div>
+      </div>
+
+      <!-- GEAS Tool embed panel -->
+      <div style="margin-top:2rem;border:1px solid rgba(240,234,216,.1);background:rgba(240,234,216,.02);">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;border-bottom:1px solid rgba(240,234,216,.07);flex-wrap:wrap;gap:.6rem;">
+          <div>
+            <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.15rem;">Live Tool · GEAS / OCLEI (Zurich)</div>
+            <div style="font-size:.88rem;font-weight:600;color:var(--parch);">Elamicon — Online Corpus of Linear Elamite Inscriptions</div>
+          </div>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap;">
+            <a href="https://center-for-decipherment.ch/tool/#script=elam" target="_blank" rel="noopener"
+               style="font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+                      color:var(--cipher);border:1px solid rgba(var(--cipher-rgb),.35);padding:.35rem .8rem;
+                      background:rgba(var(--cipher-rgb),.06);text-decoration:none;white-space:nowrap;transition:all .2s;">
+              Open Full Tool ↗
+            </a>
+            <button onclick="toggleGeasEmbed()" id="geasToggleBtn"
+               style="font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+                      color:var(--parch);border:1px solid rgba(240,234,216,.2);padding:.35rem .8rem;cursor:pointer;
+                      background:rgba(240,234,216,.06);white-space:nowrap;transition:all .2s;">
+              Embed Tool ▾
+            </button>
+          </div>
+        </div>
+
+        <!-- Collapsed by default — user clicks to expand -->
+        <div id="geasEmbedWrap" style="display:none;">
+          <div style="padding:.6rem 1rem;background:rgba(240,234,216,.03);font-size:.65rem;color:rgba(240,234,216,.4);line-height:1.6;">
+            Embedded via iframe — the GEAS Elamicon tool is served from center-for-decipherment.ch (University of Zurich).
+            Character picker, corpus browser, RegEx search, and dynamic syllabary all function within the embed.
+            For the font-dependent glyph rendering and PDF export, use the full tool link above.
+          </div>
+          <iframe
+            id="geasIframe"
+            src=""
+            data-src="https://center-for-decipherment.ch/tool/#script=elam"
+            style="width:100%;height:680px;border:none;display:block;"
+            title="GEAS Elamicon — Linear Elamite Corpus"
+            loading="lazy"
+            allowfullscreen>
+          </iframe>
+        </div>
+
+        <!-- Feature summary when collapsed -->
+        <div id="geasFeatureList" style="padding:.8rem 1rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem;">
+          <div style="font-size:.68rem;color:rgba(240,234,216,.5);display:flex;align-items:baseline;gap:.4rem;">
+            <span style="color:var(--cipher);">◆</span> Unicode character picker
+          </div>
+          <div style="font-size:.68rem;color:rgba(240,234,216,.5);display:flex;align-items:baseline;gap:.4rem;">
+            <span style="color:var(--cipher);">◆</span> Searchable inscription corpus (OCLEI)
+          </div>
+          <div style="font-size:.68rem;color:rgba(240,234,216,.5);display:flex;align-items:baseline;gap:.4rem;">
+            <span style="color:var(--cipher);">◆</span> RegEx sign-sequence search
+          </div>
+          <div style="font-size:.68rem;color:rgba(240,234,216,.5);display:flex;align-items:baseline;gap:.4rem;">
+            <span style="color:var(--cipher);">◆</span> Dynamic syllabary (customisable)
+          </div>
+          <div style="font-size:.68rem;color:rgba(240,234,216,.5);display:flex;align-items:baseline;gap:.4rem;">
+            <span style="color:var(--cipher);">◆</span> Sign frequency analysis
+          </div>
+          <div style="font-size:.68rem;color:rgba(240,234,216,.5);display:flex;align-items:baseline;gap:.4rem;">
+            <span style="color:var(--cipher);">◆</span> Per-inscription photos & drawings
+          </div>
+          <div style="font-size:.68rem;color:rgba(240,234,216,.5);display:flex;align-items:baseline;gap:.4rem;">
+            <span style="color:var(--cipher);">◆</span> Sandbox & reliterator
+          </div>
+          <div style="font-size:.68rem;color:rgba(240,234,216,.5);display:flex;align-items:baseline;gap:.4rem;">
+            <span style="color:var(--cipher);">◆</span> GEAS-Liberation font download
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="fact-stack">
+        <div class="fact-card">
+          <div class="fact-card-lbl">Corpus (OCLEI)</div>
+          <div class="fact-card-val">~40 inscriptions on stone monuments, silver beakers, copper tablets, and administrative objects. Primarily from Susa, Persepolis, and Shahdad. The GEAS corpus is more inclusive than print editions, flagging suspected forgeries rather than excluding them.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">2022 Decipherment</div>
+          <div class="fact-card-val">Desset, Tabibzadeh, Kervran, Piran & Momtaz (2022) in <em>Zeitschrift für Assyriologie</em>. Cross-referenced bilingual royal names in Linear Elamite and Akkadian cuneiform to establish ~38 sound values. The underlying Elamite language is independently attested in cuneiform, providing a partial phonological and lexical anchor.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Relation to Proto-Elamite</div>
+          <div class="fact-card-val">Proto-Elamite (~3200–2900 BCE, ~10,000 tablets) is the world's second largest undeciphered corpus after the Indus script. It remains completely undeciphered. The relationship to Linear Elamite is unresolved — possible ancestor, independent invention, or indirect descendant.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">GEAS & Alice Kober Society</div>
+          <div class="fact-card-val">Named after Alice Kober (1906–1950), whose combinatorial analysis of Linear B was crucial to Ventris's 1952 decipherment. The society publishes corpora for Linear Elamite, Byblos Script, Deir Alla Script, Raetic, Lepontic, Etruscan, and Elder Futhark Runes under open standards.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Other scripts in GEAS</div>
+          <div class="fact-card-val">The same tool hosts: Byblos Script (Lebanon, undeciphered), Deir Alla Script (Jordan, undeciphered), Raetic (Alpine, partially read), Lepontic (Cisalpine Gaul, partially read), Etruscan (largely read), Elder Futhark Runes (largely read).</div>
+        </div>
+      </div>
+
+      <div class="ai-dev-list">
+        <div class="ai-dev-lbl">Research Approaches</div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(111,134,74,.1)">🔑</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Bilingual decipherment (Desset et al. 2022)</div>
+            <div class="ai-dev-desc">Royal titulary inscriptions name the same rulers in both Linear Elamite and Akkadian cuneiform, enabling phonetic assignments for ~38 signs. The Elamite language's known phonology from cuneiform provides a crucial independent check on proposed readings.</div>
+          </div>
+        </div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(111,134,74,.1)">📊</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">GEAS dynamic syllabary & RegEx corpus search</div>
+            <div class="ai-dev-desc">The OCLEI tool enables scholars to test custom syllabary groupings against the full corpus in real time — a methodological innovation designed to break the circularity problem inherent in any decipherment attempt. Sign-sequence searches with regular expressions replace manual collation of tablets.</div>
+          </div>
+        </div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(111,134,74,.1)">🧬</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Cross-script comparison (Proto-Elamite)</div>
+            <div class="ai-dev-desc">If Linear Elamite derives from Proto-Elamite, established Linear Elamite sound values could theoretically anchor computational analysis of the far larger Proto-Elamite corpus. The CDLI at UCLA holds the largest digitised Proto-Elamite dataset. The GEAS reliterator can convert CDLI transliterations into Linear Elamite sign representations.</div>
+          </div>
+        </div>
+        <div class="ai-dev-item">
+          <div class="ai-dev-icon" style="background:rgba(111,134,74,.1)">🔬</div>
+          <div class="ai-dev-text">
+            <div class="ai-dev-title">Silver beakers & administrative context</div>
+            <div class="ai-dev-desc">Several of the most legible Linear Elamite inscriptions appear on silver beakers — luxury objects likely produced for royal gift exchange. The administrative context of other objects (brick stamps, foundation deposits) provides functional parallels to the well-understood cuneiform administrative corpus from Susa.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
 
 <!-- ═══════════════════════════════════════════════ ENDANGERED LANGUAGES -->
 <section class="script-section" id="endangered" style="background:rgba(160,100,200,.02);">
@@ -1246,6 +1416,11 @@ footer p{font-size:.7rem;color:rgba(240,234,216,.2);}
       <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">Bonn-Bochum Maya epigraphy platform. Digital corpus of Classic Maya inscriptions with 1,400+ sign catalog. classicmayan.org</div>
     </div>
 <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Decipherment · Corpus</div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">GEAS / Elamicon (OCLEI)</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">Alice Kober Society (Zurich). Unicode corpus browser for Linear Elamite, Byblos, Deir Alla, Raetic, Lepontic, Etruscan, Elder Futhark. RegEx search, dynamic syllabary, sign frequency analysis. Libre software. <a href="https://center-for-decipherment.ch/tool/#script=elam" target="_blank" rel="noopener" style="color:var(--cipher);">center-for-decipherment.ch ↗</a></div>
+    </div>
+<div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:1rem 1.1rem;">
       <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Decipherment</div>
       <div style="font-size:.85rem;font-weight:600;color:var(--parch);margin-bottom:.3rem;">Vesuvius Challenge</div>
       <div style="font-size:.72rem;color:rgba(240,234,216,.5);line-height:1.5;">scrollprize.org — live ML competition to read Herculaneum scrolls. $1.7M+ in prizes. Open CT scan data available for research.</div>
@@ -1274,6 +1449,22 @@ footer p{font-size:.7rem;color:rgba(240,234,216,.2);}
 const SB_URL = "https://ucsgtbpeuqeamuvuvojs.supabase.co";
 const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";
 const HDR = {"apikey":SB_KEY,"Authorization":`Bearer ${SB_KEY}`};
+
+// ── GEAS embed toggle ─────────────────────────────────────────────
+function toggleGeasEmbed() {
+  const wrap = document.getElementById('geasEmbedWrap');
+  const btn  = document.getElementById('geasToggleBtn');
+  const feat = document.getElementById('geasFeatureList');
+  const iframe = document.getElementById('geasIframe');
+  const open = wrap.style.display === 'none';
+  wrap.style.display = open ? 'block' : 'none';
+  feat.style.display = open ? 'none'  : 'grid';
+  btn.textContent    = open ? 'Hide Tool ▴' : 'Embed Tool ▾';
+  // Lazy-load: only set src on first open to avoid loading on page init
+  if (open && !iframe.src) {
+    iframe.src = iframe.dataset.src;
+  }
+}
 
 // Tab handling
 function setTab(el) {
