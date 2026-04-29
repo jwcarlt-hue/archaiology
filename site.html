@@ -342,6 +342,17 @@ a{text-decoration:none;color:inherit;}
 const SUPABASE_URL      = "https://ucsgtbpeuqeamuvuvojs.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";
 
+// ── HTML entity decoder ───────────────────────────────────
+// Converts any HTML entities stored in DB values (e.g. &#250; → ú,
+// &amp; → &, &eacute; → é) into proper Unicode before display.
+// Use hn(value) everywhere a site field is rendered as text.
+const _decodeEl = document.createElement('textarea');
+function hn(str) {
+  if (!str) return str;
+  _decodeEl.innerHTML = str;
+  return _decodeEl.value;
+}
+
 // ── Get site ID from URL ──────────────────────────────────
 function getSiteId() {
   const params = new URLSearchParams(window.location.search);
@@ -410,18 +421,18 @@ async function loadSite() {
   const site = sites[0];
 
   // Update page title and breadcrumb
-  document.title = `${site.name} — archAIology`;
-  document.getElementById("pageTitle").textContent = `${site.name} — archAIology`;
+  document.title = `${hn(site.name)} — archAIology`;
+  document.getElementById("pageTitle").textContent = `${hn(site.name)} — archAIology`;
   document.getElementById("bcRegion").textContent = regionLabel(site.region);
-  document.getElementById("bcName").textContent   = site.name;
-  document.getElementById("siteName").textContent = site.name;
+  document.getElementById("bcName").textContent   = hn(site.name);
+  document.getElementById("siteName").textContent = hn(site.name);
 
   // Badges
   const badges = [
-    site.culture ? `<span class="site-badge badge-culture">${site.culture}</span>` : "",
+    site.culture ? `<span class="site-badge badge-culture">${hn(site.culture)}</span>` : "",
     site.region  ? `<span class="site-badge badge-region">${regionLabel(site.region)}</span>` : "",
-    site.period  ? `<span class="site-badge badge-period">${site.period}</span>` : "",
-    site.country ? `<span class="site-badge badge-period">${site.country}</span>` : "",
+    site.period  ? `<span class="site-badge badge-period">${hn(site.period)}</span>` : "",
+    site.country ? `<span class="site-badge badge-period">${hn(site.country)}</span>` : "",
   ].filter(Boolean).join("");
   document.getElementById("siteMeta").innerHTML = badges;
 
@@ -508,11 +519,11 @@ function renderStats(site, mentionCount, ancientRefs) {
 
 function renderRecord(site) {
   const rows = [
-    ["Culture",    site.culture],
-    ["Period",     site.period],
+    ["Culture",    hn(site.culture)],
+    ["Period",     hn(site.period)],
     ["Region",     regionLabel(site.region)],
-    ["Country",    site.country],
-    ["Subregion",  site.subregion],
+    ["Country",    hn(site.country)],
+    ["Subregion",  hn(site.subregion)],
   ].filter(r => r[1]);
 
   document.getElementById("siteRecord").innerHTML = rows.map(([k,v]) => `
@@ -520,7 +531,7 @@ function renderRecord(site) {
       <span class="info-key">${k}</span>
       <span class="info-val">${v}</span>
     </div>`).join("") +
-    (site.description ? `<p style="font-family:var(--body);font-size:.82rem;color:var(--ash);line-height:1.55;margin-top:.8rem">${site.description}</p>` : "");
+    (site.description ? `<p style="font-family:var(--body);font-size:.82rem;color:var(--ash);line-height:1.55;margin-top:.8rem">${hn(site.description)}</p>` : "");
 }
 
 function renderExtLinks(site) {
@@ -596,7 +607,7 @@ function renderSynthesisTabs(tabs, site, corpus) {
         <div class="synthesis-content">${renderMarkdown(syn.content)}</div>
       `;
     } else {
-      const name = site.name;
+      const name = hn(site.name);
       const placeholders = {
         overview:       `Overview synthesis for ${name} will be generated from corpus papers.`,
         archaeological: `Archaeological analysis for ${name} — stratigraphy, material culture, architecture, chronology.`,
@@ -1156,7 +1167,7 @@ function initScene(recon, site) {
 
   // Labels
   document.getElementById("sceneLabel").textContent =
-    `${site.name} — Procedural Reconstruction`;
+    `${hn(site.name)} — Procedural Reconstruction`;
   document.getElementById("sceneAttr").textContent =
     recon ? `Based on ${recon.source_count ?? 0} corpus papers` :
             "Default model · Refines as corpus grows";
@@ -1410,7 +1421,7 @@ function clearSceneImage() {
   if (site) {
     const lbl  = document.getElementById('sceneLabel');
     const attr = document.getElementById('sceneAttr');
-    if (lbl)  lbl.textContent  = site.name + ' — Procedural Reconstruction';
+    if (lbl)  lbl.textContent  = hn(site.name) + ' — Procedural Reconstruction';
     if (attr) attr.textContent = 'Default model · Refines as corpus grows';
   }
 }
