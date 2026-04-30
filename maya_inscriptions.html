@@ -444,6 +444,7 @@ h1 em{color:var(--jade-lt);font-style:italic;}
           <button class="map-tab active" id="tab-arch-map" type="button" onclick="toggleMapPane('arch')" aria-selected="true">archAIology map</button>
           <button class="map-tab" id="tab-corpus-map" type="button" onclick="toggleMapPane('corpus')" aria-selected="false">Maya Corpus map</button>
           <button class="map-tab" id="tab-dynasty-map" type="button" onclick="toggleMapPane('dynasty')" aria-selected="false">Classic Dynasties</button>
+          <button class="map-tab" id="tab-witschey-map" type="button" onclick="toggleMapPane('witschey')" aria-selected="false">Witschey Sites</button>
         </div>
         <div class="map-credit">
           Embedded Maya Corpus map used with permission from Benjamin Rosell.<br>
@@ -528,6 +529,16 @@ h1 em{color:var(--jade-lt);font-style:italic;}
               <span>Click site pills above to explore inscriptions ↑</span>
             </div>
           </div>
+        </div>
+        <div class="map-pane" id="pane-witschey">
+          <iframe
+            class="corpus-frame"
+            src="https://www.google.com/maps/d/embed?mid=1SzlOWctuWjbaMn3_WROgDec5TZ5hWhA&ehbc=2E312F"
+            title="Mayan Sites by Walter R. T. Witschey"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
         </div>
       </div>
     </div>
@@ -686,7 +697,7 @@ window.addEventListener('load', () => {
 });
 
 function toggleMapPane(which){
-  const panes = ['arch','corpus','dynasty'];
+  const panes = ['arch','corpus','dynasty','witschey'];
   panes.forEach(p => {
     document.getElementById('pane-'+p).classList.toggle('active', p === which);
     const tab = document.getElementById('tab-'+p+'-map');
