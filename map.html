@@ -283,7 +283,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     <div class="filter-row">
       <button class="filter-chip" id="orbis-btn" onclick="toggleOrbis()">Show Routes</button>
     </div>
-    <div id="orbis-legend" style="display:none;margin-top:6px;display:none;">
+    <div id="orbis-legend" style="display:none;margin-top:6px;">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
         <div style="width:20px;height:3px;background:#d4a84b;border-radius:1px;flex-shrink:0"></div>
         <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Roads (978)</span>
@@ -1409,6 +1409,7 @@ async function toggleOrbis() {
       console.warn('ORBIS layer failed to load:', e);
       btn.textContent = 'Routes unavailable';
       btn.disabled = false;
+      orbisDataPromise = null; // reset so user can retry
       return;
     }
     btn.disabled = false;
@@ -1478,6 +1479,7 @@ async function toggleLangs() {
       console.warn('Language layer failed to load:', e);
       btn.textContent = 'Languages unavailable';
       btn.disabled = false;
+      glottologDataPromise = null; // reset so user can retry
       return;
     }
     btn.disabled = false;
