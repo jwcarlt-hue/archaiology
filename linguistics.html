@@ -254,6 +254,7 @@ footer p{font-size:.7rem;color:rgba(240,234,216,.2);}
   <a class="tab" href="#kyprianos" onclick="setTab(this)">Kyprianos Database</a>
   <a class="tab" href="#endangered" onclick="setTab(this)">Endangered Languages</a>
   <a class="tab" href="#wals" onclick="setTab(this)">WALS</a>
+  <a class="tab" href="#cuneify" onclick="setTab(this)">Cuneify</a>
   <a class="tab" href="#resources" onclick="setTab(this)">Tools</a>
 </nav>
 
@@ -1659,6 +1660,177 @@ footer p{font-size:.7rem;color:rgba(240,234,216,.2);}
 </div>
 </section>
 
+<!-- ═══════════════════════════════════════════════ CUNEIFY -->
+<section class="script-section" id="cuneify">
+<div class="container">
+  <div class="script-header">
+    <div>
+      <div class="script-eyebrow">ORACC · University of Pennsylvania Museum · Steve Tinney</div>
+      <h2 class="script-name">Cuneify</h2>
+      <div class="script-meta">
+        <span class="badge badge-deciphered">Live Tool</span>
+        <span class="badge badge-partial">Sumerian · Akkadian · 10+ languages</span>
+        <span class="badge badge-partial">CC-BY-SA 3.0</span>
+      </div>
+    </div>
+    <div class="script-status-block">
+      <div class="progress-label">Script coverage</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--glyph)"></div></div>
+      <div class="progress-pct" style="color:var(--glyph)">Full</div>
+      <div class="progress-sub">ATF transliteration → Unicode cuneiform</div>
+    </div>
+  </div>
+
+  <div class="script-body" style="margin-bottom:2.5rem;">
+    <div>
+      <div class="script-prose">
+        <p>Cuneiform is the world's oldest writing system, invented by the Sumerians around 3200 BCE and used continuously for over three millennia across Mesopotamia, Anatolia, and the Levant. Written by pressing a reed stylus into wet clay, it encodes <strong>Sumerian, Akkadian, Elamite, Hittite, Luwian, Hurrian, Urartian</strong>, and a dozen other languages of the ancient Near East.</p>
+        <p><strong>Cuneify</strong> is a transliteration converter developed by Steve Tinney at the Open Richly Annotated Cuneiform Corpus (ORACC). It takes standard Assyriological transliteration — the romanized notation scholars use to transcribe cuneiform signs — and outputs the corresponding Unicode cuneiform characters. Type <code style="font-family:var(--mono);font-size:.82em;color:var(--cipher);background:rgba(200,120,58,.08);padding:.1em .35em;">lugal</code> and get 𒈗; type <code style="font-family:var(--mono);font-size:.82em;color:var(--cipher);background:rgba(200,120,58,.08);padding:.1em .35em;">an-na</code> and get 𒀭𒈾.</p>
+        <p>The tool accepts both Unicode and ASCII transliteration conventions — <code style="font-family:var(--mono);font-size:.82em;color:var(--cipher);background:rgba(200,120,58,.08);padding:.1em .35em;">sz</code> = <code style="font-family:var(--mono);font-size:.82em;color:var(--cipher);background:rgba(200,120,58,.08);padding:.1em .35em;">š</code>, subscript numerals as digits (<code style="font-family:var(--mono);font-size:.82em;color:var(--cipher);background:rgba(200,120,58,.08);padding:.1em .35em;">e2</code> = <code style="font-family:var(--mono);font-size:.82em;color:var(--cipher);background:rgba(200,120,58,.08);padding:.1em .35em;">e₂</code>). Results open in the panel below — no font install required in modern browsers.</p>
+      </div>
+    </div>
+    <div>
+      <div class="fact-stack">
+        <div class="fact-card">
+          <div class="fact-card-lbl">Input format (ATF)</div>
+          <div class="fact-card-val">Separate signs with hyphens (<code style="font-size:.8em;color:var(--cipher)">lu-gal</code>), determinatives in braces (<code style="font-size:.8em;color:var(--cipher)">{d}en-lil2</code>), logograms uppercase (<code style="font-size:.8em;color:var(--cipher)">DINGIR</code>). Use digits for subscripts: <code style="font-size:.8em;color:var(--cipher)">u3</code> = u₃.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Languages supported</div>
+          <div class="fact-card-val">Sumerian, Old/Middle/Neo-Babylonian, Old/Middle/Neo-Assyrian, Hittite, Elamite, Hurrian, Urartian, Ugaritic. Sign repertoire follows the ORACC/CDLI standard sign list.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Unicode block</div>
+          <div class="fact-card-val">Cuneiform occupies U+12000–U+123FF (1,234 signs) + Cuneiform Numbers U+12400–U+1247F. Modern browsers render them natively without font install.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Cuneify Live Widget ── -->
+  <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.1);padding:1.5rem 1.6rem;margin-bottom:1.2rem;">
+
+    <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:1.1rem;">
+      <div>
+        <div style="font-family:var(--mono);font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cipher);margin-bottom:.25rem;">Live converter · ORACC CGI</div>
+        <div style="font-size:.82rem;font-weight:600;color:var(--parch);">Transliteration → 𒀭𒈾 Cuneiform</div>
+      </div>
+      <a href="https://oracc.museum.upenn.edu/saao/knpp/cuneiformrevealed/cuneify/" target="_blank" rel="noopener"
+        style="font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(240,234,216,.35);border:1px solid rgba(240,234,216,.1);padding:.28rem .65rem;text-decoration:none;">
+        Open on ORACC ↗
+      </a>
+    </div>
+
+    <!-- Example phrases -->
+    <div style="margin-bottom:.9rem;">
+      <div style="font-family:var(--mono);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,234,216,.28);margin-bottom:.45rem;">Try an example</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;" id="cuneify-examples">
+        <button onclick="cuneifyLoad('lugal')" class="filter-chip" title="king">lugal — king</button>
+        <button onclick="cuneifyLoad('an-na')" class="filter-chip" title="heaven / An">an-na — heaven</button>
+        <button onclick="cuneifyLoad('e2-gal')" class="filter-chip" title="palace">e2-gal — palace</button>
+        <button onclick="cuneifyLoad('{d}en-lil2')" class="filter-chip" title="Enlil">Enlil — god</button>
+        <button onclick="cuneifyLoad('ki-en-gi-r')" class="filter-chip" title="Sumer">ki-en-gi-r — Sumer</button>
+        <button onclick="cuneifyLoad('u4-da')" class="filter-chip" title="today / day">u4-da — day</button>
+        <button onclick="cuneifyLoad('asz-szur')" class="filter-chip" title="Assur">asz-szur — Assur</button>
+        <button onclick="cuneifyLoad('erin2')" class="filter-chip" title="army / cedar">erin2 — army</button>
+      </div>
+    </div>
+
+    <!-- Input + submit -->
+    <form id="cuneify-form"
+      action="https://oracc.museum.upenn.edu/cgi-bin/cuneify"
+      method="get"
+      target="cuneify-result"
+      onsubmit="cuneifySubmit()"
+      style="display:flex;gap:8px;flex-wrap:wrap;align-items:stretch;">
+      <input type="hidden" name="project" value="saao/knpp/cuneiformrevealed">
+      <input
+        id="cuneify-input"
+        name="input"
+        type="text"
+        placeholder="e.g. lugal  or  {d}en-lil2  or  e2-gal"
+        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+        style="flex:1;min-width:180px;background:rgba(10,13,18,.7);border:1px solid rgba(240,234,216,.15);
+          color:var(--parch);font-family:var(--mono);font-size:.82rem;padding:.5rem .8rem;
+          outline:none;transition:border-color .2s;"
+        onfocus="this.style.borderColor='var(--cipher)'"
+        onblur="this.style.borderColor='rgba(240,234,216,.15)'"
+      >
+      <button type="submit"
+        style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+          color:var(--ink);background:var(--cipher);border:none;padding:.5rem 1.2rem;
+          cursor:pointer;transition:opacity .2s;white-space:nowrap;"
+        onmouseover="this.style.opacity='.82'" onmouseout="this.style.opacity='1'">
+        Cuneify ▶
+      </button>
+    </form>
+
+    <!-- Result iframe -->
+    <div id="cuneify-result-wrap" style="margin-top:1rem;display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem;">
+        <div style="font-family:var(--mono);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,234,216,.28);">Result — rendered by ORACC</div>
+        <button onclick="document.getElementById('cuneify-result-wrap').style.display='none'"
+          style="font-size:.6rem;color:rgba(240,234,216,.3);background:none;border:none;cursor:pointer;padding:0;">✕ close</button>
+      </div>
+      <iframe
+        name="cuneify-result"
+        id="cuneify-result-frame"
+        style="width:100%;height:480px;border:1px solid rgba(240,234,216,.08);background:#fff;"
+        title="Cuneify result"
+        sandbox="allow-scripts allow-same-origin allow-forms"
+      ></iframe>
+      <div style="font-size:.58rem;color:rgba(240,234,216,.22);margin-top:.4rem;line-height:1.5;">
+        Result page served by ORACC (oracc.museum.upenn.edu) · CC-BY-SA 3.0 · Steve Tinney, University of Pennsylvania Museum
+      </div>
+    </div>
+
+    <!-- Native cuneiform preview (instant, no server round-trip) -->
+    <div id="cuneify-preview" style="margin-top:1rem;display:none;">
+      <div style="font-family:var(--mono);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,234,216,.28);margin-bottom:.5rem;">Unicode preview (browser-native rendering)</div>
+      <div id="cuneify-preview-text"
+        style="font-size:2.8rem;letter-spacing:.15em;color:var(--parch);line-height:1.4;
+          background:rgba(240,234,216,.03);border:1px solid rgba(240,234,216,.07);
+          padding:1rem 1.2rem;min-height:4rem;word-break:break-all;"></div>
+      <div id="cuneify-preview-meta" style="font-size:.6rem;color:rgba(240,234,216,.3);margin-top:.4rem;font-family:var(--mono);"></div>
+    </div>
+  </div>
+
+  <!-- Input guide -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;">
+    <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.8rem 1rem;">
+      <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cipher);margin-bottom:.4rem;">Signs & separators</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.55);line-height:1.6;">
+        Separate signs with <code style="color:var(--cipher)">-</code> (hyphen) or spaces.<br>
+        Compound words: <code style="color:var(--cipher)">e2-gal</code> (palace), <code style="color:var(--cipher)">lu2-kal-la</code>
+      </div>
+    </div>
+    <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.8rem 1rem;">
+      <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cipher);margin-bottom:.4rem;">Subscript digits</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.55);line-height:1.6;">
+        Use numbers instead of subscripts:<br>
+        <code style="color:var(--cipher)">e2</code> = e₂ · <code style="color:var(--cipher)">u3</code> = u₃ · <code style="color:var(--cipher)">en-lil2</code> = Enlil
+      </div>
+    </div>
+    <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.8rem 1rem;">
+      <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cipher);margin-bottom:.4rem;">Special characters</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.55);line-height:1.6;">
+        <code style="color:var(--cipher)">sz</code> = š · <code style="color:var(--cipher)">s,</code> = ṣ · <code style="color:var(--cipher)">t,</code> = ṭ<br>
+        <code style="color:var(--cipher)">j</code> or <code style="color:var(--cipher)">ng</code> = ŋ (velar nasal)
+      </div>
+    </div>
+    <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.06);padding:.8rem 1rem;">
+      <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cipher);margin-bottom:.4rem;">Determinatives</div>
+      <div style="font-size:.72rem;color:rgba(240,234,216,.55);line-height:1.6;">
+        Semantic classifiers in braces:<br>
+        <code style="color:var(--cipher)">{d}</code> = divine · <code style="color:var(--cipher)">{m}</code> = male name<br>
+        <code style="color:var(--cipher)">{ki}</code> = place · <code style="color:var(--cipher)">{gesz}</code> = wood
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
 <!-- ═══════════════════════════════════════════════ RESOURCES -->
 <section class="script-section" id="resources">
 <div class="container">
@@ -1825,7 +1997,7 @@ function setTab(el) {
 }
 
 // Scroll-spy for tabs
-const sections = ['vesuvius','lineara','protosinaitic','indus','maya','linearelamite','kyprianos','endangered','wals','resources'];
+const sections = ['vesuvius','lineara','protosinaitic','indus','maya','linearelamite','kyprianos','endangered','wals','cuneify','resources'];
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -1945,6 +2117,72 @@ function showWalsBlocked() {
   document.getElementById('walsToggleBtn').textContent = 'Blocked ▴';
 }
 
+// ── CUNEIFY ───────────────────────────────────────────────────────
+// Minimal client-side Unicode lookup for instant preview
+// (full conversion still goes to ORACC CGI for accuracy)
+const CUNEI_MAP = {
+  'lugal':'𒈗','an':'𒀭','na':'𒈾','e2':'𒂍','gal':'𒃲','ki':'𒆠',
+  'en':'𒂗','lil2':'𒆤','u4':'𒌓','da':'𒁕','asz':'𒀸','szur':'𒋫',
+  'erin2':'𒂟','u3':'𒅇','in':'𒅔','nin':'𒊩𒌆','dingir':'𒀭',
+  'kalam':'𒆳','ma':'𒈠','gi':'𒄀','r':'𒌧','nam':'𒉆','til':'𒋾',
+  'bad':'𒁁','kal':'𒆗','la':'𒆷','li':'𒇷','mu':'𒈬','nu':'𒉡',
+  'sa':'𒊓','si':'𒊬','sza':'𒊭','ta':'𒋫','ti':'𒋾','tu':'𒌅',
+  'zu':'𒍪','bi':'𒁉','bu':'𒁍','ga':'𒂵','gu':'𒄖','ha':'𒄩',
+  'hu':'𒄷','ka':'𒅗','ku':'𒆪','me':'𒈨','mi':'𒈪','ni':'𒉌',
+  'pa':'𒉺','pu':'𒅤','ra':'𒊏','ru':'𒊒','ri':'𒊑','su':'𒋢',
+  'szu':'𒋗','ab':'𒀊','ad':'𒀜','ag':'𒀝','ak':'𒀝','al':'𒀠',
+  'am':'𒄠','ap':'𒀳','at':'𒀜','az':'𒊍','ib':'𒅁','id':'𒀭𒀝',
+  'ig':'𒅅','il':'𒅋','im':'𒅎','ip':'𒅁','ir':'𒅕','is':'𒅖',
+  'iz':'𒅖','ub':'𒌒','ud':'𒌓','ug':'𒄢','uk':'𒄢','ul':'𒌓',
+  'um':'𒌒','un':'𒌦','up':'𒌒','ur':'𒌨','us':'𒍑','uz':'𒍪',
+};
+
+function cuneifyPreview(text) {
+  if (!text.trim()) {
+    document.getElementById('cuneify-preview').style.display = 'none';
+    return;
+  }
+  // Normalise: strip determinative braces, lowercase
+  const clean = text.toLowerCase()
+    .replace(/\{[^}]*\}/g, '')
+    .replace(/[<>\[\]_⌈⌉⸢⸣]/g, '')
+    .replace(/[{}*,;:?]/g, ' ');
+
+  const tokens = clean.split(/[\s\-\.]+/).filter(Boolean);
+  let result = '';
+  let mapped = 0;
+  tokens.forEach(tok => {
+    const sign = CUNEI_MAP[tok];
+    if (sign) { result += sign; mapped++; }
+    else { result += '·'; } // unknown sign placeholder
+  });
+
+  const preview = document.getElementById('cuneify-preview');
+  document.getElementById('cuneify-preview-text').textContent = result;
+  document.getElementById('cuneify-preview-meta').textContent =
+    `${mapped}/${tokens.length} signs recognized locally — submit for full ORACC result`;
+  preview.style.display = 'block';
+}
+
+function cuneifyLoad(text) {
+  document.getElementById('cuneify-input').value = text;
+  cuneifyPreview(text);
+}
+
+function cuneifySubmit() {
+  document.getElementById('cuneify-result-wrap').style.display = 'block';
+  // Update preview too
+  cuneifyPreview(document.getElementById('cuneify-input').value);
+  // Scroll result into view after frame loads
+  setTimeout(() => {
+    document.getElementById('cuneify-result-wrap').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }, 400);
+}
+
+// Live preview as user types
+document.getElementById('cuneify-input')?.addEventListener('input', function() {
+  cuneifyPreview(this.value);
+});
 </script>
 </body>
 </html>
