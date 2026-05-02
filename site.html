@@ -735,7 +735,10 @@ const SITE_EXTERNAL_VIEWS = {
     type:   'iframe',
     url:    'https://www.retratodetenochtitlan.mx/?lang=en',
     label:  'Retrato de Tenochtitlan',
-    credit: '© retratodetenochtitlan.mx — Interactive historical map',
+    credit: '© retratodetenochtitlan.mx — Interactive 3D viewer',
+    placeholderImg:     'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Centro_de_Tenochtitl%C3%A1n.jpg/1280px-Centro_de_Tenochtitl%C3%A1n.jpg',
+    placeholderAlt:     'Centro de Tenochtitlan — 3D reconstruction by Thomas Kole (CC-BY 4.0)',
+    placeholderCaption: 'Centro de Tenochtitlan, c. 1518 · 3D reconstruction by Thomas Kole · CC-BY 4.0',
   },
   'athens': {
     type:   'iframe',
@@ -1077,28 +1080,79 @@ function initScene(recon, site) {
 
     // Fallback panel shown if X-Frame-Options blocks the embed
     const fallback = document.createElement('div');
-    fallback.style.cssText = [
-      'display:none;width:100%;height:420px;',
-      'background:rgba(15,13,10,.9);',
-      'flex-direction:column;align-items:center;justify-content:center;',
-      'gap:1rem;text-align:center;padding:2rem;',
-    ].join('');
-    fallback.innerHTML = `
-      <div style="font-size:2rem;opacity:.4">🗺</div>
-      <div style="font-family:var(--serif);font-size:1.1rem;color:var(--cream)">${ext.label}</div>
-      <div style="font-size:.75rem;color:var(--ash);max-width:340px;line-height:1.6">
-        This map cannot be embedded due to the site's security policy.
-      </div>
-      <a href="${iframeUrl}" target="_blank" rel="noopener"
-         style="font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-                padding:.45rem 1rem;border:1px solid rgba(184,137,42,.5);
-                color:var(--ochre-lt);text-decoration:none;transition:all .2s;"
-         onmouseover="this.style.background='rgba(184,137,42,.12)'"
-         onmouseout="this.style.background='none'">
-        Open full interactive map ↗
-      </a>
-      <div style="font-size:.58rem;color:rgba(138,128,112,.4)">${ext.credit ?? ''}</div>
-    `;
+    fallback.style.cssText = 'display:none;width:100%;position:relative;';
+
+    if (ext.placeholderImg) {
+      // Rich image placeholder
+      fallback.innerHTML = `
+        <div style="position:relative;width:100%;height:420px;overflow:hidden;background:#0a0806;">
+          <img
+            src="${ext.placeholderImg}"
+            alt="${ext.placeholderAlt ?? ext.label}"
+            style="width:100%;height:100%;object-fit:cover;opacity:.72;display:block;"
+            onerror="this.parentElement.style.background='#0f0d0a'"
+          >
+          <!-- Gradient overlay -->
+          <div style="position:absolute;inset:0;
+            background:linear-gradient(to top,rgba(8,6,4,.92) 0%,rgba(8,6,4,.3) 45%,rgba(8,6,4,.1) 100%);
+            pointer-events:none;"></div>
+          <!-- Bottom info bar -->
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:1.2rem 1.4rem;">
+            <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.16em;
+              text-transform:uppercase;color:var(--ochre-lt);margin-bottom:.35rem;opacity:.7;">
+              Interactive 3D viewer · Cannot embed · Open in new tab
+            </div>
+            <div style="font-family:var(--serif);font-size:1.3rem;font-weight:900;
+              color:var(--cream);margin-bottom:.5rem;line-height:1.2;">
+              ${ext.label}
+            </div>
+            <div style="display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;">
+              <a href="${iframeUrl}" target="_blank" rel="noopener"
+                style="font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+                  padding:.38rem .9rem;border:1px solid rgba(184,137,42,.6);
+                  color:var(--ochre-lt);text-decoration:none;
+                  background:rgba(8,6,4,.5);backdrop-filter:blur(4px);
+                  transition:all .2s;"
+                onmouseover="this.style.background='rgba(184,137,42,.18)';this.style.borderColor='var(--ochre-lt)'"
+                onmouseout="this.style.background='rgba(8,6,4,.5)';this.style.borderColor='rgba(184,137,42,.6)'">
+                ↗ Open full interactive map
+              </a>
+              <span style="font-size:.56rem;color:rgba(242,234,216,.35);">
+                retratodetenochtitlan.mx
+              </span>
+            </div>
+          </div>
+          <!-- Top-right caption -->
+          <div style="position:absolute;top:.7rem;right:.8rem;
+            font-size:.52rem;color:rgba(242,234,216,.3);font-family:var(--mono);
+            text-align:right;line-height:1.5;max-width:300px;">
+            ${ext.placeholderCaption ?? ''}
+          </div>
+        </div>`;
+    } else {
+      // Generic fallback (no placeholder image)
+      fallback.style.cssText = [
+        'display:none;width:100%;height:420px;',
+        'background:rgba(15,13,10,.9);',
+        'flex-direction:column;align-items:center;justify-content:center;',
+        'gap:1rem;text-align:center;padding:2rem;',
+      ].join('');
+      fallback.innerHTML = `
+        <div style="font-size:2rem;opacity:.4">🗺</div>
+        <div style="font-family:var(--serif);font-size:1.1rem;color:var(--cream)">${ext.label}</div>
+        <div style="font-size:.75rem;color:var(--ash);max-width:340px;line-height:1.6">
+          This map cannot be embedded due to the site's security policy.
+        </div>
+        <a href="${iframeUrl}" target="_blank" rel="noopener"
+           style="font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+                  padding:.45rem 1rem;border:1px solid rgba(184,137,42,.5);
+                  color:var(--ochre-lt);text-decoration:none;transition:all .2s;"
+           onmouseover="this.style.background='rgba(184,137,42,.12)'"
+           onmouseout="this.style.background='none'">
+          Open full interactive map ↗
+        </a>
+        <div style="font-size:.58rem;color:rgba(138,128,112,.4)">${ext.credit ?? ''}</div>`;
+    }
 
     // "Open full map" button always visible in controls
     const openBtn = document.createElement('button');
@@ -1111,21 +1165,19 @@ function initScene(recon, site) {
     fallback.style.display = 'none';
 
     // Detect X-Frame-Options block after load
+    const showFallback = () => {
+      iframe.style.display   = 'none';
+      fallback.style.display = ext.placeholderImg ? 'block' : 'flex';
+    };
     iframe.onload = () => {
       try {
         const doc = iframe.contentDocument || iframe.contentWindow?.document;
-        if (!doc || !doc.body || doc.body.innerHTML === '') {
-          iframe.style.display   = 'none';
-          fallback.style.display = 'flex';
-        }
+        if (!doc || !doc.body || doc.body.innerHTML === '') showFallback();
       } catch {
         // Cross-origin — means it loaded successfully; leave visible
       }
     };
-    iframe.onerror = () => {
-      iframe.style.display   = 'none';
-      fallback.style.display = 'flex';
-    };
+    iframe.onerror = showFallback;
 
     wrap.insertBefore(iframe, canvas);
     wrap.appendChild(fallback);
