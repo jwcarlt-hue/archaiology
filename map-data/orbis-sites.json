@@ -1,0 +1,10160 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.909,
+          47.909
+        ]
+      },
+      "properties": {
+        "id": 50001,
+        "name": "Abodiacum",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          42.191,
+          37.341
+        ]
+      },
+      "properties": {
+        "id": 50002,
+        "name": "Ad fl. Tigrim",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.374,
+          45.671
+        ]
+      },
+      "properties": {
+        "id": 50003,
+        "name": "Ad Publicanos",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.215,
+          46.157
+        ]
+      },
+      "properties": {
+        "id": 50004,
+        "name": "Ad Tricesimum",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.977,
+          38.736
+        ]
+      },
+      "properties": {
+        "id": 50005,
+        "name": "Ad Aras",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.937,
+          39.504
+        ]
+      },
+      "properties": {
+        "id": 50006,
+        "name": "Adramyttium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.01,
+          41.062
+        ]
+      },
+      "properties": {
+        "id": 50007,
+        "name": "Aeclanum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.999,
+          29.531
+        ]
+      },
+      "properties": {
+        "id": 50008,
+        "name": "Aelana",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.074,
+          41.257
+        ]
+      },
+      "properties": {
+        "id": 50009,
+        "name": "Aequum Tuticum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.23,
+          41.593
+        ]
+      },
+      "properties": {
+        "id": 50010,
+        "name": "Aesernia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -7.446,
+          37.217
+        ]
+      },
+      "properties": {
+        "id": 50011,
+        "name": "Aesuris",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.943,
+          50.944
+        ]
+      },
+      "properties": {
+        "id": 50012,
+        "name": "Ara Agrippinensium",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.819,
+          46.839
+        ]
+      },
+      "properties": {
+        "id": 50013,
+        "name": "Aguntum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.077,
+          32.926
+        ]
+      },
+      "properties": {
+        "id": 50014,
+        "name": "Ake-Ptolemais",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.411,
+          42.079
+        ]
+      },
+      "properties": {
+        "id": 50015,
+        "name": "Alba Fucens",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.158,
+          35.292
+        ]
+      },
+      "properties": {
+        "id": 50016,
+        "name": "Albulae",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.91,
+          31.2
+        ]
+      },
+      "properties": {
+        "id": 50017,
+        "name": "Alexandria",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.152,
+          39.76
+        ]
+      },
+      "properties": {
+        "id": 50019,
+        "name": "Alexandria Troas",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.407,
+          45.542
+        ]
+      },
+      "properties": {
+        "id": 50020,
+        "name": "Altinum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.459,
+          35.573
+        ]
+      },
+      "properties": {
+        "id": 50021,
+        "name": "Ammaedara",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.518,
+          43.615
+        ]
+      },
+      "properties": {
+        "id": 50022,
+        "name": "Ancona",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.873,
+          39.947
+        ]
+      },
+      "properties": {
+        "id": 50023,
+        "name": "Ancyra",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.169,
+          36.208
+        ]
+      },
+      "properties": {
+        "id": 50024,
+        "name": "Antiochia",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.18,
+          38.301
+        ]
+      },
+      "properties": {
+        "id": 50025,
+        "name": "Caesarea (Phrygia)",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.406,
+          35.417
+        ]
+      },
+      "properties": {
+        "id": 50026,
+        "name": "Apamea",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.171,
+          38.074
+        ]
+      },
+      "properties": {
+        "id": 50027,
+        "name": "Apamea (Pisidia)",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.252,
+          29.407
+        ]
+      },
+      "properties": {
+        "id": 50028,
+        "name": "Aphroditopolis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.066,
+          40.976
+        ]
+      },
+      "properties": {
+        "id": 50029,
+        "name": "Claudia Aprensis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.59,
+          46.067
+        ]
+      },
+      "properties": {
+        "id": 50030,
+        "name": "Apulum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.441,
+          43.534
+        ]
+      },
+      "properties": {
+        "id": 50031,
+        "name": "Aquae Sextiae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.372,
+          51.395
+        ]
+      },
+      "properties": {
+        "id": 50032,
+        "name": "Aquae Sulis",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.061,
+          43.732
+        ]
+      },
+      "properties": {
+        "id": 50033,
+        "name": "Aquae Terebellicae",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.364,
+          45.767
+        ]
+      },
+      "properties": {
+        "id": 50034,
+        "name": "Aquileia",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.047,
+          47.571
+        ]
+      },
+      "properties": {
+        "id": 50035,
+        "name": "Aquincum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.787,
+          30.293
+        ]
+      },
+      "properties": {
+        "id": 50036,
+        "name": "Arae Philaenorum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.809,
+          44.137
+        ]
+      },
+      "properties": {
+        "id": 50037,
+        "name": "Arausio",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.039,
+          34.534
+        ]
+      },
+      "properties": {
+        "id": 50038,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.048,
+          38.384
+        ]
+      },
+      "properties": {
+        "id": 50039,
+        "name": "Archelais",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.627,
+          43.687
+        ]
+      },
+      "properties": {
+        "id": 50040,
+        "name": "Arelate",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.765,
+          48.594
+        ]
+      },
+      "properties": {
+        "id": 50041,
+        "name": "Argentorate",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.563,
+          44.059
+        ]
+      },
+      "properties": {
+        "id": 50042,
+        "name": "Ariminum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.862,
+          43.47
+        ]
+      },
+      "properties": {
+        "id": 50043,
+        "name": "Arretium",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.29,
+          44.829
+        ]
+      },
+      "properties": {
+        "id": 50045,
+        "name": "Arupium",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.546,
+          31.669
+        ]
+      },
+      "properties": {
+        "id": 50046,
+        "name": "Ascalon",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.574,
+          42.854
+        ]
+      },
+      "properties": {
+        "id": 50047,
+        "name": "Asculum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.049,
+          42.462
+        ]
+      },
+      "properties": {
+        "id": 50048,
+        "name": "Asturica",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.213,
+          42.464
+        ]
+      },
+      "properties": {
+        "id": 50049,
+        "name": "Aternum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.721,
+          37.974
+        ]
+      },
+      "properties": {
+        "id": 50050,
+        "name": "Athenae",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.193,
+          41.335
+        ]
+      },
+      "properties": {
+        "id": 50051,
+        "name": "Aufidena",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.313,
+          45.736
+        ]
+      },
+      "properties": {
+        "id": 50052,
+        "name": "Augusta Praetoria",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.727,
+          47.544
+        ]
+      },
+      "properties": {
+        "id": 50053,
+        "name": "Augusta Raurica",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.325,
+          49.38
+        ]
+      },
+      "properties": {
+        "id": 50054,
+        "name": "Augusta Suessionum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.686,
+          45.069
+        ]
+      },
+      "properties": {
+        "id": 50055,
+        "name": "Augusta Taurinorum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.894,
+          48.364
+        ]
+      },
+      "properties": {
+        "id": 50056,
+        "name": "Augusta Vindelicum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.063,
+          48.307
+        ]
+      },
+      "properties": {
+        "id": 50057,
+        "name": "Augustobona",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -5.677,
+          39.806
+        ]
+      },
+      "properties": {
+        "id": 50058,
+        "name": "Augustobriga",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.283,
+          46.967
+        ]
+      },
+      "properties": {
+        "id": 50059,
+        "name": "Augustodunum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.685,
+          36.148
+        ]
+      },
+      "properties": {
+        "id": 50060,
+        "name": "Auzia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.405,
+          47.081
+        ]
+      },
+      "properties": {
+        "id": 50061,
+        "name": "Avaricum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.028,
+          46.881
+        ]
+      },
+      "properties": {
+        "id": 50062,
+        "name": "Aventicum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.81,
+          50.303
+        ]
+      },
+      "properties": {
+        "id": 50063,
+        "name": "Bagacum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.118,
+          34.609
+        ]
+      },
+      "properties": {
+        "id": 50064,
+        "name": "Banasa",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.159,
+          41.361
+        ]
+      },
+      "properties": {
+        "id": 50065,
+        "name": "Barcino",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.869,
+          41.128
+        ]
+      },
+      "properties": {
+        "id": 50066,
+        "name": "Barium",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          38.424,
+          36.975
+        ]
+      },
+      "properties": {
+        "id": 50067,
+        "name": "Batnae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.436,
+          43.332
+        ]
+      },
+      "properties": {
+        "id": 50068,
+        "name": "Beneharnum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.761,
+          41.137
+        ]
+      },
+      "properties": {
+        "id": 50069,
+        "name": "Beneventum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.481,
+          23.901
+        ]
+      },
+      "properties": {
+        "id": 50070,
+        "name": "Berenice",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.152,
+          36.219
+        ]
+      },
+      "properties": {
+        "id": 50072,
+        "name": "Beroia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.521,
+          33.898
+        ]
+      },
+      "properties": {
+        "id": 50073,
+        "name": "Berytus",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.888,
+          31.62
+        ]
+      },
+      "properties": {
+        "id": 50074,
+        "name": "Eleutheropolis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.604,
+          41.381
+        ]
+      },
+      "properties": {
+        "id": 50075,
+        "name": "Bilbilis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.6,
+          40.74
+        ]
+      },
+      "properties": {
+        "id": 50076,
+        "name": "Claudiopolis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.085,
+          50.744
+        ]
+      },
+      "properties": {
+        "id": 50077,
+        "name": "Bonna",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.348,
+          44.494
+        ]
+      },
+      "properties": {
+        "id": 50078,
+        "name": "Bononia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.895,
+          44.007
+        ]
+      },
+      "properties": {
+        "id": 50079,
+        "name": "Bononia (Moesia)",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.484,
+          32.517
+        ]
+      },
+      "properties": {
+        "id": 50080,
+        "name": "Bostra",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.473,
+          41.486
+        ]
+      },
+      "properties": {
+        "id": 50081,
+        "name": "Bovianum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.424,
+          41.551
+        ]
+      },
+      "properties": {
+        "id": 50082,
+        "name": "Bracara Augusta",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.725,
+          47.495
+        ]
+      },
+      "properties": {
+        "id": 50083,
+        "name": "Brigantium",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.397,
+          43.37
+        ]
+      },
+      "properties": {
+        "id": 50084,
+        "name": "Flavium Brigantium",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.145,
+          47.737
+        ]
+      },
+      "properties": {
+        "id": 50085,
+        "name": "Brigetio",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          17.938,
+          40.635
+        ]
+      },
+      "properties": {
+        "id": 50086,
+        "name": "Brundisium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.742,
+          36.564
+        ]
+      },
+      "properties": {
+        "id": 50087,
+        "name": "Bulla Regia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.586,
+          44.856
+        ]
+      },
+      "properties": {
+        "id": 50088,
+        "name": "Burdigala",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.996,
+          44.009
+        ]
+      },
+      "properties": {
+        "id": 50089,
+        "name": "Burnum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.93,
+          51.741
+        ]
+      },
+      "properties": {
+        "id": 50090,
+        "name": "Burrio",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.839,
+          46.782
+        ]
+      },
+      "properties": {
+        "id": 50091,
+        "name": "Cabilonnum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          38.121,
+          36.661
+        ]
+      },
+      "properties": {
+        "id": 50092,
+        "name": "Caeciliana",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.872,
+          41.646
+        ]
+      },
+      "properties": {
+        "id": 50093,
+        "name": "Caesaraugusta",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.898,
+          32.508
+        ]
+      },
+      "properties": {
+        "id": 50094,
+        "name": "Caesarea Maritima",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.502,
+          38.721
+        ]
+      },
+      "properties": {
+        "id": 50095,
+        "name": "Caesarea (Cappadocia)",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.701,
+          47.383
+        ]
+      },
+      "properties": {
+        "id": 50096,
+        "name": "Caesarodunum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.966,
+          42.303
+        ]
+      },
+      "properties": {
+        "id": 50097,
+        "name": "Calagurris",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.075,
+          51.375
+        ]
+      },
+      "properties": {
+        "id": 50098,
+        "name": "Calleva",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.496,
+          47.666
+        ]
+      },
+      "properties": {
+        "id": 50099,
+        "name": "Cambete",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.326,
+          47.726
+        ]
+      },
+      "properties": {
+        "id": 50100,
+        "name": "Cambodunum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.897,
+          51.891
+        ]
+      },
+      "properties": {
+        "id": 50101,
+        "name": "Camulodunum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.065,
+          41.221
+        ]
+      },
+      "properties": {
+        "id": 50102,
+        "name": "Canusium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.789,
+          34.412
+        ]
+      },
+      "properties": {
+        "id": 50103,
+        "name": "Capsa",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.242,
+          41.085
+        ]
+      },
+      "properties": {
+        "id": 50104,
+        "name": "Capua",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.916,
+          48.121
+        ]
+      },
+      "properties": {
+        "id": 50105,
+        "name": "Carnuntum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          39.023,
+          36.875
+        ]
+      },
+      "properties": {
+        "id": 50106,
+        "name": "Carrhae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.312,
+          36.846
+        ]
+      },
+      "properties": {
+        "id": 50107,
+        "name": "Carthago",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.992,
+          37.605
+        ]
+      },
+      "properties": {
+        "id": 50108,
+        "name": "Carthago Nova",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.83,
+          41.492
+        ]
+      },
+      "properties": {
+        "id": 50109,
+        "name": "Casinum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.905,
+          42.897
+        ]
+      },
+      "properties": {
+        "id": 50110,
+        "name": "Castrum Truentinum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.625,
+          38.037
+        ]
+      },
+      "properties": {
+        "id": 50111,
+        "name": "Castulo",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.159,
+          31.562
+        ]
+      },
+      "properties": {
+        "id": 50112,
+        "name": "Catabathmus Maior",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.64,
+          41.063
+        ]
+      },
+      "properties": {
+        "id": 50113,
+        "name": "Caudium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.264,
+          46.234
+        ]
+      },
+      "properties": {
+        "id": 50114,
+        "name": "Celeia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.915,
+          47.909
+        ]
+      },
+      "properties": {
+        "id": 50115,
+        "name": "Cenabum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.622,
+          48.204
+        ]
+      },
+      "properties": {
+        "id": 50116,
+        "name": "Cetium",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.03,
+          40.993
+        ]
+      },
+      "properties": {
+        "id": 50117,
+        "name": "Chalcedon",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.8,
+          45.275
+        ]
+      },
+      "properties": {
+        "id": 50118,
+        "name": "Cibalae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.449,
+          35.172
+        ]
+      },
+      "properties": {
+        "id": 50119,
+        "name": "Circesium",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.593,
+          36.362
+        ]
+      },
+      "properties": {
+        "id": 50120,
+        "name": "Cirta",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.558,
+          47.214
+        ]
+      },
+      "properties": {
+        "id": 50121,
+        "name": "Civitas Namnetum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.947,
+          43.016
+        ]
+      },
+      "properties": {
+        "id": 50122,
+        "name": "Clusium",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.568,
+          29.958
+        ]
+      },
+      "properties": {
+        "id": 50123,
+        "name": "Clysma",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.681,
+          49.761
+        ]
+      },
+      "properties": {
+        "id": 50124,
+        "name": "Augusta Treverorum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.445,
+          51.668
+        ]
+      },
+      "properties": {
+        "id": 50125,
+        "name": "Ulpia Traiana Tricensimae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.33,
+          38.337
+        ]
+      },
+      "properties": {
+        "id": 50126,
+        "name": "Comana",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.085,
+          45.811
+        ]
+      },
+      "properties": {
+        "id": 50127,
+        "name": "Comum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.499,
+          40.085
+        ]
+      },
+      "properties": {
+        "id": 50128,
+        "name": "Conimbriga",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.985,
+          41.018
+        ]
+      },
+      "properties": {
+        "id": 50129,
+        "name": "Constantinopolis",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.805,
+          26.006
+        ]
+      },
+      "properties": {
+        "id": 50130,
+        "name": "Coptos",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.78,
+          37.884
+        ]
+      },
+      "properties": {
+        "id": 50131,
+        "name": "Corduba",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.841,
+          42.123
+        ]
+      },
+      "properties": {
+        "id": 50132,
+        "name": "Corfinium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.003,
+          54.976
+        ]
+      },
+      "properties": {
+        "id": 50133,
+        "name": "Coriosopitum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.288,
+          42.406
+        ]
+      },
+      "properties": {
+        "id": 50134,
+        "name": "Cosa",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.727,
+          36.322
+        ]
+      },
+      "properties": {
+        "id": 50135,
+        "name": "Cuicul",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.045,
+          40.853
+        ]
+      },
+      "properties": {
+        "id": 50136,
+        "name": "Cumae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.53,
+          46.848
+        ]
+      },
+      "properties": {
+        "id": 50137,
+        "name": "Curia",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.867,
+          32.824
+        ]
+      },
+      "properties": {
+        "id": 50138,
+        "name": "Cyrene",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.915,
+          36.781
+        ]
+      },
+      "properties": {
+        "id": 50139,
+        "name": "Cyrrhus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.309,
+          33.511
+        ]
+      },
+      "properties": {
+        "id": 50140,
+        "name": "Damascus",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.641,
+          32.768
+        ]
+      },
+      "properties": {
+        "id": 50141,
+        "name": "Darnis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.463,
+          46.85
+        ]
+      },
+      "properties": {
+        "id": 50142,
+        "name": "Decetia",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.497,
+          38.481
+        ]
+      },
+      "properties": {
+        "id": 50143,
+        "name": "Delphi",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.864,
+          44.896
+        ]
+      },
+      "properties": {
+        "id": 50144,
+        "name": "Dertona",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.52,
+          40.81
+        ]
+      },
+      "properties": {
+        "id": 50145,
+        "name": "Dertosa",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.306,
+          42.401
+        ]
+      },
+      "properties": {
+        "id": 50146,
+        "name": "Deultum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.897,
+          53.19
+        ]
+      },
+      "properties": {
+        "id": 50147,
+        "name": "Deva",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.889,
+          35.79
+        ]
+      },
+      "properties": {
+        "id": 50148,
+        "name": "Diana Veteranorum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.402,
+          44.708
+        ]
+      },
+      "properties": {
+        "id": 50149,
+        "name": "Dierna",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.652,
+          25.701
+        ]
+      },
+      "properties": {
+        "id": 50150,
+        "name": "Thebai",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.28,
+          42.479
+        ]
+      },
+      "properties": {
+        "id": 50151,
+        "name": "Doclea",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.381,
+          44.141
+        ]
+      },
+      "properties": {
+        "id": 50152,
+        "name": "Domavium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.528,
+          39.814
+        ]
+      },
+      "properties": {
+        "id": 50153,
+        "name": "Dorylaion",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.659,
+          44.635
+        ]
+      },
+      "properties": {
+        "id": 50154,
+        "name": "Drobeta",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.73,
+          34.746
+        ]
+      },
+      "properties": {
+        "id": 50155,
+        "name": "Dura",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.435,
+          50.71
+        ]
+      },
+      "properties": {
+        "id": 50156,
+        "name": "Durnonovaria",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.031,
+          49.262
+        ]
+      },
+      "properties": {
+        "id": 50157,
+        "name": "Durocortorum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.26,
+          44.116
+        ]
+      },
+      "properties": {
+        "id": 50158,
+        "name": "Durostorum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.454,
+          41.324
+        ]
+      },
+      "properties": {
+        "id": 50159,
+        "name": "Dyrrhachium",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.113,
+          53.954
+        ]
+      },
+      "properties": {
+        "id": 50160,
+        "name": "Eburacum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          38.794,
+          37.159
+        ]
+      },
+      "properties": {
+        "id": 50161,
+        "name": "Edessa",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.543,
+          38.045
+        ]
+      },
+      "properties": {
+        "id": 50162,
+        "name": "Eleusis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.347,
+          38.915
+        ]
+      },
+      "properties": {
+        "id": 50163,
+        "name": "Emerita Augusta",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.716,
+          34.734
+        ]
+      },
+      "properties": {
+        "id": 50164,
+        "name": "Emesa",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.989,
+          31.838
+        ]
+      },
+      "properties": {
+        "id": 50165,
+        "name": "Emmaus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.505,
+          46.05
+        ]
+      },
+      "properties": {
+        "id": 50166,
+        "name": "Emona",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.1,
+          42.15
+        ]
+      },
+      "properties": {
+        "id": 50167,
+        "name": "Emporiae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.273,
+          46.317
+        ]
+      },
+      "properties": {
+        "id": 50168,
+        "name": "Endidae",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.348,
+          37.939
+        ]
+      },
+      "properties": {
+        "id": 50169,
+        "name": "Ephesus",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.749,
+          35.143
+        ]
+      },
+      "properties": {
+        "id": 50170,
+        "name": "Epiphaneia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.016,
+          43.844
+        ]
+      },
+      "properties": {
+        "id": 50171,
+        "name": "Fanum Fortunae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.883,
+          44.285
+        ]
+      },
+      "properties": {
+        "id": 50172,
+        "name": "Faventia",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.252,
+          41.692
+        ]
+      },
+      "properties": {
+        "id": 50173,
+        "name": "Ferentinum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.256,
+          43.768
+        ]
+      },
+      "properties": {
+        "id": 50174,
+        "name": "Florentia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.605,
+          41.255
+        ]
+      },
+      "properties": {
+        "id": 50175,
+        "name": "Formiae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.731,
+          43.441
+        ]
+      },
+      "properties": {
+        "id": 50176,
+        "name": "Forum Iulii",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.512,
+          41.545
+        ]
+      },
+      "properties": {
+        "id": 50177,
+        "name": "Fregellanum",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.733,
+          32.061
+        ]
+      },
+      "properties": {
+        "id": 50178,
+        "name": "Gadara",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.293,
+          36.529
+        ]
+      },
+      "properties": {
+        "id": 50179,
+        "name": "Gades",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.592,
+          54.171
+        ]
+      },
+      "properties": {
+        "id": 50180,
+        "name": "Galacum",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.458,
+          31.51
+        ]
+      },
+      "properties": {
+        "id": 50181,
+        "name": "Gaza",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.138,
+          46.202
+        ]
+      },
+      "properties": {
+        "id": 50182,
+        "name": "Genava",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.933,
+          44.406
+        ]
+      },
+      "properties": {
+        "id": 50183,
+        "name": "Genua",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.616,
+          39.51
+        ]
+      },
+      "properties": {
+        "id": 50184,
+        "name": "Germa",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.614,
+          50.724
+        ]
+      },
+      "properties": {
+        "id": 50185,
+        "name": "Gesoriacum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.262,
+          51.867
+        ]
+      },
+      "properties": {
+        "id": 50186,
+        "name": "Glevum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.566,
+          41.683
+        ]
+      },
+      "properties": {
+        "id": 50187,
+        "name": "Hadrianoupolis",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.644,
+          35.837
+        ]
+      },
+      "properties": {
+        "id": 50188,
+        "name": "Hadrumetum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.295,
+          30.124
+        ]
+      },
+      "properties": {
+        "id": 50189,
+        "name": "Heliopolis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.203,
+          34.014
+        ]
+      },
+      "properties": {
+        "id": 50190,
+        "name": "Heliopolis (Baalbek)",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.345,
+          41.025
+        ]
+      },
+      "properties": {
+        "id": 50191,
+        "name": "Heraklea",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.941,
+          29.086
+        ]
+      },
+      "properties": {
+        "id": 50192,
+        "name": "Herakleopolis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.619,
+          41.315
+        ]
+      },
+      "properties": {
+        "id": 50193,
+        "name": "Herdoniae",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.804,
+          27.778
+        ]
+      },
+      "properties": {
+        "id": 50194,
+        "name": "Hermopolis Magna",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.553,
+          25.437
+        ]
+      },
+      "properties": {
+        "id": 50195,
+        "name": "Hibis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.477,
+          31.018
+        ]
+      },
+      "properties": {
+        "id": 50196,
+        "name": "Hierakonpolis",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.683,
+          23.068
+        ]
+      },
+      "properties": {
+        "id": 50197,
+        "name": "Hierasykaminos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.754,
+          36.888
+        ]
+      },
+      "properties": {
+        "id": 50198,
+        "name": "Hippo Regius",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -5.997,
+          37.382
+        ]
+      },
+      "properties": {
+        "id": 50199,
+        "name": "Hispalis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.768,
+          44.552
+        ]
+      },
+      "properties": {
+        "id": 50200,
+        "name": "Histria",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.228,
+          44.114
+        ]
+      },
+      "properties": {
+        "id": 50201,
+        "name": "Iader",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.512,
+          37.866
+        ]
+      },
+      "properties": {
+        "id": 50202,
+        "name": "Iconium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.625,
+          41.613
+        ]
+      },
+      "properties": {
+        "id": 50203,
+        "name": "Ilerda",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.265,
+          39.947
+        ]
+      },
+      "properties": {
+        "id": 50204,
+        "name": "Ilium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.933,
+          42.243
+        ]
+      },
+      "properties": {
+        "id": 50205,
+        "name": "Interpromium",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.196,
+          36.606
+        ]
+      },
+      "properties": {
+        "id": 50206,
+        "name": "Iol Caesarea",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.966,
+          51.618
+        ]
+      },
+      "properties": {
+        "id": 50207,
+        "name": "Isca",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.035,
+          37.438
+        ]
+      },
+      "properties": {
+        "id": 50208,
+        "name": "Italica",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.843,
+          45.756
+        ]
+      },
+      "properties": {
+        "id": 50209,
+        "name": "Iulia Concordia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.548,
+          47.458
+        ]
+      },
+      "properties": {
+        "id": 50210,
+        "name": "Iuliomagus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.012,
+          46.452
+        ]
+      },
+      "properties": {
+        "id": 50211,
+        "name": "Iulium Carnicum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.061,
+          47.804
+        ]
+      },
+      "properties": {
+        "id": 50212,
+        "name": "Iuvavum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.234,
+          31.776
+        ]
+      },
+      "properties": {
+        "id": 50213,
+        "name": "Ierusalem",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.68,
+          40.414
+        ]
+      },
+      "properties": {
+        "id": 50214,
+        "name": "Kallipolis",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.857,
+          32.61
+        ]
+      },
+      "properties": {
+        "id": 50215,
+        "name": "Kapitolias",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.985,
+          36.922
+        ]
+      },
+      "properties": {
+        "id": 50216,
+        "name": "Katabolos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.089,
+          25.518
+        ]
+      },
+      "properties": {
+        "id": 50217,
+        "name": "Kellis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.49,
+          26.807
+        ]
+      },
+      "properties": {
+        "id": 50218,
+        "name": "Klaudianon",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.197,
+          40.806
+        ]
+      },
+      "properties": {
+        "id": 50219,
+        "name": "Flaviopolis",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.602,
+          42.347
+        ]
+      },
+      "properties": {
+        "id": 50220,
+        "name": "Lacobriga",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.909,
+          35.6
+        ]
+      },
+      "properties": {
+        "id": 50221,
+        "name": "Lamasba",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.262,
+          35.489
+        ]
+      },
+      "properties": {
+        "id": 50222,
+        "name": "Lambaesis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.694,
+          40.351
+        ]
+      },
+      "properties": {
+        "id": 50223,
+        "name": "Lampsacus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -5.415,
+          42.533
+        ]
+      },
+      "properties": {
+        "id": 50224,
+        "name": "Lancia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.785,
+          35.521
+        ]
+      },
+      "properties": {
+        "id": 50225,
+        "name": "Laodicea",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.918,
+          41.806
+        ]
+      },
+      "properties": {
+        "id": 50226,
+        "name": "Larinum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.416,
+          39.639
+        ]
+      },
+      "properties": {
+        "id": 50227,
+        "name": "Larissa",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.465,
+          48.22
+        ]
+      },
+      "properties": {
+        "id": 50228,
+        "name": "Lauriacum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -5.571,
+          42.605
+        ]
+      },
+      "properties": {
+        "id": 50229,
+        "name": "Legio VII",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.292,
+          32.637
+        ]
+      },
+      "properties": {
+        "id": 50230,
+        "name": "Lepcis Magna",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.354,
+          46.571
+        ]
+      },
+      "properties": {
+        "id": 50231,
+        "name": "Limonum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.541,
+          53.237
+        ]
+      },
+      "properties": {
+        "id": 50232,
+        "name": "Lindum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.111,
+          35.209
+        ]
+      },
+      "properties": {
+        "id": 50233,
+        "name": "Lixus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.723,
+          49.522
+        ]
+      },
+      "properties": {
+        "id": 50234,
+        "name": "Loium",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.083,
+          51.52
+        ]
+      },
+      "properties": {
+        "id": 50235,
+        "name": "Londinium",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.631,
+          46.518
+        ]
+      },
+      "properties": {
+        "id": 50236,
+        "name": "Lousonna",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.499,
+          43.846
+        ]
+      },
+      "properties": {
+        "id": 50237,
+        "name": "Luca",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.398,
+          52.198
+        ]
+      },
+      "properties": {
+        "id": 50238,
+        "name": "Lugdunum Cananefatium",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.559,
+          43.038
+        ]
+      },
+      "properties": {
+        "id": 50239,
+        "name": "Lugdunum Convenarum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.936,
+          54.894
+        ]
+      },
+      "properties": {
+        "id": 50240,
+        "name": "Luguvalium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.03,
+          44.065
+        ]
+      },
+      "properties": {
+        "id": 50241,
+        "name": "Luna",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.34,
+          48.85
+        ]
+      },
+      "properties": {
+        "id": 50242,
+        "name": "Lutetia",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.892,
+          31.965
+        ]
+      },
+      "properties": {
+        "id": 50243,
+        "name": "Lydda",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.187,
+          27.183
+        ]
+      },
+      "properties": {
+        "id": 50244,
+        "name": "Lykopolis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.526,
+          37.859
+        ]
+      },
+      "properties": {
+        "id": 50245,
+        "name": "Magnesia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.892,
+          37.079
+        ]
+      },
+      "properties": {
+        "id": 50246,
+        "name": "Mampsoukrenai",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.437,
+          43.315
+        ]
+      },
+      "properties": {
+        "id": 50247,
+        "name": "Marcianopolis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.926,
+          38.558
+        ]
+      },
+      "properties": {
+        "id": 50248,
+        "name": "Mariana",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.329,
+          53.464
+        ]
+      },
+      "properties": {
+        "id": 50249,
+        "name": "Mamucio",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.363,
+          43.305
+        ]
+      },
+      "properties": {
+        "id": 50250,
+        "name": "Massilia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.187,
+          45.463
+        ]
+      },
+      "properties": {
+        "id": 50251,
+        "name": "Mediolanum",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.63,
+          45.749
+        ]
+      },
+      "properties": {
+        "id": 50252,
+        "name": "Mediolanum (Aquitania)",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          38.371,
+          38.43
+        ]
+      },
+      "properties": {
+        "id": 50253,
+        "name": "Melitene",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.276,
+          30.003
+        ]
+      },
+      "properties": {
+        "id": 50254,
+        "name": "Memphis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.768,
+          41.241
+        ]
+      },
+      "properties": {
+        "id": 50255,
+        "name": "Minturnae",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.084,
+          40.785
+        ]
+      },
+      "properties": {
+        "id": 50256,
+        "name": "Misenum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.256,
+          50.007
+        ]
+      },
+      "properties": {
+        "id": 50257,
+        "name": "Mogontiacum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.606,
+          24.683
+        ]
+      },
+      "properties": {
+        "id": 50258,
+        "name": "Mounesis",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.673,
+          45.549
+        ]
+      },
+      "properties": {
+        "id": 50259,
+        "name": "Mursa",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.135,
+          36.341
+        ]
+      },
+      "properties": {
+        "id": 50260,
+        "name": "Musti",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.924,
+          44.646
+        ]
+      },
+      "properties": {
+        "id": 50261,
+        "name": "Mutina",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.244,
+          26.156
+        ]
+      },
+      "properties": {
+        "id": 50262,
+        "name": "Myos Hormos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.897,
+          43.328
+        ]
+      },
+      "properties": {
+        "id": 50263,
+        "name": "Naissus",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3,
+          43.197
+        ]
+      },
+      "properties": {
+        "id": 50264,
+        "name": "Narbo",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.515,
+          42.519
+        ]
+      },
+      "properties": {
+        "id": 50265,
+        "name": "Narnia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          17.632,
+          43.052
+        ]
+      },
+      "properties": {
+        "id": 50266,
+        "name": "Narona",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.607,
+          30.854
+        ]
+      },
+      "properties": {
+        "id": 50267,
+        "name": "Naucratis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.233,
+          40.84
+        ]
+      },
+      "properties": {
+        "id": 50268,
+        "name": "Neapolis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.357,
+          43.843
+        ]
+      },
+      "properties": {
+        "id": 50269,
+        "name": "Nemausus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.763,
+          50.297
+        ]
+      },
+      "properties": {
+        "id": 50270,
+        "name": "Nemetacum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.723,
+          40.436
+        ]
+      },
+      "properties": {
+        "id": 50271,
+        "name": "Nicaea",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.924,
+          40.77
+        ]
+      },
+      "properties": {
+        "id": 50272,
+        "name": "Nicomedia",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.735,
+          39.007
+        ]
+      },
+      "properties": {
+        "id": 50273,
+        "name": "Nicopolis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          38.146,
+          40.151
+        ]
+      },
+      "properties": {
+        "id": 50274,
+        "name": "Nicopolis (Pontus)",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.244,
+          37.077
+        ]
+      },
+      "properties": {
+        "id": 50275,
+        "name": "Nisibis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.385,
+          43.615
+        ]
+      },
+      "properties": {
+        "id": 50276,
+        "name": "Novae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.445,
+          49.315
+        ]
+      },
+      "properties": {
+        "id": 50277,
+        "name": "Noviomagus",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.673,
+          40.742
+        ]
+      },
+      "properties": {
+        "id": 50278,
+        "name": "Nuceria",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.466,
+          42.411
+        ]
+      },
+      "properties": {
+        "id": 50279,
+        "name": "Ocriculum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.908,
+          43.211
+        ]
+      },
+      "properties": {
+        "id": 50280,
+        "name": "Odessus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.174,
+          32.897
+        ]
+      },
+      "properties": {
+        "id": 50281,
+        "name": "Oea",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.472,
+          43.707
+        ]
+      },
+      "properties": {
+        "id": 50282,
+        "name": "Oescus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -9.145,
+          38.726
+        ]
+      },
+      "properties": {
+        "id": 50283,
+        "name": "Olisipo",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.95,
+          24.466
+        ]
+      },
+      "properties": {
+        "id": 50284,
+        "name": "Omboi",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.41,
+          42.139
+        ]
+      },
+      "properties": {
+        "id": 50285,
+        "name": "Osca",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.287,
+          41.754
+        ]
+      },
+      "properties": {
+        "id": 50286,
+        "name": "Ostia/Portus",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.026,
+          48.163
+        ]
+      },
+      "properties": {
+        "id": 50287,
+        "name": "Ovilava",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.626,
+          28.672
+        ]
+      },
+      "properties": {
+        "id": 50288,
+        "name": "Oxyrhynchus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -5.383,
+          42.446
+        ]
+      },
+      "properties": {
+        "id": 50289,
+        "name": "Palantia",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          38.285,
+          34.559
+        ]
+      },
+      "properties": {
+        "id": 50290,
+        "name": "Palmyra",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.225,
+          31.356
+        ]
+      },
+      "properties": {
+        "id": 50291,
+        "name": "Paraetonium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.332,
+          44.803
+        ]
+      },
+      "properties": {
+        "id": 50292,
+        "name": "Parma",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.085,
+          47.491
+        ]
+      },
+      "properties": {
+        "id": 50293,
+        "name": "Parthanum",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.876,
+          45.409
+        ]
+      },
+      "properties": {
+        "id": 50294,
+        "name": "Patavium",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -7.851,
+          37.997
+        ]
+      },
+      "properties": {
+        "id": 50295,
+        "name": "Pax Iulia",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.522,
+          40.773
+        ]
+      },
+      "properties": {
+        "id": 50296,
+        "name": "Pella",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.567,
+          31.043
+        ]
+      },
+      "properties": {
+        "id": 50297,
+        "name": "Pelusium",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.917,
+          46.397
+        ]
+      },
+      "properties": {
+        "id": 50298,
+        "name": "Penne Locos",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.367,
+          35.845
+        ]
+      },
+      "properties": {
+        "id": 50299,
+        "name": "Perdices",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.181,
+          39.14
+        ]
+      },
+      "properties": {
+        "id": 50300,
+        "name": "Pergamum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.957,
+          40.977
+        ]
+      },
+      "properties": {
+        "id": 50301,
+        "name": "Perinthus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.464,
+          30.325
+        ]
+      },
+      "properties": {
+        "id": 50302,
+        "name": "Petra",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.592,
+          53.687
+        ]
+      },
+      "properties": {
+        "id": 50303,
+        "name": "Petuaria",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.934,
+          31.946
+        ]
+      },
+      "properties": {
+        "id": 50304,
+        "name": "Philadelpheia",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.291,
+          41.018
+        ]
+      },
+      "properties": {
+        "id": 50305,
+        "name": "Philippi",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.735,
+          42.146
+        ]
+      },
+      "properties": {
+        "id": 50306,
+        "name": "Philippopolis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.396,
+          43.715
+        ]
+      },
+      "properties": {
+        "id": 50307,
+        "name": "Pisae",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.892,
+          43.934
+        ]
+      },
+      "properties": {
+        "id": 50308,
+        "name": "Pistoriae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.698,
+          45.051
+        ]
+      },
+      "properties": {
+        "id": 50309,
+        "name": "Placentia",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.869,
+          46.419
+        ]
+      },
+      "properties": {
+        "id": 50310,
+        "name": "Poetovio",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.84,
+          44.869
+        ]
+      },
+      "properties": {
+        "id": 50311,
+        "name": "Pola",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.484,
+          40.748
+        ]
+      },
+      "properties": {
+        "id": 50312,
+        "name": "Pompeii",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.652,
+          42.8
+        ]
+      },
+      "properties": {
+        "id": 50313,
+        "name": "Pompelo",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.118,
+          47.881
+        ]
+      },
+      "properties": {
+        "id": 50314,
+        "name": "Pons Aeni",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.343,
+          46.475
+        ]
+      },
+      "properties": {
+        "id": 50315,
+        "name": "Pons Drusi",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.194,
+          47.168
+        ]
+      },
+      "properties": {
+        "id": 50316,
+        "name": "Porolissum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.78,
+          12.258
+        ]
+      },
+      "properties": {
+        "id": 50317,
+        "name": "Portus",
+        "rank": 0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.756,
+          46.561
+        ]
+      },
+      "properties": {
+        "id": 50318,
+        "name": "Potaissa",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.968,
+          31.286
+        ]
+      },
+      "properties": {
+        "id": 50319,
+        "name": "Praetorium",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.95,
+          32.707
+        ]
+      },
+      "properties": {
+        "id": 50320,
+        "name": "Ptolemais",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.804,
+          26.477
+        ]
+      },
+      "properties": {
+        "id": 50321,
+        "name": "Ptolemais Hermiou",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.106,
+          40.83
+        ]
+      },
+      "properties": {
+        "id": 50322,
+        "name": "Puteoli",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.212,
+          44.423
+        ]
+      },
+      "properties": {
+        "id": 50323,
+        "name": "Ravenna",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.86,
+          42.402
+        ]
+      },
+      "properties": {
+        "id": 50324,
+        "name": "Reate",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.102,
+          49.011
+        ]
+      },
+      "properties": {
+        "id": 50325,
+        "name": "Castra Regina",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.643,
+          38.108
+        ]
+      },
+      "properties": {
+        "id": 50326,
+        "name": "Regium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.485,
+          41.891
+        ]
+      },
+      "properties": {
+        "id": 50327,
+        "name": "Roma",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.94,
+          35.283
+        ]
+      },
+      "properties": {
+        "id": 50328,
+        "name": "Rusaddir",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.912,
+          36.885
+        ]
+      },
+      "properties": {
+        "id": 50329,
+        "name": "Rusicade",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.318,
+          51.302
+        ]
+      },
+      "properties": {
+        "id": 50330,
+        "name": "Rutupiae",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.484,
+          32.805
+        ]
+      },
+      "properties": {
+        "id": 50331,
+        "name": "Sabratha",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.269,
+          39.666
+        ]
+      },
+      "properties": {
+        "id": 50332,
+        "name": "Saguntum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.81,
+          34.005
+        ]
+      },
+      "properties": {
+        "id": 50333,
+        "name": "Sala",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.071,
+          36.762
+        ]
+      },
+      "properties": {
+        "id": 50334,
+        "name": "Saldae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.765,
+          40.677
+        ]
+      },
+      "properties": {
+        "id": 50335,
+        "name": "Salernum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.5,
+          43.531
+        ]
+      },
+      "properties": {
+        "id": 50336,
+        "name": "Salona",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.287,
+          49.892
+        ]
+      },
+      "properties": {
+        "id": 50337,
+        "name": "Samarobriva",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          38.516,
+          37.528
+        ]
+      },
+      "properties": {
+        "id": 50338,
+        "name": "Samosata",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.874,
+          46.635
+        ]
+      },
+      "properties": {
+        "id": 50339,
+        "name": "Santicum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.065,
+          38.476
+        ]
+      },
+      "properties": {
+        "id": 50340,
+        "name": "Sardis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.784,
+          45.522
+        ]
+      },
+      "properties": {
+        "id": 50341,
+        "name": "Sarmizegethusa",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          39.66,
+          40.017
+        ]
+      },
+      "properties": {
+        "id": 50342,
+        "name": "Satala",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.621,
+          47.234
+        ]
+      },
+      "properties": {
+        "id": 50343,
+        "name": "Savaria",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.599,
+          47.69
+        ]
+      },
+      "properties": {
+        "id": 50344,
+        "name": "Scarbantia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.511,
+          42.065
+        ]
+      },
+      "properties": {
+        "id": 50345,
+        "name": "Scodra",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.504,
+          32.507
+        ]
+      },
+      "properties": {
+        "id": 50346,
+        "name": "Scythopolis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.032,
+          39.748
+        ]
+      },
+      "properties": {
+        "id": 50347,
+        "name": "Sebasteia",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.011,
+          45.122
+        ]
+      },
+      "properties": {
+        "id": 50348,
+        "name": "Segusio",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.917,
+          44.992
+        ]
+      },
+      "properties": {
+        "id": 50349,
+        "name": "Senia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.333,
+          42.73
+        ]
+      },
+      "properties": {
+        "id": 50350,
+        "name": "Serdica",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          17.263,
+          45.134
+        ]
+      },
+      "properties": {
+        "id": 50351,
+        "name": "Servitium",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.706,
+          36.176
+        ]
+      },
+      "properties": {
+        "id": 50352,
+        "name": "Sicca Veneria",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.398,
+          36.775
+        ]
+      },
+      "properties": {
+        "id": 50353,
+        "name": "Side",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.466,
+          35.257
+        ]
+      },
+      "properties": {
+        "id": 50354,
+        "name": "Siga",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.861,
+          36.328
+        ]
+      },
+      "properties": {
+        "id": 50355,
+        "name": "Singara",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.469,
+          44.818
+        ]
+      },
+      "properties": {
+        "id": 50356,
+        "name": "Singidunum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.83,
+          41.161
+        ]
+      },
+      "properties": {
+        "id": 50357,
+        "name": "Sinuessa",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.895,
+          41.606
+        ]
+      },
+      "properties": {
+        "id": 50358,
+        "name": "Sipontum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.609,
+          44.965
+        ]
+      },
+      "properties": {
+        "id": 50359,
+        "name": "Sirmium",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.519,
+          38.644
+        ]
+      },
+      "properties": {
+        "id": 50360,
+        "name": "Sisapo",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.37,
+          45.482
+        ]
+      },
+      "properties": {
+        "id": 50361,
+        "name": "Siscia",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.394,
+          36.192
+        ]
+      },
+      "properties": {
+        "id": 50362,
+        "name": "Sitifis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.141,
+          38.427
+        ]
+      },
+      "properties": {
+        "id": 50363,
+        "name": "Smyrna",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          38.804,
+          35.906
+        ]
+      },
+      "properties": {
+        "id": 50364,
+        "name": "Soura",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.233,
+          51.4
+        ]
+      },
+      "properties": {
+        "id": 50365,
+        "name": "Spinis",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.737,
+          42.744
+        ]
+      },
+      "properties": {
+        "id": 50366,
+        "name": "Spoletium",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.972,
+          41.554
+        ]
+      },
+      "properties": {
+        "id": 50367,
+        "name": "Stobi",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.507,
+          36.194
+        ]
+      },
+      "properties": {
+        "id": 50368,
+        "name": "Sufasar",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.128,
+          35.257
+        ]
+      },
+      "properties": {
+        "id": 50369,
+        "name": "Sufetula",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.789,
+          48.639
+        ]
+      },
+      "properties": {
+        "id": 50370,
+        "name": "Summuntorium",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.359,
+          43.008
+        ]
+      },
+      "properties": {
+        "id": 50371,
+        "name": "Summus Pyreneus (West)",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.728,
+          42.845
+        ]
+      },
+      "properties": {
+        "id": 50372,
+        "name": "Summus Pyreneus (East)",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.905,
+          24.095
+        ]
+      },
+      "properties": {
+        "id": 50373,
+        "name": "Syene",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.098,
+          33.882
+        ]
+      },
+      "properties": {
+        "id": 50374,
+        "name": "Tacape",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.148,
+          44.46
+        ]
+      },
+      "properties": {
+        "id": 50375,
+        "name": "Taliata",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.535,
+          39.858
+        ]
+      },
+      "properties": {
+        "id": 50376,
+        "name": "Tabia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          17.239,
+          40.468
+        ]
+      },
+      "properties": {
+        "id": 50377,
+        "name": "Tarentum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.248,
+          41.29
+        ]
+      },
+      "properties": {
+        "id": 50378,
+        "name": "Tarracina",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.23,
+          41.115
+        ]
+      },
+      "properties": {
+        "id": 50379,
+        "name": "Tarraco",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.901,
+          36.915
+        ]
+      },
+      "properties": {
+        "id": 50380,
+        "name": "Tarsus",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.055,
+          41.254
+        ]
+      },
+      "properties": {
+        "id": 50381,
+        "name": "Teanum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.816,
+          30.431
+        ]
+      },
+      "properties": {
+        "id": 50382,
+        "name": "Terenouthis",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.771,
+          45.648
+        ]
+      },
+      "properties": {
+        "id": 50383,
+        "name": "Tergeste",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.983,
+          36.29
+        ]
+      },
+      "properties": {
+        "id": 50384,
+        "name": "Thagaste",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.472,
+          35.503
+        ]
+      },
+      "properties": {
+        "id": 50385,
+        "name": "Thamugadi",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.318,
+          38.321
+        ]
+      },
+      "properties": {
+        "id": 50386,
+        "name": "Thebae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.596,
+          34.986
+        ]
+      },
+      "properties": {
+        "id": 50387,
+        "name": "Thelepte",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.699,
+          33.645
+        ]
+      },
+      "properties": {
+        "id": 50388,
+        "name": "Thelseai",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.966,
+          40.635
+        ]
+      },
+      "properties": {
+        "id": 50389,
+        "name": "Thessalonica",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.143,
+          35.409
+        ]
+      },
+      "properties": {
+        "id": 50390,
+        "name": "Theveste",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.46,
+          36.53
+        ]
+      },
+      "properties": {
+        "id": 50391,
+        "name": "Thuburnica",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.185,
+          45.458
+        ]
+      },
+      "properties": {
+        "id": 50392,
+        "name": "Tibiscum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.797,
+          41.963
+        ]
+      },
+      "properties": {
+        "id": 50393,
+        "name": "Tibur",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.834,
+          36.668
+        ]
+      },
+      "properties": {
+        "id": 50394,
+        "name": "Tubusuctu",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.156,
+          45.185
+        ]
+      },
+      "properties": {
+        "id": 50395,
+        "name": "Ticinum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -5.798,
+          35.792
+        ]
+      },
+      "properties": {
+        "id": 50396,
+        "name": "Tingi",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.434,
+          43.616
+        ]
+      },
+      "properties": {
+        "id": 50398,
+        "name": "Tolosa",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.643,
+          44.188
+        ]
+      },
+      "properties": {
+        "id": 50399,
+        "name": "Tomis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.84,
+          37.86
+        ]
+      },
+      "properties": {
+        "id": 50400,
+        "name": "Tralles",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          39.718,
+          41.002
+        ]
+      },
+      "properties": {
+        "id": 50401,
+        "name": "Trapezus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.118,
+          46.066
+        ]
+      },
+      "properties": {
+        "id": 50402,
+        "name": "Tridentum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.195,
+          45.156
+        ]
+      },
+      "properties": {
+        "id": 50403,
+        "name": "Troesmis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.616,
+          37.828
+        ]
+      },
+      "properties": {
+        "id": 50404,
+        "name": "Tyana",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.198,
+          33.277
+        ]
+      },
+      "properties": {
+        "id": 50405,
+        "name": "Tyrus",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.889,
+          44.929
+        ]
+      },
+      "properties": {
+        "id": 50406,
+        "name": "Valentia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.033,
+          44.546
+        ]
+      },
+      "properties": {
+        "id": 50407,
+        "name": "Vappincum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.394,
+          47.26
+        ]
+      },
+      "properties": {
+        "id": 50408,
+        "name": "Veldidena",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.299,
+          52.487
+        ]
+      },
+      "properties": {
+        "id": 50409,
+        "name": "Venonis",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.814,
+          40.962
+        ]
+      },
+      "properties": {
+        "id": 50410,
+        "name": "Venusia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.287,
+          52.577
+        ]
+      },
+      "properties": {
+        "id": 50411,
+        "name": "Venta Icenorum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.323,
+          51.068
+        ]
+      },
+      "properties": {
+        "id": 50412,
+        "name": "Venta",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.416,
+          45.33
+        ]
+      },
+      "properties": {
+        "id": 50413,
+        "name": "Vercellae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.994,
+          45.439
+        ]
+      },
+      "properties": {
+        "id": 50414,
+        "name": "Verona",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.356,
+          51.745
+        ]
+      },
+      "properties": {
+        "id": 50415,
+        "name": "Verulamium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.002,
+          47.224
+        ]
+      },
+      "properties": {
+        "id": 50416,
+        "name": "Vesontio",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.097,
+          38.675
+        ]
+      },
+      "properties": {
+        "id": 50417,
+        "name": "Vibo Valentia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.878,
+          45.524
+        ]
+      },
+      "properties": {
+        "id": 50418,
+        "name": "Vienna",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.233,
+          44.736
+        ]
+      },
+      "properties": {
+        "id": 50419,
+        "name": "Viminacium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.373,
+          48.21
+        ]
+      },
+      "properties": {
+        "id": 50420,
+        "name": "Vindobona",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.649,
+          52.66
+        ]
+      },
+      "properties": {
+        "id": 50421,
+        "name": "Viroconium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.324,
+          42.549
+        ]
+      },
+      "properties": {
+        "id": 50422,
+        "name": "Virovesca",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.415,
+          46.702
+        ]
+      },
+      "properties": {
+        "id": 50423,
+        "name": "Virunum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.84,
+          46.468
+        ]
+      },
+      "properties": {
+        "id": 50424,
+        "name": "Vivisco",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.985,
+          42.644
+        ]
+      },
+      "properties": {
+        "id": 50425,
+        "name": "Volsinii",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -5.558,
+          34.085
+        ]
+      },
+      "properties": {
+        "id": 50426,
+        "name": "Volubilis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.683,
+          35.799
+        ]
+      },
+      "properties": {
+        "id": 50427,
+        "name": "Zarai",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.875,
+          37.059
+        ]
+      },
+      "properties": {
+        "id": 50428,
+        "name": "Zeugma",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.818,
+          45.758
+        ]
+      },
+      "properties": {
+        "id": 50429,
+        "name": "Lugdunum",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.419,
+          41.282
+        ]
+      },
+      "properties": {
+        "id": 50430,
+        "name": "Heraclea Pontica",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.116,
+          37.842
+        ]
+      },
+      "properties": {
+        "id": 50431,
+        "name": "Laodicea ad Lycum",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.517,
+          30.582
+        ]
+      },
+      "properties": {
+        "id": 50432,
+        "name": "Boubastis",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.576,
+          48.296
+        ]
+      },
+      "properties": {
+        "id": 50434,
+        "name": "Vorgium",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.627,
+          44.203
+        ]
+      },
+      "properties": {
+        "id": 50435,
+        "name": "Aginnum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.519,
+          37.158
+        ]
+      },
+      "properties": {
+        "id": 50436,
+        "name": "Cibyra",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.856,
+          36.967
+        ]
+      },
+      "properties": {
+        "id": 50437,
+        "name": "Perge",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.547,
+          36.52
+        ]
+      },
+      "properties": {
+        "id": 50438,
+        "name": "Phaselis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.995,
+          36.244
+        ]
+      },
+      "properties": {
+        "id": 50439,
+        "name": "Myra",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.322,
+          36.262
+        ]
+      },
+      "properties": {
+        "id": 50440,
+        "name": "Patara",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.331,
+          36.36
+        ]
+      },
+      "properties": {
+        "id": 50441,
+        "name": "Xanthos",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.82,
+          40.648
+        ]
+      },
+      "properties": {
+        "id": 50442,
+        "name": "Amaseia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.602,
+          39.863
+        ]
+      },
+      "properties": {
+        "id": 50443,
+        "name": "Phiara",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.077,
+          45.775
+        ]
+      },
+      "properties": {
+        "id": 50444,
+        "name": "Augustonemetum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.248,
+          45.833
+        ]
+      },
+      "properties": {
+        "id": 50445,
+        "name": "Augustoritum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.38,
+          41.748
+        ]
+      },
+      "properties": {
+        "id": 50446,
+        "name": "Amastris",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.7,
+          36.894
+        ]
+      },
+      "properties": {
+        "id": 50447,
+        "name": "Attalea",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.424,
+          38.91
+        ]
+      },
+      "properties": {
+        "id": 50448,
+        "name": "Ebusus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.75,
+          36.953
+        ]
+      },
+      "properties": {
+        "id": 50449,
+        "name": "Thabraca",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.099,
+          38.837
+        ]
+      },
+      "properties": {
+        "id": 50450,
+        "name": "Dianium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.501,
+          40.929
+        ]
+      },
+      "properties": {
+        "id": 50451,
+        "name": "Olbia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.414,
+          34.758
+        ]
+      },
+      "properties": {
+        "id": 50452,
+        "name": "Paphos",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.911,
+          35.177
+        ]
+      },
+      "properties": {
+        "id": 50453,
+        "name": "Salamis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.934,
+          36.119
+        ]
+      },
+      "properties": {
+        "id": 50454,
+        "name": "Seleukeia Pieria",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.295,
+          37.072
+        ]
+      },
+      "properties": {
+        "id": 50455,
+        "name": "Syracusae",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.137,
+          36.681
+        ]
+      },
+      "properties": {
+        "id": 50456,
+        "name": "Portus Pachyni",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.329,
+          41.304
+        ]
+      },
+      "properties": {
+        "id": 50458,
+        "name": "Amisus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.186,
+          49.123
+        ]
+      },
+      "properties": {
+        "id": 50459,
+        "name": "Divodurum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.69,
+          48.129
+        ]
+      },
+      "properties": {
+        "id": 50460,
+        "name": "Condate",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.097,
+          49.448
+        ]
+      },
+      "properties": {
+        "id": 50461,
+        "name": "Rotomagus",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.537,
+          49.525
+        ]
+      },
+      "properties": {
+        "id": 50462,
+        "name": "Iuliobona",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.112,
+          43
+        ]
+      },
+      "properties": {
+        "id": 50463,
+        "name": "Iuliobriga",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.043,
+          43.432
+        ]
+      },
+      "properties": {
+        "id": 50464,
+        "name": "Portus Blendium",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.328,
+          42.411
+        ]
+      },
+      "properties": {
+        "id": 50465,
+        "name": "Dessobriga",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.442,
+          38.902
+        ]
+      },
+      "properties": {
+        "id": 50466,
+        "name": "Lamia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.831,
+          38.399
+        ]
+      },
+      "properties": {
+        "id": 50467,
+        "name": "Naupactus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.585,
+          50.357
+        ]
+      },
+      "properties": {
+        "id": 50468,
+        "name": "Confluentes",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.663,
+          41.785
+        ]
+      },
+      "properties": {
+        "id": 50469,
+        "name": "Lissus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -5.664,
+          40.964
+        ]
+      },
+      "properties": {
+        "id": 50470,
+        "name": "Salmantica",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.529,
+          54.99
+        ]
+      },
+      "properties": {
+        "id": 50471,
+        "name": "Segedunum",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.192,
+          42.598
+        ]
+      },
+      "properties": {
+        "id": 50472,
+        "name": "Ulpiana",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.169,
+          46.659
+        ]
+      },
+      "properties": {
+        "id": 50473,
+        "name": "Maiensis Statio",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.266,
+          35.808
+        ]
+      },
+      "properties": {
+        "id": 50474,
+        "name": "Portus Magnus",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.685,
+          39.898
+        ]
+      },
+      "properties": {
+        "id": 50476,
+        "name": "Colubraria",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.767,
+          36.822
+        ]
+      },
+      "properties": {
+        "id": 50482,
+        "name": "Igilgili",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.467,
+          37.089
+        ]
+      },
+      "properties": {
+        "id": 50483,
+        "name": "Metagonium Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.929,
+          37.527
+        ]
+      },
+      "properties": {
+        "id": 50485,
+        "name": "Galata",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.11,
+          39.215
+        ]
+      },
+      "properties": {
+        "id": 50486,
+        "name": "Caralis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.159,
+          41.387
+        ]
+      },
+      "properties": {
+        "id": 50487,
+        "name": "Gallicum Fretum",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.24,
+          42.743
+        ]
+      },
+      "properties": {
+        "id": 50489,
+        "name": "Ilva",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.7,
+          34.67
+        ]
+      },
+      "properties": {
+        "id": 50491,
+        "name": "Thaenae",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.92,
+          33.68
+        ]
+      },
+      "properties": {
+        "id": 50492,
+        "name": "Meninge",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.013,
+          37.062
+        ]
+      },
+      "properties": {
+        "id": 50493,
+        "name": "Mercurii Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.11,
+          36.84
+        ]
+      },
+      "properties": {
+        "id": 50495,
+        "name": "Clipea",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.16,
+          35.23
+        ]
+      },
+      "properties": {
+        "id": 50498,
+        "name": "Caput Vada",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.94,
+          36.83
+        ]
+      },
+      "properties": {
+        "id": 50499,
+        "name": "Cossyra",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.06,
+          37.97
+        ]
+      },
+      "properties": {
+        "id": 50501,
+        "name": "Maritima",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.055,
+          45.054
+        ]
+      },
+      "properties": {
+        "id": 50502,
+        "name": "Atria",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.31,
+          45.19
+        ]
+      },
+      "properties": {
+        "id": 50504,
+        "name": "Brundulum",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.437,
+          37.798
+        ]
+      },
+      "properties": {
+        "id": 50505,
+        "name": "Lilybaeum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.825,
+          37.583
+        ]
+      },
+      "properties": {
+        "id": 50507,
+        "name": "Selinus",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.1,
+          45.64
+        ]
+      },
+      "properties": {
+        "id": 50509,
+        "name": "Tiliaventum (river)",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.4,
+          35.88
+        ]
+      },
+      "properties": {
+        "id": 50512,
+        "name": "Melita",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.45,
+          36.85
+        ]
+      },
+      "properties": {
+        "id": 50513,
+        "name": "Camarina",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.21,
+          32.37
+        ]
+      },
+      "properties": {
+        "id": 50515,
+        "name": "Cephalae Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.557,
+          38.192
+        ]
+      },
+      "properties": {
+        "id": 50516,
+        "name": "Messana",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.86,
+          43.72
+        ]
+      },
+      "properties": {
+        "id": 50518,
+        "name": "Titius (river)",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.02,
+          41.39
+        ]
+      },
+      "properties": {
+        "id": 50520,
+        "name": "Salapia",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.06,
+          37.93
+        ]
+      },
+      "properties": {
+        "id": 50521,
+        "name": "Heracleum Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.36,
+          16.21
+        ]
+      },
+      "properties": {
+        "id": 50522,
+        "name": "Aufidus",
+        "rank": 0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.26,
+          38.24
+        ]
+      },
+      "properties": {
+        "id": 50523,
+        "name": "Lokroi Epizephyrioi",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          17.2,
+          39.03
+        ]
+      },
+      "properties": {
+        "id": 50524,
+        "name": "Lacinium Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          17.99,
+          40.06
+        ]
+      },
+      "properties": {
+        "id": 50527,
+        "name": "Kallipolis-Anxa",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.22,
+          42.58
+        ]
+      },
+      "properties": {
+        "id": 50528,
+        "name": "Epidaurum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.36,
+          39.8
+        ]
+      },
+      "properties": {
+        "id": 50529,
+        "name": "Sallentinum Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.49,
+          40.15
+        ]
+      },
+      "properties": {
+        "id": 50530,
+        "name": "Hydruntum",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.13,
+          30.25
+        ]
+      },
+      "properties": {
+        "id": 50531,
+        "name": "Automalax",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.32,
+          40.44
+        ]
+      },
+      "properties": {
+        "id": 50533,
+        "name": "Acroceraunia Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.42,
+          40.51
+        ]
+      },
+      "properties": {
+        "id": 50534,
+        "name": "Aulon",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.43,
+          40.77
+        ]
+      },
+      "properties": {
+        "id": 50535,
+        "name": "Apollonia (Epirus)",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.92,
+          39.59
+        ]
+      },
+      "properties": {
+        "id": 50537,
+        "name": "Corcyra",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.079,
+          32.135
+        ]
+      },
+      "properties": {
+        "id": 50538,
+        "name": "Euesperides",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.71,
+          38.83
+        ]
+      },
+      "properties": {
+        "id": 50539,
+        "name": "Leucas",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.9,
+          37.78
+        ]
+      },
+      "properties": {
+        "id": 50540,
+        "name": "Zacynthus",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.32,
+          37.65
+        ]
+      },
+      "properties": {
+        "id": 50541,
+        "name": "Ichthys Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.45,
+          37.61
+        ]
+      },
+      "properties": {
+        "id": 50542,
+        "name": "Alpheos (river)",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.74,
+          38.26
+        ]
+      },
+      "properties": {
+        "id": 50544,
+        "name": "Patrae",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.75,
+          32.93
+        ]
+      },
+      "properties": {
+        "id": 50545,
+        "name": "Apollonia-Sozousa",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.88,
+          36.72
+        ]
+      },
+      "properties": {
+        "id": 50546,
+        "name": "Akitas Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.48,
+          36.39
+        ]
+      },
+      "properties": {
+        "id": 50547,
+        "name": "Tainaron Pr.",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.57,
+          36.76
+        ]
+      },
+      "properties": {
+        "id": 50548,
+        "name": "Gythion",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.886,
+          37.912
+        ]
+      },
+      "properties": {
+        "id": 50549,
+        "name": "Corinthus",
+        "rank": 100
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.987,
+          37.941
+        ]
+      },
+      "properties": {
+        "id": 50550,
+        "name": "Isthmia",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.12,
+          32.61
+        ]
+      },
+      "properties": {
+        "id": 50551,
+        "name": "Chersonesos Akra",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.2,
+          36.44
+        ]
+      },
+      "properties": {
+        "id": 50552,
+        "name": "Malea Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.45,
+          32.17
+        ]
+      },
+      "properties": {
+        "id": 50553,
+        "name": "Petras Mikros",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.58,
+          35.27
+        ]
+      },
+      "properties": {
+        "id": 50554,
+        "name": "Kriou Metopon Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.59,
+          38.46
+        ]
+      },
+      "properties": {
+        "id": 50555,
+        "name": "Chalcis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.6,
+          35.63
+        ]
+      },
+      "properties": {
+        "id": 50556,
+        "name": "Kimaros Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.03,
+          37.65
+        ]
+      },
+      "properties": {
+        "id": 50557,
+        "name": "Sounion Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.06,
+          34.86
+        ]
+      },
+      "properties": {
+        "id": 50558,
+        "name": "Kaudos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.22,
+          40.26
+        ]
+      },
+      "properties": {
+        "id": 50559,
+        "name": "Athos Mons",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.55,
+          37.98
+        ]
+      },
+      "properties": {
+        "id": 50562,
+        "name": "Geraistos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.71,
+          40.78
+        ]
+      },
+      "properties": {
+        "id": 50564,
+        "name": "Thasos",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.04,
+          31.92
+        ]
+      },
+      "properties": {
+        "id": 50567,
+        "name": "Kardamis",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.09,
+          31.75
+        ]
+      },
+      "properties": {
+        "id": 50568,
+        "name": "Petras Megas",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.235,
+          39.932
+        ]
+      },
+      "properties": {
+        "id": 50569,
+        "name": "Hephaistia",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.42,
+          25.21
+        ]
+      },
+      "properties": {
+        "id": 50572,
+        "name": "Rheneia",
+        "rank": 0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.27,
+          37.4
+        ]
+      },
+      "properties": {
+        "id": 50573,
+        "name": "Delos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.39,
+          35.32
+        ]
+      },
+      "properties": {
+        "id": 50577,
+        "name": "Chersonasos",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.77,
+          35.34
+        ]
+      },
+      "properties": {
+        "id": 50582,
+        "name": "Kadiston Mons",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.051,
+          39.817
+        ]
+      },
+      "properties": {
+        "id": 50586,
+        "name": "Tenedos",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.14,
+          38.37
+        ]
+      },
+      "properties": {
+        "id": 50588,
+        "name": "Chios",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.2,
+          40.01
+        ]
+      },
+      "properties": {
+        "id": 50590,
+        "name": "Sigeion",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.31,
+          39.21
+        ]
+      },
+      "properties": {
+        "id": 50592,
+        "name": "Mytilene",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.35,
+          36.55
+        ]
+      },
+      "properties": {
+        "id": 50593,
+        "name": "Astypaleia",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.417,
+          40.228
+        ]
+      },
+      "properties": {
+        "id": 50594,
+        "name": "Sestus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.94,
+          37.69
+        ]
+      },
+      "properties": {
+        "id": 50597,
+        "name": "Samos",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.02,
+          37.67
+        ]
+      },
+      "properties": {
+        "id": 50598,
+        "name": "Trogilion Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.069,
+          40.42
+        ]
+      },
+      "properties": {
+        "id": 50599,
+        "name": "Parium",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.21,
+          35.51
+        ]
+      },
+      "properties": {
+        "id": 50602,
+        "name": "Potidaion",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.24,
+          37.08
+        ]
+      },
+      "properties": {
+        "id": 50603,
+        "name": "Myndos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.29,
+          36.89
+        ]
+      },
+      "properties": {
+        "id": 50604,
+        "name": "Kos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.37,
+          36.69
+        ]
+      },
+      "properties": {
+        "id": 50606,
+        "name": "Cnidus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.43,
+          37.04
+        ]
+      },
+      "properties": {
+        "id": 50608,
+        "name": "Halicarnassus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.556,
+          40.592
+        ]
+      },
+      "properties": {
+        "id": 50609,
+        "name": "Proconnesus",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.59,
+          37.19
+        ]
+      },
+      "properties": {
+        "id": 50610,
+        "name": "Bargylia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.696,
+          42.417
+        ]
+      },
+      "properties": {
+        "id": 50611,
+        "name": "Apollonia Pontica",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.892,
+          40.381
+        ]
+      },
+      "properties": {
+        "id": 50612,
+        "name": "Cyzicus",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.23,
+          36.44
+        ]
+      },
+      "properties": {
+        "id": 50613,
+        "name": "Rhodos",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.63,
+          36.83
+        ]
+      },
+      "properties": {
+        "id": 50614,
+        "name": "Caunus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.124,
+          41.212
+        ]
+      },
+      "properties": {
+        "id": 50617,
+        "name": "Mouth of Pontus",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.124,
+          45.066
+        ]
+      },
+      "properties": {
+        "id": 50618,
+        "name": "Salsovia",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.156,
+          40.432
+        ]
+      },
+      "properties": {
+        "id": 50619,
+        "name": "Prusias",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.351,
+          46.201
+        ]
+      },
+      "properties": {
+        "id": 50620,
+        "name": "Tyras",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.902,
+          46.692
+        ]
+      },
+      "properties": {
+        "id": 50621,
+        "name": "Olbia (Borysthenes)",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.28,
+          35.11
+        ]
+      },
+      "properties": {
+        "id": 50622,
+        "name": "Akamas Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.703,
+          45.521
+        ]
+      },
+      "properties": {
+        "id": 50623,
+        "name": "Kalos Limen",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.8,
+          36.02
+        ]
+      },
+      "properties": {
+        "id": 50624,
+        "name": "Anemurium",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.13,
+          34.71
+        ]
+      },
+      "properties": {
+        "id": 50625,
+        "name": "Amathous",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.37,
+          42.014
+        ]
+      },
+      "properties": {
+        "id": 50626,
+        "name": "Karambis Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.493,
+          44.612
+        ]
+      },
+      "properties": {
+        "id": 50627,
+        "name": "Chersonesos",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.173,
+          35.33
+        ]
+      },
+      "properties": {
+        "id": 50628,
+        "name": "Lapethos",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.08,
+          34.96
+        ]
+      },
+      "properties": {
+        "id": 50630,
+        "name": "Pedalion Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.15,
+          36.46
+        ]
+      },
+      "properties": {
+        "id": 50631,
+        "name": "Corycus",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.164,
+          41.963
+        ]
+      },
+      "properties": {
+        "id": 50632,
+        "name": "Cinolis",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.59,
+          35.7
+        ]
+      },
+      "properties": {
+        "id": 50634,
+        "name": "Kleides Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.751,
+          32.055
+        ]
+      },
+      "properties": {
+        "id": 50636,
+        "name": "Ioppe",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.816,
+          32.213
+        ]
+      },
+      "properties": {
+        "id": 50637,
+        "name": "Apollonia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.042,
+          42.049
+        ]
+      },
+      "properties": {
+        "id": 50639,
+        "name": "Sinope",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.379,
+          45.046
+        ]
+      },
+      "properties": {
+        "id": 50641,
+        "name": "Theodosia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.56,
+          36.57
+        ]
+      },
+      "properties": {
+        "id": 50642,
+        "name": "Pyramos (river)",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.64,
+          34.12
+        ]
+      },
+      "properties": {
+        "id": 50643,
+        "name": "Byblos",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.19,
+          36.59
+        ]
+      },
+      "properties": {
+        "id": 50644,
+        "name": "Myriandros",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.414,
+          45.239
+        ]
+      },
+      "properties": {
+        "id": 50646,
+        "name": "Pantikapaion",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.968,
+          41.215
+        ]
+      },
+      "properties": {
+        "id": 50647,
+        "name": "Themiskyra",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.31,
+          44.892
+        ]
+      },
+      "properties": {
+        "id": 50648,
+        "name": "Gorgippia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.875,
+          41
+        ]
+      },
+      "properties": {
+        "id": 50649,
+        "name": "Kotyora",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          39.258,
+          47.268
+        ]
+      },
+      "properties": {
+        "id": 50650,
+        "name": "Tanais",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.003,
+          42.993
+        ]
+      },
+      "properties": {
+        "id": 50651,
+        "name": "Dioscurias",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.667,
+          42.15
+        ]
+      },
+      "properties": {
+        "id": 50652,
+        "name": "Phasis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.252,
+          31.289
+        ]
+      },
+      "properties": {
+        "id": 50654,
+        "name": "Raphia",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.65,
+          31.8
+        ]
+      },
+      "properties": {
+        "id": 50658,
+        "name": "Azotus Paralios",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.875,
+          24.983
+        ]
+      },
+      "properties": {
+        "id": 50660,
+        "name": "Apollonopolis Magna",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.839,
+          29.317
+        ]
+      },
+      "properties": {
+        "id": 50661,
+        "name": "Krokodilopolis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.553,
+          25.295
+        ]
+      },
+      "properties": {
+        "id": 50674,
+        "name": "Latopolis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          33.347,
+          27.208
+        ]
+      },
+      "properties": {
+        "id": 50677,
+        "name": "Mons Porphyrites",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.949,
+          25.509
+        ]
+      },
+      "properties": {
+        "id": 50678,
+        "name": "Mothis",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.544,
+          29.205
+        ]
+      },
+      "properties": {
+        "id": 50682,
+        "name": "Ammon",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.855,
+          28.338
+        ]
+      },
+      "properties": {
+        "id": 50690,
+        "name": "Oasis Parva",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.932,
+          27.044
+        ]
+      },
+      "properties": {
+        "id": 50700,
+        "name": "Qasr Farafra",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.422,
+          36.715
+        ]
+      },
+      "properties": {
+        "id": 50713,
+        "name": "Malaca",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.318,
+          38.117
+        ]
+      },
+      "properties": {
+        "id": 50714,
+        "name": "Panormus",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.582,
+          37.309
+        ]
+      },
+      "properties": {
+        "id": 50715,
+        "name": "Agrigentum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.526,
+          42.124
+        ]
+      },
+      "properties": {
+        "id": 50716,
+        "name": "Aleria",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.917,
+          39.303
+        ]
+      },
+      "properties": {
+        "id": 50717,
+        "name": "Demetrias",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.837,
+          40.814
+        ]
+      },
+      "properties": {
+        "id": 50718,
+        "name": "Amphipolis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.85,
+          34.431
+        ]
+      },
+      "properties": {
+        "id": 50719,
+        "name": "Tripolis",
+        "rank": 90
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.041,
+          41.437
+        ]
+      },
+      "properties": {
+        "id": 50720,
+        "name": "Forum Appii",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.714,
+          39.21
+        ]
+      },
+      "properties": {
+        "id": 50721,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.468,
+          40.95
+        ]
+      },
+      "properties": {
+        "id": 50725,
+        "name": "Neapolis (Thrace)",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.673,
+          39.219
+        ]
+      },
+      "properties": {
+        "id": 50726,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.114,
+          38.965
+        ]
+      },
+      "properties": {
+        "id": 50727,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.811,
+          52.089
+        ]
+      },
+      "properties": {
+        "id": 50730,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.148,
+          44.288
+        ]
+      },
+      "properties": {
+        "id": 50731,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          17.887,
+          43.136
+        ]
+      },
+      "properties": {
+        "id": 50732,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.365,
+          42.793
+        ]
+      },
+      "properties": {
+        "id": 50733,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.977,
+          45.584
+        ]
+      },
+      "properties": {
+        "id": 50735,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          17.891,
+          45.404
+        ]
+      },
+      "properties": {
+        "id": 50736,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.488,
+          45.279
+        ]
+      },
+      "properties": {
+        "id": 50737,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.391,
+          46.36
+        ]
+      },
+      "properties": {
+        "id": 50738,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.612,
+          38.33
+        ]
+      },
+      "properties": {
+        "id": 50739,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.568,
+          38.224
+        ]
+      },
+      "properties": {
+        "id": 50741,
+        "name": "Krane",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.39,
+          43.933
+        ]
+      },
+      "properties": {
+        "id": 50742,
+        "name": "Horreum Margi",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.454,
+          48.574
+        ]
+      },
+      "properties": {
+        "id": 50743,
+        "name": "Boiodurum",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.024,
+          39.857
+        ]
+      },
+      "properties": {
+        "id": 50744,
+        "name": "Toletum",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -7.681,
+          37.942
+        ]
+      },
+      "properties": {
+        "id": 50745,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.161,
+          45.421
+        ]
+      },
+      "properties": {
+        "id": 50746,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.128,
+          46.371
+        ]
+      },
+      "properties": {
+        "id": 50747,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.023,
+          47.438
+        ]
+      },
+      "properties": {
+        "id": 50748,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.633,
+          42.011
+        ]
+      },
+      "properties": {
+        "id": 50749,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.657,
+          41.078
+        ]
+      },
+      "properties": {
+        "id": 50750,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.86,
+          42.071
+        ]
+      },
+      "properties": {
+        "id": 50751,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.882,
+          49.958
+        ]
+      },
+      "properties": {
+        "id": 50752,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.694,
+          44.366
+        ]
+      },
+      "properties": {
+        "id": 50753,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.625,
+          44.821
+        ]
+      },
+      "properties": {
+        "id": 50754,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.685,
+          39.14
+        ]
+      },
+      "properties": {
+        "id": 50755,
+        "name": "Selinous",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.65,
+          39.567
+        ]
+      },
+      "properties": {
+        "id": 50756,
+        "name": "Palma",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.499,
+          46.021
+        ]
+      },
+      "properties": {
+        "id": 50757,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.254,
+          35.281
+        ]
+      },
+      "properties": {
+        "id": 50758,
+        "name": "Samonion Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.005,
+          52.964
+        ]
+      },
+      "properties": {
+        "id": 50759,
+        "name": "Mouth of Witham",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.11,
+          32.625
+        ]
+      },
+      "properties": {
+        "id": 50760,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.496,
+          42.996
+        ]
+      },
+      "properties": {
+        "id": 50761,
+        "name": "Populonium",
+        "rank": 80
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.932,
+          40.255
+        ]
+      },
+      "properties": {
+        "id": 50762,
+        "name": "Palinurus Pr.",
+        "rank": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.644,
+          46.783
+        ]
+      },
+      "properties": {
+        "id": 50763,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.538,
+          45.13
+        ]
+      },
+      "properties": {
+        "id": 50764,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.39,
+          43.805
+        ]
+      },
+      "properties": {
+        "id": 50765,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.323,
+          35.825
+        ]
+      },
+      "properties": {
+        "id": 50766,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.344,
+          36.254
+        ]
+      },
+      "properties": {
+        "id": 50767,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          17.626,
+          47.688
+        ]
+      },
+      "properties": {
+        "id": 50768,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.96,
+          44.699
+        ]
+      },
+      "properties": {
+        "id": 50769,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.551,
+          44.409
+        ]
+      },
+      "properties": {
+        "id": 50770,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.763,
+          35.274
+        ]
+      },
+      "properties": {
+        "id": 50771,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.13,
+          45.024
+        ]
+      },
+      "properties": {
+        "id": 50772,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.561,
+          45.175
+        ]
+      },
+      "properties": {
+        "id": 50773,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.024,
+          46.081
+        ]
+      },
+      "properties": {
+        "id": 50774,
+        "name": "x",
+        "rank": 6
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.172,
+          36.588
+        ]
+      },
+      "properties": {
+        "id": 50775,
+        "name": "Nisyros",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.9,
+          36.83
+        ]
+      },
+      "properties": {
+        "id": 50776,
+        "name": "Amorgos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.854,
+          36.35
+        ]
+      },
+      "properties": {
+        "id": 50777,
+        "name": "Anaphe",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.933,
+          37.833
+        ]
+      },
+      "properties": {
+        "id": 50778,
+        "name": "Andros",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.333,
+          37.617
+        ]
+      },
+      "properties": {
+        "id": 50779,
+        "name": "Ceos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.5,
+          37.566
+        ]
+      },
+      "properties": {
+        "id": 50780,
+        "name": "Corseae",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.416,
+          37.383
+        ]
+      },
+      "properties": {
+        "id": 50781,
+        "name": "Cythnos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.8,
+          37.1
+        ]
+      },
+      "properties": {
+        "id": 50782,
+        "name": "Donousa",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.059,
+          37.622
+        ]
+      },
+      "properties": {
+        "id": 50783,
+        "name": "Icaros",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.844,
+          40.161
+        ]
+      },
+      "properties": {
+        "id": 50784,
+        "name": "Imbros",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.333,
+          36.717
+        ]
+      },
+      "properties": {
+        "id": 50785,
+        "name": "Ios",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.75,
+          36.75
+        ]
+      },
+      "properties": {
+        "id": 50786,
+        "name": "Kerea",
+        "rank": 0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.55,
+          36.8
+        ]
+      },
+      "properties": {
+        "id": 50787,
+        "name": "Kimolos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.289,
+          36.98
+        ]
+      },
+      "properties": {
+        "id": 50788,
+        "name": "Kinaros",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.459,
+          37.005
+        ]
+      },
+      "properties": {
+        "id": 50789,
+        "name": "Lebinthos",
+        "rank": 0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.625,
+          37.875
+        ]
+      },
+      "properties": {
+        "id": 50790,
+        "name": "Leros",
+        "rank": 0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.276,
+          37.531
+        ]
+      },
+      "properties": {
+        "id": 50791,
+        "name": "Miletus",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.37,
+          37.44
+        ]
+      },
+      "properties": {
+        "id": 50792,
+        "name": "Mykonos",
+        "rank": 0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.378,
+          37.103
+        ]
+      },
+      "properties": {
+        "id": 50793,
+        "name": "Naxos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.558,
+          37.316
+        ]
+      },
+      "properties": {
+        "id": 50795,
+        "name": "Patmos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.518,
+          37.438
+        ]
+      },
+      "properties": {
+        "id": 50796,
+        "name": "Skyllaion Pr.",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.667,
+          36.983
+        ]
+      },
+      "properties": {
+        "id": 50797,
+        "name": "Siphnos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.92,
+          37.43
+        ]
+      },
+      "properties": {
+        "id": 50798,
+        "name": "Syros",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.366,
+          36.433
+        ]
+      },
+      "properties": {
+        "id": 50799,
+        "name": "Telos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.166,
+          37.533
+        ]
+      },
+      "properties": {
+        "id": 50800,
+        "name": "Tenos",
+        "rank": 70
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.433,
+          36.417
+        ]
+      },
+      "properties": {
+        "id": 50801,
+        "name": "Thera",
+        "rank": 70
+      }
+    }
+  ]
+}
