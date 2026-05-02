@@ -253,6 +253,7 @@ footer p{font-size:.7rem;color:rgba(240,234,216,.2);}
   <a class="tab" href="#linearelamite" onclick="setTab(this)">Linear Elamite</a>
   <a class="tab" href="#kyprianos" onclick="setTab(this)">Kyprianos Database</a>
   <a class="tab" href="#endangered" onclick="setTab(this)">Endangered Languages</a>
+  <a class="tab" href="#wals" onclick="setTab(this)">WALS</a>
   <a class="tab" href="#resources" onclick="setTab(this)">Tools</a>
 </nav>
 
@@ -1487,6 +1488,177 @@ footer p{font-size:.7rem;color:rgba(240,234,216,.2);}
 </div>
 </section>
 
+<!-- ═══════════════════════════════════════════════ WALS -->
+<section class="script-section" id="wals">
+<div class="container">
+  <div class="script-header">
+    <div>
+      <div class="script-eyebrow">World Atlas of Language Structures · Max Planck Institute</div>
+      <h2 class="script-name">WALS Online</h2>
+      <div class="script-meta">
+        <span class="badge badge-deciphered">2,662 Languages</span>
+        <span class="badge badge-partial">192 Typological Features</span>
+        <span class="badge badge-partial">CC-BY 4.0</span>
+      </div>
+    </div>
+    <div class="script-status-block">
+      <div class="progress-label">Coverage</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:14%;background:var(--glyph)"></div></div>
+      <div class="progress-pct" style="color:var(--glyph)">~14%</div>
+      <div class="progress-sub">of world's ~7,000 languages · deep typological data</div>
+    </div>
+  </div>
+
+  <div class="script-body">
+    <div>
+      <div class="script-prose">
+        <p>The <strong>World Atlas of Language Structures</strong> (WALS) is the gold-standard typological database for comparative linguistics, edited by Matthew Dryer and Martin Haspelmath and published by the Max Planck Institute for Evolutionary Anthropology. It covers <strong>2,662 languages</strong> across 192 typological features — from consonant inventories and tone systems to word order, case marking, and evidentiality.</p>
+        <p>Each language entry records its genealogical classification (family → genus), macroarea, ISO 639-3 code, and geographic coordinates. Features are documented at the level of individual chapters authored by specialists, making WALS a structured reference work as well as a queryable database.</p>
+        <p>For archAIology's scope, WALS is particularly valuable for mapping the <strong>typological context of ancient scripts</strong> — understanding what language families the Indus Valley, Linear Elamite, or Proto-Sinaitic scribes may have belonged to based on the distribution of typological features across the ancient Near East, Aegean, and South Asia.</p>
+      </div>
+    </div>
+    <div>
+      <div class="fact-stack">
+        <div class="fact-card">
+          <div class="fact-card-lbl">Feature chapters</div>
+          <div class="fact-card-val">192 typological features organized into 11 domains: Phonology, Morphology, Nominal Categories, Nominal Syntax, Verbal Categories, Word Order, Simple Clauses, Complex Sentences, Lexicon, Sign Languages, Other.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Language sample</div>
+          <div class="fact-card-val">Balanced 100- and 200-language samples for cross-linguistic generalization. Stratified by genealogy and geography to avoid Eurasian overrepresentation.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">For ancient scripts</div>
+          <div class="fact-card-val">Hittite, Luwian, Urartian, Classical Nahuatl, Mycenaean Greek, and Coptic all have WALS entries — providing the typological fingerprint for decipherment hypotheses.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-card-lbl">Data access</div>
+          <div class="fact-card-val">Full dataset available as CLDF (Cross-Linguistic Data Formats) on GitHub. Python-accessible via <code style="font-size:.78rem;color:var(--cipher)">pycldf</code>. CC-BY 4.0.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WALS Embed -->
+  <div style="margin-top:2.5rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;">
+      <div>
+        <div style="font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,234,216,.3);margin-bottom:.3rem;">Live database</div>
+        <div style="font-size:.85rem;font-weight:600;color:var(--parch);">WALS Language Browser</div>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+        <button id="walsToggleBtn" onclick="toggleWalsEmbed()"
+          style="font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+            color:var(--cipher);border:1px solid rgba(200,120,58,.3);background:rgba(200,120,58,.05);
+            padding:.35rem .85rem;cursor:pointer;transition:all .2s;">
+          Embed Browser ▾
+        </button>
+        <a href="https://wals.info/languoid" target="_blank" rel="noopener"
+          style="font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+            color:rgba(240,234,216,.4);border:1px solid rgba(240,234,216,.1);
+            padding:.35rem .85rem;text-decoration:none;transition:all .2s;">
+          Open WALS ↗
+        </a>
+        <a href="https://wals.info/feature" target="_blank" rel="noopener"
+          style="font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+            color:rgba(240,234,216,.4);border:1px solid rgba(240,234,216,.1);
+            padding:.35rem .85rem;text-decoration:none;transition:all .2s;">
+          Features ↗
+        </a>
+        <a href="https://wals.info/languoid/genealogy" target="_blank" rel="noopener"
+          style="font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+            color:rgba(240,234,216,.4);border:1px solid rgba(240,234,216,.1);
+            padding:.35rem .85rem;text-decoration:none;transition:all .2s;">
+          Genealogy ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- Feature teaser (shown before embed opens) -->
+    <div id="walsFeatureList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:1rem;">
+      <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:.7rem .9rem;">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Phonology</div>
+        <div style="font-size:.78rem;color:var(--parch);font-weight:600;">Consonant inventories</div>
+        <div style="font-size:.65rem;color:rgba(240,234,216,.4);margin-top:.2rem;">Features 1–19 · tone, click, nasals</div>
+      </div>
+      <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:.7rem .9rem;">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Word Order</div>
+        <div style="font-size:.78rem;color:var(--parch);font-weight:600;">SOV / SVO / VSO</div>
+        <div style="font-size:.65rem;color:rgba(240,234,216,.4);margin-top:.2rem;">Features 81–97 · order typology</div>
+      </div>
+      <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:.7rem .9rem;">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Nominal Categories</div>
+        <div style="font-size:.78rem;color:var(--parch);font-weight:600;">Case, gender, number</div>
+        <div style="font-size:.65rem;color:rgba(240,234,216,.4);margin-top:.2rem;">Features 28–51 · inflectional morphology</div>
+      </div>
+      <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:.7rem .9rem;">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Evidentiality</div>
+        <div style="font-size:.78rem;color:var(--parch);font-weight:600;">Grammaticalized source</div>
+        <div style="font-size:.65rem;color:rgba(240,234,216,.4);margin-top:.2rem;">Feature 77–78 · rare in ancient scripts</div>
+      </div>
+      <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:.7rem .9rem;">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Lexicon</div>
+        <div style="font-size:.78rem;color:var(--parch);font-weight:600;">Color, body, kinship terms</div>
+        <div style="font-size:.65rem;color:rgba(240,234,216,.4);margin-top:.2rem;">Features 129–138 · semantic universals</div>
+      </div>
+      <div style="background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.07);padding:.7rem .9rem;">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cipher);margin-bottom:.3rem;">Sign Languages</div>
+        <div style="font-size:.78rem;color:var(--parch);font-weight:600;">Visual-gestural systems</div>
+        <div style="font-size:.65rem;color:rgba(240,234,216,.4);margin-top:.2rem;">Features 139–142 · cross-modal comparison</div>
+      </div>
+    </div>
+
+    <!-- Iframe wrap (hidden until toggled) -->
+    <div id="walsEmbedWrap" style="display:none;">
+      <div id="walsIframeWrap" style="position:relative;width:100%;height:680px;background:rgba(240,234,216,.02);border:1px solid rgba(240,234,216,.08);">
+        <iframe
+          id="walsIframe"
+          data-src="https://wals.info/languoid"
+          src=""
+          title="WALS Online — Language Browser"
+          style="width:100%;height:100%;border:0;"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+        ></iframe>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:.4rem .7rem;
+          background:rgba(10,13,18,.7);font-size:.55rem;color:rgba(240,234,216,.25);
+          display:flex;justify-content:space-between;align-items:center;">
+          <span>WALS Online · Dryer & Haspelmath (eds.) · Max Planck Institute · CC-BY 4.0</span>
+          <a href="https://wals.info/languoid" target="_blank" rel="noopener"
+            style="color:var(--cipher);text-decoration:none;">Open full site ↗</a>
+        </div>
+      </div>
+      <!-- Blocked notice (shown if iframe fails) -->
+      <div id="walsBlockedNotice" style="display:none;padding:2rem;background:rgba(200,120,58,.04);
+        border:1px solid rgba(200,120,58,.15);text-align:center;">
+        <div style="font-size:.8rem;color:var(--cipher);font-weight:600;margin-bottom:.5rem;">WALS cannot be embedded from this origin</div>
+        <div style="font-size:.72rem;color:rgba(240,234,216,.5);margin-bottom:1rem;">The site may be blocking cross-origin frames. Use the direct link to access the full database.</div>
+        <a href="https://wals.info/languoid" target="_blank" rel="noopener"
+          style="font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+            color:var(--cipher);border:1px solid rgba(200,120,58,.35);padding:.45rem 1rem;
+            text-decoration:none;">Open WALS in new tab ↗</a>
+      </div>
+    </div>
+
+    <!-- Quick-jump links shown always -->
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem;">
+      <span style="font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,234,216,.25);align-self:center;">Jump to →</span>
+      <a href="https://wals.info/languoid/lect/wals_code_hit" target="_blank" rel="noopener" style="font-size:.58rem;color:rgba(240,234,216,.4);border:1px solid rgba(240,234,216,.08);padding:.15rem .5rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--cipher)'" onmouseout="this.style.color='rgba(240,234,216,.4)'">Hittite</a>
+      <a href="https://wals.info/languoid/lect/wals_code_grk" target="_blank" rel="noopener" style="font-size:.58rem;color:rgba(240,234,216,.4);border:1px solid rgba(240,234,216,.08);padding:.15rem .5rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--cipher)'" onmouseout="this.style.color='rgba(240,234,216,.4)'">Greek</a>
+      <a href="https://wals.info/languoid/lect/wals_code_ara" target="_blank" rel="noopener" style="font-size:.58rem;color:rgba(240,234,216,.4);border:1px solid rgba(240,234,216,.08);padding:.15rem .5rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--cipher)'" onmouseout="this.style.color='rgba(240,234,216,.4)'">Arabic</a>
+      <a href="https://wals.info/languoid/lect/wals_code_cop" target="_blank" rel="noopener" style="font-size:.58rem;color:rgba(240,234,216,.4);border:1px solid rgba(240,234,216,.08);padding:.15rem .5rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--cipher)'" onmouseout="this.style.color='rgba(240,234,216,.4)'">Coptic</a>
+      <a href="https://wals.info/languoid/lect/wals_code_tam" target="_blank" rel="noopener" style="font-size:.58rem;color:rgba(240,234,216,.4);border:1px solid rgba(240,234,216,.08);padding:.15rem .5rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--cipher)'" onmouseout="this.style.color='rgba(240,234,216,.4)'">Tamil</a>
+      <a href="https://wals.info/languoid/lect/wals_code_yuc" target="_blank" rel="noopener" style="font-size:.58rem;color:rgba(240,234,216,.4);border:1px solid rgba(240,234,216,.08);padding:.15rem .5rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--cipher)'" onmouseout="this.style.color='rgba(240,234,216,.4)'">Yucatec Maya</a>
+      <a href="https://wals.info/languoid/lect/wals_code_nav" target="_blank" rel="noopener" style="font-size:.58rem;color:rgba(240,234,216,.4);border:1px solid rgba(240,234,216,.08);padding:.15rem .5rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--cipher)'" onmouseout="this.style.color='rgba(240,234,216,.4)'">Navajo</a>
+      <a href="https://wals.info/languoid/lect/wals_code_sum" target="_blank" rel="noopener" style="font-size:.58rem;color:rgba(240,234,216,.4);border:1px solid rgba(240,234,216,.08);padding:.15rem .5rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--cipher)'" onmouseout="this.style.color='rgba(240,234,216,.4)'">Sumerian</a>
+      <a href="https://wals.info/languoid/genealogy" target="_blank" rel="noopener" style="font-size:.58rem;color:rgba(240,234,216,.4);border:1px solid rgba(240,234,216,.08);padding:.15rem .5rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--cipher)'" onmouseout="this.style.color='rgba(240,234,216,.4)'">Full genealogy tree</a>
+      <a href="https://wals.info/feature" target="_blank" rel="noopener" style="font-size:.58rem;color:rgba(240,234,216,.4);border:1px solid rgba(240,234,216,.08);padding:.15rem .5rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--cipher)'" onmouseout="this.style.color='rgba(240,234,216,.4)'">All 192 features</a>
+    </div>
+  </div>
+</div>
+</section>
+
 <!-- ═══════════════════════════════════════════════ RESOURCES -->
 <section class="script-section" id="resources">
 <div class="container">
@@ -1653,7 +1825,7 @@ function setTab(el) {
 }
 
 // Scroll-spy for tabs
-const sections = ['vesuvius','lineara','protosinaitic','indus','maya','linearelamite','kyprianos','endangered','resources'];
+const sections = ['vesuvius','lineara','protosinaitic','indus','maya','linearelamite','kyprianos','endangered','wals','resources'];
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -1730,6 +1902,49 @@ document.querySelectorAll('.progress-fill').forEach(el => {
   el.style.width = '0';
   progressObserver.observe(el);
 });
+// ── WALS embed toggle ─────────────────────────────────────────────
+function toggleWalsEmbed() {
+  const wrap = document.getElementById('walsEmbedWrap');
+  const btn  = document.getElementById('walsToggleBtn');
+  const feat = document.getElementById('walsFeatureList');
+  const open = wrap.style.display === 'none';
+
+  wrap.style.display = open ? 'block' : 'none';
+  feat.style.display = open ? 'none'  : 'grid';
+  btn.textContent    = open ? 'Hide ▴' : 'Embed Browser ▾';
+
+  if (open) {
+    const iframe = document.getElementById('walsIframe');
+    if (!iframe.src) {
+      iframe.src = iframe.dataset.src;
+
+      // Block detection — same heuristic as Kyprianos
+      const timer = setTimeout(() => {
+        try {
+          const doc = iframe.contentDocument || iframe.contentWindow?.document;
+          if (doc && (!doc.body || doc.body.innerHTML === '')) showWalsBlocked();
+        } catch(e) { /* cross-origin = loaded fine */ }
+      }, 6000);
+
+      iframe.addEventListener('load', () => {
+        clearTimeout(timer);
+        try {
+          const doc = iframe.contentDocument || iframe.contentWindow?.document;
+          if (doc && (!doc.body || doc.body.innerHTML.trim() === '')) showWalsBlocked();
+        } catch(e) { /* cross-origin: loaded correctly */ }
+      });
+
+      iframe.addEventListener('error', () => showWalsBlocked());
+    }
+  }
+}
+
+function showWalsBlocked() {
+  document.getElementById('walsIframeWrap').style.display = 'none';
+  document.getElementById('walsBlockedNotice').style.display = 'block';
+  document.getElementById('walsToggleBtn').textContent = 'Blocked ▴';
+}
+
 </script>
 </body>
 </html>
