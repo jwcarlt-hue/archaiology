@@ -187,6 +187,81 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 .leaflet-popup-content{font-family:var(--sans);margin:.5rem .7rem;font-size:.72rem;}
 .map-popup-id{font-family:var(--mono);color:var(--chisel);margin-bottom:.2rem;}
 .map-popup-place{font-weight:600;color:var(--stone);}
+
+/* ── Perseus Scaife Panel ── */
+.perseus-bar{
+  border-top:1px solid rgba(242,234,216,.08);
+  background:rgba(242,234,216,.015);
+}
+.perseus-bar-header{
+  display:flex;align-items:center;gap:1rem;
+  padding:.7rem 1.4rem;cursor:pointer;
+  user-select:none;transition:background .15s;
+}
+.perseus-bar-header:hover{background:rgba(242,234,216,.02);}
+.perseus-bar-eyebrow{
+  font-family:var(--mono);font-size:.54rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--chisel);
+}
+.perseus-bar-title{
+  font-family:var(--serif);font-size:.95rem;font-weight:700;
+  color:var(--stone);line-height:1;
+}
+.perseus-bar-desc{
+  font-size:.65rem;color:rgba(242,234,216,.35);line-height:1.4;
+  margin-left:auto;text-align:right;max-width:340px;
+}
+.perseus-bar-caret{
+  font-size:.7rem;color:rgba(242,234,216,.3);
+  margin-left:.5rem;transition:transform .25s;flex-shrink:0;
+}
+.perseus-bar-caret.open{transform:rotate(180deg);}
+.perseus-quick-links{
+  display:flex;flex-wrap:wrap;gap:5px;
+  padding:0 1.4rem .7rem;
+}
+.perseus-ql{
+  font-size:.56rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:rgba(242,234,216,.35);border:1px solid rgba(242,234,216,.09);
+  padding:.18rem .5rem;text-decoration:none;transition:all .2s;
+  cursor:pointer;background:none;
+}
+.perseus-ql:hover{color:var(--chisel);border-color:rgba(176,112,48,.35);}
+.perseus-embed-wrap{
+  display:none;
+  padding:0 1.4rem 1.4rem;
+}
+.perseus-iframe-shell{
+  position:relative;width:100%;
+  border:1px solid rgba(242,234,216,.08);
+  background:rgba(242,234,216,.02);
+}
+.perseus-iframe-shell iframe{
+  width:100%;height:680px;border:0;display:block;
+}
+.perseus-blocked{
+  display:none;padding:2.5rem;text-align:center;
+}
+.perseus-blocked-title{
+  font-family:var(--serif);font-size:1rem;font-weight:700;
+  color:var(--chisel);margin-bottom:.5rem;
+}
+.perseus-blocked-body{
+  font-size:.72rem;color:rgba(242,234,216,.45);line-height:1.6;margin-bottom:1rem;
+}
+.perseus-blocked-btn{
+  display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--chisel);
+  border:1px solid rgba(176,112,48,.35);padding:.4rem .9rem;text-decoration:none;
+  transition:border-color .2s;
+}
+.perseus-blocked-btn:hover{border-color:var(--chisel);}
+.perseus-credit{
+  font-size:.55rem;color:rgba(242,234,216,.2);
+  padding:.4rem 1.4rem .6rem;line-height:1.5;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:.3rem;
+}
+.perseus-credit a{color:var(--chisel);text-decoration:none;}
 </style>
 </head>
 <body>
@@ -329,6 +404,72 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 <div class="detail-overlay" id="detail">
   <button class="detail-close" id="detail-close">✕</button>
   <div id="detail-content"></div>
+</div>
+
+<!-- ═══════════════════ PERSEUS SCAIFE PANEL ═══════════════════ -->
+<div class="perseus-bar" id="perseus-bar">
+
+  <!-- Collapsed header row -->
+  <div class="perseus-bar-header" onclick="togglePerseus()" role="button" aria-expanded="false" id="perseus-header">
+    <div>
+      <div class="perseus-bar-eyebrow">Perseus Digital Library · Tufts University</div>
+      <div class="perseus-bar-title">Scaife Viewer — Greek &amp; Latin Texts</div>
+    </div>
+    <div class="perseus-bar-desc">
+      Search 1,000+ classical texts — Livy, Tacitus, Pliny, Caesar, Cicero, Vergil, Homer, Thucydides. Cross-reference inscriptions with the literary record.
+    </div>
+    <span class="perseus-bar-caret" id="perseus-caret">▼</span>
+  </div>
+
+  <!-- Quick-jump links (always visible) -->
+  <div class="perseus-quick-links">
+    <span style="font-size:.54rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,234,216,.2);align-self:center;margin-right:2px;">Jump →</span>
+    <button class="perseus-ql" onclick="perseusGoto('https://scaife.perseus.org/library/')">Full Library</button>
+    <button class="perseus-ql" onclick="perseusGoto('https://scaife.perseus.org/search/')">Text Search</button>
+    <button class="perseus-ql" onclick="perseusGoto('https://scaife.perseus.org/reader/urn:cts:latinLit:phi1348.abo012.perseus-lat2/')">Livy</button>
+    <button class="perseus-ql" onclick="perseusGoto('https://scaife.perseus.org/reader/urn:cts:latinLit:phi1351.phi005.perseus-lat2/')">Tacitus — Annals</button>
+    <button class="perseus-ql" onclick="perseusGoto('https://scaife.perseus.org/reader/urn:cts:latinLit:phi0978.phi001.perseus-lat2/')">Caesar — Gallic War</button>
+    <button class="perseus-ql" onclick="perseusGoto('https://scaife.perseus.org/reader/urn:cts:latinLit:phi0474.phi013.perseus-lat2/')">Cicero — De Officiis</button>
+    <button class="perseus-ql" onclick="perseusGoto('https://scaife.perseus.org/reader/urn:cts:latinLit:phi0690.phi003.perseus-lat2/')">Vergil — Aeneid</button>
+    <button class="perseus-ql" onclick="perseusGoto('https://scaife.perseus.org/reader/urn:cts:latinLit:phi1254.phi001.perseus-lat2/')">Pliny — Letters</button>
+    <button class="perseus-ql" onclick="perseusGoto('https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0003.tlg001.perseus-grc2/')">Thucydides</button>
+    <button class="perseus-ql" onclick="perseusGoto('https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0012.tlg001.perseus-grc2/')">Homer — Iliad</button>
+    <button class="perseus-ql" onclick="perseusGoto('https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0086.tlg035.perseus-grc2/')">Aristotle — Politics</button>
+    <a class="perseus-ql" href="https://scaife.perseus.org/library/" target="_blank" rel="noopener">Open full site ↗</a>
+  </div>
+
+  <!-- Expandable iframe -->
+  <div class="perseus-embed-wrap" id="perseus-embed-wrap">
+    <div class="perseus-iframe-shell">
+      <iframe
+        id="perseus-iframe"
+        data-src="https://scaife.perseus.org/library/"
+        src=""
+        title="Scaife Viewer — Perseus Digital Library"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
+      ></iframe>
+      <!-- Blocked fallback -->
+      <div class="perseus-blocked" id="perseus-blocked">
+        <div class="perseus-blocked-title">Perseus cannot be embedded from this origin</div>
+        <div class="perseus-blocked-body">
+          The Scaife Viewer restricts cross-origin framing. Use the direct links above or open Perseus in a new tab to cross-reference classical texts alongside your inscription search.
+        </div>
+        <a class="perseus-blocked-btn" href="https://scaife.perseus.org/library/" target="_blank" rel="noopener">Open Scaife Viewer ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="perseus-credit">
+    <span>Scaife Viewer · Perseus Digital Library · Tufts University · Gregory Crane, ed. · CC-BY-SA</span>
+    <span>
+      <a href="https://scaife.perseus.org/" target="_blank" rel="noopener">scaife.perseus.org</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/scaife-viewer/scaife-viewer" target="_blank" rel="noopener">Open source ↗</a>
+    </span>
+  </div>
+
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -651,6 +792,87 @@ async function showDetail(hdNr) {
 document.getElementById('detail-close').addEventListener('click', () => {
   document.getElementById('detail').classList.remove('open');
 });
+
+// ── Perseus Scaife toggle ──────────────────────────────────────
+function togglePerseus() {
+  const wrap   = document.getElementById('perseus-embed-wrap');
+  const caret  = document.getElementById('perseus-caret');
+  const header = document.getElementById('perseus-header');
+  const isOpen = wrap.style.display === 'block';
+
+  wrap.style.display = isOpen ? 'none' : 'block';
+  caret.classList.toggle('open', !isOpen);
+  header.setAttribute('aria-expanded', String(!isOpen));
+
+  if (!isOpen) {
+    // Lazy-load iframe on first open
+    const iframe = document.getElementById('perseus-iframe');
+    if (!iframe.src) {
+      iframe.src = iframe.dataset.src;
+
+      const timer = setTimeout(() => {
+        try {
+          const doc = iframe.contentDocument || iframe.contentWindow?.document;
+          if (doc && (!doc.body || doc.body.innerHTML === '')) showPerseusBlocked();
+        } catch(e) { /* cross-origin = loaded fine */ }
+      }, 7000);
+
+      iframe.addEventListener('load', () => {
+        clearTimeout(timer);
+        try {
+          const doc = iframe.contentDocument || iframe.contentWindow?.document;
+          if (doc && (!doc.body || doc.body.innerHTML.trim() === '')) showPerseusBlocked();
+        } catch(e) { /* cross-origin: loaded correctly */ }
+      });
+
+      iframe.addEventListener('error', showPerseusBlocked);
+
+      // Scroll into view after a beat
+      setTimeout(() => {
+        document.getElementById('perseus-bar').scrollIntoView({behavior:'smooth', block:'start'});
+      }, 200);
+    }
+  }
+}
+
+function showPerseusBlocked() {
+  document.getElementById('perseus-iframe').style.display = 'none';
+  document.getElementById('perseus-blocked').style.display = 'block';
+}
+
+function perseusGoto(url) {
+  const wrap   = document.getElementById('perseus-embed-wrap');
+  const iframe = document.getElementById('perseus-iframe');
+  const caret  = document.getElementById('perseus-caret');
+  const header = document.getElementById('perseus-header');
+
+  // Open the panel if collapsed
+  if (wrap.style.display !== 'block') {
+    wrap.style.display = 'block';
+    caret.classList.add('open');
+    header.setAttribute('aria-expanded', 'true');
+  }
+
+  // Navigate iframe (or set src for first load)
+  if (!iframe.src || iframe.src === 'about:blank') {
+    iframe.dataset.src = url;
+    iframe.src = url;
+  } else {
+    // Already loaded — try navigating; if blocked, open new tab
+    try {
+      iframe.src = url;
+    } catch(e) {
+      window.open(url, '_blank', 'noopener');
+    }
+  }
+
+  iframe.style.display = 'block';
+  document.getElementById('perseus-blocked').style.display = 'none';
+
+  setTimeout(() => {
+    document.getElementById('perseus-bar').scrollIntoView({behavior:'smooth', block:'start'});
+  }, 150);
+}
 
 // Load a default view on start
 window.addEventListener('load', () => {
