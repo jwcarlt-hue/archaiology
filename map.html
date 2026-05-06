@@ -344,6 +344,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <button class="filter-chip" id="armep-atlas-btn" onclick="toggleArmepAtlas()">ARMEP</button>
       <button class="filter-chip" id="fasti-atlas-btn" onclick="toggleFastiAtlas()">Fasti</button>
       <button class="filter-chip" id="cyprus-atlas-btn" onclick="toggleCyprusAtlas()">Cyprus</button>
+      <button class="filter-chip" id="roman-letters-atlas-btn" onclick="toggleRomanLettersAtlas()">Roman Letters</button>
     </div>
     <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:6px;line-height:1.45;">
       Open external archaeological atlases in a dedicated workspace above the map.
@@ -506,13 +507,42 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     </div>
   </div>
 </div>
+<div class="atlas-panel" id="romanLettersAtlasPanel">
+  <div class="atlas-head">
+    <div class="atlas-title-wrap">
+      <div class="atlas-kicker">External atlas layer</div>
+      <div class="atlas-title">Roman Letters — Geographic Timelapse</div>
+      <div class="atlas-meta">
+        Source: <a href="https://romanletters.org/map/" target="_blank" rel="noopener">romanletters.org/map/</a>
+      </div>
+    </div>
+    <div class="atlas-actions">
+      <a class="atlas-link" href="https://romanletters.org/map/" target="_blank" rel="noopener">Open in new tab</a>
+      <button class="atlas-close" type="button" onclick="toggleRomanLettersAtlas(false)">Close</button>
+    </div>
+  </div>
+  <div class="atlas-body">
+    <iframe
+      class="atlas-frame"
+      src="https://romanletters.org/map/"
+      title="Roman Letters geographic timelapse — 7,049 letters across the late Roman world, 100–800 AD"
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+    <div class="atlas-note">
+      Animated letter-flow map across the late Roman world (100–800 AD), built on DARE tiles. If it does not render here, the host site may be blocking iframe embedding. Use the open-in-new-tab link instead.
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   const atlasConfigs = [
     ['arabiaAtlasPanel','arabia-atlas-btn','Ancient Arabia','Hide Arabia Atlas'],
     ['armepAtlasPanel','armep-atlas-btn','ARMEP','Hide ARMEP'],
     ['fastiAtlasPanel','fasti-atlas-btn','Fasti','Hide Fasti'],
-    ['cyprusAtlasPanel','cyprus-atlas-btn','Cyprus','Hide Cyprus']
+    ['cyprusAtlasPanel','cyprus-atlas-btn','Cyprus','Hide Cyprus'],
+    ['romanLettersAtlasPanel','roman-letters-atlas-btn','Roman Letters','Hide Roman Letters']
   ];
 
   function safeCloseAtlases(){
@@ -553,6 +583,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   };
   window.toggleCyprusAtlas = function(force){
     toggleAtlas('cyprusAtlasPanel','cyprus-atlas-btn','Cyprus','Hide Cyprus',force);
+  };
+  window.toggleRomanLettersAtlas = function(force){
+    toggleAtlas('romanLettersAtlasPanel','roman-letters-atlas-btn','Roman Letters','Hide Roman Letters',force);
   };
   window.closeExternalAtlases = safeCloseAtlases;
 })();
