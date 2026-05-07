@@ -270,10 +270,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     <div class="filter-row">
       <button class="filter-chip tile-chip" data-tile="OSM" onclick="_setTile('OSM')">OSM</button>
       <button class="filter-chip tile-chip" data-tile="Topo" onclick="_setTile('Topo')">Topo</button>
-      <button class="filter-chip tile-chip active" data-tile="Antique" onclick="_setTile('Antique')">Antique</button>
+      <button class="filter-chip tile-chip" data-tile="Antique" onclick="_setTile('Antique')">Antique</button>
       <button class="filter-chip tile-chip" data-tile="Satellite" onclick="_setTile('Satellite')">Satellite</button>
       <button class="filter-chip tile-chip" data-tile="Light" onclick="_setTile('Light')">Light</button>
       <button class="filter-chip tile-chip" data-tile="Dark" onclick="_setTile('Dark')">Dark</button>
+      <button class="filter-chip tile-chip" data-tile="Voyager" onclick="_setTile('Voyager')">Voyager</button>
+      <button class="filter-chip tile-chip active" data-tile="NatGeo" onclick="_setTile('NatGeo')">NatGeo</button>
       <button class="filter-chip tile-chip" data-tile="DARE" onclick="_setTile('DARE')">DARE</button>
       <div id="dare-places-status" style="font-family:var(--mono);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:.3rem;letter-spacing:.04em;"></div>
     </div>
@@ -956,8 +958,14 @@ async function init() {
       attribution:'Tiles &copy; Esri',
       maxNativeZoom: 19, maxZoom: 19 }),
     'Antique':  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
-      attribution:'Tiles &copy; Esri',
+      attribution:'Tiles &copy; Esri &mdash; Source: US National Park Service',
       maxNativeZoom: 13, maxZoom: 19 }),
+    'NatGeo':   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+      attribution:'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+      maxNativeZoom: 16, maxZoom: 19 }),
+    'Voyager':  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution:'&copy; OpenStreetMap contributors | &copy; CARTO',
+      maxNativeZoom: 19, maxZoom: 19 }),
     'Light':    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution:'&copy; OpenStreetMap contributors | &copy; CARTO',
       maxNativeZoom: 19, maxZoom: 19 }),
@@ -968,7 +976,7 @@ async function init() {
       attribution:'Digital Atlas of the Roman Empire',
       minZoom: 4, maxNativeZoom: 11, maxZoom: 19 }),
   };
-  let activeTile = TILES['Antique'];
+  let activeTile = TILES['NatGeo'];
   activeTile.addTo(map);
   window._setTile = function(name) {
     if (activeTile) map.removeLayer(activeTile);
