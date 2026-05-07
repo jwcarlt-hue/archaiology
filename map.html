@@ -348,6 +348,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <button class="filter-chip" id="cyprus-atlas-btn" onclick="toggleCyprusAtlas()">Cyprus</button>
       <button class="filter-chip" id="roman-letters-atlas-btn" onclick="toggleRomanLettersAtlas()">Roman Letters</button>
       <button class="filter-chip" id="iran-gazetteer-atlas-btn" onclick="toggleIranGazetteeerAtlas()">Iran Gazetteer</button>
+      <button class="filter-chip" id="pliny-atlas-btn" onclick="togglePlinyAtlas()">Pliny the Elder</button>
     </div>
     <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:6px;line-height:1.45;">
       Open external archaeological atlases in a dedicated workspace above the map.
@@ -567,6 +568,35 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   </div>
 </div>
 
+<div class="atlas-panel" id="plinyAtlasPanel">
+  <div class="atlas-head">
+    <div class="atlas-title-wrap">
+      <div class="atlas-kicker">External atlas layer</div>
+      <div class="atlas-title">The Geography of Pliny the Elder — AWMC / ISAW</div>
+      <div class="atlas-meta">
+        Source: <a href="https://experience.arcgis.com/experience/34c49dbd58984226aa213243f3787ff9" target="_blank" rel="noopener">experience.arcgis.com</a>
+        &nbsp;·&nbsp; 6,500 entries from the <em>Natural Historia</em> &nbsp;·&nbsp; Coordinates from Pleiades &nbsp;·&nbsp; Ancient World Mapping Center &amp; ISAW/NYU
+      </div>
+    </div>
+    <div class="atlas-actions">
+      <a class="atlas-link" href="https://experience.arcgis.com/experience/34c49dbd58984226aa213243f3787ff9" target="_blank" rel="noopener">Open in new tab</a>
+      <button class="atlas-close" type="button" onclick="togglePlinyAtlas(false)">Close</button>
+    </div>
+  </div>
+  <div class="atlas-body">
+    <iframe
+      class="atlas-frame"
+      src="https://experience.arcgis.com/experience/34c49dbd58984226aa213243f3787ff9"
+      title="The Geography of Pliny the Elder — 6,500 place entries from the Natural Historia mapped with Pleiades coordinates"
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+    <div class="atlas-note">
+      Ancient World Mapping Center (UNC) &amp; ISAW/NYU. Maps every locatable entry in Pliny's <em>Natural Historia</em> — click any point for citations and its linked Pleiades entry. Hosted on ArcGIS Experience — if the frame is blocked, use the open-in-new-tab link.
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   const atlasConfigs = [
@@ -575,7 +605,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     ['fastiAtlasPanel','fasti-atlas-btn','Fasti','Hide Fasti'],
     ['cyprusAtlasPanel','cyprus-atlas-btn','Cyprus','Hide Cyprus'],
     ['romanLettersAtlasPanel','roman-letters-atlas-btn','Roman Letters','Hide Roman Letters'],
-    ['iranGazetteeerAtlasPanel','iran-gazetteer-atlas-btn','Iran Gazetteer','Hide Iran Gazetteer']
+    ['iranGazetteeerAtlasPanel','iran-gazetteer-atlas-btn','Iran Gazetteer','Hide Iran Gazetteer'],
+    ['plinyAtlasPanel','pliny-atlas-btn','Pliny the Elder','Hide Pliny']
   ];
 
   function safeCloseAtlases(){
@@ -622,6 +653,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   };
   window.toggleIranGazetteeerAtlas = function(force){
     toggleAtlas('iranGazetteeerAtlasPanel','iran-gazetteer-atlas-btn','Iran Gazetteer','Hide Iran Gazetteer',force);
+  };
+  window.togglePlinyAtlas = function(force){
+    toggleAtlas('plinyAtlasPanel','pliny-atlas-btn','Pliny the Elder','Hide Pliny',force);
   };
   window.closeExternalAtlases = safeCloseAtlases;
 })();
