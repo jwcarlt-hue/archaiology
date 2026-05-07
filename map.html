@@ -347,6 +347,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <button class="filter-chip" id="fasti-atlas-btn" onclick="toggleFastiAtlas()">Fasti</button>
       <button class="filter-chip" id="cyprus-atlas-btn" onclick="toggleCyprusAtlas()">Cyprus</button>
       <button class="filter-chip" id="roman-letters-atlas-btn" onclick="toggleRomanLettersAtlas()">Roman Letters</button>
+      <button class="filter-chip" id="iran-gazetteer-atlas-btn" onclick="toggleIranGazetteeerAtlas()">Iran Gazetteer</button>
     </div>
     <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:6px;line-height:1.45;">
       Open external archaeological atlases in a dedicated workspace above the map.
@@ -537,6 +538,35 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   </div>
 </div>
 
+<div class="atlas-panel" id="iranGazetteeerAtlasPanel">
+  <div class="atlas-head">
+    <div class="atlas-title-wrap">
+      <div class="atlas-kicker">External atlas layer</div>
+      <div class="atlas-title">Archaeological Gazetteer of Iran — UCLA Pourdavoud Institute</div>
+      <div class="atlas-meta">
+        Source: <a href="https://irangazetteer.ucla.edu/map/" target="_blank" rel="noopener">irangazetteer.ucla.edu/map/</a>
+        &nbsp;·&nbsp; Paleolithic through 14th century &nbsp;·&nbsp; Iranian World incl. Mesopotamia &amp; Transoxiana
+      </div>
+    </div>
+    <div class="atlas-actions">
+      <a class="atlas-link" href="https://irangazetteer.ucla.edu/map/" target="_blank" rel="noopener">Open in new tab</a>
+      <button class="atlas-close" type="button" onclick="toggleIranGazetteeerAtlas(false)">Close</button>
+    </div>
+  </div>
+  <div class="atlas-body">
+    <iframe
+      class="atlas-frame"
+      src="https://gisucla.maps.arcgis.com/apps/webappviewer/index.html?id=61539fbc135740279c471edee7ed6e01"
+      title="Archaeological Gazetteer of Iran — UCLA Pourdavoud Institute interactive site map"
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+    <div class="atlas-note">
+      UCLA Pourdavoud Institute. Free-access encyclopedia of Iranian archaeological sites, Paleolithic to 14th century. Hosted on ArcGIS Online — if the frame is blocked, use the open-in-new-tab link to access the full interactive map.
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   const atlasConfigs = [
@@ -544,7 +574,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     ['armepAtlasPanel','armep-atlas-btn','ARMEP','Hide ARMEP'],
     ['fastiAtlasPanel','fasti-atlas-btn','Fasti','Hide Fasti'],
     ['cyprusAtlasPanel','cyprus-atlas-btn','Cyprus','Hide Cyprus'],
-    ['romanLettersAtlasPanel','roman-letters-atlas-btn','Roman Letters','Hide Roman Letters']
+    ['romanLettersAtlasPanel','roman-letters-atlas-btn','Roman Letters','Hide Roman Letters'],
+    ['iranGazetteeerAtlasPanel','iran-gazetteer-atlas-btn','Iran Gazetteer','Hide Iran Gazetteer']
   ];
 
   function safeCloseAtlases(){
@@ -588,6 +619,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   };
   window.toggleRomanLettersAtlas = function(force){
     toggleAtlas('romanLettersAtlasPanel','roman-letters-atlas-btn','Roman Letters','Hide Roman Letters',force);
+  };
+  window.toggleIranGazetteeerAtlas = function(force){
+    toggleAtlas('iranGazetteeerAtlasPanel','iran-gazetteer-atlas-btn','Iran Gazetteer','Hide Iran Gazetteer',force);
   };
   window.closeExternalAtlases = safeCloseAtlases;
 })();
