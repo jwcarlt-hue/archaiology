@@ -1,0 +1,672 @@
+id,site_id,name,pleiades_id
+1,11,Sarhoyuk - Dorylaion,https://pleiades.stoa.org//places/610803
+2,10,Musgebi-Bodrum,https://pleiades.stoa.org//places/599959
+3,12,Maydos Kilisetepe,https://pleiades.stoa.org//places/501503
+4,17,Bademgedigi (Puranda),https://pleiades.stoa.org//places/550741
+5,44,Araplar Uyucek (Mandira Tepe),https://pleiades.stoa.org//places/550919
+6,45,Araplar Uyucek (Mandira Tepe),https://pleiades.stoa.org//places/511166
+7,412,Ada Mevkii Hoyuk,https://pleiades.stoa.org//places/609327
+8,4,Torbali-Karakuyu,https://pleiades.stoa.org//places/550498
+9,13,Bayrakli/Alt-Smyrna,https://pleiades.stoa.org//places/550771
+10,16,Kadikalesi (Anaia),https://pleiades.stoa.org//places/599490
+11,18,"Cesme, Baglararasi",https://pleiades.stoa.org//places/550488
+12,19,Liman Tepe,https://pleiades.stoa.org//places/550650
+13,23,Cine Tepecik Hoyuk,https://pleiades.stoa.org//places/599479
+14,22,Beycesultan,https://pleiades.stoa.org//places/56861725
+15,26,Stratonikeia,https://pleiades.stoa.org//places/599947
+16,61,Hamitli Hoyuk,https://pleiades.stoa.org//places/609375
+17,20,Kolophon,https://pleiades.stoa.org//places/599577
+18,83,Halkapinar,https://pleiades.stoa.org//places/599557
+19,9,Sardis,https://pleiades.stoa.org//places/550867
+20,256,Akpinar,https://pleiades.stoa.org//places/611552
+21,40,Kilcanlar Hoyuk,https://pleiades.stoa.org//places/550707
+22,41,Kolossai (Honaz) Hoyuk,https://pleiades.stoa.org//places/638811
+23,42,Yassi Hoyuk,https://pleiades.stoa.org//places/56861725
+24,14,Larisa am Hermos,https://pleiades.stoa.org//places/550773
+25,304,Dustubakyamasi,https://pleiades.stoa.org//places/501428
+26,25,"Laodikeia, Asopos Tepesi",https://pleiades.stoa.org//places/638955
+27,28,Pitane-Candarli,https://pleiades.stoa.org//places/550833
+28,413,Baglica,https://pleiades.stoa.org//places/638964
+29,82,Bakla Tepe,https://pleiades.stoa.org//places/550790
+30,88,Asarlik-Eski Hisarlik,https://pleiades.stoa.org//places/550546
+31,84,Ada Tepe (Birytis),https://pleiades.stoa.org//places/550888
+32,85,Kumtepe,https://pleiades.stoa.org//places/550877
+33,96,Balli Dag,https://pleiades.stoa.org//places/550546
+34,97,Kalanuro Tepesi,https://pleiades.stoa.org//places/501483
+35,305,Alatepe,https://pleiades.stoa.org//places/501428
+36,306,Adatepe,https://pleiades.stoa.org//places/501428
+37,80,Besiktepe-Yassitepe,https://pleiades.stoa.org//places/550401
+38,414,Kirnabasi,https://pleiades.stoa.org//places/638964
+39,415,Sakizcilar Asaronu,https://pleiades.stoa.org//places/609476
+40,416,Gocuk Dumberek,https://pleiades.stoa.org//places/609477
+41,417,Suludereburnu,https://pleiades.stoa.org//places/609327
+42,418,Cagilarasi,https://pleiades.stoa.org//places/609327
+43,307,Kaldirim,https://pleiades.stoa.org//places/501428
+44,90,Tavsan Adasi,https://pleiades.stoa.org//places/599593
+45,104,Rhodes-Trianda,https://pleiades.stoa.org//places/589815
+46,105,Hanay Tepe,https://pleiades.stoa.org//places/550546
+47,106,In Limani,https://pleiades.stoa.org//places/550401
+48,110,Isildak Tepe,https://pleiades.stoa.org//places/550942
+49,111,Eski Kale (Rhoiteion),https://pleiades.stoa.org//places/550856
+50,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550609
+51,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550929
+52,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/551907
+53,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550927
+54,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550897
+55,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550400
+56,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550415
+57,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550611
+58,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550951
+59,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550930
+60,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/551154
+61,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550871
+62,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550883
+63,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550870
+64,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550946
+65,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550413
+66,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550861
+67,116,Kumbet Kocabahce,https://pleiades.stoa.org//places/550462
+68,419,Selcen Orenarasi,https://pleiades.stoa.org//places/609476
+69,389,Oklubali Hoyuk,https://pleiades.stoa.org//places/609581
+70,389,Oklubali Hoyuk,https://pleiades.stoa.org//places/609560
+71,389,Oklubali Hoyuk,https://pleiades.stoa.org//places/609548
+72,389,Oklubali Hoyuk,https://pleiades.stoa.org//places/609401
+73,109,Figla Tepe,https://pleiades.stoa.org//places/550546
+74,112,Mal Tepe (Dardanos),https://pleiades.stoa.org//places/501393
+75,113,Hantepe,https://pleiades.stoa.org//places/550398
+76,114,Ciftlik Tepe,https://pleiades.stoa.org//places/550633
+77,117,Besik Tepe (Kolonai),https://pleiades.stoa.org//places/550661
+78,128,Degirmentepe (Suleymanli),https://pleiades.stoa.org//places/553419
+79,391,Karaca,https://pleiades.stoa.org//places/610799
+80,392,Degirmen,https://pleiades.stoa.org//places/610799
+81,393,Deniz Hoyuk,https://pleiades.stoa.org//places/609390
+82,393,Deniz Hoyuk,https://pleiades.stoa.org//places/612325
+83,393,Deniz Hoyuk,https://pleiades.stoa.org//places/609497
+84,393,Deniz Hoyuk,https://pleiades.stoa.org//places/609437
+85,393,Deniz Hoyuk,https://pleiades.stoa.org//places/612329
+86,393,Deniz Hoyuk,https://pleiades.stoa.org//places/612326
+87,118,Asartepe (in Gelibolu),https://pleiades.stoa.org//places/501386
+88,107,Sestos,https://pleiades.stoa.org//places/501609
+89,141,Tepekoylu Tarla,https://pleiades.stoa.org//places/550498
+90,125,Mecidiye (Palamut) Hoyuk,https://pleiades.stoa.org//places/550444
+91,126,Tepebaglar Hoyuk,https://pleiades.stoa.org//places/550444
+92,127,Bagcesme Hoyuk,https://pleiades.stoa.org//places/553419
+93,129,Arpali 1 Hoyuk,https://pleiades.stoa.org//places/550702
+94,129,Arpali 1 Hoyuk,https://pleiades.stoa.org//places/550665
+95,129,Arpali 1 Hoyuk,https://pleiades.stoa.org//places/550552
+96,129,Arpali 1 Hoyuk,https://pleiades.stoa.org//places/550587
+97,129,Arpali 1 Hoyuk,https://pleiades.stoa.org//places/553421
+98,129,Arpali 1 Hoyuk,https://pleiades.stoa.org//places/550829
+99,129,Arpali 1 Hoyuk,https://pleiades.stoa.org//places/550672
+100,129,Arpali 1 Hoyuk,https://pleiades.stoa.org//places/550445
+101,129,Arpali 1 Hoyuk,https://pleiades.stoa.org//places/550866
+102,129,Arpali 1 Hoyuk,https://pleiades.stoa.org//places/553423
+103,129,Arpali 1 Hoyuk,https://pleiades.stoa.org//places/553420
+104,129,Arpali 1 Hoyuk,https://pleiades.stoa.org//places/553422
+105,130,Bedeller (Orentepe) Hoyuk,https://pleiades.stoa.org//places/550949
+106,131,Kayislar Hoyuk,https://pleiades.stoa.org//places/550444
+107,394,Incekoy Hoyuk,https://pleiades.stoa.org//places/609390
+108,394,Incekoy Hoyuk,https://pleiades.stoa.org//places/609437
+109,394,Incekoy Hoyuk,https://pleiades.stoa.org//places/612329
+110,394,Incekoy Hoyuk,https://pleiades.stoa.org//places/612325
+111,394,Incekoy Hoyuk,https://pleiades.stoa.org//places/609497
+112,394,Incekoy Hoyuk,https://pleiades.stoa.org//places/612326
+113,132,Baklatepe Hoyuk (Egrikoy),https://pleiades.stoa.org//places/550802
+114,133,Asartepe (Urganli) Hoyuk,https://pleiades.stoa.org//places/550679
+115,134,Sogut Cayi Hoyuk,https://pleiades.stoa.org//places/609445
+116,135,Armutarasi Hoyuk,https://pleiades.stoa.org//places/550709
+117,136,Ters Tepe Hoyuk,https://pleiades.stoa.org//places/609528
+118,138,Bozyer Ciftligi Hoyuk,https://pleiades.stoa.org//places/609321
+119,139,"Goztepe, Kusadasi",https://pleiades.stoa.org//places/599980
+120,143,Kucuktepe,https://pleiades.stoa.org//places/551158
+121,143,Kucuktepe,https://pleiades.stoa.org//places/550828
+122,143,Kucuktepe,https://pleiades.stoa.org//places/599527
+123,143,Kucuktepe,https://pleiades.stoa.org//places/550730
+124,143,Kucuktepe,https://pleiades.stoa.org//places/551152
+125,143,Kucuktepe,https://pleiades.stoa.org//places/599724
+126,143,Kucuktepe,https://pleiades.stoa.org//places/550914
+127,143,Kucuktepe,https://pleiades.stoa.org//places/599622
+128,143,Kucuktepe,https://pleiades.stoa.org//places/599635
+129,143,Kucuktepe,https://pleiades.stoa.org//places/599709
+130,143,Kucuktepe,https://pleiades.stoa.org//places/550795
+131,143,Kucuktepe,https://pleiades.stoa.org//places/550608
+132,143,Kucuktepe,https://pleiades.stoa.org//places/600231
+133,143,Kucuktepe,https://pleiades.stoa.org//places/599874
+134,143,Kucuktepe,https://pleiades.stoa.org//places/550729
+135,143,Kucuktepe,https://pleiades.stoa.org//places/550464
+136,150,Komur Adasi,https://pleiades.stoa.org//places/599629
+137,151,Sapli Adasi,https://pleiades.stoa.org//places/599629
+138,156,Saribeyli Hoyuk,https://pleiades.stoa.org//places/610799
+139,160,Pinar Hoyuk,https://pleiades.stoa.org//places/609408
+140,165,"Ikizhoyuk I, II, III",https://pleiades.stoa.org//places/609408
+141,161,Candir Hoyuk,https://pleiades.stoa.org//places/609408
+142,172,Degirmentepe,https://pleiades.stoa.org//places/550916
+143,176,Masanti Hoyuk,https://pleiades.stoa.org//places/550924
+144,177,Maltepe (Bakiralan Tepe),https://pleiades.stoa.org//places/550767
+145,189,Yenisehir I (Bostin Bos Tepe),https://pleiades.stoa.org//places/511396
+146,189,Yenisehir I (Bostin Bos Tepe),https://pleiades.stoa.org//places/511165
+147,189,Yenisehir I (Bostin Bos Tepe),https://pleiades.stoa.org//places/511363
+148,91,Alabanda,https://pleiades.stoa.org//places/599479
+149,92,Elaia,https://pleiades.stoa.org//places/550523
+150,98,"Boyalik Tepe I, II",https://pleiades.stoa.org//places/550560
+151,395,Seraserli Hoyuk,https://pleiades.stoa.org//places/609390
+152,395,Seraserli Hoyuk,https://pleiades.stoa.org//places/609437
+153,395,Seraserli Hoyuk,https://pleiades.stoa.org//places/612329
+154,395,Seraserli Hoyuk,https://pleiades.stoa.org//places/612325
+155,395,Seraserli Hoyuk,https://pleiades.stoa.org//places/609497
+156,395,Seraserli Hoyuk,https://pleiades.stoa.org//places/612326
+157,396,Savram Hoyuk,https://pleiades.stoa.org//places/609390
+158,396,Savram Hoyuk,https://pleiades.stoa.org//places/609437
+159,396,Savram Hoyuk,https://pleiades.stoa.org//places/612329
+160,396,Savram Hoyuk,https://pleiades.stoa.org//places/612325
+161,396,Savram Hoyuk,https://pleiades.stoa.org//places/609497
+162,396,Savram Hoyuk,https://pleiades.stoa.org//places/612326
+163,397,Tuglu Hoyuk,https://pleiades.stoa.org//places/609382
+164,398,Kesilmis Hoyuk,https://pleiades.stoa.org//places/609382
+165,178,Kocagentepe Hoyuk,https://pleiades.stoa.org//places/550898
+166,179,Sakarcali Hoyuk,https://pleiades.stoa.org//places/550898
+167,180,Baglartepe Hoyuk,https://pleiades.stoa.org//places/550863
+168,181,Uyucektepe Hoyuk (Yagcili),https://pleiades.stoa.org//places/550577
+169,184,Ovakoy Uyucek,https://pleiades.stoa.org//places/550560
+170,186,Tutuncuyolu/Uyucek,https://pleiades.stoa.org//places/511178
+171,108,Cobantepe (Tavolia),https://pleiades.stoa.org//places/501334
+172,191,Cakirca Hoyuk,https://pleiades.stoa.org//places/511268
+173,86,Polymedion (Asarlik),https://pleiades.stoa.org//places/550840
+174,87,Karagac Tepe,https://pleiades.stoa.org//places/501509
+175,196,Yenikoy Hoyuk (Orhangazi),https://pleiades.stoa.org//places/511207
+176,89,Gavurtepe,https://pleiades.stoa.org//places/550585
+177,81,Tenedos (Bozcaada),https://pleiades.stoa.org//places/550911
+178,192,Cayirkoy Hoyuk,https://pleiades.stoa.org//places/511267
+179,400,Gurpinar Hoyuk,https://pleiades.stoa.org//places/609521
+180,115,Dalyan,https://pleiades.stoa.org//places/550434
+181,401,Sulumenler Hoyuk,https://pleiades.stoa.org//places/56861725
+182,21,Aphrodisias,https://pleiades.stoa.org//places/638753
+183,402,Kuyuyolu Hoyuk,https://pleiades.stoa.org//places/56861725
+184,119,Savrantepe,https://pleiades.stoa.org//places/550888
+185,1,Hisarlik,https://pleiades.stoa.org//places/550595
+186,403,Cingenoren Hoyuk,https://pleiades.stoa.org//places/56861725
+187,404,Orucgazi Hoyuk,https://pleiades.stoa.org//places/56861725
+188,159,Isikli Hoyuk,https://pleiades.stoa.org//places/609382
+189,405,Kocainustu Hoyuk,https://pleiades.stoa.org//places/56861725
+190,406,Sokmen Hoyuk,https://pleiades.stoa.org//places/609390
+191,406,Sokmen Hoyuk,https://pleiades.stoa.org//places/609437
+192,406,Sokmen Hoyuk,https://pleiades.stoa.org//places/612329
+193,406,Sokmen Hoyuk,https://pleiades.stoa.org//places/612325
+194,406,Sokmen Hoyuk,https://pleiades.stoa.org//places/609497
+195,406,Sokmen Hoyuk,https://pleiades.stoa.org//places/612326
+196,35,Awarna,https://pleiades.stoa.org//places/639166
+197,407,Cukurkuyu Hoyuk,https://pleiades.stoa.org//places/609390
+198,407,Cukurkuyu Hoyuk,https://pleiades.stoa.org//places/609437
+199,407,Cukurkuyu Hoyuk,https://pleiades.stoa.org//places/612329
+200,407,Cukurkuyu Hoyuk,https://pleiades.stoa.org//places/612325
+201,407,Cukurkuyu Hoyuk,https://pleiades.stoa.org//places/609497
+202,407,Cukurkuyu Hoyuk,https://pleiades.stoa.org//places/612326
+203,408,Catal Hoyuk,https://pleiades.stoa.org//places/609390
+204,408,Catal Hoyuk,https://pleiades.stoa.org//places/609437
+205,408,Catal Hoyuk,https://pleiades.stoa.org//places/612329
+206,408,Catal Hoyuk,https://pleiades.stoa.org//places/612325
+207,408,Catal Hoyuk,https://pleiades.stoa.org//places/609497
+208,408,Catal Hoyuk,https://pleiades.stoa.org//places/612326
+209,409,Omer Hoyuk,https://pleiades.stoa.org//places/609390
+210,409,Omer Hoyuk,https://pleiades.stoa.org//places/609437
+211,409,Omer Hoyuk,https://pleiades.stoa.org//places/612325
+212,409,Omer Hoyuk,https://pleiades.stoa.org//places/609497
+213,409,Omer Hoyuk,https://pleiades.stoa.org//places/612329
+214,409,Omer Hoyuk,https://pleiades.stoa.org//places/612326
+215,410,Emirhisar-Yassi Hoyuk,https://pleiades.stoa.org//places/609382
+216,345,Uyuk/Bilecik,https://pleiades.stoa.org//places/511210
+217,411,Yakacik Hoyuk,https://pleiades.stoa.org//places/56861725
+218,3,Karabel,https://pleiades.stoa.org//places/550778
+219,120,Bozyer,https://pleiades.stoa.org//places/550428
+220,121,Gavurtepe-Alasehir,https://pleiades.stoa.org//places/550822
+221,122,Akhisar Hoyuk,https://pleiades.stoa.org//places/550924
+222,227,Kaynakobasi Hoyuk,https://pleiades.stoa.org//places/609473
+223,123,Dagdeviren Ciftligi Hoyuk,https://pleiades.stoa.org//places/550924
+224,124,Camonu (Karasonya),https://pleiades.stoa.org//places/550924
+225,137,Su Deligi Tepe,https://pleiades.stoa.org//places/550834
+226,55,Kulhoyuk,https://pleiades.stoa.org//places/609473
+227,6,"Latmos 1, 2, 5",https://pleiades.stoa.org//places/599819
+228,7,Kocaoguz-Afyon,https://pleiades.stoa.org//places/609332
+229,140,Ilicatepe,https://pleiades.stoa.org//places/599490
+230,142,Arapkahve,https://pleiades.stoa.org//places/550741
+231,144,Buyukkale,https://pleiades.stoa.org//places/599557
+232,33,Apaisos (Wilusa),https://pleiades.stoa.org//places/501544
+233,34,Kuwaliya,https://pleiades.stoa.org//places/609295
+234,68,Kopruoren Hoyuk,https://pleiades.stoa.org//places/609407
+235,102,Hasanli Hoyuk,https://pleiades.stoa.org//places/609339
+236,145,Beytikoy,https://pleiades.stoa.org//places/550585
+237,146,Karakova,https://pleiades.stoa.org//places/550865
+238,147,Hisarkoy,https://pleiades.stoa.org//places/550659
+239,103,Tatarderesi-Hacigebes,https://pleiades.stoa.org//places/550586
+240,148,Dedekuyusu (Destepe),https://pleiades.stoa.org//places/599987
+241,149,Bahcetepe,https://pleiades.stoa.org//places/599472
+242,152,Didyma,https://pleiades.stoa.org//places/599593
+243,206,Alyamak Hoyuk,https://pleiades.stoa.org//places/610803
+244,209,Cukurhisar II/Alpu,https://pleiades.stoa.org//places/609473
+245,153,Hyllarima,https://pleiades.stoa.org//places/599659
+246,154,Alinda,https://pleiades.stoa.org//places/599480
+247,155,Medet Hoyuk,https://pleiades.stoa.org//places/638757
+248,157,Oren Mevkii,https://pleiades.stoa.org//places/610799
+249,158,Dedemkoyu Hoyuk,https://pleiades.stoa.org//places/610799
+250,162,Candir Buyuk Hoyuk,https://pleiades.stoa.org//places/609408
+251,163,Candir Kucuk Hoyuk,https://pleiades.stoa.org//places/609408
+252,164,Dogu Sahanlar Hoyuk,https://pleiades.stoa.org//places/609390
+253,164,Dogu Sahanlar Hoyuk,https://pleiades.stoa.org//places/609437
+254,164,Dogu Sahanlar Hoyuk,https://pleiades.stoa.org//places/612329
+255,164,Dogu Sahanlar Hoyuk,https://pleiades.stoa.org//places/612326
+256,164,Dogu Sahanlar Hoyuk,https://pleiades.stoa.org//places/612325
+257,164,Dogu Sahanlar Hoyuk,https://pleiades.stoa.org//places/609497
+258,166,Bekirli Hoyuk,https://pleiades.stoa.org//places/609390
+259,166,Bekirli Hoyuk,https://pleiades.stoa.org//places/612325
+260,166,Bekirli Hoyuk,https://pleiades.stoa.org//places/609497
+261,166,Bekirli Hoyuk,https://pleiades.stoa.org//places/609437
+262,166,Bekirli Hoyuk,https://pleiades.stoa.org//places/612329
+263,166,Bekirli Hoyuk,https://pleiades.stoa.org//places/612326
+264,167,Pekmez Hoyuk,https://pleiades.stoa.org//places/609390
+265,167,Pekmez Hoyuk,https://pleiades.stoa.org//places/609437
+266,167,Pekmez Hoyuk,https://pleiades.stoa.org//places/612329
+267,167,Pekmez Hoyuk,https://pleiades.stoa.org//places/612325
+268,167,Pekmez Hoyuk,https://pleiades.stoa.org//places/609497
+269,167,Pekmez Hoyuk,https://pleiades.stoa.org//places/612326
+270,168,Ayazkoy/Ayaskent,https://pleiades.stoa.org//places/550804
+271,169,Basantepe,https://pleiades.stoa.org//places/550469
+272,170,Cakran,https://pleiades.stoa.org//places/550555
+273,254,Hidirlik,https://pleiades.stoa.org//places/609317
+274,171,Ciftlik,https://pleiades.stoa.org//places/550916
+275,285,Egridir Hoyuk,https://pleiades.stoa.org//places/639072
+276,173,Gryneion,https://pleiades.stoa.org//places/550555
+277,174,Gumusova Tepe I,https://pleiades.stoa.org//places/550459
+278,175,Gumusova Tepe II,https://pleiades.stoa.org//places/550459
+279,182,Milas Pilav Tepe,https://pleiades.stoa.org//places/599704
+280,182,Milas Pilav Tepe,https://pleiades.stoa.org//places/599663
+281,182,Milas Pilav Tepe,https://pleiades.stoa.org//places/599810
+282,182,Milas Pilav Tepe,https://pleiades.stoa.org//places/599768
+283,182,Milas Pilav Tepe,https://pleiades.stoa.org//places/599798
+284,182,Milas Pilav Tepe,https://pleiades.stoa.org//places/599735
+285,183,Emre Mevkii,https://pleiades.stoa.org//places/550560
+286,185,Gokceyazi Uyucek,https://pleiades.stoa.org//places/550832
+287,187,Huyucek Tepe,https://pleiades.stoa.org//places/550742
+288,188,Antandros,https://pleiades.stoa.org//places/550433
+289,190,Inegol I (Cumatepe),https://pleiades.stoa.org//places/511409
+290,297,Kozluca Hoyuk,https://pleiades.stoa.org//places/638852
+291,315,Kumocagi/Baglikarkasi,https://pleiades.stoa.org//places/501526
+292,193,Karadin Hoyuk,https://pleiades.stoa.org//places/511412
+293,194,Uyucek Hoyuk -Iznik,https://pleiades.stoa.org//places/511367
+294,195,Yugucek Hoyuk,https://pleiades.stoa.org//places/511268
+295,199,Kopruhisar Hoyuk,https://pleiades.stoa.org//places/511348
+296,200,Marmaracik Hoyuk,https://pleiades.stoa.org//places/511391
+297,27,Pergamon,https://pleiades.stoa.org//places/117689032
+298,31,Patara,https://pleiades.stoa.org//places/639042
+299,32,Xanthos,https://pleiades.stoa.org//places/639166
+300,338,Nemrut Hoyuk,https://pleiades.stoa.org//places/553424
+301,43,Atarneus,https://pleiades.stoa.org//places/550469
+302,47,Midaion (Kara Hoyuk),https://pleiades.stoa.org//places/609473
+303,48,Yesildon,https://pleiades.stoa.org//places/609509
+304,49,Porsuk Hoyuk 1,https://pleiades.stoa.org//places/609509
+305,354,Alparslan Hoyuk,https://pleiades.stoa.org//places/609507
+306,362,Hoyuk Mevkii,https://pleiades.stoa.org//places/610799
+307,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641011
+308,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/640999
+309,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641014
+310,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641007
+311,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641000
+312,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641018
+313,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641017
+314,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641005
+315,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641006
+316,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641003
+317,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641004
+318,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641002
+319,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641001
+320,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641010
+321,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641016
+322,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641008
+323,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641009
+324,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641015
+325,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641013
+326,363,Bademagaci Hoyuk,https://pleiades.stoa.org//places/641012
+327,364,Perge,https://pleiades.stoa.org//places/639048
+328,365,Ozbek Iliksu,https://pleiades.stoa.org//places/550586
+329,366,Seref Hoyuk/Komama,https://pleiades.stoa.org//places/638812
+330,367,Koyunbeyli Hoyuk,https://pleiades.stoa.org//places/609335
+331,368,Kediyunu Hoyuk,https://pleiades.stoa.org//places/609559
+332,369,Hoyuk (Koyonu) Mevki,https://pleiades.stoa.org//places/609490
+333,371,Oynagan Mezarlik Hoyuk,https://pleiades.stoa.org//places/609490
+334,372,Cafer Hoyuk,https://pleiades.stoa.org//places/609339
+335,373,Kepir Hoyuk,https://pleiades.stoa.org//places/609490
+336,376,Boyali Hoyuk,https://pleiades.stoa.org//places/609535
+337,377,Ekinova Hoyuk Mevkii,https://pleiades.stoa.org//places/609535
+338,378,Kanlitas Hoyuk,https://pleiades.stoa.org//places/610800
+339,379,Tymion,https://pleiades.stoa.org//places/609428
+340,380,Batak Degirmen,https://pleiades.stoa.org//places/511428
+341,381,Yenidogan,https://pleiades.stoa.org//places/599779
+342,382,Bagcesmeler,https://pleiades.stoa.org//places/550403
+343,383,Kucuktepe (Halilbeyli),https://pleiades.stoa.org//places/599644
+344,383,Kucuktepe (Halilbeyli),https://pleiades.stoa.org//places/599564
+345,383,Kucuktepe (Halilbeyli),https://pleiades.stoa.org//places/599789
+346,383,Kucuktepe (Halilbeyli),https://pleiades.stoa.org//places/600238
+347,383,Kucuktepe (Halilbeyli),https://pleiades.stoa.org//places/600237
+348,383,Kucuktepe (Halilbeyli),https://pleiades.stoa.org//places/614866
+349,384,Golhisar Kalesi,https://pleiades.stoa.org//places/599987
+350,385,Manastir Mevkii Hoyuk,https://pleiades.stoa.org//places/511248
+351,386,Ortaca,https://pleiades.stoa.org//places/609534
+352,50,Porsuk Hoyuk 2,https://pleiades.stoa.org//places/609509
+353,52,Toraman Hoyuk,https://pleiades.stoa.org//places/609587
+354,8,Panaztepe,https://pleiades.stoa.org//places/550773
+355,24,Milet,https://pleiades.stoa.org//places/599799
+356,29,Iasos,https://pleiades.stoa.org//places/599664
+357,15,Ephesus,https://pleiades.stoa.org//places/599612
+358,30,Adramytteion,https://pleiades.stoa.org//places/550403
+359,53,Agapinar,https://pleiades.stoa.org//places/609569
+360,54,Yakakayi,https://pleiades.stoa.org//places/609473
+361,62,Ilicabasi I,https://pleiades.stoa.org//places/612309
+362,337,Phokaia (Eski Foca),https://pleiades.stoa.org//places/550823
+363,64,Ibikseydi,https://pleiades.stoa.org//places/609500
+364,69,Gecek,https://pleiades.stoa.org//places/609573
+365,75,Uyuk Alti Mevkii,https://pleiades.stoa.org//places/609535
+366,77,Hoyuk Tepe (Karahoyuk),https://pleiades.stoa.org//places/609403
+367,94,Tlos,https://pleiades.stoa.org//places/639147
+368,95,Hastane Hoyuk (Thyateira),https://pleiades.stoa.org//places/550924
+369,99,Karsikir Mevkii,https://pleiades.stoa.org//places/609403
+370,201,Okuf Hoyuk,https://pleiades.stoa.org//places/511409
+371,202,Soylemis Hoyuk,https://pleiades.stoa.org//places/511396
+372,202,Soylemis Hoyuk,https://pleiades.stoa.org//places/511165
+373,202,Soylemis Hoyuk,https://pleiades.stoa.org//places/511363
+374,203,Barcin Hoyuk (Yenisehir II),https://pleiades.stoa.org//places/511396
+375,203,Barcin Hoyuk (Yenisehir II),https://pleiades.stoa.org//places/511165
+376,203,Barcin Hoyuk (Yenisehir II),https://pleiades.stoa.org//places/511363
+377,204,Kursunlu Hoyuk,https://pleiades.stoa.org//places/511409
+378,205,Karaca Hoyuk,https://pleiades.stoa.org//places/610803
+379,213,Keskin,https://pleiades.stoa.org//places/609367
+380,216,Esnemez Hoyuk,https://pleiades.stoa.org//places/610800
+381,56,Kurtlar Hoyuk,https://pleiades.stoa.org//places/609561
+382,57,Katirkulesi,https://pleiades.stoa.org//places/610804
+383,58,Hamidiye 1,https://pleiades.stoa.org//places/610804
+384,59,Kizilcakoy,https://pleiades.stoa.org//places/610807
+385,60,Buyuk Hoyuk,https://pleiades.stoa.org//places/609500
+386,51,Karapazar,https://pleiades.stoa.org//places/609580
+387,63,Kulapa Hoyuk,https://pleiades.stoa.org//places/609375
+388,2,Beykoy,https://pleiades.stoa.org//places/609324
+389,65,Dogray Hoyuk,https://pleiades.stoa.org//places/609442
+390,65,Dogray Hoyuk,https://pleiades.stoa.org//places/609400
+391,67,Tavsanli Hoyuk,https://pleiades.stoa.org//places/609492
+392,70,Beskaris,https://pleiades.stoa.org//places/609343
+393,71,Hacikebir,https://pleiades.stoa.org//places/609292
+394,72,Oluklu Hoyuk,https://pleiades.stoa.org//places/609581
+395,72,Oluklu Hoyuk,https://pleiades.stoa.org//places/609560
+396,72,Oluklu Hoyuk,https://pleiades.stoa.org//places/609548
+397,72,Oluklu Hoyuk,https://pleiades.stoa.org//places/609401
+398,73,Hisar Tepesi,https://pleiades.stoa.org//places/609378
+399,74,Incesirim Mevkii,https://pleiades.stoa.org//places/609378
+400,76,Uyuk Mevkii,https://pleiades.stoa.org//places/609535
+401,78,Huyuk Tepesi,https://pleiades.stoa.org//places/609538
+402,79,Kavaklar Mevkii,https://pleiades.stoa.org//places/609335
+403,93,Seyitomer Hoyuk,https://pleiades.stoa.org//places/609414
+404,100,Dura Yeri,https://pleiades.stoa.org//places/610808
+405,101,Caldiratmaz Mevkii,https://pleiades.stoa.org//places/609506
+406,66,Kocahoyuk,https://pleiades.stoa.org//places/612307
+407,207,Ciftlik Hoyuk,https://pleiades.stoa.org//places/609367
+408,208,Ciftlik Hoyuk,https://pleiades.stoa.org//places/609473
+409,210,Doganci Hoyuk,https://pleiades.stoa.org//places/609473
+410,211,Koprubasi Hoyuk,https://pleiades.stoa.org//places/609473
+411,212,Nemli Hoyuk,https://pleiades.stoa.org//places/609581
+412,212,Nemli Hoyuk,https://pleiades.stoa.org//places/609560
+413,212,Nemli Hoyuk,https://pleiades.stoa.org//places/609548
+414,212,Nemli Hoyuk,https://pleiades.stoa.org//places/609401
+415,214,Asagi Sogutonu,https://pleiades.stoa.org//places/609367
+416,215,Boyacioglu Ciftligi,https://pleiades.stoa.org//places/609581
+417,215,Boyacioglu Ciftligi,https://pleiades.stoa.org//places/609548
+418,215,Boyacioglu Ciftligi,https://pleiades.stoa.org//places/609560
+419,215,Boyacioglu Ciftligi,https://pleiades.stoa.org//places/609401
+420,217,Gokcekisik,https://pleiades.stoa.org//places/609582
+421,36,Caltilar Hoyuk,https://pleiades.stoa.org//places/638789
+422,39,"Cal Dag, Kebren",https://pleiades.stoa.org//places/550633
+423,219,Kurupinar/Avdan,https://pleiades.stoa.org//places/609554
+424,221,Akoren,https://pleiades.stoa.org//places/609294
+425,224,Gulluhoyuk,https://pleiades.stoa.org//places/610804
+426,225,Osmaniye,https://pleiades.stoa.org//places/609473
+427,228,Akyurt Hoyuk,https://pleiades.stoa.org//places/609473
+428,229,Sarisu,https://pleiades.stoa.org//places/609473
+429,231,Bahcecik II/Sivrihisar,https://pleiades.stoa.org//places/610807
+430,232,Cayir Hoyuk,https://pleiades.stoa.org//places/612309
+431,235,Kostutepesi,https://pleiades.stoa.org//places/609388
+432,236,Sogulcak,https://pleiades.stoa.org//places/609484
+433,237,Egriova Hoyuk,https://pleiades.stoa.org//places/609287
+434,237,Egriova Hoyuk,https://pleiades.stoa.org//places/609470
+435,238,Saricailyas,https://pleiades.stoa.org//places/609484
+436,239,Akin Hoyuk,https://pleiades.stoa.org//places/609508
+437,241,Togray Hoyuk,https://pleiades.stoa.org//places/609442
+438,241,Togray Hoyuk,https://pleiades.stoa.org//places/609400
+439,242,Yalinli,https://pleiades.stoa.org//places/609442
+440,242,Yalinli,https://pleiades.stoa.org//places/609400
+441,245,Catoren Hoyuk (Adsiz),https://pleiades.stoa.org//places/609508
+442,246,Akcakaya Hoyuk,https://pleiades.stoa.org//places/609582
+443,247,Agachisar Hoyuk,https://pleiades.stoa.org//places/609442
+444,247,Agachisar Hoyuk,https://pleiades.stoa.org//places/609400
+445,249,Kayikoy Hoyuk,https://pleiades.stoa.org//places/609492
+446,251,Kiranharmanyeri,https://pleiades.stoa.org//places/609552
+447,255,Hebilin Hoyuk,https://pleiades.stoa.org//places/609577
+448,260,Kizilkilise,https://pleiades.stoa.org//places/609343
+449,261,Yassi Huyuk,https://pleiades.stoa.org//places/769548552
+450,261,Yassi Huyuk,https://pleiades.stoa.org//places/511364
+451,265,Pazaryeri 1,https://pleiades.stoa.org//places/609578
+452,268,Kucukhuyuk,https://pleiades.stoa.org//places/612330
+453,268,Kucukhuyuk,https://pleiades.stoa.org//places/609430
+454,271,Oren Mevkii (Kizik),https://pleiades.stoa.org//places/609345
+455,272,Uyuk,https://pleiades.stoa.org//places/609436
+456,273,Arpalik Mevkii,https://pleiades.stoa.org//places/609326
+457,275,Keldag (Keltepe) Mevkii,https://pleiades.stoa.org//places/609326
+458,276,Erimli Mevkii,https://pleiades.stoa.org//places/609326
+459,277,Huyuk Mevkii,https://pleiades.stoa.org//places/609538
+460,278,Dikici Hoyuk,https://pleiades.stoa.org//places/638751
+461,281,Viranici Mevkii,https://pleiades.stoa.org//places/609523
+462,282,Dorek Asar Mevkii,https://pleiades.stoa.org//places/609335
+463,283,Cayir Uyuk Mevkii,https://pleiades.stoa.org//places/609335
+464,284,Belce Hoyuk,https://pleiades.stoa.org//places/609335
+465,286,Dortyol Hoyuk,https://pleiades.stoa.org//places/638921
+466,286,Dortyol Hoyuk,https://pleiades.stoa.org//places/609553
+467,286,Dortyol Hoyuk,https://pleiades.stoa.org//places/609306
+468,286,Dortyol Hoyuk,https://pleiades.stoa.org//places/609385
+469,286,Dortyol Hoyuk,https://pleiades.stoa.org//places/609494
+470,287,Arak Hoyuk,https://pleiades.stoa.org//places/639008
+471,288,Ordekci Hoyuk,https://pleiades.stoa.org//places/638742
+472,289,Iskele Hoyuk,https://pleiades.stoa.org//places/638983
+473,290,Gelendost Hoyuk,https://pleiades.stoa.org//places/638983
+474,291,Findos Hoyuk,https://pleiades.stoa.org//places/638791
+475,292,Gondurle Hoyuk,https://pleiades.stoa.org//places/638791
+476,293,Agil Hoyuk,https://pleiades.stoa.org//places/609389
+477,294,Akmescit,https://pleiades.stoa.org//places/638983
+478,295,Ayvali-Masat Hoyuk,https://pleiades.stoa.org//places/609547
+479,296,Cavdir Hoyuk,https://pleiades.stoa.org//places/639111
+480,317,Hisarlik,https://pleiades.stoa.org//places/501526
+481,299,Eceler Hoyuk,https://pleiades.stoa.org//places/639004
+482,322,Erdelli Hoyuk,https://pleiades.stoa.org//places/550612
+483,336,Catalkaya,https://pleiades.stoa.org//places/599840
+484,341,Kavaklikoy Hoyuk,https://pleiades.stoa.org//places/599700
+485,344,Yenikoy/Bilecik,https://pleiades.stoa.org//places/609428
+486,347,Akgun Tepe Hoyuk,https://pleiades.stoa.org//places/638751
+487,353,Akpinarli Tepe Hoyuk,https://pleiades.stoa.org//places/609507
+488,370,Pinarbasi Buyuk Hoyuk,https://pleiades.stoa.org//places/609424
+489,374,Kulak Uyuk Mevkii,https://pleiades.stoa.org//places/609326
+490,375,Anayurt Mezarlik und Uyukler Mevkii,https://pleiades.stoa.org//places/609326
+491,388,Kumbag Huyuk,https://pleiades.stoa.org//places/610803
+492,390,Karayahsiler,https://pleiades.stoa.org//places/609390
+493,390,Karayahsiler,https://pleiades.stoa.org//places/609437
+494,390,Karayahsiler,https://pleiades.stoa.org//places/612329
+495,390,Karayahsiler,https://pleiades.stoa.org//places/612325
+496,390,Karayahsiler,https://pleiades.stoa.org//places/609497
+497,390,Karayahsiler,https://pleiades.stoa.org//places/612326
+498,355,Tepeardi Hoyuk,https://pleiades.stoa.org//places/609507
+499,357,Orenler Mevkii,https://pleiades.stoa.org//places/609329
+500,359,Sarikavak Hoyuk,https://pleiades.stoa.org//places/638743
+501,360,Kusura Hoyuk,https://pleiades.stoa.org//places/609291
+502,361,Yamanlar,https://pleiades.stoa.org//places/56861725
+503,37,Hanay Tepe (Bozkoy),https://pleiades.stoa.org//places/550398
+504,38,Larisa (Limantepe),https://pleiades.stoa.org//places/550685
+505,46,Inegol II Hoyuk,https://pleiades.stoa.org//places/511409
+506,218,Sandikozu Hoyuk,https://pleiades.stoa.org//places/609469
+507,220,Kavakozu,https://pleiades.stoa.org//places/609294
+508,222,Alpanoz,https://pleiades.stoa.org//places/609583
+509,223,Kulluhoyuk,https://pleiades.stoa.org//places/609484
+510,226,Kucuk Kizlar Hoyuk,https://pleiades.stoa.org//places/609473
+511,230,Araporen,https://pleiades.stoa.org//places/610804
+512,233,Ilicabasi II,https://pleiades.stoa.org//places/612309
+513,234,Hamam Karahisar,https://pleiades.stoa.org//places/609377
+514,240,Subren,https://pleiades.stoa.org//places/609580
+515,243,Maltepesi Hoyuk,https://pleiades.stoa.org//places/844864
+516,244,Kocakayavirani,https://pleiades.stoa.org//places/609561
+517,248,Hamamtepesi Hoyuk,https://pleiades.stoa.org//places/609500
+518,250,Huyuktepe,https://pleiades.stoa.org//places/612307
+519,358,Agillarin Onu Hoyuk (Kirin Uyuk),https://pleiades.stoa.org//places/638743
+520,252,Abya,https://pleiades.stoa.org//places/609314
+521,253,Alibey,https://pleiades.stoa.org//places/609317
+522,5,Akpinar,https://pleiades.stoa.org//places/550736
+523,257,Isiklar,https://pleiades.stoa.org//places/609467
+524,258,Subak,https://pleiades.stoa.org//places/609557
+525,259,Orentepe,https://pleiades.stoa.org//places/609557
+526,262,Kalehuyuk,https://pleiades.stoa.org//places/511380
+527,263,Huyucek,https://pleiades.stoa.org//places/609450
+528,264,Demirkoy,https://pleiades.stoa.org//places/511380
+529,266,Pazaryeri 2,https://pleiades.stoa.org//places/609578
+530,267,Kinik,https://pleiades.stoa.org//places/609578
+531,269,Koyalti,https://pleiades.stoa.org//places/609378
+532,270,Bulucu Hoyuk,https://pleiades.stoa.org//places/609378
+533,274,Kocapinar,https://pleiades.stoa.org//places/609342
+534,279,Huyuk Mevkii (Kabakli),https://pleiades.stoa.org//places/638751
+535,280,Uchoyuk,https://pleiades.stoa.org//places/609506
+536,298,Kaymakci,https://pleiades.stoa.org//places/886756147
+537,300,Oinoanda,https://pleiades.stoa.org//places/639013
+538,387,Haydarlar,https://pleiades.stoa.org//places/609458
+539,301,Pinara,https://pleiades.stoa.org//places/639058
+540,302,Cardakli/Eski Degirmen Yolu,https://pleiades.stoa.org//places/501428
+541,422,Sazak Oren,https://pleiades.stoa.org//places/609476
+542,423,Igdelioglu,https://pleiades.stoa.org//places/609476
+543,424,Callica,https://pleiades.stoa.org//places/638964
+544,425,Hancalar Asarlik,https://pleiades.stoa.org//places/609327
+545,426,Sarikaya Tepe Yerlesimi,https://pleiades.stoa.org//places/610799
+546,427,Sogutlucesme-Hasan Hoyuk,https://pleiades.stoa.org//places/610799
+547,428,Goceler Hoyuk,https://pleiades.stoa.org//places/609521
+548,429,Dere Hoyuk,https://pleiades.stoa.org//places/609521
+549,430,Orenler Yerlesimi,https://pleiades.stoa.org//places/609521
+550,431,Han Taslari Yerlesimi,https://pleiades.stoa.org//places/56861725
+551,432,Yuvakoy Hoyuk,https://pleiades.stoa.org//places/609382
+552,433,Tokca Hoyuk,https://pleiades.stoa.org//places/610799
+553,434,Razoglu Hoyuk,https://pleiades.stoa.org//places/886756147
+554,435,Ilimanli Hoyuk,https://pleiades.stoa.org//places/609489
+555,436,Kocaalan,https://pleiades.stoa.org//places/609489
+556,437,Kocakaya,https://pleiades.stoa.org//places/609382
+557,438,Asagi Asar Tepe,https://pleiades.stoa.org//places/609489
+558,439,Cogurlu Pinar,https://pleiades.stoa.org//places/609382
+559,440,Osmankoy-Oren,https://pleiades.stoa.org//places/609382
+560,441,Belkuyu Hoyuk,https://pleiades.stoa.org//places/609382
+561,442,Belence Hoyuk,https://pleiades.stoa.org//places/609382
+562,399,Belence Hoyuk,https://pleiades.stoa.org//places/612322
+563,443,Cesmebasi,https://pleiades.stoa.org//places/609390
+564,443,Cesmebasi,https://pleiades.stoa.org//places/609437
+565,443,Cesmebasi,https://pleiades.stoa.org//places/612329
+566,443,Cesmebasi,https://pleiades.stoa.org//places/612325
+567,443,Cesmebasi,https://pleiades.stoa.org//places/609497
+568,443,Cesmebasi,https://pleiades.stoa.org//places/612326
+569,444,Incilipinar,https://pleiades.stoa.org//places/511401
+570,445,Suluhoyuk,https://pleiades.stoa.org//places/609495
+571,445,Suluhoyuk,https://pleiades.stoa.org//places/612308
+572,446,Imisehir,https://pleiades.stoa.org//places/612308
+573,446,Imisehir,https://pleiades.stoa.org//places/609495
+574,447,Kayabasi/Inli,https://pleiades.stoa.org//places/609429
+575,448,Bahcehisar/Kandilli,https://pleiades.stoa.org//places/609450
+576,449,Erenkoy 1,https://pleiades.stoa.org//places/609450
+577,450,Demircihoyuk,https://pleiades.stoa.org//places/609581
+578,450,Demircihoyuk,https://pleiades.stoa.org//places/609560
+579,450,Demircihoyuk,https://pleiades.stoa.org//places/609548
+580,450,Demircihoyuk,https://pleiades.stoa.org//places/609401
+581,451,Malatca,https://pleiades.stoa.org//places/609460
+582,452,Saglar,https://pleiades.stoa.org//places/609552
+583,454,Gokhoyuk,https://pleiades.stoa.org//places/512653
+584,455,Yilik Hoyuk,https://pleiades.stoa.org//places/511326
+585,456,Aricklar/Aricaklar,https://pleiades.stoa.org//places/511431
+586,458,Gavur Tepesi,https://pleiades.stoa.org//places/609450
+587,459,Geren,https://pleiades.stoa.org//places/550506
+588,460,Kucuk Yamanlar,https://pleiades.stoa.org//places/550771
+589,462,Yarentepe,https://pleiades.stoa.org//places/599781
+590,462,Yarentepe,https://pleiades.stoa.org//places/599780
+591,462,Yarentepe,https://pleiades.stoa.org//places/550807
+592,462,Yarentepe,https://pleiades.stoa.org//places/550666
+593,462,Yarentepe,https://pleiades.stoa.org//places/550721
+594,462,Yarentepe,https://pleiades.stoa.org//places/550651
+595,462,Yarentepe,https://pleiades.stoa.org//places/550724
+596,463,Kazankaya Tepesi,https://pleiades.stoa.org//places/550586
+597,464,Banaz Hoyuk,https://pleiades.stoa.org//places/609502
+598,464,Banaz Hoyuk,https://pleiades.stoa.org//places/609479
+599,464,Banaz Hoyuk,https://pleiades.stoa.org//places/609365
+600,464,Banaz Hoyuk,https://pleiades.stoa.org//places/609361
+601,465,Yenice Hoyuk,https://pleiades.stoa.org//places/609362
+602,466,Ayvacik Hoyuk,https://pleiades.stoa.org//places/609362
+603,468,Oksuz Hoyuk,https://pleiades.stoa.org//places/609588
+604,469,Dumenler Hoyuk,https://pleiades.stoa.org//places/609451
+605,470,Bathonea,https://pleiades.stoa.org//places/511315
+606,471,Lesbos: Thermi,https://pleiades.stoa.org//places/550922
+607,472,Lesbos: Chalatses-Perama,https://pleiades.stoa.org//places/550576
+608,473,Lesbos: Kourtir-Skamioudi,https://pleiades.stoa.org//places/550851
+609,474,Lesbos: Pyrrha-Achladeri,https://pleiades.stoa.org//places/551908
+610,475,Lesbos: Obriokastro-Gabathas; ancient Antissa,https://pleiades.stoa.org//places/550435
+611,476,Lesbos-Methimna,https://pleiades.stoa.org//places/550747
+612,477,Chios-Emporio,https://pleiades.stoa.org//places/550530
+613,478,Samos-Heraion,https://pleiades.stoa.org//places/599641
+614,479,Patmos-Kastelli,https://pleiades.stoa.org//places/599885
+615,480,Leros-Kastro (Ayia Marina),https://pleiades.stoa.org//places/599560
+616,481,Kalymnos-Perakastro (Chorio),https://pleiades.stoa.org//places/599507
+617,482,Kos-Serayia (Chorio),https://pleiades.stoa.org//places/599728
+618,483,Astypalaia-Kastro (Ayios Ioannes),https://pleiades.stoa.org//places/599782
+619,303,Yorulmaz Ciftligi/Eski Baglik,https://pleiades.stoa.org//places/501428
+620,308,Cukurcayir,https://pleiades.stoa.org//places/501428
+621,309,Namazgah,https://pleiades.stoa.org//places/501428
+622,310,Koprubasi,https://pleiades.stoa.org//places/501428
+623,311,Ortakci/Kemer Kopru,https://pleiades.stoa.org//places/501617
+624,312,Kocatepe,https://pleiades.stoa.org//places/501526
+625,313,Ortadegirmen,https://pleiades.stoa.org//places/501526
+626,314,Tepeyani,https://pleiades.stoa.org//places/501526
+627,316,Kaynaklar/Arpac,https://pleiades.stoa.org//places/501526
+628,318,Cevizlik,https://pleiades.stoa.org//places/501526
+629,319,Maya Baba,https://pleiades.stoa.org//places/501663
+630,320,Acicesme,https://pleiades.stoa.org//places/501663
+631,321,Taslitepe,https://pleiades.stoa.org//places/609466
+632,323,Kennez 1,https://pleiades.stoa.org//places/550924
+633,324,Rahmiye II,https://pleiades.stoa.org//places/550578
+634,325,Kulaksizlar,https://pleiades.stoa.org//places/550499
+635,326,Alibeyli Hoyuk,https://pleiades.stoa.org//places/550949
+636,327,Baykustepe,https://pleiades.stoa.org//places/550511
+637,328,Halitpasa II,https://pleiades.stoa.org//places/550414
+638,329,Halitpasa I,https://pleiades.stoa.org//places/550414
+639,330,Avlutepe Hoyuk,https://pleiades.stoa.org//places/550802
+640,331,Veziroglu Hoyuk,https://pleiades.stoa.org//places/550580
+641,332,Asartepe,https://pleiades.stoa.org//places/550707
+642,333,Kizbaci Tepesi,https://pleiades.stoa.org//places/550452
+643,334,Gedevre Tepesi,https://pleiades.stoa.org//places/550707
+644,335,Kizciftligi/Trikopi,https://pleiades.stoa.org//places/550648
+645,339,Seytan Deresi,https://pleiades.stoa.org//places/599479
+646,340,Alanli (Hamzabali) Hoyuk,https://pleiades.stoa.org//places/599614
+647,342,Elmacik Hoyuk,https://pleiades.stoa.org//places/609428
+648,343,Yassitepe/Izmir,https://pleiades.stoa.org//places/550771
+649,346,Adatepe/Dinar,https://pleiades.stoa.org//places/609329
+650,348,Tepe Hoyuk,https://pleiades.stoa.org//places/638751
+651,349,Goktepe Hoyuk,https://pleiades.stoa.org//places/609472
+652,349,Goktepe Hoyuk,https://pleiades.stoa.org//places/638986
+653,349,Goktepe Hoyuk,https://pleiades.stoa.org//places/638784
+654,349,Goktepe Hoyuk,https://pleiades.stoa.org//places/639021
+655,349,Goktepe Hoyuk,https://pleiades.stoa.org//places/609330
+656,350,Kerim Cayiri,https://pleiades.stoa.org//places/609472
+657,350,Kerim Cayiri,https://pleiades.stoa.org//places/638986
+658,350,Kerim Cayiri,https://pleiades.stoa.org//places/638784
+659,350,Kerim Cayiri,https://pleiades.stoa.org//places/639021
+660,350,Kerim Cayiri,https://pleiades.stoa.org//places/609330
+661,351,Ismail Hoyugu,https://pleiades.stoa.org//places/609471
+662,352,Karatepe Hoyuk,https://pleiades.stoa.org//places/609507
+663,197,Karasil I Hoyuk,https://pleiades.stoa.org//places/511409
+664,198,Karasil II Hoyuk,https://pleiades.stoa.org//places/511409
+665,356,Buyuk und Kucuk Cataltepe,https://pleiades.stoa.org//places/609507
+666,457,Palangatepe Hoyuk,https://pleiades.stoa.org//places/511409
+667,420,Ortakoy Asartepe,https://pleiades.stoa.org//places/609421
+668,421,Sazak Asartepe,https://pleiades.stoa.org//places/609476
+669,453,Parmakoren,https://pleiades.stoa.org//places/609444
+670,461,Kumtepe (Sakaltepe),https://pleiades.stoa.org//places/550570
+671,467,Ciftlik Hoyuk,https://pleiades.stoa.org//places/609451
