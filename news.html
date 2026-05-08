@@ -39,7 +39,7 @@ body {
 }
 a { text-decoration: none; color: inherit; }
 
-/* ── TOPBAR ── */
+/* ── TOPBAR (inside content-col) ── */
 .topbar {
   background: var(--ink);
   height: 36px;
@@ -58,56 +58,128 @@ a { text-decoration: none; color: inherit; }
 }
 .topbar-item a { color: var(--ochre); }
 
-/* ── MASTHEAD ── */
-.masthead {
-  background: var(--cream);
-  border-bottom: 1px solid var(--rule);
-  padding: 0 2rem;
+/* ── SIDEBAR SHELL ── */
+.site-shell {
+  display: flex;
+  min-height: 100vh;
 }
-.masthead-inner {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  padding: 1.4rem 0 1.2rem;
+.sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  background: var(--ink);
+  border-right: 1px solid rgba(255,255,255,.07);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  z-index: 100;
 }
-.masthead-left { display: flex; gap: 1.6rem; }
-.masthead-right { display: flex; gap: 1.6rem; justify-content: flex-end; align-items: center; }
-.nav-link {
-  font-family: var(--sans);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ash);
-  transition: color 0.2s;
-  border-bottom: 1.5px solid transparent;
-  padding: 0.2rem 0;
-}
-.nav-link:hover { color: var(--ink); border-bottom-color: var(--ochre); }
-.nav-link.active { color: var(--ink); border-bottom-color: var(--ochre); }
-.logo-wordmark {
+.sidebar::-webkit-scrollbar { display: none; }
+.sidebar-logo {
   font-family: var(--serif);
-  font-size: 2.2rem;
+  font-size: 1.05rem;
   font-weight: 900;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  line-height: 1;
+  color: var(--cream);
+  letter-spacing: -.01em;
+  text-decoration: none;
+  padding: 1.4rem 1.2rem 1.1rem;
+  border-bottom: 1px solid rgba(255,255,255,.07);
   display: block;
-  text-align: center;
+  flex-shrink: 0;
 }
-.logo-wordmark .ai-mark { color: var(--ochre); font-style: italic; }
-.logo-tagline {
+.sidebar-logo span { color: var(--ochre); font-style: italic; }
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: .5rem 0;
+}
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
   font-family: var(--sans);
-  font-size: 0.6rem;
-  font-weight: 400;
-  letter-spacing: 0.18em;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .07em;
   text-transform: uppercase;
-  color: var(--ash);
-  text-align: center;
-  margin-top: 0.3rem;
+  color: rgba(250,248,243,.38);
+  text-decoration: none;
+  padding: .55rem 1.2rem;
+  border-left: 2px solid transparent;
+  transition: all .15s;
+  white-space: nowrap;
 }
+.sidebar-link:hover {
+  color: var(--cream);
+  background: rgba(255,255,255,.04);
+}
+.sidebar-link.active {
+  color: var(--ochre-lt);
+  border-left-color: var(--ochre);
+  background: rgba(184,137,42,.08);
+}
+.sidebar-icon {
+  font-size: .85rem;
+  opacity: .6;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+.sidebar-link.active .sidebar-icon,
+.sidebar-link:hover .sidebar-icon { opacity: 1; }
+.sidebar-footer {
+  font-family: var(--sans);
+  font-size: .52rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(250,248,243,.18);
+  padding: 1rem 1.2rem;
+  border-top: 1px solid rgba(255,255,255,.05);
+}
+.content-col {
+  flex: 1;
+  min-width: 0;
+  overflow-x: hidden;
+}
+/* Hide old masthead */
+.masthead { display: none; }
+.nav-links { display: none; }
+
+/* ── MOBILE: sidebar collapses to top bar ── */
+@media (max-width: 768px) {
+  .site-shell { flex-direction: column; }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0;
+  }
+  .sidebar-logo {
+    padding: .8rem 1rem;
+    border-bottom: none;
+    border-right: 1px solid rgba(255,255,255,.07);
+  }
+  .sidebar-nav { flex-direction: row; flex-wrap: wrap; padding: 0; }
+  .sidebar-link {
+    padding: .6rem .8rem;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    font-size: .58rem;
+  }
+  .sidebar-link.active {
+    border-left: none;
+    border-bottom-color: var(--ochre);
+  }
+  .sidebar-footer { display: none; }
+}
+
+/* ── MASTHEAD (old — hidden) ── */
 
 /* ── PAGE HERO ── */
 .page-hero {
@@ -459,7 +531,7 @@ a { text-decoration: none; color: inherit; }
 .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
 /* ── SIDEBAR ── */
-.feed-sidebar { position: sticky; top: 72px; }
+.feed-sidebar { position: sticky; top: 36px; }
 
 .sidebar-card {
   background: var(--white, #fff);
@@ -596,40 +668,70 @@ a { text-decoration: none; color: inherit; }
 </head>
 <body>
 
+<div class="site-shell">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-logo">arch<span>AI</span>ology</a>
+    <nav class="sidebar-nav">
+      <a class="sidebar-link" href="index.html">
+        <span class="sidebar-icon">&#x2302;</span>Home
+      </a>
+      <a class="sidebar-link active" href="news.html">
+        <span class="sidebar-icon">&#x25C8;</span>News
+      </a>
+      <a class="sidebar-link" href="map.html">
+        <span class="sidebar-icon">&#x25CE;</span>World Map
+      </a>
+      <a class="sidebar-link" href="numismatics.html">
+        <span class="sidebar-icon">&#x1FA99;</span>Numismatics
+      </a>
+      <a class="sidebar-link" href="luwian.html">
+        <span class="sidebar-icon">&#x10900;</span>Luwian Research
+      </a>
+      <a class="sidebar-link" href="maya_inscriptions.html">
+        <span class="sidebar-icon">&#x133C7;</span>Maya Mundo
+      </a>
+      <a class="sidebar-link" href="sky.html">
+        <span class="sidebar-icon">&#x2726;</span>Archaeoastronomy
+      </a>
+      <a class="sidebar-link" href="maritime.html">
+        <span class="sidebar-icon">&#x2693;</span>Maritime
+      </a>
+      <a class="sidebar-link" href="inscriptions.html">
+        <span class="sidebar-icon">&#x13080;</span>Epigraphy
+      </a>
+      <a class="sidebar-link" href="bioanthro.html">
+        <span class="sidebar-icon">&#x25C9;</span>Bioanthropology
+      </a>
+      <a class="sidebar-link" href="linguistics.html">
+        <span class="sidebar-icon">&#x25CC;</span>Linguistics
+      </a>
+      <a class="sidebar-link" href="lidar.html">
+        <span class="sidebar-icon">&#x25CE;</span>LiDAR
+      </a>
+      <a class="sidebar-link" href="conferences.html">
+        <span class="sidebar-icon">&#x25C8;</span>Conferences
+      </a>
+      <a class="sidebar-link" href="games.html">
+        <span class="sidebar-icon">&#x2B21;</span>Games
+      </a>
+      <a class="sidebar-link" href="upload.html">
+        <span class="sidebar-icon">&#x2191;</span>Upload
+      </a>
+    </nav>
+    <div class="sidebar-footer">archaiology.org</div>
+  </aside>
+
+  <!-- CONTENT COLUMN -->
+  <div class="content-col">
+
 <!-- TOPBAR -->
 <div class="topbar">
   <span class="topbar-item">archaiology.org</span>
   <span class="topbar-item" style="color:rgba(138,128,112,0.3)">·</span>
   <span class="topbar-item">Autonomous archaeology research feed</span>
 </div>
-
-<!-- MASTHEAD -->
-<header class="masthead">
-  <div class="masthead-inner">
-    <nav class="masthead-left">
-                    <a class="nav-link " href="index.html">Home</a>
-  <a class="nav-link active " href="news.html">Feed</a>
-  <a class="nav-link " href="map.html">Map</a>
-  <a class="nav-link " href="sky.html">Sky Archive</a>
-  <a class="nav-link " href="maritime.html">Maritime</a>
-  <a class="nav-link " href="linguistics.html">Linguistics</a>
-  <a class="nav-link " href="inscriptions.html">Inscriptions</a>
-  <a class="nav-link " href="maya_inscriptions.html">Maya</a>
-  <a class="nav-link " href="bioanthro.html">Bioanthro</a>
-  <a class="nav-link " href="luwian.html">Luwian</a>
-  <a class="nav-link " href="upload.html">Upload</a>
-  <a class="nav-link " href="conferences.html">Conferences</a>
-</nav>
-    <div>
-      <a href="index.html" class="logo-wordmark">arch<span class="ai-mark">AI</span>ology</a>
-      <div class="logo-tagline">Where ancient worlds meet modern methods</div>
-    </div>
-    <div class="masthead-right">
-      <a class="nav-link" href="#">Regions</a>
-      <a class="nav-link" href="#">About</a>
-    </div>
-  </div>
-</header>
 
 <!-- PAGE HERO -->
 <div class="page-hero">
@@ -864,6 +966,49 @@ function applyFilters() {
   renderPagination();
 }
 
+// ── Summary cleaner ───────────────────────────────────────────
+// Strips WPBakery/VC shortcodes, HTML tags, entities, and
+// collapses whitespace before rendering feed preview text.
+function cleanSummary(raw) {
+  if (!raw) return "";
+
+  let s = raw;
+
+  // 1. Strip WPBakery / Visual Composer shortcodes  [vc_row ...][/vc_row] etc.
+  //    Handles nested and self-closing variants
+  s = s.replace(/\[[^\]]*\]/g, " ");
+
+  // 2. Strip any remaining HTML tags
+  s = s.replace(/<[^>]+>/g, " ");
+
+  // 3. Decode common HTML entities
+  s = s
+    .replace(/&amp;/g,  "&")
+    .replace(/&lt;/g,   "<")
+    .replace(/&gt;/g,   ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#8217;/g,"'")
+    .replace(/&#8216;/g,"'")
+    .replace(/&#8220;/g,"“")
+    .replace(/&#8221;/g,"”")
+    .replace(/&#8230;/g,"…")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&#\d+;/g, " ");
+
+  // 4. Collapse whitespace and trim
+  s = s.replace(/\s+/g, " ").trim();
+
+  // 5. If nothing meaningful is left (just punctuation / numbers), return ""
+  if (s.replace(/[^a-zA-Z]/g, "").length < 10) return "";
+
+  // 6. Truncate to 200 chars at a word boundary
+  if (s.length > 200) {
+    s = s.slice(0, 200).replace(/\s+\S*$/, "") + "…";
+  }
+
+  return s;
+}
+
 // ── Render feed ───────────────────────────────────────────────
 function renderFeed() {
   const list  = document.getElementById("feedList");
@@ -902,7 +1047,7 @@ function renderFeed() {
         <div class="feed-item-title">
           <a href="${item.source_url ?? '#'}" target="_blank" rel="noopener">${item.title}</a>
         </div>
-        ${item.summary ? `<div class="feed-item-summary">${item.summary}</div>` : ''}
+        ${cleanSummary(item.summary) ? `<div class="feed-item-summary">${cleanSummary(item.summary)}</div>` : ''}
         <div class="feed-item-meta">
           ${item.author ? `<span class="meta-author">${item.author.slice(0,60)}${item.author.length > 60 ? '…' : ''}</span>` : ''}
           ${item.author && item.publisher ? `<span class="meta-sep">·</span>` : ''}
@@ -1032,5 +1177,8 @@ document.getElementById("searchInput").addEventListener("input", function() {
   }
 })();
 </script>
+
+  </div><!-- /.content-col -->
+</div><!-- /.site-shell -->
 </body>
 </html>
