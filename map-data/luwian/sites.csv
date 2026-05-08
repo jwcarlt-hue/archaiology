@@ -1,0 +1,484 @@
+id,name,latitude,longitude,site_type_id,reference_sources,province,district,geonames_specific,geonames_province,wikidata_sameas,full_url
+1,Hisarlik (Troy),39.957367,26.238267,1,Aslan and Bieg 2003;Chabot Aslan_2008; Jablonka_2008; Chabot Aslan and Rose 2013; Chabot Aslan and Gunata 2014; Chabot Aslan and Hnila 2015 ,Canakkale,Tevfikiye,https://www.geonames.org/305894,https://www.geonames.org/317109,,https://luwianstudies.org/sites/hisarlik-troy
+2,Beykoy,39.02435,30.46095,2,Gonnet_1979,Afyonkarahisar,Ablak,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/beykoy
+3,Karabel,38.3706,27.456017,3,Woudhuizen_2018,Izmir,Yukarikizilca,https://www.geonames.org/309426,https://www.geonames.org/317109,,https://luwianstudies.org/sites/karabel
+4,Torbali-Karakuyu,38.240264,27.389695,3,Woudhuizen_2018,Izmir,Torbali,https://www.geonames.org/9888834,https://www.geonames.org/311046,https://www.wikidata.org/wiki/Q232615,https://luwianstudies.org/sites/torbali-karakuyu
+5,Akpinar,38.597883,27.499167,2,Efe_1994,Manisa,Turgut Ozal Mah.,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/akpinar
+6,"Latmos 1, 2, 5",37.507664,27.679056,3,Woudhuizen_2018,Aydin,Kocarli,https://www.geonames.org/297928,https://www.geonames.org/315202,,https://luwianstudies.org/sites/latmos-1-2-5
+7,Kocaoguz-Afyon,38.612783,31.160167,3,Woudhuizen_2018,Afyonkarahisar,Deresinek,https://www.geonames.org/316722,https://www.geonames.org/315202,,https://luwianstudies.org/sites/kocaoguz-afyon
+8,Panaztepe,38.62145,26.9411,4,Erkanal_1990; Erkanal_1992; Erkanal_1993; Erkanal_1994; Erkanal_1995; Erkanal_1996; Erkanal_1997; Erkanal_1998; Erkanal_1999; Erkanal_2001; Erkanal-Oktu and Gurler 2003; Erkanal-Oktu_2004; Erkanal-Oktu and Cinardali-Karaaslan_2006; Erkanal-Oktu and Cinardali-Karaaslan_2007,Izmir,Kesik,,,,https://luwianstudies.org/sites/panaztepe
+9,Sardis,38.487067,28.04015,2,Spier_1983; Ramaga_1983,Manisa,Sart,https://www.geonames.org/301496,https://www.geonames.org/304827,https://www.wikidata.org/wiki/Q22647,https://luwianstudies.org/sites/sardis
+10,Musgebi-Bodrum ,37.041583,27.353133,4,Boysal_1964; Boysal_1965; Boysal_1967,Mugla,Muskebi,https://www.geonames.org/746983,https://www.geonames.org/747712,https://www.wikidata.org/wiki/Q1036554,https://luwianstudies.org/sites/musgebi-bodrum
+11,Sarhoyuk - Dorylaion ,39.799467,30.53595,2,Dargaand Frank_ 2003; Darga_2004,Eskisehir,Gazipasa,https://www.geonames.org/303072,https://www.geonames.org/304184,https://www.wikidata.org/wiki/Q6098044,https://luwianstudies.org/sites/sarhoyuk-dorylaion
+12,Maydos Kilisetepe ,40.1849,26.355983,2,Sazci_2013; Sazci_2012a; Ozdogan 1986; Ozdogan 1993,Canakkale,Eceabat,https://www.geonames.org/739289,https://www.geonames.org/747712,https://www.wikidata.org/wiki/Q17621054,https://luwianstudies.org/sites/maydos-kilisetepe
+13,Bayrakli/Alt-Smyrna,38.4642,27.170467,2,Akurgal_1950; Aykurt_2010,Izmir,Bayrakli,https://www.geonames.org/745719,https://www.geonames.org/747712,https://www.wikidata.org/wiki/Q6590164,https://luwianstudies.org/sites/bayrakli-alt-smyrna
+14,Larisa am Hermos,38.667683,27.029067,2,Boehlau and Schefold_1940; Boehlau and Schefold_1942,Izmir,Buruncuk,https://www.geonames.org/324696,https://www.geonames.org/747711,https://www.wikidata.org/wiki/Q464936,https://luwianstudies.org/sites/larisa-am-hermos
+15,Ephesus,37.954433,27.367933,5,Hanfmann_1962; Gultekin and Baran_1964; Erdemgil and Buyukkolanci_1992; Erdemgil and Buyukkolanci_1997; Buyukkolanci_1998; Bammer_1999; Buyukkolanci_1999; Buyukkolanci_2007; Buyukkolanci_2008 Forstenpointner and Kerschner and Muss_2008,Izmir,Isa Bey,,,,https://luwianstudies.org/sites/ephesus
+16,Kadikalesi (Anaia),37.791383,27.270317,2,Mercangoz_2003; Akdeniz_2004; Akdeniz_2006; Mercangoz_2012,Aydin,Kadikalesi,https://www.geonames.org/298722,https://www.geonames.org/311046,https://www.wikidata.org/wiki/Q1132958,https://luwianstudies.org/sites/kadikalesi-anaia
+17,Bademgedigi (Puranda) ,38.180317,27.30915,2,"Meric 2007; Meric 2002; Meric 2003, 153-155; Mountjoy 2011; Meric and Oz and Ekin 2002, 89; Meric and Oz and Ekin-Meric 2003, 153-155; Meric and Oz and Ekin-Meric and Ulusans 2004, 295-296; Meric and Oz and Ekin-Meric 2005, 140-141; Meric and Oz and Ekin-Meric and Aybek 2006, 250; Meric and Oz and Ekin-Meric and Aybek and Gungor 2007, 243-245; Meric and Oz and Ekin-Meric and Aybek and Gungor and Alatepeli 2008, 371-372; Aybek and Oz and Ekin-Meric 2009, 127-128.",Izmir,Torbali,https://www.geonames.org/310927,https://www.geonames.org/322165,https://www.wikidata.org/wiki/Q4261739,https://luwianstudies.org/sites/bademgedigi-puranda
+18,"Cesme, Baglararasi ",38.319517,26.304983,2,Aykurt_2010; Saboglu_2012,Izmir,Musalla,https://www.geonames.org/321691,https://www.geonames.org/311046,https://www.wikidata.org/wiki/Q6078064,https://luwianstudies.org/sites/cesme-baglararasi
+19,Liman Tepe ,38.362769,26.775688,2,Erkanal and Gunel_1993; Gunel_1999; Erkanal_2008; Mangaloglu-Votruba_2011; Erkanal_2012; Erkanal_2013,Izmir,Iskele,https://www.geonames.org/10262823,https://www.geonames.org/304827,https://www.wikidata.org/wiki/Q2397604,https://luwianstudies.org/sites/liman-tepe
+20,Kolophon,38.1094,27.141117,2,Goldman_1923; Bridges_1974; Sahin_2007; Bruns-Ozgan and Gassner and Muss_2011 ,Izmir,Degirmendere,https://www.geonames.org/324530,https://www.geonames.org/305268,https://www.wikidata.org/wiki/Q778224,https://luwianstudies.org/sites/kolophon
+21,Aphrodisias ,37.707017,28.724683,2,Mellaart and LIyod 1965; Mellaart 1970; LIyod 1972; Marchese_1976; Joukowsky_1986; Mellaart and Murray 1995; Mellaart 1998; Abay 2012; Dedeoglu and Abay 2014,Aydin,Geyre,https://www.geonames.org/313327,https://www.geonames.org/749780,,https://luwianstudies.org/sites/aphrodisias
+22,Beycesultan,38.2566,29.701467,2,Mellaart and Liyod_1965; Mellaart_1970; Liyod_1972; Mellaart and Murray_1995; Mellaart_1998; Abay_2012; Dedeoglu and Abay_2014,Denizli,Kavakkoy,https://www.geonames.org/322247,https://www.geonames.org/304827,https://www.wikidata.org/wiki/Q6604940,https://luwianstudies.org/sites/beycesultan
+23,Cine Tepecik Hoyuk ,37.609367,28.012267,2,Gunel 2011 B; Gunel 2011; Gunel 2010 B; Gunel and Herbordt 2010; Gunel 2006; Gunel 2007; Gunel 2008; Gunel 2009; Gunel 2010; Gunel 2011; Gunel 2012; Gunel 2013; Gunel 2014; Gunel 2015,Aydin,Cine,https://www.geonames.org/8632578,https://www.geonames.org/315202,https://www.wikidata.org/wiki/Q1018156,https://luwianstudies.org/sites/cine-tepecik-hoyuk
+24,Milet,37.531217,27.276833,2,Niemeier_2009; Niemeier_2007; Niemeier_2005; Niemeier_1999; Niemeier and Niemeier_1997; Niemeier_1998/99,Aydin,Balat,https://www.geonames.org/314238,https://www.geonames.org/322165,,https://luwianstudies.org/sites/milet
+25,"Laodikeia, Asopos Tepesi",37.839396,29.104583,2,Simsek_2011; Simsek_2009; Simsek_2008; Simsek_2007,Denizli,Eskihisar,https://www.geonames.org/298786,https://www.geonames.org/322819,https://www.wikidata.org/wiki/Q169460,https://luwianstudies.org/sites/laodikeia-asopos-tepesi
+26,Stratonikeia,37.312283,28.065617,2,Sogut_2013; Boysal_1969; Hanfmann and Waldbaum_1968; Sogut_2010; Sogut_2013,Mugla,Eskihisar,https://www.geonames.org/309402,https://www.geonames.org/311046,https://www.wikidata.org/wiki/Q6089162,https://luwianstudies.org/sites/stratonikeia
+27,Pergamon,39.132017,27.18425,2,Hertel_2011; Radt_1992,Izmir,Ulucamii,https://www.geonames.org/446798,https://www.geonames.org/317109,,https://luwianstudies.org/sites/pergamon
+28,Pitane-Candarli,38.930983,26.936083,2,Loeschke_1912; Bittel_1950; Mellink_1963,Izmir,Candarli,https://www.geonames.org/739004,https://www.geonames.org/749780,https://www.wikidata.org/wiki/Q279048,https://luwianstudies.org/sites/pitane-candarli
+29,Iasos,37.279517,27.58455,2,Benzi_1999,Mugla,Kiyikislacik,https://www.geonames.org/314299,https://www.geonames.org/304827,,https://luwianstudies.org/sites/iasos
+30,Adramytteion,39.50626,26.937169,2,Beksac_2003; Beksac_2004; Coruhlu_2006; Coruhlu_2007; Coruhlu_2008; Ozgen_2014; Ozgen_2015; Ozgen_2016,Balikesir,Oren Mah.,https://www.geonames.org/8693523,https://www.geonames.org/311046,,https://luwianstudies.org/sites/adramytteion
+31,Patara,36.267376,29.317671,2,Isik_1994; Schurr_2010;Naumann_1955,Antalya,Gelemis,https://www.geonames.org/304342,https://www.geonames.org/749780,,https://luwianstudies.org/sites/patara
+32,Xanthos,36.356243,29.318439,2,des Courtils_2003,Antalya,Kinik,https://www.geonames.org/10154614,https://www.geonames.org/750269,,https://luwianstudies.org/sites/xanthos
+33,Apaisos (Wilusa),40.3996,26.766893,6,,Canakkale,Cardak,,https://www.geonames.org/311046,,https://luwianstudies.org/sites/apaisos-wilusa
+34,Kuwaliya ,38.756983,30.5312,6,,Afyonkarahisar,Akmescit,https://www.geonames.org/319775,https://www.geonames.org/311073,,https://luwianstudies.org/sites/kuwaliya
+35,Awarna ,36.35625,29.318433,6,,Antalya,Kinik,https://www.geonames.org/10878864,https://www.geonames.org/317109,,https://luwianstudies.org/sites/awarna
+36,Caltilar Hoyuk,36.919037,29.690943,2,Momigliano et al. _2011 ,Mugla,Caltilar,https://www.geonames.org/8632491,https://www.geonames.org/315202,,https://luwianstudies.org/sites/caltilar-hoyuk
+37,Hanay Tepe (Bozkoy),39.83235,26.2233,2,Blum_et_al._(2011); Aslan and Bieg 2003; Cook_1973a; Pavuk and Schubert_2014,Canakkale,Bozkoy,https://www.geonames.org/301409,https://www.geonames.org/315202,,https://luwianstudies.org/sites/hanay-tepe-bozkoy
+38,Larisa (Limantepe),39.6156,26.145283,2,Akalin_1991; Cook_1973a; Cook_1988; Blum and Thater and Thumm-Dograyan_2014; Pavuk and Schubert_2014,Canakkale,Ayvacik,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/larisa-limantepe
+39,"Cal Dag, Kebren ",39.742933,26.5589,7,Aslan and Bieg 2003; Cook_1973a; Cook_1973b; Pavuk and Schubert_2014,Canakkale,Akpinar,https://www.geonames.org/318603,https://www.geonames.org/315202,,https://luwianstudies.org/sites/cal-dag-kebren
+40,Kilcanlar Hoyuk ,38.679275,27.992882,2,"Meric_1986; Greenewalt and  Sullivan and Ratte and Howe_ 1985; Roosevelt_2009, Roosevelt_2011",Manisa,Kilcanlar,https://www.geonames.org/8693538,https://www.geonames.org/317109,https://www.wikidata.org/wiki/Q571082,https://luwianstudies.org/sites/kilcanlar-hoyuk
+41,Kolossai (Honaz) Hoyuk ,37.7868,29.2603,2,Duman and Konakci 2006; Mellaart 1954; Birmingham 1964,Denizli,Cumhuriyet,https://www.geonames.org/6299757,https://www.geonames.org/311046,https://www.wikidata.org/wiki/Q6091199,https://luwianstudies.org/sites/kolossai-honaz-hoyuk
+42,Yassi Hoyuk ,38.199367,29.661567,2,Abay and Dedeoglu_2005,Denizli,Kavakkoy,https://www.geonames.org/12207244,https://www.geonames.org/317109,https://www.wikidata.org/wiki/Q233121,https://luwianstudies.org/sites/yassi-hoyuk
+43,Atarneus,39.091367,26.921667,2,Dreihaus_1957; Horejs_2010; Pirson_2008; Pirson and Zimmermann_2011/2012,Izmir,Cumhuriyet,,https://www.geonames.org/749780,,https://luwianstudies.org/sites/atarneus
+44,Araplar Uyucek (Mandira Tepe),39.591967,26.981983,2,Mellaart_1955; French_1967,Balikesir,Kadikoy,https://www.geonames.org/743817,https://www.geonames.org/747712,https://www.wikidata.org/wiki/Q6098985,https://luwianstudies.org/sites/araplar-uyucek-mandira-tepe
+45,Araplar Uyucek (Mandira Tepe),40.264387,29.538707,2,Mellaart_1955; French_1967,Bursa,Cardak,https://www.geonames.org/746983,https://www.geonames.org/750269,https://www.wikidata.org/wiki/Q18285621,https://luwianstudies.org/sites/araplar-uyucek-mandira-tepe
+46,Inegol II Hoyuk,40.066383,29.546617,2,French_1967,Bursa,Inegol,https://www.geonames.org/10181782,https://www.geonames.org/315202,,https://luwianstudies.org/sites/inegol-ii-hoyuk
+47,Midaion (Kara Hoyuk),39.792833,30.854833,2,Burney_1956; Efe_1996; Bilgen_2006; Bilgen_2007,Eskisehir,Agapinar,https://www.geonames.org/303402,https://www.geonames.org/322165,,https://luwianstudies.org/sites/midaion-kara-hoyuk
+48,Yesildon,39.731017,31.04225,2,Burney_1956; Efe_1996,Eskisehir,Esence,https://www.geonames.org/316634,https://www.geonames.org/323777,,https://luwianstudies.org/sites/yesildon
+49,Porsuk Hoyuk 1,39.71757,31.054443,2,Efe_1997; Burney_1956,Eskisehir,Alpu,https://www.geonames.org/308051,https://www.geonames.org/315202,,https://luwianstudies.org/sites/porsuk-hoyuk-1
+50,Porsuk Hoyuk 2,39.7131,31.06395,2,Efe_1997; Burney_1956,Eskisehir,Alpu,,https://www.geonames.org/750598,,https://luwianstudies.org/sites/porsuk-hoyuk-2
+51,Karapazar ,39.587283,30.555683,2,Efe_1995; Tufekci Sivas and Sivas_2005,Eskisehir,Akpinar,https://www.geonames.org/309510,https://www.geonames.org/311046,,https://luwianstudies.org/sites/karapazar
+52,Toraman Hoyuk,39.631093,30.719923,2,Efe_1995,Eskisehir,Kalkanli,https://www.geonames.org/8244746,https://www.geonames.org/315202,,https://luwianstudies.org/sites/toraman-hoyuk
+53,Agapinar,39.804917,30.768733,2,Efe_1995,Eskisehir,Agapinar,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/agapinar
+54,Yakakayi,39.84595,30.778967,2,Efe_1996,Eskisehir,Yakakayi,https://www.geonames.org/321733,https://www.geonames.org/322819,,https://luwianstudies.org/sites/yakakayi
+55,Kulhoyuk ,39.661833,30.9611,2,Efe_1996,Eskisehir,Isikoren,https://www.geonames.org/299438,https://www.geonames.org/322819,,https://luwianstudies.org/sites/kulhoyuk
+56,Kurtlar Hoyuk ,39.589559,31.124291,2,Efe_1996,Eskisehir,Balcikhisar,https://www.geonames.org/12207427,https://www.geonames.org/311046,,https://luwianstudies.org/sites/kurtlar-hoyuk
+57,Katirkulesi ,39.50515,30.80575,2,Efe_1996,Eskisehir,Cukuragil,https://www.geonames.org/12207249,https://www.geonames.org/315202,,https://luwianstudies.org/sites/katirkulesi
+58,Hamidiye 1 ,39.5702,30.918333,2,Efe_1996,Eskisehir,Hamidiye,https://www.geonames.org/314320,https://www.geonames.org/315202,,https://luwianstudies.org/sites/hamidiye-1
+59,Kizilcakoy ,39.349758,31.312649,2,Efe_1996,Eskisehir,Sivrihisar,https://www.geonames.org/298316,https://www.geonames.org/315202,,https://luwianstudies.org/sites/kizilcakoy
+60,Buyuk Hoyuk,39.385039,31.492761,2,Efe_1996,Eskisehir,Asagi Kepen,https://www.geonames.org/302009,https://www.geonames.org/311046,,https://luwianstudies.org/sites/buyuk-hoyuk
+61,Hamitli Hoyuk,39.3474,30.876533,2,Efe_1996,Eskisehir,Orhaniye,https://www.geonames.org/12207342,https://www.geonames.org/749780,https://www.wikidata.org/wiki/Q593737,https://luwianstudies.org/sites/hamitli-hoyuk
+62,Ilicabasi I,39.338367,31.00025,2,Efe_1996,Eskisehir,Ilicabasi,,https://www.geonames.org/311046,,https://luwianstudies.org/sites/ilicabasi-i
+63,Kulapa Hoyuk ,39.239649,30.821252,2,Efe_1997,Eskisehir,Gokcekuyu,https://www.geonames.org/313115,https://www.geonames.org/311046,,https://luwianstudies.org/sites/kulapa-hoyuk
+64,Ibikseydi,39.56885,31.43435,2,Tufekci Sivas and Sivas_2005,Eskisehir,Ibikseydi,https://www.geonames.org/310983,https://www.geonames.org/315202,,https://luwianstudies.org/sites/ibikseydi
+65,Dogray Hoyuk ,39.686517,31.303541,2,Tufekci Sivas and Sivas_2006,Eskisehir,Emircik,,https://www.geonames.org/311046,,https://luwianstudies.org/sites/dogray-hoyuk
+66,Kocahoyuk,39.782367,29.622683,,Efe_1990,Kutahya,Bukerler,https://www.geonames.org/6685987,https://www.geonames.org/317109,,https://luwianstudies.org/sites/kocahoyuk
+67,Tavsanli Hoyuk ,39.529617,29.485383,2,Efe_1990,Kutahya,Tavsanli,https://www.geonames.org/750883,https://www.geonames.org/305268,,https://luwianstudies.org/sites/tavsanli-hoyuk
+68,Kopruoren Hoyuk ,39.504867,29.753733,2,Efe_1990,Kutahya,Kopruoren,https://www.geonames.org/10861640,https://www.geonames.org/315202,,https://luwianstudies.org/sites/kopruoren-hoyuk
+69,Gecek,39.083833,30.067317,2,Efe_1993,Kutahya,Gecek,https://www.geonames.org/322689,https://www.geonames.org/322165,,https://luwianstudies.org/sites/gecek
+70,Beskaris ,38.99635,30.188333,2,Efe_1993; http://beskariskoyu.com/hoyuk.php,Kutahya,Beskaris,https://www.geonames.org/311133,https://www.geonames.org/750598,,https://luwianstudies.org/sites/beskaris
+71,Hacikebir ,39.221333,29.651033,2,Efe_1994,Kutahya,Hacikebir,https://www.geonames.org/322829,https://www.geonames.org/325303,,https://luwianstudies.org/sites/hacikebir
+72,Oluklu Hoyuk ,39.889917,30.224483,2,Efe_1990,Bilecik,Oluklu,https://www.geonames.org/322822,https://www.geonames.org/325303,,https://luwianstudies.org/sites/oluklu-hoyuk
+73,Hisar Tepesi ,38.479567,30.105967,2,Kocak_2011,Afyonkarahisar,Gursu,https://www.geonames.org/297769,https://www.geonames.org/325303,,https://luwianstudies.org/sites/hisar-tepesi
+74,Incesirim Mevkii ,38.470067,30.036367,2,Kocak_2012,Afyonkarahisar,Saltik,https://www.geonames.org/321426,https://www.geonames.org/325303,,https://luwianstudies.org/sites/incesirim-mevkii
+75,Uyuk Alti Mevkii,38.36595,30.171367,2,Kocak_2012,Afyonkarahisar,Orenkaya,https://www.geonames.org/320951,https://www.geonames.org/304184,,https://luwianstudies.org/sites/uyuk-alti-mevkii
+76,Uyuk Mevkii ,38.332683,30.14365,2,Kocak_2012,Afyonkarahisar,Orenkaya,https://www.geonames.org/7732716,https://www.geonames.org/317109,,https://luwianstudies.org/sites/uyuk-mevkii
+77,Hoyuk Tepe (Karahoyuk),38.4156,30.313783,2,Kocak_2012,Afyonkarahisar,Akin,https://www.geonames.org/750545,https://www.geonames.org/304827,,https://luwianstudies.org/sites/hoyuk-tepe-karahoyuk
+78,Huyuk Tepesi ,38.509754,30.555001,2,Kocak_2013,Afyonkarahisar,Hallac,https://www.geonames.org/12207212,https://www.geonames.org/317109,,https://luwianstudies.org/sites/huyuk-tepesi
+79,Kavaklar Mevkii ,38.462167,29.548933,,Kocak_2013-A,Usak,Budaklar,,https://www.geonames.org/311073,,https://luwianstudies.org/sites/kavaklar-mevkii
+80,Besiktepe-Yassitepe,39.915167,26.150817,4,Korfmann_1984a; Korfmann_1986a; Korfmann_1988a; Basedow_2000,Canakkale,Ezine,https://www.geonames.org/10265651,https://www.geonames.org/317109,https://www.wikidata.org/wiki/Q6098464,https://luwianstudies.org/sites/besiktepe-yassitepe
+81,Tenedos (Bozcaada),39.836133,26.072467,4,Blum and Thater and Thumm-Dograyan_2014; Arslan and Sevinc 2003;  Sevinc and Takoglu 2004; Takoglu and Bamyaci 2008,Canakkale,Alaybey,https://www.geonames.org/325492,https://www.geonames.org/298299,,https://luwianstudies.org/sites/tenedos-bozcaada
+82,Bakla Tepe,38.16472,27.144945,4,Erkanal and Ozkan_1997; Erkanal and Ozkan_1998; Erkanal and Ozkan_1999; Erkanal and Ozkan_2000; Erdal_2002; Erkanal_2008 ,Izmir,Degirmendere,https://www.geonames.org/739289,https://www.geonames.org/747712,https://www.wikidata.org/wiki/Q1848789,https://luwianstudies.org/sites/bakla-tepe
+83,Halkapinar,38.00215,27.4905,9,Horejs_2008; Meric_2009,Izmir,Tire,https://www.geonames.org/7732733,https://www.geonames.org/311046,https://www.wikidata.org/wiki/Q65072494,https://luwianstudies.org/sites/halkapinar
+84,Ada Tepe (Birytis),39.840433,26.367233,2,Aslan and Bieg 2003; Cook_1973a; Hohfeld 2009; Pavuk and Schubert_2014,Canakkale,Akkoy,https://www.geonames.org/315061,https://www.geonames.org/749778,https://www.wikidata.org/wiki/Q6541637,https://luwianstudies.org/sites/ada-tepe-birytis
+85,Kumtepe,39.978917,26.195967,2,"Aslan and Bieg 2003; Korfmann, Girgin and Morcol and Kilic_1995; Blum and Thater and Thumm-Dograyan_2014; Pavuk and Schubert_2014",Canakkale,Canakkale,https://www.geonames.org/8632198,https://www.geonames.org/749780,https://www.wikidata.org/wiki/Q1014125,https://luwianstudies.org/sites/kumtepe
+86,Polymedion (Asarlik),39.4625,26.194233,2,"Pavuk and Schubert_2014; Kirsten_1952; Cook_1973b, Leaf-1923",Canakkale,Ayvacik,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/polymedion-asarlik
+87,Karagac Tepe,40.058233,26.192917,2,Ozdogan_1986; Ozdogan_1993,Canakkale,Eceabat,https://www.geonames.org/10238105,https://www.geonames.org/317109,,https://luwianstudies.org/sites/karagac-tepe
+88,Asarlik-Eski Hisarlik ,39.881683,26.2973,2,Cook 1973a; Aslan and Bieg  2003; Korfmann_1996a;  Pavuk and Schubert_2014,Canakkale,Tastepe,https://www.geonames.org/11238704,https://www.geonames.org/747711,https://www.wikidata.org/wiki/Q6100614,https://luwianstudies.org/sites/asarlik-eski-hisarlik
+89,Gavurtepe,38.194833,27.912483,2,Meric_2009,Izmir,Odemis,https://www.geonames.org/9888493,https://www.geonames.org/317109,,https://luwianstudies.org/sites/gavurtepe
+90,Tavsan Adasi ,37.41975,27.216217,2,"http://www.minoer.uni-halle.de/index.htm, abgerufen am 05.04.2016; Akdeniz 1997 A; Bertemes and Hornung-Beretmes 2009",Aydin,Yali,https://www.geonames.org/303295,https://www.geonames.org/749778,https://www.wikidata.org/wiki/Q47611,https://luwianstudies.org/sites/tavsan-adasi
+91,Alabanda,37.592533,27.984783,2,Garstang and Gurney_1959; Hawkins_1998; Herda_2009; Herda_2013,Aydin,Yorukler,https://www.geonames.org/9888161,https://www.geonames.org/311046,,https://luwianstudies.org/sites/alabanda
+92,Elaia,38.943833,27.03995,10,Pirson_2007; Pirson_2008; Pirson_2009; Pirson_2014,Izmir,Zeytindag,https://www.geonames.org/7732336,https://www.geonames.org/317109,,https://luwianstudies.org/sites/elaia
+93,Seyitomer Hoyuk ,39.581033,29.863717,2,Bilgen_2015; Efe_1991,Kutahya,Bozcahoyuk,https://www.geonames.org/296864,https://www.geonames.org/325303,,https://luwianstudies.org/sites/seyitomer-hoyuk
+94,Tlos,36.554987,29.419706,2,Korkut_2013; Poetto_1993,Mugla,Seydikemer,https://www.geonames.org/8522444,https://www.geonames.org/304827,,https://luwianstudies.org/sites/tlos
+95,Hastane Hoyuk (Thyateira),38.923808,27.837658,2,Mimaroglu_2013,Manisa,Ragipbey,https://www.geonames.org/745169,https://www.geonames.org/325303,,https://luwianstudies.org/sites/hastane-hoyuk-thyateira
+96,Balli Dag ,39.875833,26.290233,4,Kossatz and Pompe 1992; Korfmann_1996a; Hoffeld_2009,Canakkale,Pinarbasi,https://www.geonames.org/10262823,https://www.geonames.org/311046,https://www.wikidata.org/wiki/Q1325973,https://luwianstudies.org/sites/balli-dag
+97,Kalanuro Tepesi ,40.367567,26.6292,4,Ozdogan_1986,Canakkale,Gelibolu,https://www.geonames.org/305700,https://www.geonames.org/747711,https://www.wikidata.org/wiki/Q3303460,https://luwianstudies.org/sites/kalanuro-tepesi
+98,"Boyalik Tepe I, II",39.518383,27.909633,4,Ozdogan_1989,Balikesir,Pamukcu,https://www.geonames.org/303400,https://www.geonames.org/317109,,https://luwianstudies.org/sites/boyalik-tepe-i-ii
+99,Karsikir Mevkii,38.476433,30.185267,4,Kocak_2011,Afyonkarahisar,Ulfeciler,https://www.geonames.org/12207329,https://www.geonames.org/750269,,https://luwianstudies.org/sites/karsikir-mevkii
+100,Dura Yeri ,38.68982,30.973615,9,Kocak_2012,Afyonkarahisar,Hamidiye,https://www.geonames.org/324826,https://www.geonames.org/305268,,https://luwianstudies.org/sites/dura-yeri
+101,Caldiratmaz Mevkii ,38.722353,31.081349,9,Kocak_2012,Afyonkarahisar,Dipevler,https://www.geonames.org/324084,https://www.geonames.org/317109,,https://luwianstudies.org/sites/caldiratmaz-mevkii
+102,Hasanli Hoyuk,38.313817,30.586383,4,Kocak_2014,Afyonkarahisar,Suhut,https://www.geonames.org/8632421,https://www.geonames.org/315202,,https://luwianstudies.org/sites/hasanli-hoyuk
+103,Tatarderesi-Hacigebes,38.303883,26.629717,4,Ersoy and Koparal_2009,Izmir,Urla,https://www.geonames.org/312809,https://www.geonames.org/317109,,https://luwianstudies.org/sites/tatarderesi-hacigebes
+104,Rhodes-Trianda ,36.416296,28.156523,11,Marketou_2010,?????,???????,https://www.geonames.org/303302,https://www.geonames.org/749780,,https://luwianstudies.org/sites/rhodes-trianda
+105,Hanay Tepe ,39.908533,26.293067,2,Calvert_1859; Lamb_1932; Bloedow_2000-2001; Schachner_1999,Canakkale,Tastepe,https://www.geonames.org/10976201,https://www.geonames.org/315202,,https://luwianstudies.org/sites/hanay-tepe
+106,In Limani,39.869,26.14915,2,Aslan and Bieg 2003; Blum and Thater and Thumm-Dograyan_2014; Pavuk and Schubert_2014,Canakkale,Kumburun,https://www.geonames.org/314519,https://www.geonames.org/750269,,https://luwianstudies.org/sites/in-limani
+107,Sestos,40.213483,26.388767,2,Hoffeld_2009; Korpe_2016,Canakkale,Eceabat,https://www.geonames.org/9888209,https://www.geonames.org/749778,,https://luwianstudies.org/sites/sestos
+108,Cobantepe (Tavolia),40.000717,26.258,2,Aslan and Bieg 2003; Cook_1973b; Cook_1973a; Blum and Thater and Thumm-Dograyan_2014; Pavuk and Schubert_2014,Canakkale,Kumkale,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/cobantepe-tavolia
+109,Figla Tepe ,39.895,26.308917,12,"Aslan and Bieg 2003, Korfmann_1996a",Canakkale,Tastepe,https://www.geonames.org/747204,https://www.geonames.org/322819,,https://luwianstudies.org/sites/figla-tepe
+110,Isildak Tepe ,40.005233,26.28995,2,Akarca_1978; Aslan and Bieg 2003,Canakkale,Canakkale,https://www.geonames.org/301771,https://www.geonames.org/317109,,https://luwianstudies.org/sites/isildak-tepe
+111,Eski Kale (Rhoiteion) ,40.009167,26.29995,12,Aslan and Bieg 2003; Cook_1973b; Cook_1973a; Aslan and Polat_2013,Canakkale,Erenkoy,https://www.geonames.org/301407,https://www.geonames.org/749778,,https://luwianstudies.org/sites/eski-kale-rhoiteion
+112,Mal Tepe (Dardanos) ,40.085194,26.368472,2,Cook 1973a; Aslan and Bieg  2003; Korfmann_1996a,Canakkale,Cinarli Koyu,https://www.geonames.org/10181000,https://www.geonames.org/323777,,https://luwianstudies.org/sites/mal-tepe-dardanos
+113,Hantepe ,39.804867,26.15705,2,Aslan and Bieg 2003; Cook_1973a,Canakkale,Geyikli,https://www.geonames.org/8245830,https://www.geonames.org/750269,,https://luwianstudies.org/sites/hantepe
+114,Ciftlik Tepe ,39.815733,26.57035,2,Aslan and Bieg 2003; Cook_1973a; Cook_1973b,Canakkale,Bayramic,https://www.geonames.org/316610,https://www.geonames.org/304827,,https://luwianstudies.org/sites/ciftlik-tepe
+115,Dalyan,39.76335,26.15115,2,Aslan and Bieg 2003; Cook_1973a; Cook_1973b,Canakkale,Dalyan,https://www.geonames.org/319638,https://www.geonames.org/322819,,https://luwianstudies.org/sites/dalyan
+116,Kumbet Kocabahce ,39.7649,26.239617,2,Aslan and Bieg 2003; Cook_1973a; Cook_1973b,Canakkale,Kemalli,https://www.geonames.org/301412,https://www.geonames.org/304827,,https://luwianstudies.org/sites/kumbet-kocabahce
+117,Besik Tepe (Kolonai) ,39.70885,26.159917,2,Calvert 1860; Cook_1973a; Pavuk and Schubert_ 2014,Canakkale,Ezine,https://www.geonames.org/9888292,https://www.geonames.org/304827,,https://luwianstudies.org/sites/besik-tepe-kolonai
+118,Asartepe (in Gelibolu) ,40.2708,26.487917,2,"Ozdogan_1981/1982; Ozdogan 1986, Ozbek_2008",Canakkale,Gelibolu,https://www.geonames.org/8632582,https://www.geonames.org/749780,,https://luwianstudies.org/sites/asartepe-in-gelibolu
+119,Savrantepe,39.832267,26.320933,,Aslan and Bieg 2003; Pavuk and Schubert_2014,Canakkale,Camkoy,https://www.geonames.org/10262823,https://www.geonames.org/317109,,https://luwianstudies.org/sites/savrantepe
+120,Bozyer,38.5642,28.02925,2,"Cilingiroglu Unlusoy_2015; Roosevelt_2009; Roosevelt_2010, Roosevelt_2011",Manisa,Salihli,https://www.geonames.org/411563,https://www.geonames.org/315202,,https://luwianstudies.org/sites/bozyer
+121,Gavurtepe-Alasehir,38.3391,28.520033,2,Meric_1989; Meric _1990; Meric _1992; Meric _1993,Manisa,Seyh Sinan,https://www.geonames.org/299427,https://www.geonames.org/304827,,https://luwianstudies.org/sites/gavurtepe-alasehir
+122,Akhisar Hoyuk,38.889696,27.825206,2,French_1969; Akdeniz_2009,Manisa,Hurriyet,https://www.geonames.org/738303,https://www.geonames.org/325303,,https://luwianstudies.org/sites/akhisar-hoyuk
+123,Dagdeviren Ciftligi Hoyuk,38.904017,27.794767,2,French_1969; Akdeniz_2009,Manisa,Akhisar,https://www.geonames.org/10009670,https://www.geonames.org/325303,,https://luwianstudies.org/sites/dagdeviren-ciftligi-hoyuk
+124,Camonu (Karasonya),38.971108,27.889702,2,Akdeniz_2009; Dinc_1997,Manisa,Camonu,https://www.geonames.org/299422,https://www.geonames.org/315202,,https://luwianstudies.org/sites/camonu-karasonya
+125,Mecidiye (Palamut) Hoyuk ,38.888267,27.67405,2,French_1969; Akdeniz_2009,Manisa,Mecidiye,https://www.geonames.org/8227239,https://www.geonames.org/304827,,https://luwianstudies.org/sites/mecidiye-palamut-hoyuk
+126,Tepebaglar Hoyuk ,38.8569,27.694683,2,Akdeniz_2009,Manisa,Kayislar,https://www.geonames.org/299438,https://www.geonames.org/304827,,https://luwianstudies.org/sites/tepebaglar-hoyuk
+127,Bagcesme Hoyuk ,38.997645,27.781319,2,Akdeniz_2009,Manisa,Tutenli,https://www.geonames.org/309361,https://www.geonames.org/298299,,https://luwianstudies.org/sites/bagcesme-hoyuk
+128,Degirmentepe (Suleymanli) ,39.005065,27.786663,2,French_1969; Akdeniz_2009,Manisa,Tutenli,https://www.geonames.org/318264,https://www.geonames.org/304827,,https://luwianstudies.org/sites/degirmentepe-suleymanli
+129,Arpali 1 Hoyuk ,38.7605,27.702333,2,French_1969; Akdeniz_2009,Manisa,Kemiklidere,https://www.geonames.org/749714,https://www.geonames.org/317109,,https://luwianstudies.org/sites/arpali-1-hoyuk
+130,Bedeller (Orentepe) Hoyuk ,38.6884,27.7525,2,French_1969; Akdeniz_2009,Manisa,Bedeller,https://www.geonames.org/322247,https://www.geonames.org/747712,,https://luwianstudies.org/sites/bedeller-orentepe-hoyuk
+131,Kayislar Hoyuk ,38.856855,27.69483,2,French_1969; Akdeniz_2009,Manisa,Kayislar,https://www.geonames.org/12207217,https://www.geonames.org/311046,,https://luwianstudies.org/sites/kayislar-hoyuk
+132,Baklatepe Hoyuk (Egrikoy) ,38.70111,27.378447,2,Akdeniz_2009; French_1969,Manisa,Yunusemre,https://www.geonames.org/411563,https://www.geonames.org/311046,,https://luwianstudies.org/sites/baklatepe-hoyuk-egrikoy
+133,Asartepe (Urganli) Hoyuk ,38.555483,27.844933,2,Akdeniz_2009,Manisa,Gokkaya,https://www.geonames.org/10975633,https://www.geonames.org/304827,,https://luwianstudies.org/sites/asartepe-urganli-hoyuk
+134,Sogut Cayi Hoyuk ,38.533233,28.708217,2,Akdeniz_2010,Manisa,Seritli,https://www.geonames.org/739364,https://www.geonames.org/304827,,https://luwianstudies.org/sites/sogut-cayi-hoyuk
+135,Armutarasi Hoyuk ,38.577483,28.455283,2,Akdeniz_2010,Manisa,Gokceoren,https://www.geonames.org/302648,https://www.geonames.org/749780,,https://luwianstudies.org/sites/armutarasi-hoyuk
+136,Ters Tepe Hoyuk ,38.7372,28.841533,2,Akdeniz_2010,Manisa,Karaselendi,https://www.geonames.org/309621,https://www.geonames.org/304827,,https://luwianstudies.org/sites/ters-tepe-hoyuk
+137,Su Deligi Tepe,39.007617,27.871067,2,Akdeniz_2011,Manisa,Selcikli,https://www.geonames.org/299421,https://www.geonames.org/317109,,https://luwianstudies.org/sites/su-deligi-tepe
+138,Bozyer Ciftligi Hoyuk ,38.899486,28.77428,2,Akdeniz_2011,Manisa,Alaagac,https://www.geonames.org/308023,https://www.geonames.org/317109,,https://luwianstudies.org/sites/bozyer-ciftligi-hoyuk
+139,"Goztepe, Kusadasi ",37.877967,27.387583,2,Meric 1989; Meric 2009,Izmir,Camlik,https://www.geonames.org/316743,https://www.geonames.org/322819,,https://luwianstudies.org/sites/goztepe-kusadasi
+140,Ilicatepe,37.814167,27.274333,2,Meric_2009,Aydin,Degirmendere,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/ilicatepe
+141,Tepekoylu Tarla,38.101767,27.385383,2,Meric_2009,Izmir,Mustafa Kemal Ataturk,https://www.geonames.org/324625,https://www.geonames.org/317109,,https://luwianstudies.org/sites/tepekoylu-tarla
+142,Arapkahve,38.160533,27.3248,2,Meric_2009; Tuna_1988,Izmir,Torbali,https://www.geonames.org/6299739,https://www.geonames.org/305267,,https://luwianstudies.org/sites/arapkahve
+143,Kucuktepe ,38.210083,27.3112,2,Meric_2009,Izmir,Torbali,https://www.geonames.org/11361392,https://www.geonames.org/317109,,https://luwianstudies.org/sites/kucuktepe
+144,Buyukkale,38.031933,27.555517,2,Meric_2009,Izmir,Tire,https://www.geonames.org/324528,https://www.geonames.org/325303,,https://luwianstudies.org/sites/buyukkale
+145,Beytikoy,38.2055,27.913083,2,Meric_2009,Izmir,Odemis,https://www.geonames.org/299545,https://www.geonames.org/315202,,https://luwianstudies.org/sites/beytikoy
+146,Karakova,38.174375,27.940101,2,Meric_2009,Izmir,Odemis,https://www.geonames.org/299542,https://www.geonames.org/311046,,https://luwianstudies.org/sites/karakova
+147,Hisarkoy,38.241817,28.190317,2,Meric_2009,Izmir,Kiraz,https://www.geonames.org/303571,https://www.geonames.org/298299,,https://luwianstudies.org/sites/hisarkoy
+148,Dedekuyusu (Destepe),37.858067,27.80925,2,Tul 1986; Akdeniz 1997; Gunel 2003; Gunel 2003a,Aydin,Mimar Sinan Mah.,https://www.geonames.org/12207187,https://www.geonames.org/305268,,https://luwianstudies.org/sites/dedekuyusu-destepe
+149,Bahcetepe,37.863517,28.110833,2,Gunel_2003; Gunel 2003a,Aydin,Kabaca,https://www.geonames.org/447659,https://www.geonames.org/305268,,https://luwianstudies.org/sites/bahcetepe
+150,Komur Adasi ,37.4105,27.39975,2,Voigtlander_1986; Voigtlander_1988; Voigtlander_1990; Voigtlander_1987,Aydin,Didim,https://www.geonames.org/308794,https://www.geonames.org/749780,,https://luwianstudies.org/sites/komur-adasi
+151,Sapli Adasi ,37.410283,27.4092,2,Voigtlander 1986; Voigtlander 1987; Voigtlander 1988; Voigtlander 1990,Aydin,Didim,https://www.geonames.org/10980960,https://www.geonames.org/304827,,https://luwianstudies.org/sites/sapli-adasi
+152,Didyma,37.385433,27.2565,5,Schattner_1992,Aydin,Hisar,https://www.geonames.org/300127,https://www.geonames.org/311046,,https://luwianstudies.org/sites/didyma
+153,Hyllarima,37.504873,28.349465,2,Hawkins_1998; Herda_2009; Herda_2013,Mugla,Derebag,https://www.geonames.org/310139,https://www.geonames.org/305268,,https://luwianstudies.org/sites/hyllarima
+154,Alinda,37.558417,27.820917,2,Garstang and Gurney_1959; Hawkins_1998; Herda_2009; Herda_2013,Aydin,Tutunluk,https://www.geonames.org/303188,https://www.geonames.org/325303,,https://luwianstudies.org/sites/alinda
+155,Medet Hoyuk,37.5102,29.014967,2,Mellaart_1954,Denizli,Medet,https://www.geonames.org/12207216,https://www.geonames.org/750269,,https://luwianstudies.org/sites/medet-hoyuk
+156,Saribeyli Hoyuk ,38.178783,29.661083,2,Abay and Dedeoglu_2005,Denizli,Saribeyli,https://www.geonames.org/313998,https://www.geonames.org/750598,,https://luwianstudies.org/sites/saribeyli-hoyuk
+157,Oren Mevkii,38.158917,29.637233,2,Abay and Dedeoglu_2005,Denizli,Kavakkoy,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/oren-mevkii
+158,Dedemkoyu Hoyuk,38.18545,29.69235,2,Abay and Dedeoglu_2005,Denizli,Saribeyli,https://www.geonames.org/301225,https://www.geonames.org/317109,,https://luwianstudies.org/sites/dedemkoyu-hoyuk
+159,Isikli Hoyuk,38.312867,29.860233,2,Abay_2011,Denizli,Isikli,https://www.geonames.org/12207388,https://www.geonames.org/315202,,https://luwianstudies.org/sites/isikli-hoyuk
+160,Pinar Hoyuk ,38.243183,29.951383,2,Abay_2011,Denizli,Gumussu,https://www.geonames.org/11963576,https://www.geonames.org/317109,,https://luwianstudies.org/sites/pinar-hoyuk
+161,Candir Hoyuk ,38.185383,29.9859,2,Abay and Dedeoglu_2007,Denizli,Tekke,https://www.geonames.org/742251,https://www.geonames.org/304827,,https://luwianstudies.org/sites/candir-hoyuk
+162,Candir Buyuk Hoyuk,38.182967,29.985067,2,Abay and Dedeoglu_2007,Denizli,Tekke,https://www.geonames.org/307925,https://www.geonames.org/317109,,https://luwianstudies.org/sites/candir-buyuk-hoyuk
+163,Candir Kucuk Hoyuk,38.183383,29.98815,2,Abay and Dedeoglu_2007,Denizli,Tekke,https://www.geonames.org/303400,https://www.geonames.org/317109,,https://luwianstudies.org/sites/candir-kucuk-hoyuk
+164,Dogu Sahanlar Hoyuk,38.201089,29.852275,2,Abay and Dedeoglu_2007,Denizli,Sundurlu,https://www.geonames.org/324523,https://www.geonames.org/311046,,https://luwianstudies.org/sites/dogu-sahanlar-hoyuk
+165,"Ikizhoyuk I, II, III",38.193833,29.965633,2,Abay and Dedeoglu_2007,Denizli,Sungullu,https://www.geonames.org/312415,https://www.geonames.org/749780,,https://luwianstudies.org/sites/ikizhoyuk-i-ii-iii
+166,Bekirli Hoyuk,38.201667,29.800367,2,Abay and Dedeoglu_2007,Denizli,Bekirli,https://www.geonames.org/752407,https://www.geonames.org/322819,,https://luwianstudies.org/sites/bekirli-hoyuk
+167,Pekmez Hoyuk,38.265133,29.811083,2,Abay and Dedeoglu_2007,Denizli,Karamanli,https://www.geonames.org/300397,https://www.geonames.org/325303,,https://luwianstudies.org/sites/pekmez-hoyuk
+168,Ayazkoy/Ayaskent,39.187817,27.3194,2,Dreihaus_1957; Horejs_2010,Izmir,Bergama,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/ayazkoy-ayaskent
+169,Basantepe,39.115933,26.891367,2,Dreihaus_1957; Horejs_2010,Izmir,Kabakum,https://www.geonames.org/324677,https://www.geonames.org/305268,,https://luwianstudies.org/sites/basantepe
+170,Cakran,38.881033,27.066783,2,Dreihaus_1957; Horejs_2010,Izmir,Sakran Sayfiye,https://www.geonames.org/299102,https://www.geonames.org/311046,,https://luwianstudies.org/sites/cakran
+171,Ciftlik,39.06623,26.993337,2,Dreihaus_1957; Horejs_2010,Izmir,Ismetpasa,,https://www.geonames.org/750269,,https://luwianstudies.org/sites/ciftlik
+172,Degirmentepe ,39.016164,27.066374,2,Dreihaus_1957; Horejs_2010,Izmir,Bergama,https://www.geonames.org/296317,https://www.geonames.org/322165,,https://luwianstudies.org/sites/degirmentepe
+173,Gryneion,38.87675,27.062317,2,Dreihaus_1957; Ozkan_1994; Horejs_2010,Izmir,Haciomerli,https://www.geonames.org/319741,https://www.geonames.org/325303,,https://luwianstudies.org/sites/gryneion
+174,Gumusova Tepe I,39.053083,27.240667,7,Dreihaus_1957; Horejs_2010,Izmir,Bergama,https://www.geonames.org/325290,https://www.geonames.org/315202,,https://luwianstudies.org/sites/gumusova-tepe-i
+175,Gumusova Tepe II,39.064167,27.2459,7,Dreihaus_1957; Horejs_2010,Izmir,Bergama,https://www.geonames.org/301861,https://www.geonames.org/304184,,https://luwianstudies.org/sites/gumusova-tepe-ii
+176,Masanti Hoyuk ,38.933432,27.879385,2,Akdeniz_2010,Manisa,Haskoy,https://www.geonames.org/309510,https://www.geonames.org/304184,,https://luwianstudies.org/sites/masanti-hoyuk
+177,Maltepe (Bakiralan Tepe) ,39.08375,27.724867,2,Akdeniz_2010; Dinc_1997,Manisa,Ilyaslar,https://www.geonames.org/10181782,https://www.geonames.org/315202,,https://luwianstudies.org/sites/maltepe-bakiralan-tepe
+178,Kocagentepe Hoyuk ,39.108146,27.839689,2,Akdeniz_2010; Dinc_1997,Manisa,Kirkagac,https://www.geonames.org/319438,https://www.geonames.org/315202,,https://luwianstudies.org/sites/kocagentepe-hoyuk
+179,Sakarcali Hoyuk ,39.118767,27.77085,2,Akdeniz_2010; Dinc_1997,Manisa,Kirkagac,https://www.geonames.org/738370,https://www.geonames.org/317109,,https://luwianstudies.org/sites/sakarcali-hoyuk
+180,Baglartepe Hoyuk ,39.143767,27.68295,2,Akdeniz_2010,Manisa,Ovecli,https://www.geonames.org/10265651,https://www.geonames.org/749780,,https://luwianstudies.org/sites/baglartepe-hoyuk
+181,Uyucektepe Hoyuk (Yagcili) ,39.340352,27.621767,2,Akdeniz_2010,Balikesir,Kumkoy,https://www.geonames.org/316918,https://www.geonames.org/322819,,https://luwianstudies.org/sites/uyucektepe-hoyuk-yagcili
+182,Milas Pilav Tepe,37.255733,27.727683,7,Benther_2009; Diler_2007,Mugla,Milas,https://www.geonames.org/322676,https://www.geonames.org/322165,,https://luwianstudies.org/sites/milas-pilav-tepe
+183,Emre Mevkii,39.588333,28.01885,2,Ozdogan_1989,Balikesir,Aslihan,https://www.geonames.org/303482,https://www.geonames.org/325303,,https://luwianstudies.org/sites/emre-mevkii
+184,Ovakoy Uyucek ,39.610067,27.969283,2,Ozdogan_1989,Balikesir,Ovakoy,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/ovakoy-uyucek
+185,Gokceyazi Uyucek,39.63195,27.637867,2,Ozdogan_1989,Balikesir,Gokceyazi,https://www.geonames.org/319160,https://www.geonames.org/304827,,https://luwianstudies.org/sites/gokceyazi-uyucek
+186,Tutuncuyolu/Uyucek ,40.071067,27.70275,2,Ozdogan_1989,Balikesir,Keceler,,https://www.geonames.org/749780,,https://luwianstudies.org/sites/tutuncuyolu-uyucek
+187,Huyucek Tepe,39.525167,26.97405,2,Beksac_2002,Balikesir,Coruk,https://www.geonames.org/745761,https://www.geonames.org/325303,,https://luwianstudies.org/sites/huyucek-tepe
+188,Antandros,39.5716,26.784583,2,Polat_2003; Polat and Polat_2004; Polat and Polat_2006; Polat and Polat_2007; Polat and Polat_2008,Balikesir,Sahindere,https://www.geonames.org/314618,https://www.geonames.org/325303,,https://luwianstudies.org/sites/antandros
+189,Yenisehir I (Bostin Bos Tepe) ,40.266667,29.645717,2,Mellaart_1955; Cullberg 1964/65; French_1967,Bursa,Cihadiye,https://www.geonames.org/319450,https://www.geonames.org/750269,,https://luwianstudies.org/sites/yenisehir-i-bostin-bos-tepe
+190,Inegol I (Cumatepe),40.079883,29.510233,2,Mellaart_1955; French_1967; Ozoren and Hancer and Artar_2001,Bursa,Sinanbey,https://www.geonames.org/10136836,https://www.geonames.org/750269,,https://luwianstudies.org/sites/inegol-i-cumatepe
+191,Cakirca Hoyuk ,40.462683,29.685033,2,Mellaart_1955; French_1967; Sahin and Yavas and Okcu and Sahin_2008,Bursa,Iznik,https://www.geonames.org/9888398,https://www.geonames.org/325303,,https://luwianstudies.org/sites/cakirca-hoyuk
+192,Cayirkoy Hoyuk,40.210483,28.91225,2,French_1967,Bursa,Nilufer,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/cayirkoy-hoyuk
+193,Karadin Hoyuk,40.428901,29.883403,2,French_1967; Sahin and Yavas and Okcu and Sahin_2008,Bursa,Karatekin,https://www.geonames.org/313248,https://www.geonames.org/311073,,https://luwianstudies.org/sites/karadin-hoyuk
+194,Uyucek Hoyuk -Iznik,40.419567,29.766833,2,Mellaart_1955; French_1967; Sahin and Yavas and Okcu and Sahin_2008,Bursa,Cicekli,https://www.geonames.org/8632395,https://www.geonames.org/311073,,https://luwianstudies.org/sites/uyucek-hoyuk-iznik
+195,Yugucek Hoyuk,40.41901,29.720663,2,French_1967; Sahin and Yavas and Okcu and Sahin_2008,Bursa,Yeni,https://www.geonames.org/749727,https://www.geonames.org/749780,,https://luwianstudies.org/sites/yugucek-hoyuk
+196,Yenikoy Hoyuk (Orhangazi),40.499921,29.3694,2,French_1967,Bursa,Keramet,https://www.geonames.org/319642,https://www.geonames.org/749780,,https://luwianstudies.org/sites/yenikoy-hoyuk-orhangazi
+197,Karasil I Hoyuk,40.22312,29.581017,2,French_1967,Bursa,Soylemis,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/karasil-i-hoyuk
+198,Karasil II Hoyuk,40.215183,29.561667,2,French_1967,Bursa,Karasil,,https://www.geonames.org/304827,,https://luwianstudies.org/sites/karasil-ii-hoyuk
+199,Kopruhisar Hoyuk,40.279002,29.79054,2,French_1967,Bursa,Kopruhisar,https://www.geonames.org/10409996,https://www.geonames.org/317109,,https://luwianstudies.org/sites/kopruhisar-hoyuk
+200,Marmaracik Hoyuk,40.235282,29.429007,2,French_1967,Bursa,Marmaracik,https://www.geonames.org/8238717,https://www.geonames.org/323777,,https://luwianstudies.org/sites/marmaracik-hoyuk
+201,Okuf Hoyuk,40.187617,29.551617,2,French_1967,Bursa,Bogazkoy,https://www.geonames.org/745167,https://www.geonames.org/750269,,https://luwianstudies.org/sites/okuf-hoyuk
+202,Soylemis Hoyuk,40.234369,29.614163,2,French_1967,Bursa,Soylemis,https://www.geonames.org/12207219,https://www.geonames.org/750269,,https://luwianstudies.org/sites/soylemis-hoyuk
+203,Barcin Hoyuk (Yenisehir II),40.267117,29.601467,2,French_1967; Gerritsen and Ozbal and Thissen_2013,Bursa,Karakoy,https://www.geonames.org/7732733,https://www.geonames.org/315202,,https://luwianstudies.org/sites/barcin-hoyuk-yenisehir-ii
+204,Kursunlu Hoyuk,40.049983,29.637467,2,French_1967,Bursa,Eymir,https://www.geonames.org/319116,https://www.geonames.org/315202,,https://luwianstudies.org/sites/kursunlu-hoyuk
+205,Karaca Hoyuk,39.767417,30.619133,2,Burney_1956; Efe_1995,Eskisehir,Karacahoyuk,https://www.geonames.org/300273,https://www.geonames.org/749780,,https://luwianstudies.org/sites/karaca-hoyuk
+206,Alyamak Hoyuk ,39.81855,30.593167,2,Burney_1956; Efe_1995,Eskisehir,Muttalip Emirler,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/alyamak-hoyuk
+207,Ciftlik Hoyuk ,39.761791,30.479562,2,Burney_1956; Efe_1996,Eskisehir,Sazova   ,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/ciftlik-hoyuk
+208,Ciftlik Hoyuk ,39.8224,30.835967,2,Burney_1956; Efe_1996,Eskisehir,Karahuyuk,https://www.geonames.org/297712,https://www.geonames.org/315202,,https://luwianstudies.org/sites/ciftlik-hoyuk
+209,Cukurhisar II/Alpu ,39.8426,30.983083,2,Burney_1956; Efe_1996;  Tufekci Sivas  and Sivas_2005,Eskisehir,Cerkez Cukurhisar,https://www.geonames.org/324684,https://www.geonames.org/311046,,https://luwianstudies.org/sites/cukurhisar-ii-alpu
+210,Doganci Hoyuk ,39.80695,30.976467,2,Burney_1956; Efe_1996,Eskisehir,Fatih,https://www.geonames.org/7732716,https://www.geonames.org/315202,,https://luwianstudies.org/sites/doganci-hoyuk
+211,Koprubasi Hoyuk ,39.757606,31.002283,2,Burney_1956; Efe_1996,Eskisehir,Yesildon,https://www.geonames.org/12207212,https://www.geonames.org/304827,,https://luwianstudies.org/sites/koprubasi-hoyuk
+212,Nemli Hoyuk ,39.719522,30.222153,2,Efe_1990,Eskisehir,Yeniakcayir,https://www.geonames.org/11963576,https://www.geonames.org/304827,,https://luwianstudies.org/sites/nemli-hoyuk
+213,Keskin,39.859717,30.396939,2,Efe_1993,Eskisehir,Keskin,https://www.geonames.org/12207382,https://www.geonames.org/317109,,https://luwianstudies.org/sites/keskin
+214,Asagi Sogutonu ,39.837222,30.436417,2,Efe_1993,Eskisehir,Alinca,,,,https://luwianstudies.org/sites/asagi-sogutonu
+215,Boyacioglu Ciftligi ,39.769254,30.379477,2,Efe_1993,Eskisehir,Yusuflar,https://www.geonames.org/301412,https://www.geonames.org/304184,,https://luwianstudies.org/sites/boyacioglu-ciftligi
+216,Esnemez Hoyuk,39.730776,30.084089,2,Efe_1994,Eskisehir,Esnemez,,https://www.geonames.org/311073,,https://luwianstudies.org/sites/esnemez-hoyuk
+217,Gokcekisik ,39.652333,30.395933,2,Efe_1994; Tufekci Sivas and Sivas_2004,Eskisehir,Ulucayir,https://www.geonames.org/10181000,https://www.geonames.org/749780,,https://luwianstudies.org/sites/gokcekisik
+218,Sandikozu Hoyuk,39.390133,30.35785,2,Efe_1995,Eskisehir,Sandikozu,https://www.geonames.org/301407,https://www.geonames.org/315202,,https://luwianstudies.org/sites/sandikozu-hoyuk
+219,Kurupinar/Avdan ,39.5555,30.495667,2,Emilie Haspels_1971; Efe_1995; Tufekci Sivas and Sivas_2005,Eskisehir,Karapazar,https://www.geonames.org/8632489,https://www.geonames.org/317109,,https://luwianstudies.org/sites/kurupinar-avdan
+220,Kavakozu,39.635267,30.5714,2,Efe_1995,Eskisehir,Derbent,https://www.geonames.org/301412,https://www.geonames.org/315202,,https://luwianstudies.org/sites/kavakozu
+221,Akoren ,39.622783,30.601267,2,Efe_1995; Tufekci Sivas and Sivas_2005,Eskisehir,Dogankaya,,https://www.geonames.org/322165,,https://luwianstudies.org/sites/akoren
+222,Alpanoz,39.556237,30.628148,2,Efe_1995,Eskisehir,Taslikkoy,https://www.geonames.org/10181000,https://www.geonames.org/315202,,https://luwianstudies.org/sites/alpanoz
+223,Kulluhoyuk,39.455717,30.678567,2,Efe_1995,Eskisehir,Ikicesme Mah.,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/kulluhoyuk
+224,Gulluhoyuk ,39.612601,30.808938,2,Efe_1995,Eskisehir,Yahnikapan,https://www.geonames.org/300920,https://www.geonames.org/317109,,https://luwianstudies.org/sites/gulluhoyuk
+225,Osmaniye ,39.85335,30.902767,2,Efe_1996; Tufekci Sivas and Sivas_2006,Eskisehir,Beyazaltin,https://www.geonames.org/742169,https://www.geonames.org/315202,,https://luwianstudies.org/sites/osmaniye
+226,Kucuk Kizlar Hoyuk,39.780583,30.945217,2,Efe_1996,Eskisehir,Fevzipasa,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/kucuk-kizlar-hoyuk
+227,Kaynakobasi Hoyuk ,39.71045,30.9591,2,Efe_1996,Eskisehir,Fevzipasa,https://www.geonames.org/302367,https://www.geonames.org/325303,,https://luwianstudies.org/sites/kaynakobasi-hoyuk
+228,Akyurt Hoyuk ,39.62265,30.8938,2,Efe_1996,Eskisehir,Akyurt,https://www.geonames.org/302781,https://www.geonames.org/317109,,https://luwianstudies.org/sites/akyurt-hoyuk
+229,Sarisu ,39.61967,30.911953,2,Efe_1996,Eskisehir,Tokathan,https://www.geonames.org/12207349,https://www.geonames.org/315202,,https://luwianstudies.org/sites/sarisu
+230,Araporen,39.552867,30.844967,2,Efe_1996,Eskisehir,Yazidere,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/araporen
+231,Bahcecik II (Kizilay),39.418923,31.347539,2,Efe_1996,Eskisehir,Bahcecik,https://www.geonames.org/306064,https://www.geonames.org/315202,,https://luwianstudies.org/sites/bahcecik-ii-kizilay
+232,Cayir Hoyuk ,39.407883,30.948433,2,Efe_1996,Eskisehir,Cifteler,https://www.geonames.org/7732716,https://www.geonames.org/315202,,https://luwianstudies.org/sites/cayir-hoyuk
+233,Ilicabasi II,39.30415,30.971517,2,Efe_1996,Eskisehir,Ilicabasi,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/ilicabasi-ii
+234,Hamam Karahisar,39.442317,31.7239,2,Efe_1997,Eskisehir,Yazir,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/hamam-karahisar
+235,Kostutepesi ,39.379259,31.816615,2,Efe_1997; Tufekci Sivas and Sivas_2005,Eskisehir,Bedil,https://www.geonames.org/314785,https://www.geonames.org/315202,,https://luwianstudies.org/sites/kostutepesi
+236,Sogulcak ,39.396967,30.744333,2,Efe_1997,Eskisehir,Seyitgazi,https://www.geonames.org/6299771,https://www.geonames.org/315202,,https://luwianstudies.org/sites/sogulcak
+237,Egriova Hoyuk ,39.307469,30.690129,2,Efe_1997,Eskisehir,Sukranli,https://www.geonames.org/8693577,https://www.geonames.org/315202,,https://luwianstudies.org/sites/egriova-hoyuk
+238,Saricailyas ,39.35195,30.671567,2,Efe_1997,Eskisehir,Saricailyas,https://www.geonames.org/316887,https://www.geonames.org/315202,,https://luwianstudies.org/sites/saricailyas
+239,Akin Hoyuk ,39.333733,30.524233,2,Efe_1997,Eskisehir,Akin,https://www.geonames.org/8693509,https://www.geonames.org/315202,,https://luwianstudies.org/sites/akin-hoyuk
+240,Subren,39.631433,30.50815,2,Efe_1997,Eskisehir,Supuren,,https://www.geonames.org/305268,,https://luwianstudies.org/sites/subren
+241,Togray Hoyuk ,39.69864,31.329321,2,Efe_1997,Eskisehir,Dogray,https://www.geonames.org/318026,https://www.geonames.org/315202,,https://luwianstudies.org/sites/togray-hoyuk
+242,Yalinli ,39.696964,31.380364,2,Efe_1997,Eskisehir,Adahisar,,,,https://luwianstudies.org/sites/yalinli
+243,Maltepesi Hoyuk,39.792533,31.646767,2,Tufekci Sivas and Sivas_2004,Eskisehir,Ucbasli,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/maltepesi-hoyuk
+244,Kocakayavirani,39.589779,31.124369,2,Tufekci Sivas and Sivas_2004,Eskisehir,Balcikhisar,,https://www.geonames.org/322165,,https://luwianstudies.org/sites/kocakayavirani
+245,Catoren Hoyuk (Adsiz) ,39.320533,30.624633,2,Tufekci Sivas and Sivas_2004,Eskisehir,Catoren,,,,https://luwianstudies.org/sites/catoren-hoyuk-adsiz
+246,Akcakaya Hoyuk ,39.59485,30.457883,2,Tufekci Sivas and Sivas_2005,Eskisehir,Akcakaya,https://www.geonames.org/311721,https://www.geonames.org/305268,,https://luwianstudies.org/sites/akcakaya-hoyuk
+247,Agachisar Hoyuk ,39.899369,31.131411,2,Tufekci Sivas and Sivas_2005,Eskisehir,Agachisar,https://www.geonames.org/312809,https://www.geonames.org/305268,,https://luwianstudies.org/sites/agachisar-hoyuk
+248,Hamamtepesi Hoyuk,39.404467,31.413233,7,Tufekci Sivas and Sivas_2006,Eskisehir,Kinik,,https://www.geonames.org/305268,,https://luwianstudies.org/sites/hamamtepesi-hoyuk
+249,Kayikoy Hoyuk ,39.512617,29.5411,2,Efe_1990,Kutahya,Guzelyurt,https://www.geonames.org/8227630,https://www.geonames.org/305268,,https://luwianstudies.org/sites/kayikoy-hoyuk
+250,Huyuktepe,39.570883,29.83125,2,Efe_1991,Kutahya,Agizoren,,https://www.geonames.org/305268,,https://luwianstudies.org/sites/huyuktepe
+251,Kiranharmanyeri ,39.009483,29.812683,2,Efe_1993,Kutahya,Saraycik,https://www.geonames.org/297722,https://www.geonames.org/750598,,https://luwianstudies.org/sites/kiranharmanyeri
+252,Abya,39.027032,29.97747,2,Efe_1993,Kutahya,Pinarcik,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/abya
+253,Alibey,39.078767,30.159367,2,Efe_1993,Kutahya,Altintas,,https://www.geonames.org/305268,,https://luwianstudies.org/sites/alibey
+254,Hidirlik ,39.06615,30.163967,2,Efe_1993,Kutahya,Yapilcan,https://www.geonames.org/324932,https://www.geonames.org/325302,,https://luwianstudies.org/sites/hidirlik
+255,Hebilin Hoyuk ,38.956533,30.10965,7,Efe_1993,Kutahya,Zafertepecalkoy,https://www.geonames.org/8632184,https://www.geonames.org/750598,,https://luwianstudies.org/sites/hebilin-hoyuk
+256,Akpinar,39.1366,29.542433,2,Efe_1994,Kutahya,Akpinar,https://www.geonames.org/324539,https://www.geonames.org/304827,https://www.wikidata.org/wiki/Q671358,https://luwianstudies.org/sites/akpinar
+257,Isiklar,39.276833,29.5056,2,Efe_1994,Kutahya,Certe,,https://www.geonames.org/750598,,https://luwianstudies.org/sites/isiklar
+258,Subak,39.357333,29.361167,2,Efe_1994,Kutahya,Subak,,https://www.geonames.org/750598,,https://luwianstudies.org/sites/subak
+259,Orentepe,39.3287,29.41665,2,Efe_1994,Kutahya,Yaris,,https://www.geonames.org/750598,,https://luwianstudies.org/sites/orentepe
+260,Kizilkilise ,39.013833,30.138217,2,Efe_1994,Kutahya,Genisler,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/kizilkilise
+261,Yassi Huyuk ,40.255146,30.264387,2,Efe_1992,Bilecik,Kursunlu,https://www.geonames.org/297789,https://www.geonames.org/325303,,https://luwianstudies.org/sites/yassi-huyuk
+262,Kalehuyuk,40.051483,30.145633,2,Efe_1993,Bilecik,Sogut,,https://www.geonames.org/750598,,https://luwianstudies.org/sites/kalehuyuk
+263,Huyucek,39.895233,30.07855,2,Efe_1992,Bilecik,Bozuyuk,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/huyucek
+264,Demirkoy,40.006839,30.021153,2,Efe_1992,Bilecik,Kurtkoy,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/demirkoy
+265,Pazaryeri 1 ,39.99045,29.92955,2,Efe_1992,Bilecik,Pazaryeri,https://www.geonames.org/12207412,https://www.geonames.org/311046,,https://luwianstudies.org/sites/pazaryeri-1
+266,Pazaryeri 2,39.991383,29.9327,2,Efe_1992,Bilecik,Pazaryeri,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/pazaryeri-2
+267,Kinik,40.015883,29.834733,2,Efe_1992,Bilecik,Kinik,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/kinik
+268,Kucukhuyuk ,38.7685,30.317633,2,Kocak_2011,Afyonkarahisar,Kucukhuyuk,https://www.geonames.org/319739,https://www.geonames.org/322165,,https://luwianstudies.org/sites/kucukhuyuk
+269,Koyalti,38.511883,30.078367,2,Kocak_2011,Afyonkarahisar,Alacami,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/koyalti
+270,Bulucu Hoyuk,38.447417,30.087983,2,Kocak_2012,Afyonkarahisar,Bastepe,,https://www.geonames.org/304827,,https://luwianstudies.org/sites/bulucu-hoyuk
+271,Oren Mevkii (Kizik) ,38.517967,30.2597,2,Kocak_2012,Afyonkarahisar,Kizik,https://www.geonames.org/304703,https://www.geonames.org/311046,,https://luwianstudies.org/sites/oren-mevkii-kizik
+272,Uyuk ,38.6038,29.982283,2,Kocak_2012,Afyonkarahisar,Kozluca,https://www.geonames.org/749198,https://www.geonames.org/305268,,https://luwianstudies.org/sites/uyuk
+273,Arpalik Mevkii ,38.417917,30.677667,2,Kocak_2013,Afyonkarahisar,Icikli,https://www.geonames.org/745753,https://www.geonames.org/325303,,https://luwianstudies.org/sites/arpalik-mevkii
+274,Kocapinar,38.466483,30.726317,2,Kocak_2013,Afyonkarahisar,Bozan,,https://www.geonames.org/304184,,https://luwianstudies.org/sites/kocapinar
+275,Keldag (Keltepe) Mevkii ,38.507417,30.60055,7,Kocak_2013,Afyonkarahisar,Hallac,https://www.geonames.org/315778,https://www.geonames.org/325303,,https://luwianstudies.org/sites/keldag-keltepe-mevkii
+276,Erimli Mevkii ,38.4849,30.626883,2,Kocak_2013,Afyonkarahisar,Karahalli,https://www.geonames.org/8693612,https://www.geonames.org/298299,,https://luwianstudies.org/sites/erimli-mevkii
+277,Huyuk Mevkii ,38.562683,30.578617,2,Kocak_2013,Afyonkarahisar,Halimoru,https://www.geonames.org/316329,https://www.geonames.org/311073,,https://luwianstudies.org/sites/huyuk-mevkii
+278,Dikici Hoyuk ,38.046,30.16155,2,Kocak_2013-A,Afyonkarahisar,Dikici,https://www.geonames.org/317413,https://www.geonames.org/749780,,https://luwianstudies.org/sites/dikici-hoyuk
+279,Huyuk Mevkii (Kabakli),38.1308,30.085667,2,Kocak_2013-A,Afyonkarahisar,Yakakoy,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/huyuk-mevkii-kabakli
+280,Uchoyuk,38.688192,31.036641,2,Barjamovic 2010; Kocak_2013-A; Kocak_2014,Afyonkarahisar,Bolvadin,,https://www.geonames.org/305268,,https://luwianstudies.org/sites/uchoyuk
+281,Viranici Mevkii ,38.494583,29.658383,2,Kocak_2013-A,Usak,Selcikler,https://www.geonames.org/319190,https://www.geonames.org/323777,,https://luwianstudies.org/sites/viranici-mevkii
+282,Dorek Asar Mevkii ,38.4803,29.5681,7,Kocak_2013-A,Usak,Kokez,https://www.geonames.org/12207217,https://www.geonames.org/304827,,https://luwianstudies.org/sites/dorek-asar-mevkii
+283,Cayir Uyuk Mevkii ,38.563517,29.565417,2,Kocak_2013-A,Usak,Salmanlar,https://www.geonames.org/299421,https://www.geonames.org/317109,,https://luwianstudies.org/sites/cayir-uyuk-mevkii
+284,Belce Hoyuk ,38.588783,29.556467,2,Kocak_2013-A,Usak,Yapagilar,https://www.geonames.org/8693569,https://www.geonames.org/311073,,https://luwianstudies.org/sites/belce-hoyuk
+285,Egirdir (Egridir) Hoyuk,37.889583,30.819083,2,Ozsait_2003,Isparta,Altinkum,https://www.geonames.org/8632589,https://www.geonames.org/315202,,https://luwianstudies.org/sites/egirdir-egridir-hoyuk
+286,Dortyol Hoyuk ,38.190623,31.241794,2,Ozsait_2003; Ozsait_1988,Isparta,Yalvac,https://www.geonames.org/301303,https://www.geonames.org/311073,,https://luwianstudies.org/sites/dortyol-hoyuk
+287,Arak Hoyuk ,38.062939,31.41052,7,Ozsait_2003,Isparta,Calti,https://www.geonames.org/305359,https://www.geonames.org/317109,,https://luwianstudies.org/sites/arak-hoyuk
+288,Ordekci Hoyuk ,38.068266,31.263067,2,Ozsait_2003,Isparta,Ordekci,https://www.geonames.org/11361423,https://www.geonames.org/750269,,https://luwianstudies.org/sites/ordekci-hoyuk
+289,Iskele Hoyuk ,38.046517,30.950833,2,Ozsait_1994,Isparta,Esinyurt,https://www.geonames.org/12207264,https://www.geonames.org/311073,,https://luwianstudies.org/sites/iskele-hoyuk
+290,Gelendost Hoyuk ,38.103908,31.01385,2,Ozsait_1994,Isparta,Gelendost,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/gelendost-hoyuk
+291,Findos Hoyuk ,37.877517,30.70935,2,Ozsait_1999,Isparta,Kucuk Gokceli,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/findos-hoyuk
+292,Gondurle Hoyuk ,37.903983,30.7152,4,Ozsait_1999; Ozsait_2004,Isparta,Harmanoren,https://www.geonames.org/315725,https://www.geonames.org/311073,,https://luwianstudies.org/sites/gondurle-hoyuk
+293,Agil Hoyuk ,38.292583,30.9216,2,Ozsait_1999,Isparta,Kumdanli,https://www.geonames.org/315338,https://www.geonames.org/320392,,https://luwianstudies.org/sites/agil-hoyuk
+294,Akmescit ,38.070004,30.984929,2,Ozsait_2004,Isparta,Gelendost,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/akmescit
+295,Ayvali-Masat Hoyuk ,38.413369,31.064392,2,Ozsait_2005,Isparta,Ayvali,https://www.geonames.org/8632423,https://www.geonames.org/747712,,https://luwianstudies.org/sites/ayvali-masat-hoyuk
+296,Cavdir Hoyuk ,37.146767,29.65745,2,Ozsait_1991,Burdur,Cavdir,https://www.geonames.org/298315,https://www.geonames.org/322165,,https://luwianstudies.org/sites/cavdir-hoyuk
+297,Kozluca Hoyuk ,37.4957,30.066667,2,Ozsait_1997; Ozsait and Ozsait_2012,Burdur,Elmacik,https://www.geonames.org/310393,https://www.geonames.org/304827,,https://luwianstudies.org/sites/kozluca-hoyuk
+298,Kaymakci,38.6228,27.930367,2,Roosevelt 2007; Roosevelt and Luke 2008; Roosevelt and Luke 2009; Luke and Roosevelt 2009; Roosevelt and Luke 2010; Roosevelt 2010; Roosevelt 2011; Roosevelt and Luke 2012,Manisa,Haciveliler,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/kaymakci
+299,Eceler Hoyuk,36.814482,29.636977,2,Aksoy and Kose_2005; Momigliano_2013,Mugla,Seki,https://www.geonames.org/323969,https://www.geonames.org/322819,,https://luwianstudies.org/sites/eceler-hoyuk
+300,Oinoanda,36.799908,29.561706,2,Poetto_1993,Mugla,Incealiler,,https://www.geonames.org/304827,,https://luwianstudies.org/sites/oinoanda
+301,Pinara,36.493837,29.271017,2,Poetto_1993,Mugla,Minare,,,,https://luwianstudies.org/sites/pinara
+302,Cardakli/Eski Degirmen Yolu,41.710283,26.529844,2,Erdogdu_1997,Edirne,Yeniimaret,https://www.geonames.org/12207342,https://www.geonames.org/317109,,https://luwianstudies.org/sites/cardakli-eski-degirmen-yolu
+303,Yorulmaz Ciftligi/Eski Baglik,41.735918,26.542461,2,Erdogdu_1997,Edirne,Yeniimaret,https://www.geonames.org/739288,https://www.geonames.org/747712,https://www.wikidata.org/wiki/Q1250866,https://luwianstudies.org/sites/yorulmaz-ciftligi-eski-baglik
+304,Dustubakyamasi,41.756786,26.536075,2,Erdogdu_1997,Edirne,Edirne ,https://www.geonames.org/6958766,https://www.geonames.org/749780,https://www.wikidata.org/wiki/Q10803142,https://luwianstudies.org/sites/dustubakyamasi
+305,Alatepe,41.759111,26.52758,2,Erdogdu_1997,Edirne,Edirne,https://www.geonames.org/10893763,https://www.geonames.org/400665,https://www.wikidata.org/wiki/Q194810,https://luwianstudies.org/sites/alatepe
+306,Adatepe,41.779056,26.54912,7,Erdogdu_1997,Edirne,Edirne,https://www.geonames.org/312686,https://www.geonames.org/749780,https://www.wikidata.org/wiki/Q719815,https://luwianstudies.org/sites/adatepe
+307,Kaldirim,41.815855,26.553196,7,Erdogdu_1997,Edirne,Edirne,https://www.geonames.org/301261,https://www.geonames.org/749780,https://www.wikidata.org/wiki/Q810796,https://luwianstudies.org/sites/kaldirim
+308,Cukurcayir,41.731292,26.572217,2,Erdogdu_1997,Edirne,Umurbey,https://www.geonames.org/8632582,https://www.geonames.org/747712,https://www.wikidata.org/wiki/Q109962127,https://luwianstudies.org/sites/cukurcayir
+309,Namazgah,41.710433,26.562301,2,Erdogdu_1997,Edirne,Umurbey,https://www.geonames.org/12207189,https://www.geonames.org/304827,https://www.wikidata.org/wiki/Q108923214,https://luwianstudies.org/sites/namazgah
+310,Koprubasi,41.728431,26.557001,2,Erdogdu_1997,Edirne,Yeniimaret,https://www.geonames.org/8632570,https://www.geonames.org/749780,https://www.wikidata.org/wiki/Q31389212,https://luwianstudies.org/sites/koprubasi
+311,Ortakci/Kemer Kopru,41.787179,26.752665,2,Erdogdu_1997,Edirne,Kavakli,https://www.geonames.org/317409,https://www.geonames.org/304184,https://www.wikidata.org/wiki/Q4081181,https://luwianstudies.org/sites/ortakci-kemer-kopru
+312,Kocatepe,41.735167,26.90065,13,Erdogdu_1997,Edirne,Suloglu,https://www.geonames.org/8632410,https://www.geonames.org/304827,https://www.wikidata.org/wiki/Q1361187,https://luwianstudies.org/sites/kocatepe
+313,Ortadegirmen,41.726023,26.897382,2,Erdogdu_1997,Edirne,Suloglu,https://www.geonames.org/7732734,https://www.geonames.org/311046,https://www.wikidata.org/wiki/Q6673902,https://luwianstudies.org/sites/ortadegirmen
+314,Tepeyani,41.701575,26.8882,2,Erdogdu_1997,Edirne,Havsa,https://www.geonames.org/1522181,https://www.geonames.org/259244,https://www.wikidata.org/wiki/Q1001370,https://luwianstudies.org/sites/tepeyani
+315,Kumocagi/Baglikarkasi ,41.662771,26.865033,2,Erdogdu_1997,Edirne,Musulca,https://www.geonames.org/749722,https://www.geonames.org/317109,,https://luwianstudies.org/sites/kumocagi-baglikarkasi
+316,Kaynaklar/Arpac,41.671919,26.874491,2,Erdogdu_1997,Edirne,Havsa,https://www.geonames.org/8632571,https://www.geonames.org/747712,https://www.wikidata.org/wiki/Q10837001,https://luwianstudies.org/sites/kaynaklar-arpac
+317,Hisarlik ,41.628771,26.862758,2,Erdogdu_1997,Edirne,Haskoy,https://www.geonames.org/306473,https://www.geonames.org/325303,,https://luwianstudies.org/sites/hisarlik
+318,Cevizlik,41.629818,26.85993,2,Erdogdu_1997,Edirne,Haskoy,https://www.geonames.org/745761,https://www.geonames.org/747712,https://www.wikidata.org/wiki/Q628719,https://luwianstudies.org/sites/cevizlik
+319,Maya Baba,41.103683,26.396917,7,sele,Edirne,Buyuk Altiagac,https://www.geonames.org/744934,https://www.geonames.org/747712,https://www.wikidata.org/wiki/Q849709,https://luwianstudies.org/sites/maya-baba
+320,Acicesme,41.175825,26.353748,2,Erdogdu_1999,Edirne,Kadidondurma,https://www.geonames.org/749728,https://www.geonames.org/747712,https://www.wikidata.org/wiki/Q752699,https://luwianstudies.org/sites/acicesme
+321,Taslitepe,38.368614,28.661125,7,Akdeniz_2009; Mimaroglu_2013,Manisa,Gumuscay,https://www.geonames.org/319607,https://www.geonames.org/317109,https://www.wikidata.org/wiki/Q969347,https://luwianstudies.org/sites/taslitepe
+322,Erdelli Hoyuk ,38.954072,27.559603,2,Akdeniz_2009; Mimaroglu_2013; Dinc_1991,Manisa,Buknus,https://www.geonames.org/322692,https://www.geonames.org/322819,,https://luwianstudies.org/sites/erdelli-hoyuk
+323,Kennez 1,38.846196,27.860771,2,French_1969; Mimaroglu_2013; Akdeniz_2009,Manisa,Pinarcik,https://www.geonames.org/303613,https://www.geonames.org/304827,,https://luwianstudies.org/sites/kennez-1
+324,Rahmiye II,38.842524,27.77973,2,French_1969; Mimaroglu_2013; Akdeniz_2009,Manisa,Rahmiye,https://www.geonames.org/8632393,https://www.geonames.org/304827,,https://luwianstudies.org/sites/rahmiye-ii
+325,Kulaksizlar,38.813116,27.890284,2,Mimaroglu_2013; Akdeniz_2009; Dinc_1996; Dinc_1997,Manisa,Saricali,https://www.geonames.org/318372,https://www.geonames.org/304827,,https://luwianstudies.org/sites/kulaksizlar
+326,Alibeyli Hoyuk,38.704993,27.709599,2,French_1969; Mimaroglu_2013; Akdeniz_2009,Manisa,Alibeyli,https://www.geonames.org/12207252,https://www.geonames.org/304827,,https://luwianstudies.org/sites/alibeyli-hoyuk
+327,Baykustepe,38.647667,27.59705,2,Mimaroglu_2013; Akdeniz_2009,Manisa,Mutevelli,https://www.geonames.org/318370,https://www.geonames.org/749780,,https://luwianstudies.org/sites/baykustepe
+328,Halitpasa II,38.687133,27.702783,2,French_1969; Mimaroglu_2013,Manisa,Alibeyli,https://www.geonames.org/8693417,https://www.geonames.org/325303,,https://luwianstudies.org/sites/halitpasa-ii
+329,Halitpasa I,38.692683,27.708367,7,French_1969; Mimaroglu_2013,Manisa,Alibeyli,https://www.geonames.org/301154,https://www.geonames.org/304827,,https://luwianstudies.org/sites/halitpasa-i
+330,Avlutepe Hoyuk,38.707412,27.347765,2,French_1969; Mimaroglu_2013,Manisa,Gulbahce,https://www.geonames.org/324353,https://www.geonames.org/304827,,https://luwianstudies.org/sites/avlutepe-hoyuk
+331,Veziroglu Hoyuk,38.6764,27.464717,2,French_1969; Mimaroglu_2013,Manisa,Selimsahlar,https://www.geonames.org/304710,https://www.geonames.org/304827,,https://luwianstudies.org/sites/veziroglu-hoyuk
+332,Asartepe,38.692809,27.993306,7,Luke and Roosevelt_2008; Mimaroglu_2013,Manisa,Kilcanlar,https://www.geonames.org/301409,https://www.geonames.org/304827,,https://luwianstudies.org/sites/asartepe
+333,Kizbaci Tepesi,38.646275,28.091691,7,Luke and Roosevelt_2009; Roosevelt_2010; Mimaroglu_2013,Manisa,Kemer Damlari,https://www.geonames.org/301407,https://www.geonames.org/315202,,https://luwianstudies.org/sites/kizbaci-tepesi
+334,Gedevre Tepesi,38.664,27.9422,7,Luke and Roosevelt_2009; Roosevelt_2010; Mimaroglu_2013,Manisa,Golmarmara,,https://www.geonames.org/749778,,https://luwianstudies.org/sites/gedevre-tepesi
+335,Kizciftligi/Trikopi,39.388205,26.80402,7,Beksac_1999,Balikesir,Gomec,https://www.geonames.org/12207404,https://www.geonames.org/322819,,https://luwianstudies.org/sites/kizciftligi-trikopi
+336, Catalkaya ,37.825908,27.334211,2,Gunel_2003b; Gunel_2003; Gunel_2003a,Aydin,Kusadasi,https://www.geonames.org/10975579,https://www.geonames.org/298299,,https://luwianstudies.org/sites/catalkaya
+337,Phokaia (Eski Foca) ,38.668492,26.752583,2,"Ozyigit_2005, Mimaroglu_2013",Izmir,Ataturk,https://www.geonames.org/739004,https://www.geonames.org/304827,,https://luwianstudies.org/sites/phokaia-eski-foca
+338,Nemrut Hoyuk ,38.448381,27.525698,2,Meric_1989; Mimaroglu_2013,Izmir,Asagikizilca,https://www.geonames.org/325253,https://www.geonames.org/317109,,https://luwianstudies.org/sites/nemrut-hoyuk
+339,Seytan Deresi,37.5505,28.025667,2,Gunel_2004,Aydin,Camizagili,https://www.geonames.org/302390,https://www.geonames.org/323777,,https://luwianstudies.org/sites/seytan-deresi
+340,Alanli (Hamzabali) Hoyuk,37.805999,28.112795,2,Gunel_2005,Aydin,Derekoy,https://www.geonames.org/324912,https://www.geonames.org/298299,,https://luwianstudies.org/sites/alanli-hamzabali-hoyuk
+341,Kavaklikoy Hoyuk ,37.765567,28.324533,2,Gunel_2005,Aydin,Bozdogan,https://www.geonames.org/309299,https://www.geonames.org/315202,,https://luwianstudies.org/sites/kavaklikoy-hoyuk
+342,Elmacik Hoyuk,38.579203,29.396089,2,"http://www.korumakurullari.gov.tr/Eklenti/33580,elmacik-1987.pdf?0",Usak,Elmacik,https://www.geonames.org/296044,https://www.geonames.org/311046,,https://luwianstudies.org/sites/elmacik-hoyuk
+343,Yassitepe/Izmir,38.447867,27.210467,2,Derin_2007; Derin_2015,Izmir,Kazimdirik,https://www.geonames.org/8543765,https://www.geonames.org/317109,,https://luwianstudies.org/sites/yassitepe-izmir
+344,Yenikoy/Bilecik ,38.579203,29.396089,2,"Efe, Turteki et al._2015",Usak,Elmacik,https://www.geonames.org/307791,https://www.geonames.org/311046,,https://luwianstudies.org/sites/yenikoy-bilecik
+345,Uyuk/Bilecik,40.249765,30.109741,2,"Efe, Turteki et al._2015",Bilecik,Uyuk,https://www.geonames.org/7732332,https://www.geonames.org/750269,,https://luwianstudies.org/sites/uyuk-bilecik
+346,Adatepe/Dinar,38.069667,30.260733,2,Kocak and Kucukbezci and Kizgut_2016,Afyonkarahisar,Eldere,https://www.geonames.org/8632182,https://www.geonames.org/304184,,https://luwianstudies.org/sites/adatepe-dinar
+347,Akgun Tepe Hoyuk ,38.118017,30.212767,2,Kocak and Kucukbezci and Kizgut_2016,Afyonkarahisar,Akca,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/akgun-tepe-hoyuk
+348,Tepe Hoyuk,38.155317,30.211583,2,Kocak and Kucukbezci and Kizgut_2016,Afyonkarahisar,Dombay,https://www.geonames.org/314698,https://www.geonames.org/304827,,https://luwianstudies.org/sites/tepe-hoyuk
+349,Goktepe Hoyuk,38.24145,30.266133,2,Kocak and Kucukbezci and Kizgut_2016,Afyonkarahisar,Cayustu,https://www.geonames.org/8632182,https://www.geonames.org/322165,,https://luwianstudies.org/sites/goktepe-hoyuk
+350,Kerim Cayiri,38.2069,30.2534,2,Kocak and Kucukbezci and Kizgut_2016,Afyonkarahisar,Karatas,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/kerim-cayiri
+351,Ismail Hoyugu,38.2719,30.466183,2,Kocak and Kucukbezci and Kizgut_2016,Afyonkarahisar,Kinik,,https://www.geonames.org/311046,,https://luwianstudies.org/sites/ismail-hoyugu
+352,Karatepe Hoyuk,38.241033,30.398183,2,Kocak and Kucukbezci and Kizgut_2016,Afyonkarahisar,Dinar,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/karatepe-hoyuk
+353,Akpinarli Tepe Hoyuk,38.21135,30.341667,2,Kocak and Kucukbezci and Kizgut_2016,Afyonkarahisar,Turkmen,https://www.geonames.org/305956,https://www.geonames.org/750269,,https://luwianstudies.org/sites/akpinarli-tepe-hoyuk
+354,Alparslan Hoyuk,38.2097,30.403267,2,Kocak and Kucukbezci and Kizgut_2016,Afyonkarahisar,Alparslan,,https://www.geonames.org/305268,,https://luwianstudies.org/sites/alparslan-hoyuk
+355,Tepeardi Hoyuk,38.21875,30.44185,2,Kocak and Kucukbezci and Kizgut_2016,Afyonkarahisar,Alparslan,,https://www.geonames.org/750269,,https://luwianstudies.org/sites/tepeardi-hoyuk
+356,Buyuk und Kucuk Cataltepe,38.189733,30.353067,2,Kocak and Kucukbezci and Kizgut 2016,Afyonkarahisar,Turkmen,https://www.geonames.org/10194285,https://www.geonames.org/317109,,https://luwianstudies.org/sites/buyuk-und-kucuk-cataltepe
+357,Orenler Mevkii,38.133367,30.26885,2,Kocak and Kucukbezci and Kizgut 2016,Afyonkarahisar,Akca,,https://www.geonames.org/750269,,https://luwianstudies.org/sites/orenler-mevkii
+358,Agillarin Onu Hoyuk (Kirin Uyuk),37.902867,29.895617,2,Kocak and Kucukbezci and Kizgut 2016,Afyonkarahisar,Yuregil,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/agillarin-onu-hoyuk-kirin-uyuk
+359,Sarikavak Hoyuk,37.875467,29.803483,2,Kocak and Kucukbezci and Kizgut 2016,Afyonkarahisar,Sarikavak,https://www.geonames.org/10975579,https://www.geonames.org/747712,,https://luwianstudies.org/sites/sarikavak-hoyuk
+360,Kusura Hoyuk,38.364853,30.224777,2,Lamb 1937; Lamb 1938,Afyonkarahisar,Kusura,https://www.geonames.org/318559,https://www.geonames.org/750269,,https://luwianstudies.org/sites/kusura-hoyuk
+361,Yamanlar,38.224833,29.681817,2,Dedeoglu_2009; ttp://www.kulturportali.gov.tr/turkiye/genel/kulturenvanterisit/yamanlar-hoyugu,Denizli,Yamanlar,https://www.geonames.org/11963543,https://www.geonames.org/315202,,https://luwianstudies.org/sites/yamanlar
+362,Hoyuk Mevkii,38.152805,29.614224,2,Abay and Dedeoglu 2005,Denizli,Yahyali,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/hoyuk-mevkii
+363,Bademagaci Hoyuk,37.223248,30.497848,2,Gulsun_2003; Duru and Umurtak_2010; Duru and Umurtak_2011,Antalya,Dosemealti,,https://www.geonames.org/298299,,https://luwianstudies.org/sites/bademagaci-hoyuk
+364,Perge,36.968533,30.854317,2,Abbasoglu 2007; Martini 2010,Antalya,Barbaros,https://www.geonames.org/8227234,https://www.geonames.org/311046,,https://luwianstudies.org/sites/perge
+365,Ozbek Iliksu ,38.395088,26.679327,2,Ersoy - Koparal 2016,Izmir,Urla,https://www.geonames.org/8632465,https://www.geonames.org/298299,,https://luwianstudies.org/sites/ozbek-iliksu
+366,Seref Hoyuk/Komama,37.318517,30.334067,2,Becks and Polat Becks and Metin_2016; Ozsait_2007; Ozsait  and Ozsait_1996,Antalya,Korkuteli,https://www.geonames.org/311531,https://www.geonames.org/298299,,https://luwianstudies.org/sites/seref-hoyuk-komama
+367,Koyunbeyli Hoyuk,38.58325,29.472583,2,Oy_2015,Usak,Koyunbeyli,https://www.geonames.org/321426,https://www.geonames.org/325303,,https://luwianstudies.org/sites/koyunbeyli-hoyuk
+368,Kediyunu Hoyuk,38.657039,29.502551,2,Oy_2015,Usak,Kediyunu,https://www.geonames.org/7732716,https://www.geonames.org/325303,,https://luwianstudies.org/sites/kediyunu-hoyuk
+369,Hoyuk (Koyonu) Mevki ,38.381267,30.672267,2,Kocak_2014,Afyonkarahisar,Uzunpinar,https://www.geonames.org/12207212,https://www.geonames.org/325303,,https://luwianstudies.org/sites/hoyuk-koyonu-mevki
+370,Pinarbasi Buyuk Hoyuk ,38.312067,30.732217,2,Kocak_2014,Afyonkarahisar,Kilinckaya,https://www.geonames.org/302986,https://www.geonames.org/322819,,https://luwianstudies.org/sites/pinarbasi-buyuk-hoyuk
+371,Oynagan Mezarlik Hoyuk,38.30695,30.704,2,Kocak_2014,Afyonkarahisar,Oynagan,https://www.geonames.org/11963576,https://www.geonames.org/325303,,https://luwianstudies.org/sites/oynagan-mezarlik-hoyuk
+372,Cafer Hoyuk,38.317083,30.61025,2,Kocak_2014,Afyonkarahisar,Karaadilli,,https://www.geonames.org/304184,,https://luwianstudies.org/sites/cafer-hoyuk
+373,Kepir Hoyuk,38.325983,30.653833,2,Kocak_2014,Afyonkarahisar,Suhut,https://www.geonames.org/298722,https://www.geonames.org/322165,,https://luwianstudies.org/sites/kepir-hoyuk
+374,Kulak Uyuk Mevkii ,38.380217,30.5892,2,Kocak_2014,Afyonkarahisar,Kulak,https://www.geonames.org/8227239,https://www.geonames.org/317109,,https://luwianstudies.org/sites/kulak-uyuk-mevkii
+375,Anayurt Mezarlik und Uyukler Mevkii ,38.458417,30.585967,2,Kocak_2014,Afyonkarahisar,Anayurt,https://www.geonames.org/8632577,https://www.geonames.org/325303,,https://luwianstudies.org/sites/anayurt-mezarlik-und-uyukler-mevkii
+376,Boyali Hoyuk,38.259433,30.169,2,Kocak_2014,Afyonkarahisar,Kiziloren,https://www.geonames.org/316470,https://www.geonames.org/315202,,https://luwianstudies.org/sites/boyali-hoyuk
+377,Ekinova Hoyuk Mevkii ,38.304667,30.178733,2,Kocak_2014,Afyonkarahisar,Ekinova,https://www.geonames.org/8632413,https://www.geonames.org/298299,,https://luwianstudies.org/sites/ekinova-hoyuk-mevkii
+378,Kanlitas Hoyuk,39.697417,30.0829,2,Turkcan_2011; Turkcan_2015,Eskisehir,Asagi Kuzfindik,https://www.geonames.org/314038,https://www.geonames.org/743166,,https://luwianstudies.org/sites/kanlitas-hoyuk
+379,Tymion,38.487418,29.431784,2,Lampe_2008; Lampe_2010,Usak,Sukraniye,https://www.geonames.org/12207245,https://www.geonames.org/322819,,https://luwianstudies.org/sites/tymion
+380,Batak Degirmen ,41.627375,27.469577,2,http://www.kirklarelienvanteri.gov.tr/sitler.php?id=226; Beksac_2008,Kirklareli,Akarlar,https://www.geonames.org/411183,https://www.geonames.org/322165,,https://luwianstudies.org/sites/batak-degirmen
+381,Yenidogan,37.728133,27.3922,,Lohmann_2006; Forer_1937,Aydin,Yenidogan,https://www.geonames.org/9889032,https://www.geonames.org/325303,,https://luwianstudies.org/sites/yenidogan
+382,Bagcesmeler ,39.404963,26.950573,,Beksac_2004A,Balikesir,Agacik,https://www.geonames.org/9889137,https://www.geonames.org/325303,,https://luwianstudies.org/sites/bagcesmeler
+383,Kucuktepe (Halilbeyli),37.767483,27.736283,7,Akdeniz_1997,Aydin,Halilbeyli,https://www.geonames.org/12207184,https://www.geonames.org/322819,,https://luwianstudies.org/sites/kucuktepe-halilbeyli
+384,Golhisar Kalesi ,37.791747,27.914076,14,Akdeniz_1997,Aydin,Kozalakli,https://www.geonames.org/9888759,https://www.geonames.org/317109,,https://luwianstudies.org/sites/golhisar-kalesi
+385,Manastir Mevkii Hoyuk,40.499067,27.48245,2,Gunsenin_1996,Balikesir,Avsa,https://www.geonames.org/306766,https://www.geonames.org/305268,,https://luwianstudies.org/sites/manastir-mevkii-hoyuk
+386,Ortaca,39.265083,29.835333,2,Efe_1993,Kutahya,Ortaca,https://www.geonames.org/12207253,https://www.geonames.org/304184,,https://luwianstudies.org/sites/ortaca
+387,Haydarlar,39.200806,29.986705,2,Efe_1993,Kutahya,Haydarlar,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/haydarlar
+388,Kumbag Huyuk ,39.863867,30.496,2,Efe_1993,Eskisehir,Kozkayi,https://www.geonames.org/322692,https://www.geonames.org/325303,,https://luwianstudies.org/sites/kumbag-huyuk
+389,Oklubali Hoyuk ,39.826852,30.236726,2,Efe_1992,Eskisehir,Oklubali,https://www.geonames.org/319500,https://www.geonames.org/322819,,https://luwianstudies.org/sites/oklubali-hoyuk
+390,Karayahsiler,38.223867,29.734233,2,Dedeoglu_2009,Denizli,Karayahsiler,https://www.geonames.org/12207184,https://www.geonames.org/750269,,https://luwianstudies.org/sites/karayahsiler
+391,Karaca,38.194533,29.719617,2,Dedeoglu_2009,Denizli,Karayahsiler,https://www.geonames.org/7503211,https://www.geonames.org/311046,,https://luwianstudies.org/sites/karaca
+392,Degirmen,38.175897,29.7634,2,Dedeoglu_2009,Denizli,Bekirli,https://www.geonames.org/7732344,https://www.geonames.org/749778,,https://luwianstudies.org/sites/degirmen
+393,Deniz Hoyuk,38.214033,29.815567,2,Dedeoglu_2009,Denizli,Civril,https://www.geonames.org/298935,https://www.geonames.org/304827,,https://luwianstudies.org/sites/deniz-hoyuk
+394,Incekoy Hoyuk,38.246267,29.7838,2,Dedeoglu_2009,Denizli,Incekoy,https://www.geonames.org/325491,https://www.geonames.org/750269,,https://luwianstudies.org/sites/incekoy-hoyuk
+395,Seraserli Hoyuk,38.231249,29.801856,2,Dedeoglu_2009,Denizli,Seraserli,https://www.geonames.org/299427,https://www.geonames.org/317109,,https://luwianstudies.org/sites/seraserli-hoyuk
+396,Savram Hoyuk,38.232114,29.777227,2,Dedeoglu_2009,Denizli,Incekoy,https://www.geonames.org/10346824,https://www.geonames.org/317109,,https://luwianstudies.org/sites/savram-hoyuk
+397,Tuglu Hoyuk,38.252626,29.839599,2,Dedeoglu_2009,Denizli,Tuglu,https://www.geonames.org/10350637,https://www.geonames.org/304827,,https://luwianstudies.org/sites/tuglu-hoyuk
+398,Kesilmis Hoyuk,38.2888,29.83755,2,Dedeoglu_2009,Denizli,Civril,https://www.geonames.org/741301,https://www.geonames.org/325303,,https://luwianstudies.org/sites/kesilmis-hoyuk
+399,Belence Hoyuk,38.625277,29.840337,2,Dedeoglu_2013,Usak,Cogurlu,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/belence-hoyuk
+400,Gurpinar Hoyuk,38.401467,29.715767,2,Dedeoglu_2009,Denizli,Gurpinar,https://www.geonames.org/314698,https://www.geonames.org/322819,,https://luwianstudies.org/sites/gurpinar-hoyuk
+401,Sulumenler Hoyuk,38.343923,29.669798,2,Dedeoglu_2009,Denizli,Karabedirler,https://www.geonames.org/312686,https://www.geonames.org/315202,,https://luwianstudies.org/sites/sulumenler-hoyuk
+402,Kuyuyolu Hoyuk,38.330133,29.66225,2,Dedeoglu_2009,Denizli,Karabedirler,https://www.geonames.org/324019,https://www.geonames.org/311046,,https://luwianstudies.org/sites/kuyuyolu-hoyuk
+403,Cingenoren Hoyuk,38.32732,29.64791,2,Dedeoglu_2009,Denizli,Karabedirler,https://www.geonames.org/8632415,https://www.geonames.org/322819,,https://luwianstudies.org/sites/cingenoren-hoyuk
+404,Orucgazi Hoyuk,38.31375,29.63665,2,Dedeoglu_2009,Denizli,Karabedirler,https://www.geonames.org/10375669,https://www.geonames.org/311046,,https://luwianstudies.org/sites/orucgazi-hoyuk
+405,Kocainustu Hoyuk,38.196613,29.574237,2,Dedeoglu_2009,Denizli,Gomce,https://www.geonames.org/312752,https://www.geonames.org/315202,,https://luwianstudies.org/sites/kocainustu-hoyuk
+406,Sokmen  Hoyuk,38.251667,29.748333,2,Dedeoglu_2009,Denizli,Sokmen,https://www.geonames.org/301774,https://www.geonames.org/311046,,https://luwianstudies.org/sites/sokmen-hoyuk
+407,Cukurkuyu Hoyuk,38.26508,29.811113,2,Dedeoglu_2009,Denizli,Karamanli,https://www.geonames.org/299438,https://www.geonames.org/317109,,https://luwianstudies.org/sites/cukurkuyu-hoyuk
+408,Catal Hoyuk,38.232862,29.735046,2,Dedeoglu_2009,Denizli,Bulgurlar,https://www.geonames.org/299427,https://www.geonames.org/315202,,https://luwianstudies.org/sites/catal-hoyuk
+409,Omer Hoyuk,38.2808,29.771683,2,Dedeoglu_2009,Denizli,Omerli,https://www.geonames.org/8632579,https://www.geonames.org/322819,,https://luwianstudies.org/sites/omer-hoyuk
+410,Emirhisar-Yassi Hoyuk,38.268633,29.81835,2,Dedeoglu_2009,Denizli,Karamanli,,https://www.geonames.org/305268,,https://luwianstudies.org/sites/emirhisar-yassi-hoyuk
+411,Yakacik Hoyuk,38.243848,29.674803,2,Dedeoglu_2009,Denizli,Yamanlar,https://www.geonames.org/321623,https://www.geonames.org/304827,,https://luwianstudies.org/sites/yakacik-hoyuk
+412,Ada Mevkii Hoyuk,38.193383,29.384133,2,Dedeoglu and Ozan and Konakci_2016,Denizli,Calkuyucak,https://www.geonames.org/305209,https://www.geonames.org/317109,https://www.wikidata.org/wiki/Q1142488,https://luwianstudies.org/sites/ada-mevkii-hoyuk
+413,Baglica ,37.990317,29.628421,2,Dedeoglu and Ozan and Konakci_2016,Denizli,Balca,https://www.geonames.org/412929,https://www.geonames.org/311046,https://www.wikidata.org/wiki/Q3605584,https://luwianstudies.org/sites/baglica
+414,Kirnabasi,38.053267,29.47805,7,Dedeoglu and Ozan and Konakci_2016,Denizli,Asagi Seyit,https://www.geonames.org/317409,https://www.geonames.org/325303,https://www.wikidata.org/wiki/Q6717939,https://luwianstudies.org/sites/kirnabasi
+415,Sakizcilar Asaronu,38.025654,29.262747,7,Dedeoglu and Ozan and Konakci_2016,Denizli,Sakizcilar,https://www.geonames.org/324624,https://www.geonames.org/317109,https://www.wikidata.org/wiki/Q2462764,https://luwianstudies.org/sites/sakizcilar-asaronu
+416,Gocuk Dumberek ,38.11905,29.208,2,Dedeoglu and Ozan and Konakci_2016,Denizli,Dagmarmara,https://www.geonames.org/252685,https://www.geonames.org/317109,https://www.wikidata.org/wiki/Q10777373,https://luwianstudies.org/sites/gocuk-dumberek
+417,Suludereburnu,38.152997,29.427023,7,Dedeoglu and Konakci and Ozan_2015,Denizli,Cal,https://www.geonames.org/11361392,https://www.geonames.org/317109,https://www.wikidata.org/wiki/Q186373,https://luwianstudies.org/sites/suludereburnu
+418,Cagilarasi,38.123513,29.393084,2,Dedeoglu and Konakci and Ozan_2015,Denizli,Hancalar,https://www.geonames.org/10375669,https://www.geonames.org/747711,https://www.wikidata.org/wiki/Q1318876,https://luwianstudies.org/sites/cagilarasi
+419,Selcen Orenarasi,38.098184,29.36532,2,Dedeoglu and Konakci and Ozan_2015; Dedeoglu and Ozan_2016,Denizli,Selcen,https://www.geonames.org/739004,https://www.geonames.org/317109,,https://luwianstudies.org/sites/selcen-orenarasi
+420,Ortakoy Asartepe,38.17365,29.301167,7,Dedeoglu and Konakci and Ozan_2015,Denizli,Ortakoy,https://www.geonames.org/738615,https://www.geonames.org/305268,,https://luwianstudies.org/sites/ortakoy-asartepe
+421,Sazak Asartepe,38.090917,29.278467,7,Dedeoglu and Konakci and Ozan_2015,Denizli,Sazak,https://www.geonames.org/303349,https://www.geonames.org/311046,,https://luwianstudies.org/sites/sazak-asartepe
+422,Sazak Oren,38.089579,29.291156,2,Dedeoglu and Konakci and Ozan_2015,Denizli,Sazak,https://www.geonames.org/305945,https://www.geonames.org/315202,,https://luwianstudies.org/sites/sazak-oren
+423,Igdelioglu ,38.07778,29.315491,2,Dedeoglu and Konakci and Ozan_2015,Denizli,Sazak,,,,https://luwianstudies.org/sites/igdelioglu
+424,Callica,38.05755,29.452183,2,Dedeoglu and Konakci and Ozan_2015,Denizli,Asagi Seyit,,https://www.geonames.org/311046,,https://luwianstudies.org/sites/callica
+425,Hancalar Asarlik,38.125133,29.428117,2,Dedeoglu and Konakci and Ozan_2015,Denizli,Hancalar,,,,https://luwianstudies.org/sites/hancalar-asarlik
+426,Sarikaya Tepe Yerlesimi,38.077657,29.730913,7,Dedeoglu and Konakci and Carki_2014,Denizli,Resadiye,,https://www.geonames.org/298299,,https://luwianstudies.org/sites/sarikaya-tepe-yerlesimi
+427,Sogutlucesme-Hasan Hoyuk,38.069367,29.770683,2,Dedeoglu and Konakci and Carki_2014,Denizli,Civril,https://www.geonames.org/318260,https://www.geonames.org/311046,,https://luwianstudies.org/sites/sogutlucesme-hasan-hoyuk
+428,Goceler Hoyuk,38.392346,29.620799,7,Dedeoglu and Konakci and Carki_2014 and Konakci_2017,Denizli,Karalar,https://www.geonames.org/10262963,https://www.geonames.org/315202,,https://luwianstudies.org/sites/goceler-hoyuk
+429,Dere Hoyuk,38.399467,29.643983,2,Dedeoglu and Konakci and Carki_2014,Denizli,Karalar,,,,https://luwianstudies.org/sites/dere-hoyuk
+430,Orenler Yerlesimi,38.388033,29.6814,2,Dedeoglu and Konakci and Carki_2014,Denizli,Gurpinar,https://www.geonames.org/10228617,https://www.geonames.org/747712,,https://luwianstudies.org/sites/orenler-yerlesimi
+431,Han Taslari Yerlesimi,38.319868,29.656813,2,Dedeoglu and Konakci and Carki_2014,Denizli,Karabedirler,https://www.geonames.org/302907,https://www.geonames.org/304827,,https://luwianstudies.org/sites/han-taslari-yerlesimi
+432,Yuvakoy Hoyuk,38.313717,29.9073,2,Dedeoglu and Konakci and Carki_2014,Denizli,Yuva,,https://www.geonames.org/322819,,https://luwianstudies.org/sites/yuvakoy-hoyuk
+433,Tokca Hoyuk,38.15711,29.786686,2,Dedeoglu and Konakci and Carki_2014,Denizli,Tokca,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/tokca-hoyuk
+434,Razoglu Hoyuk,38.597333,27.906317,2,Roosevelt and Luke and Cobb and O'Grady and Sekedat_2014,Manisa,Golmarmara,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/razoglu-hoyuk
+435,Ilimanli Hoyuk,38.446433,29.87035,2,Dedeoglu_2013,Denizli,Yukari Capak,https://www.geonames.org/303403,https://www.geonames.org/315202,,https://luwianstudies.org/sites/ilimanli-hoyuk
+436,Kocaalan,38.443067,29.866433,2,Dedeoglu_2013,Denizli,Capak,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/kocaalan
+437,Kocakaya,38.4126,29.870917,2,Dedeoglu_2013,Denizli,Capak,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/kocakaya
+438,Asagi Asar Tepe,38.417083,29.87545,2,Dedeoglu_2013,Denizli,Osmankoy,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/asagi-asar-tepe
+439,Cogurlu Pinar,38.403368,29.871993,2,Dedeoglu_2013,Denizli,Osmankoy,,https://www.geonames.org/298299,,https://luwianstudies.org/sites/cogurlu-pinar
+440,Osmankoy-Oren,38.3906,29.859283,2,Dedeoglu_2013,Denizli,Osmankoy,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/osmankoy-oren
+441,Belkuyu Hoyuk,38.383917,29.81815,2,Dedeoglu_2013,Denizli,Belence,,https://www.geonames.org/750269,,https://luwianstudies.org/sites/belkuyu-hoyuk
+442,Belence Hoyuk,38.413017,29.840786,2,Dedeoglu_2013,Denizli,Belence,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/belence-hoyuk
+443,Cesmebasi,38.329217,29.760033,2,Dedeoglu_2013,Denizli,Kocak,,https://www.geonames.org/305268,,https://luwianstudies.org/sites/cesmebasi
+444,Incilipinar,40.091609,28.480909,7,Aybek and Oz_2010,Bursa,Yavelli,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/incilipinar
+445,Suluhoyuk,39.651169,30.808299,2,Efe and Perello_2016; Efe_1995,Eskisehir,Yahnikapan,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/suluhoyuk
+446,Imisehir,39.690067,30.758217,2,Efe and Perello_2016; Efe_1995,Eskisehir,Imisehir,,https://www.geonames.org/750598,,https://luwianstudies.org/sites/imisehir
+447,Kayabasi/Inli,39.470017,30.218433,2,Efe_1990b; Efe and Perello_2016,Kutahya,Cobanlar,,https://www.geonames.org/305268,,https://luwianstudies.org/sites/kayabasi-inli
+448,Bahcehisar/Kandilli,39.834516,30.087969,2,"French_1969, no 322; Efe_1992",Eskisehir,Kandilli,,https://www.geonames.org/305268,,https://luwianstudies.org/sites/bahcehisar-kandilli
+449,Erenkoy 1,39.738867,30.040067,2,Efe and Perello_2016; Efe_1990b,Eskisehir,Erenkoy,,https://www.geonames.org/750598,,https://luwianstudies.org/sites/erenkoy-1
+450,Demircihoyuk,39.850248,30.270793,2,Efe and Perello_2016; Efe_1998; Efe_1992,Bilecik,Zemzemiye,,https://www.geonames.org/750598,,https://luwianstudies.org/sites/demircihoyuk
+451,Malatca,39.20195,30.337483,2,Efe and Perello_2016; Efe_1994,Kutahya,Demirozu,,https://www.geonames.org/750598,,https://luwianstudies.org/sites/malatca
+452,Saglar,39.180048,29.819072,2,Efe and Perello_2016; Efe_1993,Kutahya,Bezirgan,,https://www.geonames.org/750598,,https://luwianstudies.org/sites/saglar
+453,Parmakoren,39.452186,29.964673,2,Efe and Perello_2016; Efe_1991,Kutahya,Bolucek,https://www.geonames.org/322208,https://www.geonames.org/325303,,https://luwianstudies.org/sites/parmakoren
+454,Gokhoyuk,40.383567,29.961333,7,Efe and Perello_2016; Efe et. Al._2014,Bilecik,Osmaneli,,https://www.geonames.org/311046,,https://luwianstudies.org/sites/gokhoyuk
+455,Yilik Hoyuk,40.267133,29.934333,2,Efe and Perello_2016; Aydin_1987; Efe_1992,Bilecik,Beyce,,https://www.geonames.org/311046,,https://luwianstudies.org/sites/yilik-hoyuk
+456,Aricklar/Aricaklar,40.281721,30.368618,,Efe and Perello_2016; Efe_1992,Bilecik,Ciftlik,,https://www.geonames.org/311046,,https://luwianstudies.org/sites/aricklar-aricaklar
+457,Palangatepe Hoyuk,40.112697,29.477588,2,,Bursa,Inegol,https://www.geonames.org/319473,https://www.geonames.org/311046,,https://luwianstudies.org/sites/palangatepe-hoyuk
+458,Gavur Tepesi,39.801183,29.919298,7,Efe_1990,Bilecik,Dodurga,,https://www.geonames.org/311046,,https://luwianstudies.org/sites/gavur-tepesi
+459,Geren,38.6548,26.90535,7,Meric_1985 ,Izmir,Kemal Ataturk,,https://www.geonames.org/298299,,https://luwianstudies.org/sites/geren
+460,Kucuk Yamanlar,38.469468,27.119992,2,Meric_1986 ,Izmir,Emek,,https://www.geonames.org/298299,,https://luwianstudies.org/sites/kucuk-yamanlar
+461,Kumtepe (Sakaltepe),38.61805,27.103617,2,Meric_1985 ,Izmir,Yahselli,https://www.geonames.org/307419,https://www.geonames.org/322819,,https://luwianstudies.org/sites/kumtepe-sakaltepe
+462,Yarentepe,38.260018,26.749436,2,Ersoy and Koparal_2008,Izmir,Kuscular,,https://www.geonames.org/298299,,https://luwianstudies.org/sites/yarentepe
+463,Kazankaya Tepesi,38.272367,26.610117,7,Ersoy and Koparal_2014,Izmir,Urla,,https://www.geonames.org/298299,,https://luwianstudies.org/sites/kazankaya-tepesi
+464,Banaz Hoyuk,38.749117,29.761917,2,Yilmaz_2019,Usak,Banaz,,https://www.geonames.org/298299,,https://luwianstudies.org/sites/banaz-hoyuk
+465,Yenice Hoyuk,38.712483,29.85925,2,Yilmaz_2019,Usak,Yenice,,https://www.geonames.org/745044,,https://luwianstudies.org/sites/yenice-hoyuk
+466,Ayvacik Hoyuk,38.648161,29.817004,2,Oy_2017,Usak,Ahat,,https://www.geonames.org/256866,,https://luwianstudies.org/sites/ayvacik-hoyuk
+467,Ciftlik Hoyuk,38.818417,29.9939,2,Oy_2017 and Yilmaz_2019,Usak,Ciftlik,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/ciftlik-hoyuk
+468,Oksuz Hoyuk,38.698018,29.726424,2, Yilmaz_2019,Usak,Oksuz,,https://www.geonames.org/256866,,https://luwianstudies.org/sites/oksuz-hoyuk
+469,Dumenler Hoyuk,38.84345,29.81545,2, Yilmaz_2019,Usak,Dumenler,,https://www.geonames.org/315202,,https://luwianstudies.org/sites/dumenler-hoyuk
+470,Bathonea,41.033568,28.733316,2,Aydingun_2015,Istanbul,Yarimburgaz,,https://www.geonames.org/305268,,https://luwianstudies.org/sites/bathonea
+471,Lesbos: Thermi  ,39.176824,26.503804,15,Lamb_1935; Spencer_1995,????????,?????? ??????,,https://www.geonames.org/311073,,https://luwianstudies.org/sites/lesbos-thermi
+472,Lesbos: Chalatses-Perama  ,39.046067,26.5021,15,Spencer_1995,????????,??????,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/lesbos-chalatses-perama
+473,Lesbos: Kourtir-Skamioudi ,39.129658,26.208695,15,Spencer_1995,???????? ??????? ??????????,???????? ??????? ??????????,,https://www.geonames.org/325303,,https://luwianstudies.org/sites/lesbos-kourtir-skamioudi
+474,Lesbos: Pyrrha-Achladeri ,39.150117,26.278867,15,Spencer_1995,???????? ??????? ??????????,???????? ??????? ??????????,,https://www.geonames.org/749780,,https://luwianstudies.org/sites/lesbos-pyrrha-achladeri
+475,Lesbos: Obriokastro-Gabathas; ancient Antissa,39.28038,26.016235,15,Spencer_1995,Not found,?????????,,https://www.geonames.org/304827,,https://luwianstudies.org/sites/lesbos-obriokastro-gabathas-ancient-antissa
+476,Lesbos-Methimna ,39.368383,26.177333,15,Spencer_1995,Not found,???????,,https://www.geonames.org/317109,,https://luwianstudies.org/sites/lesbos-methimna
+477,Chios-Emporio ,38.18655,26.02865,15,Mee_2008,Not found,?????????,,https://www.geonames.org/323777,,https://luwianstudies.org/sites/chios-emporio
+478,Samos-Heraion ,37.671964,26.885868,15,Kouka_2015,???????? ??????? ???????????,?????,https://www.geonames.org/740759,https://www.geonames.org/325303,,https://luwianstudies.org/sites/samos-heraion
+479,Patmos-Kastelli ,37.32965,26.540017,15,Hope Simpson and Dickinson_1979,Not found,?????,,,,https://luwianstudies.org/sites/patmos-kastelli
+480,Leros-Kastro (Ayia Marina) ,37.156103,26.859369,15,Hope Simpson and Dickinson_1979,Not found,???? ??????,,,,https://luwianstudies.org/sites/leros-kastro-ayia-marina
+481,Kalymnos-Perakastro (Chorio) ,36.967067,26.961117,15,Hope Simpson and Dickinson_1979,Not found,?????,https://www.geonames.org/298315,https://www.geonames.org/322819,,https://luwianstudies.org/sites/kalymnos-perakastro-chorio
+482,Kos-Serayia (Chorio) ,36.888812,27.28669,15,Marketou_2010,???,???,https://www.geonames.org/321623,https://www.geonames.org/317109,,https://luwianstudies.org/sites/kos-serayia-chorio
+483,Astypalaia-Kastro (Ayios Ioannes) ,36.590483,26.425,15,Marketou_2010,Not found,???????????? ??????? ????????,https://www.geonames.org/9997422,https://www.geonames.org/317109,,https://luwianstudies.org/sites/astypalaia-kastro-ayios-ioannes
