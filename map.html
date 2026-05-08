@@ -350,6 +350,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <button class="filter-chip" id="roman-letters-atlas-btn" onclick="toggleRomanLettersAtlas()">Roman Letters</button>
       <button class="filter-chip" id="iran-gazetteer-atlas-btn" onclick="toggleIranGazetteeerAtlas()">Iran Gazetteer</button>
       <button class="filter-chip" id="pliny-atlas-btn" onclick="togglePlinyAtlas()">Pliny the Elder</button>
+      <button class="filter-chip" id="peutinger-atlas-btn" onclick="togglePeutingerAtlas()">Tabula Peutingeriana</button>
     </div>
     <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:6px;line-height:1.45;">
       Open external archaeological atlases in a dedicated workspace above the map.
@@ -598,6 +599,40 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   </div>
 </div>
 
+<div class="atlas-panel" id="peutingerAtlasPanel">
+  <div class="atlas-head">
+    <div class="atlas-title-wrap">
+      <div class="atlas-kicker">External atlas layer</div>
+      <div class="atlas-title">Tabula Peutingeriana Digital Plot — Jean-Baptiste Piggin</div>
+      <div class="atlas-meta">
+        Source: <a href="https://piggin.net/ta.svg" target="_blank" rel="noopener">piggin.net/ta.svg</a>
+        &nbsp;·&nbsp; Roman road network, England to Sri Lanka &nbsp;·&nbsp; 3,300+ places &nbsp;·&nbsp; 4th c. CE &nbsp;·&nbsp; CC BY-SA
+      </div>
+    </div>
+    <div class="atlas-actions">
+      <a class="atlas-link" href="https://piggin.net/ta.svg" target="_blank" rel="noopener">Open full SVG ↗</a>
+      <button class="atlas-close" type="button" onclick="togglePeutingerAtlas(false)">Close</button>
+    </div>
+  </div>
+  <div class="atlas-body">
+    <object
+      data="https://piggin.net/ta.svg"
+      type="image/svg+xml"
+      id="peutinger-object"
+      style="width:100%;height:480px;border:none;display:block;background:#f5f0e8;overflow:auto;"
+      title="Tabula Peutingeriana Digital Plot — Jean-Baptiste Piggin"
+    >
+      <!-- Fallback if object tag fails -->
+      <div style="padding:2rem;text-align:center;font-family:monospace;font-size:.7rem;color:#888;">
+        SVG could not be embedded. <a href="https://piggin.net/ta.svg" target="_blank" rel="noopener" style="color:#b8892a;">Open directly in browser ↗</a>
+      </div>
+    </object>
+    <div class="atlas-note">
+      Piggin's <em>Tabula Peutingeriana Digital Plot</em> (CC BY-SA) — the most complete digital edition of the Roman world road diagram, with color-coded Italian routes and animated emendations. The scroll is ~20× wider than tall: scroll or pan horizontally to traverse England → Sri Lanka. <strong>Open full SVG</strong> in a new tab for the best experience. Jean-Baptiste Piggin (1953–2019), independent scholar, Hamburg.
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   const atlasConfigs = [
@@ -607,7 +642,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     ['cyprusAtlasPanel','cyprus-atlas-btn','Cyprus','Hide Cyprus'],
     ['romanLettersAtlasPanel','roman-letters-atlas-btn','Roman Letters','Hide Roman Letters'],
     ['iranGazetteeerAtlasPanel','iran-gazetteer-atlas-btn','Iran Gazetteer','Hide Iran Gazetteer'],
-    ['plinyAtlasPanel','pliny-atlas-btn','Pliny the Elder','Hide Pliny']
+    ['plinyAtlasPanel','pliny-atlas-btn','Pliny the Elder','Hide Pliny'],
+    ['peutingerAtlasPanel','peutinger-atlas-btn','Tabula Peutingeriana','Hide Peutinger']
   ];
 
   function safeCloseAtlases(){
@@ -657,6 +693,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   };
   window.togglePlinyAtlas = function(force){
     toggleAtlas('plinyAtlasPanel','pliny-atlas-btn','Pliny the Elder','Hide Pliny',force);
+  };
+  window.togglePeutingerAtlas = function(force){
+    toggleAtlas('peutingerAtlasPanel','peutinger-atlas-btn','Tabula Peutingeriana','Hide Peutinger',force);
   };
   window.closeExternalAtlases = safeCloseAtlases;
 })();
