@@ -17,7 +17,7 @@
 html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-height:100vh;}
 
 /* ── Masthead ── */
-.masthead{position:fixed;top:0;left:0;right:0;z-index:1000;height:44px;
+.masthead{position:fixed;top:0;left:0;right:0;z-index:1000;height:32px;
   background:rgba(8,9,14,.97);border-bottom:1px solid rgba(242,234,216,.06);
   display:flex;align-items:center;padding:0 1.4rem;gap:1.5rem;}
 .logo{font-family:var(--serif);font-size:1.1rem;font-weight:900;color:var(--stone);text-decoration:none;}
@@ -44,11 +44,11 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 
 /* ── Layout ── */
 .container{max-width:1200px;margin:0 auto;padding:0 1.4rem;}
-.page-body{display:grid;grid-template-columns:300px 1fr;gap:0;min-height:calc(100vh - 44px);}
+.page-body{display:grid;grid-template-columns:300px 1fr;gap:0;min-height:calc(100vh - 32px);}
 @media(max-width:800px){.page-body{grid-template-columns:1fr;}}
 
 /* ── Search panel ── */
-.search-panel{position:sticky;top:44px;height:calc(100vh - 44px);overflow-y:auto;
+.search-panel{position:sticky;top:32px;height:calc(100vh - 32px);overflow-y:auto;
   background:rgba(242,234,216,.02);border-right:1px solid rgba(242,234,216,.06);
   padding:1.2rem;scrollbar-width:thin;}
 .search-panel::-webkit-scrollbar{width:4px;}
@@ -96,7 +96,7 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 .results-area{display:flex;flex-direction:column;}
 
 /* Map */
-#insc-map{height:300px;border-bottom:1px solid rgba(242,234,216,.06);}
+#insc-map{height:460px;border-bottom:1px solid rgba(242,234,216,.06);}
 
 /* Results list */
 .results-list{flex:1;padding:.8rem 1.2rem;}
@@ -131,7 +131,7 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 .insc-person strong{color:rgba(242,234,216,.65);}
 
 /* Detail panel */
-.detail-overlay{position:fixed;right:0;top:44px;bottom:0;width:420px;
+.detail-overlay{position:fixed;right:0;top:32px;bottom:0;width:420px;
   background:#0e0c09;border-left:1px solid rgba(242,234,216,.07);
   overflow-y:auto;transform:translateX(100%);transition:transform .3s;z-index:900;}
 .detail-overlay.open{transform:translateX(0);}
@@ -282,7 +282,7 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
   <a class="nav-link " href="conferences.html">Conferences</a>
 </header>
 
-<div style="padding-top:44px;">
+<div style="padding-top:32px;">
 
 <!-- Hero -->
 <div class="hero">
@@ -500,8 +500,8 @@ let selectedType = '', selectedPhoto = '';
 // ── Map init ──────────────────────────────────────────────────
 window.addEventListener('load', () => {
   map = L.map('insc-map', {center:[44,14],zoom:4,zoomControl:false,attributionControl:false});
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',
-    {attribution:'© Esri',maxZoom:8}).addTo(map);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
+    {attribution:'Tiles © Esri — National Geographic',maxNativeZoom:16,maxZoom:19}).addTo(map);
   L.control.zoom({position:'bottomright'}).addTo(map);
   L.control.attribution({position:'bottomright',prefix:'EDH · Heidelberg · CC-BY'}).addTo(map);
 });
@@ -676,7 +676,7 @@ function renderMapMarkers(items) {
     markers.push(m);
   });
   if (pts.length) {
-    try { map.fitBounds(L.featureGroup(markers).getBounds(), {padding:[20,20],maxZoom:8}); }
+    try { map.fitBounds(L.featureGroup(markers).getBounds(), {padding:[20,20],maxZoom:14}); }
     catch(e) {}
   }
 }
