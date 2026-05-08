@@ -164,6 +164,7 @@ body{font-family:var(--sans);background:var(--ink);color:var(--parch);min-height
 footer{padding:3rem 0;text-align:center;border-top:1px solid rgba(240,234,216,.05);}
 footer p{font-size:.7rem;color:rgba(240,234,216,.2);}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 </head>
 <body>
 
@@ -1233,13 +1234,23 @@ footer p{font-size:.7rem;color:rgba(240,234,216,.2);}
       </div>
 
       <div style="margin-top:1.5rem;">
-        <div class="ai-dev-lbl">Explore on the map</div>
+        <div class="ai-dev-lbl">Language Map</div>
         <div class="script-prose">
-          <p>The <strong>Glottolog language layer</strong> on the <a href="map.html">archAIology map</a> shows all 47 tracked languages as colour-coded dots — green for vulnerable, orange for severely endangered, red for critically endangered, grey for dormant. Each marker links to the language's Glottolog entry and overlaps with our 45,000+ archaeological site gazetteer, making the spatial relationship between living languages and ancient sites immediately visible.</p>
+          <p>All 47 tracked languages mapped by their Glottolog coordinates. Color-coded by AES endangerment level — green for safe/vulnerable, orange for severely endangered, red for critically endangered, grey for dormant/extinct. Click any marker for language details, family, speaker count, and Glottolog link.</p>
         </div>
-        <a href="map.html" style="display:inline-block;margin-top:.8rem;padding:.5rem 1rem;background:rgba(160,100,200,.15);border:1px solid rgba(160,100,200,.3);color:#c090d8;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;">
-          Open Language Map →
-        </a>
+        <!-- Glottolog Leaflet Map -->
+        <div style="position:relative;margin-top:1rem;">
+          <div id="glottolog-map" style="height:420px;background:#0d0f14;border:1px solid rgba(160,100,200,.2);border-radius:2px;"></div>
+          <div id="glottolog-map-status" style="position:absolute;bottom:8px;left:8px;font-family:monospace;font-size:.6rem;color:rgba(240,220,255,.5);background:rgba(0,0,0,.6);padding:3px 7px;border-radius:2px;pointer-events:none;"></div>
+        </div>
+        <!-- AES Legend -->
+        <div style="display:flex;flex-wrap:wrap;gap:.7rem;margin-top:.7rem;">
+          <div style="display:flex;align-items:center;gap:5px;"><div style="width:9px;height:9px;border-radius:50%;background:#40b060;flex-shrink:0;"></div><span style="font-size:.6rem;color:rgba(240,234,216,.45);">Safe / Vulnerable</span></div>
+          <div style="display:flex;align-items:center;gap:5px;"><div style="width:9px;height:9px;border-radius:50%;background:#f0c020;flex-shrink:0;"></div><span style="font-size:.6rem;color:rgba(240,234,216,.45);">Definitely Endangered</span></div>
+          <div style="display:flex;align-items:center;gap:5px;"><div style="width:9px;height:9px;border-radius:50%;background:#f07020;flex-shrink:0;"></div><span style="font-size:.6rem;color:rgba(240,234,216,.45);">Severely Endangered</span></div>
+          <div style="display:flex;align-items:center;gap:5px;"><div style="width:9px;height:9px;border-radius:50%;background:#d03030;flex-shrink:0;"></div><span style="font-size:.6rem;color:rgba(240,234,216,.45);">Critically Endangered</span></div>
+          <div style="display:flex;align-items:center;gap:5px;"><div style="width:9px;height:9px;border-radius:50%;background:#808080;flex-shrink:0;"></div><span style="font-size:.6rem;color:rgba(240,234,216,.45);">Dormant / Extinct</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -2183,6 +2194,75 @@ function cuneifySubmit() {
 document.getElementById('cuneify-input')?.addEventListener('input', function() {
   cuneifyPreview(this.value);
 });
+</script>
+<!-- Glottolog Language Map -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function(){
+  const mapEl = document.getElementById('glottolog-map');
+  if (!mapEl) return;
+
+  // Init map
+  const gmap = L.map('glottolog-map', {
+    center: [20, 20], zoom: 2,
+    zoomControl: true,
+    attributionControl: false,
+  });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    maxNativeZoom: 19, maxZoom: 19
+  }).addTo(gmap);
+
+  const AES_COLORS = {
+    1:'#40b060', 2:'#90c040', 3:'#f0c020',
+    4:'#f07020', 5:'#d03030', 6:'#808080'
+  };
+  const AES_LABELS = {
+    1:'Safe', 2:'Vulnerable', 3:'Definitely Endangered',
+    4:'Severely Endangered', 5:'Critically Endangered', 6:'Dormant/Extinct'
+  };
+
+  function langIcon(aes) {
+    const color = AES_COLORS[aes] || '#808080';
+    const r = aes >= 5 ? 7 : aes >= 3 ? 5 : 4;
+    return L.divIcon({
+      html:`<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+4}" height="${r*2+4}">
+        <circle cx="${r+2}" cy="${r+2}" r="${r}" fill="${color}" fill-opacity=".88"
+          stroke="#fff" stroke-width="1.5" stroke-opacity=".55"/>
+        ${aes >= 5 ? `<circle cx="${r+2}" cy="${r+2}" r="${r+3}" fill="none" stroke="${color}" stroke-width="1" stroke-opacity=".35"/>` : ''}
+      </svg>`,
+      className:'', iconSize:[r*2+4,r*2+4], iconAnchor:[r+2,r+2]
+    });
+  }
+
+  const status = document.getElementById('glottolog-map-status');
+
+  fetch('./map-data/glottolog-langs.json')
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(langs => {
+      langs.forEach(lang => {
+        const spk = lang.speakers > 0 ? `${lang.speakers.toLocaleString()} speakers` : 'Dormant / Extinct';
+        const glottoUrl = lang.glottocode ? `https://glottolog.org/resource/languoid/id/${lang.glottocode}` : null;
+        const popup = `
+          <div style="font-family:sans-serif;min-width:160px;">
+            <div style="font-weight:700;font-size:.9rem;margin-bottom:.2rem;">${lang.name}</div>
+            <div style="font-size:.72rem;color:#b8892a;margin-bottom:.3rem;">${AES_LABELS[lang.aes] || ''} (AES ${lang.aes})</div>
+            <div style="font-size:.68rem;color:#888;margin-bottom:.15rem;">${lang.family || ''}</div>
+            <div style="font-size:.68rem;color:#888;margin-bottom:.4rem;">${spk}</div>
+            ${lang.note ? `<div style="font-size:.65rem;color:#aaa;font-style:italic;margin-bottom:.4rem;">${lang.note}</div>` : ''}
+            ${glottoUrl ? `<a href="${glottoUrl}" target="_blank" rel="noopener" style="font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#b8892a;">Glottolog ↗</a>` : ''}
+          </div>`;
+        L.marker([lang.lat, lang.lng], { icon: langIcon(lang.aes) })
+          .bindPopup(popup, { maxWidth: 220, closeButton: false })
+          .addTo(gmap);
+      });
+      if (status) status.textContent = `${langs.length} languages · Glottolog CC-BY 4.0`;
+    })
+    .catch(e => {
+      if (status) status.textContent = 'Could not load language data';
+      console.warn('Glottolog map error:', e);
+    });
+})();
 </script>
 </body>
 </html>
