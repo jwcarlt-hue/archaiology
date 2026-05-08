@@ -302,45 +302,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     </div>
   </div>
   <div class="ctrl-card">
-    <div class="ctrl-label">Glottolog Languages</div>
-    <div class="filter-row">
-      <button class="filter-chip" id="lang-btn" onclick="toggleLangs()">Show Languages</button>
-    </div>
-    <div id="lang-legend" style="display:none;margin-top:6px;">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#f07020;flex-shrink:0"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Severely endangered</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#d03030;flex-shrink:0"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Critically endangered</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#808080;flex-shrink:0"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Dormant / Extinct</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#40b060;flex-shrink:0"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Vulnerable / Safe</span>
-      </div>
-      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:4px;">47 languages in this layer</div>
-    </div>
-  </div>
-  <div class="ctrl-card">
-    <div class="ctrl-label">Roman Mosaics</div>
-    <div class="filter-row">
-      <button class="filter-chip" id="mosaic-btn" onclick="toggleMosaics()">Show Mosaics</button>
-    </div>
-    <div id="mosaic-legend" style="display:none;margin-top:6px;">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-        <svg width="14" height="14" style="flex-shrink:0"><polygon points="7,1 13,13 1,13" fill="#c87050" fill-opacity=".85" stroke="rgba(255,200,150,.5)" stroke-width="1"/></svg>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Mosaic floor site (DARE type 98)</span>
-      </div>
-      <div id="mosaic-status" style="font-family:var(--mono);font-size:.58rem;color:rgba(240,220,180,.4);letter-spacing:.04em;"></div>
-      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:4px;">DARE type 98 dataset</div>
-    </div>
-  </div>
-  <div class="ctrl-card">
     <div class="ctrl-label">External Atlas</div>
     <div class="filter-row">
       <button class="filter-chip" id="arabia-atlas-btn" onclick="toggleArabiaAtlas()">Ancient Arabia</button>
@@ -348,9 +309,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <button class="filter-chip" id="fasti-atlas-btn" onclick="toggleFastiAtlas()">Fasti</button>
       <button class="filter-chip" id="cyprus-atlas-btn" onclick="toggleCyprusAtlas()">Cyprus</button>
       <button class="filter-chip" id="roman-letters-atlas-btn" onclick="toggleRomanLettersAtlas()">Roman Letters</button>
+      <button class="filter-chip" id="mosaic-btn" onclick="toggleMosaics()">Roman Mosaics</button>
       <button class="filter-chip" id="iran-gazetteer-atlas-btn" onclick="toggleIranGazetteeerAtlas()">Iran Gazetteer</button>
       <button class="filter-chip" id="pliny-atlas-btn" onclick="togglePlinyAtlas()">Pliny the Elder</button>
       <button class="filter-chip" id="peutinger-atlas-btn" onclick="togglePeutingerAtlas()">Tabula Peutingeriana</button>
+      <button class="filter-chip" id="proxeny-atlas-btn" onclick="toggleProxenyAtlas()">Proxeny Networks</button>
     </div>
     <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:6px;line-height:1.45;">
       Open external archaeological atlases in a dedicated workspace above the map.
@@ -633,6 +596,35 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   </div>
 </div>
 
+<div class="atlas-panel" id="proxenyAtlasPanel">
+  <div class="atlas-head">
+    <div class="atlas-title-wrap">
+      <div class="atlas-kicker">External atlas layer</div>
+      <div class="atlas-title">Proxeny Networks of Ancient Greece — CSAD / Oxford</div>
+      <div class="atlas-meta">
+        Source: <a href="http://proxenies.csad.ox.ac.uk/places/home" target="_blank" rel="noopener">proxenies.csad.ox.ac.uk</a>
+        &nbsp;·&nbsp; Proxeny decrees 500–31 BCE &nbsp;·&nbsp; 1,000+ inscriptions &nbsp;·&nbsp; Centre for the Study of Ancient Documents, Oxford
+      </div>
+    </div>
+    <div class="atlas-actions">
+      <a class="atlas-link" href="http://proxenies.csad.ox.ac.uk/places/home" target="_blank" rel="noopener">Open in new tab</a>
+      <button class="atlas-close" type="button" onclick="toggleProxenyAtlas(false)">Close</button>
+    </div>
+  </div>
+  <div class="atlas-body">
+    <iframe
+      class="atlas-frame"
+      src="http://proxenies.csad.ox.ac.uk/places/home"
+      title="Proxeny Networks of Ancient Greece — CSAD Oxford, proxeny decrees 500–31 BCE"
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+    <div class="atlas-note">
+      Centre for the Study of Ancient Documents, Oxford. Maps proxeny decrees — civic grants of guest-friendship — across the Greek world, 500–31 BCE. Over 1,000 inscriptions linking honorands to poleis. A unique spatial dataset for Greek interstate diplomacy. If the frame is blocked, use the open-in-new-tab link.
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   const atlasConfigs = [
@@ -643,7 +635,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     ['romanLettersAtlasPanel','roman-letters-atlas-btn','Roman Letters','Hide Roman Letters'],
     ['iranGazetteeerAtlasPanel','iran-gazetteer-atlas-btn','Iran Gazetteer','Hide Iran Gazetteer'],
     ['plinyAtlasPanel','pliny-atlas-btn','Pliny the Elder','Hide Pliny'],
-    ['peutingerAtlasPanel','peutinger-atlas-btn','Tabula Peutingeriana','Hide Peutinger']
+    ['peutingerAtlasPanel','peutinger-atlas-btn','Tabula Peutingeriana','Hide Peutinger'],
+    ['proxenyAtlasPanel','proxeny-atlas-btn','Proxeny Networks','Hide Proxeny']
   ];
 
   function safeCloseAtlases(){
@@ -696,6 +689,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   };
   window.togglePeutingerAtlas = function(force){
     toggleAtlas('peutingerAtlasPanel','peutinger-atlas-btn','Tabula Peutingeriana','Hide Peutinger',force);
+  };
+  window.toggleProxenyAtlas = function(force){
+    toggleAtlas('proxenyAtlasPanel','proxeny-atlas-btn','Proxeny Networks','Hide Proxeny',force);
   };
   window.closeExternalAtlases = safeCloseAtlases;
 })();
@@ -1850,5 +1846,6 @@ async function toggleBibleLayer() {
 // ── END BIBLE GEOCODING LAYER ────────────────────────────────────────────────
 
 </script>
+<div id="mosaic-status" style="display:none"></div>
 </body>
 </html>
