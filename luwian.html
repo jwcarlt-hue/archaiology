@@ -538,7 +538,8 @@ function parseCSVRow(line) {
 
 async function loadAllData() {
   // Load core files in parallel
-  const [siteDesc, sitePeriod, pleiades, geonames, daiGaz, oreDeposits] = await Promise.all([
+  const [sitesCore, siteDesc, sitePeriod, pleiades, geonames, daiGaz, oreDeposits] = await Promise.all([
+    fetchCSV('sites.csv'),
     fetchCSV('site_descriptions.csv'),
     fetchCSV('site_period.csv'),
     fetchCSV('pleiades.csv'),
@@ -593,7 +594,7 @@ async function loadAllData() {
   });
 
   // Build master SITES array from site_descriptions (has coords + names)
-  SITES = siteDesc.map(r => {
+  SITES = sitesCore.map(r => {
     const id = r.site_id || r.id || r.ID || '';
     return {
       id,
