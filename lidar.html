@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>LiDAR & Elevation — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1c1814;--cream:#faf8f3;--ochre:#b8892a;--ochre-lt:#d4a84b;
+  --ash:#8a8070;--rule:#d5ccb8;--linen:#e8e0d0;--forest:#2a3d2e;
+  /* LiDAR accent — signal green / terrain teal */
+  --lidar:#2a7a4a;--lidar-lt:#3aaa6a;--lidar-dk:#1a5a34;
+  --lidar-glow:rgba(42,122,74,.15);
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --mono:'DM Mono',monospace;--sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+
+/* ── Masthead ── */
+.masthead{position:fixed;top:0;left:0;right:0;z-index:1000;height:44px;
+  background:rgba(250,248,243,.97);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;padding:0 1.5rem;gap:1.5rem;overflow-x:auto;}
+.logo{font-family:var(--serif);font-size:1.1rem;font-weight:900;color:var(--ink);flex-shrink:0;}
+.logo span{color:var(--ochre);font-style:italic;}
+.nav-link{font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ash);transition:color .2s;white-space:nowrap;}
+.nav-link:hover,.nav-link.active{color:var(--ink);}
+
+/* ── Hero ── */
+.hero{padding:80px 2rem 3rem;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#0d1f14 0%,#1a2e1e 40%,#0f1a12 100%);}
+.hero-scan{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+/* Animated LiDAR scan line */
+.hero-scan::before{
+  content:'';position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent 0%,rgba(58,170,106,.6) 30%,rgba(58,170,106,1) 50%,rgba(58,170,106,.6) 70%,transparent 100%);
+  animation:scan 4s ease-in-out infinite;
+  box-shadow:0 0 20px rgba(58,170,106,.4),0 0 40px rgba(58,170,106,.2);
+}
+@keyframes scan{
+  0%{top:0%;opacity:0;}
+  10%{opacity:1;}
+  90%{opacity:.8;}
+  100%{top:100%;opacity:0;}
+}
+/* Contour line texture */
+.hero-scan::after{
+  content:'';position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(58,170,106,.04) 28px,rgba(58,170,106,.04) 29px),
+    repeating-linear-gradient(90deg,transparent,transparent 48px,rgba(58,170,106,.025) 48px,rgba(58,170,106,.025) 49px);
+}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1;}
+.hero-eyebrow{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--lidar-lt);margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem;}
+.hero-eyebrow::before{content:'';width:22px;height:1px;background:var(--lidar-lt);}
+.hero-title{font-family:var(--serif);font-size:clamp(2.2rem,6vw,4.2rem);font-weight:900;
+  color:#e8f4ec;line-height:1.04;margin-bottom:.7rem;letter-spacing:-.02em;}
+.hero-title em{color:var(--lidar-lt);font-style:italic;}
+.hero-sub{font-family:var(--body);font-size:.92rem;color:rgba(200,230,210,.5);
+  max-width:640px;line-height:1.85;margin-bottom:2rem;font-weight:300;}
+.hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.hs-n{font-family:var(--serif);font-size:1.6rem;font-weight:900;color:var(--lidar-lt);}
+.hs-l{font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,230,210,.35);}
+
+/* ── Tab bar ── */
+.tab-bar{background:rgba(250,248,243,.98);border-bottom:1px solid var(--rule);
+  display:flex;padding:0 2rem;position:sticky;top:44px;z-index:90;gap:.5rem;overflow-x:auto;}
+.tab{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ash);padding:.85rem 1.1rem;cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
+.tab:hover{color:var(--ink);}
+.tab.active{color:var(--ink);border-bottom-color:var(--lidar);}
+
+/* ── Sections ── */
+.section{display:none;}
+.section.active{display:block;}
+
+/* ── Tool card grid ── */
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:1.2rem;max-width:1200px;margin:0 auto;padding:2rem 1.5rem;}
+.tool-card{background:#fff;border:1px solid var(--rule);border-radius:3px;
+  overflow:hidden;display:flex;flex-direction:column;
+  transition:box-shadow .2s,border-color .2s;}
+.tool-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08);border-color:rgba(42,122,74,.3);}
+.tool-card-head{padding:1.1rem 1.2rem .8rem;border-bottom:1px solid var(--linen);}
+.tool-card-kicker{font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--lidar);margin-bottom:.3rem;}
+.tool-card-title{font-family:var(--serif);font-size:1.1rem;font-weight:700;
+  color:var(--ink);margin-bottom:.3rem;line-height:1.2;}
+.tool-card-sub{font-size:.72rem;color:var(--ash);font-family:var(--mono);}
+.tool-card-body{padding:.9rem 1.2rem 1rem;flex:1;}
+.tool-card-desc{font-family:var(--body);font-size:.8rem;color:rgba(28,24,20,.65);
+  line-height:1.75;font-weight:300;}
+.tool-card-meta{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.75rem;}
+.tool-tag{font-family:var(--mono);font-size:.5rem;font-weight:500;letter-spacing:.06em;
+  text-transform:uppercase;padding:.12rem .4rem;border-radius:2px;}
+.tag-global{background:rgba(42,122,74,.1);color:var(--lidar);}
+.tag-us{background:rgba(42,61,46,.08);color:var(--forest);}
+.tag-mexico{background:rgba(184,137,42,.1);color:var(--ochre);}
+.tag-free{background:rgba(42,122,74,.07);color:var(--lidar-dk);}
+.tag-api{background:rgba(28,24,20,.06);color:var(--ash);}
+.tag-wms{background:rgba(42,122,74,.08);color:var(--lidar);}
+.tag-lidar{background:#0d1f14;color:var(--lidar-lt);}
+.tag-dem{background:rgba(42,61,46,.1);color:var(--forest);}
+.tool-card-foot{padding:.7rem 1.2rem;border-top:1px solid var(--linen);
+  display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;}
+.tool-btn{font-family:var(--mono);font-size:.58rem;letter-spacing:.07em;text-transform:uppercase;
+  padding:.3rem .7rem;border:1px solid;cursor:pointer;transition:all .15s;background:none;}
+.tool-btn-primary{border-color:var(--lidar);color:var(--lidar);}
+.tool-btn-primary:hover{background:var(--lidar);color:#fff;}
+.tool-btn-secondary{border-color:var(--rule);color:var(--ash);}
+.tool-btn-secondary:hover{border-color:var(--ash);color:var(--ink);}
+.tool-coverage{margin-left:auto;font-family:var(--mono);font-size:.52rem;color:var(--ash);}
+
+/* ── Viewer panel ── */
+.viewer-wrap{max-width:1200px;margin:0 auto;padding:2rem 1.5rem;}
+.viewer-header{display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;}
+.viewer-title-block{}
+.viewer-kicker{font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--lidar);margin-bottom:.2rem;}
+.viewer-title{font-family:var(--serif);font-size:1.4rem;font-weight:700;color:var(--ink);}
+.viewer-meta{font-family:var(--mono);font-size:.58rem;color:var(--ash);margin-top:.2rem;}
+.viewer-meta a{color:var(--lidar);}
+.viewer-actions{display:flex;gap:.4rem;align-items:center;}
+.viewer-frame-wrap{border:1px solid var(--rule);border-radius:3px;overflow:hidden;
+  background:#f0f4f0;}
+.viewer-frame-head{background:rgba(42,122,74,.06);padding:.5rem 1rem;
+  border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;}
+.viewer-frame-label{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ash);}
+.viewer-frame-link{font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;color:var(--lidar);}
+.viewer-frame{width:100%;border:none;display:block;background:#fff;}
+.viewer-note{padding:.65rem 1rem;background:rgba(42,122,74,.04);
+  border-top:1px solid var(--rule);font-family:var(--mono);font-size:.56rem;
+  color:var(--ash);letter-spacing:.03em;line-height:1.6;}
+.viewer-note strong{color:var(--lidar);}
+
+/* ── Context section ── */
+.ctx-wrap{max-width:900px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+.ctx-block{margin-bottom:2.5rem;}
+.ctx-eyebrow{font-family:var(--mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--lidar);margin-bottom:.5rem;}
+.ctx-title{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:var(--ink);
+  margin-bottom:.8rem;line-height:1.2;}
+.ctx-body{font-family:var(--body);font-size:.88rem;color:rgba(28,24,20,.65);
+  line-height:1.85;font-weight:300;}
+.ctx-body p{margin-bottom:.9rem;}
+.ctx-body strong{color:rgba(28,24,20,.85);font-weight:500;}
+.ctx-body a{color:var(--lidar);border-bottom:1px solid rgba(42,122,74,.3);}
+.ctx-body a:hover{border-bottom-color:var(--lidar);}
+.ctx-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:.8rem;margin:1.2rem 0;}
+.ctx-stat{background:rgba(42,122,74,.05);border:1px solid rgba(42,122,74,.15);padding:.9rem 1rem;}
+.ctx-stat-n{font-family:var(--serif);font-size:1.5rem;font-weight:900;color:var(--lidar);}
+.ctx-stat-l{font-size:.56rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ash);margin-top:.1rem;}
+.ctx-cite{background:rgba(42,122,74,.04);border-left:2px solid rgba(42,122,74,.4);
+  padding:.7rem 1rem;margin:1.2rem 0;font-family:var(--mono);font-size:.65rem;
+  color:var(--ash);line-height:1.7;}
+.ctx-mound-note{background:#0d1f14;border-radius:3px;padding:1.1rem 1.3rem;margin:1.5rem 0;}
+.ctx-mound-note-label{font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--lidar-lt);margin-bottom:.5rem;}
+.ctx-mound-note-body{font-family:var(--body);font-size:.82rem;color:rgba(200,230,210,.6);
+  line-height:1.75;font-weight:300;}
+.ctx-mound-note-body strong{color:rgba(200,230,210,.9);}
+
+/* ── Mound coverage table ── */
+.coverage-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.78rem;}
+.coverage-table th{font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ash);padding:.45rem .7rem;text-align:left;
+  border-bottom:2px solid var(--rule);}
+.coverage-table td{padding:.45rem .7rem;border-bottom:1px solid var(--linen);
+  font-family:var(--body);color:rgba(28,24,20,.7);vertical-align:top;}
+.coverage-table tr:hover td{background:rgba(42,122,74,.03);}
+.cov-check{color:var(--lidar);font-weight:700;}
+.cov-partial{color:var(--ochre);}
+.cov-no{color:rgba(28,24,20,.25);}
+
+/* ── Responsive ── */
+@media(max-width:700px){
+  .tool-grid{grid-template-columns:1fr;padding:1rem;}
+  .viewer-wrap{padding:1rem;}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+  <a class="nav-link" href="index.html">Home</a>
+  <a class="nav-link" href="news.html">Feed</a>
+  <a class="nav-link" href="map.html">Map</a>
+  <a class="nav-link" href="sky.html">Sky Archive</a>
+  <a class="nav-link" href="maritime.html">Maritime</a>
+  <a class="nav-link" href="linguistics.html">Linguistics</a>
+  <a class="nav-link" href="inscriptions.html">Inscriptions</a>
+  <a class="nav-link" href="maya_inscriptions.html">Maya</a>
+  <a class="nav-link" href="bioanthro.html">Bioanthro</a>
+  <a class="nav-link" href="luwian.html">Luwian</a>
+  <a class="nav-link active" href="lidar.html">LiDAR</a>
+  <a class="nav-link" href="upload.html">Upload</a>
+  <a class="nav-link" href="conferences.html">Conferences</a>
+</header>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-scan"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Geospatial Intelligence · Elevation &amp; Point Cloud Data</div>
+    <h1 class="hero-title">LiDAR &amp;<br><em>Elevation Tools</em></h1>
+    <p class="hero-sub">Light Detection and Ranging has transformed landscape archaeology — revealing mounds, causeways, platforms, and enclosures invisible to ground survey and conventional remote sensing. This page aggregates open-access LiDAR and digital elevation model (DEM) resources relevant to archaiology.org research areas.</p>
+    <div class="hero-stats">
+      <div><div class="hs-n">5</div><div class="hs-l">Integrated data sources</div></div>
+      <div><div class="hs-n">Global</div><div class="hs-l">Coverage span</div></div>
+      <div><div class="hs-n">0.5–30m</div><div class="hs-l">Resolution range</div></div>
+      <div><div class="hs-n">Free</div><div class="hs-l">All sources open access</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Tab bar ── -->
+<nav class="tab-bar">
+  <div class="tab active" onclick="setTab(this,'tools')">📡 Tool Directory</div>
+  <div class="tab" onclick="setTab(this,'opentopo')">🌐 OpenTopography</div>
+  <div class="tab" onclick="setTab(this,'usgs')">🇺🇸 USGS LiDAR</div>
+  <div class="tab" onclick="setTab(this,'copernicus')">🛰 Copernicus DEM</div>
+  <div class="tab" onclick="setTab(this,'alos')">🗾 ALOS World 3D</div>
+  <div class="tab" onclick="setTab(this,'inegi')">🇲🇽 INEGI</div>
+  <div class="tab" onclick="setTab(this,'context')">📖 About LiDAR</div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 1 — TOOL DIRECTORY
+════════════════════════════════════════════════════ -->
+<div class="section active" id="sec-tools">
+  <div class="tool-grid">
+
+    <!-- OpenTopography -->
+    <div class="tool-card">
+      <div class="tool-card-head">
+        <div class="tool-card-kicker">Global · LiDAR + DEM</div>
+        <div class="tool-card-title">OpenTopography</div>
+        <div class="tool-card-sub">opentopography.org · NSF-funded</div>
+      </div>
+      <div class="tool-card-body">
+        <p class="tool-card-desc">The most research-focused LiDAR portal. Covers high-resolution point cloud datasets for the Americas, Europe, and selected global sites — plus global DEMs (SRTM, ALOS, Copernicus, NASADEM). Free API for programmatic access. Heavily used for Maya and mound site archaeology.</p>
+        <div class="tool-card-meta">
+          <span class="tool-tag tag-global">Global</span>
+          <span class="tool-tag tag-free">Free</span>
+          <span class="tool-tag tag-lidar">LiDAR</span>
+          <span class="tool-tag tag-dem">DEM</span>
+          <span class="tool-tag tag-api">API</span>
+          <span class="tool-tag tag-wms">WMS</span>
+        </div>
+      </div>
+      <div class="tool-card-foot">
+        <button class="tool-btn tool-btn-primary" onclick="setTab(document.querySelector('[onclick*=opentopo]'),'opentopo')">Open Viewer</button>
+        <a class="tool-btn tool-btn-secondary" href="https://opentopography.org" target="_blank" rel="noopener">Website ↗</a>
+        <span class="tool-coverage">0.5m–30m res.</span>
+      </div>
+    </div>
+
+    <!-- USGS LiDAR -->
+    <div class="tool-card">
+      <div class="tool-card-head">
+        <div class="tool-card-kicker">United States · LiDAR point cloud</div>
+        <div class="tool-card-title">USGS LiDAR Explorer</div>
+        <div class="tool-card-sub">apps.nationalmap.gov · 3DEP program</div>
+      </div>
+      <div class="tool-card-body">
+        <p class="tool-card-desc">The USGS 3D Elevation Program (3DEP) is building nationwide LiDAR coverage of the contiguous US, Hawaii, and territories at 1m resolution. Critical for Southeastern and Midwestern mound site research — Florida, Georgia, Mississippi, Wisconsin, and future states in the Gregory Little mound inventory all fall under 3DEP coverage.</p>
+        <div class="tool-card-meta">
+          <span class="tool-tag tag-us">United States</span>
+          <span class="tool-tag tag-free">Free</span>
+          <span class="tool-tag tag-lidar">LiDAR</span>
+          <span class="tool-tag tag-api">API</span>
+        </div>
+      </div>
+      <div class="tool-card-foot">
+        <button class="tool-btn tool-btn-primary" onclick="setTab(document.querySelector('[onclick*=usgs]'),'usgs')">Open Viewer</button>
+        <a class="tool-btn tool-btn-secondary" href="https://apps.nationalmap.gov/lidar-explorer/" target="_blank" rel="noopener">Website ↗</a>
+        <span class="tool-coverage">1m res. (US)</span>
+      </div>
+    </div>
+
+    <!-- Copernicus DEM -->
+    <div class="tool-card">
+      <div class="tool-card-head">
+        <div class="tool-card-kicker">Global · Digital Elevation Model</div>
+        <div class="tool-card-title">Copernicus DEM</div>
+        <div class="tool-card-sub">ESA / Copernicus · GLO-30 &amp; GLO-90</div>
+      </div>
+      <div class="tool-card-body">
+        <p class="tool-card-desc">The European Space Agency's global DEM derived from TanDEM-X radar data. GLO-30 (30m) covers the globe; GLO-90 (90m) is freely available without registration. Best global coverage for Mediterranean, Near East, and Anatolian sites. The go-to elevation baseline for archaiology.org's Old World research areas.</p>
+        <div class="tool-card-meta">
+          <span class="tool-tag tag-global">Global</span>
+          <span class="tool-tag tag-free">Free</span>
+          <span class="tool-tag tag-dem">DEM</span>
+          <span class="tool-tag tag-wms">WMS</span>
+        </div>
+      </div>
+      <div class="tool-card-foot">
+        <button class="tool-btn tool-btn-primary" onclick="setTab(document.querySelector('[onclick*=copernicus]'),'copernicus')">Open Viewer</span></button>
+        <a class="tool-btn tool-btn-secondary" href="https://browser.dataspace.copernicus.eu/" target="_blank" rel="noopener">Website ↗</a>
+        <span class="tool-coverage">30m–90m res.</span>
+      </div>
+    </div>
+
+    <!-- ALOS World 3D -->
+    <div class="tool-card">
+      <div class="tool-card-head">
+        <div class="tool-card-kicker">Global · SAR-derived DEM</div>
+        <div class="tool-card-title">ALOS World 3D</div>
+        <div class="tool-card-sub">JAXA · AW3D30</div>
+      </div>
+      <div class="tool-card-body">
+        <p class="tool-card-desc">Japan Aerospace Exploration Agency's global 30m DEM, derived from 3 million ALOS PRISM stereo scenes. AW3D30 is freely available and well-regarded for accuracy in tropical and mid-latitude regions — good coverage for Mesoamerican, Mediterranean, and Asian sites. The 5m commercial version offers finer resolution for targeted areas.</p>
+        <div class="tool-card-meta">
+          <span class="tool-tag tag-global">Global</span>
+          <span class="tool-tag tag-free">Free (30m)</span>
+          <span class="tool-tag tag-dem">DEM</span>
+        </div>
+      </div>
+      <div class="tool-card-foot">
+        <button class="tool-btn tool-btn-primary" onclick="setTab(document.querySelector('[onclick*=alos]'),'alos')">Open Viewer</button>
+        <a class="tool-btn tool-btn-secondary" href="https://www.eorc.jaxa.jp/ALOS/en/dataset/aw3d30/aw3d30_e.htm" target="_blank" rel="noopener">Website ↗</a>
+        <span class="tool-coverage">5m–30m res.</span>
+      </div>
+    </div>
+
+    <!-- INEGI -->
+    <div class="tool-card">
+      <div class="tool-card-head">
+        <div class="tool-card-kicker">Mexico · LiDAR + DEM</div>
+        <div class="tool-card-title">INEGI LiDAR</div>
+        <div class="tool-card-sub">Instituto Nacional de Estadística y Geografía</div>
+      </div>
+      <div class="tool-card-body">
+        <p class="tool-card-desc">Mexico's national statistics and geography institute has been acquiring LiDAR coverage of Mexican territory since 2010, including the Yucatán Peninsula, Chiapas, Oaxaca, and Veracruz — all core Maya and Mesoamerican research zones. Free download via their geoportal. Directly relevant to archaiology.org's Maya inscriptions and ballcourt datasets.</p>
+        <div class="tool-card-meta">
+          <span class="tool-tag tag-mexico">Mexico</span>
+          <span class="tool-tag tag-free">Free</span>
+          <span class="tool-tag tag-lidar">LiDAR</span>
+          <span class="tool-tag tag-dem">DEM</span>
+          <span class="tool-tag tag-wms">WMS</span>
+        </div>
+      </div>
+      <div class="tool-card-foot">
+        <button class="tool-btn tool-btn-primary" onclick="setTab(document.querySelector('[onclick*=inegi]'),'inegi')">Open Viewer</button>
+        <a class="tool-btn tool-btn-secondary" href="https://www.inegi.org.mx/app/geo2/elevacionesmex/" target="_blank" rel="noopener">Website ↗</a>
+        <span class="tool-coverage">0.5m–5m res.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Mound site LiDAR relevance note -->
+  <div style="max-width:1200px;margin:0 auto;padding:0 1.5rem 3rem;">
+    <div class="ctx-mound-note">
+      <div class="ctx-mound-note-label">📍 Native American Mound Site Coverage</div>
+      <div class="ctx-mound-note-body">
+        archaiology.org currently maps mound sites from <strong>Florida, Georgia, Mississippi, and Wisconsin</strong> — all states with substantial USGS 3DEP LiDAR coverage at 1m resolution. LiDAR has been instrumental in identifying previously unknown mound complexes across the Southeast and Midwest, including hundreds of sites documented in Gregory Little's <em>Illustrated Encyclopedia of Native American Mounds &amp; Earthworks</em> (3rd ed.). As additional state datasets are added, USGS LiDAR Explorer provides the primary elevation reference. OpenTopography additionally hosts curated point-cloud collections for several key Mississippian and Woodland period complexes.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 2 — OPENTOPOGRAPHY
+════════════════════════════════════════════════════ -->
+<div class="section" id="sec-opentopo">
+  <div class="viewer-wrap">
+    <div class="viewer-header">
+      <div class="viewer-title-block">
+        <div class="viewer-kicker">Global LiDAR &amp; DEM Portal · NSF-funded</div>
+        <div class="viewer-title">OpenTopography</div>
+        <div class="viewer-meta">opentopography.org &nbsp;·&nbsp; Free API &nbsp;·&nbsp; <a href="https://opentopography.org/developers" target="_blank" rel="noopener">Developer docs ↗</a></div>
+      </div>
+      <div class="viewer-actions">
+        <a class="tool-btn tool-btn-primary" href="https://opentopography.org" target="_blank" rel="noopener" style="text-decoration:none;">Open in new tab ↗</a>
+      </div>
+    </div>
+    <div class="viewer-frame-wrap">
+      <div class="viewer-frame-head">
+        <span class="viewer-frame-label">OpenTopography · Global Dataset Browser</span>
+        <a class="viewer-frame-link" href="https://opentopography.org" target="_blank" rel="noopener">opentopography.org ↗</a>
+      </div>
+      <iframe class="viewer-frame" src="https://opentopography.org" height="640" loading="lazy" title="OpenTopography global LiDAR and DEM portal" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <div class="viewer-note"><strong>Note:</strong> If the frame is blocked by the host, use the open-in-new-tab link. OpenTopography also provides a <strong>REST API</strong> for programmatic DEM extraction — useful for building elevation profiles directly into archaiology.org site pages.</div>
+    </div>
+    <div style="margin-top:1.5rem;">
+      <table class="coverage-table">
+        <thead><tr><th>Dataset</th><th>Resolution</th><th>Coverage</th><th>LiDAR</th><th>DEM</th></tr></thead>
+        <tbody>
+          <tr><td>USGS 3DEP (via OT)</td><td>1m</td><td>United States</td><td class="cov-check">✓</td><td class="cov-check">✓</td></tr>
+          <tr><td>SRTM GL1</td><td>30m</td><td>Global (60°N–56°S)</td><td class="cov-no">—</td><td class="cov-check">✓</td></tr>
+          <tr><td>NASADEM</td><td>30m</td><td>Global</td><td class="cov-no">—</td><td class="cov-check">✓</td></tr>
+          <tr><td>ALOS World 3D</td><td>30m</td><td>Global</td><td class="cov-no">—</td><td class="cov-check">✓</td></tr>
+          <tr><td>Copernicus GLO-30</td><td>30m</td><td>Global</td><td class="cov-no">—</td><td class="cov-check">✓</td></tr>
+          <tr><td>Community datasets</td><td>Variable</td><td>Site-specific</td><td class="cov-check">✓</td><td class="cov-partial">~</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 3 — USGS LiDAR
+════════════════════════════════════════════════════ -->
+<div class="section" id="sec-usgs">
+  <div class="viewer-wrap">
+    <div class="viewer-header">
+      <div class="viewer-title-block">
+        <div class="viewer-kicker">United States · 3D Elevation Program (3DEP)</div>
+        <div class="viewer-title">USGS LiDAR Explorer</div>
+        <div class="viewer-meta">apps.nationalmap.gov &nbsp;·&nbsp; 1m resolution target &nbsp;·&nbsp; <a href="https://www.usgs.gov/3d-elevation-program" target="_blank" rel="noopener">3DEP program ↗</a></div>
+      </div>
+      <div class="viewer-actions">
+        <a class="tool-btn tool-btn-primary" href="https://apps.nationalmap.gov/lidar-explorer/#/" target="_blank" rel="noopener" style="text-decoration:none;">Open in new tab ↗</a>
+      </div>
+    </div>
+    <div class="viewer-frame-wrap">
+      <div class="viewer-frame-head">
+        <span class="viewer-frame-label">USGS LiDAR Explorer · 3DEP National Coverage</span>
+        <a class="viewer-frame-link" href="https://apps.nationalmap.gov/lidar-explorer/#/" target="_blank" rel="noopener">apps.nationalmap.gov ↗</a>
+      </div>
+      <iframe class="viewer-frame" src="https://apps.nationalmap.gov/lidar-explorer/#/" height="640" loading="lazy" title="USGS LiDAR Explorer — 3D Elevation Program national coverage" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <div class="viewer-note"><strong>Coverage note:</strong> The USGS Vue 3 SPA may block iframe embedding. Use the open-in-new-tab link for full interactivity. &nbsp;|&nbsp; <strong>Mound site states with 3DEP coverage:</strong> Florida <span class="cov-check">✓</span> &nbsp; Georgia <span class="cov-check">✓</span> &nbsp; Mississippi <span class="cov-check">✓</span> &nbsp; Wisconsin <span class="cov-check">✓</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 4 — COPERNICUS DEM
+════════════════════════════════════════════════════ -->
+<div class="section" id="sec-copernicus">
+  <div class="viewer-wrap">
+    <div class="viewer-header">
+      <div class="viewer-title-block">
+        <div class="viewer-kicker">ESA · TanDEM-X derived · GLO-30 &amp; GLO-90</div>
+        <div class="viewer-title">Copernicus DEM Browser</div>
+        <div class="viewer-meta">browser.dataspace.copernicus.eu &nbsp;·&nbsp; Global 30m–90m &nbsp;·&nbsp; <a href="https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model" target="_blank" rel="noopener">Dataset info ↗</a></div>
+      </div>
+      <div class="viewer-actions">
+        <a class="tool-btn tool-btn-primary" href="https://browser.dataspace.copernicus.eu/" target="_blank" rel="noopener" style="text-decoration:none;">Open in new tab ↗</a>
+      </div>
+    </div>
+    <div class="viewer-frame-wrap">
+      <div class="viewer-frame-head">
+        <span class="viewer-frame-label">Copernicus Data Space Browser · ESA</span>
+        <a class="viewer-frame-link" href="https://browser.dataspace.copernicus.eu/" target="_blank" rel="noopener">dataspace.copernicus.eu ↗</a>
+      </div>
+      <iframe class="viewer-frame" src="https://browser.dataspace.copernicus.eu/" height="640" loading="lazy" title="Copernicus Data Space Browser — global DEM and satellite imagery" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <div class="viewer-note"><strong>Best for:</strong> Mediterranean, Near East, Anatolia, and Europe — the primary elevation reference for archaiology.org's Old World research areas. GLO-90 requires no registration; GLO-30 requires a free Copernicus account. Both are freely available for research use.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 5 — ALOS WORLD 3D
+════════════════════════════════════════════════════ -->
+<div class="section" id="sec-alos">
+  <div class="viewer-wrap">
+    <div class="viewer-header">
+      <div class="viewer-title-block">
+        <div class="viewer-kicker">JAXA · ALOS PRISM stereopair · AW3D30</div>
+        <div class="viewer-title">ALOS World 3D — AW3D30</div>
+        <div class="viewer-meta">eorc.jaxa.jp &nbsp;·&nbsp; Free 30m global DEM &nbsp;·&nbsp; <a href="https://www.eorc.jaxa.jp/ALOS/en/dataset/aw3d30/aw3d30_e.htm" target="_blank" rel="noopener">Download portal ↗</a></div>
+      </div>
+      <div class="viewer-actions">
+        <a class="tool-btn tool-btn-primary" href="https://www.eorc.jaxa.jp/ALOS/en/dataset/aw3d30/aw3d30_e.htm" target="_blank" rel="noopener" style="text-decoration:none;">Open in new tab ↗</a>
+      </div>
+    </div>
+    <div class="viewer-frame-wrap">
+      <div class="viewer-frame-head">
+        <span class="viewer-frame-label">JAXA ALOS World 3D · AW3D30 Dataset Portal</span>
+        <a class="viewer-frame-link" href="https://www.eorc.jaxa.jp/ALOS/en/dataset/aw3d30/aw3d30_e.htm" target="_blank" rel="noopener">eorc.jaxa.jp ↗</a>
+      </div>
+      <iframe class="viewer-frame" src="https://www.eorc.jaxa.jp/ALOS/en/dataset/aw3d30/aw3d30_e.htm" height="640" loading="lazy" title="JAXA ALOS World 3D AW3D30 global DEM" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <div class="viewer-note"><strong>AW3D30</strong> (free, 30m) is compiled from 3 million stereo scene pairs and is well-suited for regional-scale analysis across Mesoamerica, Anatolia, and East Asia. The commercial <strong>AW3D5</strong> (5m) product is available for targeted site-level work. Data available as GeoTIFF tiles.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 6 — INEGI
+════════════════════════════════════════════════════ -->
+<div class="section" id="sec-inegi">
+  <div class="viewer-wrap">
+    <div class="viewer-header">
+      <div class="viewer-title-block">
+        <div class="viewer-kicker">Mexico · LiDAR + DEM · Maya &amp; Mesoamerican zones</div>
+        <div class="viewer-title">INEGI Elevaciones México</div>
+        <div class="viewer-meta">inegi.org.mx &nbsp;·&nbsp; Yucatán, Chiapas, Oaxaca, Veracruz &nbsp;·&nbsp; <a href="https://www.inegi.org.mx/temas/relieve/continental/" target="_blank" rel="noopener">Continental relief ↗</a></div>
+      </div>
+      <div class="viewer-actions">
+        <a class="tool-btn tool-btn-primary" href="https://www.inegi.org.mx/app/geo2/elevacionesmex/" target="_blank" rel="noopener" style="text-decoration:none;">Open in new tab ↗</a>
+      </div>
+    </div>
+    <div class="viewer-frame-wrap">
+      <div class="viewer-frame-head">
+        <span class="viewer-frame-label">INEGI · Elevaciones México · National LiDAR &amp; DEM Portal</span>
+        <a class="viewer-frame-link" href="https://www.inegi.org.mx/app/geo2/elevacionesmex/" target="_blank" rel="noopener">inegi.org.mx ↗</a>
+      </div>
+      <iframe class="viewer-frame" src="https://www.inegi.org.mx/app/geo2/elevacionesmex/" height="640" loading="lazy" title="INEGI Elevaciones México — national LiDAR and digital elevation model portal" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <div class="viewer-note"><strong>Maya research note:</strong> INEGI LiDAR covers the Yucatán Peninsula at sub-meter resolution in many areas — directly relevant to archaiology.org's Maya inscriptions and Mesoamerican Ballgame League datasets. WMS endpoints available for GIS integration.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 7 — ABOUT LiDAR
+════════════════════════════════════════════════════ -->
+<div class="section" id="sec-context">
+  <div class="ctx-wrap">
+
+    <div class="ctx-block">
+      <div class="ctx-eyebrow">Remote Sensing Technology</div>
+      <div class="ctx-title">What is LiDAR?</div>
+      <div class="ctx-body">
+        <p>LiDAR — Light Detection and Ranging — is an active remote sensing technique that fires rapid laser pulses at the ground and measures the return time to calculate precise distance. Mounted on aircraft or drones, a single survey flight can generate hundreds of millions of elevation measurements, producing point clouds of extraordinary density and accuracy.</p>
+        <p>The archaeological value of LiDAR lies in its ability to penetrate forest canopy. In tropical and temperate woodland environments, the laser's multiple return pulses distinguish canopy surface from bare earth — revealing terrain features masked by vegetation for centuries. Platforms, mounds, causeways, field systems, and enclosures emerge as unmistakable signatures in the bare-earth DEM.</p>
+        <p>The most celebrated archaeological LiDAR campaigns include the 2018 PACUNAM survey that revealed <strong>60,000+ previously unknown Maya structures</strong> beneath the Guatemalan forest, and the ongoing LiDAR surveys of Amazonian geoglyphs. In North America, 3DEP data has transformed understanding of Mississippian mound complexes, identifying previously unknown structures adjacent to well-studied sites.</p>
+      </div>
+    </div>
+
+    <div class="ctx-stat-grid">
+      <div class="ctx-stat"><div class="ctx-stat-n">60,000+</div><div class="ctx-stat-l">Maya structures revealed by PACUNAM LiDAR 2018</div></div>
+      <div class="ctx-stat"><div class="ctx-stat-n">1m</div><div class="ctx-stat-l">USGS 3DEP target resolution across the US</div></div>
+      <div class="ctx-stat"><div class="ctx-stat-n">~2,100</div><div class="ctx-stat-l">US counties with 3DEP coverage</div></div>
+      <div class="ctx-stat"><div class="ctx-stat-n">30m</div><div class="ctx-stat-l">Global baseline resolution (Copernicus GLO-30)</div></div>
+    </div>
+
+    <div class="ctx-block">
+      <div class="ctx-eyebrow">archaiology.org — Mound Site Context</div>
+      <div class="ctx-title">Native American Earthworks &amp; LiDAR</div>
+      <div class="ctx-body">
+        <p>archaiology.org's Native American mound site datasets currently cover Florida, Georgia, Mississippi, and Wisconsin — all states with substantial USGS 3DEP coverage. LiDAR has been the single most transformative technology for earthwork archaeology in the past decade, enabling researchers to identify low-relief mounds, enclosures, and associated features invisible in conventional survey.</p>
+        <p>The upcoming integration of Gregory Little's <em>Illustrated Encyclopedia of Native American Mounds &amp; Earthworks</em> (3rd ed.) will substantially expand the site inventory. For each site, USGS 3DEP provides the primary elevation reference; OpenTopography hosts curated point-cloud collections for key Mississippian and Woodland period complexes.</p>
+      </div>
+    </div>
+
+    <div class="ctx-mound-note">
+      <div class="ctx-mound-note-label">📚 Roadmap — LiDAR Integration</div>
+      <div class="ctx-mound-note-body">
+        Future development: <strong>elevation profile overlays</strong> on the main archaiology.org map using the OpenTopography REST API; <strong>Copernicus GLO-30 hillshade tiles</strong> as a Leaflet base layer for Old World sites; <strong>INEGI WMS integration</strong> for the Maya inscriptions map; and direct <strong>USGS 3DEP tile overlays</strong> on state-level mound site maps. This page serves as the reference hub and test bed for all LiDAR-adjacent geospatial tooling as those features are built out.
+      </div>
+    </div>
+
+    <div class="ctx-block">
+      <div class="ctx-eyebrow">Further Reading</div>
+      <div class="ctx-title">Key References</div>
+      <div class="ctx-body">
+        <p><strong>Chase et al. (2011)</strong> — "Airborne LiDAR, archaeology, and the ancient Maya landscape at Caracol, Belize." <em>Journal of Archaeological Science</em>. Pioneering application of LiDAR to Maya archaeology.</p>
+        <p><strong>Canuto et al. (2018)</strong> — "Ancient lowland Maya complexity as revealed by airborne laser scanning of northern Guatemala." <em>Science.</em> The PACUNAM survey; 2,144 km² revealing 60,000+ structures.</p>
+        <p><strong>Thompson et al. (2020)</strong> — "Airborne laser scanning in archaeology: Aims, potential and future directions." <em>Journal of Archaeological Method and Theory.</em> Comprehensive methodological review.</p>
+        <p><strong>Little, Gregory L.</strong> — <em>Illustrated Encyclopedia of Native American Mounds &amp; Earthworks</em>, 3rd ed. (forthcoming integration). The most comprehensive print inventory of North American earthwork sites.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function setTab(el, id) {
+  // el may be a button or a tab div — normalize
+  if (typeof el === 'string') {
+    // called from tool card buttons with onclick passing tab id directly
+    id = el;
+    el = document.querySelector(`.tab[onclick*="${id}"]`);
+  }
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const sec = document.getElementById('sec-' + id);
+  if (sec) sec.classList.add('active');
+}
+
+// Fix tool card "Open Viewer" buttons — they pass the tab element directly,
+// but we need to also activate the tab highlight.
+document.querySelectorAll('.tool-btn-primary').forEach(btn => {
+  const orig = btn.getAttribute('onclick');
+  if (orig && orig.includes('setTab')) {
+    btn.addEventListener('click', function(e) {
+      // Extract id from the querySelector inside setTab call
+      const match = orig.match(/\*=([a-z]+)/);
+      if (match) {
+        const id = match[1];
+        const tabEl = document.querySelector(`.tab[onclick*="${id}"]`);
+        setTab(tabEl, id);
+      }
+    });
+    btn.removeAttribute('onclick');
+  }
+});
+</script>
+</body>
+</html>
