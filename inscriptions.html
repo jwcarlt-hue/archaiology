@@ -17,7 +17,7 @@
 html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-height:100vh;}
 
 /* ── Masthead ── */
-.masthead{position:fixed;top:0;left:0;right:0;z-index:1000;height:32px;
+.masthead{position:fixed;top:0;left:0;right:0;z-index:1000;height:44px;
   background:rgba(8,9,14,.97);border-bottom:1px solid rgba(242,234,216,.06);
   display:flex;align-items:center;padding:0 1.4rem;gap:1.5rem;}
 .logo{font-family:var(--serif);font-size:1.1rem;font-weight:900;color:var(--stone);text-decoration:none;}
@@ -44,11 +44,11 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 
 /* ── Layout ── */
 .container{max-width:1200px;margin:0 auto;padding:0 1.4rem;}
-.page-body{display:grid;grid-template-columns:300px 1fr;gap:0;min-height:calc(100vh - 32px);}
+.page-body{display:grid;grid-template-columns:300px 1fr;gap:0;min-height:calc(100vh - 44px);}
 @media(max-width:800px){.page-body{grid-template-columns:1fr;}}
 
 /* ── Search panel ── */
-.search-panel{position:sticky;top:32px;height:calc(100vh - 32px);overflow-y:auto;
+.search-panel{position:sticky;top:44px;height:calc(100vh - 44px);overflow-y:auto;
   background:rgba(242,234,216,.02);border-right:1px solid rgba(242,234,216,.06);
   padding:1.2rem;scrollbar-width:thin;}
 .search-panel::-webkit-scrollbar{width:4px;}
@@ -96,7 +96,7 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 .results-area{display:flex;flex-direction:column;}
 
 /* Map */
-#insc-map{height:460px;border-bottom:1px solid rgba(242,234,216,.06);}
+#insc-map{height:300px;border-bottom:1px solid rgba(242,234,216,.06);}
 
 /* Results list */
 .results-list{flex:1;padding:.8rem 1.2rem;}
@@ -131,7 +131,7 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 .insc-person strong{color:rgba(242,234,216,.65);}
 
 /* Detail panel */
-.detail-overlay{position:fixed;right:0;top:32px;bottom:0;width:420px;
+.detail-overlay{position:fixed;right:0;top:44px;bottom:0;width:420px;
   background:#0e0c09;border-left:1px solid rgba(242,234,216,.07);
   overflow-y:auto;transform:translateX(100%);transition:transform .3s;z-index:900;}
 .detail-overlay.open{transform:translateX(0);}
@@ -282,7 +282,7 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
   <a class="nav-link " href="conferences.html">Conferences</a>
 </header>
 
-<div style="padding-top:32px;">
+<div style="padding-top:44px;">
 
 <!-- Hero -->
 <div class="hero">
@@ -400,6 +400,841 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 </div>
 </div>
 
+<!-- ═══════════════════ ORACLE BONE SITES ═══════════════════ -->
+<div class="ob-section" id="oracle-bone-section">
+  <div class="ob-hero">
+    <div class="ob-hero-eyebrow">Scapulimancy &amp; Pyromancy · China · Neolithic to Tang</div>
+    <h2 class="ob-hero-title">Oracle Bone <em>Sites</em></h2>
+    <p class="ob-hero-sub">59 sites spanning ca. 3300 BCE to 900 CE — from unmodified scapulimancy in the Late Neolithic to the institutionalised royal divination of the Late Shang capital Yinxu. Based on Rowan Flad's comparative survey of oracle-bone pretreatment practices across Chinese prehistory and history.</p>
+    <div class="ob-stat-strip">
+      <div class="ob-stat"><div class="ob-stat-n">59</div><div class="ob-stat-l">Sites mapped</div></div>
+      <div class="ob-stat"><div class="ob-stat-n">ca. 3300 BCE</div><div class="ob-stat-l">Earliest (Fuhegoumen)</div></div>
+      <div class="ob-stat"><div class="ob-stat-n">900 CE</div><div class="ob-stat-l">Latest (Tang — Mingyueba)</div></div>
+      <div class="ob-stat"><div class="ob-stat-n">Yinxu</div><div class="ob-stat-l">Canonical Late Shang capital</div></div>
+    </div>
+  </div>
+
+  <div class="ob-layout">
+    <!-- Map -->
+    <div class="ob-map-col">
+      <div class="ob-map-label">
+        <span>Oracle Bone Sites · China</span>
+        <span id="ob-map-status" style="font-family:monospace;font-size:.55rem;color:rgba(242,234,216,.3);"></span>
+      </div>
+      <div id="ob-map" style="height:520px;background:#0d1118;border:1px solid rgba(242,234,216,.08);"></div>
+      <div class="ob-legend">
+        <div class="ob-legend-item"><span style="background:#6a8fa0;"></span>Late Neolithic</div>
+        <div class="ob-legend-item"><span style="background:#7a9fb0;"></span>Longshan</div>
+        <div class="ob-legend-item"><span style="background:#c09050;"></span>Erlitou</div>
+        <div class="ob-legend-item"><span style="background:#b87830;"></span>Erligang</div>
+        <div class="ob-legend-item"><span style="background:#c85030;"></span>Shang</div>
+        <div class="ob-legend-item"><span style="background:#7a8060;"></span>Zhou</div>
+        <div class="ob-legend-item"><span style="background:#508070;"></span>Han / Tang</div>
+        <div class="ob-legend-item"><span style="background:#6080a0;"></span>Lower Xiajiadian</div>
+      </div>
+    </div>
+
+    <!-- Site cards -->
+    <div class="ob-cards-col">
+      <div class="ob-cards-header">
+        <input class="ob-search" id="ob-search" type="text" placeholder="Filter sites…" oninput="obFilter(this.value)">
+        <div class="ob-cards-count" id="ob-cards-count">59 sites</div>
+      </div>
+      <div class="ob-cards-list" id="ob-cards-list">
+        <div class="ob-card" data-no="1" onclick="obFlyTo(1)">
+          <div class="ob-card-head" style="border-left-color:#c85030;">
+            <span class="ob-card-no">#1</span>
+            <span class="ob-card-name">Andi</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c85030;">Late Shang</div>
+          <div class="ob-card-loc">📍 Wugong County, Shaanxi <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Wugong, Shaanxi; one of several Late Shang-era Shaanxi sites with oracle bones similar to Upper Erligang contexts. Flad treats this as persistence of earlier traditions outside the Central Plains state apparatus.</div>
+        </div>
+        <div class="ob-card" data-no="2" onclick="obFlyTo(2)">
+          <div class="ob-card-head" style="border-left-color:#7a8060;">
+            <span class="ob-card-no">#2</span>
+            <span class="ob-card-name">Anzhangzi</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a8060;">Upper Xiajiadian</div>
+          <div class="ob-card-loc">📍 Lingyuan, Liaoning <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Lingyuan, Liaoning; Upper Xiajiadian context, ca. 1000-300 BC. Cited as northeast evidence that oracle-bone use persisted with relatively elaborate procedures but without uniform Shang-style control.</div>
+        </div>
+        <div class="ob-card" data-no="3" onclick="obFlyTo(3)">
+          <div class="ob-card-head" style="border-left-color:#c85030;">
+            <span class="ob-card-no">#3</span>
+            <span class="ob-card-name">Beicun</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c85030;">Early Shang</div>
+          <div class="ob-card-loc">📍 Yaozhou/Yao Xian, Shaanxi <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Yao Xian, Shaanxi; Early Shang oracle bones are cattle scapula fragments cut through the shaft, polished, and drilled before burning. Hollows are circular with rounded bases and no attendant chisel marks. Also grouped with Late Shang-era Shaanxi sites similar to Upper Erligang contexts.</div>
+        </div>
+        <div class="ob-card" data-no="4" onclick="obFlyTo(4)">
+          <div class="ob-card-head" style="border-left-color:#7a9fb0;">
+            <span class="ob-card-no">#4</span>
+            <span class="ob-card-name">Beiyingtai; Jiangoucun</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a9fb0;">Early Shang</div>
+          <div class="ob-card-loc">📍 Handan, Hebei cluster <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Beiyingtai: Handan, Hebei; seven Early Shang cattle and pig scapula fragments. Jiangoucun: Handan, Hebei; Late Longshan site grouped with similar unpretreated scapula remains from Hebei.</div>
+        </div>
+        <div class="ob-card" data-no="5" onclick="obFlyTo(5)">
+          <div class="ob-card-head" style="border-left-color:#c85030;">
+            <span class="ob-card-no">#5</span>
+            <span class="ob-card-name">Beiyinyangying</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c85030;">Late Shang</div>
+          <div class="ob-card-loc">📍 Nanjing, Jiangsu <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Nanjing; Late Shang remains are grouped with Yinjiacheng as eastern examples that lack evidence of elaborate divination procedures.</div>
+        </div>
+        <div class="ob-card" data-no="6" onclick="obFlyTo(6)">
+          <div class="ob-card-head" style="border-left-color:#7a9fb0;">
+            <span class="ob-card-no">#6</span>
+            <span class="ob-card-name">Caoyanzhuang; Dongxianxian; Gejiazhuang</span>
+            <span class="ob-card-city">Xingtai City</span>
+          </div>
+          <div class="ob-card-period" style="color:#7a9fb0;">Late Longshan</div>
+          <div class="ob-card-loc">📍 Xingtai City cluster, Hebei <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Caoyanzhuang: Xingtai, Hebei; Late Longshan site with similar unpretreated scapula remains. Dongxianxian: Xingtai, Hebei; Western Zhou specimens nearly identical to Liulihe circular hollows with a single chiseled line. Gejiazhuang: Xingtai, Hebei; Erligang-period drilled cattle scapulae.</div>
+        </div>
+        <div class="ob-card" data-no="7" onclick="obFlyTo(7)">
+          <div class="ob-card-head" style="border-left-color:#7a9fb0;">
+            <span class="ob-card-no">#7</span>
+            <span class="ob-card-name">Chengziya</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a9fb0;">Late Longshan</div>
+          <div class="ob-card-loc">📍 Chengziya Archaeological Site, Zhangqiu/Licheng, Shandong <span style="color:#7ab890;font-size:.52rem;margin-left:.3rem;">High</span></div>
+          <div class="ob-card-notes">Licheng, Shandong; Late Longshan site grouped with similar scapulimancy remains; these sites used cattle, pig, sheep, and deer scapulae burned without pretreatment.</div>
+        </div>
+        <div class="ob-card" data-no="8" onclick="obFlyTo(8)">
+          <div class="ob-card-head" style="border-left-color:#7a9fb0;">
+            <span class="ob-card-no">#8</span>
+            <span class="ob-card-name">Dachengshan</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a9fb0;">Late Longshan</div>
+          <div class="ob-card-loc">📍 Tangshan, Hebei <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Tangshan, Hebei; Late Longshan site grouped with similar scapulimancy remains; these sites used cattle, pig, sheep, and deer scapulae burned without pretreatment.</div>
+        </div>
+        <div class="ob-card" data-no="9" onclick="obFlyTo(9)">
+          <div class="ob-card-head" style="border-left-color:#6a8fa0;">
+            <span class="ob-card-no">#9</span>
+            <span class="ob-card-name">Dahezhuang</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#6a8fa0;">Qijia culture</div>
+          <div class="ob-card-loc">📍 Yongjing County, Gansu <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Yongjing, Gansu; Qijia-culture site, ca. 2200-1800 BC, with strata around ca. 1900 BC. Grouped with unpretreated scapula oracle-bone finds; radiocarbon dates cited at about 1924 and 1887 calBC.</div>
+        </div>
+        <div class="ob-card" data-no="10" onclick="obFlyTo(10)">
+          <div class="ob-card-head" style="border-left-color:#6080a0;">
+            <span class="ob-card-no">#10</span>
+            <span class="ob-card-name">Dashanqian</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#6080a0;">Lower Xiajiadian</div>
+          <div class="ob-card-loc">📍 Harqin Banner, Inner Mongolia <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Harqin Banner, Inner Mongolia; Lower Xiajiadian contexts. A few oracle bones recovered, all drilled before burning; one scapula shaft had 37 densely crowded drill holes of different sizes.</div>
+        </div>
+        <div class="ob-card" data-no="11" onclick="obFlyTo(11)">
+          <div class="ob-card-head" style="border-left-color:#c85030;">
+            <span class="ob-card-no">#11</span>
+            <span class="ob-card-name">Daxinzhuang</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c85030;">Shang</div>
+          <div class="ob-card-loc">📍 Daxinzhuang / Licheng, Jinan, Shandong <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Ji'nan, Shandong; one of the most significant Shang-period assemblages outside Anyang. Five-stage sequence: early mammal scapulae with removed spines and drilled circular hollows; later deer/sheep/cattle scapulae thinned and drilled; then turtle shell appears; later turtle plastrons dominate with drill-and-chisel preparation; final stage almost all plastrons with more chisel-only preparation.</div>
+        </div>
+        <div class="ob-card" data-no="12" onclick="obFlyTo(12)">
+          <div class="ob-card-head" style="border-left-color:#88a070;">
+            <span class="ob-card-no">#12</span>
+            <span class="ob-card-name">Donghuishan</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#88a070;">Siba culture</div>
+          <div class="ob-card-loc">📍 Minle County, Gansu <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Minle, Gansu; Siba-culture site, ca. 1900-1500 BC, cited among recent excavations with oracle-bone examples; grouped with unpretreated scapula remains.</div>
+        </div>
+        <div class="ob-card" data-no="13" onclick="obFlyTo(13)">
+          <div class="ob-card-head" style="border-left-color:#c09050;">
+            <span class="ob-card-no">#13</span>
+            <span class="ob-card-name">Dongxiafeng; Dongyin</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c09050;">Erlitou</div>
+          <div class="ob-card-loc">📍 Xia County, Shanxi cluster <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Dongxiafeng: Xia Xian, Shanxi; four-phase Erlitou-period sequence showing transition toward pretreatment. Dongyin: Xia Xian, Shanxi; Upper Erligang modified cattle scapula oracle bones with circular drilled hollows of varying size and depth.</div>
+        </div>
+        <div class="ob-card" data-no="14" onclick="obFlyTo(14)">
+          <div class="ob-card-head" style="border-left-color:#508070;">
+            <span class="ob-card-no">#14</span>
+            <span class="ob-card-name">Dongxing</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#508070;">Han</div>
+          <div class="ob-card-loc">📍 Hailin City, Heilongjiang <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Hailin City, Heilongjiang; Han Dynasty pig scapula used in pyromancy, cited as evidence that mammal-bone pyromancy persisted after the Bronze Age.</div>
+        </div>
+        <div class="ob-card" data-no="15" onclick="obFlyTo(15)">
+          <div class="ob-card-head" style="border-left-color:#c85030;">
+            <span class="ob-card-no">#15</span>
+            <span class="ob-card-name">Erligang; Family Residences of the Henan Academy of Chinese Medicine; Huangweihui Qingniangongyu; Huimin Zhongxue; Minggong Ludong; Nanguanwai; Xiaoshuangqiao</span>
+            <span class="ob-card-city">Zhengzhou City</span>
+          </div>
+          <div class="ob-card-period" style="color:#c85030;">Early to Middle Shang</div>
+          <div class="ob-card-loc">📍 Zhengzhou City cluster, Henan <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Erligang: Early Shang type-site; cattle scapulae most common, with pig, sheep, deer, dog scapulae, cattle limb bones, and turtle-shell fragments also used; Lower Erligang examples usually not pretreated; bronze drill evidence noted. Family Residences, Huangweihui Qingniangongyu, and Huimin Zhongxue: Zhengzhou localities showing the same Lower Erligang pattern. Minggong Ludong: Lower and Upper Erligang contexts; People's Park phase turtle plastron and carapace fragments have parallel rows/double marks. Nanguanwai: largest Zhengzhou collection; Luodamiao cattle scapula split and drilled; turtle plastron unaltered; Lower Erligang mostly unmodified; Upper Erligang many flattened and drilled, with cattle scapulae and all 37 turtle plastrons drilled. Xiaoshuangqiao: Baijiazhuang/Middle Shang sheep scapula fragments mostly not pretreated, with one possible drilled specimen.</div>
+        </div>
+        <div class="ob-card" data-no="16" onclick="obFlyTo(16)">
+          <div class="ob-card-head" style="border-left-color:#c09050;">
+            <span class="ob-card-no">#16</span>
+            <span class="ob-card-name">Erlitou; Yanshi Shangcheng</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c09050;">Erlitou culture</div>
+          <div class="ob-card-loc">📍 Erlitou/Yanshi, Henan <span style="color:#7ab890;font-size:.52rem;margin-left:.3rem;">High</span></div>
+          <div class="ob-card-notes">Erlitou: Yanshi, Henan; phases I-IV show cattle, sheep, and pig scapulae directly burned, with circular/oval marks and no drilling or chiseling; marks are inconsistent and unsystematic, and Flad argues scapulimancy was not a significant state-sponsored activity there. Yanshi Shangcheng: Shang walled site, ca. 1600-1400 BC; numerous oracle bones, mostly sheep scapulae burned directly and not pretreated, with a few pretreated cattle scapulae.</div>
+        </div>
+        <div class="ob-card" data-no="17" onclick="obFlyTo(17)">
+          <div class="ob-card-head" style="border-left-color:#c85030;">
+            <span class="ob-card-no">#17</span>
+            <span class="ob-card-name">Fangchijie; Fuqin Xiaoqu; Jiangjun yamen; Minshan fandian; Qingyanggong; Zhihuijie</span>
+            <span class="ob-card-city">Chengdu City</span>
+          </div>
+          <div class="ob-card-period" style="color:#c85030;">Shang to Zhou</div>
+          <div class="ob-card-loc">📍 Chengdu City cluster, Sichuan <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Fangchijie: Chengdu level 5, associated with Sanxingdui culture, gives the earliest Chengdu examples; turtle shells, mainly plastrons, are the main medium. Fuqin Xiaoqu, Jiangjun Yamen, Zhihuijie, Minshan Fandian, and Qingyanggong: Chengdu finds show chronological development from circular hollows, some drilled and some chiseled, to rectangular hollows within circular depressions and rectangular hollows with incised lines. Flad emphasizes overlap and heterogeneity rather than standardization or tight political control.</div>
+        </div>
+        <div class="ob-card" data-no="18" onclick="obFlyTo(18)">
+          <div class="ob-card-head" style="border-left-color:#7a8060;">
+            <span class="ob-card-no">#18</span>
+            <span class="ob-card-name">Fengchu</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a8060;">Western Zhou</div>
+          <div class="ob-card-loc">📍 Zhouyuan/Fengchu area, Shaanxi <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Zhouyuan oracle-bone findspot. Along with Qijiacun, inscribed bones reflect transmission from Shang divination; some inscriptions name Shang ancestors, and preparation techniques are broadly similar to Yinxu practice, suggesting diviners trained in or derived from Terminal Shang traditions.</div>
+        </div>
+        <div class="ob-card" data-no="19" onclick="obFlyTo(19)">
+          <div class="ob-card-head" style="border-left-color:#c85030;">
+            <span class="ob-card-no">#19</span>
+            <span class="ob-card-name">Fucheng</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c85030;">Middle Shang</div>
+          <div class="ob-card-loc">📍 Jiaozuo, Henan <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Jiaozuo, Henan; similar to Xiaoshuangqiao, showing high variability in divination during the Baijiazhuang/Middle Shang horizon.</div>
+        </div>
+        <div class="ob-card" data-no="20" onclick="obFlyTo(20)">
+          <div class="ob-card-head" style="border-left-color:#6a8fa0;">
+            <span class="ob-card-no">#20</span>
+            <span class="ob-card-name">Fuhegoumen</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#6a8fa0;">Late Neolithic</div>
+          <div class="ob-card-loc">📍 Bairin Left Banner, Inner Mongolia <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Balin Left Banner, Inner Mongolia; among the earliest pyromancy evidence. A sheep or small deer scapula had numerous intentional burn marks on the distal blade and was dated by associated birch bark to about 3321 ± 179 calBC.</div>
+        </div>
+        <div class="ob-card" data-no="21" onclick="obFlyTo(21)">
+          <div class="ob-card-head" style="border-left-color:#6a8fa0;">
+            <span class="ob-card-no">#21</span>
+            <span class="ob-card-name">Fujiamen</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#6a8fa0;">Late Neolithic</div>
+          <div class="ob-card-loc">📍 Wushan County, Gansu <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Wushan, Gansu; cited with Zhaizita and Fuhegoumen as a Late Neolithic scapulimancy example from China's Northern Zone.</div>
+        </div>
+        <div class="ob-card" data-no="22" onclick="obFlyTo(22)">
+          <div class="ob-card-head" style="border-left-color:#c85030;">
+            <span class="ob-card-no">#22</span>
+            <span class="ob-card-name">Ganjinggou; Zhongba</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c85030;">Zhou</div>
+          <div class="ob-card-loc">📍 Zhong Xian / Zhongba-Ganjinggou cluster, Chongqing <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Ganjinggou: Zhong Xian, Chongqing; Three Gorges site with oracle bones in Zhou-period strata. Zhongba: prehistoric salt-production site in Zhong Xian; earliest Three Gorges pyromancy includes a small burned plastron from phase II, ca. 1630-1210 BC; phase III, ca. 1100-200 BC, has over 180 oracle bones, mostly turtle plastrons plus at least one fish operculum. Marks range from circular direct burns to circular/oval prepared hollows with grooves and later rectangular hollows with perpendicular incisions; no standard procedure.</div>
+        </div>
+        <div class="ob-card" data-no="23" onclick="obFlyTo(23)">
+          <div class="ob-card-head" style="border-left-color:#7a8060;">
+            <span class="ob-card-no">#23</span>
+            <span class="ob-card-name">Jingnansi; Meihuaiqiao</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a8060;">Zhou</div>
+          <div class="ob-card-loc">📍 Jiangling, Hubei / Middle Yangzi cluster <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Jingnansi: Jiangling, Hubei; Zhou-era oracle bones in the Middle Yangzi region. Meihuaiqiao: Jiangling, Hubei; divination remains are mostly turtle shells.</div>
+        </div>
+        <div class="ob-card" data-no="24" onclick="obFlyTo(24)">
+          <div class="ob-card-head" style="border-left-color:#7a9fb0;">
+            <span class="ob-card-no">#24</span>
+            <span class="ob-card-name">Kangjia</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a9fb0;">Longshan</div>
+          <div class="ob-card-loc">📍 Lintong, Shaanxi <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Lintong, Shaanxi; at least 20 deer, pig, and sheep scapulae used in pyromancy from Longshan deposits predating 2700 BC. Bone surfaces were not pretreated, with no drilled holes or chisel marks before burning.</div>
+        </div>
+        <div class="ob-card" data-no="25" onclick="obFlyTo(25)">
+          <div class="ob-card-head" style="border-left-color:#6080a0;">
+            <span class="ob-card-no">#25</span>
+            <span class="ob-card-name">Yaowangmiao</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#6080a0;">Lower Xiajiadian</div>
+          <div class="ob-card-loc">📍 Chifeng area, Inner Mongolia <span style="color:#c85030;font-size:.52rem;margin-left:.3rem;">Low</span></div>
+          <div class="ob-card-notes">Chifeng area; Lower Xiajiadian site grouped with Nanshangen, Zhizhushan, and Xiajiadian. Finds include pig scapulae and other pyromancy bones; diviners drilled hollows before burning to facilitate and control cracking.</div>
+        </div>
+        <div class="ob-card" data-no="26" onclick="obFlyTo(26)">
+          <div class="ob-card-head" style="border-left-color:#7a8060;">
+            <span class="ob-card-no">#26</span>
+            <span class="ob-card-name">Lianyushan; Shimenzui</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a8060;">Zhou</div>
+          <div class="ob-card-loc">📍 Zigui, Hubei cluster <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Lianyushan: Zigui, Hubei; Three Gorges site with oracle bones in Zhou-period strata. Shimenzui: Zigui, Hubei; Zhou-period oracle bones, including a fish operculum used as an oracle bone; cited as evidence of regional operculimancy alongside Xianglushi and Zhongba.</div>
+        </div>
+        <div class="ob-card" data-no="27" onclick="obFlyTo(27)">
+          <div class="ob-card-head" style="border-left-color:#c85030;">
+            <span class="ob-card-no">#27</span>
+            <span class="ob-card-name">Lijaya</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c85030;">Late Shang</div>
+          <div class="ob-card-loc">📍 Qingjian County, Shaanxi <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Qingjian, Shaanxi; Flad spells it Lijiaya. Grouped with Beicun, Zhumazui, and Andi as Late Shang-era Shaanxi sites with oracle bones similar to Upper Erligang contexts.</div>
+        </div>
+        <div class="ob-card" data-no="28" onclick="obFlyTo(28)">
+          <div class="ob-card-head" style="border-left-color:#7a8060;">
+            <span class="ob-card-no">#28</span>
+            <span class="ob-card-name">Liulihe</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a8060;">Western Zhou</div>
+          <div class="ob-card-loc">📍 Liulihe / Fangshan, Beijing <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Near Beijing; dozens of divination plastrons with double marks. Some have narrow rectangular chiseled grooves and rectangular attendant hollows derived from Yinxu-style divination marks; three oracle bones are inscribed. Others have circular hollows about 1.2 cm across with a single chiseled line.</div>
+        </div>
+        <div class="ob-card" data-no="29" onclick="obFlyTo(29)">
+          <div class="ob-card-head" style="border-left-color:#7a8060;">
+            <span class="ob-card-no">#29</span>
+            <span class="ob-card-name">Liutaizi</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a8060;">Western Zhou</div>
+          <div class="ob-card-loc">📍 Jiyang, Shandong <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Jiyang, Shandong; yielded Western Zhou oracle bones with more diverse hollows, used by Flad in discussing persistent eastern/Dongyi and regional oracle-bone traditions.</div>
+        </div>
+        <div class="ob-card" data-no="30" onclick="obFlyTo(30)">
+          <div class="ob-card-head" style="border-left-color:#7a8060;">
+            <span class="ob-card-no">#30</span>
+            <span class="ob-card-name">Maliutuo</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a8060;">Zhou</div>
+          <div class="ob-card-loc">📍 Maliutuo / Wuliang, Three Gorges area <span style="color:#c85030;font-size:.52rem;margin-left:.3rem;">Low</span></div>
+          <div class="ob-card-notes">Wuliang, Three Gorges area; Zhou-period strata. A late Bronze Age noncemetery site where excavations recovered many turtle plastrons and large fish opercula with divination marks.</div>
+        </div>
+        <div class="ob-card" data-no="31" onclick="obFlyTo(31)">
+          <div class="ob-card-head" style="border-left-color:#7a8060;">
+            <span class="ob-card-no">#31</span>
+            <span class="ob-card-name">Maogoudong</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a8060;">Zhou</div>
+          <div class="ob-card-loc">📍 Zaoyang, Hubei <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Zaoyang, Hubei; Zhou-era oracle-bone locality in the Xiangfan region. Regional specimens include turtle plastrons with long rectangular hollows, curved corners, and incised lines, plus scapulae with rectangular or square hollows on preflattened areas.</div>
+        </div>
+        <div class="ob-card" data-no="32" onclick="obFlyTo(32)">
+          <div class="ob-card-head" style="border-left-color:#a07060;">
+            <span class="ob-card-no">#32</span>
+            <span class="ob-card-name">Mingyueba</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#a07060;">Tang</div>
+          <div class="ob-card-loc">📍 Yunyang, Chongqing <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Yunyang, Chongqing; Tang-era oracle bone, AD 618-907, cited as the most recent oracle bone known from archaeological contexts in China.</div>
+        </div>
+        <div class="ob-card" data-no="33" onclick="obFlyTo(33)">
+          <div class="ob-card-head" style="border-left-color:#6080a0;">
+            <span class="ob-card-no">#33</span>
+            <span class="ob-card-name">Nanshangen</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#6080a0;">Lower Xiajiadian</div>
+          <div class="ob-card-loc">📍 Ningcheng County, Inner Mongolia <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Ningcheng, Inner Mongolia; Lower Xiajiadian site grouped with Zhizhushan, Yaowangmiao, and Xiajiadian. Finds include pig scapulae and other pyromancy bones with drilled hollows before burning.</div>
+        </div>
+        <div class="ob-card" data-no="34" onclick="obFlyTo(34)">
+          <div class="ob-card-head" style="border-left-color:#b87830;">
+            <span class="ob-card-no">#34</span>
+            <span class="ob-card-name">Panlongcheng</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#b87830;">Erligang</div>
+          <div class="ob-card-loc">📍 Panlongcheng Archaeological Site, Wuhan/Huangpi, Hubei <span style="color:#7ab890;font-size:.52rem;margin-left:.3rem;">High</span></div>
+          <div class="ob-card-notes">Huangpi, Hubei; important Erligang-phase walled site. Several drilled cattle scapulae occur in period V and VII contexts, including pit finds and one specimen inside a bronze jue vessel. Fits the Upper Erligang pattern, but small numbers suggest pyromancy was not central to the expansive Erligang Shang state.</div>
+        </div>
+        <div class="ob-card" data-no="35" onclick="obFlyTo(35)">
+          <div class="ob-card-head" style="border-left-color:#7a8060;">
+            <span class="ob-card-no">#35</span>
+            <span class="ob-card-name">Qijiacun</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a8060;">Western Zhou</div>
+          <div class="ob-card-loc">📍 Fufeng County / Qijiacun, Shaanxi <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Fufeng, Shaanxi; Western Zhou plastrons on the Zhou Plain prepared similarly to Yinxu oracle bones, with elongated groove and side burn mark. Alongside Fengchu, inscribed Zhouyuan oracle bones indicate Shang-derived procedures and close early court association.</div>
+        </div>
+        <div class="ob-card" data-no="36" onclick="obFlyTo(36)">
+          <div class="ob-card-head" style="border-left-color:#b87830;">
+            <span class="ob-card-no">#36</span>
+            <span class="ob-card-name">Quliang</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#b87830;">Lower Erligang</div>
+          <div class="ob-card-loc">📍 Xinmi, Henan <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Xinmi, Henan; Lower Erligang-period site with heterogeneous divination practices and incipient elaboration.</div>
+        </div>
+        <div class="ob-card" data-no="37" onclick="obFlyTo(37)">
+          <div class="ob-card-head" style="border-left-color:#7a9fb0;">
+            <span class="ob-card-no">#37</span>
+            <span class="ob-card-name">Shangpo</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a9fb0;">Late Longshan</div>
+          <div class="ob-card-loc">📍 Xiping County, Henan <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Xiping, Henan; recent excavation cited among Longshanoid examples. Grouped with sites whose oracle bones are cattle, pig, sheep, and deer scapulae burned without pretreatment.</div>
+        </div>
+        <div class="ob-card" data-no="38" onclick="obFlyTo(38)">
+          <div class="ob-card-head" style="border-left-color:#c09050;">
+            <span class="ob-card-no">#38</span>
+            <span class="ob-card-name">Shaochai</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c09050;">Erlitou</div>
+          <div class="ob-card-loc">📍 Gongyi/Gong Xian, Henan <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Gong Xian, Henan; Erlitou phase III contexts include several cattle scapula fragments drilled before burning, evidence of increased elaboration. At the earliest oracle-bone level, cattle scapula fragments were not pretreated, but pretreatment emerged during Erlitou III; cattle scapulae were modified while sheep scapulae were not.</div>
+        </div>
+        <div class="ob-card" data-no="39" onclick="obFlyTo(39)">
+          <div class="ob-card-head" style="border-left-color:#8a8070;">
+            <span class="ob-card-no">#39</span>
+            <span class="ob-card-name">Shijia</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#8a8070;">Yueshi culture</div>
+          <div class="ob-card-loc">📍 Huantai County, Shandong <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Huantai, Shandong; contemporaneous Yueshi-culture site, ca. 2000-1600 BC, with only unmodified sheep scapulae.</div>
+        </div>
+        <div class="ob-card" data-no="40" onclick="obFlyTo(40)">
+          <div class="ob-card-head" style="border-left-color:#7a9fb0;">
+            <span class="ob-card-no">#40</span>
+            <span class="ob-card-name">Taikoucun</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a9fb0;">Late Longshan</div>
+          <div class="ob-card-loc">📍 Yongnian, Hebei <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Yongnian, Hebei; Late Longshan site grouped with similar scapulimancy remains; these sites used cattle, pig, sheep, and deer scapulae burned without pretreatment.</div>
+        </div>
+        <div class="ob-card" data-no="41" onclick="obFlyTo(41)">
+          <div class="ob-card-head" style="border-left-color:#b87830;">
+            <span class="ob-card-no">#41</span>
+            <span class="ob-card-name">Taixi</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#b87830;">Erligang</div>
+          <div class="ob-card-loc">📍 Gaocheng, Hebei <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Gaocheng, Hebei; Erligang-era pits and burials produced a highly variable assemblage of 494 oracle bones, mostly cattle, pig, and turtle.</div>
+        </div>
+        <div class="ob-card" data-no="42" onclick="obFlyTo(42)">
+          <div class="ob-card-head" style="border-left-color:#7a9fb0;">
+            <span class="ob-card-no">#42</span>
+            <span class="ob-card-name">Taosi</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a9fb0;">Late Longshan</div>
+          <div class="ob-card-loc">📍 Taosi Archaeological Site / observatory, Xiangfen, Shanxi <span style="color:#7ab890;font-size:.52rem;margin-left:.3rem;">High</span></div>
+          <div class="ob-card-notes">Xiangfen, Shanxi; recent excavation cited among Longshanoid examples. Grouped with sites whose oracle bones are cattle, pig, sheep, and deer scapulae burned without pretreatment.</div>
+        </div>
+        <div class="ob-card" data-no="43" onclick="obFlyTo(43)">
+          <div class="ob-card-head" style="border-left-color:#6080a0;">
+            <span class="ob-card-no">#43</span>
+            <span class="ob-card-name">Xiajiadian</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#6080a0;">Lower Xiajiadian</div>
+          <div class="ob-card-loc">📍 Xiajiadian / Chifeng area, Inner Mongolia <span style="color:#c85030;font-size:.52rem;margin-left:.3rem;">Low</span></div>
+          <div class="ob-card-notes">Chifeng area; Lower Xiajiadian site with pig scapulae and other pyromancy bones. Diviners drilled hollows before burning to facilitate and control cracks.</div>
+        </div>
+        <div class="ob-card" data-no="44" onclick="obFlyTo(44)">
+          <div class="ob-card-head" style="border-left-color:#c85030;">
+            <span class="ob-card-no">#44</span>
+            <span class="ob-card-name">Xianglushi</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c85030;">Early Shang to Western Zhou</div>
+          <div class="ob-card-loc">📍 Xianglushi / Qingjiang near Yichang, Hubei <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Qingjiang River near Yichang, Hubei; three-level sequence. Level 6, Early Shang, has three turtle plastron fragments with oval chisel marks and chiseled lines. Level 5, Middle-Late Shang, has 13 oracle bones: 12 turtle shells and one fish operculum, with drill marks and some chisel lines. Level 4, Terminal Shang/Western Zhou, has 17 excavated plus 7 surface specimens: 5 turtle-shell fragments and 19 fish opercula, mostly rectangular hollows.</div>
+        </div>
+        <div class="ob-card" data-no="45" onclick="obFlyTo(45)">
+          <div class="ob-card-head" style="border-left-color:#7a8060;">
+            <span class="ob-card-no">#45</span>
+            <span class="ob-card-name">Xiaojialing</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a8060;">Zhou</div>
+          <div class="ob-card-loc">📍 Yicheng, Hubei <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Yicheng, Hubei; Zhou-era oracle-bone locality in the Xiangfan region. Regional finds show turtle plastrons with rectangular hollows and incised lines, and scapulae with rectangular or square hollows on preflattened areas.</div>
+        </div>
+        <div class="ob-card" data-no="46" onclick="obFlyTo(46)">
+          <div class="ob-card-head" style="border-left-color:#c09050;">
+            <span class="ob-card-no">#46</span>
+            <span class="ob-card-name">Xiaozhao; Yuanqu Gucheng</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c09050;">Erlitou</div>
+          <div class="ob-card-loc">📍 Yuanqu County cluster, Shanxi <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Xiaozhao: Yuanqu, Shanxi; Erlitou-period site showing heterogeneous divination. Yuanqu Gucheng: Erlitou levels contain varied oracle bones including some pretreated specimens; Erligang levels show similar trends toward elaboration.</div>
+        </div>
+        <div class="ob-card" data-no="47" onclick="obFlyTo(47)">
+          <div class="ob-card-head" style="border-left-color:#7a9fb0;">
+            <span class="ob-card-no">#47</span>
+            <span class="ob-card-name">Xiapanwang</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a9fb0;">Late Longshan</div>
+          <div class="ob-card-loc">📍 Ci County, Hebei <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Ci Xian, Hebei; Late Longshan site grouped with similar scapulimancy remains; these sites used cattle, pig, sheep, and deer scapulae burned without pretreatment.</div>
+        </div>
+        <div class="ob-card" data-no="48" onclick="obFlyTo(48)">
+          <div class="ob-card-head" style="border-left-color:#7a9fb0;">
+            <span class="ob-card-no">#48</span>
+            <span class="ob-card-name">Xiawanggang</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a9fb0;">Late Yangshao</div>
+          <div class="ob-card-loc">📍 Xichuan County, Henan <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Xichuan, Henan; possible Late Yangshao sheep scapula oracle bone, though dating may be Longshan. Longshan strata include a pig scapula blade with at least seven scattered divination marks, burned without pretreatment. Erlitou levels yielded a single pig scapula burned directly without pretreatment. Also cited for Zhou-period persistence in southern Henan.</div>
+        </div>
+        <div class="ob-card" data-no="49" onclick="obFlyTo(49)">
+          <div class="ob-card-head" style="border-left-color:#7a9fb0;">
+            <span class="ob-card-no">#49</span>
+            <span class="ob-card-name">Xinzhongji</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a9fb0;">Late Longshan</div>
+          <div class="ob-card-loc">📍 Cao County, Shandong <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Cao Xian, Shandong; Late Longshan site grouped with similar scapulimancy remains; these sites used cattle, pig, sheep, and deer scapulae burned without pretreatment.</div>
+        </div>
+        <div class="ob-card" data-no="50" onclick="obFlyTo(50)">
+          <div class="ob-card-head" style="border-left-color:#7a9fb0;">
+            <span class="ob-card-no">#50</span>
+            <span class="ob-card-name">Yangbai</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a9fb0;">Late Longshan</div>
+          <div class="ob-card-loc">📍 Wutai County, Shanxi <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Wutai, Shanxi; late phase around ca. 2000 BC. Radiocarbon dates cited around 2172, 1867, and 1786 calBC; grouped with Longshanoid examples using unpretreated scapulae.</div>
+        </div>
+        <div class="ob-card" data-no="51" onclick="obFlyTo(51)">
+          <div class="ob-card-head" style="border-left-color:#7a9fb0;">
+            <span class="ob-card-no">#51</span>
+            <span class="ob-card-name">Yangtouwa</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a9fb0;">Late Longshan</div>
+          <div class="ob-card-loc">📍 Dalian, Liaoning <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Dalian, Liaoning; ca. 2500 BC. Cited as a widely dispersed Longshanoid example with similar unpretreated scapulimancy remains.</div>
+        </div>
+        <div class="ob-card" data-no="52" onclick="obFlyTo(52)">
+          <div class="ob-card-head" style="border-left-color:#c85030;">
+            <span class="ob-card-no">#52</span>
+            <span class="ob-card-name">Yinjiacheng</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c85030;">Late Shang</div>
+          <div class="ob-card-loc">📍 Sishui County, Shandong <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Sishui, Shandong; Late Shang remains lack elaborate procedures, but several specimens have combinations of three circular drill marks. Flad interprets the unusual triple-drill pattern as possible local appropriation of Shang divination by diviners aware of but not trained in the state procedure.</div>
+        </div>
+        <div class="ob-card" data-no="53" onclick="obFlyTo(53)">
+          <div class="ob-card-head" style="border-left-color:#c85030;">
+            <span class="ob-card-no">#53</span>
+            <span class="ob-card-name">Yinxu</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c85030;">Late Shang</div>
+          <div class="ob-card-loc">📍 Yinxu, Anyang, Henan <span style="color:#7ab890;font-size:.52rem;margin-left:.3rem;">High</span></div>
+          <div class="ob-card-notes">Late Shang capital near Anyang, Henan, ca. 1250-1046 BC. Large oracle-bone caches and inscriptions show pyromancy tied to the Shang court, with the king as chief diviner in the latest period. Standardized double-hollow marks on cattle scapulae and turtle plastrons reflect institutionalized, politically charged divination, though nonroyal/popular contexts also existed.</div>
+        </div>
+        <div class="ob-card" data-no="54" onclick="obFlyTo(54)">
+          <div class="ob-card-head" style="border-left-color:#6a8fa0;">
+            <span class="ob-card-no">#54</span>
+            <span class="ob-card-name">Zhaizita</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#6a8fa0;">Late Neolithic</div>
+          <div class="ob-card-loc">📍 Jungar Banner, Inner Mongolia <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Jungar Banner, Inner Mongolia; cited with Fuhegoumen and Fujiamen as a Late Neolithic scapulimancy example from China's Northern Zone.</div>
+        </div>
+        <div class="ob-card" data-no="55" onclick="obFlyTo(55)">
+          <div class="ob-card-head" style="border-left-color:#7a8060;">
+            <span class="ob-card-no">#55</span>
+            <span class="ob-card-name">Zhiwushan</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a8060;">Zhou</div>
+          <div class="ob-card-loc">📍 Xiangfan/Xiangyang, Hubei <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Xiangfan, Hubei; Zhou-era oracle-bone locality. Regional specimens include turtle plastrons with long rectangular hollows, curved corners, and incised lines, plus scapulae with rectangular or square hollows on preflattened areas.</div>
+        </div>
+        <div class="ob-card" data-no="56" onclick="obFlyTo(56)">
+          <div class="ob-card-head" style="border-left-color:#6080a0;">
+            <span class="ob-card-no">#56</span>
+            <span class="ob-card-name">Zhizhushan</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#6080a0;">Lower Xiajiadian</div>
+          <div class="ob-card-loc">📍 Zhizhushan / Chifeng area, Inner Mongolia <span style="color:#c85030;font-size:.52rem;margin-left:.3rem;">Low</span></div>
+          <div class="ob-card-notes">Chifeng area; Lower Xiajiadian site grouped with Nanshangen, Yaowangmiao, and Xiajiadian; finds include pig scapulae and other pyromancy bones with drilled hollows before burning.</div>
+        </div>
+        <div class="ob-card" data-no="57" onclick="obFlyTo(57)">
+          <div class="ob-card-head" style="border-left-color:#7a8060;">
+            <span class="ob-card-no">#57</span>
+            <span class="ob-card-name">Zhouliangyuqiao</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#7a8060;">Zhou</div>
+          <div class="ob-card-loc">📍 Shashi/Jingzhou, Hubei <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Shashi, Hubei; Middle Yangzi site with mostly turtle-shell divination remains, and also cited among Zhou-era oracle-bone sites in Hubei.</div>
+        </div>
+        <div class="ob-card" data-no="58" onclick="obFlyTo(58)">
+          <div class="ob-card-head" style="border-left-color:#c09050;">
+            <span class="ob-card-no">#58</span>
+            <span class="ob-card-name">Zhukaigou</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c09050;">Erlitou-period</div>
+          <div class="ob-card-loc">📍 Ejin Horo Banner / Zhukaigou, Inner Mongolia <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Ejin Horo Banner, Inner Mongolia; Erlitou-period levels include 51 oracle bones: cattle scapulae (32), deer (11), pig (4), sheep (2), plus camel and bear scapulae. Some were pretreated with spines removed and holes drilled before burning; radiocarbon dates cluster around the early second millennium to mid-second millennium BC.</div>
+        </div>
+        <div class="ob-card" data-no="59" onclick="obFlyTo(59)">
+          <div class="ob-card-head" style="border-left-color:#c85030;">
+            <span class="ob-card-no">#59</span>
+            <span class="ob-card-name">Zhumazui</span>
+            
+          </div>
+          <div class="ob-card-period" style="color:#c85030;">Late Shang</div>
+          <div class="ob-card-loc">📍 Liquan County, Shaanxi <span style="color:#d4a84b;font-size:.52rem;margin-left:.3rem;">Medium</span></div>
+          <div class="ob-card-notes">Liquan, Shaanxi; grouped with Beicun, Lijiaya, and Andi as Late Shang-era Shaanxi sites with oracle bones similar to Upper Erligang contexts; interpreted as persistence of earlier traditions outside the Central Plains state apparatus.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Source note -->
+  <div class="ob-source-note">
+    <strong>Source:</strong> Rowan K. Flad, "Divination and Power: A Multiregional View of the Development of Oracle Bone Divination in Early China," <em>Current Anthropology</em> 49:3 (2008), pp. 403–437. <a href="https://www.jstor.org/stable/10.1086/588495" target="_blank" rel="noopener">JSTOR ↗</a>
+    &nbsp;·&nbsp; Coordinates: approximate WGS84, locality/county level unless noted. Verify against site reports before publication.
+  </div>
+</div>
+
+<!-- ─── Oracle Bone CSS ─── -->
+<style>
+.ob-section{background:linear-gradient(180deg,#0a0c10 0%,#080a0e 100%);border-top:1px solid rgba(242,234,216,.06);padding-bottom:4rem;}
+.ob-hero{padding:3rem 2rem 2rem;max-width:1100px;margin:0 auto;}
+.ob-hero-eyebrow{font-family:monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:#b07030;margin-bottom:.7rem;}
+.ob-hero-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.8rem,5vw,3.2rem);font-weight:900;color:#f2ead8;line-height:1.05;margin-bottom:.6rem;letter-spacing:-.02em;}
+.ob-hero-title em{color:#c09050;font-style:italic;}
+.ob-hero-sub{font-size:.82rem;color:rgba(242,234,216,.5);max-width:680px;line-height:1.8;margin-bottom:1.5rem;}
+.ob-stat-strip{display:flex;gap:2rem;flex-wrap:wrap;}
+.ob-stat-n{font-family:'Playfair Display',Georgia,serif;font-size:1.4rem;font-weight:900;color:#c09050;}
+.ob-stat-l{font-size:.52rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,234,216,.35);margin-top:.1rem;}
+.ob-layout{display:grid;grid-template-columns:1fr 360px;gap:1.5rem;max-width:1100px;margin:0 auto;padding:0 2rem;}
+.ob-map-col{display:flex;flex-direction:column;gap:.5rem;}
+.ob-map-label{display:flex;justify-content:space-between;align-items:center;font-family:monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,234,216,.35);}
+.ob-legend{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.4rem;}
+.ob-legend-item{display:flex;align-items:center;gap:.3rem;font-size:.55rem;color:rgba(242,234,216,.4);}
+.ob-legend-item span{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0;}
+.ob-cards-col{display:flex;flex-direction:column;gap:.5rem;max-height:600px;}
+.ob-cards-header{display:flex;align-items:center;gap:.5rem;}
+.ob-search{flex:1;background:rgba(242,234,216,.05);border:1px solid rgba(242,234,216,.1);color:#f2ead8;font-size:.7rem;padding:.4rem .7rem;outline:none;font-family:inherit;}
+.ob-search:focus{border-color:#b07030;}
+.ob-search::placeholder{color:rgba(242,234,216,.3);}
+.ob-cards-count{font-family:monospace;font-size:.55rem;color:rgba(242,234,216,.3);white-space:nowrap;}
+.ob-cards-list{overflow-y:auto;display:flex;flex-direction:column;gap:.4rem;flex:1;min-height:0;max-height:540px;scrollbar-width:thin;scrollbar-color:rgba(192,144,80,.3) transparent;}
+.ob-card{background:rgba(242,234,216,.03);border:1px solid rgba(242,234,216,.07);padding:.65rem .75rem;cursor:pointer;transition:background .15s,border-color .15s;}
+.ob-card:hover,.ob-card.active{background:rgba(192,144,80,.08);border-color:rgba(192,144,80,.3);}
+.ob-card-head{display:flex;align-items:baseline;gap:.4rem;border-left:2px solid;padding-left:.4rem;margin-bottom:.25rem;}
+.ob-card-no{font-family:monospace;font-size:.55rem;color:rgba(242,234,216,.3);flex-shrink:0;}
+.ob-card-name{font-size:.78rem;font-weight:700;color:#f2ead8;line-height:1.2;}
+.ob-card-city{font-size:.62rem;color:rgba(242,234,216,.35);}
+.ob-card-period{font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem;}
+.ob-card-loc{font-size:.58rem;color:rgba(242,234,216,.3);margin-bottom:.3rem;}
+.ob-card-notes{font-size:.68rem;color:rgba(242,234,216,.5);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.ob-source-note{max-width:1100px;margin:2rem auto 0;padding:1rem 2rem;font-size:.68rem;color:rgba(242,234,216,.3);line-height:1.7;border-top:1px solid rgba(242,234,216,.05);}
+.ob-source-note a{color:#b07030;}
+.ob-source-note strong{color:rgba(242,234,216,.5);}
+@media(max-width:900px){
+  .ob-layout{grid-template-columns:1fr;}
+  .ob-cards-col{max-height:400px;}
+}
+</style>
+
+<!-- ─── Oracle Bone JS ─── -->
+<script>
+const ORACLE_BONE_SITES = [
+  {no:1,name:'Andi',city:'',period:'Late Shang / Shaanxi',notes:'Wugong, Shaanxi; one of several Late Shang-era Shaanxi sites with oracle bones similar to Upper Erligang contexts. Flad treats this as persistence of earlier traditions outside the Central Plains state apparatus.',lat:34.260000,lng:108.220000,loc:'Wugong County, Shaanxi',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=34.260000&mlon=108.220000#map=10/34.260000/108.220000',color:'#c85030',periodLabel:'Late Shang'  },
+  {no:2,name:'Anzhangzi',city:'',period:'Upper Xiajiadian / Zhou-era persistence',notes:'Lingyuan, Liaoning; Upper Xiajiadian context, ca. 1000-300 BC. Cited as northeast evidence that oracle-bone use persisted with relatively elaborate procedures but without uniform Shang-style control.',lat:41.240000,lng:119.400000,loc:'Lingyuan, Liaoning',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=41.240000&mlon=119.400000#map=10/41.240000/119.400000',color:'#7a8060',periodLabel:'Upper Xiajiadian'  },
+  {no:3,name:'Beicun',city:'',period:'Early Shang; Late Shang-era Shaanxi comparison',notes:'Yao Xian, Shaanxi; Early Shang oracle bones are cattle scapula fragments cut through the shaft, polished, and drilled before burning. Hollows are circular with rounded bases and no attendant chisel marks. Also grouped with Late Shang-era Shaanxi sites similar to Upper Erligang contexts.',lat:34.916700,lng:108.966700,loc:'Yaozhou/Yao Xian, Shaanxi',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=34.916700&mlon=108.966700#map=10/34.916700/108.966700',color:'#c85030',periodLabel:'Early Shang'  },
+  {no:4,name:'Beiyingtai; Jiangoucun',city:'',period:'Early Shang; Late Longshan',notes:'Beiyingtai: Handan, Hebei; seven Early Shang cattle and pig scapula fragments. Jiangoucun: Handan, Hebei; Late Longshan site grouped with similar unpretreated scapula remains from Hebei.',lat:36.610000,lng:114.490000,loc:'Handan, Hebei cluster',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=36.610000&mlon=114.490000#map=10/36.610000/114.490000',color:'#7a9fb0',periodLabel:'Early Shang'  },
+  {no:5,name:'Beiyinyangying',city:'',period:'Late Shang',notes:'Nanjing; Late Shang remains are grouped with Yinjiacheng as eastern examples that lack evidence of elaborate divination procedures.',lat:32.061000,lng:118.797000,loc:'Nanjing, Jiangsu',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=32.061000&mlon=118.797000#map=10/32.061000/118.797000',color:'#c85030',periodLabel:'Late Shang'  },
+  {no:6,name:'Caoyanzhuang; Dongxianxian; Gejiazhuang',city:'Xingtai City',period:'Late Longshan; Western Zhou; Erligang',notes:'Caoyanzhuang: Xingtai, Hebei; Late Longshan site with similar unpretreated scapula remains. Dongxianxian: Xingtai, Hebei; Western Zhou specimens nearly identical to Liulihe circular hollows with a single chiseled line. Gejiazhuang: Xingtai, Hebei; Erligang-period drilled cattle scapulae.',lat:37.070000,lng:114.500000,loc:'Xingtai City cluster, Hebei',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=37.070000&mlon=114.500000#map=10/37.070000/114.500000',color:'#7a9fb0',periodLabel:'Late Longshan'  },
+  {no:7,name:'Chengziya',city:'',period:'Late Longshan',notes:'Licheng, Shandong; Late Longshan site grouped with similar scapulimancy remains; these sites used cattle, pig, sheep, and deer scapulae burned without pretreatment.',lat:36.734811,lng:117.352489,loc:'Chengziya Archaeological Site, Zhangqiu/Licheng, Shandong',conf:'High',osm:'https://www.openstreetmap.org/?mlat=36.734811&mlon=117.352489#map=10/36.734811/117.352489',color:'#7a9fb0',periodLabel:'Late Longshan'  },
+  {no:8,name:'Dachengshan',city:'',period:'Late Longshan',notes:'Tangshan, Hebei; Late Longshan site grouped with similar scapulimancy remains; these sites used cattle, pig, sheep, and deer scapulae burned without pretreatment.',lat:39.630000,lng:118.180000,loc:'Tangshan, Hebei',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=39.630000&mlon=118.180000#map=10/39.630000/118.180000',color:'#7a9fb0',periodLabel:'Late Longshan'  },
+  {no:9,name:'Dahezhuang',city:'',period:'Qijia culture / late Neolithic to Early Bronze Age',notes:'Yongjing, Gansu; Qijia-culture site, ca. 2200-1800 BC, with strata around ca. 1900 BC. Grouped with unpretreated scapula oracle-bone finds; radiocarbon dates cited at about 1924 and 1887 calBC.',lat:35.940000,lng:103.320000,loc:'Yongjing County, Gansu',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=35.940000&mlon=103.320000#map=10/35.940000/103.320000',color:'#6a8fa0',periodLabel:'Qijia culture'  },
+  {no:10,name:'Dashanqian',city:'',period:'Lower Xiajiadian / Early Bronze Age',notes:'Harqin Banner, Inner Mongolia; Lower Xiajiadian contexts. A few oracle bones recovered, all drilled before burning; one scapula shaft had 37 densely crowded drill holes of different sizes.',lat:41.930000,lng:118.700000,loc:'Harqin Banner, Inner Mongolia',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=41.930000&mlon=118.700000#map=10/41.930000/118.700000',color:'#6080a0',periodLabel:'Lower Xiajiadian'  },
+  {no:11,name:'Daxinzhuang',city:'',period:'Shang',notes:'Ji\'nan, Shandong; one of the most significant Shang-period assemblages outside Anyang. Five-stage sequence: early mammal scapulae with removed spines and drilled circular hollows; later deer/sheep/cattle scapulae thinned and drilled; then turtle shell appears; later turtle plastrons dominate with drill-and-chisel preparation; final stage almost all plastrons with more chisel-only preparation.',lat:36.710000,lng:117.110000,loc:'Daxinzhuang / Licheng, Jinan, Shandong',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=36.710000&mlon=117.110000#map=10/36.710000/117.110000',color:'#c85030',periodLabel:'Shang'  },
+  {no:12,name:'Donghuishan',city:'',period:'Siba culture / Early Bronze Age',notes:'Minle, Gansu; Siba-culture site, ca. 1900-1500 BC, cited among recent excavations with oracle-bone examples; grouped with unpretreated scapula remains.',lat:38.430000,lng:100.810000,loc:'Minle County, Gansu',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=38.430000&mlon=100.810000#map=10/38.430000/100.810000',color:'#88a070',periodLabel:'Siba culture'  },
+  {no:13,name:'Dongxiafeng; Dongyin',city:'',period:'Erlitou; Upper Erligang',notes:'Dongxiafeng: Xia Xian, Shanxi; four-phase Erlitou-period sequence showing transition toward pretreatment. Dongyin: Xia Xian, Shanxi; Upper Erligang modified cattle scapula oracle bones with circular drilled hollows of varying size and depth.',lat:35.140000,lng:111.220000,loc:'Xia County, Shanxi cluster',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=35.140000&mlon=111.220000#map=10/35.140000/111.220000',color:'#c09050',periodLabel:'Erlitou'  },
+  {no:14,name:'Dongxing',city:'',period:'Han',notes:'Hailin City, Heilongjiang; Han Dynasty pig scapula used in pyromancy, cited as evidence that mammal-bone pyromancy persisted after the Bronze Age.',lat:44.570000,lng:129.380000,loc:'Hailin City, Heilongjiang',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=44.570000&mlon=129.380000#map=10/44.570000/129.380000',color:'#508070',periodLabel:'Han'  },
+  {no:15,name:'Erligang; Family Residences of the Henan Academy of Chinese Medicine; Huangweihui Qingniangongyu; Huimin Zhongxue; Minggong Ludong; Nanguanwai; Xiaoshuangqiao',city:'Zhengzhou City',period:'Early to Middle Shang / Zhengzhou cluster',notes:'Erligang: Early Shang type-site; cattle scapulae most common, with pig, sheep, deer, dog scapulae, cattle limb bones, and turtle-shell fragments also used; Lower Erligang examples usually not pretreated; bronze drill evidence noted. Family Residences, Huangweihui Qingniangongyu, and Huimin Zhongxue: Zhengzhou localities showing the same Lower Erligang pattern. Minggong Ludong: Lower and Upper Erligang contexts; People\'s Park phase turtle plastron and carapace fragments have parallel rows/double marks. Nanguanwai: largest Zhengzhou collection; Luodamiao cattle scapula split and drilled; turtle plastron unaltered; Lower Erligang mostly unmodified; Upper Erligang many flattened and drilled, with cattle scapulae and all 37 turtle plastrons drilled. Xiaoshuangqiao: Baijiazhuang/Middle Shang sheep scapula fragments mostly not pretreated, with one possible drilled specimen.',lat:34.746600,lng:113.625400,loc:'Zhengzhou City cluster, Henan',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=34.746600&mlon=113.625400#map=10/34.746600/113.625400',color:'#c85030',periodLabel:'Early to Middle Shang'  },
+  {no:16,name:'Erlitou; Yanshi Shangcheng',city:'',period:'Erlitou culture; Early Shang',notes:'Erlitou: Yanshi, Henan; phases I-IV show cattle, sheep, and pig scapulae directly burned, with circular/oval marks and no drilling or chiseling; marks are inconsistent and unsystematic, and Flad argues scapulimancy was not a significant state-sponsored activity there. Yanshi Shangcheng: Shang walled site, ca. 1600-1400 BC; numerous oracle bones, mostly sheep scapulae burned directly and not pretreated, with a few pretreated cattle scapulae.',lat:34.701053,lng:112.691578,loc:'Erlitou/Yanshi, Henan',conf:'High',osm:'https://www.openstreetmap.org/?mlat=34.701053&mlon=112.691578#map=10/34.701053/112.691578',color:'#c09050',periodLabel:'Erlitou culture'  },
+  {no:17,name:'Fangchijie; Fuqin Xiaoqu; Jiangjun yamen; Minshan fandian; Qingyanggong; Zhihuijie',city:'Chengdu City',period:'Shang to Zhou / Chengdu region',notes:'Fangchijie: Chengdu level 5, associated with Sanxingdui culture, gives the earliest Chengdu examples; turtle shells, mainly plastrons, are the main medium. Fuqin Xiaoqu, Jiangjun Yamen, Zhihuijie, Minshan Fandian, and Qingyanggong: Chengdu finds show chronological development from circular hollows, some drilled and some chiseled, to rectangular hollows within circular depressions and rectangular hollows with incised lines. Flad emphasizes overlap and heterogeneity rather than standardization or tight political control.',lat:30.660000,lng:104.063000,loc:'Chengdu City cluster, Sichuan',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=30.660000&mlon=104.063000#map=10/30.660000/104.063000',color:'#c85030',periodLabel:'Shang to Zhou'  },
+  {no:18,name:'Fengchu',city:'',period:'Western Zhou / Zhouyuan',notes:'Zhouyuan oracle-bone findspot. Along with Qijiacun, inscribed bones reflect transmission from Shang divination; some inscriptions name Shang ancestors, and preparation techniques are broadly similar to Yinxu practice, suggesting diviners trained in or derived from Terminal Shang traditions.',lat:34.450000,lng:107.620000,loc:'Zhouyuan/Fengchu area, Shaanxi',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=34.450000&mlon=107.620000#map=10/34.450000/107.620000',color:'#7a8060',periodLabel:'Western Zhou'  },
+  {no:19,name:'Fucheng',city:'',period:'Middle Shang / Early Shang comparison',notes:'Jiaozuo, Henan; similar to Xiaoshuangqiao, showing high variability in divination during the Baijiazhuang/Middle Shang horizon.',lat:35.240000,lng:113.230000,loc:'Jiaozuo, Henan',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=35.240000&mlon=113.230000#map=10/35.240000/113.230000',color:'#c85030',periodLabel:'Middle Shang'  },
+  {no:20,name:'Fuhegoumen',city:'',period:'Late Neolithic',notes:'Balin Left Banner, Inner Mongolia; among the earliest pyromancy evidence. A sheep or small deer scapula had numerous intentional burn marks on the distal blade and was dated by associated birch bark to about 3321 ± 179 calBC.',lat:43.980000,lng:119.390000,loc:'Bairin Left Banner, Inner Mongolia',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=43.980000&mlon=119.390000#map=10/43.980000/119.390000',color:'#6a8fa0',periodLabel:'Late Neolithic'  },
+  {no:21,name:'Fujiamen',city:'',period:'Late Neolithic / Northern Zone',notes:'Wushan, Gansu; cited with Zhaizita and Fuhegoumen as a Late Neolithic scapulimancy example from China\'s Northern Zone.',lat:34.720000,lng:104.890000,loc:'Wushan County, Gansu',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=34.720000&mlon=104.890000#map=10/34.720000/104.890000',color:'#6a8fa0',periodLabel:'Late Neolithic'  },
+  {no:22,name:'Ganjinggou; Zhongba',city:'',period:'Zhou; Shang to Zhou / Three Gorges',notes:'Ganjinggou: Zhong Xian, Chongqing; Three Gorges site with oracle bones in Zhou-period strata. Zhongba: prehistoric salt-production site in Zhong Xian; earliest Three Gorges pyromancy includes a small burned plastron from phase II, ca. 1630-1210 BC; phase III, ca. 1100-200 BC, has over 180 oracle bones, mostly turtle plastrons plus at least one fish operculum. Marks range from circular direct burns to circular/oval prepared hollows with grooves and later rectangular hollows with perpendicular incisions; no standard procedure.',lat:30.300000,lng:108.040000,loc:'Zhong Xian / Zhongba-Ganjinggou cluster, Chongqing',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=30.300000&mlon=108.040000#map=10/30.300000/108.040000',color:'#c85030',periodLabel:'Zhou'  },
+  {no:23,name:'Jingnansi; Meihuaiqiao',city:'',period:'Zhou / Middle Yangzi',notes:'Jingnansi: Jiangling, Hubei; Zhou-era oracle bones in the Middle Yangzi region. Meihuaiqiao: Jiangling, Hubei; divination remains are mostly turtle shells.',lat:30.040000,lng:112.420000,loc:'Jiangling, Hubei / Middle Yangzi cluster',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=30.040000&mlon=112.420000#map=10/30.040000/112.420000',color:'#7a8060',periodLabel:'Zhou'  },
+  {no:24,name:'Kangjia',city:'',period:'Longshan',notes:'Lintong, Shaanxi; at least 20 deer, pig, and sheep scapulae used in pyromancy from Longshan deposits predating 2700 BC. Bone surfaces were not pretreated, with no drilled holes or chisel marks before burning.',lat:34.380000,lng:109.220000,loc:'Lintong, Shaanxi',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=34.380000&mlon=109.220000#map=10/34.380000/109.220000',color:'#7a9fb0',periodLabel:'Longshan'  },
+  {no:25,name:'Yaowangmiao',city:'',period:'Lower Xiajiadian / Early Bronze Age',notes:'Chifeng area; Lower Xiajiadian site grouped with Nanshangen, Zhizhushan, and Xiajiadian. Finds include pig scapulae and other pyromancy bones; diviners drilled hollows before burning to facilitate and control cracking.',lat:42.270000,lng:118.960000,loc:'Chifeng area, Inner Mongolia',conf:'Low',osm:'https://www.openstreetmap.org/?mlat=42.270000&mlon=118.960000#map=10/42.270000/118.960000',color:'#6080a0',periodLabel:'Lower Xiajiadian'  },
+  {no:26,name:'Lianyushan; Shimenzui',city:'',period:'Zhou / Three Gorges',notes:'Lianyushan: Zigui, Hubei; Three Gorges site with oracle bones in Zhou-period strata. Shimenzui: Zigui, Hubei; Zhou-period oracle bones, including a fish operculum used as an oracle bone; cited as evidence of regional operculimancy alongside Xianglushi and Zhongba.',lat:30.830000,lng:110.980000,loc:'Zigui, Hubei cluster',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=30.830000&mlon=110.980000#map=10/30.830000/110.980000',color:'#7a8060',periodLabel:'Zhou'  },
+  {no:27,name:'Lijaya',city:'',period:'Late Shang / Shaanxi',notes:'Qingjian, Shaanxi; Flad spells it Lijiaya. Grouped with Beicun, Zhumazui, and Andi as Late Shang-era Shaanxi sites with oracle bones similar to Upper Erligang contexts.',lat:37.080000,lng:110.130000,loc:'Qingjian County, Shaanxi',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=37.080000&mlon=110.130000#map=10/37.080000/110.130000',color:'#c85030',periodLabel:'Late Shang'  },
+  {no:28,name:'Liulihe',city:'',period:'Western Zhou',notes:'Near Beijing; dozens of divination plastrons with double marks. Some have narrow rectangular chiseled grooves and rectangular attendant hollows derived from Yinxu-style divination marks; three oracle bones are inscribed. Others have circular hollows about 1.2 cm across with a single chiseled line.',lat:39.600000,lng:116.020000,loc:'Liulihe / Fangshan, Beijing',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=39.600000&mlon=116.020000#map=10/39.600000/116.020000',color:'#7a8060',periodLabel:'Western Zhou'  },
+  {no:29,name:'Liutaizi',city:'',period:'Western Zhou',notes:'Jiyang, Shandong; yielded Western Zhou oracle bones with more diverse hollows, used by Flad in discussing persistent eastern/Dongyi and regional oracle-bone traditions.',lat:36.980000,lng:117.180000,loc:'Jiyang, Shandong',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=36.980000&mlon=117.180000#map=10/36.980000/117.180000',color:'#7a8060',periodLabel:'Western Zhou'  },
+  {no:30,name:'Maliutuo',city:'',period:'Zhou / Three Gorges',notes:'Wuliang, Three Gorges area; Zhou-period strata. A late Bronze Age noncemetery site where excavations recovered many turtle plastrons and large fish opercula with divination marks.',lat:30.800000,lng:109.500000,loc:'Maliutuo / Wuliang, Three Gorges area',conf:'Low',osm:'https://www.openstreetmap.org/?mlat=30.800000&mlon=109.500000#map=10/30.800000/109.500000',color:'#7a8060',periodLabel:'Zhou'  },
+  {no:31,name:'Maogoudong',city:'',period:'Zhou / Hubei-Xiangfan region',notes:'Zaoyang, Hubei; Zhou-era oracle-bone locality in the Xiangfan region. Regional specimens include turtle plastrons with long rectangular hollows, curved corners, and incised lines, plus scapulae with rectangular or square hollows on preflattened areas.',lat:32.130000,lng:112.750000,loc:'Zaoyang, Hubei',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=32.130000&mlon=112.750000#map=10/32.130000/112.750000',color:'#7a8060',periodLabel:'Zhou'  },
+  {no:32,name:'Mingyueba',city:'',period:'Tang',notes:'Yunyang, Chongqing; Tang-era oracle bone, AD 618-907, cited as the most recent oracle bone known from archaeological contexts in China.',lat:30.930000,lng:108.700000,loc:'Yunyang, Chongqing',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=30.930000&mlon=108.700000#map=10/30.930000/108.700000',color:'#a07060',periodLabel:'Tang'  },
+  {no:33,name:'Nanshangen',city:'',period:'Lower Xiajiadian / Early Bronze Age',notes:'Ningcheng, Inner Mongolia; Lower Xiajiadian site grouped with Zhizhushan, Yaowangmiao, and Xiajiadian. Finds include pig scapulae and other pyromancy bones with drilled hollows before burning.',lat:41.600000,lng:119.330000,loc:'Ningcheng County, Inner Mongolia',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=41.600000&mlon=119.330000#map=10/41.600000/119.330000',color:'#6080a0',periodLabel:'Lower Xiajiadian'  },
+  {no:34,name:'Panlongcheng',city:'',period:'Erligang / Early Shang',notes:'Huangpi, Hubei; important Erligang-phase walled site. Several drilled cattle scapulae occur in period V and VII contexts, including pit finds and one specimen inside a bronze jue vessel. Fits the Upper Erligang pattern, but small numbers suggest pyromancy was not central to the expansive Erligang Shang state.',lat:30.694444,lng:114.265833,loc:'Panlongcheng Archaeological Site, Wuhan/Huangpi, Hubei',conf:'High',osm:'https://www.openstreetmap.org/?mlat=30.694444&mlon=114.265833#map=10/30.694444/114.265833',color:'#b87830',periodLabel:'Erligang'  },
+  {no:35,name:'Qijiacun',city:'',period:'Western Zhou / Zhouyuan',notes:'Fufeng, Shaanxi; Western Zhou plastrons on the Zhou Plain prepared similarly to Yinxu oracle bones, with elongated groove and side burn mark. Alongside Fengchu, inscribed Zhouyuan oracle bones indicate Shang-derived procedures and close early court association.',lat:34.375600,lng:107.900200,loc:'Fufeng County / Qijiacun, Shaanxi',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=34.375600&mlon=107.900200#map=10/34.375600/107.900200',color:'#7a8060',periodLabel:'Western Zhou'  },
+  {no:36,name:'Quliang',city:'',period:'Lower Erligang / Early Shang',notes:'Xinmi, Henan; Lower Erligang-period site with heterogeneous divination practices and incipient elaboration.',lat:34.540000,lng:113.390000,loc:'Xinmi, Henan',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=34.540000&mlon=113.390000#map=10/34.540000/113.390000',color:'#b87830',periodLabel:'Lower Erligang'  },
+  {no:37,name:'Shangpo',city:'',period:'Late Longshan / Chalcolithic',notes:'Xiping, Henan; recent excavation cited among Longshanoid examples. Grouped with sites whose oracle bones are cattle, pig, sheep, and deer scapulae burned without pretreatment.',lat:33.390000,lng:114.020000,loc:'Xiping County, Henan',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=33.390000&mlon=114.020000#map=10/33.390000/114.020000',color:'#7a9fb0',periodLabel:'Late Longshan'  },
+  {no:38,name:'Shaochai',city:'',period:'Erlitou / Early Bronze Age',notes:'Gong Xian, Henan; Erlitou phase III contexts include several cattle scapula fragments drilled before burning, evidence of increased elaboration. At the earliest oracle-bone level, cattle scapula fragments were not pretreated, but pretreatment emerged during Erlitou III; cattle scapulae were modified while sheep scapulae were not.',lat:34.750000,lng:113.030000,loc:'Gongyi/Gong Xian, Henan',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=34.750000&mlon=113.030000#map=10/34.750000/113.030000',color:'#c09050',periodLabel:'Erlitou'  },
+  {no:39,name:'Shijia',city:'',period:'Yueshi culture / Early Bronze Age',notes:'Huantai, Shandong; contemporaneous Yueshi-culture site, ca. 2000-1600 BC, with only unmodified sheep scapulae.',lat:36.960000,lng:118.100000,loc:'Huantai County, Shandong',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=36.960000&mlon=118.100000#map=10/36.960000/118.100000',color:'#8a8070',periodLabel:'Yueshi culture'  },
+  {no:40,name:'Taikoucun',city:'',period:'Late Longshan',notes:'Yongnian, Hebei; Late Longshan site grouped with similar scapulimancy remains; these sites used cattle, pig, sheep, and deer scapulae burned without pretreatment.',lat:36.770000,lng:114.490000,loc:'Yongnian, Hebei',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=36.770000&mlon=114.490000#map=10/36.770000/114.490000',color:'#7a9fb0',periodLabel:'Late Longshan'  },
+  {no:41,name:'Taixi',city:'',period:'Erligang / Early Shang',notes:'Gaocheng, Hebei; Erligang-era pits and burials produced a highly variable assemblage of 494 oracle bones, mostly cattle, pig, and turtle.',lat:38.030000,lng:114.840000,loc:'Gaocheng, Hebei',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=38.030000&mlon=114.840000#map=10/38.030000/114.840000',color:'#b87830',periodLabel:'Erligang'  },
+  {no:42,name:'Taosi',city:'',period:'Late Longshan / Chalcolithic',notes:'Xiangfen, Shanxi; recent excavation cited among Longshanoid examples. Grouped with sites whose oracle bones are cattle, pig, sheep, and deer scapulae burned without pretreatment.',lat:35.882194,lng:111.498583,loc:'Taosi Archaeological Site / observatory, Xiangfen, Shanxi',conf:'High',osm:'https://www.openstreetmap.org/?mlat=35.882194&mlon=111.498583#map=10/35.882194/111.498583',color:'#7a9fb0',periodLabel:'Late Longshan'  },
+  {no:43,name:'Xiajiadian',city:'',period:'Lower Xiajiadian / Early Bronze Age',notes:'Chifeng area; Lower Xiajiadian site with pig scapulae and other pyromancy bones. Diviners drilled hollows before burning to facilitate and control cracks.',lat:42.270000,lng:118.960000,loc:'Xiajiadian / Chifeng area, Inner Mongolia',conf:'Low',osm:'https://www.openstreetmap.org/?mlat=42.270000&mlon=118.960000#map=10/42.270000/118.960000',color:'#6080a0',periodLabel:'Lower Xiajiadian'  },
+  {no:44,name:'Xianglushi',city:'',period:'Early Shang to Western Zhou / Middle Yangzi',notes:'Qingjiang River near Yichang, Hubei; three-level sequence. Level 6, Early Shang, has three turtle plastron fragments with oval chisel marks and chiseled lines. Level 5, Middle-Late Shang, has 13 oracle bones: 12 turtle shells and one fish operculum, with drill marks and some chisel lines. Level 4, Terminal Shang/Western Zhou, has 17 excavated plus 7 surface specimens: 5 turtle-shell fragments and 19 fish opercula, mostly rectangular hollows.',lat:30.700000,lng:111.280000,loc:'Xianglushi / Qingjiang near Yichang, Hubei',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=30.700000&mlon=111.280000#map=10/30.700000/111.280000',color:'#c85030',periodLabel:'Early Shang to Western Zhou'  },
+  {no:45,name:'Xiaojialing',city:'',period:'Zhou / Hubei-Xiangfan region',notes:'Yicheng, Hubei; Zhou-era oracle-bone locality in the Xiangfan region. Regional finds show turtle plastrons with rectangular hollows and incised lines, and scapulae with rectangular or square hollows on preflattened areas.',lat:31.720000,lng:112.260000,loc:'Yicheng, Hubei',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=31.720000&mlon=112.260000#map=10/31.720000/112.260000',color:'#7a8060',periodLabel:'Zhou'  },
+  {no:46,name:'Xiaozhao; Yuanqu Gucheng',city:'',period:'Erlitou; Erligang',notes:'Xiaozhao: Yuanqu, Shanxi; Erlitou-period site showing heterogeneous divination. Yuanqu Gucheng: Erlitou levels contain varied oracle bones including some pretreated specimens; Erligang levels show similar trends toward elaboration.',lat:35.300000,lng:111.670000,loc:'Yuanqu County cluster, Shanxi',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=35.300000&mlon=111.670000#map=10/35.300000/111.670000',color:'#c09050',periodLabel:'Erlitou'  },
+  {no:47,name:'Xiapanwang',city:'',period:'Late Longshan',notes:'Ci Xian, Hebei; Late Longshan site grouped with similar scapulimancy remains; these sites used cattle, pig, sheep, and deer scapulae burned without pretreatment.',lat:36.360000,lng:114.370000,loc:'Ci County, Hebei',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=36.360000&mlon=114.370000#map=10/36.360000/114.370000',color:'#7a9fb0',periodLabel:'Late Longshan'  },
+  {no:48,name:'Xiawanggang',city:'',period:'Late Yangshao / Longshan / Erlitou / Zhou persistence',notes:'Xichuan, Henan; possible Late Yangshao sheep scapula oracle bone, though dating may be Longshan. Longshan strata include a pig scapula blade with at least seven scattered divination marks, burned without pretreatment. Erlitou levels yielded a single pig scapula burned directly without pretreatment. Also cited for Zhou-period persistence in southern Henan.',lat:33.140000,lng:111.490000,loc:'Xichuan County, Henan',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=33.140000&mlon=111.490000#map=10/33.140000/111.490000',color:'#7a9fb0',periodLabel:'Late Yangshao'  },
+  {no:49,name:'Xinzhongji',city:'',period:'Late Longshan',notes:'Cao Xian, Shandong; Late Longshan site grouped with similar scapulimancy remains; these sites used cattle, pig, sheep, and deer scapulae burned without pretreatment.',lat:34.830000,lng:115.540000,loc:'Cao County, Shandong',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=34.830000&mlon=115.540000#map=10/34.830000/115.540000',color:'#7a9fb0',periodLabel:'Late Longshan'  },
+  {no:50,name:'Yangbai',city:'',period:'Late Longshan / Chalcolithic',notes:'Wutai, Shanxi; late phase around ca. 2000 BC. Radiocarbon dates cited around 2172, 1867, and 1786 calBC; grouped with Longshanoid examples using unpretreated scapulae.',lat:38.730000,lng:113.250000,loc:'Wutai County, Shanxi',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=38.730000&mlon=113.250000#map=10/38.730000/113.250000',color:'#7a9fb0',periodLabel:'Late Longshan'  },
+  {no:51,name:'Yangtouwa',city:'',period:'Late Longshan / Chalcolithic',notes:'Dalian, Liaoning; ca. 2500 BC. Cited as a widely dispersed Longshanoid example with similar unpretreated scapulimancy remains.',lat:38.914000,lng:121.614000,loc:'Dalian, Liaoning',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=38.914000&mlon=121.614000#map=10/38.914000/121.614000',color:'#7a9fb0',periodLabel:'Late Longshan'  },
+  {no:52,name:'Yinjiacheng',city:'',period:'Late Shang / eastern regional variant',notes:'Sishui, Shandong; Late Shang remains lack elaborate procedures, but several specimens have combinations of three circular drill marks. Flad interprets the unusual triple-drill pattern as possible local appropriation of Shang divination by diviners aware of but not trained in the state procedure.',lat:35.650000,lng:117.270000,loc:'Sishui County, Shandong',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=35.650000&mlon=117.270000#map=10/35.650000/117.270000',color:'#c85030',periodLabel:'Late Shang'  },
+  {no:53,name:'Yinxu',city:'',period:'Late Shang',notes:'Late Shang capital near Anyang, Henan, ca. 1250-1046 BC. Large oracle-bone caches and inscriptions show pyromancy tied to the Shang court, with the king as chief diviner in the latest period. Standardized double-hollow marks on cattle scapulae and turtle plastrons reflect institutionalized, politically charged divination, though nonroyal/popular contexts also existed.',lat:36.119500,lng:114.316800,loc:'Yinxu, Anyang, Henan',conf:'High',osm:'https://www.openstreetmap.org/?mlat=36.119500&mlon=114.316800#map=10/36.119500/114.316800',color:'#c85030',periodLabel:'Late Shang'  },
+  {no:54,name:'Zhaizita',city:'',period:'Late Neolithic / Northern Zone',notes:'Jungar Banner, Inner Mongolia; cited with Fuhegoumen and Fujiamen as a Late Neolithic scapulimancy example from China\'s Northern Zone.',lat:39.860000,lng:111.240000,loc:'Jungar Banner, Inner Mongolia',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=39.860000&mlon=111.240000#map=10/39.860000/111.240000',color:'#6a8fa0',periodLabel:'Late Neolithic'  },
+  {no:55,name:'Zhiwushan',city:'',period:'Zhou / Hubei-Xiangfan region',notes:'Xiangfan, Hubei; Zhou-era oracle-bone locality. Regional specimens include turtle plastrons with long rectangular hollows, curved corners, and incised lines, plus scapulae with rectangular or square hollows on preflattened areas.',lat:32.010000,lng:112.140000,loc:'Xiangfan/Xiangyang, Hubei',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=32.010000&mlon=112.140000#map=10/32.010000/112.140000',color:'#7a8060',periodLabel:'Zhou'  },
+  {no:56,name:'Zhizhushan',city:'',period:'Lower Xiajiadian / Early Bronze Age',notes:'Chifeng area; Lower Xiajiadian site grouped with Nanshangen, Yaowangmiao, and Xiajiadian; finds include pig scapulae and other pyromancy bones with drilled hollows before burning.',lat:42.270000,lng:118.960000,loc:'Zhizhushan / Chifeng area, Inner Mongolia',conf:'Low',osm:'https://www.openstreetmap.org/?mlat=42.270000&mlon=118.960000#map=10/42.270000/118.960000',color:'#6080a0',periodLabel:'Lower Xiajiadian'  },
+  {no:57,name:'Zhouliangyuqiao',city:'',period:'Zhou / Middle Yangzi',notes:'Shashi, Hubei; Middle Yangzi site with mostly turtle-shell divination remains, and also cited among Zhou-era oracle-bone sites in Hubei.',lat:30.310000,lng:112.250000,loc:'Shashi/Jingzhou, Hubei',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=30.310000&mlon=112.250000#map=10/30.310000/112.250000',color:'#7a8060',periodLabel:'Zhou'  },
+  {no:58,name:'Zhukaigou',city:'',period:'Erlitou-period / Early Bronze Age northern zone',notes:'Ejin Horo Banner, Inner Mongolia; Erlitou-period levels include 51 oracle bones: cattle scapulae (32), deer (11), pig (4), sheep (2), plus camel and bear scapulae. Some were pretreated with spines removed and holes drilled before burning; radiocarbon dates cluster around the early second millennium to mid-second millennium BC.',lat:39.610000,lng:109.780000,loc:'Ejin Horo Banner / Zhukaigou, Inner Mongolia',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=39.610000&mlon=109.780000#map=10/39.610000/109.780000',color:'#c09050',periodLabel:'Erlitou-period'  },
+  {no:59,name:'Zhumazui',city:'',period:'Late Shang / Shaanxi',notes:'Liquan, Shaanxi; grouped with Beicun, Lijiaya, and Andi as Late Shang-era Shaanxi sites with oracle bones similar to Upper Erligang contexts; interpreted as persistence of earlier traditions outside the Central Plains state apparatus.',lat:34.480000,lng:108.430000,loc:'Liquan County, Shaanxi',conf:'Medium',osm:'https://www.openstreetmap.org/?mlat=34.480000&mlon=108.430000#map=10/34.480000/108.430000',color:'#c85030',periodLabel:'Late Shang'  }
+];
+
+(function(){
+  // Init Leaflet map (Leaflet already loaded by inscriptions.html)
+  const obMap = L.map('ob-map', {
+    center: [35, 108], zoom: 4,
+    zoomControl: true,
+    attributionControl: false,
+    maxZoom: 19,
+  });
+
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+    attribution:'Tiles © Esri — National Geographic',
+    maxNativeZoom: 16, maxZoom: 19
+  }).addTo(obMap);
+
+  const status = document.getElementById('ob-map-status');
+
+  // Build markers
+  const markerMap = {};
+  ORACLE_BONE_SITES.forEach(s => {
+    const r = 6;
+    const icon = L.divIcon({
+      html:`<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+4}" height="${r*2+4}">
+        <circle cx="${r+2}" cy="${r+2}" r="${r}" fill="${s.color}" fill-opacity=".88"
+          stroke="rgba(242,234,216,.5)" stroke-width="1.2"/>
+      </svg>`,
+      className:'', iconSize:[r*2+4,r*2+4], iconAnchor:[r+2,r+2]
+    });
+    const popup = `<div style="font-family:sans-serif;min-width:200px;max-width:260px;">
+      <div style="font-weight:700;font-size:.9rem;margin-bottom:.15rem;color:#1c1814;">${s.name}</div>
+      <div style="font-size:.65rem;color:#b07030;font-weight:700;margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.05em;">${s.periodLabel}</div>
+      <div style="font-size:.65rem;color:#888;margin-bottom:.5rem;">📍 ${s.loc}</div>
+      <div style="font-size:.7rem;color:#444;line-height:1.55;">${s.notes}</div>
+      ${s.osm ? `<a href="${s.osm}" target="_blank" rel="noopener" style="display:inline-block;margin-top:.5rem;font-size:.6rem;font-weight:700;color:#b07030;letter-spacing:.05em;text-transform:uppercase;">OSM ↗</a>` : ''}
+    </div>`;
+    const marker = L.marker([s.lat, s.lng], {icon})
+      .bindPopup(popup, {maxWidth:280, closeButton:false})
+      .addTo(obMap);
+    marker.on('click', () => {
+      highlightCard(s.no);
+    });
+    markerMap[s.no] = marker;
+  });
+
+  if (status) status.textContent = `${ORACLE_BONE_SITES.length} sites`;
+
+  // Fly to site from card click
+  window.obFlyTo = function(no) {
+    const s = ORACLE_BONE_SITES.find(x => +x.no === +no);
+    if (!s) return;
+    obMap.flyTo([s.lat, s.lng], 9, {duration:1});
+    const m = markerMap[no];
+    if (m) setTimeout(() => m.openPopup(), 900);
+    highlightCard(no);
+    document.getElementById('oracle-bone-section').scrollIntoView({behavior:'smooth', block:'start'});
+  };
+
+  function highlightCard(no) {
+    document.querySelectorAll('.ob-card').forEach(c => c.classList.remove('active'));
+    const card = document.querySelector(`.ob-card[data-no="${no}"]`);
+    if (card) {
+      card.classList.add('active');
+      card.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }
+  }
+
+  // Filter cards
+  window.obFilter = function(q) {
+    const term = q.toLowerCase();
+    let visible = 0;
+    document.querySelectorAll('.ob-card').forEach(card => {
+      const no = card.dataset.no;
+      const s = ORACLE_BONE_SITES.find(x => +x.no === +no);
+      if (!s) return;
+      const match = !term ||
+        s.name.toLowerCase().includes(term) ||
+        s.period.toLowerCase().includes(term) ||
+        s.notes.toLowerCase().includes(term) ||
+        s.loc.toLowerCase().includes(term);
+      card.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    const countEl = document.getElementById('ob-cards-count');
+    if (countEl) countEl.textContent = `${visible} site${visible !== 1 ? 's' : ''}`;
+  };
+})();
+</script>
+
 <!-- Detail panel -->
 <div class="detail-overlay" id="detail">
   <button class="detail-close" id="detail-close">✕</button>
@@ -500,8 +1335,8 @@ let selectedType = '', selectedPhoto = '';
 // ── Map init ──────────────────────────────────────────────────
 window.addEventListener('load', () => {
   map = L.map('insc-map', {center:[44,14],zoom:4,zoomControl:false,attributionControl:false});
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
-    {attribution:'Tiles © Esri — National Geographic',maxNativeZoom:16,maxZoom:19}).addTo(map);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',
+    {attribution:'© Esri',maxZoom:8}).addTo(map);
   L.control.zoom({position:'bottomright'}).addTo(map);
   L.control.attribution({position:'bottomright',prefix:'EDH · Heidelberg · CC-BY'}).addTo(map);
 });
@@ -676,7 +1511,7 @@ function renderMapMarkers(items) {
     markers.push(m);
   });
   if (pts.length) {
-    try { map.fitBounds(L.featureGroup(markers).getBounds(), {padding:[20,20],maxZoom:14}); }
+    try { map.fitBounds(L.featureGroup(markers).getBounds(), {padding:[20,20],maxZoom:8}); }
     catch(e) {}
   }
 }
