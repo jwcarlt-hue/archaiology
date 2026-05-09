@@ -1178,11 +1178,13 @@ function _initObMap(){
   if(_obMapInited) return; _obMapInited=true;
   // Init Leaflet map
   const obMap = L.map('ob-map', {
-    center: [35, 108], zoom: 4,
+    center: [35, 105], zoom: 4,
     zoomControl: true,
     attributionControl: false,
     maxZoom: 19,
   });
+  // Force Leaflet to recalculate container size after display:block
+  setTimeout(() => { obMap.invalidateSize(); }, 50);
 
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
     attribution:'Tiles © Esri — National Geographic',
@@ -1363,7 +1365,7 @@ let selectedType = '', selectedPhoto = '';
 
 // ── Map init ──────────────────────────────────────────────────
 window.addEventListener('load', () => {
-  map = L.map('insc-map', {center:[44,14],zoom:4,zoomControl:false,attributionControl:false,maxZoom:19});
+  map = L.map('insc-map', {center:[38,16],zoom:3,zoomControl:false,attributionControl:false,maxZoom:19});
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
     {attribution:'Tiles © Esri — National Geographic',maxNativeZoom:16,maxZoom:19}).addTo(map);
   L.control.zoom({position:'bottomright'}).addTo(map);
@@ -1758,7 +1760,7 @@ function inscSetTab(el, id) {
   if (id === 'tab-oracle') {
     setTimeout(() => {
       _initObMap();
-    }, 50); // brief delay so display:block is applied before Leaflet measures container
+    }, 120); // allow display:block to fully paint before Leaflet measures container
   }
   // Invalidate Heidelberg map size when returning to it
   if (id === 'tab-inscriptions' && typeof map !== 'undefined' && map) {
