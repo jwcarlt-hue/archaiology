@@ -869,7 +869,7 @@ const SITE_EXTERNAL_VIEWS = {
   label:  'Corinth Computer Project Map',
   credit: 'Map by the Corinth Computer Project',
 },
-'teotihuacan': {
+'teotihuacan of the valley': {
   type:      'sketchfab',
   modelId:   '1191545483b04a82bbe63475c666b0e8',
   label:     'Teotihuacán - Pyramid of Quetzalcoatl, Mexico',
@@ -907,7 +907,7 @@ const SITE_EXTERNAL_VIEWS = {
 },
 'rhodes': {
   type:      'sketchfab',
-  modelId:   'a925d7a51a444120932f57e0e1e9d892',
+  modelId:   '6ef60956e7ec4779988b203635ae68ea',
   label:     'Acropolis of Lindos | RHODES',
   title:     'Acropolis of Lindos | RHODES',
   author:    'Arqueomodel3D',
@@ -1103,7 +1103,7 @@ const SITE_EXTERNAL_VIEWS = {
   authorUrl: 'https://sketchfab.com/Theo.Derory',
   credit:    '3D model by Théo Derory on Sketchfab',
 },
-'temple to ramesses ii at abu simbel': {
+'abu simbel': {
   type:      'sketchfab',
   modelId:   'ed31283687b5403ca913ceff7a42f45f',
   label:     'The Great Temple at Abu Simbel',
@@ -1636,8 +1636,13 @@ function applySceneImage(src, labelText, attrText) {
 //   3. Committed jpg asset (assets/site-images/{siteId}.jpg)
 //   4. Procedural canvas (default — no action needed)
 (function restoreViewer() {
+  // 0. If this site has a curated Sketchfab/iframe view, do nothing —
+  //    initScene() handles it and we must not overwrite the embed.
+  const extKey = (new URLSearchParams(window.location.search).get('id') ?? siteId ?? '')
+    .toLowerCase().trim();
+  if (SITE_EXTERNAL_VIEWS[extKey]) return;
+
   // 1. localStorage
-  const stored = localStorage.getItem(SITE_IMG_KEY);
   if (stored) {
     try {
       const { src, label, attr } = JSON.parse(stored);
