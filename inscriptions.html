@@ -272,18 +272,15 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 .insc-tab:hover{color:rgba(242,234,216,.7);}
 .insc-tab.active{color:#c8b88a;border-bottom-color:#b07030;}
 .tab-section{
-  position:absolute;
-  left:-9999px;
-  top:-9999px;
-  visibility:hidden;
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
   pointer-events:none;
-  width:100%;
 }
 .tab-section.active{
-  position:static;
-  left:auto;
-  top:auto;
-  visibility:visible;
+  max-height:none;
+  overflow:visible;
+  opacity:1;
   pointer-events:auto;
 }
 </style>
@@ -1379,12 +1376,15 @@ let selectedType = '', selectedPhoto = '';
 
 // ── Map init ──────────────────────────────────────────────────
 window.addEventListener('load', () => {
-  _initObMap(); // init while ob-map container has real off-screen dimensions
-  map = L.map('insc-map', {center:[38,16],zoom:3,zoomControl:false,attributionControl:false,maxZoom:19});
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
-    {attribution:'Tiles © Esri — National Geographic',maxNativeZoom:16,maxZoom:19}).addTo(map);
-  L.control.zoom({position:'bottomright'}).addTo(map);
-  L.control.attribution({position:'bottomright',prefix:'EDH · Heidelberg · CC-BY'}).addTo(map);
+  // Defer both map inits so CSS layout is fully settled first
+  setTimeout(() => {
+    _initObMap();
+    map = L.map('insc-map', {center:[38,16],zoom:3,zoomControl:false,attributionControl:false,maxZoom:19});
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
+      {attribution:'Tiles © Esri — National Geographic',maxNativeZoom:16,maxZoom:19}).addTo(map);
+    L.control.zoom({position:'bottomright'}).addTo(map);
+    L.control.attribution({position:'bottomright',prefix:'EDH · Heidelberg · CC-BY'}).addTo(map);
+  }, 100); // end setTimeout
 });
 
 // ── Chip toggles ──────────────────────────────────────────────
