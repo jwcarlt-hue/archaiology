@@ -271,8 +271,21 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
   border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
 .insc-tab:hover{color:rgba(242,234,216,.7);}
 .insc-tab.active{color:#c8b88a;border-bottom-color:#b07030;}
-.tab-section{display:none;}
-.tab-section.active{display:block;}
+.tab-section{
+  position:absolute;
+  left:-9999px;
+  top:-9999px;
+  visibility:hidden;
+  pointer-events:none;
+  width:100%;
+}
+.tab-section.active{
+  position:static;
+  left:auto;
+  top:auto;
+  visibility:visible;
+  pointer-events:auto;
+}
 </style>
 </head>
 <body>
@@ -1176,7 +1189,7 @@ const ORACLE_BONE_SITES = [
 let _obMapInited = false;
 function _initObMap(){
   if(_obMapInited) return; _obMapInited=true;
-  // Init Leaflet map
+  // Init Leaflet map — container always in DOM (off-screen, not display:none)
   const obMap = L.map('ob-map', {
     center: [35, 105], zoom: 4,
     zoomControl: true,
@@ -1190,6 +1203,7 @@ function _initObMap(){
     attribution:'Tiles © Esri — National Geographic',
     maxNativeZoom: 16, maxZoom: 19
   }).addTo(obMap);
+  window._obMapRef = obMap;
 
   const status = document.getElementById('ob-map-status');
 
@@ -1365,6 +1379,7 @@ let selectedType = '', selectedPhoto = '';
 
 // ── Map init ──────────────────────────────────────────────────
 window.addEventListener('load', () => {
+  _initObMap(); // init while ob-map container has real off-screen dimensions
   map = L.map('insc-map', {center:[38,16],zoom:3,zoomControl:false,attributionControl:false,maxZoom:19});
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
     {attribution:'Tiles © Esri — National Geographic',maxNativeZoom:16,maxZoom:19}).addTo(map);
@@ -1758,9 +1773,8 @@ function inscSetTab(el, id) {
   document.getElementById(id).classList.add('active');
   // Lazy-init oracle bone map on first show
   if (id === 'tab-oracle') {
-    setTimeout(() => {
-      _initObMap();
-    }, 120); // allow display:block to fully paint before Leaflet measures container
+    // Map already inited on page load — just invalidate size in case container shifted
+    setTimeout(() => { if(window._obMapRef) window._obMapRef.invalidateSize(); }, 50);
   }
   // Invalidate Heidelberg map size when returning to it
   if (id === 'tab-inscriptions' && typeof map !== 'undefined' && map) {
