@@ -1379,7 +1379,7 @@ window.addEventListener('load', () => {
   // Defer both map inits so CSS layout is fully settled first
   setTimeout(() => {
     _initObMap();
-    map = L.map('insc-map', {center:[38,16],zoom:3,zoomControl:false,attributionControl:false,maxZoom:19});
+    map = L.map('insc-map', {center:[42,16],zoom:2,zoomControl:false,attributionControl:false,maxZoom:19});
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
       {attribution:'Tiles © Esri — National Geographic',maxNativeZoom:16,maxZoom:19}).addTo(map);
     L.control.zoom({position:'bottomright'}).addTo(map);
