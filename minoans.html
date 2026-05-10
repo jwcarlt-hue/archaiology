@@ -178,6 +178,35 @@ a{text-decoration:none;color:inherit;}
   .sites-col{max-height:320px;}
   .geotour-frame{height:350px;}
 }
+
+/* ── Page tabs ── */
+.mn-tab-bar{display:flex;gap:0;border-bottom:1px solid rgba(255,250,240,.08);
+  background:rgba(9,8,6,.98);position:sticky;top:44px;z-index:100;padding:0 2rem;overflow-x:auto;}
+.mn-tab{font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(255,250,240,.35);padding:.8rem 1.3rem;
+  cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;
+  background:none;border-top:none;border-left:none;border-right:none;}
+.mn-tab:hover{color:rgba(255,250,240,.7);}
+.mn-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.mn-section{display:none;}
+.mn-section.active{display:block;}
+
+/* ── Linear A tab ── */
+.lineara-wrap{background:#0a0806;}
+.lineara-bar{display:flex;align-items:center;gap:1rem;padding:.55rem 1.4rem;
+  background:rgba(212,168,75,.05);border-bottom:1px solid rgba(212,168,75,.1);flex-wrap:wrap;}
+.lineara-kicker{font-family:var(--mono);font-size:.58rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--gold);}
+.lineara-meta{font-family:var(--mono);font-size:.54rem;color:rgba(255,250,240,.28);flex:1;}
+.lineara-link{font-family:var(--mono);font-size:.54rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--gold);white-space:nowrap;}
+.lineara-link:hover{text-decoration:underline;}
+.lineara-frame{width:100%;height:calc(100vh - 120px);min-height:600px;
+  border:none;display:block;background:#111;}
+.lineara-note{padding:.7rem 1.4rem;font-family:var(--mono);font-size:.56rem;
+  color:rgba(255,250,240,.28);letter-spacing:.04em;line-height:1.6;
+  border-top:1px solid rgba(255,250,240,.05);}
+.lineara-note a{color:var(--gold);}
 </style>
 </head>
 <body>
@@ -230,6 +259,15 @@ a{text-decoration:none;color:inherit;}
   </div>
 </div>
 
+
+<!-- Page tab bar -->
+<div class="mn-tab-bar">
+  <button class="mn-tab active" onclick="mnSetTab(this,'mn-sites')">🗺 Sites &amp; Map</button>
+  <button class="mn-tab" onclick="mnSetTab(this,'mn-lineara')">𐝂 Linear A Corpus</button>
+</div>
+
+<!-- ── TAB: Sites & Map ── -->
+<div id="mn-sites" class="mn-section active">
 <!-- Period filter -->
 <div style="max-width:1200px;margin:0 auto;">
   <div class="period-nav">
@@ -687,5 +725,38 @@ window.mnFilter = function(q) {
   }
 };
 </script>
+</div><!-- /#mn-sites -->
+
+<!-- ── TAB: Linear A Corpus ── -->
+<div id="mn-lineara" class="mn-section">
+  <div class="lineara-wrap">
+    <div class="lineara-bar">
+      <span class="lineara-kicker">𐝂 Linear A Corpus Explorer</span>
+      <span class="lineara-meta">lineara.xyz · Jekyll static site · Interactive sign browser · hover words · click to filter</span>
+      <a class="lineara-link" href="https://lineara.xyz/" target="_blank" rel="noopener">Open full site ↗</a>
+    </div>
+    <iframe
+      src="https://lineara.xyz/"
+      class="lineara-frame"
+      title="Linear A corpus explorer — lineara.xyz"
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allow="fullscreen"
+    ></iframe>
+    <div class="lineara-note">
+      <strong style="color:rgba(255,250,240,.5);">lineara.xyz</strong> — Interactive Linear A corpus browser by John Younger's signary and the DĀMOS database. Hover words to see sign values; click to filter by sign or tablet. If the frame does not render, use the open-in-new-tab link. &nbsp;·&nbsp; <a href="https://en.wikipedia.org/wiki/Linear_A" target="_blank" rel="noopener">Linear A (Wikipedia)</a> &nbsp;·&nbsp; <a href="https://lineara.xyz/" target="_blank" rel="noopener">lineara.xyz</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function mnSetTab(el, id) {
+  document.querySelectorAll('.mn-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.mn-section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+</script>
+
 </body>
 </html>
