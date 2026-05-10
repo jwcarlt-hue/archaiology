@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Minoan Crete — archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{
+  --ink:#090806;--bone:#faf6ee;--paper:#f5f0e6;--rule:#d8cdb8;
+  --bronze:#9b6a2f;--gold:#d4a84b;--gold-lt:#e8c070;
+  --ash:#8a8070;--muted:rgba(255,250,240,.38);
+  --lapis:#2a3d5c;--terra:#7a3520;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--ink);color:var(--bone);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+/* ── Masthead ── */
+.masthead{position:sticky;top:0;z-index:200;height:44px;background:rgba(9,8,6,.97);
+  border-bottom:1px solid rgba(255,250,240,.07);
+  display:flex;align-items:center;gap:1.4rem;padding:0 1.4rem;overflow-x:auto;}
+.logo{font-family:var(--serif);font-size:1.1rem;font-weight:900;color:var(--bone);flex-shrink:0;}
+.logo span{color:var(--gold);font-style:italic;}
+.nav-link{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;transition:color .2s;}
+.nav-link:hover,.nav-link.active{color:var(--bone);}
+
+/* ── Geotour 3D panel ── */
+.geotour-wrap{width:100%;background:#060504;border-bottom:1px solid rgba(255,250,240,.06);}
+.geotour-bar{display:flex;align-items:center;gap:1rem;padding:.4rem 1.4rem;
+  background:rgba(212,168,75,.05);border-bottom:1px solid rgba(212,168,75,.1);flex-wrap:wrap;}
+.geotour-label{font-family:var(--mono);font-size:.58rem;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--gold);}
+.geotour-meta{font-family:var(--mono);font-size:.54rem;color:rgba(255,250,240,.28);flex:1;}
+.geotour-link{font-family:var(--mono);font-size:.54rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--gold);white-space:nowrap;}
+.geotour-link:hover{text-decoration:underline;}
+.geotour-frame{width:100%;height:500px;border:none;display:block;background:#0a0806;}
+
+/* ── Hero ── */
+.hero{padding:3.5rem 2rem 2.5rem;max-width:1200px;margin:0 auto;}
+.hero-eyebrow{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;
+  display:flex;align-items:center;gap:.6rem;}
+.hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold);}
+.hero-title{font-family:var(--serif);font-size:clamp(2.4rem,7vw,5rem);font-weight:900;
+  line-height:.96;letter-spacing:-.025em;color:var(--bone);margin-bottom:.8rem;}
+.hero-title em{color:var(--gold);font-style:italic;}
+.hero-sub{font-size:.88rem;color:rgba(255,250,240,.5);max-width:620px;
+  line-height:1.8;margin-bottom:2rem;font-weight:300;}
+.hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap;border-top:1px solid rgba(255,250,240,.07);
+  padding-top:1.5rem;}
+.hstat-n{font-family:var(--serif);font-size:1.6rem;font-weight:900;color:var(--gold);line-height:1;}
+.hstat-l{font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(255,250,240,.32);margin-top:.15rem;}
+
+/* ── Period pills ── */
+.period-nav{display:flex;gap:.4rem;flex-wrap:wrap;padding:.6rem 2rem;
+  border-bottom:1px solid rgba(255,250,240,.06);max-width:1200px;margin:0 auto;}
+.period-pill{font-family:var(--mono);font-size:.56rem;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;padding:.28rem .7rem;
+  border:1px solid rgba(255,250,240,.1);color:rgba(255,250,240,.4);
+  cursor:pointer;border-radius:2px;transition:all .15s;background:none;}
+.period-pill:hover{color:var(--bone);border-color:rgba(255,250,240,.3);}
+.period-pill.active{background:rgba(212,168,75,.18);color:var(--gold);
+  border-color:rgba(212,168,75,.5);}
+
+/* ── Main layout ── */
+.main-layout{display:grid;grid-template-columns:1fr 340px;gap:0;
+  max-width:1200px;margin:0 auto;min-height:60vh;}
+
+/* ── Map column ── */
+.map-col{border-right:1px solid rgba(255,250,240,.06);}
+.map-label{font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(255,250,240,.3);
+  padding:.6rem 1rem;border-bottom:1px solid rgba(255,250,240,.06);
+  display:flex;justify-content:space-between;align-items:center;}
+.map-label span#mn-count{color:var(--gold);}
+#mn-map{height:540px;background:#0d1018;}
+
+/* ── Legend ── */
+.map-legend{display:flex;flex-wrap:wrap;gap:.5rem;padding:.65rem 1rem;
+  border-top:1px solid rgba(255,250,240,.05);}
+.legend-item{display:flex;align-items:center;gap:.3rem;
+  font-family:var(--mono);font-size:.52rem;color:rgba(255,250,240,.38);}
+.legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+
+/* ── Site list column ── */
+.sites-col{overflow-y:auto;max-height:620px;
+  scrollbar-width:thin;scrollbar-color:rgba(212,168,75,.2) transparent;}
+.sites-search{padding:.6rem .8rem;border-bottom:1px solid rgba(255,250,240,.06);
+  position:sticky;top:0;background:var(--ink);z-index:10;}
+.sites-search input{width:100%;background:rgba(255,250,240,.04);
+  border:1px solid rgba(255,250,240,.1);color:var(--bone);
+  font-family:var(--sans);font-size:.72rem;padding:.38rem .65rem;outline:none;}
+.sites-search input:focus{border-color:rgba(212,168,75,.5);}
+.sites-search input::placeholder{color:rgba(255,250,240,.2);}
+.site-card{padding:.8rem 1rem;border-bottom:1px solid rgba(255,250,240,.05);
+  cursor:pointer;transition:background .12s;}
+.site-card:hover,.site-card.active{background:rgba(212,168,75,.07);}
+.sc-head{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.2rem;}
+.sc-name{font-family:var(--serif);font-size:.9rem;font-weight:700;color:var(--bone);line-height:1.2;}
+.sc-period{font-family:var(--mono);font-size:.5rem;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;padding:.1rem .35rem;
+  border-radius:2px;flex-shrink:0;}
+.sc-type{font-family:var(--mono);font-size:.56rem;color:rgba(255,250,240,.3);margin-bottom:.25rem;}
+.sc-desc{font-size:.7rem;color:rgba(255,250,240,.45);line-height:1.55;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.sc-links{display:flex;gap:.4rem;margin-top:.35rem;}
+.sc-link{font-family:var(--mono);font-size:.52rem;color:var(--gold);
+  letter-spacing:.05em;text-transform:uppercase;}
+.sc-link:hover{text-decoration:underline;}
+
+/* ── Context section ── */
+.context-section{padding:3rem 2rem 1.5rem;max-width:1200px;margin:0 auto;
+  border-top:1px solid rgba(255,250,240,.06);}
+.ctx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;margin-top:1.5rem;}
+.ctx-card{background:rgba(255,250,240,.03);border:1px solid rgba(255,250,240,.07);
+  padding:1.2rem 1.3rem;}
+.ctx-card-kicker{font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:.4rem;}
+.ctx-card-title{font-family:var(--serif);font-size:1.1rem;font-weight:700;
+  color:var(--bone);margin-bottom:.5rem;line-height:1.2;}
+.ctx-card-body{font-size:.78rem;color:rgba(255,250,240,.48);line-height:1.7;font-weight:300;}
+.section-eyebrow{font-family:var(--mono);font-size:.58rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
+.section-title{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2.2rem);
+  font-weight:900;color:var(--bone);line-height:1.1;}
+
+/* ── Timeline ── */
+.timeline{padding:2.5rem 2rem 3rem;max-width:1200px;margin:0 auto;
+  border-top:1px solid rgba(255,250,240,.06);}
+.tl-track{position:relative;padding-left:1.5rem;margin-top:1.5rem;}
+.tl-track::before{content:'';position:absolute;left:.35rem;top:0;bottom:0;
+  width:1px;background:rgba(212,168,75,.2);}
+.tl-item{position:relative;margin-bottom:1.8rem;}
+.tl-dot{position:absolute;left:-1.27rem;top:.25rem;width:8px;height:8px;
+  border-radius:50%;border:1.5px solid var(--gold);background:var(--ink);}
+.tl-period{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:.2rem;}
+.tl-title{font-family:var(--serif);font-size:1rem;font-weight:700;
+  color:var(--bone);margin-bottom:.3rem;}
+.tl-body{font-size:.75rem;color:rgba(255,250,240,.45);line-height:1.65;font-weight:300;}
+
+/* ── Source note ── */
+.source-note{max-width:1200px;margin:0 auto 3rem;padding:1rem 2rem;
+  font-family:var(--mono);font-size:.58rem;color:rgba(255,250,240,.25);
+  line-height:1.7;border-top:1px solid rgba(255,250,240,.05);}
+.source-note a{color:var(--gold);}
+
+/* ── Leaflet popup ── */
+.leaflet-popup-content-wrapper{background:rgba(9,8,6,.97);
+  border:1px solid rgba(212,168,75,.3);border-radius:2px;
+  box-shadow:0 4px 20px rgba(0,0,0,.7);}
+.leaflet-popup-tip{background:rgba(9,8,6,.97);}
+.leaflet-popup-content{margin:.65rem .85rem;font-family:var(--sans);}
+.popup-name{font-family:var(--serif);font-size:1rem;font-weight:900;
+  color:var(--bone);margin-bottom:.15rem;}
+.popup-type{font-family:var(--mono);font-size:.56rem;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--gold);margin-bottom:.3rem;}
+.popup-desc{font-size:.7rem;color:rgba(255,250,240,.55);line-height:1.55;margin-bottom:.45rem;}
+.popup-btn{display:block;font-family:var(--mono);font-size:.56rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--gold);
+  border:1px solid rgba(212,168,75,.3);padding:.22rem .5rem;
+  background:none;cursor:pointer;width:100%;text-align:center;transition:all .2s;}
+.popup-btn:hover{background:rgba(212,168,75,.12);}
+
+/* ── Responsive ── */
+@media(max-width:820px){
+  .main-layout{grid-template-columns:1fr;}
+  .sites-col{max-height:320px;}
+  .geotour-frame{height:350px;}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a href="index.html" class="logo">arch<span>AI</span>ology</a>
+  <a class="nav-link" href="index.html">Home</a>
+  <a class="nav-link" href="news.html">Feed</a>
+  <a class="nav-link" href="map.html">Map</a>
+  <a class="nav-link" href="sky.html">Sky Archive</a>
+  <a class="nav-link" href="maritime.html">Maritime</a>
+  <a class="nav-link" href="linguistics.html">Linguistics</a>
+  <a class="nav-link" href="inscriptions.html">Inscriptions</a>
+  <a class="nav-link" href="maya_inscriptions.html">Maya</a>
+  <a class="nav-link" href="bioanthro.html">Bioanthro</a>
+  <a class="nav-link" href="luwian.html">Luwian</a>
+  <a class="nav-link" href="lidar.html">LiDAR</a>
+  <a class="nav-link active" href="minoans.html">Minoans</a>
+  <a class="nav-link" href="conferences.html">Conferences</a>
+</header>
+
+<!-- Geotour 3D map of Crete -->
+<div class="geotour-wrap">
+  <div class="geotour-bar">
+    <span class="geotour-label">🏔 Geotour Crete · Interactive 3D Terrain</span>
+    <span class="geotour-meta">CesiumJS · Digital Elevation Model · Minoan period filter available · geotour.gr · CC BY-NC-SA 4.0</span>
+    <a class="geotour-link" href="https://www.geotour.gr/vt/3dmap" target="_blank" rel="noopener">Open full 3D map ↗</a>
+  </div>
+  <iframe
+    src="https://www.geotour.gr/vt/3dmap"
+    class="geotour-frame"
+    title="Geotour Crete Interactive 3D Map — CesiumJS terrain with Minoan period layer"
+    loading="lazy"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allow="fullscreen"
+  ></iframe>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-eyebrow">Bronze Age Aegean · Crete · ca. 3100–1100 BCE</div>
+  <h1 class="hero-title">Minoan<br><em>Civilisation</em></h1>
+  <p class="hero-sub">Europe's first advanced civilisation flourished on Crete for two millennia — palace economies, Linear A script, fresco art, and maritime trade networks reaching Egypt, the Levant, and the Aegean islands. This page maps the physical remains of that world.</p>
+  <div class="hero-stats">
+    <div><div class="hstat-n">45+</div><div class="hstat-l">Sites mapped</div></div>
+    <div><div class="hstat-n">ca. 3100 BCE</div><div class="hstat-l">Earliest Minoan</div></div>
+    <div><div class="hstat-n">ca. 1100 BCE</div><div class="hstat-l">End of Bronze Age</div></div>
+    <div><div class="hstat-n">4</div><div class="hstat-l">Palace centres</div></div>
+    <div><div class="hstat-n">Linear A</div><div class="hstat-l">Undeciphered script</div></div>
+  </div>
+</div>
+
+<!-- Period filter -->
+<div style="max-width:1200px;margin:0 auto;">
+  <div class="period-nav">
+    <button class="period-pill active" data-period="all">All periods</button>
+    <button class="period-pill" data-period="prepalatial">Prepalatial (EM I–III)</button>
+    <button class="period-pill" data-period="protopalatial">Protopalatial (MM I–II)</button>
+    <button class="period-pill" data-period="neopalatial">Neopalatial (MM III–LM I)</button>
+    <button class="period-pill" data-period="postpalatial">Postpalatial (LM II–III)</button>
+    <button class="period-pill" data-period="palace">Palace centres</button>
+    <button class="period-pill" data-period="peak">Peak sanctuaries</button>
+    <button class="period-pill" data-period="tomb">Tombs & cemeteries</button>
+    <button class="period-pill" data-period="harbour">Harbours & ports</button>
+  </div>
+</div>
+
+<!-- Map + site list -->
+<div class="main-layout">
+  <div class="map-col">
+    <div class="map-label">
+      <span>Minoan Sites · Crete</span>
+      <span id="mn-count">— sites</span>
+    </div>
+    <div id="mn-map"></div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#d4a84b;"></div>Palace centre</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#c87040;"></div>Town / settlement</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#8060a0;"></div>Peak sanctuary</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#4080a0;"></div>Harbour / port</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#608060;"></div>Tomb / cemetery</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#a08070;"></div>Villa / rural</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#707070;"></div>Cave shrine</div>
+    </div>
+  </div>
+  <div class="sites-col" id="sites-col">
+    <div class="sites-search">
+      <input type="text" id="mn-search" placeholder="Search sites…" oninput="mnFilter(this.value)">
+    </div>
+    <div id="mn-cards"></div>
+  </div>
+</div>
+
+<!-- Context cards -->
+<div class="context-section">
+  <div class="section-eyebrow">Research context</div>
+  <div class="section-title">Minoan Civilisation</div>
+  <div class="ctx-grid">
+    <div class="ctx-card">
+      <div class="ctx-card-kicker">Palace Economy</div>
+      <div class="ctx-card-title">The Four Palaces</div>
+      <div class="ctx-card-body">Knossos, Phaistos, Malia, and Zakros formed the core of a redistributive palace economy. Each controlled surrounding hinterlands, collecting, storing, and redistributing agricultural surplus, craft goods, and luxury imports. The palaces were also religious and administrative centres.</div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-card-kicker">Writing &amp; Administration</div>
+      <div class="ctx-card-title">Linear A</div>
+      <div class="ctx-card-body">The Minoan script Linear A remains undeciphered — one of the great outstanding problems in ancient linguistics. Used for palace administration from ca. 1800–1450 BCE, it was adapted by Mycenaean Greeks into Linear B (deciphered 1952), which records an early form of Greek.</div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-card-kicker">Maritime Networks</div>
+      <div class="ctx-card-title">Thalassocracy</div>
+      <div class="ctx-card-body">Minoan traders reached Egypt (copper, tin, textiles), the Levant, Cyprus, mainland Greece, and the Cyclades. The volcanic eruption of Thera (Santorini) ca. 1620 BCE devastated the island of Akrotiri and contributed to a major transition in Aegean power toward Mycenaean Greece.</div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-card-kicker">Religion &amp; Ritual</div>
+      <div class="ctx-card-title">Peak Sanctuaries</div>
+      <div class="ctx-card-body">Over 25 peak sanctuaries have been identified on Cretan hilltops, used for votive offerings, animal sacrifice, and communal ritual. The bull — a central symbol in Minoan religion — appears throughout fresco art, rhyta, and the phenomenon of bull-leaping depicted at Knossos.</div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-card-kicker">Collapse</div>
+      <div class="ctx-card-title">Late Minoan Transition</div>
+      <div class="ctx-card-body">Around 1450 BCE, the Minoan palaces (except Knossos) were destroyed, likely by Mycenaean conquest from mainland Greece. Knossos continued under Mycenaean administration until ca. 1375 BCE. The cause of the widespread destruction remains debated — Mycenaean invasion, internal revolt, or natural disaster.</div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-card-kicker">Art &amp; Architecture</div>
+      <div class="ctx-card-title">The Fresco Tradition</div>
+      <div class="ctx-card-body">Minoan frescoes from Knossos, Akrotiri, and Akrotiri's West House are among the finest preserved Bronze Age paintings in the world. Subjects include processions, landscapes, marine life, and the bull-leaping scenes that have made Minoan art instantly recognisable.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Timeline -->
+<div class="timeline">
+  <div class="section-eyebrow">Chronology</div>
+  <div class="section-title">Minoan Periods</div>
+  <div class="tl-track">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">Early Minoan I–III · ca. 3100–2100 BCE</div>
+      <div class="tl-title">Prepalatial</div>
+      <div class="tl-body">Initial Bronze Age settlements. Tholos tombs of the Mesara plain. First evidence of bronze metalworking and long-distance trade. Population growth and emergence of proto-urban centres at Knossos, Myrtos, and Vasiliki.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">Middle Minoan I–II · ca. 2100–1700 BCE</div>
+      <div class="tl-title">Protopalatial — First Palaces</div>
+      <div class="tl-body">Construction of the first palaces at Knossos, Phaistos, Malia, and Zakros. Emergence of Kamares ware polychrome pottery. Linear A script develops. The Old Palaces are destroyed ca. 1700 BCE (seismic event?) and immediately rebuilt.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">Middle Minoan III – Late Minoan I · ca. 1700–1450 BCE</div>
+      <div class="tl-title">Neopalatial — Peak Minoan Civilisation</div>
+      <div class="tl-body">The New Palaces period. Knossos reaches maximum extent. Minoan influence spreads across the Aegean. Magnificent frescoes. Thera eruption ca. 1620 BCE. Trading posts at Akrotiri (Thera), Trianda (Rhodes), Miletus, and Ugarit.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">Late Minoan II–IIIA · ca. 1450–1370 BCE</div>
+      <div class="tl-title">Postpalatial — Mycenaean Knossos</div>
+      <div class="tl-body">Destruction of all palaces except Knossos. Mycenaean Linear B tablets replace Linear A at Knossos, indicating Greek-speaking administration. The Warrior Graves at Knossos suggest mainland Greek elite presence.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">Late Minoan IIIB–C · ca. 1370–1100 BCE</div>
+      <div class="tl-title">Final Bronze Age</div>
+      <div class="tl-body">Knossos abandoned as a palace. Population retreats to defensible refuge sites. General Aegean-wide Bronze Age Collapse ca. 1200 BCE. Continuation of Minoan cultural traditions in isolated communities through ca. 1100 BCE.</div>
+    </div>
+  </div>
+</div>
+
+<div class="source-note">
+  Site coordinates: Pleiades Gazetteer (pleiades.stoa.org, CC BY 3.0) · supplemented from published excavation reports.
+  Chronology: Manning, S.W. (2010) "Chronology and Terminology" in <em>The Oxford Handbook of the Bronze Age Aegean</em>.
+  3D terrain: <a href="https://www.geotour.gr" target="_blank" rel="noopener">Geotour Crete</a> (CC BY-NC-SA 4.0), Nikolakakis N., 2024–2026.
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// ── Minoan site dataset ──────────────────────────────────────────────────────
+// Coordinates from Pleiades / published excavation reports
+// Types: palace, town, peak, harbour, tomb, villa, cave
+const MINOAN_SITES = [
+  // PALACE CENTRES
+  {id:1, name:'Knossos', lat:35.2983, lng:25.1624, type:'palace', color:'#d4a84b',
+   period:['protopalatial','neopalatial','postpalatial'],
+   pleiades:'589748', desc:'The largest Bronze Age Aegean palace, covering 20,000 m². Excavated by Arthur Evans from 1900. Center of Minoan civilisation, featuring the famous bull-leaping frescoes, the Throne Room, and storage magazines.',
+   tags:['palace']},
+  {id:2, name:'Phaistos', lat:35.0503, lng:24.8128, type:'palace', color:'#d4a84b',
+   period:['protopalatial','neopalatial'],
+   pleiades:'589792', desc:'Second largest Minoan palace, in the fertile Mesara plain. Excavated by Italian missions from 1900. The Phaistos Disc — an undeciphered fired clay disc with spiral pictographic inscription — was found here in 1908.',
+   tags:['palace']},
+  {id:3, name:'Malia', lat:35.2972, lng:25.5078, type:'palace', color:'#d4a84b',
+   period:['protopalatial','neopalatial'],
+   pleiades:'589773', desc:'Third major Minoan palace on the north coast. Excavated by French School of Athens. Famous for the Kernos (offering table) and the Chrysolakkos tomb complex — the Aigina Treasure may originate here.',
+   tags:['palace']},
+  {id:4, name:'Zakros', lat:35.0969, lng:26.2572, type:'palace', color:'#d4a84b',
+   period:['neopalatial'],
+   pleiades:'589913', desc:'Easternmost Minoan palace, discovered intact in 1961 by Nikolaos Platon. Located on the east coast facing the Levant trade routes. A rich archive of Linear A tablets and luxury imports survived.',
+   tags:['palace']},
+  // TOWNS & SETTLEMENTS
+  {id:5, name:'Akrotiri (Thera)', lat:36.3519, lng:25.4056, type:'town', color:'#c87040',
+   period:['neopalatial'],
+   pleiades:'599728', desc:'Minoan-influenced town on Santorini, preserved under volcanic ash from the Theran eruption ca. 1620 BCE. Exceptional multi-storey buildings with frescoes (the "Boxing Boys", "Spring Fresco", "Ship Fresco"). Not technically on Crete but central to Minoan network.',
+   tags:['town']},
+  {id:6, name:'Gournia', lat:35.1181, lng:25.8928, type:'town', color:'#c87040',
+   period:['neopalatial'],
+   pleiades:'589760', desc:'Best-preserved Minoan town, excavated by Harriet Boyd Hawes 1901–04 — the first woman to direct a major excavation. Workshops for bronze, stone, and pottery visible. Small palace-like building at the summit.',
+   tags:['town']},
+  {id:7, name:'Palaikastro', lat:35.2033, lng:26.2597, type:'town', color:'#c87040',
+   period:['neopalatial','postpalatial'],
+   pleiades:'589789', desc:'Large Minoan town on the east coast, occupied from EM through LM periods. The Kouros of Palaikastro — a chryselephantine statue of exceptional quality — was found smashed here, perhaps in an act of deliberate destruction.',
+   tags:['town']},
+  {id:8, name:'Kommos', lat:34.9989, lng:24.7831, type:'harbour', color:'#4080a0',
+   period:['neopalatial','postpalatial'],
+   pleiades:'589771', desc:'Major Minoan harbour town serving Phaistos on the south coast. Excavated by Joseph Shaw. Enormous building J (a ship-shed?) suggests the scale of Minoan maritime infrastructure. Later became a Phoenician trading post.',
+   tags:['harbour']},
+  {id:9, name:'Pseira', lat:35.1769, lng:25.8594, type:'town', color:'#c87040',
+   period:['neopalatial'],
+   pleiades:'589797', desc:'Small Minoan island town in Mirabello Bay. Ritual deposit of marine-style pottery. Likely a specialized trading and fishing community. Accessible only by sea.',
+   tags:['town']},
+  {id:10, name:'Mochlos', lat:35.1669, lng:25.9906, type:'town', color:'#c87040',
+   period:['prepalatial','neopalatial'],
+   pleiades:'589780', desc:'Once a peninsula, now a small island. Early Minoan cemetery with exceptional goldwork and stone vases. Later a prosperous Neopalatial town with evidence of craftsmen specialising in fine metalwork.',
+   tags:['town']},
+  {id:11, name:'Vasiliki', lat:35.0931, lng:25.7797, type:'town', color:'#c87040',
+   period:['prepalatial'],
+   pleiades:'589906', desc:'Early Bronze Age settlement giving its name to Vasiliki ware — distinctive flame-mottled pottery produced by uneven firing. The technique prefigures later Minoan ceramic traditions.',
+   tags:['town']},
+  {id:12, name:'Myrtos (Fournou Koriffi)', lat:34.9972, lng:25.6036, type:'town', color:'#c87040',
+   period:['prepalatial'],
+   pleiades:'589783', desc:'Early Minoan I–II settlement on the south coast, destroyed by fire ca. 2200 BCE. The "Goddess of Myrtos" — a clay vessel in the form of a female figure — is among the earliest Minoan cultic objects.',
+   tags:['town']},
+  {id:13, name:'Akhladia', lat:35.1622, lng:26.1803, type:'villa', color:'#a08070',
+   period:['neopalatial'],
+   pleiades:'589718', desc:'Minoan villa on the east coast, part of the network of country houses that administered rural areas for the palace system. Evidence of craft production and storage.',
+   tags:['villa']},
+  {id:14, name:'Tylissos', lat:35.3308, lng:24.9883, type:'villa', color:'#a08070',
+   period:['neopalatial'],
+   pleiades:'589901', desc:'Three overlapping Minoan mansions west of Knossos, forming a small administrative centre. Exceptional bronze cauldrons and ingots recovered. Possible satellite community of the Knossos palace.',
+   tags:['villa']},
+  {id:15, name:'Nirou Chani', lat:35.3239, lng:25.2611, type:'villa', color:'#a08070',
+   period:['neopalatial'],
+   pleiades:'589785', desc:'Large Minoan villa on the north coast, nicknamed the "House of the High Priest" for its cache of double axes and tripod altars. Possibly a distribution centre for cult equipment.',
+   tags:['villa']},
+  {id:16, name:'Vathypetro', lat:35.2178, lng:25.0986, type:'villa', color:'#a08070',
+   period:['neopalatial'],
+   pleiades:'589907', desc:'Minoan country estate south of Knossos. Wine press, loom weights, and storage facilities suggest an agricultural processing centre. Construction interrupted, possibly by the same destruction horizon affecting other Minoan sites ca. 1450 BCE.',
+   tags:['villa']},
+  {id:17, name:'Hagia Triada', lat:35.0625, lng:24.8047, type:'villa', color:'#a08070',
+   period:['neopalatial','postpalatial'],
+   pleiades:'589764', desc:'Royal Minoan villa near Phaistos. Exceptional frescoes and the Hagia Triada Sarcophagus — a painted limestone coffin depicting funerary rites, among the most important Minoan objects known. Linear A archive recovered.',
+   tags:['villa']},
+  {id:18, name:'Archanes', lat:35.2342, lng:25.1628, type:'town', color:'#c87040',
+   period:['protopalatial','neopalatial'],
+   pleiades:'589726', desc:'Minoan town south of Knossos with a substantial building complex possibly serving as a summer residence of the Knossos rulers. Nearby Anemospilia temple — controversial evidence of human sacrifice found.',
+   tags:['town']},
+  // PEAK SANCTUARIES
+  {id:19, name:'Petsofas Peak Sanctuary', lat:35.1908, lng:26.2453, type:'peak', color:'#8060a0',
+   period:['protopalatial','neopalatial'],
+   pleiades:'589793', desc:'One of the best-documented Minoan peak sanctuaries near Palaikastro. Over 500 terracotta votives of human and animal figures. The site commands panoramic views over the sea, connecting visibility with ritual function.',
+   tags:['peak']},
+  {id:20, name:'Juktas Peak Sanctuary', lat:35.2469, lng:25.1583, type:'peak', color:'#8060a0',
+   period:['protopalatial','neopalatial'],
+   pleiades:'589767', desc:'The principal peak sanctuary of the Knossos palace system, on the highest peak visible from Knossos. Site of the controversial Anemospilia evidence of sacrifice. Massive votive deposits including stone and ceramic figures.',
+   tags:['peak']},
+  {id:21, name:'Traostalos Peak Sanctuary', lat:35.1086, lng:26.1681, type:'peak', color:'#8060a0',
+   period:['protopalatial'],
+   pleiades:'590063', desc:'East Cretan peak sanctuary associated with the Zakros palace system. Large ceramic assemblage including animal and human figurines. Remote location suggesting dedicated pilgrimage.',
+   tags:['peak']},
+  {id:22, name:'Vrysinas Peak Sanctuary', lat:35.3881, lng:24.4739, type:'peak', color:'#8060a0',
+   period:['protopalatial','neopalatial'],
+   pleiades:'589909', desc:'Western Cretan peak sanctuary near Rethymno. Exceptional concentration of terracotta human figurines. Evidence of use across both palatial periods, suggesting regional continuity independent of palace cycles.',
+   tags:['peak']},
+  {id:23, name:'Kophinas Peak Sanctuary', lat:34.9994, lng:25.1022, type:'peak', color:'#8060a0',
+   period:['neopalatial'],
+   pleiades:'590014', desc:'South-central Cretan peak sanctuary overlooking the Mesara plain and Libyan Sea. Ritual deposits including bronze figurines. Possibly shared between the Phaistos and Hagia Triada administrative zones.',
+   tags:['peak']},
+  // CAVE SHRINES
+  {id:24, name:'Psychro Cave (Diktaean Cave)', lat:35.1506, lng:25.5067, type:'cave', color:'#707070',
+   period:['prepalatial','protopalatial','neopalatial','postpalatial'],
+   pleiades:'589799', desc:'Major Minoan cave sanctuary on the Lasithi plateau, identified in antiquity as the birthplace of Zeus. Exceptional votive deposits including bronze double axes, figurines, and jewellery spanning all Minoan periods. Used continuously into the Archaic period.',
+   tags:['cave']},
+  {id:25, name:'Idaean Cave', lat:35.2206, lng:24.7947, type:'cave', color:'#707070',
+   period:['postpalatial'],
+   pleiades:'589766', desc:'Cave sanctuary on Mount Ida (Psiloritis), the highest peak in Crete. Used from the Bronze Age through the Classical period. Bronze shields and tympana of exceptional quality recovered. In myth, the site where Zeus was raised by the Curetes.',
+   tags:['cave']},
+  {id:26, name:'Kamares Cave', lat:35.1092, lng:24.7764, type:'cave', color:'#707070',
+   period:['protopalatial'],
+   pleiades:'589769', desc:'Cave on the south flank of Mount Ida giving its name to Kamares ware, the finest Minoan polychrome pottery. Votive deposits found here were almost exclusively the highest-quality palatial ceramics, suggesting elite ritual activity.',
+   tags:['cave']},
+  // TOMBS & CEMETERIES
+  {id:27, name:'Chrysolakkos (Malia)', lat:35.3044, lng:25.5089, type:'tomb', color:'#608060',
+   period:['protopalatial'],
+   pleiades:'589757', desc:'Monumental Minoan mortuary complex north of Malia palace — a communal ossuary ("Golden Pit") used for elite burial. The Aigina Treasure, now in the British Museum, may have been looted from this site in the 19th century.',
+   tags:['tomb']},
+  {id:28, name:'Isopata Royal Tomb', lat:35.3256, lng:25.1522, type:'tomb', color:'#608060',
+   period:['postpalatial'],
+   pleiades:'589768', desc:'Large Late Minoan chamber tomb north of Knossos, probably a royal burial. The Isopata Ring — a gold ring depicting a religious scene with floating figures — was found here and has generated decades of debate about Minoan ecstatic ritual.',
+   tags:['tomb']},
+  {id:29, name:'Mesara Tholos Tombs', lat:35.0600, lng:24.9500, type:'tomb', color:'#608060',
+   period:['prepalatial'],
+   pleiades:'589777', desc:'Cluster of circular communal stone tombs (tholoi) across the Mesara plain — the characteristic funerary architecture of Early Minoan Crete. Used over centuries for collective burial, with gold jewellery, stone vessels, and ivory objects.',
+   tags:['tomb']},
+  {id:30, name:'Agia Triada Tholos Tombs', lat:35.0581, lng:24.8042, type:'tomb', color:'#608060',
+   period:['prepalatial'],
+   pleiades:'589764', desc:'Tholos tombs adjacent to the Hagia Triada villa complex, used from Early Minoan through Late Minoan periods. Shows long funerary continuity at this elite location.',
+   tags:['tomb']},
+  {id:31, name:'Archanes Phourni Cemetery', lat:35.2269, lng:25.1642, type:'tomb', color:'#608060',
+   period:['protopalatial','neopalatial','postpalatial'],
+   pleiades:'589727', desc:'The largest Bronze Age cemetery in the Aegean, used from MM I to LM IIIC. Multiple burial types including tholos, pithoi, and chamber tombs. A horse sacrifice is among the most remarkable finds.',
+   tags:['tomb']},
+  // HARBOURS & PORTS
+  {id:32, name:'Poros-Katsambas', lat:35.3281, lng:25.1881, type:'harbour', color:'#4080a0',
+   period:['neopalatial','postpalatial'],
+   pleiades:'589794', desc:'Minoan harbour town serving Knossos on the north coast, 5km from the palace. Evidence of import/export activity including Cypriot, Egyptian, and Near Eastern objects. Likely the main point of entry for overseas trade reaching Knossos.',
+   tags:['harbour']},
+  {id:33, name:'Amnisos', lat:35.3333, lng:25.2094, type:'harbour', color:'#4080a0',
+   period:['neopalatial'],
+   pleiades:'589723', desc:'Harbour of Knossos mentioned in Linear B tablets and in Homer. The Villa of the Lilies fresco was found here. Destroyed by the Theran eruption tsunami and/or pumice fall ca. 1620 BCE.',
+   tags:['harbour']},
+  {id:34, name:'Nirou Chani harbour', lat:35.3228, lng:25.2569, type:'harbour', color:'#4080a0',
+   period:['neopalatial'],
+   pleiades:'589785', desc:'Coastal settlement associated with the Nirou Chani villa, likely functioning as a minor harbour for coastal trade along the north shore.',
+   tags:['harbour']},
+  // ADDITIONAL IMPORTANT SITES
+  {id:35, name:'Pyrgos (Myrtos)', lat:34.9942, lng:25.6100, type:'villa', color:'#a08070',
+   period:['protopalatial'],
+   pleiades:'589801', desc:'Protopalatial country house on the south coast, possibly an administrative outpost of the Phaistos palace. One of the earliest examples of the Minoan country house type.',
+   tags:['villa']},
+  {id:36, name:'Achladia', lat:35.1689, lng:26.1694, type:'villa', color:'#a08070',
+   period:['neopalatial'],
+   pleiades:'589718', desc:'East Cretan Minoan villa with stone-built architecture and storage facilities. Part of the eastern administrative network dependent on Zakros.',
+   tags:['villa']},
+  {id:37, name:'Zou', lat:35.1386, lng:26.1722, type:'villa', color:'#a08070',
+   period:['neopalatial'],
+   pleiades:'589914', desc:'Minoan rural site in the Siteia region. Wine and olive oil processing equipment found, confirming agricultural production within the palace economy.',
+   tags:['villa']},
+  {id:38, name:'Chamaizi', lat:35.1706, lng:26.0717, type:'town', color:'#c87040',
+   period:['protopalatial'],
+   pleiades:'589754', desc:'Unusual oval-plan Minoan building on an isolated hilltop, possibly a sanctuary or watchtower. The oval plan is unique in Minoan architecture.',
+   tags:['town']},
+  {id:39, name:'Kato Zakros (town)', lat:35.0950, lng:26.2544, type:'town', color:'#c87040',
+   period:['neopalatial'],
+   pleiades:'589770', desc:'Minoan town surrounding the Zakros palace in the valley and on the hillside. Over 150 houses excavated, revealing the community that supported the palace.',
+   tags:['town']},
+  {id:40, name:'Monastiraki', lat:35.2294, lng:24.6931, type:'town', color:'#c87040',
+   period:['protopalatial'],
+   pleiades:'589781', desc:'Protopalatial administrative centre in western Crete. Large building with Linear A archive and massive storage capacities suggests a local palatial centre independent of Knossos.',
+   tags:['town']},
+  {id:41, name:'Apodoulou', lat:35.2003, lng:24.7294, type:'villa', color:'#a08070',
+   period:['neopalatial'],
+   pleiades:'589724', desc:'Minoan villa in the Rethymno region. Fresco fragments and Linear A tablet. Evidence of bronze casting. Part of the western Cretan palatial network.',
+   tags:['villa']},
+  {id:42, name:'Prasa', lat:35.3547, lng:24.8717, type:'peak', color:'#8060a0',
+   period:['protopalatial'],
+   pleiades:'589796', desc:'Small peak sanctuary in the Rethymno region. Terracotta figurine deposit consistent with other Minoan hilltop cult sites.',
+   tags:['peak']},
+  {id:43, name:'Sklavokampos', lat:35.2969, lng:24.9514, type:'villa', color:'#a08070',
+   period:['neopalatial'],
+   pleiades:'589803', desc:'Minoan villa west of Knossos with exceptional fresco fragments and a carved stone rhyton. Administrative centre for the western approaches to Knossos.',
+   tags:['villa']},
+  {id:44, name:'Agia Photia (Siteia)', lat:35.2033, lng:26.1089, type:'tomb', color:'#608060',
+   period:['prepalatial'],
+   pleiades:'589719', desc:'Largest Early Minoan cemetery in eastern Crete, with over 250 rock-cut tombs. Exceptional Cycladic-influenced material culture suggesting early Aegean interaction networks.',
+   tags:['tomb']},
+  {id:45, name:'Kephala Vasilikis', lat:35.0889, lng:25.7836, type:'town', color:'#c87040',
+   period:['prepalatial'],
+   pleiades:'589771', desc:'Type site for Vasiliki ware ceramics. Early Bronze Age settlement in the eastern isthmus region, connecting north and south coasts.',
+   tags:['town']},
+];
+
+// ── Map init ─────────────────────────────────────────────────────────────────
+const mnMap = L.map('mn-map', {
+  center: [35.18, 25.0], zoom: 8,
+  zoomControl: true,
+  attributionControl: false,
+  maxZoom: 18,
+});
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+  maxNativeZoom: 16, maxZoom: 18,
+  attribution: 'Tiles © Esri — National Geographic'
+}).addTo(mnMap);
+L.control.attribution({position:'bottomright',prefix:'archaiology.org · Pleiades CC BY 3.0'}).addTo(mnMap);
+
+// ── Markers ──────────────────────────────────────────────────────────────────
+function siteIcon(site, r) {
+  r = r || 7;
+  return L.divIcon({
+    html: `<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+4}" height="${r*2+4}">
+      <circle cx="${r+2}" cy="${r+2}" r="${r}"
+        fill="${site.color}" fill-opacity=".88"
+        stroke="rgba(255,250,240,.5)" stroke-width="${site.type==='palace'?2:1.2}"/>
+      ${site.type==='palace'
+        ? `<circle cx="${r+2}" cy="${r+2}" r="${r-3}" fill="none" stroke="rgba(255,250,240,.35)" stroke-width="1"/>`
+        : ''}
+    </svg>`,
+    className: '', iconSize: [r*2+4, r*2+4], iconAnchor: [r+2, r+2]
+  });
+}
+
+const markerMap = {};
+let activeSiteId = null;
+
+MINOAN_SITES.forEach(s => {
+  const r = s.type === 'palace' ? 9 : s.type === 'town' ? 7 : 6;
+  const marker = L.marker([s.lat, s.lng], {icon: siteIcon(s, r)});
+  marker.bindPopup(`
+    <div class="popup-name">${s.name}</div>
+    <div class="popup-type">${s.type.charAt(0).toUpperCase()+s.type.slice(1)}</div>
+    <div class="popup-desc">${s.desc.slice(0, 160)}…</div>
+    <button class="popup-btn" onclick="mnSelectSite(${s.id})">View details</button>
+  `, {maxWidth: 260, closeButton: false});
+  marker.on('click', () => mnSelectSite(s.id));
+  marker.addTo(mnMap);
+  markerMap[s.id] = marker;
+});
+
+// ── Build site cards ──────────────────────────────────────────────────────────
+function buildCards(sites) {
+  const container = document.getElementById('mn-cards');
+  container.innerHTML = sites.map(s => {
+    const periodShort = {
+      prepalatial:'EM', protopalatial:'MM I–II',
+      neopalatial:'MM III–LM I', postpalatial:'LM II–III'
+    };
+    const periodLabel = s.period.map(p => periodShort[p] || p).join(' / ');
+    const pleiURL = s.pleiades ? `https://pleiades.stoa.org/places/${s.pleiades}` : null;
+    return `<div class="site-card" id="card-${s.id}" data-id="${s.id}" onclick="mnSelectSite(${s.id})">
+      <div class="sc-head">
+        <span class="sc-name">${s.name}</span>
+        <span class="sc-period" style="background:${s.color}22;color:${s.color};border:1px solid ${s.color}44;">${s.type}</span>
+      </div>
+      <div class="sc-type">${periodLabel}</div>
+      <div class="sc-desc">${s.desc}</div>
+      <div class="sc-links">
+        ${pleiURL ? `<a class="sc-link" href="${pleiURL}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Pleiades ↗</a>` : ''}
+        <a class="sc-link" href="https://www.openstreetmap.org/?mlat=${s.lat}&mlon=${s.lng}&zoom=14" target="_blank" rel="noopener" onclick="event.stopPropagation()">OSM ↗</a>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('mn-count').textContent = `${sites.length} sites`;
+}
+
+buildCards(MINOAN_SITES);
+
+// ── Select site ───────────────────────────────────────────────────────────────
+window.mnSelectSite = function(id) {
+  // Deactivate previous
+  if (activeSiteId) {
+    const prev = document.getElementById(`card-${activeSiteId}`);
+    if (prev) prev.classList.remove('active');
+  }
+  activeSiteId = id;
+  const s = MINOAN_SITES.find(x => x.id === id);
+  if (!s) return;
+  // Activate card and scroll to it
+  const card = document.getElementById(`card-${id}`);
+  if (card) {
+    card.classList.add('active');
+    card.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+  // Fly map
+  mnMap.flyTo([s.lat, s.lng], 11, {duration: 1});
+  markerMap[id].openPopup();
+};
+
+// ── Period filter ─────────────────────────────────────────────────────────────
+let activePeriod = 'all';
+let activeType = 'all';
+
+document.querySelectorAll('.period-pill').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.period-pill').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const val = this.dataset.period;
+    activePeriod = val;
+    applyFilters();
+  });
+});
+
+function applyFilters() {
+  const search = document.getElementById('mn-search').value.toLowerCase();
+  const filtered = MINOAN_SITES.filter(s => {
+    const periodMatch = activePeriod === 'all' || s.period.includes(activePeriod) || s.tags.includes(activePeriod);
+    const searchMatch = !search || s.name.toLowerCase().includes(search) || s.desc.toLowerCase().includes(search);
+    return periodMatch && searchMatch;
+  });
+  buildCards(filtered);
+  // Show/hide markers
+  MINOAN_SITES.forEach(s => {
+    const inFiltered = filtered.find(f => f.id === s.id);
+    const m = markerMap[s.id];
+    if (inFiltered) {
+      if (!mnMap.hasLayer(m)) m.addTo(mnMap);
+    } else {
+      if (mnMap.hasLayer(m)) mnMap.removeLayer(m);
+    }
+  });
+}
+
+// ── Search filter ─────────────────────────────────────────────────────────────
+window.mnFilter = function(q) {
+  applyFilters();
+  if (q.trim()) {
+    const match = MINOAN_SITES.find(s => s.name.toLowerCase().includes(q.toLowerCase()));
+    if (match) mnMap.flyTo([match.lat, match.lng], 10, {duration:1});
+  }
+};
+</script>
+</body>
+</html>
