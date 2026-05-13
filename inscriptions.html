@@ -1757,10 +1757,14 @@ function inscSetTab(el, id) {
   el.classList.add('active');
   document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  // Lazy-init oracle bone map on first show
+  // Lazy-init oracle bone map on first tab show.
+  // We use requestAnimationFrame so the browser has painted display:block
+  // before Leaflet measures the container — guarantees non-zero dimensions.
   if (id === 'tab-oracle') {
-    // Map already inited on page load — just invalidate size in case container shifted
-    setTimeout(() => { if(window._obMapRef) window._obMapRef.invalidateSize(); }, 50);
+    requestAnimationFrame(() => {
+      _initObMap();
+      if (window._obMapRef) window._obMapRef.invalidateSize();
+    });
   }
   // Invalidate Heidelberg map size when returning to it
   if (id === 'tab-inscriptions' && typeof map !== 'undefined' && map) {
