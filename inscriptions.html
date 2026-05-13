@@ -1262,7 +1262,7 @@ function _initObMap(){
     const countEl = document.getElementById('ob-cards-count');
     if (countEl) countEl.textContent = `${visible} site${visible !== 1 ? 's' : ''}`;
   };
-})();
+}
 </script>
 
 </div><!-- /#tab-oracle -->
@@ -1758,8 +1758,8 @@ function inscSetTab(el, id) {
   document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   // Lazy-init oracle bone map on first tab show.
-  // We use requestAnimationFrame so the browser has painted display:block
-  // before Leaflet measures the container — guarantees non-zero dimensions.
+  // requestAnimationFrame fires after display:block is painted —
+  // guarantees Leaflet measures a real non-zero container.
   if (id === 'tab-oracle') {
     requestAnimationFrame(() => {
       _initObMap();
