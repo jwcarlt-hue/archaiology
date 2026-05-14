@@ -1926,8 +1926,8 @@ const SITE_IMG_KEY = `archaiology_site_img_${siteId}`;
 // ── Site GLB lookup ───────────────────────────────────────
 // Add entries here as new models are pushed to 3d_models/
 const SITE_GLBS = {
-  'Rio Bec': '3d_models/Rio_Bec_Structure_5N2.min.glb',
-  'Ploutonion at Hierapolis': '3d_models/Ploutonion_at_Hierapolis.min.glb',
+  'rio bec':                  '3d_models/Rio_Bec_Structure_5N2.min.glb',
+  'ploutonion at hierapolis': '3d_models/Ploutonion_at_Hierapolis.min.glb',
 };
 
 // ── Mode helpers ──────────────────────────────────────────
@@ -2001,7 +2001,7 @@ function applySceneImage(src, labelText, attrText) {
   }
 
   // 2. Site GLB
-  const glbSrc = SITE_GLBS[siteId];
+  const glbSrc = SITE_GLBS[siteId.toLowerCase().trim()];
   if (glbSrc) {
     applySceneModel(
       glbSrc,
@@ -2063,7 +2063,7 @@ function clearSceneImage() {
   mv.src  = ''; mv.style.display  = 'none';
 
   // If this site has a GLB, restore the model rather than the canvas
-  const glbSrc = SITE_GLBS[siteId];
+  const glbSrc = SITE_GLBS[siteId.toLowerCase().trim()];
   if (glbSrc) {
     localStorage.removeItem(SITE_IMG_KEY);
     if (input) input.value = '';
