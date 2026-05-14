@@ -312,7 +312,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <button class="filter-chip" id="mosaic-btn" onclick="toggleMosaics()">Roman Mosaics</button>
       <button class="filter-chip" id="iran-gazetteer-atlas-btn" onclick="toggleIranGazetteeerAtlas()">Iran Gazetteer</button>
       <button class="filter-chip" id="pliny-atlas-btn" onclick="togglePlinyAtlas()">Pliny the Elder</button>
-      <button class="filter-chip" id="peutinger-atlas-btn" onclick="togglePeutingerAtlas()">Tabula Peutingeriana</button>
+      <button class="filter-chip" id="omnesviae-atlas-btn" onclick="toggleOmnesViaeAtlas()">OmnesViae</button>
       <button class="filter-chip" id="proxeny-atlas-btn" onclick="toggleProxenyAtlas()">Proxeny Networks</button>
       <button class="filter-chip" id="mithraeum-atlas-btn" onclick="toggleMithraeumAtlas()">Mithraeum</button>
     </div>
@@ -563,37 +563,74 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   </div>
 </div>
 
-<div class="atlas-panel" id="peutingerAtlasPanel">
+<div class="atlas-panel" id="omnesViaeAtlasPanel">
   <div class="atlas-head">
     <div class="atlas-title-wrap">
       <div class="atlas-kicker">External atlas layer</div>
-      <div class="atlas-title">Tabula Peutingeriana Digital Plot — Jean-Baptiste Piggin</div>
+      <div class="atlas-title">OmnesViae — Roman Route Planner</div>
       <div class="atlas-meta">
-        Source: <a href="https://piggin.net/ta.svg" target="_blank" rel="noopener">piggin.net/ta.svg</a>
-        &nbsp;·&nbsp; Roman road network, England to Sri Lanka &nbsp;·&nbsp; 3,300+ places &nbsp;·&nbsp; 4th c. CE &nbsp;·&nbsp; CC BY-SA
+        Source: <a href="https://omnesviae.org" target="_blank" rel="noopener">omnesviae.org</a>
+        &nbsp;·&nbsp; Tabula Peutingeriana &amp; Antonine Itinerary &nbsp;·&nbsp; Cursus publicus road network &nbsp;·&nbsp; Shortest-path routing
       </div>
     </div>
     <div class="atlas-actions">
-      <a class="atlas-link" href="https://piggin.net/ta.svg" target="_blank" rel="noopener">Open full SVG ↗</a>
-      <button class="atlas-close" type="button" onclick="togglePeutingerAtlas(false)">Close</button>
+      <a class="atlas-link" href="https://omnesviae.org" target="_blank" rel="noopener">Open OmnesViae ↗</a>
+      <button class="atlas-close" type="button" onclick="toggleOmnesViaeAtlas(false)">Close</button>
     </div>
   </div>
-  <div class="atlas-body">
-    <object
-      data="https://piggin.net/ta.svg"
-      type="image/svg+xml"
-      id="peutinger-object"
-      style="width:100%;height:480px;border:none;display:block;background:#f5f0e8;overflow:auto;"
-      title="Tabula Peutingeriana Digital Plot — Jean-Baptiste Piggin"
-    >
-      <!-- Fallback if object tag fails -->
-      <div style="padding:2rem;text-align:center;font-family:monospace;font-size:.7rem;color:#888;">
-        SVG could not be embedded. <a href="https://piggin.net/ta.svg" target="_blank" rel="noopener" style="color:#b8892a;">Open directly in browser ↗</a>
+  <div class="atlas-body" style="display:flex;flex-direction:row;gap:0;min-height:0;overflow:hidden;">
+    <!-- Main iframe -->
+    <iframe
+      src="https://omnesviae.org/nobis"
+      id="omnesviae-iframe"
+      style="flex:1;min-width:0;border:none;display:block;background:#1a1a2e;"
+      title="OmnesViae Roman Route Planner"
+      allow="fullscreen"
+      loading="lazy"
+    ></iframe>
+    <!-- Tabula Peutingeriana reference card -->
+    <div style="
+      width:260px;flex-shrink:0;background:#13110e;border-left:1px solid #2e2a22;
+      display:flex;flex-direction:column;padding:1.25rem 1.1rem;gap:1rem;overflow-y:auto;
+    ">
+      <div>
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ochre);margin-bottom:.4rem;">Related resource</div>
+        <div style="font-family:var(--serif);font-size:.95rem;font-weight:900;color:var(--cream);line-height:1.2;margin-bottom:.35rem;">Tabula Peutingeriana</div>
+        <div style="font-size:.62rem;color:#8a8070;line-height:1.55;">
+          The 13th-century parchment copy of the Roman road map stretching from Britain to India — the primary source behind OmnesViae's route data.
+        </div>
       </div>
-    </object>
-    <div class="atlas-note">
-      Piggin's <em>Tabula Peutingeriana Digital Plot</em> (CC BY-SA) — the most complete digital edition of the Roman world road diagram, with color-coded Italian routes and animated emendations. The scroll is ~20× wider than tall: scroll or pan horizontally to traverse England → Sri Lanka. <strong>Open full SVG</strong> in a new tab for the best experience. Jean-Baptiste Piggin (1953–2019), independent scholar, Hamburg.
+      <div style="display:flex;flex-direction:column;gap:.55rem;">
+        <a href="https://www.cambridge.org/core/books/romes-world/A8A5A4B2E42EA1D4D58EFD8A5E2C6A5A" target="_blank" rel="noopener"
+          style="display:block;padding:.55rem .7rem;background:#1e1a14;border:1px solid #2e2a22;border-radius:4px;text-decoration:none;color:var(--cream);font-size:.62rem;line-height:1.45;transition:border-color .15s;">
+          <span style="display:block;font-weight:700;color:var(--ochre);margin-bottom:.2rem;">Talbert, Rome's World ↗</span>
+          The canonical scholarly edition. OmnesViae data is based on Talbert's reconstructions.
+        </a>
+        <a href="https://piggin.net/ta.svg" target="_blank" rel="noopener"
+          style="display:block;padding:.55rem .7rem;background:#1e1a14;border:1px solid #2e2a22;border-radius:4px;text-decoration:none;color:var(--cream);font-size:.62rem;line-height:1.45;transition:border-color .15s;">
+          <span style="display:block;font-weight:700;color:var(--ochre);margin-bottom:.2rem;">Piggin Digital Plot SVG ↗</span>
+          Jean-Baptiste Piggin's complete digital vector rendering (CC BY-SA) — color-coded Italian routes, 3,300+ places. Open raw SVG for full horizontal scroll.
+        </a>
+        <a href="https://www.tabula-peutingeriana.de/" target="_blank" rel="noopener"
+          style="display:block;padding:.55rem .7rem;background:#1e1a14;border:1px solid #2e2a22;border-radius:4px;text-decoration:none;color:var(--cream);font-size:.62rem;line-height:1.45;transition:border-color .15s;">
+          <span style="display:block;font-weight:700;color:var(--ochre);margin-bottom:.2rem;">tabula-peutingeriana.de ↗</span>
+          High-resolution facsimile and segment viewer of the Vienna parchment scroll (ÖNB Cod. 324).
+        </a>
+        <a href="https://commons.wikimedia.org/wiki/Tabula_Peutingeriana" target="_blank" rel="noopener"
+          style="display:block;padding:.55rem .7rem;background:#1e1a14;border:1px solid #2e2a22;border-radius:4px;text-decoration:none;color:var(--cream);font-size:.62rem;line-height:1.45;transition:border-color .15s;">
+          <span style="display:block;font-weight:700;color:var(--ochre);margin-bottom:.2rem;">Wikimedia Commons ↗</span>
+          Public domain segment scans for direct download and scholarly reuse.
+        </a>
+      </div>
+      <div style="margin-top:auto;padding-top:.75rem;border-top:1px solid #2e2a22;">
+        <div style="font-size:.55rem;color:#5a5248;line-height:1.5;">
+          Original: Vienna, Österreichische Nationalbibliothek, Cod. Vindob. 324. Parchment scroll, 13th c. CE copy of 4th c. original. 6.82 m × 0.34 m. England → Sri Lanka.
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="atlas-note">
+    OmnesViae routes the Roman <em>cursus publicus</em> using distances from the Tabula Peutingeriana and Antonine Itinerary. Enter two cities to find the shortest Roman road path. Developed by René Voorburg. The sidebar links to primary facsimiles and the Piggin SVG for direct study of the map itself.
   </div>
 </div>
 
@@ -665,7 +702,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     ['romanLettersAtlasPanel','roman-letters-atlas-btn','Roman Letters','Hide Roman Letters'],
     ['iranGazetteeerAtlasPanel','iran-gazetteer-atlas-btn','Iran Gazetteer','Hide Iran Gazetteer'],
     ['plinyAtlasPanel','pliny-atlas-btn','Pliny the Elder','Hide Pliny'],
-    ['peutingerAtlasPanel','peutinger-atlas-btn','Tabula Peutingeriana','Hide Peutinger'],
+    ['omnesViaeAtlasPanel','omnesviae-atlas-btn','OmnesViae','Hide OmnesViae'],
     ['proxenyAtlasPanel','proxeny-atlas-btn','Proxeny Networks','Hide Proxeny'],
     ['mithraeumAtlasPanel','mithraeum-atlas-btn','Mithraeum','Hide Mithraeum']
   ];
@@ -718,8 +755,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   window.togglePlinyAtlas = function(force){
     toggleAtlas('plinyAtlasPanel','pliny-atlas-btn','Pliny the Elder','Hide Pliny',force);
   };
-  window.togglePeutingerAtlas = function(force){
-    toggleAtlas('peutingerAtlasPanel','peutinger-atlas-btn','Tabula Peutingeriana','Hide Peutinger',force);
+  window.toggleOmnesViaeAtlas = function(force){
+    toggleAtlas('omnesViaeAtlasPanel','omnesviae-atlas-btn','OmnesViae','Hide OmnesViae',force);
   };
   window.toggleProxenyAtlas = function(force){
     toggleAtlas('proxenyAtlasPanel','proxeny-atlas-btn','Proxeny Networks','Hide Proxeny',force);
