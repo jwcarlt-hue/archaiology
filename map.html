@@ -314,6 +314,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <button class="filter-chip" id="pliny-atlas-btn" onclick="togglePlinyAtlas()">Pliny the Elder</button>
       <button class="filter-chip" id="peutinger-atlas-btn" onclick="togglePeutingerAtlas()">Tabula Peutingeriana</button>
       <button class="filter-chip" id="proxeny-atlas-btn" onclick="toggleProxenyAtlas()">Proxeny Networks</button>
+      <button class="filter-chip" id="mithraeum-atlas-btn" onclick="toggleMithraeumAtlas()">Mithraeum</button>
     </div>
     <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:6px;line-height:1.45;">
       Open external archaeological atlases in a dedicated workspace above the map.
@@ -625,6 +626,35 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   </div>
 </div>
 
+<div class="atlas-panel" id="mithraeumAtlasPanel">
+  <div class="atlas-head">
+    <div class="atlas-title-wrap">
+      <div class="atlas-kicker">External atlas layer</div>
+      <div class="atlas-title">Map of Mithraic Monuments — The New Mithraeum</div>
+      <div class="atlas-meta">
+        Source: <a href="https://www.mithraeum.eu/map?tag=all" target="_blank" rel="noopener">mithraeum.eu/map</a>
+        &nbsp;·&nbsp; Temples, shrines, caves &amp; spelaea of Mithras &nbsp;·&nbsp; City-level findspot coordinates &nbsp;·&nbsp; Roman Empire-wide coverage
+      </div>
+    </div>
+    <div class="atlas-actions">
+      <a class="atlas-link" href="https://www.mithraeum.eu/map?tag=all" target="_blank" rel="noopener">Open in new tab</a>
+      <button class="atlas-close" type="button" onclick="toggleMithraeumAtlas(false)">Close</button>
+    </div>
+  </div>
+  <div class="atlas-body">
+    <iframe
+      class="atlas-frame"
+      src="https://www.mithraeum.eu/map?tag=all"
+      title="Map of Mithraic monuments — The New Mithraeum — temples, shrines, and spelaea of Mithras across the Roman Empire"
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+    <div class="atlas-note">
+      The New Mithraeum. Interactive map of Mithraic temples, shrines, caves, and spelaea across the Roman Empire — with associated objects, reliefs, and sculpture at city-level findspot resolution. If the frame is blocked, use the open-in-new-tab link.
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   const atlasConfigs = [
@@ -636,7 +666,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     ['iranGazetteeerAtlasPanel','iran-gazetteer-atlas-btn','Iran Gazetteer','Hide Iran Gazetteer'],
     ['plinyAtlasPanel','pliny-atlas-btn','Pliny the Elder','Hide Pliny'],
     ['peutingerAtlasPanel','peutinger-atlas-btn','Tabula Peutingeriana','Hide Peutinger'],
-    ['proxenyAtlasPanel','proxeny-atlas-btn','Proxeny Networks','Hide Proxeny']
+    ['proxenyAtlasPanel','proxeny-atlas-btn','Proxeny Networks','Hide Proxeny'],
+    ['mithraeumAtlasPanel','mithraeum-atlas-btn','Mithraeum','Hide Mithraeum']
   ];
 
   function safeCloseAtlases(){
@@ -692,6 +723,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   };
   window.toggleProxenyAtlas = function(force){
     toggleAtlas('proxenyAtlasPanel','proxeny-atlas-btn','Proxeny Networks','Hide Proxeny',force);
+  };
+  window.toggleMithraeumAtlas = function(force){
+    toggleAtlas('mithraeumAtlasPanel','mithraeum-atlas-btn','Mithraeum','Hide Mithraeum',force);
   };
   window.closeExternalAtlases = safeCloseAtlases;
 })();
