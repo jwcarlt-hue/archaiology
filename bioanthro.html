@@ -215,6 +215,60 @@ svg#timeline{width:100%;overflow:visible;}
 .tool-button{display:inline-flex;align-items:center;justify-content:center;padding:.38rem .62rem;border:1px solid rgba(200,216,240,.1);font-family:var(--mono);font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(200,216,240,.48);transition:all .15s;}
 .tool-button:hover{color:var(--rust-lt);border-color:rgba(192,90,48,.32);}
 
+/* ════════════════════════════════════════
+   SECTION 5: 3D FOSSIL MODELS
+══════════════════════════════════════════ */
+.models-layout{display:grid;grid-template-columns:minmax(240px,280px) 1fr;gap:1.2rem;align-items:start;}
+.model-list{display:flex;flex-direction:column;gap:.35rem;}
+.model-list-item{display:flex;flex-direction:column;gap:.12rem;padding:.75rem .9rem;
+  background:rgba(200,216,240,.02);border:1px solid rgba(200,216,240,.07);
+  border-left:2px solid transparent;cursor:pointer;transition:all .15s;text-align:left;width:100%;}
+.model-list-item:hover{border-left-color:rgba(192,90,48,.4);background:rgba(192,90,48,.04);}
+.model-list-item.active{border-left-color:var(--rust-lt);background:rgba(192,90,48,.07);}
+.mli-taxon{font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--rust-lt);margin-bottom:.08rem;}
+.mli-name{font-size:.72rem;font-weight:700;color:var(--bone);line-height:1.3;}
+.mli-type{font-size:.56rem;color:rgba(200,216,240,.35);margin-top:.08rem;}
+.model-viewer-wrap{background:rgba(200,216,240,.015);border:1px solid rgba(200,216,240,.07);}
+.model-header{padding:.9rem 1.1rem .7rem;border-bottom:1px solid rgba(200,216,240,.06);}
+.model-header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;}
+.model-title{font-family:var(--serif);font-size:1.15rem;font-style:italic;color:var(--bone);margin-bottom:.2rem;}
+.model-taxon-pill{font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.18rem .55rem;border:1px solid rgba(192,90,48,.3);color:var(--rust-lt);
+  background:rgba(192,90,48,.07);white-space:nowrap;align-self:flex-start;margin-top:.2rem;}
+.model-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.5rem;}
+.model-meta-item{font-family:var(--mono);font-size:.55rem;letter-spacing:.07em;color:rgba(200,216,240,.38);}
+.model-meta-item span{color:rgba(200,216,240,.6);}
+.model-frame-wrap{position:relative;width:100%;padding-top:56.25%;background:#03060c;}
+.model-frame-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.model-frame-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.8rem;background:#03060c;}
+.model-fp-icon{font-size:2rem;opacity:.3;}
+.model-fp-text{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(200,216,240,.28);}
+.model-load-btn{padding:.45rem 1rem;background:rgba(192,90,48,.12);border:1px solid rgba(192,90,48,.32);
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--rust-lt);cursor:pointer;transition:all .15s;}
+.model-load-btn:hover{background:rgba(192,90,48,.22);color:var(--bone);}
+.model-desc-wrap{padding:.8rem 1.1rem;border-top:1px solid rgba(200,216,240,.05);}
+.model-desc{font-family:var(--body);font-size:.82rem;line-height:1.75;color:rgba(200,216,240,.5);
+  font-weight:300;margin-bottom:.7rem;}
+.model-credit-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;
+  padding-top:.6rem;border-top:1px solid rgba(200,216,240,.05);}
+.model-credit{font-family:var(--mono);font-size:.52rem;letter-spacing:.07em;color:rgba(200,216,240,.28);}
+.model-credit a{color:rgba(200,216,240,.48);text-decoration:underline;text-underline-offset:2px;}
+.model-credit a:hover{color:var(--rust-lt);}
+.model-ext-link{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--mono);
+  font-size:.55rem;letter-spacing:.06em;text-transform:uppercase;padding:.28rem .6rem;
+  border:1px solid rgba(200,216,240,.1);color:rgba(200,216,240,.4);transition:all .15s;}
+.model-ext-link:hover{color:var(--rust-lt);border-color:rgba(192,90,48,.3);}
+.model-empty{padding:3rem;text-align:center;color:rgba(200,216,240,.2);
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;}
+
+@media(max-width:860px){.models-layout{grid-template-columns:1fr;}
+  .model-list{flex-direction:row;flex-wrap:wrap;gap:.3rem;}
+  .model-list-item{min-width:160px;}}
+
 @media (max-width: 980px){
   .genomics-tools{grid-template-columns:1fr;}
 }
@@ -260,6 +314,7 @@ svg#timeline{width:100%;overflow:visible;}
   <div class="tab" onclick="setTab(this,'timeline')">🌳 Hominin Timeline</div>
   <div class="tab" onclick="setTab(this,'sites')">📍 Fossil Sites</div>
   <div class="tab" onclick="setTab(this,'genomics')">Genomics Tools</div>
+  <div class="tab" onclick="setTab(this,'models')">🦴 3D Fossil Models</div>
 </div>
 
 <!-- ═══════════════ SECTION 1: FEED ═══════════════ -->
@@ -372,6 +427,50 @@ svg#timeline{width:100%;overflow:visible;}
         <a class="tool-button" href="https://www.ncbi.nlm.nih.gov/tools/sviewer/embedding-api/" target="_blank" rel="noopener">Embedding docs</a>
       </div>
     </aside>
+  </div>
+</div>
+
+<!-- ═══════════════ SECTION 5: 3D FOSSIL MODELS ═══════════════ -->
+<div class="section" id="sec-models">
+  <div class="sec-eyebrow">Sketchfab · 3D Fossil Reconstructions</div>
+  <h2 class="sec-title">Hominid Fossil Models</h2>
+  <p class="sec-sub">Three-dimensional reconstructions of key hominid fossil finds and anatomical studies, embedded from Sketchfab. Select a specimen to load the interactive viewer — rotate, zoom, and examine morphology in full 3D. Models load on demand to preserve bandwidth.</p>
+
+  <div class="models-layout">
+    <nav class="model-list" id="model-list" aria-label="Fossil model list"></nav>
+    <div class="model-viewer-wrap" id="model-viewer-wrap">
+      <div class="model-empty" id="model-empty">Select a specimen from the list</div>
+      <div id="model-detail" style="display:none;">
+        <div class="model-header">
+          <div class="model-header-top">
+            <div>
+              <div class="model-taxon-pill" id="md-taxon"></div>
+              <div class="model-title" id="md-title"></div>
+            </div>
+            <a class="model-ext-link" id="md-sketchfab-link" href="#" target="_blank" rel="noopener">View on Sketchfab ↗</a>
+          </div>
+          <div class="model-meta">
+            <div class="model-meta-item">Period: <span id="md-period"></span></div>
+            <div class="model-meta-item">Discovery: <span id="md-discovery"></span></div>
+            <div class="model-meta-item">Institution: <span id="md-institution"></span></div>
+          </div>
+        </div>
+        <div class="model-frame-wrap" id="md-frame-wrap">
+          <div class="model-frame-placeholder" id="md-placeholder">
+            <div class="model-fp-icon">🦴</div>
+            <div class="model-fp-text">3D model ready to load</div>
+            <button class="model-load-btn" onclick="loadActiveModel()">Load 3D Model</button>
+          </div>
+        </div>
+        <div class="model-desc-wrap">
+          <div class="model-desc" id="md-desc"></div>
+          <div class="model-credit-bar">
+            <div class="model-credit" id="md-credit"></div>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap;" id="md-links"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -561,7 +660,7 @@ const GENOME_PRESETS = {
   }
 };
 
-let timelineBuilt = false, mapBuilt = false, genomicsBootstrapped = false, genomicsApp = null;
+let timelineBuilt = false, mapBuilt = false, genomicsBootstrapped = false, genomicsApp = null, modelsBuilt = false;
 function setTab(el, id) {
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
@@ -570,6 +669,7 @@ function setTab(el, id) {
   if (id==='timeline' && !timelineBuilt) { buildTimeline(); timelineBuilt=true; }
   if (id==='sites' && !mapBuilt) { buildFossilMap(); mapBuilt=true; }
   if (id==='genomics' && !genomicsBootstrapped) { initGenomicsTools(); genomicsBootstrapped=true; }
+  if (id==='models' && !modelsBuilt) { buildModelsList(); modelsBuilt=true; }
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -905,6 +1005,219 @@ function initGenomicsTools() {
 }
 
 loadFeed();
-</script>
+
+// ════════════════════════════════════════════════════════════════
+// SECTION 5: 3D FOSSIL MODELS
+// ════════════════════════════════════════════════════════════════
+
+const FOSSIL_MODELS = [
+  {
+    key: 'lucy',
+    taxon: 'Australopithecus afarensis',
+    taxonShort: 'Au. afarensis',
+    name: 'Lucy — Reconstruction',
+    type: 'Full skeletal reconstruction',
+    modelId: '12e9e659c40247a2bf911aa985828937',
+    period: 'c. 3.2 Ma (Pliocene)',
+    discovery: 'Hadar, Ethiopia, 1974 (D. Johanson)',
+    institution: 'Cleveland Museum of Natural History',
+    author: 'oddviz',
+    authorUrl: 'https://sketchfab.com/oddviz',
+    credit: '3D model by oddviz for the Cleveland Museum of Natural History, via Sketchfab. CC Attribution.',
+    sketchfabUrl: 'https://sketchfab.com/3d-models/lucy-australopithecus-afarensis-reconstruction-12e9e659c40247a2bf911aa985828937',
+    desc: 'Lucy (AL 288-1) is the most famous Australopithecus afarensis specimen, recovered from Hadar, Ethiopia, in November 1974 by Donald Johanson and Tom Gray. At ~3.2 million years old, she represents roughly 40% of a complete skeleton — extraordinary for a find of her age — and provided the first clear anatomical evidence that bipedalism preceded the expansion of the hominin brain. Standing about 107 cm tall, with a small cranial capacity (~400 cc) and a mosaic of ape-like and human-like features, Lucy anchored the understanding of Australopithecines as committed bipeds who retained significant arboreal adaptations in their upper limbs. The "Lucy\'s Baby" specimen (DIK-1-1, Dikika) later extended the afarensis record to 3.3 Ma.',
+    links: [
+      { label: 'Sketchfab model', url: 'https://sketchfab.com/3d-models/lucy-australopithecus-afarensis-reconstruction-12e9e659c40247a2bf911aa985828937' },
+      { label: 'CMNH Lucy page', url: 'https://www.cmnh.org/lucy' },
+    ]
+  },
+  // ── Placeholder models — extend as more Sketchfab IDs are sourced ──
+  {
+    key: 'turkana_boy',
+    taxon: 'Homo ergaster',
+    taxonShort: 'H. ergaster',
+    name: 'Turkana Boy — KNM-WT 15000',
+    type: 'Fossil specimen (cast)',
+    modelId: null,
+    period: 'c. 1.6 Ma (early Pleistocene)',
+    discovery: 'Nariokotome, Kenya, 1984 (Leakey / Brown)',
+    institution: 'National Museums of Kenya',
+    author: null,
+    authorUrl: null,
+    credit: '3D model not yet linked. Add a Sketchfab modelId to enable the viewer.',
+    sketchfabUrl: 'https://sketchfab.com/search?q=turkana+boy+homo+ergaster&type=models',
+    desc: 'KNM-WT 15000 ("Turkana Boy" or "Nariokotome Boy") is the most complete early Homo skeleton known, recovered from lake sediments west of Lake Turkana in 1984. A male aged approximately 7–11 years at death, he would have grown to around 185 cm — larger than any Australopithecine and within the modern human range. The specimen demonstrates that H. ergaster had a fully modern post-cranial skeleton, long legs adapted to open-country walking and running, and a cranial capacity of about 880 cc. The narrow pelvis implies that H. ergaster infants were born neurologically less mature than Australopithecines, prefiguring the extended childhood dependency that characterises Homo sapiens.',
+    links: [
+      { label: 'Search Sketchfab', url: 'https://sketchfab.com/search?q=turkana+boy+homo+ergaster&type=models' },
+    ]
+  },
+  {
+    key: 'neanderthal_skull',
+    taxon: 'Homo neanderthalensis',
+    taxonShort: 'H. neanderthalensis',
+    name: 'La Ferrassie 1 — Neanderthal Skull',
+    type: 'Fossil scan / cast',
+    modelId: null,
+    period: 'c. 70–50 ka (late Pleistocene)',
+    discovery: 'La Ferrassie, Dordogne, France, 1909',
+    institution: 'Musée de l\'Homme, Paris',
+    author: null,
+    authorUrl: null,
+    credit: '3D model not yet linked. Add a Sketchfab modelId to enable the viewer.',
+    sketchfabUrl: 'https://sketchfab.com/search?q=neanderthal+skull+la+ferrassie&type=models',
+    desc: 'La Ferrassie 1 is one of the most complete Neanderthal skeletons known, representing an adult male with a cranial capacity of ~1,680 cc — slightly larger than the modern human mean. Recovered from a deliberate burial context in the Dordogne valley alongside six other Neanderthal individuals (including children), the find contributed to the long-running debate about Neanderthal mortuary behaviour and symbolic thought. The skull exhibits the classic Neanderthal suite: pronounced supraorbital tori, a large mid-facial prognathism, an occipital bun, and a retromolar gap. Ancient DNA now confirms Neanderthals and modern humans interbred, with 1–4% Neanderthal ancestry detectable in living non-African populations.',
+    links: [
+      { label: 'Search Sketchfab', url: 'https://sketchfab.com/search?q=neanderthal+skull&type=models' },
+    ]
+  },
+  {
+    key: 'naledi_skull',
+    taxon: 'Homo naledi',
+    taxonShort: 'H. naledi',
+    name: 'Homo naledi — Dinaledi Composite',
+    type: 'Composite reconstruction',
+    modelId: null,
+    period: '335–236 ka (Middle Pleistocene)',
+    discovery: 'Rising Star Cave, South Africa, 2013 (Berger et al.)',
+    institution: 'Evolutionary Studies Institute, Wits',
+    author: null,
+    authorUrl: null,
+    credit: '3D model not yet linked. Add a Sketchfab modelId to enable the viewer.',
+    sketchfabUrl: 'https://sketchfab.com/search?q=homo+naledi&type=models',
+    desc: 'Homo naledi, described in 2015 from over 1,500 fossil elements recovered from the Dinaledi Chamber of Rising Star Cave, represents a morphologically mosaic hominin: a small cranium (465–610 cc) paired with a fully human-like hand and foot, and a Australopithecine-grade shoulder and hip. The 2017 dating of 335–236 ka placed H. naledi as a contemporary of archaic and early modern Homo sapiens in Africa — a remarkable coexistence that had not been anticipated. The deliberate placement of remains in an inaccessible cave chamber remains one of the most contested claims in recent paleoanthropology.',
+    links: [
+      { label: 'Search Sketchfab', url: 'https://sketchfab.com/search?q=homo+naledi&type=models' },
+    ]
+  },
+  {
+    key: 'floresiensis',
+    taxon: 'Homo floresiensis',
+    taxonShort: 'H. floresiensis',
+    name: 'LB1 — "Hobbit" Skull',
+    type: 'Fossil specimen / cast',
+    modelId: null,
+    period: '100–60 ka (late Pleistocene)',
+    discovery: 'Liang Bua Cave, Flores, Indonesia, 2003',
+    institution: 'National Research Centre for Archaeology, Jakarta',
+    author: null,
+    authorUrl: null,
+    credit: '3D model not yet linked. Add a Sketchfab modelId to enable the viewer.',
+    sketchfabUrl: 'https://sketchfab.com/search?q=homo+floresiensis+hobbit&type=models',
+    desc: 'LB1, the holotype of Homo floresiensis, was recovered from Liang Bua cave on the island of Flores in 2003. An adult female standing approximately 106 cm tall with a cranial capacity of ~380 cc (comparable to Australopithecines), she co-existed with modern humans and manufactured Oldowan-like stone tools until as recently as 50,000 years ago. The "island dwarfism" hypothesis — that H. floresiensis descended from H. erectus and underwent insular dwarfing on Flores — is now widely accepted, though some researchers propose ancestry from an even more archaic lineage. The species survived until modern humans colonised the island, making it one of the last non-sapiens hominins outside Africa.',
+    links: [
+      { label: 'Search Sketchfab', url: 'https://sketchfab.com/search?q=homo+floresiensis&type=models' },
+    ]
+  },
+];
+
+let activeModelKey = null;
+
+function buildModelsList() {
+  const list = document.getElementById('model-list');
+  list.innerHTML = FOSSIL_MODELS.map(m => `
+    <button class="model-list-item" data-key="${m.key}" onclick="selectModel('${m.key}')">
+      <div class="mli-taxon">${m.taxonShort}</div>
+      <div class="mli-name">${m.name}</div>
+      <div class="mli-type">${m.type}${m.modelId ? '' : ' · model pending'}</div>
+    </button>
+  `).join('');
+  // Auto-select first
+  selectModel(FOSSIL_MODELS[0].key);
+}
+
+function selectModel(key) {
+  const m = FOSSIL_MODELS.find(x => x.key === key);
+  if (!m) return;
+
+  // If switching away from active, reset iframe
+  if (activeModelKey && activeModelKey !== key) {
+    const frameWrap = document.getElementById('md-frame-wrap');
+    // remove any existing iframe
+    const old = frameWrap.querySelector('iframe');
+    if (old) old.remove();
+    const ph = document.getElementById('md-placeholder');
+    if (ph) ph.style.display = 'flex';
+  }
+
+  activeModelKey = key;
+
+  // Update list active state
+  document.querySelectorAll('.model-list-item').forEach(b => {
+    b.classList.toggle('active', b.dataset.key === key);
+  });
+
+  // Hide empty, show detail
+  document.getElementById('model-empty').style.display = 'none';
+  document.getElementById('model-detail').style.display = 'block';
+
+  // Populate header
+  document.getElementById('md-taxon').textContent = m.taxon;
+  document.getElementById('md-title').textContent = m.name;
+  document.getElementById('md-period').textContent = m.period;
+  document.getElementById('md-discovery').textContent = m.discovery;
+  document.getElementById('md-institution').textContent = m.institution;
+  document.getElementById('md-sketchfab-link').href = m.sketchfabUrl;
+
+  // Frame
+  const frameWrap = document.getElementById('md-frame-wrap');
+  // Remove old iframe if switching
+  const oldIframe = frameWrap.querySelector('iframe');
+  if (oldIframe) oldIframe.remove();
+  // Show placeholder
+  let ph = document.getElementById('md-placeholder');
+  if (!ph) {
+    ph = document.createElement('div');
+    ph.className = 'model-frame-placeholder';
+    ph.id = 'md-placeholder';
+    frameWrap.appendChild(ph);
+  }
+  if (m.modelId) {
+    ph.style.display = 'flex';
+    ph.innerHTML = `
+      <div class="model-fp-icon">🦴</div>
+      <div class="model-fp-text">3D model ready to load</div>
+      <button class="model-load-btn" onclick="loadActiveModel()">Load 3D Model</button>`;
+  } else {
+    ph.style.display = 'flex';
+    ph.innerHTML = `
+      <div class="model-fp-icon">🦴</div>
+      <div class="model-fp-text">3D model not yet linked</div>
+      <a class="model-load-btn" href="${m.sketchfabUrl}" target="_blank" rel="noopener" style="text-decoration:none;">Search Sketchfab ↗</a>`;
+  }
+
+  // Description
+  document.getElementById('md-desc').textContent = m.desc;
+
+  // Credit
+  const creditEl = document.getElementById('md-credit');
+  if (m.author) {
+    creditEl.innerHTML = `${m.credit} · <a href="${m.authorUrl}" target="_blank" rel="noopener">@${m.author}</a>`;
+  } else {
+    creditEl.textContent = m.credit;
+  }
+
+  // Links
+  const linksEl = document.getElementById('md-links');
+  linksEl.innerHTML = (m.links || []).map(l =>
+    `<a class="model-ext-link" href="${l.url}" target="_blank" rel="noopener">${l.label} ↗</a>`
+  ).join('');
+}
+
+function loadActiveModel() {
+  const m = FOSSIL_MODELS.find(x => x.key === activeModelKey);
+  if (!m || !m.modelId) return;
+
+  const frameWrap = document.getElementById('md-frame-wrap');
+  const ph = document.getElementById('md-placeholder');
+  if (ph) ph.style.display = 'none';
+
+  const iframe = document.createElement('iframe');
+  iframe.src = `https://sketchfab.com/models/${m.modelId}/embed?autospin=0&autostart=1&ui_controls=1&ui_infos=0&ui_watermark_link=0&ui_watermark=0&ui_ar=0&ui_help=0&ui_settings=0&ui_vr=0&ui_fullscreen=1&ui_annotations=0`;
+  iframe.title = m.name;
+  iframe.allow = 'autoplay; fullscreen; xr-spatial-tracking';
+  iframe.setAttribute('allowfullscreen', '');
+  frameWrap.appendChild(iframe);
+}
+
 </body>
 </html>
