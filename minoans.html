@@ -295,10 +295,17 @@ a{text-decoration:none;color:inherit;}
       <div class="legend-item"><div class="legend-dot" style="background:#d4a84b;"></div>Palace centre</div>
       <div class="legend-item"><div class="legend-dot" style="background:#c87040;"></div>Town / settlement</div>
       <div class="legend-item"><div class="legend-dot" style="background:#8060a0;"></div>Peak sanctuary</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#4080a0;"></div>Harbour / port</div>
       <div class="legend-item"><div class="legend-dot" style="background:#608060;"></div>Tomb / cemetery</div>
       <div class="legend-item"><div class="legend-dot" style="background:#a08070;"></div>Villa / rural</div>
       <div class="legend-item"><div class="legend-dot" style="background:#707070;"></div>Cave shrine</div>
+      <div class="legend-item" style="margin-top:.35rem;padding-top:.35rem;border-top:1px solid rgba(255,250,240,.1);font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);opacity:.7;">Harbours &amp; Ports</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#4080a0;"></div>Minoan / Crete</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#5090b0;"></div>Aegean / Greece</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#a05828;"></div>Canaanite / Levant</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#8a6020;"></div>Egyptian</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7070b0;"></div>Cypriot</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#608040;"></div>Anatolian</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#707070;"></div>Comparative</div>
     </div>
   </div>
   <div class="sites-col" id="sites-col">
@@ -587,6 +594,345 @@ const MINOAN_SITES = [
    tags:['town']},
 ];
 
+// ── Raban Harbour Study — Minoan & Canaanite Harbours & Ports ─────────────────
+// 66 sites: Crete (Minoan), Aegean, Levant/Canaan, Egypt, Cyprus, Anatolia, comparative
+// Source: Raban harbour study; coordinates WGS84 decimal degrees
+const HARBOUR_SITES = [
+  {id:200, name:"Akhziv / Achziv", lat:33.0484, lng:35.1028, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"MBIIa / Middle Bronze Age", region:"Levant; Israel",
+   harbour_type:"engineered estuary harbour",
+   desc:"<em>Engineered estuary harbour.</em> One of Raban's key Levantine examples: preventive works, altered river course, quarrying/dredging, silt-free channel; MBIIa rampart built partly with silt quarried from the harbour basin.",
+   tags:["harbour","canaanite"]},
+  {id:201, name:"Akko / Acre", lat:32.9275, lng:35.0816, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"MBIIa through Late Bronze Age", region:"Levant; Israel",
+   harbour_type:"port town; quarried harbour basin hypothesis",
+   desc:"<em>Port town; quarried harbour basin hypothesis.</em> Named as a harbour place in Egyptian/Canaanite context; MBIIa ramparts contained huge volumes of beach sand, suggesting creation of a basin; 1989 evidence for quarrying from beach and bedrock.",
+   tags:["harbour","canaanite"]},
+  {id:202, name:"Akrotiri / Thera", lat:36.351, lng:25.403, type:'harbour', color:"#5090b0",
+   period:["harbour"], period_context:"Bronze Age Minoan / iconographic source", region:"Thera; Aegean",
+   harbour_type:"fresco harbour depiction; suggested harbour",
+   desc:"<em>Fresco harbour depiction; suggested harbour.</em> Raban treats the miniature fresco as the best Bronze Age pictorial depiction of harbours; notes a suggested harbour of Akrotiri itself, paralleled by the 'Arrival' town scene.",
+   tags:["harbour","aegean"]},
+  {id:203, name:"Amnisos", lat:35.337, lng:25.2045, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Middle/Late Bronze Age Minoan", region:"Crete",
+   harbour_type:"river outlet / estuary + nearshore reef or islet",
+   desc:"<em>River outlet / estuary + nearshore reef or islet.</em> Harbour of Knossos cited in Linear B and Homer. Listed among major Cretan coastal sites with the common estuarine harbour setting; tilted beach structures compared with Malia and Nirou Khani.",
+   tags:["harbour","minoan"]},
+  {id:204, name:"Asine", lat:37.5241, lng:22.8743, type:'harbour', color:"#5090b0",
+   period:["harbour"], period_context:"Bronze Age analogy", region:"Argolid; Greece",
+   harbour_type:"protected bay with built quay analogy",
+   desc:"<em>Protected bay with built quay analogy.</em> Used as analogue for Akrotiri fresco's 'Arrival' town type: built quay, protected water deep enough for boats to moor afloat; compared with east Malia, Kition, and south Dor.",
+   tags:["harbour","aegean"]},
+  {id:205, name:"Ashdod / Tel Mor", lat:31.8236, lng:34.656, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Late Bronze Age / Canaanite", region:"Levant; Israel",
+   harbour_type:"inland metropolis with riverine daughter port",
+   desc:"<em>Inland metropolis with riverine daughter port.</em> Raban describes Ashdod's port as Tel Mor, a riverine harbour serving the inland/metropolitan site.",
+   tags:["harbour","canaanite"]},
+  {id:206, name:"Ashkelon", lat:31.6688, lng:34.5474, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Middle/Late Bronze Age Canaanite", region:"Levant; Israel",
+   harbour_type:"rocky bay/promontory or exposed coastal port",
+   desc:"<em>Rocky bay/promontory or exposed coastal port.</em> Listed in Execration-text harbour places; fortified town on an eroding exposed shore; grouped with rocky/promontory harbour siting.",
+   tags:["harbour","canaanite"]},
+  {id:207, name:"Askitario", lat:38.0091, lng:24.0243, type:'harbour', color:"#5090b0",
+   period:["harbour"], period_context:"Early Helladic / Bronze Age", region:"Attica; Aegean",
+   harbour_type:"rocky bay or promontory siting",
+   desc:"<em>Rocky bay or promontory siting.</em> Listed among Aegean Early Helladic settlements with rocky-bay/promontory harbour siting.",
+   tags:["harbour","aegean"]},
+  {id:208, name:"Athens (Piraeus)", lat:37.942, lng:23.6469, type:'harbour', color:"#5090b0",
+   period:["harbour"], period_context:"Bronze Age comparison", region:"Aegean; Greece",
+   harbour_type:"inland centre with separate shore harbour",
+   desc:"<em>Inland centre with separate shore harbour.</em> Named as an Aegean example of a centre set inland with a separate shore quarter/harbour, sometimes linked by a navigable watercourse.",
+   tags:["harbour","aegean"]},
+  {id:209, name:"Ayia Irini (Kea)", lat:37.6689, lng:24.326, type:'harbour', color:"#5090b0",
+   period:["harbour"], period_context:"Early Helladic / Bronze Age", region:"Kea; Aegean",
+   harbour_type:"rocky bay or promontory siting",
+   desc:"<em>Rocky bay or promontory siting.</em> Listed as an Aegean Early Helladic settlement with the rocky-bay/promontory harbour setting comparable to Levantine examples.",
+   tags:["harbour","aegean"]},
+  {id:210, name:"Ayia Varvara / East Malia", lat:35.297, lng:25.5095, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Middle Minoan", region:"Crete",
+   harbour_type:"east harbour/mooring basin",
+   desc:"<em>East harbour/mooring basin.</em> Promontory east of Malia with MM sherds/walls; small bay and offshore islet divided by an artificial rampart, plus retaining wall to block river silt; interpreted as weather-protected, silt-free mooring basin.",
+   tags:["harbour","minoan"]},
+  {id:211, name:"Ayios Kosmos", lat:37.8798, lng:23.7306, type:'harbour', color:"#5090b0",
+   period:["harbour"], period_context:"Early Helladic / Bronze Age", region:"Attica; Aegean",
+   harbour_type:"rocky bay or promontory siting",
+   desc:"<em>Rocky bay or promontory siting.</em> Listed with Ayia Irini, Manika, Askitario, and Kolonna as Early Helladic sites characterized by rocky-bay/promontory harbour siting.",
+   tags:["harbour","aegean"]},
+  {id:212, name:"Birket Habu", lat:25.708, lng:32.601, type:'harbour', color:"#8a6020",
+   period:["harbour"], period_context:"14th c. BCE / New Kingdom", region:"Egypt; Nile Valley",
+   harbour_type:"ashlar quay / Nile harbour comparison",
+   desc:"<em>Ashlar quay / Nile harbour.</em> Cited as an Egyptian example where ashlar quays were in use in the 14th c. BCE; a possible source of later ashlar quay technology in Cyprus and the Levant.",
+   tags:["harbour","egyptian"]},
+  {id:213, name:"Birket Malkata", lat:25.7075, lng:32.5945, type:'harbour', color:"#8a6020",
+   period:["harbour"], period_context:"ca. 1400 BCE", region:"Egypt; western Thebes",
+   harbour_type:"large artificial basin / Nile harbour comparison",
+   desc:"<em>Large artificial basin / Nile harbour.</em> Raban calls it the largest known basin of the quarried-harbour type in the Nile region, dated around 1400 BCE.",
+   tags:["harbour","egyptian"]},
+  {id:214, name:"Byblos", lat:34.1208, lng:35.6461, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Old Kingdom onward; MBA/LBA", region:"Levant; Lebanon",
+   harbour_type:"rocky bay/promontory; major emporium",
+   desc:"<em>Rocky bay/promontory; major emporium.</em> Important Levantine emporium for Egyptian seaborne trade since the Old Kingdom; one of the textually documented, well-protected harbour cities.",
+   tags:["harbour","canaanite"]},
+  {id:215, name:"Caesarea Maritima", lat:32.5004, lng:34.8925, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"later ancient comparison", region:"Levant; Israel",
+   harbour_type:"tectonically displaced harbour installations",
+   desc:"<em>Tectonically displaced harbour installations.</em> Mentioned as a local exception where vertical displacement of harbour/marine installations was studied.",
+   tags:["harbour","canaanite"]},
+  {id:216, name:"Dor / Tel Dor", lat:32.6175, lng:34.9175, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Late Bronze Age / Sea Peoples horizon", region:"Levant; Israel",
+   harbour_type:"ashlar quays; south harbour",
+   desc:"<em>Ashlar quays; south harbour.</em> Best documented LBA harbour installation in Raban's Levantine sample; Wen-Amon describes Dor as a Sea Peoples port; excavations revealed three successive quays dated to the 13th, early 12th, and late 12th c. BCE.",
+   tags:["harbour","canaanite"]},
+  {id:217, name:"Elaphonisos", lat:36.508, lng:22.97, type:'harbour', color:"#5090b0",
+   period:["harbour"], period_context:"Bronze Age Aegean", region:"South Peloponnese; Greece",
+   harbour_type:"estuary/opening type",
+   desc:"<em>Estuary/opening type.</em> Listed with Pylos as a south Peloponnesian example of the common river-outlet/nearshore feature harbour siting.",
+   tags:["harbour","aegean"]},
+  {id:218, name:"Ephesos", lat:37.9397, lng:27.3412, type:'harbour', color:"#608040",
+   period:["harbour"], period_context:"ancient/Bronze Age harbour case", region:"Western Anatolia",
+   harbour_type:"silted river-outlet harbour, now inland",
+   desc:"<em>Silted river-outlet harbour, now inland.</em> Named as a once-important harbour now landlocked by alluviation and coastal sedimentation.",
+   tags:["harbour","anatolian"]},
+  {id:219, name:"Gaza", lat:31.5017, lng:34.4668, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Bronze Age Canaanite", region:"Levant; southern coast",
+   harbour_type:"inland centre with shore harbour",
+   desc:"<em>Inland centre with shore harbour.</em> Included among Levantine centres with a separate shore quarter or daughter harbour, analogous to Ugarit/Minet el-Baida and Ashdod/Tel Mor.",
+   tags:["harbour","canaanite"]},
+  {id:220, name:"Giza (pyramid canal harbours)", lat:29.9792, lng:31.1342, type:'harbour', color:"#8a6020",
+   period:["harbour"], period_context:"Old Kingdom / 27th c. BCE comparison", region:"Egypt; Nile Valley",
+   harbour_type:"quarried navigational channels",
+   desc:"<em>Quarried navigational channels.</em> Used as a comparative example: navigational channels quarried from the Nile to the pyramids already in the 27th c. BCE.",
+   tags:["harbour","egyptian"]},
+  {id:221, name:"Gournia", lat:35.1091, lng:25.7927, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Bronze Age Minoan", region:"Crete",
+   harbour_type:"inland/near-coastal centre with shore harbour analogy",
+   desc:"<em>Near-coastal centre with shore harbour.</em> Named as an Aegean/Cretan centre with a separate shore harbour or river-connected maritime quarter.",
+   tags:["harbour","minoan"]},
+  {id:222, name:"Hala Sultan Tekke", lat:34.8848, lng:33.6092, type:'harbour', color:"#7070b0",
+   period:["harbour"], period_context:"Late Bronze Age comparison", region:"Cyprus",
+   harbour_type:"near-sea wells/harbour structural parallel",
+   desc:"<em>Near-sea wells / harbour structural parallel.</em> Noted for rectangular wells near the sea paralleling Dor and Kato Zakro; used as a structural comparison.",
+   tags:["harbour","cypriot"]},
+  {id:223, name:"Iasos", lat:37.2796, lng:27.585, type:'harbour', color:"#608040",
+   period:["harbour"], period_context:"Bronze Age probable", region:"Caria / western Anatolia",
+   harbour_type:"probably estuary/opening type",
+   desc:"<em>Probably estuary/opening type.</em> Raban says Iasos was probably of the same topographic type as Smyrna, Ephesos, and Miletos during the Bronze Age.",
+   tags:["harbour","anatolian"]},
+  {id:224, name:"Itanos", lat:35.2646, lng:26.2617, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Bronze Age Minoan", region:"Crete",
+   harbour_type:"submerged river outlet / lagoon harbour",
+   desc:"<em>Submerged river outlet / lagoon harbour.</em> Compared with Malia: a submerged river outlet south of the acropolis, now a marshy coastal lagoon gradually silting with winter alluvium.",
+   tags:["harbour","minoan"]},
+  {id:225, name:"Kato Zakro", lat:35.0977, lng:26.2628, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Bronze Age Minoan", region:"Crete",
+   harbour_type:"river outlet / suggested haven",
+   desc:"<em>River outlet / suggested haven.</em> Raban compares it to Malia and Itanos; a haven is reconstructed on the south side of the palatial site. Also cited for rectangular wells near the sea.",
+   tags:["harbour","minoan"]},
+  {id:226, name:"Kition", lat:34.9133, lng:33.63, type:'harbour', color:"#7070b0",
+   period:["harbour"], period_context:"Late Bronze Age", region:"Cyprus",
+   harbour_type:"lagoon/bay harbour with ashlar quay-like structures",
+   desc:"<em>Lagoon/bay harbour with ashlar quay-like structures.</em> 'Bastions' at the temple site are reinterpreted as quays in a silted lagoon/bay, with anchors and slabs closely paralleling Dor.",
+   tags:["harbour","cypriot"]},
+  {id:227, name:"Knossos (harbour context)", lat:35.2989, lng:25.1636, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Bronze Age Minoan", region:"Crete",
+   harbour_type:"inland palatial centre with shore harbour",
+   desc:"<em>Inland palatial centre with shore harbour.</em> Named as an Aegean example of an inland centre with a separate shore harbour/quarter, likely connected by a river course for small craft. Harbour site: Amnisos/Poros-Katsambas.",
+   tags:["harbour","minoan"]},
+  {id:228, name:"Kolonna (Aegina)", lat:37.7466, lng:23.427, type:'harbour', color:"#5090b0",
+   period:["harbour"], period_context:"Early Helladic / Bronze Age", region:"Aegina; Aegean",
+   harbour_type:"rocky bay or promontory siting",
+   desc:"<em>Rocky bay or promontory siting.</em> Listed among Aegean Early Helladic settlements with rocky-bay/promontory harbour siting.",
+   tags:["harbour","aegean"]},
+  {id:229, name:"Kommos (harbour study)", lat:35.013, lng:24.761, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Minoan", region:"Crete",
+   harbour_type:"shipshed/boathouse parallel",
+   desc:"<em>Shipshed/boathouse parallel.</em> Mentioned as a parallel for Minoan ship-shed/boathouse architecture, alongside Malia and Nirou Khani.",
+   tags:["harbour","minoan"]},
+  {id:230, name:"Kydonia", lat:35.5163, lng:24.0181, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Bronze Age Minoan", region:"Crete",
+   harbour_type:"river outlet / reef or islet harbour type",
+   desc:"<em>River outlet / reef or islet harbour type.</em> Listed among major Cretan coastal sites using the estuary plus nearshore reef/islet harbour setting.",
+   tags:["harbour","minoan"]},
+  {id:231, name:"Lerna", lat:37.5767, lng:22.7198, type:'harbour', color:"#5090b0",
+   period:["harbour"], period_context:"Bronze Age Aegean", region:"Argolid; Greece",
+   harbour_type:"riverbank/estuary harbour analogy",
+   desc:"<em>Riverbank/estuary harbour analogy.</em> Listed among Aegean sites comparable to the Akrotiri fresco's riverbank harbour town.",
+   tags:["harbour","aegean"]},
+  {id:232, name:"Lothal", lat:22.5226, lng:72.2498, type:'harbour', color:"#707070",
+   period:["harbour"], period_context:"Bronze Age comparison", region:"Indus Valley; comparative",
+   harbour_type:"quarried basin beside navigation route",
+   desc:"<em>Quarried basin beside navigation route.</em> Used as a non-Mediterranean comparison for quarrying a harbour basin beside a riverine navigation route.",
+   tags:["harbour"]},
+  {id:233, name:"Malia — western harbour", lat:35.2928, lng:25.4915, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Middle Minoan", region:"Crete",
+   harbour_type:"estuarine basin with quarried channels",
+   desc:"<em>Estuarine basin with quarried channels.</em> Raban's key Middle Minoan case: marshy hollow west of site, small bay, retaining wall, and channels across rocky ridge interpreted as navigation/flushing features for an estuarine harbour basin.",
+   tags:["harbour","minoan"]},
+  {id:234, name:"Malia — eastern harbour", lat:35.297, lng:25.5095, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Middle Minoan", region:"Crete",
+   harbour_type:"protected bay and artificial rampart",
+   desc:"<em>Protected bay and artificial rampart.</em> East-side outlet beyond Chrysolakkos protected by Ayia Varvara promontory; artificial rampart and retaining wall created a probable weather-protected, silt-free mooring basin.",
+   tags:["harbour","minoan"]},
+  {id:235, name:"Manika (Euboea)", lat:38.477, lng:23.5925, type:'harbour', color:"#5090b0",
+   period:["harbour"], period_context:"Early Helladic / Bronze Age", region:"Euboea; Aegean",
+   harbour_type:"rocky bay or promontory siting",
+   desc:"<em>Rocky bay or promontory siting.</em> Listed among Early Helladic sites with rocky-bay/promontory harbour siting.",
+   tags:["harbour","aegean"]},
+  {id:236, name:"Gulf of Messenia", lat:37.02, lng:22.13, type:'harbour', color:"#5090b0",
+   period:["harbour"], period_context:"coastal-change comparison", region:"Peloponnese; Greece",
+   harbour_type:"harbour/coastal plain palaeogeography",
+   desc:"<em>Harbour/coastal plain palaeogeography.</em> Cited as a coastal plain where sea-level and shoreline changes affected archaeological settings; a regional harbour-palaeography case.",
+   tags:["harbour","aegean"]},
+  {id:237, name:"Michmoreth", lat:32.4058, lng:34.8717, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"MBIIa / Middle Bronze Age", region:"Levant; Israel",
+   harbour_type:"engineered estuary harbour",
+   desc:"<em>Engineered estuary harbour.</em> Listed among Levantine sites where anti-siltation measures, dredging/quarrying, basin creation, and silt-free channels were used or expected.",
+   tags:["harbour","canaanite"]},
+  {id:238, name:"Miletos", lat:37.53, lng:27.278, type:'harbour', color:"#608040",
+   period:["harbour"], period_context:"ancient/Bronze Age harbour case", region:"Western Anatolia",
+   harbour_type:"silted river-outlet harbour, now inland",
+   desc:"<em>Silted river-outlet harbour, now inland.</em> Named as a classic example of an important harbour site made landlocked by river alluviation and coastal processes.",
+   tags:["harbour","anatolian"]},
+  {id:239, name:"Minet el-Baida / White Harbour", lat:35.6067, lng:35.7731, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Late Bronze Age", region:"Levant; Syria",
+   harbour_type:"daughter harbour with ashlar maritime structures",
+   desc:"<em>Daughter harbour with ashlar maritime structures.</em> Identified as Ugarit's harbour, Maḥadu; ashlar header walls near the waterline and harbour magazines were exposed at Minet el-Baida.",
+   tags:["harbour","canaanite"]},
+  {id:240, name:"Misrefot-Yam", lat:33.086, lng:35.105, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"MBIIa / Middle Bronze Age", region:"Levant; Israel",
+   harbour_type:"engineered estuary harbour",
+   desc:"<em>Engineered estuary harbour.</em> Listed with Akhziv, Tell Abu Hawam, Tel Nami, Michmoreth, and Tel Poleg as a site where measures were taken to keep estuary havens from silting.",
+   tags:["harbour","canaanite"]},
+  {id:241, name:"Mochlos (harbour study)", lat:35.1875, lng:25.9055, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Early Minoan / Bronze Age", region:"Crete",
+   harbour_type:"nearshore island / promontory type",
+   desc:"<em>Nearshore island / promontory type.</em> Raban names Mochlos as a good Cretan example of nearshore-island siting, comparable to rocky-bay/promontory harbour settings.",
+   tags:["harbour","minoan"]},
+  {id:242, name:"Mycenae", lat:37.7308, lng:22.7564, type:'harbour', color:"#5090b0",
+   period:["harbour"], period_context:"Bronze Age Aegean", region:"Argolid; Greece",
+   harbour_type:"inland centre with shore harbour",
+   desc:"<em>Inland centre with shore harbour.</em> Named as an Aegean centre with a separate shore harbour/quarter, often river-connected for small craft.",
+   tags:["harbour","aegean"]},
+  {id:243, name:"Myrtos (harbour context)", lat:35.0069, lng:25.5906, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Early Minoan", region:"Crete",
+   harbour_type:"possible peninsular harbour type",
+   desc:"<em>Possible peninsular harbour type.</em> Raban suggests Myrtos may have been of peninsular type in the Early Minoan period.",
+   tags:["harbour","minoan"]},
+  {id:244, name:"Nahariya", lat:33.0058, lng:35.0941, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Bronze Age comparison", region:"Levant; Israel",
+   harbour_type:"estuary/riverbank harbour analogy",
+   desc:"<em>Estuary/riverbank harbour analogy.</em> Listed with Akhziv, Tel Abu Hawam, Tel Nami, Michmoreth, and Tel Gerisa as Israeli comparanda for the riverbank harbour type shown in the Akrotiri fresco.",
+   tags:["harbour","canaanite"]},
+  {id:245, name:"Nirou Khani (harbour study)", lat:35.3337, lng:25.2432, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Bronze Age Minoan", region:"Crete",
+   harbour_type:"coastal harbour; possible shipshed/boathouse",
+   desc:"<em>Coastal harbour; possible shipshed/boathouse.</em> Listed among major Cretan coastal sites of the estuary/islet type; submerged/tilted beach structures and possible shipshed parallels compared with Malia and Kommos.",
+   tags:["harbour","minoan"]},
+  {id:246, name:"Phaestos (harbour context)", lat:35.0514, lng:24.813, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Bronze Age Minoan", region:"Crete",
+   harbour_type:"inland centre with shore harbour",
+   desc:"<em>Inland centre with shore harbour.</em> Named with Knossos and Gournia as an Aegean centre with a separate harbour/shore quarter, often connected by a river course. Harbour site: Kommos.",
+   tags:["harbour","minoan"]},
+  {id:247, name:"Pseira (harbour study)", lat:35.186, lng:25.8635, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Early Minoan / Bronze Age", region:"Crete",
+   harbour_type:"nearshore island / promontory type",
+   desc:"<em>Nearshore island / promontory type.</em> Named as a good Cretan example of nearshore-island harbour siting.",
+   tags:["harbour","minoan"]},
+  {id:248, name:"Pylos / Sandy Pylos", lat:36.9128, lng:21.6964, type:'harbour', color:"#5090b0",
+   period:["harbour"], period_context:"Bronze Age Aegean", region:"Southwest Peloponnese; Greece",
+   harbour_type:"palaeogeographic harbour / riverbank analogy",
+   desc:"<em>Palaeogeographic harbour / riverbank analogy.</em> Raban cites Pylos as a classic shoreline-change case and a harbour site comparable to the Akrotiri fresco's riverbank town type.",
+   tags:["harbour","aegean"]},
+  {id:249, name:"Ras Basit", lat:35.8667, lng:35.85, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Late Bronze Age", region:"North Syria",
+   harbour_type:"coastal site with ashlar maritime structures",
+   desc:"<em>Coastal site with ashlar maritime structures.</em> North Syrian coastal site with 13th–12th c. BCE occupation and structures comparable to Ugarit and Dor/Kition maritime masonry.",
+   tags:["harbour","canaanite"]},
+  {id:250, name:"Ras Ibn Hani", lat:35.5875, lng:35.7359, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Early/Middle Bronze Age and LBA", region:"North Syria",
+   harbour_type:"rocky/promontory harbour; later ashlar structures",
+   desc:"<em>Rocky/promontory harbour; later ashlar structures.</em> Named as a north Canaanite rocky-bay/promontory harbour site; later 13th–12th c. occupation levels have structures similar to Ugarit/Ras Basit.",
+   tags:["harbour","canaanite"]},
+  {id:251, name:"Rethymnon", lat:35.3656, lng:24.4823, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"Bronze Age Minoan", region:"Crete",
+   harbour_type:"river outlet / reef or islet harbour type",
+   desc:"<em>River outlet / reef or islet harbour type.</em> Listed among major Cretan coastal sites using the common river-outlet plus nearshore reef/islet harbour setting.",
+   tags:["harbour","minoan"]},
+  {id:252, name:"Sidon", lat:33.5606, lng:35.3758, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Late Bronze Age / Phoenician later", region:"Levant; Lebanon",
+   harbour_type:"covered LBA harbour works",
+   desc:"<em>Covered LBA harbour works.</em> Raban says LBA harbour remains may be hidden by later harbour works at sites such as Tyre, Sidon, and possibly Byblos.",
+   tags:["harbour","canaanite"]},
+  {id:253, name:"Smyrna (Old)", lat:38.461, lng:27.168, type:'harbour', color:"#608040",
+   period:["harbour"], period_context:"ancient/Bronze Age harbour case", region:"Western Anatolia",
+   harbour_type:"silted river-outlet harbour, now inland",
+   desc:"<em>Silted river-outlet harbour, now inland.</em> Named as a once-important harbour now landlocked through alluviation/coastal processes.",
+   tags:["harbour","anatolian"]},
+  {id:254, name:"Tarsus", lat:36.9177, lng:34.8951, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"ancient harbour case", region:"Cilicia",
+   harbour_type:"silted river-outlet harbour, now inland",
+   desc:"<em>Silted river-outlet harbour, now inland.</em> Named with Miletos, Ephesos, and Smyrna as a once-prime harbour now landlocked by sedimentation.",
+   tags:["harbour","canaanite"]},
+  {id:255, name:"Tel Abu Hawam", lat:32.80083, lng:35.01917, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"MBIIa / Bronze Age", region:"Levant; Israel",
+   harbour_type:"engineered estuary harbour",
+   desc:"<em>Engineered estuary harbour.</em> Listed among Levantine sites with anti-siltation and basin/channel works; also compared with Akrotiri's riverbank harbour image. Haifa Bay.",
+   tags:["harbour","canaanite"]},
+  {id:256, name:"Tel Gerisa", lat:32.0902, lng:34.8065, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Bronze Age comparison", region:"Levant; Israel",
+   harbour_type:"riverbank/estuary harbour analogy",
+   desc:"<em>Riverbank/estuary harbour analogy.</em> Listed as an Israeli comparandum for the Akrotiri fresco's riverbank harbour-town type.",
+   tags:["harbour","canaanite"]},
+  {id:257, name:"Tel Nami", lat:32.706, lng:34.929, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"MBIIa / Middle Bronze Age", region:"Levant; Israel",
+   harbour_type:"engineered estuary harbour",
+   desc:"<em>Engineered estuary harbour.</em> Listed among sites with preventive anti-siltation works; Raban notes no post-Bronze Age occupation, making Bronze Age harbour interpretation clearer.",
+   tags:["harbour","canaanite"]},
+  {id:258, name:"Tel Poleg", lat:32.2583, lng:34.8403, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"MBIIa / Middle Bronze Age", region:"Levant; Israel",
+   harbour_type:"engineered estuary harbour",
+   desc:"<em>Engineered estuary harbour.</em> Listed among Levantine estuary havens where measures were taken to prevent silting and maintain navigation channels.",
+   tags:["harbour","canaanite"]},
+  {id:259, name:"Thebes (Malkata)", lat:25.7196, lng:32.6009, type:'harbour', color:"#8a6020",
+   period:["harbour"], period_context:"14th c. BCE comparison", region:"Egypt; Nile Valley",
+   harbour_type:"ashlar quay / Nile harbour technology",
+   desc:"<em>Ashlar quay / Nile harbour.</em> Cited with Birket Habu as an Egyptian locus of ashlar quays that may have influenced later Cyprus/Levant maritime structures.",
+   tags:["harbour","egyptian"]},
+  {id:260, name:"Tyre / Usu", lat:33.2704, lng:35.2038, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Late Bronze Age Canaanite/Phoenician", region:"Levant; Lebanon",
+   harbour_type:"coastal harbour with inland counterpart",
+   desc:"<em>Coastal harbour with inland counterpart.</em> Named as a harbour place in texts and as a city with inland centre Usu; Raban notes later harbour works may cover LBA installations.",
+   tags:["harbour","canaanite"]},
+  {id:261, name:"Ugarit / Ras Shamra", lat:35.6023, lng:35.7866, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Late Bronze Age", region:"Levant; Syria",
+   harbour_type:"main city with daughter harbour at Minet el-Baida",
+   desc:"<em>Main city with daughter harbour.</em> Major Canaanite coastal centre documented by maritime texts; main site has ashlar architecture and fortifications, while its harbour was Minet el-Baida/Maḥadu.",
+   tags:["harbour","canaanite"]},
+  {id:262, name:"Ullaza", lat:34.7086, lng:35.9862, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Middle Bronze Age / Canaanite", region:"North Levant",
+   harbour_type:"rocky bay or promontory harbour type",
+   desc:"<em>Rocky bay or promontory harbour type.</em> Listed with Byblos and Ras Ibn Hani as north Canaanite examples of rocky-bay/promontory siting.",
+   tags:["harbour","canaanite"]},
+  {id:263, name:"Ur", lat:30.962, lng:46.103, type:'harbour', color:"#707070",
+   period:["harbour"], period_context:"3rd millennium BCE comparison", region:"Mesopotamia; comparative",
+   harbour_type:"excavated docks/harbour basins",
+   desc:"<em>Excavated docks/harbour basins.</em> Used as an early comparative example of artificial docks/harbour basins in south Mesopotamia.",
+   tags:["harbour"]},
+  {id:264, name:"Yavneh-Yam / Yabne-Yam", lat:31.9228, lng:34.6933, type:'harbour', color:"#a05828",
+   period:["harbour"], period_context:"Bronze Age Canaanite", region:"Levant; Israel",
+   harbour_type:"rocky bay/promontory; possible textual harbour identification",
+   desc:"<em>Rocky bay/promontory harbour.</em> Listed as a south-coast rocky/promontory harbour site; a footnote notes an alternative identification of Ugaritic maḥadu with Yabne-Yam.",
+   tags:["harbour","canaanite"]},
+  {id:265, name:"Yeorgiopolis", lat:35.3624, lng:24.26, type:'harbour', color:"#4080a0",
+   period:["harbour"], period_context:"ancient harbour plan", region:"North-west Crete",
+   harbour_type:"coastline/harbour plan",
+   desc:"<em>Coastline/harbour plan.</em> Appears in the illustration list as the coastline plan of the ancient harbour of Yeorgiopolis; not discussed in the main text of Raban's study.",
+   tags:["harbour","minoan"]},
+];
+
+// Merge into single ALL_SITES array used by map & cards
+const ALL_SITES = [...MINOAN_SITES, ...HARBOUR_SITES];
+
 // ── Map init ─────────────────────────────────────────────────────────────────
 const mnMap = L.map('mn-map', {
   center: [35.18, 25.0], zoom: 8,
@@ -619,7 +965,7 @@ function siteIcon(site, r) {
 const markerMap = {};
 let activeSiteId = null;
 
-MINOAN_SITES.forEach(s => {
+ALL_SITES.forEach(s => {
   const r = s.type === 'palace' ? 9 : s.type === 'town' ? 7 : 6;
   const marker = L.marker([s.lat, s.lng], {icon: siteIcon(s, r)});
   marker.bindPopup(`
@@ -641,14 +987,20 @@ function buildCards(sites) {
       prepalatial:'EM', protopalatial:'MM I–II',
       neopalatial:'MM III–LM I', postpalatial:'LM II–III'
     };
-    const periodLabel = s.period.map(p => periodShort[p] || p).join(' / ');
+    const periodLabel = s.harbour_type
+      ? (s.period_context || 'Bronze Age')
+      : s.period.map(p => periodShort[p] || p).join(' / ');
+    const subLabel = s.harbour_type
+      ? `<div class="sc-type" style="color:${s.color};opacity:.85;">${s.harbour_type}</div>
+         ${s.region ? `<div class="sc-type" style="opacity:.6;">${s.region}</div>` : ''}`
+      : `<div class="sc-type">${periodLabel}</div>`;
     const pleiURL = s.pleiades ? `https://pleiades.stoa.org/places/${s.pleiades}` : null;
     return `<div class="site-card" id="card-${s.id}" data-id="${s.id}" onclick="mnSelectSite(${s.id})">
       <div class="sc-head">
         <span class="sc-name">${s.name}</span>
-        <span class="sc-period" style="background:${s.color}22;color:${s.color};border:1px solid ${s.color}44;">${s.type}</span>
+        <span class="sc-period" style="background:${s.color}22;color:${s.color};border:1px solid ${s.color}44;">${s.harbour_type ? 'harbour' : s.type}</span>
       </div>
-      <div class="sc-type">${periodLabel}</div>
+      ${subLabel}
       <div class="sc-desc">${s.desc}</div>
       <div class="sc-links">
         ${pleiURL ? `<a class="sc-link" href="${pleiURL}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Pleiades ↗</a>` : ''}
@@ -659,7 +1011,7 @@ function buildCards(sites) {
   document.getElementById('mn-count').textContent = `${sites.length} sites`;
 }
 
-buildCards(MINOAN_SITES);
+buildCards(ALL_SITES);
 
 // ── Select site ───────────────────────────────────────────────────────────────
 window.mnSelectSite = function(id) {
@@ -669,7 +1021,7 @@ window.mnSelectSite = function(id) {
     if (prev) prev.classList.remove('active');
   }
   activeSiteId = id;
-  const s = MINOAN_SITES.find(x => x.id === id);
+  const s = ALL_SITES.find(x => x.id === id);
   if (!s) return;
   // Activate card and scroll to it
   const card = document.getElementById(`card-${id}`);
@@ -698,14 +1050,14 @@ document.querySelectorAll('.period-pill').forEach(btn => {
 
 function applyFilters() {
   const search = document.getElementById('mn-search').value.toLowerCase();
-  const filtered = MINOAN_SITES.filter(s => {
+  const filtered = ALL_SITES.filter(s => {
     const periodMatch = activePeriod === 'all' || s.period.includes(activePeriod) || s.tags.includes(activePeriod);
     const searchMatch = !search || s.name.toLowerCase().includes(search) || s.desc.toLowerCase().includes(search);
     return periodMatch && searchMatch;
   });
   buildCards(filtered);
   // Show/hide markers
-  MINOAN_SITES.forEach(s => {
+  ALL_SITES.forEach(s => {
     const inFiltered = filtered.find(f => f.id === s.id);
     const m = markerMap[s.id];
     if (inFiltered) {
@@ -714,13 +1066,21 @@ function applyFilters() {
       if (mnMap.hasLayer(m)) mnMap.removeLayer(m);
     }
   });
+  // Refit map bounds when harbour filter is active (sites span Crete → Levant → Egypt)
+  if (activePeriod === 'harbour' && filtered.length > 0) {
+    const lats = filtered.map(s => s.lat), lngs = filtered.map(s => s.lng);
+    const bounds = [[Math.min(...lats)-1, Math.min(...lngs)-1],[Math.max(...lats)+1, Math.max(...lngs)+1]];
+    mnMap.fitBounds(bounds, {padding:[30,30], maxZoom:7, animate:true});
+  } else if (activePeriod === 'all') {
+    mnMap.setView([35.18, 25.0], 8, {animate:true});
+  }
 }
 
 // ── Search filter ─────────────────────────────────────────────────────────────
 window.mnFilter = function(q) {
   applyFilters();
   if (q.trim()) {
-    const match = MINOAN_SITES.find(s => s.name.toLowerCase().includes(q.toLowerCase()));
+    const match = ALL_SITES.find(s => s.name.toLowerCase().includes(q.toLowerCase()));
     if (match) mnMap.flyTo([match.lat, match.lng], 10, {duration:1});
   }
 };
