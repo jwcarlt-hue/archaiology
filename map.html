@@ -315,6 +315,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <button class="filter-chip" id="omnesviae-atlas-btn" onclick="toggleOmnesViaeAtlas()">OmnesViae</button>
       <button class="filter-chip" id="proxeny-atlas-btn" onclick="toggleProxenyAtlas()">Proxeny Networks</button>
       <button class="filter-chip" id="mithraeum-atlas-btn" onclick="toggleMithraeumAtlas()">Mithraeum</button>
+      <button class="filter-chip" id="dmarc-atlas-btn" onclick="toggleDmarcAtlas()">DMARC</button>
     </div>
     <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:6px;line-height:1.45;">
       Open external archaeological atlases in a dedicated workspace above the map.
@@ -581,7 +582,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   <div class="atlas-body" style="display:flex;flex-direction:row;gap:0;min-height:0;overflow:hidden;">
     <!-- Main iframe -->
     <iframe
-      src="https://omnesviae.org/"
+      src="https://omnesviae.org/nobis"
       id="omnesviae-iframe"
       style="flex:1;min-width:0;border:none;display:block;background:#1a1a2e;"
       title="OmnesViae Roman Route Planner"
@@ -692,9 +693,35 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   </div>
 </div>
 
-<script>
-(function(){
-  const atlasConfigs = [
+<div class="atlas-panel" id="dmarcAtlasPanel">
+  <div class="atlas-head">
+    <div class="atlas-title-wrap">
+      <div class="atlas-kicker">External atlas layer · Harvard Center for Geographic Analysis</div>
+      <div class="atlas-title">DMARC — Digital Map Archive of the Roman Campagna</div>
+      <div class="atlas-meta">
+        Source: <a href="https://harvard-cga.maps.arcgis.com/apps/webappviewer/index.html?id=9e7b4e361f5940d5bd399ec6c2ca2197" target="_blank" rel="noopener">harvard-cga.maps.arcgis.com</a>
+        &nbsp;·&nbsp; Roman Campagna survey data &nbsp;·&nbsp; Harvard CGA &nbsp;·&nbsp; ArcGIS Web App
+      </div>
+    </div>
+    <div class="atlas-actions">
+      <a class="atlas-link" href="https://harvard-cga.maps.arcgis.com/apps/webappviewer/index.html?id=9e7b4e361f5940d5bd399ec6c2ca2197" target="_blank" rel="noopener">Open in new tab ↗</a>
+      <button class="atlas-close" type="button" onclick="toggleDmarcAtlas(false)">Close</button>
+    </div>
+  </div>
+  <div class="atlas-body">
+    <iframe
+      class="atlas-frame"
+      src="https://harvard-cga.maps.arcgis.com/apps/webappviewer/index.html?id=9e7b4e361f5940d5bd399ec6c2ca2197"
+      title="DMARC — Digital Map Archive of the Roman Campagna — Harvard Center for Geographic Analysis"
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allow="fullscreen"
+    ></iframe>
+    <div class="atlas-note">
+      The Digital Map Archive of the Roman Campagna (DMARC), produced by the Harvard Center for Geographic Analysis. An ArcGIS-based interactive atlas of historical cartographic and survey data covering the Roman Campagna — the landscape surrounding ancient Rome. If the frame is blocked by ArcGIS CORS policy, use the open-in-new-tab link above.
+    </div>
+  </div>
+</div>
     ['arabiaAtlasPanel','arabia-atlas-btn','Ancient Arabia','Hide Arabia Atlas'],
     ['armepAtlasPanel','armep-atlas-btn','ARMEP','Hide ARMEP'],
     ['fastiAtlasPanel','fasti-atlas-btn','Fasti','Hide Fasti'],
@@ -704,7 +731,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     ['plinyAtlasPanel','pliny-atlas-btn','Pliny the Elder','Hide Pliny'],
     ['omnesViaeAtlasPanel','omnesviae-atlas-btn','OmnesViae','Hide OmnesViae'],
     ['proxenyAtlasPanel','proxeny-atlas-btn','Proxeny Networks','Hide Proxeny'],
-    ['mithraeumAtlasPanel','mithraeum-atlas-btn','Mithraeum','Hide Mithraeum']
+    ['mithraeumAtlasPanel','mithraeum-atlas-btn','Mithraeum','Hide Mithraeum'],
+    ['dmarcAtlasPanel','dmarc-atlas-btn','DMARC','Hide DMARC']
   ];
 
   function safeCloseAtlases(){
@@ -763,6 +791,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   };
   window.toggleMithraeumAtlas = function(force){
     toggleAtlas('mithraeumAtlasPanel','mithraeum-atlas-btn','Mithraeum','Hide Mithraeum',force);
+  };
+  window.toggleDmarcAtlas = function(force){
+    toggleAtlas('dmarcAtlasPanel','dmarc-atlas-btn','DMARC','Hide DMARC',force);
   };
   window.closeExternalAtlases = safeCloseAtlases;
 })();
