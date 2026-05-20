@@ -722,6 +722,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     </div>
   </div>
 </div>
+
+<script>
+(function(){
+  const atlasConfigs = [
     ['arabiaAtlasPanel','arabia-atlas-btn','Ancient Arabia','Hide Arabia Atlas'],
     ['armepAtlasPanel','armep-atlas-btn','ARMEP','Hide ARMEP'],
     ['fastiAtlasPanel','fasti-atlas-btn','Fasti','Hide Fasti'],
@@ -1068,6 +1072,7 @@ function regionLabel(r) {
   return {europe:'Europe',near_east:'Near East',mesoamerica:'Mesoamerica',
     north_america:'N. America',south_america:'S. America',general:'General'}[r] || r;
 }
+
 
 
 async function init() {
