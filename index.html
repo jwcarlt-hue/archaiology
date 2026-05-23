@@ -463,6 +463,66 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 }
 .ac-meta strong { color: var(--ink); font-weight: 600; }
 
+
+/* ── PARTNER TILES ── */
+.partners-section {
+  padding: 2.8rem 0 3.2rem;
+}
+.partners-eyebrow {
+  font-family: var(--sans);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ash);
+  margin-bottom: 1.2rem;
+}
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.1rem;
+}
+.partner-tile {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  border: 1px solid var(--rule);
+  aspect-ratio: 16 / 9;
+  background: var(--linen);
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.partner-tile:hover {
+  border-color: var(--ochre);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+.partner-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.2s;
+}
+.partner-tile:hover img { opacity: 0.88; }
+.partner-tile-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.55rem 0.75rem 0.5rem;
+  background: linear-gradient(to top, rgba(28,24,20,0.82) 0%, transparent 100%);
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(250,248,243,0.9);
+}
+@media (max-width: 700px) {
+  .partners-grid { grid-template-columns: 1fr; }
+}
+
 /* â”€â”€ MISSION BAND â”€â”€ */
 .mission-band {
   background: var(--forest);
@@ -1297,6 +1357,35 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
     <div class="newsletter-form">
       <input class="newsletter-input" type="email" placeholder="your@email.com">
       <button class="newsletter-submit">Subscribe</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- PARTNER & AFFILIATE TILES -->
+<div class="page-wrap">
+  <div class="partners-section reveal">
+    <div class="partners-eyebrow">Partners &amp; Affiliates</div>
+    <div class="partners-grid">
+
+      <!-- 1: Maya Heritage Center -->
+      <a class="partner-tile" href="https://www.zeffy.com/en-US/donation-form/967cd480-311d-438c-abd5-f79dae1cffa8" target="_blank" rel="noopener" aria-label="Donate to Maya Heritage Center">
+        <img src="mayaheritagedonate.jpg" alt="Maya Heritage Center — Preserving Maya Culture Past and Present" loading="lazy">
+        <div class="partner-tile-label">Maya Heritage Center &rarr;</div>
+      </a>
+
+      <!-- 2: Bearspray AI -->
+      <a class="partner-tile" href="https://www.bearspray.ai/" target="_blank" rel="noopener" aria-label="Bearspray AI">
+        <img src="Bearsprayaithumbnail.jpg" alt="Bearspray AI — AI Excavation, Survey and Method" loading="lazy">
+        <div class="partner-tile-label">Bearspray AI &rarr;</div>
+      </a>
+
+      <!-- 3: Bucranica -->
+      <a class="partner-tile" href="https://www.bucranica.org/" target="_blank" rel="noopener" aria-label="Bucranica — The Bull Corridor">
+        <img src="bucranicathumbnail.jpg" alt="Bucranica — The Bull Corridor of the Eastern Mediterranean" loading="lazy">
+        <div class="partner-tile-label">Bucranica.org &rarr;</div>
+      </a>
+
     </div>
   </div>
 </div>
