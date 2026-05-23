@@ -319,9 +319,9 @@ svg#timeline{width:100%;overflow:visible;}
 
 <!-- ═══════════════ SECTION 1: FEED ═══════════════ -->
 <div class="section active" id="sec-feed">
-  <div class="sec-eyebrow">PubMed eUtils · Live</div>
+  <div class="sec-eyebrow">Europe PMC · Live</div>
   <h2 class="sec-title">Recent Literature</h2>
-  <p class="sec-sub">Articles drawn live from PubMed across five leading journals in human evolutionary biology. Click any article to expand the abstract.</p>
+  <p class="sec-sub">Articles drawn live from Europe PMC across five leading journals in human evolutionary biology. Click any article to expand the abstract.</p>
 
   <div class="feed-controls">
     <button class="journal-chip active" data-j="ALL" onclick="setJournal(this,'ALL')">All Journals</button>
@@ -333,7 +333,7 @@ svg#timeline{width:100%;overflow:visible;}
     <div class="feed-status" id="feed-status">Loading…</div>
   </div>
 
-  <div id="feed-container"><div class="feed-loading">Fetching from PubMed</div></div>
+  <div id="feed-container"><div class="feed-loading">Fetching from Europe PMC</div></div>
   <div class="pagination" id="feed-pagination" style="display:none;"></div>
 </div>
 
@@ -482,11 +482,11 @@ svg#timeline{width:100%;overflow:visible;}
 // ════════════════════════════════════════════════════════════════
 
 const JOURNALS = {
-  JHE:  {name:'J Human Evol',     query:'"Journal of Human Evolution"[journal]', full:'Journal of Human Evolution'},
-  PA:   {name:'PaleoAnthropology',query:'"PaleoAnthropology"[journal]',          full:'PaleoAnthropology'},
-  EA:   {name:'Evol Anthropology', query:'"Evolutionary Anthropology"[journal]',  full:'Evolutionary Anthropology'},
-  AJBA: {name:'Am J Biol Anthrop', query:'"American Journal of Biological Anthropology"[journal] OR "American Journal of Physical Anthropology"[journal]', full:'Am. J. Biological Anthropology'},
-  EHS:  {name:'Evol Human Sci',    query:'"Evolutionary Human Sciences"[journal]',full:'Evolutionary Human Sciences'},
+  JHE:  {name:'J Human Evol',      epmc:'JOURNAL:"Journal of Human Evolution"',                                                                              full:'Journal of Human Evolution'},
+  PA:   {name:'PaleoAnthropology', epmc:'JOURNAL:"PaleoAnthropology"',                                                                                       full:'PaleoAnthropology'},
+  EA:   {name:'Evol Anthropology',  epmc:'JOURNAL:"Evolutionary Anthropology"',                                                                               full:'Evolutionary Anthropology'},
+  AJBA: {name:'Am J Biol Anthrop',  epmc:'JOURNAL:"American Journal of Biological Anthropology" OR JOURNAL:"American Journal of Physical Anthropology"',      full:'Am. J. Biological Anthropology'},
+  EHS:  {name:'Evol Human Sci',     epmc:'JOURNAL:"Evolutionary Human Sciences"',                                                                             full:'Evolutionary Human Sciences'},
 };
 
 // ── Hominin taxa ──────────────────────────────────────────────
@@ -673,54 +673,50 @@ function setTab(el, id) {
 }
 
 // ════════════════════════════════════════════════════════════════
-// SECTION 1: JOURNAL FEED — PubMed eUtils
+// SECTION 1: JOURNAL FEED — Europe PMC REST API (CORS-enabled, free, no key required)
 // ════════════════════════════════════════════════════════════════
-const EUTILS = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
+// Europe PMC mirrors PubMed with full CORS headers — safe to call directly from the browser.
+// eUtils blocked cross-origin requests from GitHub Pages; Europe PMC does not.
+const EPMC = 'https://www.ebi.ac.uk/europepmc/webservices/rest';
 let allArticles = [], currentJournal = 'ALL', feedPage = 1;
 const PER_PAGE = 15;
 
 async function fetchJournal(code) {
   const j = JOURNALS[code];
-  const searchUrl = `${EUTILS}/esearch.fcgi?db=pubmed&term=${encodeURIComponent(j.query)}&retmax=25&sort=date&retmode=json`;
-  const sr = await fetch(searchUrl);
-  if (!sr.ok) return [];
-  const sd = await sr.json();
-  const ids = sd.esearchresult?.idlist || [];
-  if (!ids.length) return [];
-
-  const summUrl = `${EUTILS}/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`;
-  const smr = await fetch(summUrl);
-  if (!smr.ok) return [];
-  const smd = await smr.json();
-  const result = smd.result || {};
-
-  return ids.map(id => {
-    const r = result[id] || {};
-    const authors = (r.authors||[]).slice(0,3).map(a=>a.name).join(', ');
-    const more = (r.authors||[]).length > 3 ? ` et al.` : '';
+  // Build a journal-title query; Europe PMC uses JOURNAL:"..." syntax
+  const journalQuery = j.epmc || `JOURNAL:"${j.full}"`;
+  const url = `${EPMC}/search?query=${encodeURIComponent(journalQuery)}&resultType=core&pageSize=25&sort=P_PDATE_D%20desc&format=json`;
+  const r = await fetch(url);
+  if (!r.ok) return [];
+  const d = await r.json();
+  const results = d.resultList?.result || [];
+  return results.map(a => {
+    const authors = (a.authorList?.author || []).slice(0,3).map(au => au.fullName || au.lastName || '').filter(Boolean).join(', ');
+    const more = (a.authorList?.author || []).length > 3 ? ' et al.' : '';
     return {
-      pmid: id, journal: code,
-      title: r.title || '(no title)',
+      pmid:    a.pmid || a.id || '',
+      journal: code,
+      title:   a.title || '(no title)',
       authors: authors + more,
-      date: r.pubdate || r.epubdate || '',
-      doi: (r.elocationid||'').replace('doi: ',''),
-      source: r.source || j.full,
+      date:    a.firstPublicationDate || a.pubYear || '',
+      doi:     a.doi || '',
+      source:  a.journalTitle || j.full,
     };
   });
 }
 
 async function fetchAbstract(pmid) {
-  const url = `${EUTILS}/efetch.fcgi?db=pubmed&id=${pmid}&retmode=text&rettype=abstract`;
+  // Europe PMC article endpoint returns abstractText directly
+  const url = `${EPMC}/article/MED/${pmid}?format=json`;
   const r = await fetch(url);
   if (!r.ok) return null;
-  const text = await r.text();
-  const match = text.match(/Abstract\n([\s\S]+?)(?:\n\n|\nCopyright|$)/);
-  return match ? match[1].trim().replace(/\n/g,' ') : null;
+  const d = await r.json();
+  return d.result?.abstractText?.replace(/<[^>]+>/g, ' ').replace(/\s+/g,' ').trim() || null;
 }
 
 async function loadFeed() {
   document.getElementById('feed-status').textContent = 'Loading…';
-  document.getElementById('feed-container').innerHTML = '<div class="feed-loading">Fetching from PubMed</div>';
+  document.getElementById('feed-container').innerHTML = '<div class="feed-loading">Fetching from Europe PMC</div>';
   try {
     const codes = Object.keys(JOURNALS);
     const results = await Promise.all(codes.map(c => fetchJournal(c).catch(()=>[])));
