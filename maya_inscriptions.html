@@ -118,6 +118,55 @@ h1 em{color:var(--jade-lt);font-style:italic;}
 .corpus-frame{
   width:100%;height:100%;border:0;background:#0a1018;
 }
+/* External map link cards (replaces blocked iframes) */
+.ext-map-card{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  background:rgba(10,16,24,.6);padding:1.5rem;box-sizing:border-box;overflow-y:auto;
+}
+.ext-map-card-inner{
+  max-width:520px;width:100%;border:1px solid rgba(90,184,128,.15);
+  background:rgba(10,16,24,.9);padding:1.8rem 2rem 1.6rem;
+}
+.ext-map-eyebrow{
+  font-family:var(--mono);font-size:.52rem;font-weight:700;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--jade-lt);opacity:.7;margin-bottom:.5rem;
+}
+.ext-map-title{
+  font-family:var(--serif);font-size:1.5rem;font-weight:900;
+  color:var(--star);line-height:1.2;margin-bottom:.2rem;
+}
+.ext-map-url{
+  font-family:var(--mono);font-size:.58rem;color:rgba(200,216,240,.35);
+  margin-bottom:1rem;letter-spacing:.05em;
+}
+.ext-map-desc{
+  font-size:.8rem;line-height:1.7;color:rgba(200,216,240,.5);
+  margin-bottom:1.2rem;
+}
+.ext-map-stats{
+  display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.4rem;
+  padding:.8rem 0;border-top:1px solid rgba(200,216,240,.07);
+  border-bottom:1px solid rgba(200,216,240,.07);
+}
+.ext-map-stat{
+  display:flex;flex-direction:column;gap:.15rem;
+}
+.ext-map-stat span{
+  font-family:var(--mono);font-size:.48rem;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--jade-lt);opacity:.6;
+}
+.ext-map-stat{font-size:.7rem;color:rgba(200,216,240,.55);}
+.ext-map-btn{
+  display:inline-block;padding:.55rem 1.2rem;
+  background:rgba(90,184,128,.1);border:1px solid rgba(90,184,128,.3);
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--jade-lt);text-decoration:none;transition:all .15s;margin-bottom:.9rem;
+}
+.ext-map-btn:hover{background:rgba(90,184,128,.2);color:var(--star);}
+.ext-map-credit{
+  font-family:var(--mono);font-size:.5rem;color:rgba(200,216,240,.22);
+  letter-spacing:.05em;
+}
 @media(max-width:700px){
   .map-toolbar{align-items:flex-start;flex-direction:column;}
   .map-credit{text-align:left;}
@@ -445,10 +494,12 @@ h1 em{color:var(--jade-lt);font-style:italic;}
           <button class="map-tab" id="tab-corpus-map" type="button" onclick="toggleMapPane('corpus')" aria-selected="false">Maya Corpus map</button>
           <button class="map-tab" id="tab-dynasty-map" type="button" onclick="toggleMapPane('dynasty')" aria-selected="false">Classic Dynasties</button>
           <button class="map-tab" id="tab-witschey-map" type="button" onclick="toggleMapPane('witschey')" aria-selected="false">Witschey Sites</button>
+          <button class="map-tab" id="tab-mayamap-map" type="button" onclick="toggleMapPane('mayamap')" aria-selected="false">MayaMap.org</button>
         </div>
-        <div class="map-credit">
-          Embedded Maya Corpus map used with permission from Benjamin Rosell.<br>
-          <a href="https://mayacorpus.org/map" target="_blank" rel="noopener">Open mayacorpus.org/map</a>
+        <div class="map-credit" id="map-credit-line">
+          Witschey Sites: <a href="https://www.google.com/maps/d/viewer?mid=1SzlOWctuWjbaMn3_WROgDec5TZ5hWhA" target="_blank" rel="noopener">Google My Maps ↗</a>
+          &nbsp;·&nbsp; Maya Corpus: <a href="https://mayacorpus.org/map" target="_blank" rel="noopener">mayacorpus.org/map ↗</a>
+          &nbsp;·&nbsp; MayaMap: <a href="http://www.mayamap.org/" target="_blank" rel="noopener">mayamap.org ↗</a>
         </div>
       </div>
       <div class="map-panel">
@@ -456,13 +507,30 @@ h1 em{color:var(--jade-lt);font-style:italic;}
           <div id="maya-map"></div>
         </div>
         <div class="map-pane" id="pane-corpus">
-          <iframe
-            class="corpus-frame"
-            src="https://mayacorpus.org/map"
-            title="Maya Corpus map"
-            loading="lazy"
-            referrerpolicy="strict-origin-when-cross-origin"
-          ></iframe>
+          <!-- mayacorpus.org/map sets X-Frame-Options: DENY — cannot be embedded.
+               Replaced with a rich link card; permission already granted by Benjamin Rosell. -->
+          <div class="ext-map-card">
+            <div class="ext-map-card-inner">
+              <div class="ext-map-eyebrow">Maya Epigraphy · External Resource</div>
+              <div class="ext-map-title">Maya Corpus Project Map</div>
+              <div class="ext-map-url">mayacorpus.org/map</div>
+              <p class="ext-map-desc">
+                An interactive mapping interface for the Maya Corpus Project, maintained by Benjamin Rosell.
+                Plots corpus sites, monument counts, and epigraphic records across the Maya area — the most
+                comprehensive georeferenced database of Maya inscriptions currently available online.
+                Embedding is restricted by the site's security policy; open directly in a new tab.
+              </p>
+              <div class="ext-map-stats">
+                <div class="ext-map-stat"><span>Coverage</span>Classic &amp; Postclassic Maya area</div>
+                <div class="ext-map-stat"><span>Data</span>Monuments, texts, site records</div>
+                <div class="ext-map-stat"><span>Access</span>Free, no account required</div>
+              </div>
+              <a class="ext-map-btn" href="https://mayacorpus.org/map" target="_blank" rel="noopener">
+                Open Maya Corpus Map ↗
+              </a>
+              <div class="ext-map-credit">Used with permission from Benjamin Rosell · mayacorpus.org</div>
+            </div>
+          </div>
         </div>
         <div class="map-pane" id="pane-dynasty">
           <div class="dynasty-chart-wrap">
@@ -539,6 +607,31 @@ h1 em{color:var(--jade-lt);font-style:italic;}
             referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen
           ></iframe>
+        </div>
+        <div class="map-pane" id="pane-mayamap">
+          <div class="ext-map-card">
+            <div class="ext-map-card-inner">
+              <div class="ext-map-eyebrow">Maya Archaeology · External Resource</div>
+              <div class="ext-map-title">MayaMap.org</div>
+              <div class="ext-map-url">mayamap.org</div>
+              <p class="ext-map-desc">
+                MayaMap is a Harvard-affiliated geographic database of ancient Maya sites compiled by
+                Walter R. T. Witschey and Clifford T. Brown. It documents over 6,000 ancient Maya
+                settlements with location data, site classifications, and bibliographic references —
+                one of the most comprehensive spatial datasets of the Maya area in existence.
+                The site restricts iframe embedding; open it directly for the full interactive experience.
+              </p>
+              <div class="ext-map-stats">
+                <div class="ext-map-stat"><span>Sites</span>6,000+ ancient settlements</div>
+                <div class="ext-map-stat"><span>Authors</span>Witschey &amp; Brown</div>
+                <div class="ext-map-stat"><span>Affiliation</span>Harvard / FAMSI</div>
+              </div>
+              <a class="ext-map-btn" href="http://www.mayamap.org/" target="_blank" rel="noopener">
+                Open MayaMap.org ↗
+              </a>
+              <div class="ext-map-credit">Witschey, W. R. T. &amp; Brown, C. T. · Electronic Atlas of Ancient Maya Sites</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -697,7 +790,7 @@ window.addEventListener('load', () => {
 });
 
 function toggleMapPane(which){
-  const panes = ['arch','corpus','dynasty','witschey'];
+  const panes = ['arch','corpus','dynasty','witschey','mayamap'];
   panes.forEach(p => {
     document.getElementById('pane-'+p).classList.toggle('active', p === which);
     const tab = document.getElementById('tab-'+p+'-map');
