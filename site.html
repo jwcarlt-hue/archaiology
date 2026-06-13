@@ -724,6 +724,25 @@ async function generateSynthesisFromPDFs(_requestedTab) {
 let renderer, camera, sceneThree, animating = true, autoRotate = true;
 const ORBIT_SPEED = 0.003;
 
+// ── Site rename aliases ──────────────────────────────────────────────────────
+// When a site is renamed in Supabase (archaeology_sites.name), the URL key
+// (?id=<name>) and site.name both change to the NEW name — but curated
+// SITE_EXTERNAL_VIEWS / SITE_GLBS entries are still keyed under the OLD name.
+// Add an entry here mapping the new lowercase/trimmed name -> the old
+// lowercase/trimmed key, and resolveExtKey() will fall back to it automatically.
+const SITE_NAME_ALIASES = {
+  'avaris': 'avaris/ramesses',
+};
+
+// Resolves a lookup key against SITE_EXTERNAL_VIEWS / SITE_GLBS, trying the
+// alias (old key) if the direct (current) key isn't found.
+function resolveExtKey(key, dict) {
+  if (dict[key]) return key;
+  const alias = SITE_NAME_ALIASES[key];
+  if (alias && dict[alias]) return alias;
+  return key;
+}
+
 // ── External curated views — keyed by site name (case-insensitive) ──────────
 // type:'iframe'     → embed a webpage (existing behaviour)
 // type:'sketchfab'  → embed a Sketchfab 3D model (no ads, no recommendations)
@@ -1872,7 +1891,7 @@ function initScene(recon, site) {
   const extKey = (
     new URLSearchParams(window.location.search).get('id') ?? site.name ?? ''
   ).toLowerCase().trim();
-  const ext = SITE_EXTERNAL_VIEWS[extKey];
+  const ext = SITE_EXTERNAL_VIEWS[resolveExtKey(extKey, SITE_EXTERNAL_VIEWS)];
   if (ext) {
     // Hide canvas and 3D controls — shared by both iframe and sketchfab paths
     canvas.style.display = 'none';
@@ -2252,7 +2271,7 @@ function applySceneImage(src, labelText, attrText) {
   }
 
   // 2. Site GLB
-  const glbSrc = SITE_GLBS[siteId.toLowerCase().trim()];
+  const glbSrc = SITE_GLBS[resolveExtKey(siteId.toLowerCase().trim(), SITE_GLBS)];
   if (glbSrc) {
     applySceneModel(
       glbSrc,
@@ -2314,7 +2333,7 @@ function clearSceneImage() {
   mv.src  = ''; mv.style.display  = 'none';
 
   // If this site has a GLB, restore the model rather than the canvas
-  const glbSrc = SITE_GLBS[siteId.toLowerCase().trim()];
+  const glbSrc = SITE_GLBS[resolveExtKey(siteId.toLowerCase().trim(), SITE_GLBS)];
   if (glbSrc) {
     localStorage.removeItem(SITE_IMG_KEY);
     if (input) input.value = '';
