@@ -128,26 +128,6 @@ a{text-decoration:none;color:inherit;}
 .topos-btn{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ochre);border:1px solid rgba(184,137,42,.4);padding:.35rem .8rem;white-space:nowrap;transition:all .2s;}
 .topos-btn:hover{background:rgba(184,137,42,.15);}
 
-/* ── NATIVE LAND ── */
-.nl-card { background:white; border:1px solid var(--rule); padding:1.2rem 1.3rem; margin-bottom:1.2rem; }
-.nl-loading { display:flex; align-items:center; gap:.5rem; font-family:var(--sans); font-size:.7rem; color:var(--ash); }
-.nl-loading-dot { width:5px; height:5px; border-radius:50%; background:var(--ochre); animation:ldot 1.2s ease infinite; }
-.nl-loading-dot:nth-child(2){animation-delay:.2s;} .nl-loading-dot:nth-child(3){animation-delay:.4s;}
-.nl-group { margin-bottom:.85rem; }
-.nl-group:last-of-type { margin-bottom:.5rem; }
-.nl-group-label { font-family:var(--sans); font-size:.52rem; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--ash); margin-bottom:.4rem; }
-.nl-pills { display:flex; flex-wrap:wrap; gap:.35rem; }
-.nl-pill { font-family:var(--sans); font-size:.65rem; font-weight:600; padding:.25rem .6rem; border-radius:2px; cursor:pointer; transition:opacity .15s; text-decoration:none; display:inline-block; }
-.nl-pill:hover { opacity:.75; }
-.nl-pill-territory { background:rgba(122,62,26,.12); color:var(--terra); border:1px solid rgba(122,62,26,.2); }
-.nl-pill-language  { background:rgba(42,61,46,.12);  color:#2a5c38;   border:1px solid rgba(42,61,46,.2); }
-.nl-pill-treaty    { background:rgba(58,74,92,.12);  color:var(--slate); border:1px solid rgba(58,74,92,.2); }
-.nl-none { font-family:var(--sans); font-size:.7rem; color:var(--ash); font-style:italic; }
-.nl-disclaimer { font-family:var(--sans); font-size:.58rem; color:var(--ash); line-height:1.45; margin-top:.7rem; padding-top:.6rem; border-top:1px dotted var(--linen); opacity:.75; }
-.nl-disclaimer a { color:var(--ochre); }
-.nl-map-link { display:flex; align-items:center; justify-content:space-between; padding:.35rem 0 0; font-family:var(--sans); font-size:.68rem; color:var(--ash); transition:color .2s; }
-.nl-map-link:hover { color:var(--ochre); }
-
 /* ── SKETCHFAB ATTRIBUTION ── */
 .sketchfab-attr{
   position:absolute;bottom:.8rem;left:.8rem;
@@ -316,17 +296,6 @@ a{text-decoration:none;color:inherit;}
       <div id="extLinks"></div>
     </div>
 
-    <div class="sidebar-card nl-card" id="nativeLandCard" style="display:none">
-      <div class="sidebar-label">Indigenous Territories</div>
-      <div id="nativeLandBody">
-        <div class="nl-loading">
-          <div class="nl-loading-dot"></div>
-          <div class="nl-loading-dot"></div>
-          <div class="nl-loading-dot"></div>
-        </div>
-      </div>
-    </div>
-
   </aside>
 </div>
 
@@ -491,7 +460,6 @@ async function loadSite() {
   renderSynthesisTabs(tabs, site, allPapers);
 
   window._currentSite = site;
-  if (site.lat && site.lng) loadNativeLand(site.lat, site.lng);
   return site;
 }
 
@@ -2363,141 +2331,6 @@ function clearSceneImage() {
     const attr = document.getElementById('sceneAttr');
     if (lbl)  lbl.textContent  = hn(site.name) + ' — Procedural Reconstruction';
     if (attr) attr.textContent = 'Default model · Refines as corpus grows';
-  }
-}
-// ── NATIVE LAND DIGITAL ───────────────────────────────────
-// API: https://api-docs.native-land.ca
-// CC0 licensed. Queries territories, languages, and treaties
-// for the site's lat/lng coordinates.
-// ── NATIVE LAND DIGITAL ───────────────────────────────────
-// API: https://api-docs.native-land.ca  (CC0)
-// Set your key from native-land.ca/auth/signup → API tab
-const NATIVE_LAND_API_KEY = "YOUR_NATIVE_LAND_API_KEY";
-
-async function loadNativeLand(lat, lng) {
-  const card = document.getElementById("nativeLandCard");
-  const body = document.getElementById("nativeLandBody");
-  card.style.display = "block";
-
-  // Normalise response — API returns a bare array of GeoJSON features
-  function toFeatures(raw) {
-    if (Array.isArray(raw)) return raw;
-    if (raw && Array.isArray(raw.features)) return raw.features;
-    return [];
-  }
-
-  // Properties use capital-case keys: Name, Slug
-  const getName = f => f.properties?.Name || f.properties?.name || f.properties?.NAME || "";
-  const getSlug = f => f.properties?.Slug || f.properties?.slug || f.properties?.SLUG || "";
-
-  const dedup = arr => {
-    const seen = new Set();
-    return arr.filter(f => {
-      const k = getSlug(f) || getName(f);
-      if (!k || seen.has(k)) return false;
-      seen.add(k); return true;
-    });
-  };
-
-  try {
-    const base = `https://native-land.ca/api/index.php?position=${lat},${lng}&key=${NATIVE_LAND_API_KEY}`;
-
-    // Three parallel fetches — one per category so typing is unambiguous
-    const [rT, rL, rTr] = await Promise.all([
-      fetch(`${base}&maps=territories`),
-      fetch(`${base}&maps=languages`),
-      fetch(`${base}&maps=treaties`),
-    ]);
-
-    if (!rT.ok && !rL.ok && !rTr.ok) {
-      throw new Error(`API error: ${rT.status} / ${rL.status} / ${rTr.status}`);
-    }
-
-    const [rawT, rawL, rawTr] = await Promise.all([
-      rT.ok  ? rT.json()  : null,
-      rL.ok  ? rL.json()  : null,
-      rTr.ok ? rTr.json() : null,
-    ]);
-
-    // Debug — open DevTools console to see raw API output
-    console.log("[NativeLand] territories:", rawT);
-    console.log("[NativeLand] languages:",   rawL);
-    console.log("[NativeLand] treaties:",    rawTr);
-
-    const territories = dedup(toFeatures(rawT));
-    const languages   = dedup(toFeatures(rawL));
-    const treaties    = dedup(toFeatures(rawTr));
-
-    if (!territories.length && !languages.length && !treaties.length) {
-      body.innerHTML =
-        `<p class="nl-none">No Indigenous territory data for these coordinates.</p>
-         <a class="nl-map-link"
-            href="https://native-land.ca/maps/?lat=${lat}&lng=${lng}"
-            target="_blank" rel="noopener">
-           View on Native Land map <span class="ext-link-arrow">↗</span>
-         </a>
-         <div class="nl-disclaimer">Data: <a href="https://native-land.ca" target="_blank"
-           rel="noopener">Native Land Digital</a> (CC0). Not official or legal boundaries.</div>`;
-      return;
-    }
-
-    const renderGroup = (label, items, cls) => {
-      if (!items.length) return "";
-      const pills = items.map(f => {
-        const name = getName(f);
-        const slug = getSlug(f);
-        if (!name) return "";
-        const href = slug
-          ? `https://native-land.ca/maps/indigenous-territory/${encodeURIComponent(slug)}`
-          : "https://native-land.ca/";
-        return `<a class="nl-pill nl-pill-${cls}"
-                   href="${href}" target="_blank" rel="noopener">${name}</a>`;
-      }).filter(Boolean).join("");
-      return pills
-        ? `<div class="nl-group">
-             <div class="nl-group-label">${label}</div>
-             <div class="nl-pills">${pills}</div>
-           </div>`
-        : "";
-    };
-
-    body.innerHTML =
-      renderGroup("Territories", territories, "territory") +
-      renderGroup("Languages",   languages,   "language")  +
-      renderGroup("Treaties",    treaties,    "treaty")    +
-      `<a class="nl-map-link"
-          href="https://native-land.ca/maps/?lat=${lat}&lng=${lng}"
-          target="_blank" rel="noopener">
-        View on Native Land map <span class="ext-link-arrow">↗</span>
-      </a>
-      <div class="nl-disclaimer">
-        Data: <a href="https://native-land.ca" target="_blank" rel="noopener">Native Land Digital</a> (CC0).
-        Not official or legal boundaries. Reflects Indigenous self-identification.
-      </div>`;
-
-  } catch (err) {
-    console.error("[NativeLand] error:", err);
-
-    // CORS / network failure → fall back to official iframe embed
-    const isCORS = err.message === "Failed to fetch"
-                || err.message?.includes("NetworkError")
-                || err.name === "TypeError";
-    if (isCORS) {
-      body.innerHTML =
-        `<iframe
-           src="https://native-land.ca/api/embed/embed.html?maps=territories,languages&lat=${lat}&lng=${lng}"
-           style="width:100%;height:220px;border:none;display:block;"
-           title="Native Land territories" loading="lazy"></iframe>
-         <div class="nl-disclaimer" style="margin-top:.5rem">
-           Data: <a href="https://native-land.ca" target="_blank" rel="noopener">Native Land Digital</a> (CC0).
-           Not official or legal boundaries.
-         </div>`;
-    } else {
-      body.innerHTML =
-        `<p class="nl-none">Could not load territory data.</p>
-         <a class="nl-map-link" href="https://native-land.ca" target="_blank" rel="noopener">
-           Native Land Digital ↗</a>`;
-    }
   }
 }
 
