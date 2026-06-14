@@ -1363,6 +1363,7 @@ const TYPE_LABEL = {
 
 let map, markers = [], currentSort = 'date', currentPage = 1, totalCount = 0;
 let selectedType = '', selectedPhoto = '';
+let isInitialMapLoad = true; // first render frames Europe instead of zooming to results
 
 // ── Map init ──────────────────────────────────────────────────
 window.addEventListener('load', () => {
@@ -1543,8 +1544,15 @@ function renderMapMarkers(items) {
     markers.push(m);
   });
   if (pts.length) {
-    try { map.fitBounds(L.featureGroup(markers).getBounds(), {padding:[20,20],maxZoom:14}); }
-    catch(e) {}
+    if (isInitialMapLoad) {
+      // Default view (e.g. "Rom" tombstones on first load) is geographically
+      // tight — frame Europe broadly instead of zooming to street level.
+      map.setView([46, 12], 4);
+      isInitialMapLoad = false;
+    } else {
+      try { map.fitBounds(L.featureGroup(markers).getBounds(), {padding:[20,20],maxZoom:14}); }
+      catch(e) {}
+    }
   }
 }
 
