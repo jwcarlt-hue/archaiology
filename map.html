@@ -1357,12 +1357,35 @@ document.getElementById('mentionedOnly').addEventListener('change', function() {
 let searchTimer;
 document.getElementById('siteSearch').addEventListener('input', function() {
   clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => {
+  searchTimer = setTimeout(async () => {
     searchTerm = this.value.trim().toLowerCase();
     if (searchTerm) {
-      // Fly to first match
-      const match = allMarkerData.find(d =>
+      // 1. Try a match among already-loaded sites first (instant)
+      let match = allMarkerData.find(d =>
         d.site.name.toLowerCase().includes(searchTerm));
+
+      // 2. If nothing loaded matches, query Supabase directly — this covers
+      //    sites with low ancient_refs that haven't been loaded into the
+      //    viewport yet (e.g. renamed sites, minor sites far from view).
+      if (!match) {
+        try {
+          const remote = await sbFetch(
+            `archaeology_sites?select=id,name,region,subregion,culture,period,lat,lng,country,description,wikipedia_url,topostext_url,ancient_refs`+
+            `&name=ilike.*${encodeURIComponent(searchTerm)}*&limit=10`
+          );
+          const existing = new Set(allSites.map(s => s.id));
+          const newSites = remote.filter(s => !existing.has(s.id) && s.lat && s.lng);
+          if (newSites.length) {
+            newSites.forEach(s => allSites.push(s));
+            addMarkersForSites(newSites);
+            applyFilters();
+            match = allMarkerData.find(d => d.site.id === newSites[0].id);
+          }
+        } catch (e) {
+          console.warn('Remote site search failed', e);
+        }
+      }
+
       if (match) map.flyTo([match.site.lat, match.site.lng], 8, {duration:1.2});
     }
     applyFilters();
