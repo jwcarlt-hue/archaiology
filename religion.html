@@ -322,6 +322,18 @@ img{display:block;max-width:100%;}
       </div>
 
       <div class="dock-card">
+        <div class="dock-card-label">Artemis Cult Sites</div>
+        <div class="dock-row">
+          <button class="dock-btn" id="artemis-btn" onclick="toggleArtemisLayer()">Show Artemis Cult Sites</button>
+        </div>
+        <div id="artemis-legend" style="display:none;margin-top:.7rem;display:flex;flex-direction:column;gap:.4rem;">
+          <div class="legend-row"><div class="legend-dot" style="background:#b89bd6;"></div>Epithet, cult site, or sanctuary</div>
+          <div id="artemis-status"></div>
+        </div>
+        <div class="dock-note">47 epithets &amp; aitia across the Greek world · click a marker for site notes</div>
+      </div>
+
+      <div class="dock-card">
         <div class="dock-card-label">External Atlases</div>
         <div class="dock-row" id="atlas-dock-buttons"></div>
         <div class="dock-note">Opens a curated atlas in place of the map. If a frame is
@@ -1069,6 +1081,415 @@ async function showZoroDetail(site) {
     }
   });
   document.getElementById('infoLinks').innerHTML = linkItems.join('');
+}
+
+
+// 47 Artemis cult sites — epithets, festivals, and aitia
+// Source: user-supplied gazetteer with site notes and citations
+const ARTEMIS_SITES = [
+  {id:1, epithet:'Alpheiaia', cultSite:'Letrinoi in Eleia', mappedPlace:'Letrinoi (near Pyrgos, Eleia)', lat:37.672865, lng:21.431292,
+   precision:'settlement/polis', confidence:'Low', aitia:true, festival:true,
+   coordNote:'Sanctuary of Artemis Alpheiaia unlocated/destroyed; plotted Letrinoi representative point.',
+   coordSource:'ToposText/Pleiades: Letrinoi', sourceUrl:'https://topostext.org/place/377214PLet',
+   notes:'Pausanias\' Letrinoi notice explains Artemis Alpheiaia through Alpheios\' pursuit/love of Artemis and mentions paintings in the sanctuary',
+   noteSources:["https://topostext.org/place/377214PLet", "https://resource.manto.unh.edu/11259217"]},
+  {id:2, epithet:'Aptera', cultSite:'Aptera in Krete', mappedPlace:'Aptera (Crete)', lat:35.463, lng:24.141,
+   precision:'settlement/polis', confidence:'High', aitia:true, festival:true,
+   coordNote:'Ancient Aptera representative point.',
+   coordSource:'ToposText: Aptera', sourceUrl:'https://topostext.org/place/355241PApt',
+   notes:'Ancient Aptera is a high, defensible Cretan polis above Souda Bay; a city-level cult/aition rather than a specifically excavated Artemision.',
+   noteSources:["https://topostext.org/place/355241PApt"]},
+  {id:3, epithet:'Aspalis', cultSite:'Ameilêtê in Phthia', mappedPlace:'Melitaia/Melite (Phthiotis)', lat:39.0385, lng:22.4565,
+   precision:'settlement/polis', confidence:'High', aitia:true, festival:true,
+   coordNote:'Aspalis/Ameilêtê cult is at Melite in Phthia; plotted Melitaia representative point.',
+   coordSource:'ToposText: Melitaia', sourceUrl:'https://topostext.org/place/390225UMel',
+   notes:'Aspalis Ameilete Hekaerge is an etiological heroine-cult at Melite/Phthia: Antoninus Liberalis says Aspalis\' vanished body was replaced by a statue beside Artemis and that maidens annually suspended a virgin she-goat.',
+   noteSources:["https://topostext.org/work/216", "https://en.wikipedia.org/wiki/Aspalis"]},
+  {id:4, epithet:'Braurônia', cultSite:'Brauron', mappedPlace:'Sanctuary of Artemis Brauronia (Brauron)', lat:37.9262, lng:23.9937,
+   precision:'specific sanctuary', confidence:'High', aitia:true, festival:true,
+   coordNote:'Specific sanctuary point at Vravrona/Brauron.',
+   coordSource:'ToposText: Artemis Brauronia sanctuary', sourceUrl:'https://topostext.org/place/379240SBra',
+   notes:'Brauron is the best-attested Attic Artemis sanctuary in this sheet: girls served as arktoi in the Brauronia, and the sanctuary is tied to Iphigenia/Orestes traditions and female life-cycle rites.',
+   noteSources:["https://topostext.org/place/379240SBra", "https://womeninantiquity.wordpress.com/2017/03/20/the-cult-of-artemis-at-brauron/"]},
+  {id:5, epithet:'Daitis', cultSite:'Ephesia (Ephesos)', mappedPlace:'Ephesian Artemis temple (Ephesos)', lat:37.949, lng:27.364,
+   precision:'specific sanctuary', confidence:'High', aitia:true, festival:true,
+   coordNote:'Ephesian Artemis temple point at Selçuk.',
+   coordSource:'ToposText: Ephesian Artemis temple', sourceUrl:'https://topostext.org/place/379274SEph',
+   notes:'The Ephesian Artemision is a major extra-urban sanctuary and one of the best documented cult centers of Artemis; Daitis is treated here as an Ephesian cult-title/aetiological variant tied to the temple complex.',
+   noteSources:["https://topostext.org/place/379274SEph"]},
+  {id:6, epithet:'Daphnaia', cultSite:'Elis and Olympia in Eleia', mappedPlace:'Olympia (also Elis city)', lat:37.6378, lng:21.63,
+   precision:'multiple loci; plotted primary', confidence:'High', aitia:true, festival:true,
+   coordNote:'Row names both Elis and Olympia; plotted Olympia. Elis city representative point: 37.890000, 21.374000.',
+   coordSource:'ToposText: Olympia; ToposText: Elis', sourceUrl:'https://topostext.org/place/376216SOly ; https://topostext.org/place/378214PEli',
+   notes:'Daphnaia is listed for both Elis and Olympia; the safest note is a regional Eleian/Olympian Artemis cult with two named loci, not one fixed sanctuary unless a specific ancient testimony is being cited.',
+   noteSources:["https://topostext.org/place/376216SOly", "https://topostext.org/place/378214PEli"]},
+  {id:7, epithet:'Dêlia', cultSite:'Delos', mappedPlace:'Delos', lat:37.398, lng:25.267,
+   precision:'island/polis', confidence:'High', aitia:true, festival:true,
+   coordNote:'Island/polis representative point.',
+   coordSource:'ToposText: Delos', sourceUrl:'https://topostext.org/place/374253PDel',
+   notes:'Delos is the pan-Hellenic birth-island of Artemis and Apollo; Dêlia/Delia should be read as an island cult-title tied to Delian festival, sanctuary, and mythic natal geography.',
+   noteSources:["https://topostext.org/place/374253PDel"]},
+  {id:8, epithet:'Diktynna', cultSite:'Diktynnaion in north-west Krete', mappedPlace:'Diktynnaion sanctuary (Menies, Crete)', lat:35.6636578, lng:23.7670705,
+   precision:'specific sanctuary', confidence:'High', aitia:true, festival:true,
+   coordNote:'Specific Diktynnaion point near Menies/Rodopou peninsula.',
+   coordSource:'Pleiades: Diktynnaion; ToposText: Diktynnaion', sourceUrl:'https://pleiades.stoa.org/places/589760 ; https://topostext.org/place/357238SDik',
+   notes:'The Diktynnaion at Menies on the Rodopou peninsula is the key Cretan sanctuary for Diktynna/Britomartis; the epithet is especially useful for the project as a Cretan goddess-continuity bridge.',
+   noteSources:["https://pleiades.stoa.org/places/589760", "https://topostext.org/place/357238SDik"]},
+  {id:9, epithet:'Ephesia', cultSite:'Ephesos', mappedPlace:'Ephesian Artemis temple (Ephesos)', lat:37.949, lng:27.364,
+   precision:'specific sanctuary', confidence:'High', aitia:true, festival:true,
+   coordNote:'Ephesia plotted at the Artemision of Ephesos.',
+   coordSource:'ToposText: Ephesian Artemis temple', sourceUrl:'https://topostext.org/place/379274SEph',
+   notes:'Ephesia refers to the Artemision at Ephesos, a city-defining sanctuary and pilgrimage center; keep this as the anchor row for Ephesian Artemis in Asia Minor.',
+   noteSources:["https://topostext.org/place/379274SEph"]},
+  {id:10, epithet:'Ephesia', cultSite:'Skillous in Eleia', mappedPlace:'Skillous (Eleia)', lat:37.6115, lng:21.636,
+   precision:'settlement/polis', confidence:'Medium', aitia:true, festival:true,
+   coordNote:'Ancient Skillous representative point.',
+   coordSource:'ToposText: Skillous', sourceUrl:'https://topostext.org/place/376216PSki',
+   notes:'Skillous is important because Xenophon famously established a small sanctuary of Artemis Ephesia there after his return from Asia, making it a deliberate miniature/translation of the Ephesian cult.',
+   noteSources:["https://topostext.org/place/376216PSki"]},
+  {id:11, epithet:'Eukleia', cultSite:'Thebes', mappedPlace:'Thebes (Boeotia)', lat:38.3191, lng:23.3178,
+   precision:'settlement/polis', confidence:'High', aitia:true, festival:true,
+   coordNote:'Ancient Thebes representative point.',
+   coordSource:'ToposText: Thebes', sourceUrl:'https://topostext.org/place/383233PThe',
+   notes:'At Thebes, Artemis Eukleia belongs to a civic/agonistic vocabulary of good repute or glory; treat the row as a polis-level cult location unless a particular Theban shrine is independently identified.',
+   noteSources:["https://topostext.org/place/383233PThe"]},
+  {id:12, epithet:'Hêmera', cultSite:'Lousoi in Arkadia', mappedPlace:'Artemis Hemerasia sanctuary, Lousoi', lat:37.9719, lng:22.1121,
+   precision:'specific sanctuary', confidence:'High', aitia:true, festival:true,
+   coordNote:'Specific Artemis Hemerasia sanctuary point.',
+   coordSource:'ToposText: Artemis Hemerasia temple Lousoi', sourceUrl:'https://topostext.org/place/380221SLou',
+   notes:'Lousoi was a major Arcadian sanctuary of Artemis Hemera/Hemerasia, \'She Who Soothes\'; it was identified and excavated in the late 19th century, and the cult is linked with the healing/civilizing of the Proetides.',
+   noteSources:["https://topostext.org/place/380221SLou", "https://www.oeaw.ac.at/en/oeai/institute/branches/athens/excavations-projects/lousoi", "https://books.openedition.org/pulg/624"]},
+  {id:13, epithet:'Karyatis', cultSite:'Karyai in Lakonia', mappedPlace:'Karyai? (near Analipsi/Pigadakia)', lat:37.3308, lng:22.444,
+   precision:'settlement/sanctuary area', confidence:'High', aitia:true, festival:true,
+   coordNote:'Ancient Karyai identification near Laconia/Arcadia border; plotted ToposText Karyai? point.',
+   coordSource:'ToposText: Karyai?', sourceUrl:'https://topostext.org/place/373225UKar',
+   notes:'Karyai/Caryae in Laconia had an Artemis Karyatis cult with maiden dances; the later term Caryatides was connected with the girls/priestesses of this cult and the place-name.',
+   noteSources:["https://topostext.org/place/373225UKar", "https://en.wikipedia.org/wiki/Caryatis"]},
+  {id:14, epithet:'Kondyleatis', cultSite:'Kondylea in Arkadia', mappedPlace:'Kaphyai/near Kondylea (Arcadia)', lat:37.7644, lng:22.2579,
+   precision:'nearby settlement proxy', confidence:'Medium', aitia:true, festival:true,
+   coordNote:'Kondylea is described as about one stadion from Kaphyai; exact grove not separately located, so plotted Kaphyai proxy.',
+   coordSource:'ToposText: Kaphyai; Pausanias Kondylea near Kaphyai', sourceUrl:'https://topostext.org/place/378223UKap',
+   notes:'Kondylea near Kaphyai is the Pausanian setting for Artemis Kondyleatis/Apanchomene: a grove, a hanged/strangled statue episode, dead children, and an annual sacrifice to the boys\' dead spirits.',
+   noteSources:["https://topostext.org/place/378223UKap", "https://en.wikipedia.org/wiki/Apanchomene"]},
+  {id:15, epithet:'Kordaka', cultSite:'Elis in Eleia', mappedPlace:'Elis city (Eleia)', lat:37.89, lng:21.374,
+   precision:'settlement/polis', confidence:'High', aitia:true, festival:true,
+   coordNote:'Ancient Elis representative point.',
+   coordSource:'ToposText: Elis', sourceUrl:'https://topostext.org/place/378214PEli',
+   notes:'Artemis Kordaka at Elis is explained by the kordax dance; Pausanias\' notice makes this a strong ritual-performance row, with dance itself functioning as the cultic aition.',
+   noteSources:["https://topostext.org/place/378214PEli", "https://topostext.org/people/13713", "https://www.jstor.org/stable/3293059"]},
+  {id:16, epithet:'Ktêsylla', cultSite:'Keos (Hekaergê Keos)', mappedPlace:'Keos/Kea island', lat:37.6167, lng:24.3333,
+   precision:'island centroid', confidence:'High', aitia:true, festival:true,
+   coordNote:'Row gives Keos broadly; plotted island representative point.',
+   coordSource:'ToposText: Keos', sourceUrl:'https://topostext.org/place/376243IKeo',
+   notes:'Ktêsylla/Hekaerge on Keos is an aetiological heroine-Artemis complex preserved by Antoninus Liberalis; the exact sanctuary locus is not fixed, so the island point is a proxy.',
+   noteSources:["https://topostext.org/place/376243IKeo", "https://topostext.org/work/216"]},
+  {id:17, epithet:'Kyrene', cultSite:'Kyrene in Libya', mappedPlace:'Cyrene (Libya)', lat:32.819, lng:21.856,
+   precision:'settlement/polis', confidence:'High', aitia:true, festival:true,
+   coordNote:'Ancient Cyrene representative point.',
+   coordSource:'ToposText: Cyrene', sourceUrl:'https://topostext.org/place/328219PCyr',
+   notes:'Kyrene/Cyrene is tied to the huntress-nymph Cyrene and Apollo\'s Libyan foundation myth; this is stronger as mythic/toponymic Artemis-adjacent material than as a securely localized Artemision.',
+   noteSources:["https://topostext.org/place/328219PCyr"]},
+  {id:18, epithet:'Laphria', cultSite:'Kalydon in Aitolia', mappedPlace:'Artemis Laphrios sanctuary, Kalydon', lat:38.3722, lng:21.5298,
+   precision:'specific sanctuary', confidence:'High', aitia:true, festival:true,
+   coordNote:'Specific Artemis Laphrios temple/sanctuary point at Kalydon.',
+   coordSource:'ToposText: Artemis Laphrios sanctuary', sourceUrl:'https://topostext.org/place/384215SArt',
+   notes:'Kalydon is the Aetolian home of Artemis Laphria; Pausanias describes the spectacular Laphria festival at Patrai after the Calydonian image was transferred there by Augustus.',
+   noteSources:["https://topostext.org/place/384215SArt", "https://www.theoi.com/Cult/ArtemisCult2.html", "https://books.openedition.org/pulg/1137"]},
+  {id:19, epithet:'Orthia', cultSite:'Sparta', mappedPlace:'Sanctuary of Artemis Orthia (Sparta)', lat:37.083, lng:22.435,
+   precision:'specific sanctuary', confidence:'High', aitia:true, festival:true,
+   coordNote:'Specific Orthia sanctuary near Sparta/Eurotas.',
+   coordSource:'ToposText: Artemis Ortheia', sourceUrl:'https://topostext.org/place/371224SArt',
+   notes:'The Spartan sanctuary of Artemis Orthia is a major Archaic-to-Roman cult site by the Eurotas, famous for initiatory rites, votives, masks, and later whipping/contest traditions.',
+   noteSources:["https://topostext.org/place/371224SArt", "https://archive.org/details/R.M.Dawkinsed.TheSanctuaryOfArtemisORTHIAATSPARTA", "https://realsparta.gr/en-us/What-to-do/Archaelogical-Sites-Monuments/Orthia-Artemis-Sanctuary"]},
+  {id:20, epithet:'Parthenos', cultSite:'Tauroi', mappedPlace:'Tauric Chersonese region (Crimea)', lat:45.3, lng:34.3,
+   precision:'regional/approximate', confidence:'Medium', aitia:true, festival:true,
+   coordNote:'Tauroi is regional rather than a precise cult site; plotted Tauric Chersonese regional point. Specific Chersonesos city: 44.610300, 33.492200.',
+   coordSource:'ToposText: Tauric Chersonese region', sourceUrl:'https://topostext.org/place/453343RChe',
+   notes:'The Tauric Parthenos is a regional, not point-specific, cult complex: Greek tradition locates a virgin goddess in the Tauric Chersonese and connects her with Iphigenia, Orestes, and human-sacrifice stories.',
+   noteSources:["https://topostext.org/place/453343RChe"]},
+  {id:21, epithet:'Peithô', cultSite:'Argos', mappedPlace:'Agora/central Argos', lat:37.6305, lng:22.7214,
+   precision:'settlement/polis', confidence:'High', aitia:true, festival:true,
+   coordNote:'Argos plotted at ancient agora/civic center.',
+   coordSource:'ToposText: Agora of Argos', sourceUrl:'https://topostext.org/place/376227XAgA',
+   notes:'At Argos, Artemis Peitho is tied to Hypermnestra: Pausanias says she founded the temple after winning her case against Danaus concerning Lynceus, making this a legal/persuasion aition.',
+   noteSources:["https://topostext.org/place/376227XAgA", "https://bingdev.binghamton.edu/ascholtz/ams355/peitho-readings.html"]},
+  {id:22, epithet:'Phakelitis', cultSite:'Syrakuse', mappedPlace:'Syracuse (Sicily)', lat:37.0639, lng:15.293,
+   precision:'settlement/polis', confidence:'High', aitia:true, festival:true,
+   coordNote:'Ancient Syracuse representative point.',
+   coordSource:'ToposText: Syracuse', sourceUrl:'https://topostext.org/place/371153PSyr',
+   notes:'Artemis Phakelitis at Syracuse is poorly localized here; keep the note as Sicilian Artemis with a bundle/torch/ritual-name tradition, likely attached to wider Iphigenia-Orestes/Tauric transfer stories but requiring primary-source verification.',
+   noteSources:["https://topostext.org/place/371153PSyr", "https://www.theoi.com/Cult/ArtemisTitles.html"]},
+  {id:23, epithet:'Prosêôa', cultSite:'Artamision in Euboia', mappedPlace:'Artemision (Euboea)', lat:39.0097, lng:23.217,
+   precision:'sanctuary/settlement area', confidence:'High', aitia:true, festival:true,
+   coordNote:'Possible Artemis Proseoa sanctuary under Ag. Georgios chapel at Artemision.',
+   coordSource:'ToposText: Artemision (Euboea)', sourceUrl:'https://topostext.org/place/390232SArt',
+   notes:'Artemision in Euboea is a coastal cape/sanctuary zone whose name preserves Artemis; Proseôa/Proseoa should be treated as a local topographic cult-title until the specific epithet testimony is pinned down.',
+   noteSources:["https://topostext.org/place/390232SArt"]},
+  {id:24, epithet:'Sarônia', cultSite:'Troizen', mappedPlace:'Troizen', lat:37.5033, lng:23.3484,
+   precision:'settlement/polis', confidence:'High', aitia:true, festival:true,
+   coordNote:'Ancient Troizen representative point.',
+   coordSource:'ToposText: Troizen', sourceUrl:'https://topostext.org/place/375234PTro',
+   notes:'Artemis Saronia at Troizen is linked with the mythical king Saron, who founded the sanctuary and drowned while pursuing a deer into the sea; Pausanias also notes an annual Saronia festival.',
+   noteSources:["https://topostext.org/place/375234PTro", "https://www.theoi.com/Text/Pausanias2C.html", "https://pantheon.org/articles/s/saron.html"]},
+  {id:25, epithet:'Soteira', cultSite:'Troizen', mappedPlace:'Troizen', lat:37.5033, lng:23.3484,
+   precision:'settlement/polis', confidence:'High', aitia:true, festival:true,
+   coordNote:'Same coordinate as Troizen row.',
+   coordSource:'ToposText: Troizen', sourceUrl:'https://topostext.org/place/375234PTro',
+   notes:'Artemis Soteira/Saviour at Troizen had a temple in the marketplace according to Pausanias; note this as an urban protective cult distinct from the coastal Saronia complex.',
+   noteSources:["https://topostext.org/place/375234PTro", "https://www.theoi.com/Text/Pausanias2C.html"]},
+  {id:26, epithet:'Stymphalia', cultSite:'Stymphalos in Arkadia', mappedPlace:'Stymphalos', lat:37.8606, lng:22.4618,
+   precision:'settlement/polis', confidence:'High', aitia:true, festival:true,
+   coordNote:'Ancient Stymphalos representative point.',
+   coordSource:'ToposText: Stymphalos', sourceUrl:'https://topostext.org/place/379225PSty',
+   notes:'Stymphalos had Artemis cult traditions connected with the Arcadian lake/polis landscape; the row can also be read against the Stymphalian-bird mythic horizon, but exact sanctuary details need checking.',
+   noteSources:["https://topostext.org/place/379225PSty"]},
+  {id:27, epithet:'Taurô', cultSite:'Tauroi', mappedPlace:'Tauric Chersonese region (Crimea)', lat:45.3, lng:34.3,
+   precision:'regional/approximate', confidence:'Medium', aitia:true, festival:true,
+   coordNote:'Tauroi is regional rather than a precise cult site; plotted Tauric Chersonese regional point.',
+   coordSource:'ToposText: Tauric Chersonese region', sourceUrl:'https://topostext.org/place/453343RChe',
+   notes:'Taurô/Tauric Artemis is a duplicate of the Tauric regional complex: treat as Black Sea/Crimean, Iphigenia-Orestes, and virgin-goddess material rather than a mapped single sanctuary.',
+   noteSources:["https://topostext.org/place/453343RChe", "https://www.theoi.com/Cult/ArtemisTitles.html"]},
+  {id:28, epithet:'Tauropolos', cultSite:'Halae in Attica', mappedPlace:'Artemis Tauropolos temple, Halai Araphenides', lat:37.9796, lng:24.0089,
+   precision:'specific sanctuary', confidence:'High', aitia:true, festival:true,
+   coordNote:'Specific temple foundations by the shore at Artemida/Loutsa.',
+   coordSource:'ToposText: Artemis Tauropolos temple (Attica)', sourceUrl:'https://topostext.org/place/380240STau',
+   notes:'Halai Araphenides/Loutsa preserves the partly excavated sanctuary of Artemis Tauropolos, with literary testimony plus architecture, inscriptions, ceramics, and small finds; this is a strong Attic transfer/threshold cult row.',
+   noteSources:["https://topostext.org/place/380240STau", "https://ajaonline.org/book-review/2826/"]},
+  {id:29, epithet:'Triklaria', cultSite:'Patrai in Achaia', mappedPlace:'Patrai/Patras', lat:38.245, lng:21.74,
+   precision:'settlement/polis', confidence:'High', aitia:true, festival:true,
+   coordNote:'Ancient Patrai representative point.',
+   coordSource:'ToposText: Patrai', sourceUrl:'https://topostext.org/place/382217PPat',
+   notes:'Artemis Triklaria at Patrai has a powerful aition in Pausanias: former human sacrifice, the lovers Melanippos and Komaitho, and the eventual replacement of the rite after Eurypylos arrived.',
+   noteSources:["https://topostext.org/place/382217PPat", "https://www.theoi.com/Cult/ArtemisCult2.html"]},
+  {id:30, epithet:'Agrotera', cultSite:'Ilissos valley (district of Agrai, near Athens)', mappedPlace:'Artemis Agrotera temple/Agrai, Ilissos', lat:37.96761, lng:23.73529,
+   precision:'specific sanctuary', confidence:'High', aitia:false, festival:false,
+   coordNote:'Specific faint temple traces in Mets/Ilissos district.',
+   coordSource:'ToposText: Artemis Agrotera temple', sourceUrl:'https://topostext.org/place/380237SArt',
+   notes:'The Agrai/Ilissos sanctuary of Artemis Agrotera was linked with Artemis\' first hunt after leaving Delos and with the Athenian vow of goats after Marathon; it is one of the strongest Attic ritual-calendar rows.',
+   noteSources:["https://topostext.org/place/380237SArt", "https://topostext.org/work/213"]},
+  {id:31, epithet:'Agraia', cultSite:'Ilissos valley (district of Agrai, near Athens)', mappedPlace:'Artemis Agrotera temple/Agrai, Ilissos', lat:37.96761, lng:23.73529,
+   precision:'specific sanctuary', confidence:'High', aitia:false, festival:false,
+   coordNote:'Agraia paired with Agrotera at Agrai/Ilissos; same coordinate.',
+   coordSource:'ToposText: Artemis Agrotera temple', sourceUrl:'https://topostext.org/place/380237SArt',
+   notes:'Agraia is essentially the local/topographic form of the Agrai/Agrotera complex by the Ilissos; keep it paired with Agrotera for the huntress, Marathon-vow, and goat-sacrifice tradition.',
+   noteSources:["https://topostext.org/place/380237SArt", "https://topostext.org/work/213"]},
+  {id:32, epithet:'Oinaia', cultSite:'Oinoe near Eleutherai (north-western border of Attica)', mappedPlace:'Oinoe near Eleutherai (Attica)', lat:38.168, lng:23.449,
+   precision:'settlement/deme', confidence:'High', aitia:false, festival:false,
+   coordNote:'Frontier deme Oinoe east of modern Oinoe; chosen over Oinoe/Marathon because source note specifies Eleutherai.',
+   coordSource:'ToposText: Oinoe (Attica)', sourceUrl:'https://topostext.org/place/382234DOin',
+   notes:'Artemis Oinaia is attested in the Athenian sacrificial calendar, but the sanctuary has not been identified; Canopoli favors Oinoe near Eleutherai over the Marathonian Oinoe as the likely toponymic source.',
+   noteSources:["https://topostext.org/place/382234DOin", "https://wrap.warwick.ac.uk/id/eprint/173404/1/WRAP-Artemis-and-her-territory-toponymic-and-topographical-cult-epithets-of-Artemis-in-Attica-Canopoli-2022.pdf"]},
+  {id:33, epithet:'Braurônia', cultSite:'Acropolis (Athens)', mappedPlace:'Brauronian Artemis shrine, Athens Acropolis', lat:37.97145, lng:23.72538,
+   precision:'specific sanctuary', confidence:'High', aitia:false, festival:false,
+   coordNote:'Specific Acropolis Brauronion cuttings.',
+   coordSource:'ToposText: Brauronian Artemis shrine (Athens Acropolis)', sourceUrl:'https://topostext.org/place/380237SABr',
+   notes:'The Brauroneion on the Athenian Acropolis was the urban shrine of Artemis Brauronia, probably Peisistratid in origin, tied to the main Brauron cult and to dedications of clothing by women.',
+   noteSources:["https://topostext.org/place/380237SABr", "https://en.wikipedia.org/wiki/Brauroneion"]},
+  {id:34, epithet:'Braurônia', cultSite:'Stymphalos in Arkadia', mappedPlace:'Stymphalos', lat:37.8606, lng:22.4618,
+   precision:'settlement/polis', confidence:'High', aitia:false, festival:false,
+   coordNote:'Brauronia attested at Stymphalos; plotted Stymphalos representative point.',
+   coordSource:'ToposText: Stymphalos', sourceUrl:'https://topostext.org/place/379225PSty',
+   notes:'The Stymphalos Braurônia row likely reflects a cult-title transfer or local reception of Brauronian Artemis; exact sanctuary remains or a secure findspot are not clear from this sheet, so use polis-level caution.',
+   noteSources:["https://topostext.org/place/379225PSty"]},
+  {id:35, epithet:'Braurônia', cultSite:'Amphipolis in Makedonia', mappedPlace:'Amphipolis', lat:40.822, lng:23.847,
+   precision:'settlement/polis', confidence:'High', aitia:false, festival:false,
+   coordNote:'Amphipolis acropolis/Tauropolos context; plotted polis representative point.',
+   coordSource:'ToposText: Amphipolis', sourceUrl:'https://topostext.org/place/408238PAmp',
+   notes:'The Amphipolis Braurônia row should be treated as cult-title diffusion into a northern Greek/Macedonian polis; the exact sanctuary locus and mechanism of transfer need epigraphic checking.',
+   noteSources:["https://topostext.org/place/408238PAmp"]},
+  {id:36, epithet:'Mounichia', cultSite:'Mounichia hill in Piraeus (west coast of Attica)', mappedPlace:'Artemis Mounychia sanctuary (Piraeus)', lat:37.9356, lng:23.6592,
+   precision:'specific sanctuary', confidence:'High', aitia:false, festival:false,
+   coordNote:'Specific harbor sanctuary under/near modern Yacht Club at Mikrolimano.',
+   coordSource:'ToposText: Artemis Mounychia sanctuary', sourceUrl:'https://topostext.org/place/379237SMou',
+   notes:'The Mounychia sanctuary stood on the Piraeus promontory above Mikrolimani but is now largely lost; the festival on the 16th of Mounychion used full-moon/candle-cake imagery and was linked with Salamis memory.',
+   noteSources:["https://topostext.org/place/379237SMou", "https://en.wikipedia.org/wiki/Munichia_(festival)"]},
+  {id:37, epithet:'Mounichia', cultSite:'Epidauros in Argolis', mappedPlace:'Epidauros (Argolid)', lat:37.6331, lng:23.1617,
+   precision:'settlement/polis', confidence:'High', aitia:false, festival:false,
+   coordNote:'Attestation at Epidauros; plotted coastal polis representative point.',
+   coordSource:'ToposText: Epidauros', sourceUrl:'https://topostext.org/place/376232PEpi',
+   notes:'The Epidauros Mounichia row is a diffusion/duplicate of the Mounychia title outside Athens; the cult is attested but this CSV does not yet identify a specific sanctuary within the Epidaurian landscape.',
+   noteSources:["https://topostext.org/place/376232PEpi", "https://www.theoi.com/Cult/ArtemisTitles.html"]},
+  {id:38, epithet:'Mounichia', cultSite:'Sicyon in the Peloponnese', mappedPlace:'Sikyon/Sicyon', lat:37.9834, lng:22.7145,
+   precision:'settlement/polis', confidence:'High', aitia:false, festival:false,
+   coordNote:'Ancient Sikyon representative point.',
+   coordSource:'ToposText: Sikyon', sourceUrl:'https://topostext.org/place/380227PSik',
+   notes:'At Sicyon, Mounichia appears as another non-Athenian reception of the title; treat as a polis-level attestation unless Pausanias/inscriptional details are added later.',
+   noteSources:["https://topostext.org/place/380227PSik", "https://www.theoi.com/Cult/ArtemisTitles.html"]},
+  {id:39, epithet:'Mounichia', cultSite:'Pygela in Ionia', mappedPlace:'Pygela/Phygela (Ionia)', lat:37.8622, lng:27.2637,
+   precision:'settlement/polis', confidence:'Low', aitia:false, festival:false,
+   coordNote:'Possible site near Kuşadası; low location confidence.',
+   coordSource:'ToposText: Pygela', sourceUrl:'https://topostext.org/place/379273UPhy',
+   notes:'Pygela/Phygela was an Ionian coastal settlement near Ephesos; Mounichia here likely belongs to a coastal/harbor Artemis network, but the exact cult installation is not securely localized.',
+   noteSources:["https://topostext.org/place/379273UPhy", "https://www.theoi.com/Cult/ArtemisTitles.html"]},
+  {id:40, epithet:'Mounichia', cultSite:'Cyzicus on the Propontis', mappedPlace:'Kyzikos/Cyzicus', lat:40.3895, lng:27.8878,
+   precision:'settlement/polis', confidence:'High', aitia:false, festival:false,
+   coordNote:'Ancient Kyzikos representative point.',
+   coordSource:'ToposText: Kyzikos', sourceUrl:'https://topostext.org/place/404279UCyz',
+   notes:'Cyzicus is a Propontic harbor/polis with an attested Mounichia title; use this as a north-Aegean/Propontic diffusion row pending epigraphic detail.',
+   noteSources:["https://topostext.org/place/404279UCyz", "https://www.theoi.com/Cult/ArtemisTitles.html"]},
+  {id:41, epithet:'Kolainis', cultSite:'Myrrinous in Attica', mappedPlace:'Myrrinous (Attica)', lat:37.8778, lng:23.9661,
+   precision:'deme/settlement', confidence:'High', aitia:false, festival:false,
+   coordNote:'Artemis Kolainis at Myrrinous; plotted deme representative point.',
+   coordSource:'ToposText: Myrrinous', sourceUrl:'https://topostext.org/place/379240DMyr',
+   notes:'Artemis Kolainis at Myrrinous is an Attic toponymic/topographical cult; exact sanctuary identification remains uncertain, so the deme point is the correct conservative plot.',
+   noteSources:["https://topostext.org/place/379240DMyr", "https://wrap.warwick.ac.uk/id/eprint/173404/1/WRAP-Artemis-and-her-territory-toponymic-and-topographical-cult-epithets-of-Artemis-in-Attica-Canopoli-2022.pdf"]},
+  {id:42, epithet:'Kolainis', cultSite:'Athens (Acropolis and Olympieion)', mappedPlace:'Athens Acropolis (also Olympieion)', lat:37.9717, lng:23.7257,
+   precision:'multiple loci; plotted primary', confidence:'High', aitia:false, festival:false,
+   coordNote:'Row names Acropolis and Olympieion dedications; plotted Acropolis. Olympieion point: 37.969400, 23.733700.',
+   coordSource:'ToposText: Athenian Acropolis; ToposText: Olympieion', sourceUrl:'https://topostext.org/place/380237SAkr ; https://topostext.org/place/380237SOly',
+   notes:'Kolainis at Athens is recorded for Acropolis/Olympieion loci in this dataset; treat as an urban counterpart or transfer of the Myrrhinous/Attic cult, with exact location unresolved between the listed loci.',
+   noteSources:["https://topostext.org/place/380237SAkr", "https://topostext.org/place/380237SOly", "https://wrap.warwick.ac.uk/id/eprint/173404/1/WRAP-Artemis-and-her-territory-toponymic-and-topographical-cult-epithets-of-Artemis-in-Attica-Canopoli-2022.pdf"]},
+  {id:43, epithet:'Amarysia', cultSite:'Athmonon in Attica', mappedPlace:'Athmonon (Attica)', lat:38.0466, lng:23.788,
+   precision:'deme/settlement', confidence:'Low', aitia:false, festival:false,
+   coordNote:'Artemis Amarysia at Athmonon; plotted deme representative point.',
+   coordSource:'ToposText: Athmonon', sourceUrl:'https://topostext.org/place/381238DAth',
+   notes:'Athmonon had an Attic Artemis Amarysia cult, reflecting the prestige of the Euboean sanctuary at Amarynthos; this is a good row for tracking Euboea-to-Attica cult-title transfer.',
+   noteSources:["https://topostext.org/place/381238DAth", "https://wrap.warwick.ac.uk/id/eprint/173404/1/WRAP-Artemis-and-her-territory-toponymic-and-topographical-cult-epithets-of-Artemis-in-Attica-Canopoli-2022.pdf"]},
+  {id:44, epithet:'Amarysia', cultSite:'Kydathenaion in Athens', mappedPlace:'Kydathenaion (Athens)', lat:37.974, lng:23.7306,
+   precision:'deme/urban district', confidence:'Medium', aitia:false, festival:false,
+   coordNote:'Urban counterpart to Athmonon; plotted Kydathenaion/Plaka representative point.',
+   coordSource:'ToposText: Kydathenaion', sourceUrl:'https://topostext.org/place/380237DKyd',
+   notes:'Kydathenaion gives an urban Athenian/deme context for Artemis Amarysia; read with Athmonon and Amarynthos as evidence for Attic reception of an Euboean regional cult.',
+   noteSources:["https://topostext.org/place/380237DKyd", "https://wrap.warwick.ac.uk/id/eprint/173404/1/WRAP-Artemis-and-her-territory-toponymic-and-topographical-cult-epithets-of-Artemis-in-Attica-Canopoli-2022.pdf"]},
+  {id:45, epithet:'Amarysia', cultSite:'Amarynthos in Euboea', mappedPlace:'Amarynthos / Artemis Amarysia sanctuary area', lat:38.387, lng:23.9091,
+   precision:'settlement/sanctuary area', confidence:'High', aitia:false, festival:false,
+   coordNote:'Major Euboean Artemis Amarysia cult site; plotted Amarynthos representative point. Excavated sanctuary/stoa area nearby at ca. 38.402900, 23.897600.',
+   coordSource:'ToposText: Amarynthos', sourceUrl:'https://topostext.org/place/384239UAma',
+   notes:'Amarynthos is now archaeologically confirmed as the sanctuary of Artemis Amarysia: inscribed blocks name Artemis in Amarynthos, and recent Greek-Swiss excavations document a major Eretrian sanctuary and festival center.',
+   noteSources:["https://topostext.org/place/384239UAma", "https://www.college-de-france.fr/en/news/archaeological-discovery-at-amarynthos", "https://www.esag.swiss/amarynthos/sanctuary-of-artemis/", "https://www.cambridge.org/core/services/aop-cambridge-core/content/view/78291EB394B3A0A61815BB276333DC35/S0570608418000121a.pdf/div-class-title-recent-research-at-the-sanctuary-of-artemis-amarysia-in-amarynthos-euboea-div.pdf"]},
+  {id:46, epithet:'Pheraia', cultSite:'Athens (from Pherae in Thessaly)', mappedPlace:'Athens (cult attested; origin Pherai)', lat:37.9717, lng:23.7257,
+   precision:'generic city proxy', confidence:'Medium', aitia:false, festival:false,
+   coordNote:'Cult location in Athens unclear; plotted Acropolis as city proxy. Toponymic origin Pherai in Thessaly: 39.379000, 22.753900.',
+   coordSource:'ToposText: Athenian Acropolis; ToposText: Pherai', sourceUrl:'https://topostext.org/place/380237SAkr ; https://topostext.org/place/394228PPhe',
+   notes:'Artemis Pheraia at Athens is best treated as an imported Thessalian/Pherai-Enodia/Hecate form; Pausanias\' comparison with Argive and Sikyonian forms makes it a cross-regional cult-title, but the Athenian locus is not secure.',
+   noteSources:["https://topostext.org/place/380237SAkr", "https://topostext.org/place/394228PPhe", "https://journals.openedition.org/kernos/1775?lang=en", "https://www.theoi.com/Cult/ArtemisTitles.html"]},
+  {id:47, epithet:'Tauropolos', cultSite:'Amphipolis in Makedonia', mappedPlace:'Amphipolis', lat:40.822, lng:23.847,
+   precision:'settlement/polis', confidence:'High', aitia:false, festival:false,
+   coordNote:'Artemis Tauropolos at Amphipolis; plotted polis representative point pending exact cult-building coordinates.',
+   coordSource:'ToposText: Amphipolis', sourceUrl:'https://topostext.org/place/408238PAmp',
+   notes:'Tauropolos at Amphipolis marks northern/Macedonian reception of the Tauropolos title; treat the polis point as a proxy until coins, inscriptions, or a sanctuary context are pulled into the row.',
+   noteSources:["https://topostext.org/place/408238PAmp", "https://www.theoi.com/Cult/ArtemisTitles.html"]},
+];
+
+
+// ══════════════════════════════════════════════════════════════════════════
+// ARTEMIS CULT SITES — epithets, festivals, and aitia across the Greek world.
+// Unlike the Zoroastrian layer, site notes are pre-researched in the
+// gazetteer itself, so the info drawer renders synchronously — no external
+// lookups needed.
+// ══════════════════════════════════════════════════════════════════════════
+let artemisOn = false, artemisLayer = null;
+
+function artemisIcon() {
+  return L.divIcon({
+    html: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+      <circle cx="7" cy="7" r="5.5" fill="#b89bd6" fill-opacity=".92" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/>
+      <path d="M9.4 4.1a4.1 4.1 0 1 0 0 5.8 4.7 4.7 0 0 1 0-5.8z" fill="#1a1410" fill-opacity=".5"/>
+    </svg>`,
+    className: '', iconSize: [14, 14], iconAnchor: [7, 7]
+  });
+}
+
+function buildArtemisLayer() {
+  const g = L.layerGroup();
+  ARTEMIS_SITES.forEach(site => {
+    const marker = L.marker([site.lat, site.lng], { icon: artemisIcon() });
+    marker.bindTooltip(
+      `<b>Artemis ${site.epithet}</b><br><span style="color:rgba(184,155,214,.85);font-size:.62rem">${site.cultSite}</span>`,
+      { sticky: true }
+    );
+    marker.on('click', () => showArtemisDetail(site));
+    g.addLayer(marker);
+  });
+  return { layer: g, count: ARTEMIS_SITES.length };
+}
+
+window.toggleArtemisLayer = function () {
+  const btn = document.getElementById('artemis-btn');
+  const leg = document.getElementById('artemis-legend');
+  const status = document.getElementById('artemis-status');
+
+  if (!artemisLayer) {
+    const { layer, count } = buildArtemisLayer();
+    artemisLayer = layer;
+    if (status) status.textContent = `${count} sites loaded`;
+  }
+
+  if (artemisOn) {
+    map.removeLayer(artemisLayer);
+    btn.textContent = 'Show Artemis Cult Sites';
+    btn.classList.remove('active');
+    leg.style.display = 'none';
+    artemisOn = false;
+  } else {
+    artemisLayer.addTo(map);
+    btn.textContent = 'Hide Artemis Cult Sites';
+    btn.classList.add('active');
+    leg.style.display = 'flex';
+    artemisOn = true;
+  }
+};
+
+const CONFIDENCE_COLOR = {
+  High:   '#7fb88a',
+  Medium: '#c9952f',
+  Low:    '#a1503c',
+};
+
+function titleCasePrecision(p) {
+  return p.split('/').map(part =>
+    part.replace(/\b\w/g, c => c.toUpperCase())
+  ).join(' / ');
+}
+
+function showArtemisDetail(site) {
+  resetInfoDrawer();
+  document.getElementById('infoKicker').textContent = 'Artemis Cult Site';
+  document.getElementById('infoKicker').style.color = '#b89bd6';
+  document.getElementById('infoTitle').textContent = `Artemis ${site.epithet}`;
+
+  const confColor = CONFIDENCE_COLOR[site.confidence] || 'var(--smoke)';
+  const badges = [
+    `<span class="info-badge" style="color:${confColor};border-color:${confColor}66;">${site.confidence} confidence</span>`,
+  ];
+  if (site.aitia)    badges.push(`<span class="info-badge">Aition</span>`);
+  if (site.festival) badges.push(`<span class="info-badge">Festival</span>`);
+  document.getElementById('infoBadges').innerHTML = badges.join('');
+
+  document.getElementById('infoCoords').innerHTML =
+    `${site.cultSite}${site.mappedPlace && site.mappedPlace !== site.cultSite ? ' &rarr; ' + site.mappedPlace : ''}<br>` +
+    `${site.lat.toFixed(5)}, ${site.lng.toFixed(5)} &middot; ${titleCasePrecision(site.precision)}`;
+
+  // Description — pre-written site notes, shown synchronously
+  const descEl = document.getElementById('infoDesc');
+  descEl.style.display = 'block';
+  descEl.textContent = site.notes;
+
+  // Coordinate provenance note
+  const noteEl = document.getElementById('infoNote');
+  noteEl.style.display = 'block';
+  noteEl.textContent = site.coordNote;
+
+  // Links — coordinate source + note sources + OSM, deduped
+  const osm = `https://www.openstreetmap.org/?mlat=${site.lat}&mlon=${site.lng}&zoom=12`;
+  const seen = new Set();
+  const linkItems = [];
+  const addLink = (url, label) => {
+    if (!url || seen.has(url)) return;
+    seen.add(url);
+    linkItems.push(`<a class="info-link" href="${url}" target="_blank" rel="noopener">${label} ↗</a>`);
+  };
+  addLink(site.sourceUrl, site.coordSource || 'Source');
+  (site.noteSources || []).forEach(u => {
+    let label = 'Source';
+    try { label = new URL(u).hostname.replace('www.', ''); } catch (e) {}
+    addLink(u, label);
+  });
+  linkItems.push(`<a class="info-link" href="${osm}" target="_blank" rel="noopener">OSM ↗</a>`);
+  document.getElementById('infoLinks').innerHTML = linkItems.join('');
+
+  openInfoDrawer();
+  map.flyTo([site.lat, site.lng], Math.max(map.getZoom(), 7), { duration: 1 });
 }
 
 })();
