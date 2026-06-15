@@ -190,6 +190,17 @@ img{display:block;max-width:100%;}
 .info-badge{font-family:var(--ui);font-size:.56rem;font-weight:700;letter-spacing:.08em;
   text-transform:uppercase;padding:.2rem .5rem;border:1px solid var(--hair);color:var(--smoke);}
 .info-coords{font-family:var(--ui);font-size:.7rem;color:var(--smoke);margin-bottom:1rem;}
+.info-image-wrap{margin-bottom:1rem;border:1px solid var(--hair);background:rgba(255,255,255,.02);}
+.info-image-wrap img{width:100%;height:160px;object-fit:cover;display:block;filter:saturate(.9);}
+.info-image-credit{font-family:var(--ui);font-size:.54rem;color:rgba(236,226,207,.32);
+  padding:.35rem .55rem;letter-spacing:.04em;}
+.info-image-credit a{color:rgba(236,226,207,.45);}
+.info-desc{font-family:var(--body);font-size:.85rem;line-height:1.75;color:rgba(236,226,207,.78);
+  margin-bottom:1rem;}
+.info-desc.loading{font-family:var(--ui);font-size:.62rem;letter-spacing:.08em;
+  text-transform:uppercase;color:rgba(236,226,207,.32);}
+.info-note{font-family:var(--ui);font-size:.6rem;line-height:1.7;color:rgba(236,226,207,.35);
+  margin-bottom:1rem;}
 .info-refs{font-family:var(--body);font-size:.82rem;line-height:1.75;color:rgba(236,226,207,.78);
   padding:.8rem;background:rgba(255,255,255,.02);border:1px solid var(--hair);margin-bottom:1rem;}
 .info-refs a{color:var(--ember-lt);}
@@ -299,6 +310,18 @@ img{display:block;max-width:100%;}
       </div>
 
       <div class="dock-card">
+        <div class="dock-card-label">Zoroastrian Fire Temples</div>
+        <div class="dock-row">
+          <button class="dock-btn" id="zoro-btn" onclick="toggleZoroLayer()">Show Fire Temples</button>
+        </div>
+        <div id="zoro-legend" style="display:none;margin-top:.7rem;display:flex;flex-direction:column;gap:.4rem;">
+          <div class="legend-row"><div class="legend-dot" style="background:#e0612a;"></div>Fire temple / sacred fire site</div>
+          <div id="zoro-status"></div>
+        </div>
+        <div class="dock-note">42 Ātash sites across Iran · click a marker for description and images</div>
+      </div>
+
+      <div class="dock-card">
         <div class="dock-card-label">External Atlases</div>
         <div class="dock-row" id="atlas-dock-buttons"></div>
         <div class="dock-note">Opens a curated atlas in place of the map. If a frame is
@@ -314,6 +337,12 @@ img{display:block;max-width:100%;}
         <div class="info-title" id="infoTitle"></div>
         <div class="info-badges" id="infoBadges"></div>
         <div class="info-coords" id="infoCoords"></div>
+        <div class="info-image-wrap" id="infoImageWrap" style="display:none;">
+          <img id="infoImage" alt="">
+          <div class="info-image-credit" id="infoImageCredit"></div>
+        </div>
+        <div class="info-desc" id="infoDesc" style="display:none;"></div>
+        <div class="info-note" id="infoNote" style="display:none;"></div>
         <div class="info-refs" id="infoRefs" style="display:none;"></div>
         <div class="info-links" id="infoLinks"></div>
       </div>
@@ -330,6 +359,11 @@ img{display:block;max-width:100%;}
     used with permission · <a href="https://suttacentral.net" target="_blank" rel="noopener">SuttaCentral</a> ·
     <a href="https://www.intofarlands.com" target="_blank" rel="noopener">Into Far Lands</a> ·
     <a href="https://awmc.unc.edu" target="_blank" rel="noopener">Ancient World Mapping Center</a>, UNC Chapel Hill.</p>
+  <p>Zoroastrian fire temple descriptions and images via
+    <a href="https://www.wikipedia.org" target="_blank" rel="noopener">Wikipedia</a>,
+    <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a>, and
+    <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a>
+    (CC BY-SA), loaded on demand per site.</p>
   <p>Bonampak Room 3 mural reproduction · Roman catacomb fresco of Christ and the Apostles ·
     Zhang Lu, <em>Laozi Riding an Ox</em> (Ming dynasty) · Mithraic tauroctony fresco.
     All collage images are public-domain reproductions of ancient and historical works.</p>
@@ -348,9 +382,9 @@ const map = L.map('religion-map', {
   zoomControl: true,
   attributionControl: true,
 });
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-  subdomains: 'abcd',
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+  attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+  maxNativeZoom: 16,
   maxZoom: 19,
 }).addTo(map);
 L.control.zoom({position:'bottomright'}).addTo(map);
@@ -557,7 +591,18 @@ async function buildBibleLayer() {
   return { layer: g, count: places.length };
 }
 
+// Clears the optional image/description/note slots so switching between
+// Bible places and Zoroastrian sites doesn't leak stale content.
+function resetInfoDrawer() {
+  document.getElementById('infoImageWrap').style.display = 'none';
+  document.getElementById('infoDesc').style.display = 'none';
+  document.getElementById('infoDesc').classList.remove('loading');
+  document.getElementById('infoNote').style.display = 'none';
+  document.getElementById('infoRefs').style.display = 'none';
+}
+
 function showBibleDetail(p, refsHtml) {
+  resetInfoDrawer();
   const isWater = p.isWater;
   document.getElementById('infoKicker').textContent = isWater ? 'Water / River' : 'Biblical Land Place';
   document.getElementById('infoKicker').style.color = isWater ? '#6ab4e8' : '#e8c06a';
@@ -621,6 +666,410 @@ window.toggleBibleLayer = async function () {
     bibleOn = true;
   }
 };
+
+
+// 42 Zoroastrian fire temple / sacred fire sites
+// Source: user-supplied gazetteer with coordinate provenance notes
+const ZOROASTRIAN_SITES = [
+  {id:1, name:'Adrian Temple of Tehran', alt:'Adrian; Tehran Adorian Fire Temple', location:'Tehran', region:'Tehran province', country:'Iran', lat:35.695672, lng:51.414073, precision:'exact_site',
+   note:'Coordinates from site page.',
+   urls:["https://en.wikipedia.org/wiki/Adrian_Temple_of_Tehran"]},
+  {id:2, name:'Adur Burzen-Mihr', alt:'Fire Temple of Kashmar; Atashgah Castle association', location:'Kashmar', region:'Razavi Khorasan province', country:'Iran', lat:35.31639, lng:58.38611, precision:'site_or_traditional_location',
+   note:'Coordinates used for Atashgah Castle/Kashmar traditional location of Adur Burzen-Mihr.',
+   urls:["https://en.wikipedia.org/wiki/Adur_Burzen-Mihr", "https://www.marefa.org/قائمة_معاقل_الحشاشين"]},
+  {id:3, name:'Adur Farnbag', alt:'Karian Fire Temple; Azar Farnbagh', location:'Larestan County', region:'Fars province', country:'Iran', lat:28.071, lng:53.082, precision:'locality_approx',
+   note:'Approximate to Kariyan/Karian area; verify before using as a pin for the ruined temple itself.',
+   urls:["https://www.iranicaonline.org/articles/adur-farnbag-an-atas-bahram-see-atas-that-is-a-zoroastrian-sacred-fire-of-the-highest-grade-held-to-be-one-of-the/", "https://irandoostan.com/travel-to-iran-to-discover-the-zoroastrian-fire-temples/"]},
+  {id:4, name:'Adur Gushnasp', alt:'Azar Goshnasb; Takht-e Soleyman fire temple', location:'West Azerbaijan province', region:'West Azerbaijan province', country:'Iran', lat:36.603171, lng:47.235949, precision:'exact_site',
+   note:'Coordinates for Takht-e Soleyman/Adur Gushnasp archaeological complex.',
+   urls:["https://en.wikipedia.org/wiki/Adur_Gushnasp", "https://qualla.com/adur-gushnasp"]},
+  {id:5, name:'Espi Mazget', alt:'Espi Mazget Fire Temple / Mosque', location:'Rezvanshahr County', region:'Gilan province', country:'Iran', lat:37.638139, lng:49.048083, precision:'exact_site',
+   note:'Coordinates from site page.',
+   urls:["https://en.wikipedia.org/wiki/Espi_Mazget"]},
+  {id:6, name:'Fire Temple of Amol', alt:'Amol Fire Temple', location:'Amol', region:'Mazandaran province', country:'Iran', lat:36.4696, lng:52.3507, precision:'locality_approx',
+   note:'Approximate to Amol city; exact ruin coordinate not verified.',
+   urls:["https://en.wikipedia.org/wiki/List_of_fire_temples_in_Iran"]},
+  {id:7, name:'Fire Temple of Aspakhu', alt:'Aspakhu Fire Temple; Espakhoo Temple', location:'Bojnord County', region:'North Khorasan province', country:'Iran', lat:37.403, lng:56.3698, precision:'exact_site',
+   note:'Coordinates from site page.',
+   urls:["https://en.wikipedia.org/wiki/Aspakhu_Fire_Temple"]},
+  {id:8, name:'Fire Temple of Azar Ju', alt:'Azarjoo Fire Temple', location:'Darab County', region:'Fars province', country:'Iran', lat:28.7519, lng:54.5444, precision:'locality_approx',
+   note:'Approximate to Darab area; exact temple coordinate not verified.',
+   urls:["https://en.wikipedia.org/wiki/List_of_fire_temples_in_Iran"]},
+  {id:9, name:'Fire Temple of Bardneshandeh', alt:'Bard-e Neshandeh; Bardneshandeh', location:'Masjed Soleyman County', region:'Khuzestan province', country:'Iran', lat:31.983536, lng:49.281622, precision:'exact_site',
+   note:'Coordinates converted from published DMS for Bard-e Neshandeh.',
+   urls:["https://www.researchgate.net/figure/Bard-e-Neshandeh-the-site-coordinate-is-3159073N-49165384E-The-archaeological-site_fig1_339644589"]},
+  {id:10, name:'Fire Temple of Baze Hoor', alt:'Bazeh Hoor; Bazeh Khur Chahartaq', location:'Mashhad County', region:'Razavi Khorasan province', country:'Iran', lat:35.665, lng:59.75, precision:'locality_approx',
+   note:'Approximate to Robat Sefid/Bazeh Hoor area south of Mashhad; exact site coordinate not verified.',
+   urls:["https://www.gettyimages.com/photos/bazeh-khur-fire-temple"]},
+  {id:11, name:'Fire Temple of Cham Namesht', alt:'Cham Namesht Chahartaq', location:'Darreh Shahr County', region:'Ilam province', country:'Iran', lat:33.1445, lng:47.3799, precision:'locality_approx',
+   note:'Approximate to Darreh Shahr; exact chahartaq coordinate not verified.',
+   urls:["https://en.wikipedia.org/wiki/List_of_fire_temples_in_Iran"]},
+  {id:12, name:'Fire Temple of Farashband', alt:'Atashkadeh Farashband', location:'Farashband County', region:'Fars province', country:'Iran', lat:28.855378, lng:52.094644, precision:'locality_approx',
+   note:'Approximate to Farashband city; county contains several chahartaq sites.',
+   urls:["https://mapy.com/en/?id=1069081904&source=osm", "https://en.wikipedia.org/wiki/Farashband"]},
+  {id:13, name:'Fire Temple of Fishvar', alt:'Fishvar Fire Temple; Malcheh/Mehrchahartaq area', location:'Evaz County', region:'Fars province', country:'Iran', lat:27.77134, lng:53.68676, precision:'exact_site',
+   note:'Coordinates from map record for Fishvar Fire Temple.',
+   urls:["https://mapcarta.com/"]},
+  {id:14, name:'Fire Temple of Harpak', alt:'Harpak Fire Temple; Abyaneh Fire Temple', location:'Natanz County', region:'Isfahan province', country:'Iran', lat:33.5857, lng:51.5979, precision:'locality_approx',
+   note:'Approximate to Abyaneh village; exact structure coordinate not verified.',
+   urls:["https://en.wikipedia.org/wiki/List_of_fire_temples_in_Iran"]},
+  {id:15, name:'Fire Temple of Ij', alt:'Ij Fire Temple; Stone Mosque of Ij', location:'Estahban County', region:'Fars province', country:'Iran', lat:29.02, lng:54.24, precision:'locality_approx',
+   note:'Approximate to Ij/Estahban area; exact site coordinate not verified.',
+   urls:["https://en.wikipedia.org/wiki/List_of_fire_temples_in_Iran"]},
+  {id:16, name:'Fire Temple of Isfahan', alt:'Atashgah of Isfahan; Marabin/Maras hill', location:'Isfahan', region:'Isfahan province', country:'Iran', lat:32.648124, lng:51.570339, precision:'photo_gps_exact_or_near_site',
+   note:'Wikimedia photo GPS/map coordinate for the fire temple hill complex.',
+   urls:["https://commons.wikimedia.org/wiki/File:Atashgah_Isfahan_Zoroastrian_fire_temple.jpg", "https://mapcarta.com/13181236"]},
+  {id:17, name:'Fire Temple of Izadkhast', alt:'Izadkhast Chahartaq', location:'Abadeh County', region:'Fars province', country:'Iran', lat:31.5167, lng:52.1249, precision:'locality_approx',
+   note:'Approximate to Izadkhast historic town/castle area; exact chahartaq coordinate not verified.',
+   urls:["https://en.wikipedia.org/wiki/List_of_fire_temples_in_Iran"]},
+  {id:18, name:'Fire Temple of Jereh', alt:'Jereh Chahartaq', location:'Kazerun County', region:'Fars province', country:'Iran', lat:29.296444, lng:51.967417, precision:'exact_site',
+   note:'Coordinates converted from Wikidata DMS 29°17\'47.2N 51°58\'2.7E.',
+   urls:["https://www.wikidata.org/wiki/Q5894256"]},
+  {id:19, name:'Fire Temple of Karkuyeh', alt:'Karkouyeh Fire Temple', location:'Hirmand County', region:'Sistan and Baluchestan province', country:'Iran', lat:31.05, lng:61.7, precision:'locality_approx',
+   note:'Approximate to Karkuyeh/Zabol-Hirmand area; exact ruin coordinate not verified.',
+   urls:["https://zoroastrians.net/wp-content/uploads/2009/12/the-forgotten-ancient-fire-temples-of-iran.pdf"]},
+  {id:20, name:'Fire Temple of Kazerun', alt:'Kazerun Fire Temple', location:'Kazerun', region:'Fars province', country:'Iran', lat:29.627123, lng:51.651817, precision:'locality_approx',
+   note:'Approximate to Kazerun city; exact fire temple coordinate not verified.',
+   urls:["https://en.wikipedia.org/wiki/List_of_fire_temples_in_Iran"]},
+  {id:21, name:'Fire Temple of Kerman', alt:'Kerman Zoroastrian Fire Temple and Museum', location:'Kerman County', region:'Kerman province', country:'Iran', lat:30.289, lng:57.0716, precision:'urban_address_approx',
+   note:'Approximate to Moshtaghieh Square/Zariseif Street area; address verified, coordinate should be checked before final mapping.',
+   urls:["https://irandoostan.com/fire-temple-of-kerman/", "https://www.visitiran.ir/index.php/en/attraction/museum-and-fire-temple-kerman-zoroastrians"]},
+  {id:22, name:'Fire Temple of Khaneh Div', alt:'Khaneh-ye Div Chahartaq', location:'Davarzan County', region:'Razavi Khorasan province', country:'Iran', lat:36.3425, lng:57.34875, precision:'exact_site',
+   note:'Coordinates converted from Wikimedia Commons category DMS 36°20\'33N 57°20\'55.5E.',
+   urls:["https://commons.wikimedia.org/wiki/Category:Khaneh_Div_Fire_Temple", "https://www.wikidata.org/wiki/Q5935416"]},
+  {id:23, name:'Fire Temple of Kheyrabad', alt:'Kheirabad Chahartaq', location:'Gachsaran County', region:'Kohgiluyeh and Boyer-Ahmad province', country:'Iran', lat:30.529642, lng:50.507238, precision:'photo_gps_exact_or_near_site',
+   note:'Coordinates from Wikimedia photo GPS for ChaharTaqi-KheirAbad.',
+   urls:["https://commons.wikimedia.org/wiki/File:ChaharTaqi-KheirAbad.JPG"]},
+  {id:24, name:'Fire Temple of Konar Siah', alt:'Konar Siyah Chahartaq', location:'Firuzabad County', region:'Fars province', country:'Iran', lat:28.72101, lng:52.423484, precision:'photo_gps_exact_or_near_site',
+   note:'Coordinates from Wikimedia/photo GPS listing for Chartaqi of Konar Siyah.',
+   urls:["https://commons.wikimedia.org/wiki/File:Chartaqi_of_Konar_Siyah_چهارطاقی_کنارسیاه_-_panoramio.jpg"]},
+  {id:25, name:'Fire Temple of Kusan', alt:'Koosan/Kusan Fire Temple', location:'Behshahr County', region:'Mazandaran province', country:'Iran', lat:36.72, lng:53.55, precision:'locality_approx',
+   note:'Approximate to Kusan/Behshahr area; exact site coordinate not verified.',
+   urls:["https://zoroastrians.net/wp-content/uploads/2009/12/the-forgotten-ancient-fire-temples-of-iran.pdf"]},
+  {id:26, name:'Fire Temple of Mil Azhdeha', alt:'Mil-e Azhdeha; Dragon Tower', location:'Mamasani County', region:'Fars province', country:'Iran', lat:30.143, lng:51.522, precision:'locality_approx',
+   note:'Approximate to Nurabad/Mamasani area; exact monument coordinate not verified.',
+   urls:["https://en.wikipedia.org/wiki/List_of_fire_temples_in_Iran"]},
+  {id:27, name:'Fire Temple of Mil Milgeh', alt:'Mil-e Milageh; Mil Milgeh Fire Temple', location:'Eslamabad-e Gharb', region:'Kermanshah province', country:'Iran', lat:34.109, lng:46.527, precision:'locality_approx',
+   note:'Approximate to Eslamabad-e Gharb area; exact site coordinate not verified.',
+   urls:["https://en.wikipedia.org/wiki/List_of_fire_temples_in_Iran"]},
+  {id:28, name:'Fire Temple of Nagharekhaneh', alt:'Naqareh Khaneh Chahartaq', location:'Farashband County', region:'Fars province', country:'Iran', lat:28.76475, lng:52.107167, precision:'exact_site',
+   note:'Coordinates converted from Wikidata DMS 28°45\'53.1N 52°6\'25.8E.',
+   urls:["https://www.wikidata.org/wiki/Q5909289"]},
+  {id:29, name:'Fire Temple of Natanz', alt:'Natanz Fire Temple', location:'Natanz County', region:'Isfahan province', country:'Iran', lat:33.521111, lng:51.912806, precision:'photo_gps_exact_or_near_site',
+   note:'Coordinates converted from Wikimedia Commons photo viewpoint DMS 33°31\'16.000N 51°54\'46.102E.',
+   urls:["https://commons.wikimedia.org/wiki/File:2-Natanz_Fire_Temple-_March_2025.jpg", "https://www.wikidata.org/wiki/Q5867235"]},
+  {id:30, name:'Fire Temple of Neyasar', alt:'Niasar Fire Temple; Atashgah Niyasar', location:'Kashan County', region:'Isfahan province', country:'Iran', lat:33.9719, lng:51.1519, precision:'locality_approx',
+   note:'Approximate to Niasar hill/village; verify exact hilltop coordinate before final mapping.',
+   urls:["https://www.archnet.org/sites/5299", "https://historicaliran.blogspot.com/2009/11/niasar-fire-temple.html"]},
+  {id:31, name:'Fire Temple of Qotbabad', alt:'Qotbabad Old Fire Temple', location:'Jahrom County', region:'Fars province', country:'Iran', lat:28.63806, lng:53.63917, precision:'locality_approx_with_monument_in_city',
+   note:'Coordinates for Qotbabad city; the page image caption identifies the old fire temple, but exact monument pin not separately verified.',
+   urls:["https://en.wikipedia.org/wiki/Qotbabad"]},
+  {id:32, name:'Fire Temple of Shiyan', alt:'Shian/Shiyan Fire Temple', location:'Eslamabad-e Gharb County', region:'Kermanshah province', country:'Iran', lat:34.027, lng:46.527, precision:'locality_approx',
+   note:'Approximate to Shiyan/Eslamabad-e Gharb area; exact site coordinate not verified.',
+   urls:["https://en.wikipedia.org/wiki/List_of_fire_temples_in_Iran"]},
+  {id:33, name:'Fire Temple of Siah Gol', alt:'Siahgol Fire Temple', location:'Eyvan County', region:'Ilam province', country:'Iran', lat:33.906389, lng:46.065833, precision:'exact_site',
+   note:'Coordinates converted from Wikidata DMS 33°54\'23N 46°3\'57E.',
+   urls:["https://www.wikidata.org/wiki/Q5875167"]},
+  {id:34, name:'Fire Temple of Takht-e Rostam', alt:'Takht Rostam Fire Temple', location:'Shahriar County', region:'Tehran province', country:'Iran', lat:35.574341, lng:50.938949, precision:'photo_gps_exact_or_near_site',
+   note:'Coordinates converted from Wikimedia Commons photo viewpoint DMS 35°34\'27.628N 50°56\'20.216E.',
+   urls:["https://commons.wikimedia.org/wiki/File:Takht_Rostam_Fire_Temple_(4).jpg"]},
+  {id:35, name:'Fire Temple of Tashvir', alt:'Tashvir Fire Temple', location:'Tarom County', region:'Zanjan province', country:'Iran', lat:36.790278, lng:49.005, precision:'exact_site',
+   note:'Coordinates converted from Wikidata DMS 36°47\'25N 49°0\'18E.',
+   urls:["https://www.wikidata.org/wiki/Q5907616"]},
+  {id:36, name:'Fire Temple of Yazd', alt:'Yazd Atash Behram', location:'Yazd', region:'Yazd province', country:'Iran', lat:31.90556, lng:54.33917, precision:'exact_site',
+   note:'Coordinates from dedicated site page for Yazd Atash Behram.',
+   urls:["https://en.wikipedia.org/wiki/Fire_Temple_of_Yazd"]},
+  {id:37, name:'Noushijan', alt:'Fire Temple of Noushijan; Nush-i Jan; Noushijan Tappe', location:'Malayer', region:'Hamadan province', country:'Iran', lat:34.36557, lng:48.63322, precision:'exact_site',
+   note:'Coordinates from Mapcarta/OpenStreetMap record for Noushijan archaeological site.',
+   urls:["https://mapcarta.com/W346043272", "https://en.wikipedia.org/wiki/Noushijan"]},
+  {id:38, name:'Tarikhaneh', alt:'Tarikhaneh Mosque / earlier fire-temple tradition', location:'Damghan', region:'Semnan province', country:'Iran', lat:36.164278, lng:54.354111, precision:'photo_gps_exact_or_near_site',
+   note:'Coordinates from Wikimedia photo/GPS listing for Tarikhaneh.',
+   urls:["https://commons.wikimedia.org/wiki/Category:Tarikhaneh"]},
+  {id:39, name:'Temple of Khvorheh', alt:'Khvorheh Mansion; Khorheh Temple', location:'Mahallat County', region:'Markazi province', country:'Iran', lat:34.064169, lng:50.486669, precision:'exact_site',
+   note:'Coordinates converted from Wikidata DMS 34°3\'51.01N 50°29\'12.01E.',
+   urls:["https://www.wikidata.org/wiki/Q5891626", "https://en.wikipedia.org/wiki/Khvorheh_Mansion"]},
+  {id:40, name:'Temple of Mehr', alt:'Mithra Temple of Maragheh; Verjuy Mehr Temple', location:'Maragheh County', region:'East Azerbaijan province', country:'Iran', lat:37.337, lng:46.268, precision:'locality_approx',
+   note:'Approximate to Verjuy/Maragheh Mithra temple area; exact cave/temple coordinate not verified.',
+   urls:["https://en.wikipedia.org/wiki/List_of_fire_temples_in_Iran"]},
+  {id:41, name:'Temple of Mehri', alt:'Mehri Temple, Maragheh area', location:'Maragheh County', region:'East Azerbaijan province', country:'Iran', lat:37.337, lng:46.268, precision:'locality_approx',
+   note:'Approximate to the same Verjuy/Maragheh temple area; verify whether distinct from Temple of Mehr before de-duplicating.',
+   urls:["https://en.wikipedia.org/wiki/List_of_fire_temples_in_Iran"]},
+  {id:42, name:'Temple of Sorkh Dom Luri', alt:'Sorkh Dom Luri sanctuary', location:'Kuhdasht County', region:'Lorestan province', country:'Iran', lat:33.461, lng:47.537, precision:'locality_approx',
+   note:'Approximate to Kuhdasht/Sorkh Dom Luri area; exact sanctuary coordinate not verified.',
+   urls:["https://en.wikipedia.org/wiki/List_of_fire_temples_in_Iran"]},
+];
+
+
+// ══════════════════════════════════════════════════════════════════════════
+// ZOROASTRIAN FIRE TEMPLES — sacred fires of the Atash, mostly Sasanian-era
+// chahartaqs and active Atash Behrams across Iran. Site cards are populated
+// on demand from Wikipedia / Wikidata / Wikimedia Commons (all CORS-enabled,
+// no key required) — falling back to the gazetteer note + source links when
+// no structured record exists.
+// ══════════════════════════════════════════════════════════════════════════
+let zoroOn = false, zoroLayer = null;
+const zoroMediaCache = new Map();
+
+function zoroIcon() {
+  return L.divIcon({
+    html: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+      <circle cx="7" cy="7" r="5.5" fill="#e0612a" fill-opacity=".9" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/>
+      <path d="M7 3.4c.9 1.3 1.9 2.2 1.9 3.6 0 1.2-.85 2-1.9 2s-1.9-.8-1.9-2c0-1.4 1-2.3 1.9-3.6z"
+        fill="#fff" fill-opacity=".85"/>
+    </svg>`,
+    className: '', iconSize: [14, 14], iconAnchor: [7, 7]
+  });
+}
+
+function buildZoroLayer() {
+  const g = L.layerGroup();
+  ZOROASTRIAN_SITES.forEach(site => {
+    const marker = L.marker([site.lat, site.lng], { icon: zoroIcon() });
+    marker.bindTooltip(
+      `<b>${site.name}</b><br><span style="color:rgba(224,97,42,.85);font-size:.62rem">${site.region}, ${site.country}</span>`,
+      { sticky: true }
+    );
+    marker.on('click', () => showZoroDetail(site));
+    g.addLayer(marker);
+  });
+  return { layer: g, count: ZOROASTRIAN_SITES.length };
+}
+
+window.toggleZoroLayer = function () {
+  const btn = document.getElementById('zoro-btn');
+  const leg = document.getElementById('zoro-legend');
+  const status = document.getElementById('zoro-status');
+
+  if (!zoroLayer) {
+    const { layer, count } = buildZoroLayer();
+    zoroLayer = layer;
+    if (status) status.textContent = `${count} sites loaded`;
+  }
+
+  if (zoroOn) {
+    map.removeLayer(zoroLayer);
+    btn.textContent = 'Show Fire Temples';
+    btn.classList.remove('active');
+    leg.style.display = 'none';
+    zoroOn = false;
+  } else {
+    zoroLayer.addTo(map);
+    btn.textContent = 'Hide Fire Temples';
+    btn.classList.add('active');
+    leg.style.display = 'flex';
+    zoroOn = true;
+  }
+};
+
+// ── Tiered media lookup ──────────────────────────────────────────────────
+// 1. en.wikipedia.org REST summary  → extract + thumbnail
+// 2. wikidata.org entity            → description + sitelink + P18 image
+// 3. commons.wikimedia.org File:    → Special:FilePath thumbnail
+// 4. commons.wikimedia.org Category → first file member via API
+// 5. nothing matched                → gazetteer note + raw source links
+async function fetchSiteMedia(site) {
+  if (zoroMediaCache.has(site.id)) return zoroMediaCache.get(site.id);
+
+  const urls = site.urls || [];
+  let result = { description: null, image: null, imageCredit: null, sourceLabel: null, sourceUrl: null };
+
+  // 1. Wikipedia
+  const wikiUrl = urls.find(u => /en\.wikipedia\.org\/wiki\//.test(u));
+  if (wikiUrl) {
+    try {
+      const title = wikiUrl.split('/wiki/')[1];
+      const r = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${title}`);
+      if (r.ok) {
+        const d = await r.json();
+        if (d.extract) {
+          result = {
+            description: d.extract,
+            image: d.thumbnail?.source || null,
+            imageCredit: d.thumbnail ? 'Wikipedia' : null,
+            sourceLabel: 'Wikipedia',
+            sourceUrl: d.content_urls?.desktop?.page || wikiUrl,
+          };
+          zoroMediaCache.set(site.id, result);
+          return result;
+        }
+      }
+    } catch (e) { console.warn('Wikipedia lookup failed', site.name, e); }
+  }
+
+  // 2. Wikidata
+  const wdUrl = urls.find(u => /wikidata\.org\/wiki\/(Q\d+)/.test(u));
+  if (wdUrl) {
+    try {
+      const qid = wdUrl.match(/Q\d+/)[0];
+      const r = await fetch(`https://www.wikidata.org/wiki/Special:EntityData/${qid}.json`);
+      if (r.ok) {
+        const d = await r.json();
+        const ent = d.entities?.[qid];
+        const desc = ent?.descriptions?.en?.value || null;
+        const enwiki = ent?.sitelinks?.enwiki?.title;
+        let image = null, imageCredit = null;
+        const p18 = ent?.claims?.P18?.[0]?.mainsnak?.datavalue?.value;
+        if (p18) {
+          image = `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(p18)}?width=480`;
+          imageCredit = 'Wikimedia Commons';
+        }
+        // Prefer a richer Wikipedia extract if a sitelink exists
+        if (enwiki) {
+          try {
+            const r2 = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(enwiki)}`);
+            if (r2.ok) {
+              const d2 = await r2.json();
+              result = {
+                description: d2.extract || desc,
+                image: image || d2.thumbnail?.source || null,
+                imageCredit: image ? imageCredit : (d2.thumbnail ? 'Wikipedia' : null),
+                sourceLabel: 'Wikipedia',
+                sourceUrl: d2.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${enwiki}`,
+              };
+              zoroMediaCache.set(site.id, result);
+              return result;
+            }
+          } catch (e) { /* fall through to Wikidata-only result */ }
+        }
+        if (desc || image) {
+          result = { description: desc, image, imageCredit, sourceLabel: 'Wikidata', sourceUrl: wdUrl };
+          zoroMediaCache.set(site.id, result);
+          return result;
+        }
+      }
+    } catch (e) { console.warn('Wikidata lookup failed', site.name, e); }
+  }
+
+  // 3. Commons File:
+  const fileUrl = urls.find(u => /commons\.wikimedia\.org\/wiki\/File:/.test(u));
+  if (fileUrl) {
+    const file = fileUrl.split('/wiki/')[1];
+    result = {
+      description: null,
+      image: `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=480`,
+      imageCredit: 'Wikimedia Commons',
+      sourceLabel: 'Wikimedia Commons',
+      sourceUrl: fileUrl,
+    };
+    zoroMediaCache.set(site.id, result);
+    return result;
+  }
+
+  // 4. Commons Category — find first file member
+  const catUrl = urls.find(u => /commons\.wikimedia\.org\/wiki\/Category:/.test(u));
+  if (catUrl) {
+    try {
+      const cat = catUrl.split('/wiki/')[1];
+      const r = await fetch(`https://commons.wikimedia.org/w/api.php?action=query&list=categorymembers&cmtitle=${encodeURIComponent(cat)}&cmtype=file&cmlimit=1&format=json&origin=*`);
+      if (r.ok) {
+        const d = await r.json();
+        const member = d.query?.categorymembers?.[0];
+        if (member) {
+          result = {
+            description: null,
+            image: `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(member.title.replace('File:', ''))}?width=480`,
+            imageCredit: 'Wikimedia Commons',
+            sourceLabel: 'Wikimedia Commons',
+            sourceUrl: catUrl,
+          };
+          zoroMediaCache.set(site.id, result);
+          return result;
+        }
+      }
+    } catch (e) { console.warn('Commons category lookup failed', site.name, e); }
+    result = { description: null, image: null, imageCredit: null, sourceLabel: 'Wikimedia Commons', sourceUrl: catUrl };
+    zoroMediaCache.set(site.id, result);
+    return result;
+  }
+
+  // 5. Fallback — first available source link, no image
+  if (urls.length) {
+    try {
+      const host = new URL(urls[0]).hostname.replace('www.', '');
+      result.sourceLabel = host;
+    } catch (e) { result.sourceLabel = 'Source'; }
+    result.sourceUrl = urls[0];
+  }
+  zoroMediaCache.set(site.id, result);
+  return result;
+}
+
+const PRECISION_LABEL = {
+  exact_site: 'Exact site',
+  site_or_traditional_location: 'Traditional location',
+  locality_approx: 'Locality (approximate)',
+  locality_approx_with_monument_in_city: 'Locality (monument in city)',
+  urban_address_approx: 'Address (approximate)',
+  photo_gps_exact_or_near_site: 'Photo GPS (near site)',
+};
+
+async function showZoroDetail(site) {
+  resetInfoDrawer();
+  document.getElementById('infoKicker').textContent = 'Zoroastrian Fire Temple';
+  document.getElementById('infoKicker').style.color = '#e0612a';
+  document.getElementById('infoTitle').textContent = site.name;
+
+  const altBadge = site.alt ? `<span class="info-badge">${site.alt.split(';')[0].trim()}</span>` : '';
+  document.getElementById('infoBadges').innerHTML =
+    `<span class="info-badge">${site.country}</span>` +
+    `<span class="info-badge">${site.region}</span>` +
+    altBadge;
+
+  document.getElementById('infoCoords').textContent =
+    `${site.lat.toFixed(5)}, ${site.lng.toFixed(5)} · ${PRECISION_LABEL[site.precision] || site.precision}`;
+
+  // Coordinate provenance note
+  const noteEl = document.getElementById('infoNote');
+  noteEl.style.display = 'block';
+  noteEl.textContent = site.note;
+
+  // Description placeholder while we fetch
+  const descEl = document.getElementById('infoDesc');
+  descEl.style.display = 'block';
+  descEl.classList.add('loading');
+  descEl.textContent = 'Looking up description…';
+
+  const osm = `https://www.openstreetmap.org/?mlat=${site.lat}&mlon=${site.lng}&zoom=13`;
+  document.getElementById('infoLinks').innerHTML =
+    `<a class="info-link" href="${osm}" target="_blank" rel="noopener">OSM ↗</a>`;
+
+  openInfoDrawer();
+  map.flyTo([site.lat, site.lng], Math.max(map.getZoom(), 8), { duration: 1 });
+
+  const media = await fetchSiteMedia(site);
+
+  // Guard against rapid clicks landing on the wrong site
+  if (document.getElementById('infoTitle').textContent !== site.name) return;
+
+  descEl.classList.remove('loading');
+  descEl.textContent = media.description || 'No structured description found for this site. See the source link below for available references.';
+
+  const imgWrap = document.getElementById('infoImageWrap');
+  if (media.image) {
+    document.getElementById('infoImage').src = media.image;
+    document.getElementById('infoImage').alt = site.name;
+    document.getElementById('infoImageCredit').innerHTML = media.sourceUrl
+      ? `Image: <a href="${media.sourceUrl}" target="_blank" rel="noopener">${media.imageCredit || 'source'}</a>`
+      : `Image: ${media.imageCredit || ''}`;
+    imgWrap.style.display = 'block';
+  } else {
+    imgWrap.style.display = 'none';
+  }
+
+  const linkItems = [`<a class="info-link" href="${osm}" target="_blank" rel="noopener">OSM ↗</a>`];
+  if (media.sourceUrl) {
+    linkItems.push(`<a class="info-link" href="${media.sourceUrl}" target="_blank" rel="noopener">${media.sourceLabel || 'Source'} ↗</a>`);
+  }
+  // Add any remaining source URLs not already used as the primary
+  (site.urls || []).forEach(u => {
+    if (u !== media.sourceUrl) {
+      let label = 'Source';
+      try { label = new URL(u).hostname.replace('www.', ''); } catch (e) {}
+      linkItems.push(`<a class="info-link" href="${u}" target="_blank" rel="noopener">${label} ↗</a>`);
+    }
+  });
+  document.getElementById('infoLinks').innerHTML = linkItems.join('');
+}
 
 })();
 </script>
