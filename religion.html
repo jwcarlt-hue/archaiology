@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Religion, Ritual &amp; Myth | archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500;1,600&family=Cinzel:wght@400;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{
+  --void:#0d0907;       /* near-black, warm ground */
+  --void-2:#171009;     /* raised panels */
+  --ember:#c9952f;      /* votive gold */
+  --ember-lt:#e0b65c;
+  --blood:#6e2a1f;      /* oxblood / sacrificial red */
+  --blood-lt:#a1503c;
+  --veil:#33524a;       /* faded jade — celestial mantle */
+  --veil-lt:#5a8378;
+  --parchment:#ece2cf;  /* warm text */
+  --smoke:rgba(236,226,207,.46);
+  --hair:rgba(236,226,207,.1);
+
+  --display:'Cormorant Garamond',Georgia,serif;
+  --rune:'Cinzel',serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --ui:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--void);
+  color:var(--parchment);
+  font-family:var(--body);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--ember-lt);}
+img{display:block;max-width:100%;}
+
+/* ══════════════════════ MASTHEAD ══════════════════════ */
+.masthead{position:sticky;top:0;left:0;right:0;z-index:1000;height:44px;
+  background:var(--void-2);border-bottom:1px solid var(--hair);
+  display:flex;align-items:center;padding:0 1.2rem;gap:1.5rem;overflow-x:auto;}
+.masthead::-webkit-scrollbar{display:none;}
+.rel-logo{font-family:var(--display);font-style:italic;font-size:1.05rem;font-weight:600;
+  color:var(--parchment);text-decoration:none;white-space:nowrap;}
+.rel-logo span{color:var(--ember);}
+.rel-nav-link{font-family:var(--ui);font-size:.64rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--smoke);text-decoration:none;transition:color .2s;white-space:nowrap;}
+.rel-nav-link:hover,.rel-nav-link.active{color:var(--ember-lt);}
+
+/* ══════════════════════ HERO COLLAGE ══════════════════════ */
+.hero{position:relative;min-height:78vh;overflow:hidden;background:var(--void);
+  display:flex;align-items:center;justify-content:center;}
+.hero-img{position:absolute;object-fit:cover;filter:sepia(.4) saturate(.85) contrast(1.08) brightness(.82);}
+.hero-img--taur{left:0;top:0;width:62%;height:100%;object-position:38% 42%;
+  opacity:.75;
+  mask-image:radial-gradient(ellipse 78% 92% at 32% 50%,#000 48%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 78% 92% at 32% 50%,#000 48%,transparent 100%);}
+.hero-img--bonampak{right:3%;top:4%;width:50%;height:62%;object-position:center 35%;
+  mix-blend-mode:screen;opacity:.6;
+  mask-image:radial-gradient(ellipse 80% 80% at 55% 45%,#000 42%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 80% at 55% 45%,#000 42%,transparent 100%);}
+.hero-img--apostles{left:0;bottom:0;width:100%;height:42%;object-position:center 30%;
+  mix-blend-mode:screen;opacity:.55;
+  mask-image:linear-gradient(to top,#000 30%,transparent 95%);
+  -webkit-mask-image:linear-gradient(to top,#000 30%,transparent 95%);}
+.hero-img--laozi{right:0;top:0;width:28%;height:100%;object-position:top center;
+  mix-blend-mode:screen;opacity:.6;
+  mask-image:linear-gradient(to left,#000 40%,transparent 96%);
+  -webkit-mask-image:linear-gradient(to left,#000 40%,transparent 96%);}
+.hero-vignette{position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 46%,transparent 0%,rgba(13,9,7,.55) 70%,rgba(13,9,7,.94) 100%),
+    linear-gradient(180deg,rgba(13,9,7,.35) 0%,rgba(13,9,7,.2) 30%,rgba(13,9,7,.55) 78%,rgba(13,9,7,.97) 100%);
+  pointer-events:none;}
+.hero-glow{position:absolute;left:50%;top:46%;width:46vw;height:46vw;max-width:640px;max-height:640px;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(201,149,47,.16) 0%,transparent 70%);
+  pointer-events:none;animation:ember-pulse 9s ease-in-out infinite;}
+@keyframes ember-pulse{0%,100%{opacity:.7;}50%{opacity:1;}}
+@media(prefers-reduced-motion:reduce){.hero-glow{animation:none;}}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:880px;padding:0 1.5rem;}
+.hero-eyebrow{font-family:var(--rune);font-size:.66rem;font-weight:600;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--ember-lt);margin-bottom:1.1rem;}
+.hero-title{font-family:var(--display);font-style:italic;font-weight:600;
+  font-size:clamp(2.6rem,8vw,5.6rem);line-height:1.05;color:var(--parchment);
+  text-shadow:0 0 36px rgba(201,149,47,.28),0 2px 28px rgba(0,0,0,.6);}
+.hero-sub{margin-top:1.3rem;font-family:var(--body);font-style:italic;font-size:clamp(.95rem,1.6vw,1.2rem);
+  color:var(--smoke);max-width:620px;margin-inline:auto;line-height:1.75;}
+.hero-credits{position:absolute;left:0;right:0;bottom:1.1rem;z-index:2;text-align:center;
+  font-family:var(--rune);font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(236,226,207,.32);padding:0 1.5rem;}
+.hero-credits span{margin:0 .55rem;}
+@media(max-width:720px){
+  .hero{min-height:84vh;}
+  .hero-img--taur{width:78%;height:55%;top:0;left:0;
+    mask-image:linear-gradient(to bottom,#000 45%,transparent 96%);
+    -webkit-mask-image:linear-gradient(to bottom,#000 45%,transparent 96%);}
+  .hero-img--bonampak{width:70%;height:38%;top:auto;bottom:30%;right:0;
+    mask-image:radial-gradient(ellipse 85% 85% at 60% 50%,#000 40%,transparent 100%);
+    -webkit-mask-image:radial-gradient(ellipse 85% 85% at 60% 50%,#000 40%,transparent 100%);}
+  .hero-img--apostles{height:34%;}
+  .hero-img--laozi{width:42%;height:48%;top:0;right:0;
+    mask-image:linear-gradient(to bottom left,#000 35%,transparent 92%);
+    -webkit-mask-image:linear-gradient(to bottom left,#000 35%,transparent 92%);}
+  .hero-credits{font-size:.5rem;line-height:1.8;}
+  .hero-credits span{display:inline-block;}
+}
+
+/* ══════════════════════ INTRO ══════════════════════ */
+.intro{max-width:760px;margin:0 auto;padding:4.2rem 1.5rem 3.4rem;text-align:center;}
+.intro-eyebrow{font-family:var(--rune);font-size:.6rem;font-weight:600;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--ember);margin-bottom:1.1rem;}
+.intro-title{font-family:var(--display);font-style:italic;font-weight:600;
+  font-size:clamp(1.7rem,3.4vw,2.6rem);color:var(--parchment);margin-bottom:1.2rem;line-height:1.2;}
+.intro p{font-size:1.02rem;color:rgba(236,226,207,.78);}
+.intro p + p{margin-top:1rem;}
+.intro-rule{width:64px;height:1px;background:var(--ember);margin:1.8rem auto 0;opacity:.5;}
+
+/* ══════════════════════ MAP SECTION ══════════════════════ */
+.atlas-section{max-width:1320px;margin:0 auto;padding:0 1.2rem 4rem;}
+.atlas-section-head{text-align:center;margin-bottom:1.8rem;}
+.atlas-section .intro-eyebrow,.atlas-section .intro-title{margin-bottom:.6rem;}
+.atlas-section .intro-title{margin-bottom:.4rem;}
+.atlas-section-sub{font-family:var(--body);font-style:italic;font-size:.92rem;color:var(--smoke);
+  max-width:600px;margin:.6rem auto 0;}
+
+.atlas-layout{position:relative;display:grid;grid-template-columns:240px 1fr;gap:1rem;
+  height:680px;}
+.atlas-dock{background:var(--void-2);border:1px solid var(--hair);padding:1rem;
+  display:flex;flex-direction:column;gap:1.1rem;overflow-y:auto;}
+.dock-card-label{font-family:var(--rune);font-size:.58rem;font-weight:600;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ember);margin-bottom:.6rem;}
+.dock-row{display:flex;flex-direction:column;gap:.4rem;}
+.dock-btn{font-family:var(--ui);font-size:.66rem;font-weight:600;letter-spacing:.04em;
+  text-align:left;padding:.5rem .65rem;background:rgba(255,255,255,.02);
+  border:1px solid var(--hair);color:var(--smoke);cursor:pointer;transition:all .15s;
+  border-radius:2px;}
+.dock-btn:hover{color:var(--parchment);border-color:rgba(201,149,47,.4);}
+.dock-btn.active{background:rgba(201,149,47,.14);color:var(--ember-lt);border-color:var(--ember);}
+.dock-note{font-family:var(--ui);font-size:.6rem;line-height:1.6;color:rgba(236,226,207,.32);
+  margin-top:.2rem;}
+.legend-row{display:flex;align-items:center;gap:.5rem;font-family:var(--ui);font-size:.64rem;color:var(--smoke);}
+.legend-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(255,255,255,.3);}
+#bible-status{font-family:var(--ui);font-size:.58rem;color:rgba(201,149,47,.6);letter-spacing:.04em;}
+
+.atlas-map-wrap{position:relative;border:1px solid var(--hair);overflow:hidden;}
+#religion-map{position:absolute;inset:0;}
+
+/* External atlas panels — overlay the map area */
+.atlas-panel{position:absolute;inset:0;z-index:650;background:rgba(13,9,7,.97);
+  display:none;flex-direction:column;}
+.atlas-panel.open{display:flex;}
+.atlas-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;
+  padding:.9rem 1.1rem;border-bottom:1px solid var(--hair);flex-wrap:wrap;}
+.atlas-kicker{font-family:var(--rune);font-size:.55rem;font-weight:600;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ember);margin-bottom:.3rem;}
+.atlas-title{font-family:var(--display);font-style:italic;font-size:1.25rem;font-weight:600;
+  color:var(--parchment);line-height:1.2;}
+.atlas-meta{font-family:var(--ui);font-size:.64rem;color:var(--smoke);margin-top:.3rem;line-height:1.6;}
+.atlas-meta a{color:var(--ember-lt);text-decoration:none;}
+.atlas-actions{display:flex;gap:.5rem;flex-shrink:0;}
+.atlas-link,.atlas-close{font-family:var(--ui);font-size:.6rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding:.5rem .8rem;border:1px solid var(--hair);
+  background:rgba(255,255,255,.02);color:var(--smoke);text-decoration:none;cursor:pointer;
+  transition:all .2s;white-space:nowrap;}
+.atlas-link:hover,.atlas-close:hover{color:var(--ember-lt);border-color:var(--ember);}
+.atlas-body{position:relative;flex:1;min-height:0;background:#070504;}
+.atlas-frame{width:100%;height:100%;border:0;background:#070504;}
+.atlas-note{position:absolute;left:14px;bottom:14px;max-width:380px;padding:.65rem .8rem;
+  background:rgba(13,9,7,.85);border:1px solid var(--hair);font-family:var(--ui);
+  font-size:.62rem;line-height:1.6;color:rgba(236,226,207,.55);z-index:3;}
+
+/* Bible place info drawer */
+.info-drawer{position:absolute;top:0;right:0;bottom:0;width:300px;max-width:88%;
+  background:var(--void-2);border-left:1px solid var(--hair);
+  transform:translateX(100%);transition:transform .25s ease;z-index:700;
+  padding:1.2rem 1.1rem;overflow-y:auto;}
+.info-drawer.open{transform:translateX(0);}
+.info-close{position:absolute;top:.7rem;right:.8rem;background:none;border:none;
+  color:var(--smoke);font-size:1.1rem;cursor:pointer;line-height:1;}
+.info-close:hover{color:var(--ember-lt);}
+.info-kicker{font-family:var(--rune);font-size:.56rem;font-weight:600;letter-spacing:.2em;
+  text-transform:uppercase;margin-bottom:.4rem;}
+.info-title{font-family:var(--display);font-style:italic;font-size:1.35rem;font-weight:600;
+  color:var(--parchment);margin-bottom:.6rem;line-height:1.25;}
+.info-badges{display:flex;gap:.4rem;margin-bottom:.8rem;flex-wrap:wrap;}
+.info-badge{font-family:var(--ui);font-size:.56rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding:.2rem .5rem;border:1px solid var(--hair);color:var(--smoke);}
+.info-coords{font-family:var(--ui);font-size:.7rem;color:var(--smoke);margin-bottom:1rem;}
+.info-refs{font-family:var(--body);font-size:.82rem;line-height:1.75;color:rgba(236,226,207,.78);
+  padding:.8rem;background:rgba(255,255,255,.02);border:1px solid var(--hair);margin-bottom:1rem;}
+.info-refs a{color:var(--ember-lt);}
+.info-links{display:flex;gap:.5rem;flex-wrap:wrap;}
+.info-link{font-family:var(--ui);font-size:.6rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding:.4rem .7rem;border:1px solid var(--hair);
+  color:var(--smoke);text-decoration:none;transition:all .2s;}
+.info-link:hover{color:var(--ember-lt);border-color:var(--ember);}
+
+@media(max-width:860px){
+  .atlas-layout{grid-template-columns:1fr;height:auto;}
+  .atlas-dock{flex-direction:row;flex-wrap:wrap;gap:.6rem;overflow-x:auto;overflow-y:visible;}
+  .dock-card{flex:1 1 100%;}
+  .dock-row{flex-direction:row;flex-wrap:wrap;}
+  .dock-btn{flex:1 1 auto;}
+  .atlas-map-wrap{height:480px;}
+  .info-drawer{width:100%;}
+}
+
+/* ══════════════════════ FOOTER ══════════════════════ */
+.rel-footer{border-top:1px solid var(--hair);padding:2.4rem 1.5rem 3rem;text-align:center;}
+.rel-footer-rule{width:48px;height:1px;background:var(--blood-lt);margin:0 auto 1.4rem;opacity:.6;}
+.rel-footer p{font-family:var(--ui);font-size:.66rem;letter-spacing:.04em;
+  color:rgba(236,226,207,.34);max-width:680px;margin:0 auto .6rem;line-height:1.9;}
+.rel-footer a{color:var(--ember-lt);text-decoration:none;}
+.rel-footer a:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ MASTHEAD ══════════════════════ -->
+<header class="masthead">
+  <a class="rel-logo" href="index.html">arch<span>AI</span>ology</a>
+  <a class="rel-nav-link" href="index.html">Home</a>
+  <a class="rel-nav-link" href="news.html">Feed</a>
+  <a class="rel-nav-link" href="map.html">Map</a>
+  <a class="rel-nav-link active" href="religion.html">Religion</a>
+  <a class="rel-nav-link" href="sky.html">Sky Archive</a>
+  <a class="rel-nav-link" href="maritime.html">Maritime</a>
+  <a class="rel-nav-link" href="linguistics.html">Linguistics</a>
+  <a class="rel-nav-link" href="inscriptions.html">Inscriptions</a>
+  <a class="rel-nav-link" href="maya_inscriptions.html">Maya</a>
+  <a class="rel-nav-link" href="bioanthro.html">Bioanthro</a>
+  <a class="rel-nav-link" href="luwian.html">Luwian</a>
+</header>
+
+<!-- ══════════════════════ HERO COLLAGE ══════════════════════ -->
+<section class="hero">
+  <img class="hero-img hero-img--taur" src="tauroctonymural.jpg" alt="Mithraic tauroctony mural — Mithras slaying the bull">
+  <img class="hero-img hero-img--bonampak" src="bonampakroom3.jpg" alt="Maya court ritual scene, Bonampak murals">
+  <img class="hero-img hero-img--apostles" src="jesusapostles.jpg" alt="Early Christian fresco of Christ and the apostles, Roman catacomb">
+  <img class="hero-img hero-img--laozi" src="Zhang_Lu-Laozi_Riding_an_Ox.jpg" alt="Laozi Riding an Ox, ink painting by Zhang Lu">
+  <div class="hero-glow"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Sacred Geography · Comparative Ritual</div>
+    <h1 class="hero-title">Religion, Ritual &amp; Myth</h1>
+    <p class="hero-sub">From the tauroctony of the Mithraic mysteries to the painted court of Bonampak,
+      from catacomb apostles to Laozi astride his ox — an archive of how civilizations have
+      mapped, painted, and inhabited the sacred.</p>
+  </div>
+  <div class="hero-credits">
+    <span>Mithraic Tauroctony, Roman</span>
+    <span>Maya Court Ritual, Bonampak Room 3</span>
+    <span>Apostles, Roman Catacomb Fresco</span>
+    <span>Laozi Riding an Ox — Zhang Lu, Ming Dynasty</span>
+  </div>
+</section>
+
+<!-- ══════════════════════ INTRO ══════════════════════ -->
+<section class="intro">
+  <div class="intro-eyebrow">An Archive of the Sacred</div>
+  <h2 class="intro-title">Where belief left a mark on the world</h2>
+  <p>Across every culture archAIology studies, ritual and myth are inseparable from place —
+    a cave where a bull is slain beneath the stars, a court where a king receives tribute
+    beneath a jaguar canopy, a catacomb chamber where the dead are gathered before an
+    enthroned teacher, a riverbank where a sage rides west on the back of an ox.</p>
+  <p>This page gathers that sacred geography into one interactive atlas: biblical place
+    names, Mithraic temples and spelaea, the missionary geography of early Christianity,
+    the textual world of the Pāli Canon, and the episcopal networks of the late antique
+    Mediterranean.</p>
+  <div class="intro-rule"></div>
+</section>
+
+<!-- ══════════════════════ SACRED GEOGRAPHY MAP ══════════════════════ -->
+<section class="atlas-section">
+  <div class="atlas-section-head">
+    <div class="intro-eyebrow">Sacred Geography</div>
+    <h2 class="intro-title">An Interactive Atlas of Belief</h2>
+    <p class="atlas-section-sub">Toggle biblical place names directly on the map, or open a
+      curated external atlas alongside it — each maintained by its own research project.</p>
+  </div>
+
+  <div class="atlas-layout">
+    <nav class="atlas-dock">
+      <div class="dock-card">
+        <div class="dock-card-label">Bible Geocoding</div>
+        <div class="dock-row">
+          <button class="dock-btn" id="bible-btn" onclick="toggleBibleLayer()">Show Bible Places</button>
+        </div>
+        <div id="bible-legend" style="display:none;margin-top:.7rem;display:flex;flex-direction:column;gap:.4rem;">
+          <div class="legend-row"><div class="legend-dot" style="background:#e8c06a;"></div>Land place</div>
+          <div class="legend-row"><div class="legend-dot" style="background:#6ab4e8;"></div>Water / sea</div>
+          <div id="bible-status"></div>
+        </div>
+        <div class="dock-note">OpenBible.info geocoding · click a marker for references</div>
+      </div>
+
+      <div class="dock-card">
+        <div class="dock-card-label">External Atlases</div>
+        <div class="dock-row" id="atlas-dock-buttons"></div>
+        <div class="dock-note">Opens a curated atlas in place of the map. If a frame is
+          blocked by the source site, use the open-in-new-tab link.</div>
+      </div>
+    </nav>
+
+    <div class="atlas-map-wrap">
+      <div id="religion-map"></div>
+      <div class="info-drawer" id="infoDrawer">
+        <button class="info-close" id="infoClose">&times;</button>
+        <div class="info-kicker" id="infoKicker"></div>
+        <div class="info-title" id="infoTitle"></div>
+        <div class="info-badges" id="infoBadges"></div>
+        <div class="info-coords" id="infoCoords"></div>
+        <div class="info-refs" id="infoRefs" style="display:none;"></div>
+        <div class="info-links" id="infoLinks"></div>
+      </div>
+      <div id="atlas-panels"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ FOOTER ══════════════════════ -->
+<footer class="rel-footer">
+  <div class="rel-footer-rule"></div>
+  <p>Sacred geography data: <a href="https://www.openbible.info/geo/" target="_blank" rel="noopener">OpenBible.info</a>
+    (Bible Geocoding, CC) · <a href="https://www.mithraeum.eu" target="_blank" rel="noopener">The New Mithraeum</a>,
+    used with permission · <a href="https://suttacentral.net" target="_blank" rel="noopener">SuttaCentral</a> ·
+    <a href="https://www.intofarlands.com" target="_blank" rel="noopener">Into Far Lands</a> ·
+    <a href="https://awmc.unc.edu" target="_blank" rel="noopener">Ancient World Mapping Center</a>, UNC Chapel Hill.</p>
+  <p>Bonampak Room 3 mural reproduction · Roman catacomb fresco of Christ and the Apostles ·
+    Zhang Lu, <em>Laozi Riding an Ox</em> (Ming dynasty) · Mithraic tauroctony fresco.
+    All collage images are public-domain reproductions of ancient and historical works.</p>
+  <p><a href="index.html">&larr; Back to archAIology</a></p>
+</footer>
+
+<!-- ══════════════════════ SCRIPTS ══════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function(){
+
+// ── Map init — dark sacred basemap, framed on the Old World ─────────────────
+const map = L.map('religion-map', {
+  center: [27, 32],
+  zoom: 3,
+  zoomControl: true,
+  attributionControl: true,
+});
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  subdomains: 'abcd',
+  maxZoom: 19,
+}).addTo(map);
+L.control.zoom({position:'bottomright'}).addTo(map);
+
+// ══════════════════════════════════════════════════════════════════════════
+// EXTERNAL ATLASES — config-driven panels + dock buttons
+// ══════════════════════════════════════════════════════════════════════════
+const ATLASES = [
+  {
+    id: 'mithraeum',
+    label: 'Mithraeum',
+    kicker: 'External atlas · The New Mithraeum',
+    title: 'Map of Mithraic Monuments',
+    meta: 'Source: <a href="https://www.mithraeum.eu/map?tag=all" target="_blank" rel="noopener">mithraeum.eu/map</a> &nbsp;·&nbsp; Temples, shrines, caves &amp; spelaea of Mithras &nbsp;·&nbsp; Roman Empire-wide coverage',
+    url: 'https://www.mithraeum.eu/map?tag=all',
+    note: 'The New Mithraeum. Interactive map of Mithraic temples, shrines, caves, and spelaea across the Roman Empire — with associated objects, reliefs, and sculpture at city-level findspot resolution. Embedded with permission from Gaby Würzer. If the frame is blocked, use the open-in-new-tab link.',
+  },
+  {
+    id: 'sutta',
+    label: 'SuttaCentral',
+    kicker: 'External atlas · SuttaCentral',
+    title: 'Geography of the Early Buddhist Texts',
+    meta: 'Source: <a href="https://suttacentral.net/map?lang=en" target="_blank" rel="noopener">suttacentral.net/map</a> &nbsp;·&nbsp; Place names from the Pāli Canon &nbsp;·&nbsp; Ganges basin &amp; northern India',
+    url: 'https://suttacentral.net/map?lang=en',
+    note: 'SuttaCentral\u2019s map plots place names that occur across the early Buddhist suttas — the towns, rivers, and kingdoms of the Buddha\u2019s world in the Ganges basin. If the frame is blocked by SuttaCentral\u2019s site policy, use the open-in-new-tab link.',
+  },
+  {
+    id: 'paul',
+    label: "Paul's Journeys",
+    kicker: 'External atlas · Into Far Lands',
+    title: "Map of Paul's Missionary Journeys",
+    meta: 'Source: <a href="https://www.intofarlands.com/map-of-pauls-journeys" target="_blank" rel="noopener">intofarlands.com</a> &nbsp;·&nbsp; Acts of the Apostles &amp; the Pauline epistles &nbsp;·&nbsp; Eastern Mediterranean',
+    url: 'https://www.intofarlands.com/map-of-pauls-journeys',
+    note: 'A travel-mapped reconstruction of Paul\u2019s missionary journeys through Asia Minor, Greece, and the Levant as recorded in Acts. If the frame is blocked, use the open-in-new-tab link.',
+  },
+  {
+    id: 'nicaea',
+    label: 'Council of Nicaea',
+    kicker: 'External atlas · Ancient World Mapping Center',
+    title: 'Bishoprics at the Council of Nicaea, 325 CE',
+    meta: 'Source: <a href="https://awmc.github.io/council-of-nicaea/" target="_blank" rel="noopener">awmc.github.io/council-of-nicaea</a> &nbsp;·&nbsp; First Ecumenical Council &nbsp;·&nbsp; AWMC, UNC Chapel Hill',
+    url: 'https://awmc.github.io/council-of-nicaea/',
+    note: 'Episcopal sees represented at the First Ecumenical Council of Nicaea, mapped by the Ancient World Mapping Center (UNC Chapel Hill). If the frame is blocked, use the open-in-new-tab link.',
+  },
+  {
+    id: 'spain',
+    label: 'Spanish Bishoprics',
+    kicker: 'External atlas · Ancient World Mapping Center',
+    title: 'Bishoprics of Late Antique Spain',
+    meta: 'Source: <a href="https://awmc.github.io/spanishbishoprics/" target="_blank" rel="noopener">awmc.github.io/spanishbishoprics</a> &nbsp;·&nbsp; Episcopal sees of Hispania, 4th\u20137th c. CE &nbsp;·&nbsp; AWMC, UNC Chapel Hill',
+    url: 'https://awmc.github.io/spanishbishoprics/',
+    note: 'The episcopal network of late antique Hispania, mapped by the Ancient World Mapping Center (UNC Chapel Hill) — sees of the Visigothic and late Roman church. If the frame is blocked, use the open-in-new-tab link.',
+  },
+];
+
+const dockButtons = document.getElementById('atlas-dock-buttons');
+const panelsHost  = document.getElementById('atlas-panels');
+
+ATLASES.forEach(a => {
+  // Dock button
+  const btn = document.createElement('button');
+  btn.className = 'dock-btn';
+  btn.id = `atlas-btn-${a.id}`;
+  btn.textContent = a.label;
+  btn.onclick = () => toggleAtlas(a.id);
+  dockButtons.appendChild(btn);
+
+  // Panel
+  const panel = document.createElement('div');
+  panel.className = 'atlas-panel';
+  panel.id = `atlas-panel-${a.id}`;
+  panel.innerHTML = `
+    <div class="atlas-head">
+      <div>
+        <div class="atlas-kicker">${a.kicker}</div>
+        <div class="atlas-title">${a.title}</div>
+        <div class="atlas-meta">${a.meta}</div>
+      </div>
+      <div class="atlas-actions">
+        <a class="atlas-link" href="${a.url}" target="_blank" rel="noopener">Open in new tab</a>
+        <button class="atlas-close" type="button" onclick="closeAtlas('${a.id}')">Close</button>
+      </div>
+    </div>
+    <div class="atlas-body">
+      <iframe class="atlas-frame" src="${a.url}" title="${a.title}" loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <div class="atlas-note">${a.note}</div>
+    </div>`;
+  panelsHost.appendChild(panel);
+});
+
+function closeAllAtlases(){
+  ATLASES.forEach(a => {
+    document.getElementById(`atlas-panel-${a.id}`).classList.remove('open');
+    document.getElementById(`atlas-btn-${a.id}`).classList.remove('active');
+  });
+}
+
+window.toggleAtlas = function(id){
+  const panel = document.getElementById(`atlas-panel-${id}`);
+  const isOpen = panel.classList.contains('open');
+  closeAllAtlases();
+  closeInfoDrawer();
+  if (!isOpen){
+    panel.classList.add('open');
+    document.getElementById(`atlas-btn-${id}`).classList.add('active');
+  }
+};
+window.closeAtlas = function(id){
+  document.getElementById(`atlas-panel-${id}`).classList.remove('open');
+  document.getElementById(`atlas-btn-${id}`).classList.remove('active');
+};
+
+// ══════════════════════════════════════════════════════════════════════════
+// INFO DRAWER — shared by Bible-place clicks
+// ══════════════════════════════════════════════════════════════════════════
+const infoDrawer = document.getElementById('infoDrawer');
+document.getElementById('infoClose').onclick = closeInfoDrawer;
+function closeInfoDrawer(){ infoDrawer.classList.remove('open'); }
+function openInfoDrawer(){ closeAllAtlases(); infoDrawer.classList.add('open'); }
+
+// ══════════════════════════════════════════════════════════════════════════
+// BIBLE GEOCODING LAYER — ported from map.html (OpenBible.info, CC)
+// ══════════════════════════════════════════════════════════════════════════
+let bibleOn = false, bibleLayer = null, bibleDataPromise = null;
+
+function bibleIcon(isWater) {
+  const color = isWater ? '#6ab4e8' : '#e8c06a';
+  return L.divIcon({
+    html: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12">
+      <circle cx="6" cy="6" r="5" fill="${color}" fill-opacity=".88"
+        stroke="rgba(255,255,255,.45)" stroke-width="1.5"/>
+    </svg>`,
+    className: '', iconSize: [12, 12], iconAnchor: [6, 6]
+  });
+}
+
+async function loadBibleData() {
+  if (!bibleDataPromise) {
+    bibleDataPromise = (async () => {
+      const res = await fetch('map-data/all.kmz');
+      if (!res.ok) throw new Error(`KMZ fetch failed: ${res.status}`);
+      const buf = await res.arrayBuffer();
+
+      if (!window.JSZip) {
+        await new Promise((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+          s.onload = resolve;
+          s.onerror = reject;
+          document.head.appendChild(s);
+        });
+      }
+      const JSZip = window.JSZip;
+      const zip = await JSZip.loadAsync(buf);
+      const kmlText = await zip.file('doc.kml').async('string');
+
+      const parser = new DOMParser();
+      const kml = parser.parseFromString(kmlText, 'text/xml');
+
+      const places = [];
+      const topFolders = kml.documentElement.querySelectorAll(':scope > Document > Folder');
+      topFolders.forEach(folder => {
+        const placeName = folder.querySelector(':scope > name')?.textContent?.trim() || '';
+        const descEl    = folder.querySelector(':scope > description');
+        const bibleRefs = descEl ? descEl.textContent.trim() : '';
+
+        const placemarks = folder.querySelectorAll('Placemark');
+        placemarks.forEach(pm => {
+          const styleUrl = pm.querySelector('styleUrl')?.textContent || '';
+          const isRepPoint = styleUrl.includes('representativepoint') || styleUrl === '#landpoint' || styleUrl === '#waterpoint';
+          if (!isRepPoint) return;
+          const coordEl = pm.querySelector('Point > coordinates');
+          if (!coordEl) return;
+          const parts = coordEl.textContent.trim().split(',');
+          const lng = parseFloat(parts[0]);
+          const lat = parseFloat(parts[1]);
+          if (isNaN(lat) || isNaN(lng)) return;
+          const isWater = styleUrl.includes('water');
+          places.push({ name: placeName, lat, lng, bibleRefs, isWater });
+        });
+      });
+      return places;
+    })();
+  }
+  return bibleDataPromise;
+}
+
+async function buildBibleLayer() {
+  const places = await loadBibleData();
+  const g = L.layerGroup();
+  places.forEach(p => {
+    const marker = L.marker([p.lat, p.lng], { icon: bibleIcon(p.isWater) });
+    const refsPlain = p.bibleRefs.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    const refsHtml  = p.bibleRefs;
+
+    marker.bindTooltip(
+      `<b>${p.name}</b>${refsPlain ? '<br><span style="color:rgba(240,220,160,.7);font-size:.62rem">' + refsPlain + '</span>' : ''}`,
+      { sticky: true }
+    );
+    marker.on('click', () => showBibleDetail(p, refsHtml));
+    g.addLayer(marker);
+  });
+  return { layer: g, count: places.length };
+}
+
+function showBibleDetail(p, refsHtml) {
+  const isWater = p.isWater;
+  document.getElementById('infoKicker').textContent = isWater ? 'Water / River' : 'Biblical Land Place';
+  document.getElementById('infoKicker').style.color = isWater ? '#6ab4e8' : '#e8c06a';
+  document.getElementById('infoTitle').textContent = p.name;
+  document.getElementById('infoBadges').innerHTML =
+    `<span class="info-badge">OpenBible.info</span>` +
+    `<span class="info-badge">${isWater ? 'Water' : 'Land'}</span>`;
+  document.getElementById('infoCoords').textContent = `${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}`;
+
+  const refsPlain = refsHtml || '';
+  const refsBox = document.getElementById('infoRefs');
+  if (refsPlain) {
+    refsBox.style.display = 'block';
+    refsBox.innerHTML = refsPlain;
+  } else {
+    refsBox.style.display = 'none';
+  }
+
+  const osm = `https://www.openstreetmap.org/?mlat=${p.lat}&mlon=${p.lng}&zoom=12`;
+  document.getElementById('infoLinks').innerHTML =
+    `<a class="info-link" href="https://www.openbible.info/geo/" target="_blank" rel="noopener">OpenBible ↗</a>` +
+    `<a class="info-link" href="${osm}" target="_blank" rel="noopener">OSM ↗</a>`;
+
+  openInfoDrawer();
+  map.flyTo([p.lat, p.lng], Math.max(map.getZoom(), 6), {duration: 1});
+}
+
+window.toggleBibleLayer = async function () {
+  const btn = document.getElementById('bible-btn');
+  const leg = document.getElementById('bible-legend');
+  const status = document.getElementById('bible-status');
+
+  if (!bibleLayer) {
+    btn.disabled = true;
+    btn.textContent = 'Loading Places…';
+    try {
+      const { layer, count } = await buildBibleLayer();
+      bibleLayer = layer;
+      if (status) status.textContent = `${count} places loaded`;
+    } catch (e) {
+      console.warn('Bible layer failed to load:', e);
+      btn.textContent = 'Unavailable';
+      btn.disabled = false;
+      bibleDataPromise = null;
+      return;
+    }
+    btn.disabled = false;
+  }
+
+  if (bibleOn) {
+    map.removeLayer(bibleLayer);
+    btn.textContent = 'Show Bible Places';
+    btn.classList.remove('active');
+    leg.style.display = 'none';
+    bibleOn = false;
+  } else {
+    bibleLayer.addTo(map);
+    btn.textContent = 'Hide Bible Places';
+    btn.classList.add('active');
+    leg.style.display = 'flex';
+    bibleOn = true;
+  }
+};
+
+})();
+</script>
+</body>
+</html>
