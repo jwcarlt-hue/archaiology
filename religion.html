@@ -334,6 +334,18 @@ img{display:block;max-width:100%;}
       </div>
 
       <div class="dock-card">
+        <div class="dock-card-label">Apollo Cult Sites</div>
+        <div class="dock-row">
+          <button class="dock-btn" id="apollo-btn" onclick="toggleApolloLayer()">Show Apollo Cult Sites</button>
+        </div>
+        <div id="apollo-legend" style="display:none;margin-top:.7rem;display:flex;flex-direction:column;gap:.4rem;">
+          <div class="legend-row"><div class="legend-dot" style="background:#e8c454;"></div>Temple or sanctuary</div>
+          <div id="apollo-status"></div>
+        </div>
+        <div class="dock-note">25 temples &amp; sanctuaries · click a marker for site notes and a reconstruction image</div>
+      </div>
+
+      <div class="dock-card">
         <div class="dock-card-label">External Atlases</div>
         <div class="dock-row" id="atlas-dock-buttons"></div>
         <div class="dock-note">Opens a curated atlas in place of the map. If a frame is
@@ -376,6 +388,9 @@ img{display:block;max-width:100%;}
     <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a>, and
     <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a>
     (CC BY-SA), loaded on demand per site.</p>
+  <p>Apollo temple site notes draw on Wikipedia and ToposText/Pleiades; accompanying
+    images are AI-generated digital reconstructions, not photographs of the
+    surviving remains.</p>
   <p>Bonampak Room 3 mural reproduction · Roman catacomb fresco of Christ and the Apostles ·
     Zhang Lu, <em>Laozi Riding an Ox</em> (Ming dynasty) · Mithraic tauroctony fresco.
     All collage images are public-domain reproductions of ancient and historical works.</p>
@@ -1480,6 +1495,318 @@ function showArtemisDetail(site) {
     linkItems.push(`<a class="info-link" href="${url}" target="_blank" rel="noopener">${label} ↗</a>`);
   };
   addLink(site.sourceUrl, site.coordSource || 'Source');
+  (site.noteSources || []).forEach(u => {
+    let label = 'Source';
+    try { label = new URL(u).hostname.replace('www.', ''); } catch (e) {}
+    addLink(u, label);
+  });
+  linkItems.push(`<a class="info-link" href="${osm}" target="_blank" rel="noopener">OSM ↗</a>`);
+  document.getElementById('infoLinks').innerHTML = linkItems.join('');
+
+  openInfoDrawer();
+  map.flyTo([site.lat, site.lng], Math.max(map.getZoom(), 7), { duration: 1 });
+}
+
+
+// 25 Apollo temples and cult sites
+// Source: user-supplied gazetteer with site notes, citations, and reconstruction images
+// Images: apollo-<slug>.jpg, extracted from embedded Excel Rich Data picture cells.
+// Lives flat in the repo root alongside index.html, same as the other site thumbnails.
+const APOLLO_SITES = [
+  {id:1, name:'Amyclae', mappedPlace:'Sanctuary of Apollo Amyklaios, Agia Kyriaki hill, Amyklai/Sparta', lat:37.032, lng:22.427,
+   precision:'sanctuary_approx', confidence:'medium', noteConfidence:'high',
+   coordNote:'Exact point should be checked against a GIS plan; source locates the sanctuary 5 km SW of Sparta on Agia Kyriaki hill.',
+   coordSource:'Amyklaion project / Greek Ministry page; coordinate estimated from Agia Kyriaki sanctuary hill', coordSourceUrl:'https://amyklaion.gr/en/sanctuary/location/',
+   notes:'Amyclae/Amyklai is the Spartan sanctuary of Apollo Amyklaios, associated with the colossal cult image, the so-called Throne of Apollo, and the Hyakinthia festival.',
+   noteSources:["https://en.wikipedia.org/wiki/Amyclae", "https://amyklaion.gr/en/sanctuary/location/"],
+   image:'apollo-amyclae.jpg'},
+  {id:2, name:'Temple of the Delians', mappedPlace:'Sanctuary of Apollo / Temple of the Delians, Delos', lat:37.4004, lng:25.2666,
+   precision:'sanctuary', confidence:'high', noteConfidence:'high',
+   coordNote:'Temple of the Delians is inside the Sanctuary of Apollo on Delos; coordinate is sanctuary-level, not stylobate centroid.',
+   coordSource:'ToposText / Pleiades representative point for Delian Apollo sanctuary', coordSourceUrl:'https://topostext.org/place/374253SSan',
+   notes:'The Temple of the Delians stands within the Delian Sanctuary of Apollo; use as a Delos Apollo-sanctuary row, not as a separate polis-level coordinate.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_the_Delians", "https://topostext.org/place/374253SSan"],
+   image:'apollo-temple-of-the-delians.jpg'},
+  {id:3, name:'Temple of Apollo (Delphi)', mappedPlace:'Temple of Apollo at Delphi', lat:38.48225, lng:22.5011,
+   precision:'monument', confidence:'high', noteConfidence:'high',
+   coordNote:'Classical temple of Apollo at Delphi.',
+   coordSource:'ToposText / Wikipedia', coordSourceUrl:'https://topostext.org/place/385225SApo',
+   notes:'Temple of Apollo at Delphi: central building of the Delphic sanctuary and seat of the Pythia; rebuilt through several phases after destruction and fire.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo_(Delphi)", "https://topostext.org/place/385225SApo"],
+   image:'apollo-temple-of-apollo-delphi.jpg'},
+  {id:4, name:'Temple of Apollo (Melite)', mappedPlace:'Temple of Apollo, Melite/Mdina, Malta', lat:35.8858, lng:14.403,
+   precision:'city_approx', confidence:'low', noteConfidence:'medium',
+   coordNote:'Destroyed Roman temple in ancient Melite; exact findspot/crepidoma point not secure, so mapped to Mdina/Melite approximate center.',
+   coordSource:'Wikipedia location plus Mdina/Melite city coordinate approximation', coordSourceUrl:'https://en.wikipedia.org/wiki/Temple_of_Apollo_(Melite)',
+   notes:'Apollo temple at Melite/Mdina: small Roman-period Maltese Apollo cult site known from antiquarian/archaeological traces; keep coordinate and interpretation cautious.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo_(Melite)"],
+   image:'apollo-temple-of-apollo-melite.jpg'},
+  {id:5, name:'Temple of Apollo Palatinus', mappedPlace:'Temple of Apollo Palatinus, Palatine Hill, Rome', lat:41.8886, lng:12.4869,
+   precision:'monument_approx', confidence:'medium', noteConfidence:'high',
+   coordNote:'Precise centroid should be checked against an archaeological plan; mapped to Palatine Apollo platform area.',
+   coordSource:'Wikipedia/Digital Augustan Rome location; coordinate estimated at Palatine temple complex near House of Augustus', coordSourceUrl:'https://en.wikipedia.org/wiki/Temple_of_Apollo_Palatinus',
+   notes:'Augustan Temple of Apollo Palatinus on the Palatine, dedicated after Actium; linked to Augustusâ€™ house, the portico, libraries, and transfer of Sibylline books.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo_Palatinus"],
+   image:'apollo-temple-of-apollo-palatinus.jpg'},
+  {id:6, name:'Temple of Apollo Patroos', mappedPlace:'Temple of Apollo Patroos, Athenian Agora, Athens', lat:37.97554, lng:23.7221,
+   precision:'monument', confidence:'high', noteConfidence:'high',
+   coordNote:'Foundations on west side of Athenian Agora.',
+   coordSource:'ToposText / Pleiades', coordSourceUrl:'https://topostext.org/place/380237SPtr',
+   notes:'Temple of Apollo Patroos in the Athenian Agora; Apollo here functions as ancestral/fatherly god of Ion and the Ionians, with strong civic-genealogical weight.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo_Patroos", "https://topostext.org/place/380237SPtr"],
+   image:'apollo-temple-of-apollo-patroos.jpg'},
+  {id:7, name:'Temple of Apollo (Pompeii)', mappedPlace:'Temple of Apollo, Pompeii', lat:40.74921, lng:14.4844,
+   precision:'monument', confidence:'high', noteConfidence:'high',
+   coordNote:'Sanctuary of Apollo in Pompeii forum area.',
+   coordSource:'Wikipedia coordinates', coordSourceUrl:'https://en.wikipedia.org/wiki/Temple_of_Apollo_(Pompeii)',
+   notes:'Pompeii Sanctuary/Temple of Apollo beside the forum; an archaic cult place rebuilt in Roman form, with courtyard, altar, and Apollo/Artemis statuary.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo_(Pompeii)", "https://pompeiisites.org/en/excavations-plan-en/sanctuary-of-apollo/"],
+   image:'apollo-temple-of-apollo-pompeii.jpg'},
+  {id:8, name:'Ptoion', mappedPlace:'Sanctuary of Apollo Ptoios, Mt Ptoion / Kastraki, Boeotia', lat:38.45915, lng:23.25193,
+   precision:'sanctuary', confidence:'high', noteConfidence:'high',
+   coordNote:'Ptoion row mapped to the oracle/sanctuary of Apollo Ptoios rather than the whole mountain range.',
+   coordSource:'ToposText', coordSourceUrl:'https://topostext.org/place/385233SPto',
+   notes:'Ptoion / Mt. Ptoion is the Boeotian oracular sanctuary of Apollo Ptoios near Akraiphia; strong oracle and regional cult significance.',
+   noteSources:["https://en.wikipedia.org/wiki/Ptoion", "https://topostext.org/place/385233SPto"],
+   image:'apollo-ptoion.jpg'},
+  {id:9, name:'Sanctuary of Apollo Abaeus', mappedPlace:'Sanctuary / oracle of Apollo Abaeus at Kalapodi', lat:38.6366, lng:22.8956,
+   precision:'sanctuary', confidence:'high', noteConfidence:'high',
+   coordNote:'Probable site of Apollo of Abai / Kalapodi sanctuary.',
+   coordSource:'ToposText', coordSourceUrl:'https://topostext.org/place/386229SAba',
+   notes:'Sanctuary of Apollo Abaeus at Abae in Phocis, a famous oracle of Apollo; ancient reports emphasize its destruction by Persians and later historical rebuilding/continuity.',
+   noteSources:["https://en.wikipedia.org/wiki/Sanctuary_of_Apollo_Abaeus", "https://topostext.org/place/386229SAba"],
+   image:'apollo-sanctuary-of-apollo-abaeus.jpg'},
+  {id:10, name:'Sanctuary of Apollo Maleatas', mappedPlace:'Sanctuary of Apollo Maleatas, Mt Kynortion, Epidaurus', lat:37.599, lng:23.086,
+   precision:'sanctuary', confidence:'high', noteConfidence:'high',
+   coordNote:'Earliest sanctuary at Epidaurus, on north slope of Mt Kynortion above the Asklepieion.',
+   coordSource:'ToposText', coordSourceUrl:'https://topostext.org/place/376231SApo',
+   notes:'Sanctuary of Apollo Maleatas on Mt. Kynortion above Epidaurus; important healing cult predecessor/partner to Asklepios and key for Apollo-as-healer contexts.',
+   noteSources:["https://en.wikipedia.org/wiki/Sanctuary_of_Apollo_Maleatas", "https://topostext.org/place/376231SApo"],
+   image:'apollo-sanctuary-of-apollo-maleatas.jpg'},
+  {id:11, name:'Temple C (Selinus)', mappedPlace:'Temple C, Selinus/Selinunte, Sicily', lat:37.58317, lng:12.825325,
+   precision:'monument', confidence:'high', noteConfidence:'medium',
+   coordNote:'Temple C on the acropolis of Selinus; usually identified as dedicated to Apollo by inscription.',
+   coordSource:'Pleiades', coordSourceUrl:'https://pleiades.stoa.org/places/795363785',
+   notes:'Temple C at Selinus/Selinunte is an Archaic Doric temple commonly linked with Apollo, though deity attribution should be kept cautious in catalogue use.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_C_(Selinus)", "https://pleiades.stoa.org/places/795363785"],
+   image:'apollo-temple-c-selinus.jpg'},
+  {id:12, name:'Temple of Apollo (Side)', mappedPlace:'Temple of Apollo, Side, Antalya Province, Turkey', lat:36.7643, lng:31.3868,
+   precision:'monument', confidence:'high', noteConfidence:'high',
+   coordNote:'Temple at tip of Side peninsula beside the sea.',
+   coordSource:'Turkish Archaeological News', coordSourceUrl:'https://turkisharchaeonews.net/object/ancient-temples-and-byzantine-basilica-side',
+   notes:'Temple of Apollo at Side is a Roman-period harbour/shoreline sanctuary; restored columns make it a strong Window/carrier site, but not an early Greek oracle context.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo_(Side)", "https://turkisharchaeonews.net/object/ancient-temples-and-byzantine-basilica-side"],
+   image:'apollo-temple-of-apollo-side.jpg'},
+  {id:13, name:'Temple of Apollo Sosianus', mappedPlace:'Temple of Apollo Sosianus, Rome', lat:41.8925, lng:12.4797,
+   precision:'monument', confidence:'high', noteConfidence:'high',
+   coordNote:'Temple behind the Theatre of Marcellus / Forum Holitorium area.',
+   coordSource:'ToposText', coordSourceUrl:'https://topostext.org/place/419125SApo',
+   notes:'Temple of Apollo Sosianus/Medicus in Rome, outside the pomerium near the Theatre of Marcellus; old healing/plague cult, rebuilt by Gaius Sosius under Augustus.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo_Sosianus", "https://topostext.org/place/419125SApo", "https://www.turismoroma.it/en/places/templi-di-apollo-sosiano-e-di-bellona"],
+   image:'apollo-temple-of-apollo-sosianus.jpg'},
+  {id:14, name:'Temple of Apollo (Syracuse)', mappedPlace:'Temple of Apollo, Ortygia, Syracuse', lat:37.0639, lng:15.2933,
+   precision:'monument_approx', confidence:'medium', noteConfidence:'high',
+   coordNote:'Archaic temple at Piazza Pancali, Ortygia; coordinate is an approximate monument point.',
+   coordSource:'Wikipedia location and Piazza Pancali/Ortygia mapping', coordSourceUrl:'https://en.wikipedia.org/wiki/Temple_of_Apollo_(Syracuse)',
+   notes:'Syracuse/Ortygia Temple of Apollo: early monumental Doric temple in Sicily, later reused as church/mosque/church; key western Greek Apollo architecture row.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo_(Syracuse)"],
+   image:'apollo-temple-of-apollo-syracuse.jpg'},
+  {id:15, name:'Temple of Apollo Aktios', mappedPlace:'Temple of Apollo Aktios / Actian Apollo, Actium', lat:38.9509, lng:20.7683,
+   precision:'sanctuary', confidence:'high', noteConfidence:'high',
+   coordNote:'Sanctuary of Actian Apollo near Aktio marina.',
+   coordSource:'ToposText / Digital Atlas of the Roman Empire', coordSourceUrl:'https://topostext.org/place/390208SAkt',
+   notes:'Temple/sanctuary of Apollo Aktios at Actium; Actian Apollo becomes especially prominent after Octavianâ€™s victory and the Nicopolis/Actian games complex.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo_Aktios", "https://topostext.org/place/390208SAkt"],
+   image:'apollo-temple-of-apollo-aktios.jpg'},
+  {id:16, name:'Temple of Apollo at Daphne, Antioch', mappedPlace:'Daphne, suburb/sanctuary of Apollo near Antioch', lat:36.13, lng:36.1442,
+   precision:'suburb_sanctuary_approx', confidence:'low', noteConfidence:'medium',
+   coordNote:'Temple site at Daphne is not securely pinpointed; coordinate maps the Daphne sanctuary/suburb area.',
+   coordSource:'ToposText', coordSourceUrl:'https://topostext.org/place/361361UDap',
+   notes:'Daphne near Antioch was famed for Apolloâ€™s sanctuary/grove and cult statue; exact temple point is uncertain, so use as a sanctuary-district rather than monument centroid.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo_at_Daphne,_Antioch", "https://topostext.org/place/361361UDap"],
+   image:'apollo-temple-of-apollo-at-daphne-antioch.jpg'},
+  {id:17, name:'Temple of Apollo Epicurius at Bassae', mappedPlace:'Temple of Apollo Epicurius at Bassae', lat:37.42972, lng:21.90028,
+   precision:'monument', confidence:'high', noteConfidence:'high',
+   coordNote:'Duplicate Bassae temple entry.',
+   coordSource:'Wikipedia / UNESCO site coordinates', coordSourceUrl:'https://en.wikipedia.org/wiki/Bassae',
+   notes:'Duplicate Bassae row: Temple of Apollo Epicurius at Bassae, mid-5th-c. BCE Arcadian mountain sanctuary and UNESCO monument.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo_Epicurius_at_Bassae", "https://en.wikipedia.org/wiki/Bassae", "https://whc.unesco.org/en/list/392/"],
+   image:'apollo-temple-of-apollo-epicurius-at-bassae.jpg'},
+  {id:18, name:'Temple of Apollo Smintheus', mappedPlace:'Temple of Apollo Smintheus, GÃ¼lpÄ±nar / Chryse, Troad', lat:39.5269, lng:26.1627,
+   precision:'sanctuary_approx', confidence:'medium', noteConfidence:'high',
+   coordNote:'Smintheion near GÃ¼lpÄ±nar; coordinate should be verified against a site GIS point if required.',
+   coordSource:'Wikipedia/location pages; approximate GÃ¼lpÄ±nar Smintheion point', coordSourceUrl:'https://en.wikipedia.org/wiki/Temple_of_Apollo_Smintheus',
+   notes:'Temple of Apollo Smintheus / Smintheion in the Troad near GÃ¼lpÄ±nar/Chryse; cult title is linked with Sminthos/Sminthe and later â€œmouseâ€ interpretations.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo_Smintheus"],
+   image:'apollo-temple-of-apollo-smintheus.jpg'},
+  {id:19, name:'Temple of Apollo, Claros', mappedPlace:'Claros sanctuary, Ahmetbeyli, Ä°zmir Province, Turkey', lat:38.005, lng:27.19278,
+   precision:'sanctuary', confidence:'high', noteConfidence:'high',
+   coordNote:'Duplicate Claros temple/sanctuary row.',
+   coordSource:'Wikipedia coordinates', coordSourceUrl:'https://en.wikipedia.org/wiki/Claros',
+   notes:'Duplicate Claros row: Apollo Clarius oracle sanctuary in Ionia, with major inscriptions, monumental cult group, and Hellenistic/Roman prophetic activity.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo,_Claros", "https://en.wikipedia.org/wiki/Claros"],
+   image:'apollo-temple-of-apollo-claros.jpg'},
+  {id:20, name:'Temple of Apollo, Corinth', mappedPlace:'Temple of Apollo, Ancient Corinth', lat:37.9055, lng:22.8787,
+   precision:'monument_approx', confidence:'medium', noteConfidence:'high',
+   coordNote:'Doric temple on Temple Hill in Ancient Corinth; coordinate approximated from archaeological site mapping.',
+   coordSource:'Warwick/Ancient Corinth descriptions; approximate Temple Hill point', coordSourceUrl:'https://www.corinthcomputerproject.org/records/temple-apollo/',
+   notes:'Temple of Apollo at Corinth: Archaic Doric temple on Temple Hill, one of the most visible monumental survivals of ancient Corinth.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo,_Corinth", "https://www.corinthcomputerproject.org/records/temple-apollo/"],
+   image:'apollo-temple-of-apollo-corinth.jpg'},
+  {id:21, name:'Temple of Apollo, Cyrene', mappedPlace:'Sanctuary / Temple of Apollo, Cyrene', lat:32.826, lng:21.857,
+   precision:'sanctuary_approx', confidence:'medium', noteConfidence:'high',
+   coordNote:'Mapped to Apollo sanctuary area below acropolis near Springs of Apollo and Cyra; check against Cyrene GIS for precision.',
+   coordSource:'Wikipedia/Warwick description; approximate Apollo sanctuary point below acropolis', coordSourceUrl:'https://en.wikipedia.org/wiki/Cyrene,_Libya',
+   notes:'Temple/Sanctuary of Apollo at Cyrene, near the spring/city sanctuary zone; central to Cyreneâ€™s Greek foundation cult and Apollo Karneios/Libyan colonial identity.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo,_Cyrene", "https://en.wikipedia.org/wiki/Cyrene,_Libya"],
+   image:'apollo-temple-of-apollo-cyrene.jpg'},
+  {id:22, name:'Temple of Apollo, Didyma', mappedPlace:'Temple of Apollo at Didyma', lat:37.385, lng:27.25639,
+   precision:'sanctuary', confidence:'high', noteConfidence:'high',
+   coordNote:'Didymaion, oracle sanctuary of Apollo near Miletus.',
+   coordSource:'Wikipedia coordinates', coordSourceUrl:'https://en.wikipedia.org/wiki/Didyma',
+   notes:'Didymaion / Temple of Apollo at Didyma: monumental oracle sanctuary of Apollo near Miletus, linked to the Branchidae and Hellenistic building accounts.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo,_Didyma", "https://en.wikipedia.org/wiki/Didyma"],
+   image:'apollo-temple-of-apollo-didyma.jpg'},
+  {id:23, name:'Temple of Apollo, Gortyn', mappedPlace:'Temple of Apollo Pythios at Gortyn/Gortyna, Crete', lat:35.062628, lng:24.946811,
+   precision:'site_approx', confidence:'medium', noteConfidence:'medium',
+   coordNote:'Coordinate approximates the Gortyn archaeological site; the Apollo Pythios sanctuary lies in the lower town/plain east of the city center.',
+   coordSource:'Following Hadrian coordinate for Gortyn site plus site descriptions', coordSourceUrl:'https://followinghadrianphotography.com/2016/10/30/gortyn/',
+   notes:'Temple of Apollo Pythios at Gortyn/Gortyna; important Cretan Apollo row, but coordinate remains site-level rather than securely a temple centroid.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo,_Gortyn", "https://followinghadrianphotography.com/2016/10/30/gortyn/"],
+   image:'apollo-temple-of-apollo-gortyn.jpg'},
+  {id:24, name:'Temple of Pythian Apollo, Rhodes', mappedPlace:'Temple of Pythian Apollo, Acropolis of Rhodes', lat:36.439992, lng:28.21066,
+   precision:'monument', confidence:'high', noteConfidence:'high',
+   coordNote:'Hellenistic Temple of Apollo Pythios on the Acropolis of Rhodes.',
+   coordSource:'Pleiades location resource', coordSourceUrl:'https://pleiades.stoa.org/places/630398334/temple-of-apollo-pythios',
+   notes:'Temple of Pythian Apollo on the Acropolis of Rhodes; Hellenistic civic/athletic-sacred landscape, relevant to Rhodes as a corridor hinge.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Pythian_Apollo,_Rhodes", "https://pleiades.stoa.org/places/630398334/temple-of-apollo-pythios"],
+   image:'apollo-temple-of-pythian-apollo-rhodes.jpg'},
+  {id:25, name:'Temple of Apollo Zoster', mappedPlace:'Temple of Apollo Zoster, Vouliagmeni, Attica', lat:37.81, lng:23.7737,
+   precision:'monument', confidence:'high', noteConfidence:'high',
+   coordNote:'Harbor sanctuary at Vouliagmeni/Astir Beach on Cape Zoster.',
+   coordSource:'ToposText / Atlas Obscura', coordSourceUrl:'https://topostext.org/place/378238SApo',
+   notes:'Temple of Apollo Zoster at Vouliagmeni/Cape Zoster; coastal Attic sanctuary tied to Apollo, Artemis, and Leto in a promontory/harbour setting.',
+   noteSources:["https://en.wikipedia.org/wiki/Temple_of_Apollo_Zoster", "https://topostext.org/place/378238SApo"],
+   image:'apollo-temple-of-apollo-zoster.jpg'},
+];
+
+
+// ══════════════════════════════════════════════════════════════════════════
+// APOLLO CULT SITES — temples and sanctuaries of Apollo across the ancient
+// Mediterranean. Site notes and reconstruction images are both pre-supplied
+// in the gazetteer (images extracted from embedded Excel Rich Data picture
+// cells), so the info drawer renders entirely synchronously — no external
+// lookups needed.
+// ══════════════════════════════════════════════════════════════════════════
+let apolloOn = false, apolloLayer = null;
+
+function apolloIcon() {
+  return L.divIcon({
+    html: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+      <circle cx="7" cy="7" r="5.5" fill="#e8c454" fill-opacity=".92" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/>
+      <path d="M7 2.6l1.05 2.45 2.65.25-2.02 1.78.62 2.6L7 8.2 4.7 9.68l.62-2.6-2.02-1.78 2.65-.25z"
+        fill="#1a1410" fill-opacity=".55"/>
+    </svg>`,
+    className: '', iconSize: [14, 14], iconAnchor: [7, 7]
+  });
+}
+
+function buildApolloLayer() {
+  const g = L.layerGroup();
+  APOLLO_SITES.forEach(site => {
+    const marker = L.marker([site.lat, site.lng], { icon: apolloIcon() });
+    marker.bindTooltip(
+      `<b>${site.name}</b><br><span style="color:rgba(232,196,84,.9);font-size:.62rem">${site.mappedPlace}</span>`,
+      { sticky: true }
+    );
+    marker.on('click', () => showApolloDetail(site));
+    g.addLayer(marker);
+  });
+  return { layer: g, count: APOLLO_SITES.length };
+}
+
+window.toggleApolloLayer = function () {
+  const btn = document.getElementById('apollo-btn');
+  const leg = document.getElementById('apollo-legend');
+  const status = document.getElementById('apollo-status');
+
+  if (!apolloLayer) {
+    const { layer, count } = buildApolloLayer();
+    apolloLayer = layer;
+    if (status) status.textContent = `${count} sites loaded`;
+  }
+
+  if (apolloOn) {
+    map.removeLayer(apolloLayer);
+    btn.textContent = 'Show Apollo Cult Sites';
+    btn.classList.remove('active');
+    leg.style.display = 'none';
+    apolloOn = false;
+  } else {
+    apolloLayer.addTo(map);
+    btn.textContent = 'Hide Apollo Cult Sites';
+    btn.classList.add('active');
+    leg.style.display = 'flex';
+    apolloOn = true;
+  }
+};
+
+const APOLLO_CONF_COLOR = {
+  high:   '#7fb88a',
+  medium: '#c9952f',
+  low:    '#a1503c',
+};
+
+function titleCaseApolloPrecision(p) {
+  return p.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function showApolloDetail(site) {
+  resetInfoDrawer();
+  document.getElementById('infoKicker').textContent = 'Apollo Cult Site';
+  document.getElementById('infoKicker').style.color = '#e8c454';
+  document.getElementById('infoTitle').textContent = site.name;
+
+  const confColor = APOLLO_CONF_COLOR[site.confidence] || 'var(--smoke)';
+  const noteConfColor = APOLLO_CONF_COLOR[site.noteConfidence] || 'var(--smoke)';
+  document.getElementById('infoBadges').innerHTML =
+    `<span class="info-badge" style="color:${confColor};border-color:${confColor}66;">${site.confidence} coord. confidence</span>` +
+    `<span class="info-badge" style="color:${noteConfColor};border-color:${noteConfColor}66;">${site.noteConfidence} note confidence</span>`;
+
+  document.getElementById('infoCoords').innerHTML =
+    `${site.mappedPlace}<br>${site.lat.toFixed(5)}, ${site.lng.toFixed(5)} &middot; ${titleCaseApolloPrecision(site.precision)}`;
+
+  // Reconstruction image — local file, shown synchronously
+  const imgWrap = document.getElementById('infoImageWrap');
+  if (site.image) {
+    document.getElementById('infoImage').src = `${site.image}`;
+    document.getElementById('infoImage').alt = site.name;
+    document.getElementById('infoImageCredit').textContent = 'Digital reconstruction render';
+    imgWrap.style.display = 'block';
+  } else {
+    imgWrap.style.display = 'none';
+  }
+
+  // Description — pre-written site notes, shown synchronously
+  const descEl = document.getElementById('infoDesc');
+  descEl.style.display = 'block';
+  descEl.textContent = site.notes;
+
+  // Coordinate provenance note
+  const noteEl = document.getElementById('infoNote');
+  noteEl.style.display = 'block';
+  noteEl.textContent = site.coordNote;
+
+  // Links — coordinate source + note sources + OSM, deduped
+  const osm = `https://www.openstreetmap.org/?mlat=${site.lat}&mlon=${site.lng}&zoom=13`;
+  const seen = new Set();
+  const linkItems = [];
+  const addLink = (url, label) => {
+    if (!url || seen.has(url)) return;
+    seen.add(url);
+    linkItems.push(`<a class="info-link" href="${url}" target="_blank" rel="noopener">${label} ↗</a>`);
+  };
+  addLink(site.coordSourceUrl, site.coordSource || 'Source');
   (site.noteSources || []).forEach(u => {
     let label = 'Source';
     try { label = new URL(u).hostname.replace('www.', ''); } catch (e) {}
