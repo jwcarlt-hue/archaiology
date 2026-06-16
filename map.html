@@ -59,6 +59,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
 
 /* SEARCH */
 .search-wrap{position:fixed;top:56px;right:12px;z-index:500;}
+.basemap-panel-right{position:fixed;top:104px;right:12px;z-index:500;width:195px;}
 .search-inner{position:relative;}
 .search-icon{position:absolute;left:.55rem;top:50%;transform:translateY(-50%);
   color:var(--ash);font-size:.7rem;pointer-events:none;}
@@ -226,6 +227,24 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
   </div>
 </div>
 
+<div class="basemap-panel-right">
+  <div class="ctrl-card">
+    <div class="ctrl-label">Base Map</div>
+    <div class="filter-row">
+      <button class="filter-chip tile-chip" data-tile="OSM" onclick="_setTile('OSM')">OSM</button>
+      <button class="filter-chip tile-chip" data-tile="Topo" onclick="_setTile('Topo')">Topo</button>
+      <button class="filter-chip tile-chip" data-tile="Antique" onclick="_setTile('Antique')">Antique</button>
+      <button class="filter-chip tile-chip" data-tile="Satellite" onclick="_setTile('Satellite')">Satellite</button>
+      <button class="filter-chip tile-chip" data-tile="Light" onclick="_setTile('Light')">Light</button>
+      <button class="filter-chip tile-chip" data-tile="Dark" onclick="_setTile('Dark')">Dark</button>
+      <button class="filter-chip tile-chip" data-tile="Voyager" onclick="_setTile('Voyager')">Voyager</button>
+      <button class="filter-chip tile-chip active" data-tile="NatGeo" onclick="_setTile('NatGeo')">NatGeo</button>
+      <button class="filter-chip tile-chip" data-tile="DARE" onclick="_setTile('DARE')">DARE</button>
+      <div id="dare-places-status" style="font-family:var(--mono);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:.3rem;letter-spacing:.04em;"></div>
+    </div>
+  </div>
+</div>
+
 <div class="map-controls">
   <div class="ctrl-card">
     <div class="ctrl-label">Site Tiers</div>
@@ -264,21 +283,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <button class="filter-chip" data-region="mesoamerica">Mesoamerica</button>
       <button class="filter-chip" data-region="north_america">N. America</button>
       <button class="filter-chip" data-region="south_america">S. America</button>
-    </div>
-  </div>
-  <div class="ctrl-card">
-    <div class="ctrl-label">Base Map</div>
-    <div class="filter-row">
-      <button class="filter-chip tile-chip" data-tile="OSM" onclick="_setTile('OSM')">OSM</button>
-      <button class="filter-chip tile-chip" data-tile="Topo" onclick="_setTile('Topo')">Topo</button>
-      <button class="filter-chip tile-chip" data-tile="Antique" onclick="_setTile('Antique')">Antique</button>
-      <button class="filter-chip tile-chip" data-tile="Satellite" onclick="_setTile('Satellite')">Satellite</button>
-      <button class="filter-chip tile-chip" data-tile="Light" onclick="_setTile('Light')">Light</button>
-      <button class="filter-chip tile-chip" data-tile="Dark" onclick="_setTile('Dark')">Dark</button>
-      <button class="filter-chip tile-chip" data-tile="Voyager" onclick="_setTile('Voyager')">Voyager</button>
-      <button class="filter-chip tile-chip active" data-tile="NatGeo" onclick="_setTile('NatGeo')">NatGeo</button>
-      <button class="filter-chip tile-chip" data-tile="DARE" onclick="_setTile('DARE')">DARE</button>
-      <div id="dare-places-status" style="font-family:var(--mono);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:.3rem;letter-spacing:.04em;"></div>
     </div>
   </div>
   <div class="ctrl-card">
