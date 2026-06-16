@@ -339,6 +339,32 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:2px;">OpenBible.info geocoding</div>
     </div>
   </div>
+  <div class="ctrl-card">
+    <div class="ctrl-label">Etruscan Sites</div>
+    <div class="filter-row">
+      <button class="filter-chip" id="etruscan-btn" onclick="toggleEtruscanLayer()">Show Etruscan Sites</button>
+    </div>
+    <div id="etruscan-legend" style="display:none;margin-top:6px;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#b85c38;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Necropolis</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#8a6a9e;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Tomb / tumulus</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#5b8a72;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Site / monument</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#5687c2;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Museum</span>
+      </div>
+      <div id="etruscan-status" style="font-family:var(--mono,monospace);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:4px;letter-spacing:.04em;"></div>
+      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:2px;">Data: René Kauffmann</div>
+    </div>
+  </div>
 </div>
 
 <div class="detail-panel" id="detailPanel">
@@ -1904,6 +1930,130 @@ async function toggleBibleLayer() {
   }
 }
 // ── END BIBLE GEOCODING LAYER ────────────────────────────────────────────────
+
+// ── ETRUSCAN ARCHAEOLOGICAL SITES & MUSEUMS ──────────────────────────────────
+// Source: "Etruscan archaeological sites and museums" Google My Map by René
+// Kauffmann, exported as KMZ and converted to static JSON (map-data/etruscan-
+// sites.json) for fast client-side loading. 379 sites across 4 categories:
+// necropolises, tombs/tumuli, sites/monuments, and museums. Some entries
+// include a hosted photo; if that image fails to load (the host URLs are
+// Google My Maps session-scoped links and may not always resolve), the
+// description text and citation still render normally.
+let etruscanOn = false, etruscanLayer = null, etruscanDataPromise = null;
+
+const ETRUSCAN_CATEGORY_STYLE = {
+  necropolis: { color: '#b85c38', label: 'Necropolis' },
+  tomb:       { color: '#8a6a9e', label: 'Tomb / Tumulus' },
+  site:       { color: '#5b8a72', label: 'Site / Monument' },
+  museum:     { color: '#5687c2', label: 'Museum' },
+};
+
+function etruscanIcon(category) {
+  const style = ETRUSCAN_CATEGORY_STYLE[category] || { color: '#999' };
+  return L.divIcon({
+    html: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12">
+      <circle cx="6" cy="6" r="5" fill="${style.color}" fill-opacity=".88"
+        stroke="rgba(255,255,255,.45)" stroke-width="1.5"/>
+    </svg>`,
+    className: '', iconSize: [12, 12], iconAnchor: [6, 6]
+  });
+}
+
+async function loadEtruscanData() {
+  if (!etruscanDataPromise) {
+    etruscanDataPromise = (async () => {
+      const res = await fetch('./map-data/etruscan-sites.json');
+      if (!res.ok) throw new Error(`Etruscan JSON fetch failed: ${res.status}`);
+      return await res.json();
+    })();
+  }
+  return etruscanDataPromise;
+}
+
+async function buildEtruscanLayer() {
+  const sites = await loadEtruscanData();
+  const g = L.layerGroup();
+  sites.forEach(s => {
+    const marker = L.marker([s.lat, s.lng], { icon: etruscanIcon(s.category) });
+    const style = ETRUSCAN_CATEGORY_STYLE[s.category] || { label: 'Site' };
+    marker.bindTooltip(`<b>${s.name}</b>`, { sticky: true, className: 'orbis-tip' });
+    marker.on('click', () => showEtruscanDetail(s, style));
+    g.addLayer(marker);
+  });
+  return { layer: g, count: sites.length };
+}
+
+function showEtruscanDetail(s, style) {
+  document.getElementById('detailTier').textContent = style.label;
+  document.getElementById('detailTier').style.color = style.color;
+  document.getElementById('detailName').textContent = s.name;
+
+  document.getElementById('detailBadges').innerHTML =
+    `<span class="badge badge-culture">Etruscan</span>` +
+    `<span class="badge badge-region">${style.label}</span>`;
+
+  // Description: render the original KML HTML (img/br only — sanitized at
+  // build time, no scripts or unexpected tags). If the embedded photo 404s
+  // (Google My Maps hosted-image links are session-scoped and may expire),
+  // hide it gracefully rather than showing a broken-image icon.
+  document.getElementById('detailDesc').innerHTML =
+    s.desc.replace(/<img /g, '<img onerror="this.style.display=\'none\'" style="max-width:100%;border-radius:4px;margin:6px 0;" ');
+
+  document.getElementById('detailMentions').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Category';
+  document.getElementById('detailMentions').textContent = style.label;
+  document.getElementById('detailAncientRefs').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Source';
+  document.getElementById('detailAncientRefs').textContent = 'R. Kauffmann';
+
+  document.getElementById('detailTopos').style.display = 'none';
+  document.getElementById('detailMentionsList').style.display = 'none';
+
+  const osm = `https://www.openstreetmap.org/?mlat=${s.lat}&mlon=${s.lng}&zoom=14`;
+  document.getElementById('extLinks').innerHTML =
+    `<a class="ext-link" href="${osm}" target="_blank" rel="noopener">OSM</a>`;
+
+  document.getElementById('sitePageBtn').style.display = 'none';
+  closeExternalAtlases();
+  document.getElementById('detailPanel').classList.add('open');
+}
+
+async function toggleEtruscanLayer() {
+  const btn = document.getElementById('etruscan-btn');
+  const leg = document.getElementById('etruscan-legend');
+  const status = document.getElementById('etruscan-status');
+
+  if (!etruscanLayer) {
+    btn.disabled = true;
+    btn.textContent = 'Loading Sites';
+    try {
+      const { layer, count } = await buildEtruscanLayer();
+      etruscanLayer = layer;
+      if (status) status.textContent = `${count} sites loaded`;
+    } catch (e) {
+      console.warn('Etruscan layer failed to load:', e);
+      btn.textContent = 'Unavailable';
+      btn.disabled = false;
+      etruscanDataPromise = null;
+      return;
+    }
+    btn.disabled = false;
+  }
+
+  if (etruscanOn) {
+    map.removeLayer(etruscanLayer);
+    btn.textContent = 'Show Etruscan Sites';
+    btn.classList.remove('active');
+    leg.style.display = 'none';
+    etruscanOn = false;
+  } else {
+    etruscanLayer.addTo(map);
+    btn.textContent = 'Hide Etruscan Sites';
+    btn.classList.add('active');
+    leg.style.display = 'block';
+    etruscanOn = true;
+  }
+}
+// ── END ETRUSCAN ARCHAEOLOGICAL SITES & MUSEUMS ──────────────────────────────
+
 
 </script>
 <div id="mosaic-status" style="display:none"></div>
