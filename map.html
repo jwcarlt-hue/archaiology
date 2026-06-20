@@ -369,6 +369,23 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:2px;">Data: René Kauffmann</div>
     </div>
   </div>
+  <div class="ctrl-card">
+    <div class="ctrl-label">Jomon Prehistoric Sites</div>
+    <div class="filter-row">
+      <button class="filter-chip" id="jomon-btn" onclick="toggleJomonLayer()">Show Jomon Sites</button>
+    </div>
+    <div id="jomon-legend" style="display:none;margin-top:6px;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" style="flex-shrink:0">
+          <circle cx="6.5" cy="6.5" r="5.5" fill="#d4793a" fill-opacity=".9" stroke="rgba(255,255,255,.35)" stroke-width="1.4"/>
+          <circle cx="6.5" cy="6.5" r="2.2" fill="rgba(255,255,255,.7)"/>
+        </svg>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">UNESCO WH 1632 component site</span>
+      </div>
+      <div id="jomon-status" style="font-family:var(--mono,monospace);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:4px;letter-spacing:.04em;"></div>
+      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:2px;">jomon-japan.jp · UNESCO WHC</div>
+    </div>
+  </div>
 </div>
 
 <div class="detail-panel" id="detailPanel">
@@ -2057,6 +2074,207 @@ async function toggleEtruscanLayer() {
   }
 }
 // ── END ETRUSCAN ARCHAEOLOGICAL SITES & MUSEUMS ──────────────────────────────
+
+// 19 Jomon Prehistoric Sites in Northern Japan
+// Source: jomon-japan.jp / UNESCO WH List 1632
+const JOMON_SITES = [
+  {id:1, name:'Irie Site', prefecture:'Hokkaido', lat:42.5428, lng:140.7753,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/irie',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A009b000004-861x640.jpg',
+   dates:'ca. 3500 BCE – 800 BCE',
+   desc:'The Irie Site in Toyako Town, Hokkaido, is a Jomon period coastal settlement on a terrace overlooking Uchiura Bay, featuring residential and burial areas with large shell mounds containing shells, fish and mammal bones, and bone tools indicating active fishing and hunting. It exemplifies early sedentism and communal support, as evidenced by remains of an individual with disabilities who lived long with community aid.'},
+  {id:2, name:'Odai Yamamoto Site', prefecture:'Aomori', lat:41.0656, lng:140.555,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/odai-yamamoto',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/02/A001b000001-913x640.jpg',
+   dates:'ca. 13,000 BCE (Stage Ia Jomon, earliest pottery in Northeast Asia)',
+   desc:'The Odai Yamamoto Site in Sotogahama Town, Aomori Prefecture, yielded some of the earliest known pottery in Northeast Asia (ca. 13,000 BCE) along with late Paleolithic stone tools, attesting to the transition from mobile hunter-gatherer lifestyles to Jomon sedentism.'},
+  {id:3, name:'Ofune Site', prefecture:'Hokkaido', lat:41.95778, lng:140.92528,
+   url:'https://kitano-jomon.jp/en/ruins/ofune_site_en/',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/02/A007b000002-960x640.jpg',
+   dates:'ca. 3500–2000 BCE',
+   desc:'The Ofune Site is a large Mid-Jomon settlement in Hakodate, Hokkaido, featuring over 100 deep pit dwellings, earthen mounds used for rituals, and evidence of fishing, hunting, and gathering from marine and forest resources.'},
+  {id:4, name:'Sannai Maruyama Site', prefecture:'Aomori', lat:40.81028, lng:140.69750,
+   url:'https://sannaimaruyama.pref.aomori.jp/english/',
+   image:'https://sannaimaruyama.pref.aomori.jp/english/wp-content/uploads/2020/08/main_img01.jpg',
+   dates:'ca. 3900–2200 BCE',
+   desc:'The Sannai-Maruyama Site is Japan\'s largest known Jomon-period settlement, featuring extensive pit dwellings, pillar buildings, and artifacts from a large village community. Designated a Special Historic Site and part of the UNESCO World Heritage-listed Jomon Prehistoric Sites in Northern Japan.'},
+  {id:5, name:'Isedotai Stone Circles', prefecture:'Akita', lat:40.2011, lng:140.3481,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/isedotai',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A011a000002a-960x640.jpg',
+   dates:'ca. 2000 BCE – 1700 BCE',
+   desc:'Isedotai Stone Circles is Japan\'s only site with four large stone circles (largest 45m diameter) concentrated together on a river terrace, associated with ritual activities, pit graves, and numerous clay figurines from the Jomon maturation stage.'},
+  {id:6, name:'Kakinoshima Site', prefecture:'Hokkaido', lat:41.9292, lng:140.9483,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/kakinoshima',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/02/002-1_%E5%9E%A3%E3%83%8E%E5%B3%B6%E5%B7%AE%E6%9B%BF%EF%BC%88%E9%81%BA%E8%B7%A1%E5%85%A8%E6%99%AF%EF%BC%89-907x640.jpg',
+   dates:'ca. 7000 BCE to 1000 BCE',
+   desc:'The Kakinoshima Site is a Jomon period settlement in Hakodate, Hokkaido, featuring separated residential and burial areas, a large U-shaped earthwork for rituals (over 190m long, built ca. 2000 BCE), and artifacts like footprint-imprinted clay tablets. It is part of the UNESCO World Heritage-listed Jomon Prehistoric Sites in Northern Japan.'},
+  {id:7, name:'Futatsumori Site', prefecture:'Aomori', lat:40.74806, lng:141.23000,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/futatsumori',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A005a000001-853x640.jpg',
+   dates:'ca. 3500–2000 BCE',
+   desc:'The Futatsumori Site is a large Jomon period settlement with shell middens on a terrace overlooking Lake Ogawara in Shichinohe Town, Aomori Prefecture, featuring numerous pit dwellings, storage pits, and artifacts reflecting adaptation to environmental changes from marine transgression to regression.'},
+  {id:8, name:'Tagoyano Site', prefecture:'Aomori', lat:40.88806, lng:140.33917,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/tagoyano',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A004b000001-853x640.jpg',
+   dates:'ca. 4000 BCE – 2000 BCE',
+   desc:'The Tagoyano Site is a Jomon period settlement with shell mounds located on a hill along the Iwaki River in Tsugaru City, Aomori Prefecture, attesting to early sedentism, shellfish harvesting, fishing, and trade across the Tsugaru Strait evidenced by shell bracelets and Hokkaido obsidian.'},
+  {id:9, name:'Choshichiyachi Site', prefecture:'Aomori', lat:40.572000, lng:141.458806,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/choshichiyachi',
+   image:'https://upload.wikimedia.org/wikipedia/commons/f/fe/Choshichiyachi_Shell_Midden.jpg',
+   dates:'ca. 6000 BCE (Initial Jomon period)',
+   desc:'Choshichiyachi Site is a Jomon period shell midden and settlement in Hachinohe City, Aomori Prefecture, located along the ancient Oirase Bay, attesting to early fishing-based livelihoods with evidence of rod and harpoon fishing, hunting, and rich marine resources.'},
+  {id:10, name:'Korekawa Site', prefecture:'Aomori', lat:40.47556, lng:141.48836,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/korekawa',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A017b000010-956x640.jpg',
+   dates:'ca. 4000 BCE – 400 BCE',
+   desc:'The Korekawa Site in Hachinohe City, Aomori Prefecture, consists of the Ichioji, Hotta, and Nakai sites, featuring a Final Jomon settlement with residential areas, burials, dumping grounds, and ritual features yielding sophisticated pottery, lacquerware, wooden artifacts, and evidence of hunting, fishing, gathering, and spiritual practices.'},
+  {id:11, name:'Kamegaoka Burial Site', prefecture:'Aomori', lat:40.884242, lng:140.339351,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/kamegaoka',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A016b000002-853x640.jpg',
+   dates:'ca. 1000 BCE – 400 BCE (Final Jomon period)',
+   desc:'The Kamegaoka Burial Site is a large late Jomon period cemetery on a plateau along the Iwaki River in Tsugaru City, Aomori Prefecture, featuring pit graves and ritual dumping grounds in surrounding lowlands that yielded famous goggle-eyed clay figurines, lacquered pottery, and jade artifacts indicative of advanced spirituality and artistry.'},
+  {id:12, name:'Kitakogane Site', prefecture:'Hokkaido', lat:42.4020333, lng:140.9106472,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/kitakogane',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/02_%E5%8C%97%E9%BB%84%E9%87%91%E8%B2%9D%E5%A1%9A-%E3%83%AC%E3%82%BF%E3%83%83%E3%83%81.jpg',
+   dates:'ca. 5000 BCE – 3500 BCE',
+   desc:'Kitakogane Site is a Jōmon period shell mound settlement on a hillside facing Uchiura Bay in Date City, Hokkaido, featuring pit dwellings, graves, shell mounds with marine remains, and ritual areas evidencing fishing-based livelihood and adaptation to environmental changes.'},
+  {id:13, name:'Komakino Stone Circle', prefecture:'Aomori', lat:40.7375, lng:140.7278,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/komakino',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A010a000001-960x640.jpg',
+   dates:'ca. 2000 BCE (early Late Jōmon period)',
+   desc:'Komakino Stone Circle is a large Late Jōmon period ritual site featuring concentric stone rings up to 55m in diameter on a leveled plateau in Aomori City, constructed in the rare \'Komakino-style\' with vertically placed stones forming walls, associated with pit dwellings, burials, and over 400 triangular ritual stone plates.'},
+  {id:14, name:'Goshono Site', prefecture:'Iwate', lat:40.1978, lng:141.3064,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/goshono',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A008b000011.jpg',
+   dates:'ca. 2500 BCE – 2000 BCE',
+   desc:'The Goshono Site is a large Middle Jomon period settlement in Ichinohe Town, Iwate Prefecture, featuring over 800 pit dwellings, a central burial area with stone arrangements, and ritual earthen mounds, attesting to the sedentism and spiritual life in an inland river area.'},
+  {id:15, name:'Washinoki Stone Circle', prefecture:'Hokkaido', lat:42.1161, lng:140.5263,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/washinoki',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A018b000001-937x640.jpg',
+   dates:'ca. 2000 BCE (Jomon Stage IIIa)',
+   desc:'One of the largest stone circles in Hokkaido, featuring double outer rings and a central oval arrangement of 602 stones, located on a river terrace near Uchiura Bay. It served as a ritual site with an adjacent pit burial area and was well-preserved under volcanic ash.'},
+  {id:16, name:'Oyu Stone Circles', prefecture:'Akita', lat:40.27167, lng:140.80389,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/oyu',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A012a000013.jpg',
+   dates:'ca. 2000 BCE – 1500 BCE',
+   desc:'The Oyu Stone Circles site in Kazuno City, Akita Prefecture, features two large stone circles (Manza, 52m diameter; Nonakado, 44m) made of river stones, surrounded by pillar-supported buildings, pits, and graves in concentric arrangements, with ritual artifacts like clay figurines unearthed. Aligned with solar events such as summer solstice sunset, it attests to Jomon spiritual culture in an inland setting near rivers and forests.'},
+  {id:17, name:'Takasago Burial Site', prefecture:'Hokkaido', lat:42.548175, lng:140.771444,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/takasago',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/%E3%80%90%E5%B7%AE%E6%9B%BF%E3%80%91015-4_%E9%AB%98%E7%A0%82%E8%B2%9D%E5%A1%9A%EF%BC%88%E5%85%A5%E6%B1%9F%E3%83%BB%E9%AB%98%E7%A0%82%E8%B2%9D%E5%A1%9A%E9%A4%A8%EF%BC%89-960x600.jpg',
+   dates:'ca. 3500–800 BCE (Stage IIIb ca. 1000 BCE)',
+   desc:'The Takasago Burial Site in Toyako Town, Hokkaido, features shell mounds and a burial area with pit graves and stone arrangements containing burial goods, red pigment, and human remains showing tooth extraction and pregnancy. It attests to Jomon coastal livelihoods and spiritual rituals during a period of sedentism maturation.'},
+  {id:18, name:'Omori Katsuyama Stone Circle', prefecture:'Aomori', lat:40.69889, lng:140.35833,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/omori-katsuyama',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A014b000019-960x640.jpg',
+   dates:'ca. 1000 BCE (Late Jomon, Stage IIIb)',
+   desc:'Omori Katsuyama Stone Circle is a Late Jomon ritual site in Hirosaki City, Aomori Prefecture, featuring an oval arrangement of 77 stone clusters (48.5m x 39.1m) on a leveled hilltop at the foot of Mt. Iwaki, aligned to the winter solstice sunset over the mountain.'},
+  {id:19, name:'Kiusu Earthwork Burial Circles', prefecture:'Hokkaido', lat:42.88556, lng:141.71611,
+   url:'https://jomon-japan.jp/en/learn/jomon-sites/kiusu',
+   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/02/A013b000002.jpg',
+   dates:'ca. 1200 BCE (Final Jomon period)',
+   desc:'The Kiusu Earthwork Burial Circles consist of nine large communal grave sites in Chitose, Hokkaido, with earthworks ranging 30-83m in diameter, attesting to complex burial practices in late Jomon settled communities.'},
+];
+
+
+// ── JOMON PREHISTORIC SITES — Northern Japan ─────────────────────────────────
+// UNESCO World Heritage List 1632 (2021): "Jomon Prehistoric Sites in Northern
+// Japan". 17 component sites across Hokkaido, Aomori, Iwate, and Akita.
+// Source data: jomon-japan.jp / whc.unesco.org/en/list/1632
+// Images served directly from jomon-japan.jp and partner sites (no API key needed).
+let jomonOn = false, jomonLayer = null;
+
+function jomonIcon() {
+  return L.divIcon({
+    html: `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13">
+      <circle cx="6.5" cy="6.5" r="5.5" fill="#d4793a" fill-opacity=".9"
+        stroke="rgba(255,255,255,.5)" stroke-width="1.4"/>
+      <circle cx="6.5" cy="6.5" r="2.2" fill="rgba(255,255,255,.7)"/>
+    </svg>`,
+    className: '', iconSize: [13, 13], iconAnchor: [6, 6]
+  });
+}
+
+function buildJomonLayer() {
+  const g = L.layerGroup();
+  JOMON_SITES.forEach(s => {
+    const marker = L.marker([s.lat, s.lng], { icon: jomonIcon() });
+    marker.bindTooltip(
+      `<b>${s.name}</b><br><span style="color:rgba(212,121,58,.9);font-size:.62rem">${s.prefecture} · ${s.dates}</span>`,
+      { sticky: true, className: 'orbis-tip' }
+    );
+    marker.on('click', () => showJomonDetail(s));
+    g.addLayer(marker);
+  });
+  return { layer: g, count: JOMON_SITES.length };
+}
+
+function showJomonDetail(s) {
+  document.getElementById('detailTier').textContent = 'Jomon Prehistoric Site';
+  document.getElementById('detailTier').style.color = '#d4793a';
+  document.getElementById('detailName').textContent = s.name;
+
+  document.getElementById('detailBadges').innerHTML =
+    `<span class="badge badge-culture">Jomon</span>` +
+    `<span class="badge badge-region">${s.prefecture}</span>` +
+    `<span class="badge badge-period">UNESCO WH 1632</span>`;
+
+  // Description with inline image — gracefully hide image on error
+  const imgTag = s.image
+    ? `<img src="${s.image}" alt="${s.name}"
+         onerror="this.style.display='none'"
+         style="width:100%;border-radius:4px;margin:6px 0 8px;display:block;object-fit:cover;max-height:160px;">`
+    : '';
+  document.getElementById('detailDesc').innerHTML =
+    `${imgTag}<span style="font-size:.74rem;font-style:italic;color:rgba(240,220,180,.6);">${s.dates}</span><br><br>${s.desc}`;
+
+  document.getElementById('detailMentions').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Period';
+  document.getElementById('detailMentions').textContent = 'Jomon';
+  document.getElementById('detailAncientRefs').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Prefecture';
+  document.getElementById('detailAncientRefs').textContent = s.prefecture;
+
+  document.getElementById('detailTopos').style.display = 'none';
+  document.getElementById('detailMentionsList').style.display = 'none';
+
+  const osm = `https://www.openstreetmap.org/?mlat=${s.lat}&mlon=${s.lng}&zoom=14`;
+  document.getElementById('extLinks').innerHTML =
+    `<a class="ext-link" href="${s.url}" target="_blank" rel="noopener">jomon-japan.jp</a>` +
+    `<a class="ext-link" href="https://whc.unesco.org/en/list/1632" target="_blank" rel="noopener">UNESCO WHC</a>` +
+    `<a class="ext-link" href="${osm}" target="_blank" rel="noopener">OSM</a>`;
+
+  document.getElementById('sitePageBtn').style.display = 'none';
+  closeExternalAtlases();
+  document.getElementById('detailPanel').classList.add('open');
+}
+
+window.toggleJomonLayer = function () {
+  const btn = document.getElementById('jomon-btn');
+  const leg = document.getElementById('jomon-legend');
+  const status = document.getElementById('jomon-status');
+
+  if (!jomonLayer) {
+    const { layer, count } = buildJomonLayer();
+    jomonLayer = layer;
+    if (status) status.textContent = `${count} sites loaded`;
+  }
+
+  if (jomonOn) {
+    map.removeLayer(jomonLayer);
+    btn.textContent = 'Show Jomon Sites';
+    btn.classList.remove('active');
+    leg.style.display = 'none';
+    jomonOn = false;
+  } else {
+    jomonLayer.addTo(map);
+    btn.textContent = 'Hide Jomon Sites';
+    btn.classList.add('active');
+    leg.style.display = 'block';
+    jomonOn = true;
+    // Fly to northern Japan on first enable
+    map.flyTo([41.5, 140.5], 7, { duration: 1.5 });
+  }
+};
+// ── END JOMON PREHISTORIC SITES ───────────────────────────────────────────────
+
 
 
 </script>
