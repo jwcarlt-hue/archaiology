@@ -99,36 +99,7 @@ a{text-decoration:none;color:inherit;}
 @media(max-width:900px){.sky-body{grid-template-columns:1fr;}}
 
 /* STELLARIUM VIEWPORT */
-.stellarium-wrap{
-  background:var(--night);
-  border:1px solid rgba(200,216,240,.08);
-  position:relative;overflow:hidden;
-}
-.stellarium-label{
-  position:absolute;top:.8rem;left:.8rem;z-index:10;
-  background:rgba(5,8,16,.8);border:1px solid rgba(184,137,42,.3);
-  color:var(--ochre);font-family:var(--sans);font-size:.58rem;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem;
-  backdrop-filter:blur(4px);
-}
-.stellarium-frame{
-  width:100%;height:500px;border:none;display:block;
-}
-.stellarium-placeholder{
-  width:100%;height:500px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
-  background:radial-gradient(ellipse at center, #0a1428 0%, #050810 70%);
-}
-.placeholder-icon{font-size:3rem;opacity:.3;}
-.placeholder-text{font-family:var(--sans);font-size:.78rem;color:rgba(200,216,240,.4);text-align:center;line-height:1.6;}
-.open-stellarium{
-  display:inline-flex;align-items:center;gap:.5rem;
-  background:rgba(184,137,42,.15);border:1px solid rgba(184,137,42,.3);
-  color:var(--ochre);font-family:var(--sans);font-size:.65rem;font-weight:700;
-  letter-spacing:.08em;text-transform:uppercase;padding:.5rem 1rem;
-  cursor:pointer;transition:all .2s;text-decoration:none;
-}
-.open-stellarium:hover{background:rgba(184,137,42,.25);}
+
 
 /* EVENT CARDS */
 .events-section{margin-top:1.5rem;}
@@ -249,30 +220,14 @@ a{text-decoration:none;color:inherit;}
         <option value="10">Telescope (10°)</option>
       </select>
     </div>
-    <button class="view-btn" id="viewBtn">View Sky →</button>
+    <button class="view-btn" id="viewBtn">✦ Open in Stellarium Web</button>
   </div>
 </div>
 
 <div class="sky-body">
 <main>
 
-  <!-- STELLARIUM VIEWPORT -->
-  <div class="stellarium-wrap">
-    <div class="stellarium-label" id="skyLabel">Athens · Summer Solstice · 2026</div>
-    <div id="stellariumContainer">
-      <div class="stellarium-placeholder" id="placeholder">
-        <div class="placeholder-icon">🌌</div>
-        <div class="placeholder-text">
-          Select a site and date above<br>then click <strong>View Sky</strong> to open Stellarium Web
-        </div>
-        <a class="open-stellarium" id="openStellariumBtn" href="#" target="_blank">
-          ✦ Open in Stellarium Web
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- QUICK EVENT CARDS -->
+<!-- QUICK EVENT CARDS -->
   <div class="events-section">
     <div class="events-label">Key Archaeoastronomical Moments</div>
     <div class="event-grid">
@@ -407,27 +362,57 @@ a{text-decoration:none;color:inherit;}
 
 <script>
 // ── State ─────────────────────────────────────────────────────
-let currentLat = 39.36, currentLng = 22.94;
+let currentLat = 37.9714, currentLng = 23.7267;   // Athens (matches first dropdown option)
 let currentDate = '2026-06-21T04:00';
 let currentFov  = 60;
 let currentSiteName = 'Athens, Greece';
 
 // ── Build Stellarium URL ──────────────────────────────────────
+// Handles both standard CE dates and BCE dates (negative-year ISO strings).
+// browser Date() and datetime-local inputs reject years < 0, so we extract
+// components manually for ancient dates.
 function buildStellariumUrl(lat, lng, dateStr, fov) {
-  // Convert datetime-local format to ISO
-  const d    = new Date(dateStr + ':00Z');
-  const iso  = d.toISOString();
-
-  // Stellarium Web deep link
-  // date format: YYYY-MM-DDTHH:MM:SSZ
+  let iso;
+  const bce = dateStr.startsWith('-');
+  if (bce) {
+    // dateStr like "-3113-08-13T00:00" — pass the raw string with seconds appended.
+    // Stellarium Web accepts extended ISO 8601 with negative years.
+    iso = dateStr + ':00Z';
+  } else {
+    const d = new Date(dateStr + ':00Z');
+    iso = isNaN(d) ? dateStr + ':00Z' : d.toISOString();
+  }
   const params = new URLSearchParams({
     date: iso,
     lat:  lat.toFixed(4),
     lng:  lng.toFixed(4),
     fov:  fov.toString(),
   });
-
   return `https://stellarium-web.org/?${params.toString()}`;
+}
+
+// ── Parse date string for display (handles BCE negative-year strings) ────────
+function parseDateDisplay(dateStr) {
+  if (dateStr.startsWith('-')) {
+    // e.g. "-3113-08-13T00:00"
+    const parts = dateStr.slice(1).split('T');
+    const dateParts = parts[0].split('-');
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]) - 1;
+    const day = parseInt(dateParts[2]);
+    const time = parts[1] || '00:00';
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return {
+      dateLabel: `${monthNames[month]} ${day}, ${year + 1} BCE`,
+      timeLabel: time + ' UTC',
+    };
+  }
+  const d = new Date(dateStr + ':00Z');
+  if (isNaN(d)) return { dateLabel: dateStr.slice(0,10), timeLabel: dateStr.slice(11,16) + ' UTC' };
+  return {
+    dateLabel: d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
+    timeLabel: d.toISOString().slice(11,16) + ' UTC',
+  };
 }
 
 // ── Update info panel ─────────────────────────────────────────
@@ -437,74 +422,21 @@ function updateInfo(siteName, lat, lng, dateStr, fov) {
     Math.abs(lat).toFixed(2) + '°' + (lat >= 0 ? 'N' : 'S');
   document.getElementById('infoLng').textContent  =
     Math.abs(lng).toFixed(2) + '°' + (lng >= 0 ? 'E' : 'W');
-
-  const d = new Date(dateStr + ':00Z');
-  document.getElementById('infoDate').textContent =
-    d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
-  document.getElementById('infoTime').textContent =
-    d.toISOString().slice(11,16) + ' UTC';
+  const { dateLabel, timeLabel } = parseDateDisplay(dateStr);
+  document.getElementById('infoDate').textContent = dateLabel;
+  document.getElementById('infoTime').textContent = timeLabel;
   document.getElementById('infoFov').textContent  = fov + '°';
 }
 
-// ── Open sky ──────────────────────────────────────────────────
-function openSky(lat, lng, dateStr, fov, siteName, label) {
+// ── Update the button URL and info panel ──────────────────────
+function updateSky(lat, lng, dateStr, fov, siteName) {
   currentLat = lat; currentLng = lng;
   currentDate = dateStr; currentFov = fov;
   currentSiteName = siteName;
-
-  const url = buildStellariumUrl(lat, lng, dateStr, fov);
-  const displayLabel = label || `${siteName} · ${dateStr.slice(0,10)}`;
-
-  // Update the Open button
-  const btn = document.getElementById('openStellariumBtn');
-  btn.href = url;
-
-  // Update standing label
-  document.getElementById('skyLabel').textContent = displayLabel;
-
-  // Stellarium Web blocks iframe embedding (X-Frame-Options: DENY).
-  // Replace the placeholder with a rich launch card that opens in a new tab.
-  const container = document.getElementById('stellariumContainer');
-  const d = new Date(dateStr + ':00Z');
-  const dateFormatted = d.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
-  container.innerHTML = `
-    <div style="
-      position:relative;display:flex;flex-direction:column;align-items:center;
-      justify-content:center;min-height:340px;padding:2.5rem 2rem;
-      background:linear-gradient(180deg,rgba(6,9,18,.95) 0%,rgba(10,14,28,.98) 100%);
-      border:1px solid rgba(200,216,240,.08);text-align:center;
-    ">
-      <div style="font-size:2.2rem;margin-bottom:1rem;opacity:.7;">🌌</div>
-      <div style="font-family:var(--serif,serif);font-style:italic;font-size:1.15rem;
-        font-weight:600;color:var(--star,#f0f4ff);margin-bottom:.35rem;line-height:1.3;">
-        ${siteName}
-      </div>
-      <div style="font-family:var(--sans,sans-serif);font-size:.68rem;letter-spacing:.08em;
-        text-transform:uppercase;color:var(--ochre,#b8892a);margin-bottom:.25rem;">
-        ${dateFormatted} &nbsp;·&nbsp; FoV ${fov}°
-      </div>
-      <div style="font-family:var(--sans,sans-serif);font-size:.62rem;
-        color:rgba(200,216,240,.35);margin-bottom:1.6rem;">
-        ${lat >= 0 ? lat.toFixed(4)+'°N' : Math.abs(lat).toFixed(4)+'°S'} &nbsp;
-        ${lng >= 0 ? lng.toFixed(4)+'°E' : Math.abs(lng).toFixed(4)+'°W'}
-      </div>
-      <a href="${url}" target="_blank" rel="noopener" style="
-        display:inline-flex;align-items:center;gap:.5rem;
-        background:rgba(184,137,42,.15);border:1px solid rgba(184,137,42,.35);
-        color:var(--ochre,#b8892a);font-family:var(--sans,sans-serif);
-        font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-        padding:.6rem 1.3rem;text-decoration:none;transition:all .2s;
-      ">✦ Open in Stellarium Web</a>
-      <div style="font-family:var(--sans,sans-serif);font-size:.56rem;
-        color:rgba(200,216,240,.22);margin-top:1.2rem;max-width:280px;line-height:1.6;">
-        Stellarium Web restricts embedding from external sites. Opens full-screen in a new tab.
-      </div>
-    </div>`;
-
   updateInfo(siteName, lat, lng, dateStr, fov);
 }
 
-// ── View button ───────────────────────────────────────────────
+// ── View Sky button — opens Stellarium Web in new tab ─────────
 document.getElementById('viewBtn').addEventListener('click', function() {
   const siteSelect = document.getElementById('siteSelect');
   const val        = siteSelect.value;
@@ -524,22 +456,27 @@ document.getElementById('viewBtn').addEventListener('click', function() {
   const fov     = parseInt(document.getElementById('fovSelect').value);
 
   if (isNaN(lat) || isNaN(lng)) { alert('Invalid coordinates'); return; }
-  openSky(lat, lng, dateStr, fov, siteName, null);
+  if (!dateStr) { alert('Please select a date'); return; }
+
+  updateSky(lat, lng, dateStr, fov, siteName);
+  window.open(buildStellariumUrl(lat, lng, dateStr, fov), '_blank', 'noopener');
 });
 
-// ── Event cards ───────────────────────────────────────────────
+// ── Event cards — update button URL and info panel immediately ─
 document.querySelectorAll('.event-card').forEach(card => {
   card.addEventListener('click', function() {
     document.querySelectorAll('.event-card').forEach(c => c.classList.remove('active'));
     this.classList.add('active');
 
-    const date  = this.dataset.date;
-    const label = this.dataset.label;
-    document.getElementById('dateInput').value = date.slice(0,16);
+    const dateStr = this.dataset.date;
+    const label   = this.dataset.label;
 
-    // Use current site coords
-    openSky(currentLat, currentLng, date.slice(0,16), currentFov,
-            currentSiteName, label + ' · ' + currentSiteName);
+    // Set the date input if it's a CE date the input can handle; otherwise leave as-is
+    if (!dateStr.startsWith('-') && dateStr !== '0000-01-01T00:00') {
+      document.getElementById('dateInput').value = dateStr.slice(0,16);
+    }
+
+    updateSky(currentLat, currentLng, dateStr, currentFov, currentSiteName);
   });
 });
 
@@ -554,26 +491,30 @@ document.querySelectorAll('.site-option').forEach(opt => {
     const lng    = parseFloat(coords[1]);
     const name   = this.dataset.name;
 
-    // Update select
+    // Keep dropdown in sync if option exists
     const sel = document.getElementById('siteSelect');
     const opt2 = [...sel.options].find(o => o.value === this.dataset.coords);
     if (opt2) sel.value = this.dataset.coords;
 
-    currentLat = lat; currentLng = lng; currentSiteName = name;
-    updateInfo(name, lat, lng, currentDate, currentFov);
+    updateSky(lat, lng, currentDate, currentFov, name);
   });
 });
 
-// ── Site select toggle custom ─────────────────────────────────
+// ── Site select dropdown ─────────────────────────────────────
 document.getElementById('siteSelect').addEventListener('change', function() {
   document.getElementById('customGroup').style.display =
     this.value === 'custom' ? 'flex' : 'none';
+  if (this.value !== 'custom') {
+    const parts = this.value.split(',');
+    const lat = parseFloat(parts[0]);
+    const lng = parseFloat(parts[1]);
+    const name = this.options[this.selectedIndex].text;
+    updateSky(lat, lng, currentDate, currentFov, name);
+  }
 });
 
-// ── Update open button on load ────────────────────────────────
+// ── Init ─────────────────────────────────────────────────────
 (function init() {
-  const url = buildStellariumUrl(37.9714, 23.7267, '2026-06-21T04:00', 60);
-  document.getElementById('openStellariumBtn').href = url;
   updateInfo('Athens, Greece', 37.9714, 23.7267, '2026-06-21T04:00', 60);
 })();
 </script>
