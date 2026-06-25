@@ -165,22 +165,6 @@ a{text-decoration:none;color:inherit;}
 .info-row:last-child{border-bottom:none;}
 .info-key{font-family:var(--sans);font-size:.65rem;color:rgba(200,216,240,.4);}
 .info-val{font-family:var(--sans);font-size:.72rem;font-weight:600;color:var(--star);}
-.seac-banner{
-  background:rgba(184,137,42,.08);border:1px solid rgba(184,137,42,.25);
-  padding:1rem;margin-bottom:1rem;
-}
-.seac-label{font-family:var(--sans);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre);margin-bottom:.4rem;}
-.seac-title{font-family:var(--body);font-size:.88rem;font-weight:600;color:var(--star);line-height:1.4;margin-bottom:.5rem;}
-.seac-meta{font-family:var(--sans);font-size:.65rem;color:rgba(200,216,240,.5);}
-.seac-btn{
-  display:block;margin-top:.7rem;
-  background:rgba(184,137,42,.15);border:1px solid rgba(184,137,42,.3);
-  color:var(--ochre);font-family:var(--sans);font-size:.62rem;font-weight:700;
-  letter-spacing:.08em;text-transform:uppercase;padding:.35rem .7rem;
-  text-align:center;transition:all .2s;
-}
-.seac-btn:hover{background:rgba(184,137,42,.25);}
-
 /* ABOUT */
 .about-section{max-width:1280px;margin:0 auto;padding:2rem;border-top:1px solid rgba(200,216,240,.06);}
 .about-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
@@ -232,7 +216,6 @@ a{text-decoration:none;color:inherit;}
     <div class="ctrl-group">
       <label class="ctrl-label">Site</label>
       <select class="ctrl-select" id="siteSelect">
-        <option value="39.36,22.94">Volos, Greece (SEAC 2026)</option>
         <option value="37.9714,23.7267">Athens, Greece</option>
         <option value="51.1789,-1.8262">Stonehenge, UK</option>
         <option value="36.0608,-107.9578">Chaco Canyon, USA</option>
@@ -275,7 +258,7 @@ a{text-decoration:none;color:inherit;}
 
   <!-- STELLARIUM VIEWPORT -->
   <div class="stellarium-wrap">
-    <div class="stellarium-label" id="skyLabel">Volos · Summer Solstice · 2026</div>
+    <div class="stellarium-label" id="skyLabel">Athens · Summer Solstice · 2026</div>
     <div id="stellariumContainer">
       <div class="stellarium-placeholder" id="placeholder">
         <div class="placeholder-icon">🌌</div>
@@ -328,11 +311,6 @@ a{text-decoration:none;color:inherit;}
         <div class="event-name">Crab Nebula Supernova</div>
         <div class="event-desc">Guest star recorded by Chinese and Arab astronomers. Possibly depicted in Anasazi petroglyphs at Chaco.</div>
       </div>
-      <div class="event-card" data-date="-0576-09-04T05:00" data-label="SEAC Historic Sky">
-        <div class="event-date">Sep 4, 576 BCE · Volos</div>
-        <div class="event-name">Ancient Volos Horizon</div>
-        <div class="event-desc">The sky over ancient Iolkos (Volos) — home of Jason and the Argonauts — at dawn 2,600 years ago.</div>
-      </div>
     </div>
   </div>
 
@@ -341,18 +319,15 @@ a{text-decoration:none;color:inherit;}
 <!-- SIDEBAR -->
 <aside class="sky-sidebar">
 
-  <!-- SEAC 2026 HIGHLIGHT -->
-  <div class="seac-banner">
-    <div class="seac-label">✦ archaiology.org presenting at</div>
-    <div class="seac-title">SEAC XXXIII — Volos, Greece<br>September 4–8, 2026</div>
-    <div class="seac-meta">"Peg, Boat, and Quartered Sky: The Lidar Höyük Prism as Portable Parapegma"</div>
-    <a class="seac-btn" href="conferences.html">Conference Calendar →</a>
+  <!-- CONFERENCE CALENDAR LINK -->
+  <div style="margin-bottom:1rem;">
+    <a href="conferences.html" style="display:block;background:rgba(184,137,42,.08);border:1px solid rgba(184,137,42,.25);padding:.7rem 1rem;font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ochre);text-align:center;text-decoration:none;transition:background .2s;">Conference Calendar →</a>
   </div>
 
   <!-- CURRENT SKY INFO -->
   <div class="sidebar-card">
     <div class="sidebar-label">Current Selection</div>
-    <div class="info-row"><span class="info-key">Site</span><span class="info-val" id="infoSite">Volos</span></div>
+    <div class="info-row"><span class="info-key">Site</span><span class="info-val" id="infoSite">Athens</span></div>
     <div class="info-row"><span class="info-key">Latitude</span><span class="info-val" id="infoLat">39.36°N</span></div>
     <div class="info-row"><span class="info-key">Longitude</span><span class="info-val" id="infoLng">22.94°E</span></div>
     <div class="info-row"><span class="info-key">Date</span><span class="info-val" id="infoDate">Jun 21, 2026</span></div>
@@ -390,10 +365,6 @@ a{text-decoration:none;color:inherit;}
     <div class="site-option" data-coords="37.1597,25.3313" data-name="Delos">
       <span class="site-opt-name">Delos (Apollo)</span>
       <span class="site-opt-coords">37.16°N</span>
-    </div>
-    <div class="site-option" data-coords="39.36,22.94" data-name="Volos (SEAC 2026)">
-      <span class="site-opt-name">Volos · SEAC 2026</span>
-      <span class="site-opt-coords">39.36°N</span>
     </div>
   </div>
 
@@ -439,7 +410,7 @@ a{text-decoration:none;color:inherit;}
 let currentLat = 39.36, currentLng = 22.94;
 let currentDate = '2026-06-21T04:00';
 let currentFov  = 60;
-let currentSiteName = 'Volos, Greece';
+let currentSiteName = 'Athens, Greece';
 
 // ── Build Stellarium URL ──────────────────────────────────────
 function buildStellariumUrl(lat, lng, dateStr, fov) {
@@ -482,27 +453,51 @@ function openSky(lat, lng, dateStr, fov, siteName, label) {
   currentSiteName = siteName;
 
   const url = buildStellariumUrl(lat, lng, dateStr, fov);
+  const displayLabel = label || `${siteName} · ${dateStr.slice(0,10)}`;
 
   // Update the Open button
   const btn = document.getElementById('openStellariumBtn');
   btn.href = url;
 
-  // Update label
-  document.getElementById('skyLabel').textContent = label ||
-    `${siteName} · ${dateStr.slice(0,10)}`;
+  // Update standing label
+  document.getElementById('skyLabel').textContent = displayLabel;
 
-  // Show iframe
+  // Stellarium Web blocks iframe embedding (X-Frame-Options: DENY).
+  // Replace the placeholder with a rich launch card that opens in a new tab.
   const container = document.getElementById('stellariumContainer');
+  const d = new Date(dateStr + ':00Z');
+  const dateFormatted = d.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
   container.innerHTML = `
-    <div style="position:relative;">
-      <div class="stellarium-label" id="skyLabel">${label || siteName}</div>
-      <iframe class="stellarium-frame"
-        src="${url}"
-        allow="fullscreen"
-        allowfullscreen>
-      </iframe>
-      <div style="position:absolute;bottom:.8rem;right:.8rem;">
-        <a href="${url}" target="_blank" class="open-stellarium">↗ Full screen</a>
+    <div style="
+      position:relative;display:flex;flex-direction:column;align-items:center;
+      justify-content:center;min-height:340px;padding:2.5rem 2rem;
+      background:linear-gradient(180deg,rgba(6,9,18,.95) 0%,rgba(10,14,28,.98) 100%);
+      border:1px solid rgba(200,216,240,.08);text-align:center;
+    ">
+      <div style="font-size:2.2rem;margin-bottom:1rem;opacity:.7;">🌌</div>
+      <div style="font-family:var(--serif,serif);font-style:italic;font-size:1.15rem;
+        font-weight:600;color:var(--star,#f0f4ff);margin-bottom:.35rem;line-height:1.3;">
+        ${siteName}
+      </div>
+      <div style="font-family:var(--sans,sans-serif);font-size:.68rem;letter-spacing:.08em;
+        text-transform:uppercase;color:var(--ochre,#b8892a);margin-bottom:.25rem;">
+        ${dateFormatted} &nbsp;·&nbsp; FoV ${fov}°
+      </div>
+      <div style="font-family:var(--sans,sans-serif);font-size:.62rem;
+        color:rgba(200,216,240,.35);margin-bottom:1.6rem;">
+        ${lat >= 0 ? lat.toFixed(4)+'°N' : Math.abs(lat).toFixed(4)+'°S'} &nbsp;
+        ${lng >= 0 ? lng.toFixed(4)+'°E' : Math.abs(lng).toFixed(4)+'°W'}
+      </div>
+      <a href="${url}" target="_blank" rel="noopener" style="
+        display:inline-flex;align-items:center;gap:.5rem;
+        background:rgba(184,137,42,.15);border:1px solid rgba(184,137,42,.35);
+        color:var(--ochre,#b8892a);font-family:var(--sans,sans-serif);
+        font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+        padding:.6rem 1.3rem;text-decoration:none;transition:all .2s;
+      ">✦ Open in Stellarium Web</a>
+      <div style="font-family:var(--sans,sans-serif);font-size:.56rem;
+        color:rgba(200,216,240,.22);margin-top:1.2rem;max-width:280px;line-height:1.6;">
+        Stellarium Web restricts embedding from external sites. Opens full-screen in a new tab.
       </div>
     </div>`;
 
@@ -577,9 +572,9 @@ document.getElementById('siteSelect').addEventListener('change', function() {
 
 // ── Update open button on load ────────────────────────────────
 (function init() {
-  const url = buildStellariumUrl(39.36, 22.94, '2026-06-21T04:00', 60);
+  const url = buildStellariumUrl(37.9714, 23.7267, '2026-06-21T04:00', 60);
   document.getElementById('openStellariumBtn').href = url;
-  updateInfo('Volos, Greece', 39.36, 22.94, '2026-06-21T04:00', 60);
+  updateInfo('Athens, Greece', 37.9714, 23.7267, '2026-06-21T04:00', 60);
 })();
 </script>
 
