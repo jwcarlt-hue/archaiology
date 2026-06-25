@@ -222,14 +222,19 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .secondary-thumb {
   height: 58px;
   background: var(--linen);
-  border: 1px dashed var(--rule);
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  opacity: 0.5;
+  overflow: hidden;
+  position: relative;
 }
+.secondary-thumb.has-image {
+  border: none;
+}
+.secondary-thumb.thumb-fallback {
+  border-left: 3px solid var(--rule);
+}
+.secondary-thumb.type-paper.thumb-fallback  { border-left-color: var(--forest); }
+.secondary-thumb.type-news.thumb-fallback   { border-left-color: var(--ochre); }
+.secondary-thumb.type-other.thumb-fallback  { border-left-color: var(--ash); }
 .secondary-tag {
   font-family: var(--sans);
   font-size: 0.58rem;
@@ -928,8 +933,6 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .skel-thumb { background: linear-gradient(90deg, var(--linen) 25%, var(--rule) 50%, var(--linen) 75%);
               background-size: 800px 100%; animation: shimmer 1.4s ease infinite; }
 .secondary-item.feed-live { cursor: pointer; }
-.secondary-thumb.type-paper  { background: rgba(42,61,46,0.08);  opacity:1; font-size:1.1rem; }
-.secondary-thumb.type-news   { background: rgba(184,137,42,0.08); opacity:1; font-size:1.1rem; }
 
 </style>
 </head>
@@ -938,57 +941,6 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   const SUPABASE_URL = "https://ucsgtbpeuqeamuvuvojs.supabase.co";
   const KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";
   const REGIONS = { mesoamerica:"Mesoamerica", north_america:"N. America", europe:"Europe", near_east:"Near East", general:"General" };
-
-  // Keyword -> emoji marker (first match wins), using JS unicode escapes for encoding safety
-  const KEYWORD_MAP = [
-    [/skull|cranium|crania|skeleton|burial|tomb|grave|funerary|mummy|mummif/i, "\u{1F480}"],
-    [/dna|genome|genetic|ancient.?dna|paleogenomic/i, "\u{1F9EC}"],
-    [/bone|osteo|remains|mortuary/i, "\u{1F9B4}"],
-    [/inscription|epigraphy|hieroglyph|cuneiform|tablet|papyrus|manuscript/i, "\u{13080}"],
-    [/maya|glyph|codex|stela|stele/i, "\u{133C7}"],
-    [/luwian|anatolian|hittite|prism/i, "\u{10900}"],
-    [/astronom|celestial|solar|lunar|solstice|equinox|zodiac|star|comet|eclipse|planet|parapegma/i, "\u{2726}"],
-    [/calendar|chronolog|radiocarbon|carbon.?14/i, "\u{1F4C5}"],
-    [/pyramid|temple|monument|palace|citadel|acropolis|ziggurat/i, "\u{1F3DB}"],
-    [/megalith|stonehenge|standing.?stone|dolmen|menhir|cave|rock.?art|petroglyph|pictograph/i, "\u{1FAA8}"],
-    [/pottery|ceramic|vessel|amphora|urn|bowl|jar|goblet/i, "\u{1F3FA}"],
-    [/coin|numismat|currency|mint/i, "\u{1FA99}"],
-    [/boat|ship|maritime|shipwreck|nautical/i, "\u{2693}"],
-    [/game|board.?game|dice|senet|mehen/i, "\u{1F3B2}"],
-    [/egypt|egyptian|pharaoh|nile/i, "\u{132F4}"],
-    [/greek|greece|athens|sparta|hellenistic/i, "\u{1F3DB}"],
-    [/roman|rome|latin|caesar|imperial/i, "\u{2694}"],
-    [/mesopotamia|babylon|assyrian|sumerian|akkadian|ur\b/i, "\u{1202D}"],
-    [/india|indus|harappan|vedic/i, "\u{1F589}"],
-    [/china|chinese|shang|zhou|han\b|tang\b|ming\b/i, "\u{1F409}"],
-    [/inca|andean|peru|tiwanaku/i, "\u{1F999}"],
-    [/aztec|nahua|tenochtitlan|mexico|olmec|zapotec|oaxaca|monte.?alban/i, "\u{1F40D}"],
-    [/mississippian|cahokia|hopewell|woodhenge/i, "\u{1F426}"],
-    [/lidar|remote.?sensing|satellite|gis|geophys/i, "\u{1F6F0}"],
-    [/excavat|dig|fieldwork|trench/i, "\u{26CF}"],
-    [/isotope|spectrometry|xrf|chemical.?analysis/i, "\u{1F52C}"],
-    [/3d|photogrammetry|scan|reconstruct/i, "\u{1F4D0}"],
-    [/climate|environment|palynology|pollen|ice.?core/i, "\u{1F321}"],
-    [/trade|exchange|silk.?road|merchant/i, "\u{1F5FA}"],
-    [/war|battle|conflict|conquest|siege/i, "\u{2694}"],
-  ];
-
-  // Region fallbacks when no keyword matches
-  const REGION_EMOJI = {
-    mesoamerica:   "\u{1F30B}",
-    north_america: "\u{1F985}",
-    europe:        "\u{1F3DB}",
-    near_east:     "\u{1F319}",
-    general:       "\u{1F50D}",
-  };
-
-  function pickEmoji(title, region) {
-    const hay = (title ?? "") + " " + (region ?? "");
-    for (const [re, emoji] of KEYWORD_MAP) {
-      if (re.test(hay)) return emoji;
-    }
-    return REGION_EMOJI[region] ?? "\u{1F3FA}";
-  }
 
   function relDate(iso) {
     if (!iso) return "";
@@ -1008,7 +960,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/news_feed?select=title,content_type,region,published_at,source_url,publisher&order=published_at.desc&limit=5`,
+      `${SUPABASE_URL}/rest/v1/news_feed?select=title,content_type,region,published_at,source_url,publisher,image_url&order=published_at.desc&limit=5`,
       { headers: { apikey: KEY, Authorization: `Bearer ${KEY}` } }
     );
     const items = await res.json();
@@ -1016,17 +968,23 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
     if (!el || !items.length) return;
 
     el.innerHTML = items.map(item => {
-      const emoji  = pickEmoji(item.title, item.region);
-      const tc     = item.content_type === "paper" ? "type-paper"
-                   : item.content_type === "news"  ? "type-news" : "type-other";
-      const tag    = [REGIONS[item.region] ?? item.region, trunc(item.publisher, 35)]
-                     .filter(Boolean).join(" - ");
+      const tc  = item.content_type === "paper" ? "type-paper"
+                : item.content_type === "news"  ? "type-news" : "type-other";
+      const tag = [REGIONS[item.region] ?? item.region, trunc(item.publisher, 35)]
+                  .filter(Boolean).join(" · ");
       const url    = item.source_url ?? "news.html";
       const target = url.startsWith("http") ? "_blank" : "_self";
+
+      const thumb = item.image_url
+        ? `<img src="${item.image_url}" alt="" loading="lazy"
+               style="width:100%;height:100%;object-fit:cover;display:block;"
+               onerror="this.parentElement.classList.add('thumb-fallback')">`
+        : "";
+
       return `
       <a class="secondary-item feed-live" href="${url}" target="${target}" rel="noopener"
          style="text-decoration:none;color:inherit;">
-        <div class="secondary-thumb ${tc}">${emoji}</div>
+        <div class="secondary-thumb ${tc} ${item.image_url ? "has-image" : "thumb-fallback"}">${thumb}</div>
         <div>
           <div class="secondary-tag">${tag}</div>
           <div class="secondary-title">${item.title ?? ""}</div>
