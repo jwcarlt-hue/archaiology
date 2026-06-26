@@ -1450,7 +1450,9 @@ document.getElementById('siteSearch').addEventListener('input', function() {
 
 init();
 
-const MOSAIC_API = 'https://imperium.ahlfeldt.se/api/geojson.php';
+// DARE only serves HTTP — browsers block mixed-content from HTTPS pages.
+// Route through a Supabase Edge Function that proxies the request server-side.
+const MOSAIC_API = 'https://ucsgtbpeuqeamuvuvojs.supabase.co/functions/v1/dare-proxy';
 let mosaicLayer   = null;
 let mosaicEnabled = false;
 let mosaicLoaded  = false; // fetch once
@@ -1468,15 +1470,13 @@ function mosaicIcon() {
 }
 
 async function loadMosaicLayer() {
-  if (mosaicLoaded) return; // already fetched successfully
+  if (mosaicLoaded) return;
   document.getElementById('mosaic-status').textContent = 'Loading…';
   try {
-    // Try https first, fall back to http (DARE docs show http as canonical)
-    let res = await fetch(`${MOSAIC_API}?typeid=98`).catch(() => null);
-    if (!res || !res.ok) {
-      res = await fetch(`http://imperium.ahlfeldt.se/api/geojson.php?typeid=98`);
-    }
-    if (!res.ok) throw new Error(res.status);
+    const res = await fetch(`${MOSAIC_API}?typeid=98`, {
+      headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA' }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const features = data.features || [];
 
@@ -1548,7 +1548,9 @@ function showMosaicDetail(props) {
 
   // Fetch extended data asynchronously to enrich panel
   if (id) {
-    fetch(`${MOSAIC_API}?id=${id}`)
+    fetch(`${MOSAIC_API}?id=${id}`, {
+      headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA' }
+    })
       .then(r => r.json())
       .then(data => {
         if (!data.features || !data.features[0]) return;
@@ -1607,13 +1609,25 @@ window.toggleMosaics = async function () {
     btn.textContent = 'Loading…';
     btn.disabled = true;
     leg.style.display = 'block';
-    await loadMosaicLayer(); // wait for fetch to complete before adding to map
+    try {
+      await loadMosaicLayer();
+    } catch(e) {
+      // loadMosaicLayer already resets mosaicEnabled/mosaicLoaded on failure
+    }
     btn.disabled = false;
-    btn.textContent = 'Hide Mosaics';
-    if (mosaicLayer) mosaicLayer.addTo(map);
+    if (mosaicLoaded && mosaicLayer) {
+      mosaicLayer.addTo(map);
+      btn.textContent = 'Hide Mosaics';
+    } else {
+      // load failed — reset state so button is usable again
+      mosaicEnabled = false;
+      btn.classList.remove('active');
+      btn.textContent = 'Roman Mosaics';
+      leg.style.display = 'none';
+    }
   } else {
     btn.classList.remove('active');
-    btn.textContent = 'Show Mosaics';
+    btn.textContent = 'Roman Mosaics';
     leg.style.display = 'none';
     if (mosaicLayer) map.removeLayer(mosaicLayer);
   }
