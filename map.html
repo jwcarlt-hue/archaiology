@@ -1485,11 +1485,14 @@ function mosaicIcon() {
 }
 
 async function loadMosaicLayer() {
-  if (mosaicLoaded) return; // already fetched
-  document.getElementById('mosaic-status').textContent = 'Loading';
+  if (mosaicLoaded) return; // already fetched successfully
+  document.getElementById('mosaic-status').textContent = 'Loading…';
   try {
-    // typeid=98 is global
-    const res  = await fetch(`${MOSAIC_API}?typeid=98`);
+    // Try https first, fall back to http (DARE docs show http as canonical)
+    let res = await fetch(`${MOSAIC_API}?typeid=98`).catch(() => null);
+    if (!res || !res.ok) {
+      res = await fetch(`http://imperium.ahlfeldt.se/api/geojson.php?typeid=98`);
+    }
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     const features = data.features || [];
@@ -1503,7 +1506,7 @@ async function loadMosaicLayer() {
         const country = p.country || '';
         layer.bindPopup(
           `<div class="popup-name">${name}</div>` +
-          `<div class="popup-sub">Mosaic floor site${country ? ' | ' + country : ''}</div>`, 
+          `<div class="popup-sub">Mosaic floor site${country ? ' | ' + country : ''}</div>`,
           { maxWidth: 220, closeButton: false }
         );
         layer.on('click', () => showMosaicDetail({
@@ -1519,11 +1522,11 @@ async function loadMosaicLayer() {
     document.getElementById('mosaic-status').textContent =
       `${n} site${n !== 1 ? 's' : ''} | DARE typeid=98`;
 
-    if (mosaicEnabled) mosaicLayer.addTo(map);
-
   } catch (e) {
-    document.getElementById('mosaic-status').textContent = 'DARE API error';
+    document.getElementById('mosaic-status').textContent = 'DARE API error — retry';
     console.warn('Mosaic layer fetch failed:', e);
+    mosaicLoaded = false; // reset so user can retry by toggling again
+    mosaicEnabled = false;
   }
 }
 
@@ -1611,17 +1614,20 @@ function showMosaicDetail(props) {
   document.getElementById('detailPanel').classList.add('open');
 }
 
-window.toggleMosaics = function () {
+window.toggleMosaics = async function () {
   mosaicEnabled = !mosaicEnabled;
   const btn = document.getElementById('mosaic-btn');
   const leg = document.getElementById('mosaic-legend');
 
   if (mosaicEnabled) {
     btn.classList.add('active');
-    btn.textContent = 'Hide Mosaics';
+    btn.textContent = 'Loading…';
+    btn.disabled = true;
     leg.style.display = 'block';
-    loadMosaicLayer(); // fetch once then add; if already loaded, addTo directly
-    if (mosaicLoaded && mosaicLayer) mosaicLayer.addTo(map);
+    await loadMosaicLayer(); // wait for fetch to complete before adding to map
+    btn.disabled = false;
+    btn.textContent = 'Hide Mosaics';
+    if (mosaicLayer) mosaicLayer.addTo(map);
   } else {
     btn.classList.remove('active');
     btn.textContent = 'Show Mosaics';
