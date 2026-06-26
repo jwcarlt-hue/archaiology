@@ -191,16 +191,17 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
 
 <header class="masthead">
   <a href="index.html" class="logo">arch<span>AI</span>ology</a>
-                <a class="nav-link " href="index.html">Home</a>
+  <a class="nav-link " href="index.html">Home</a>
   <a class="nav-link " href="news.html">Feed</a>
   <a class="nav-link active " href="map.html">Map</a>
-  <a class="nav-link " href="sky.html">Sky Archive</a>
+  <a class="nav-link " href="sky.html">Archaeoastronomy</a>
   <a class="nav-link " href="maritime.html">Maritime</a>
   <a class="nav-link " href="linguistics.html">Linguistics</a>
   <a class="nav-link " href="inscriptions.html">Inscriptions</a>
   <a class="nav-link " href="maya_inscriptions.html">Maya</a>
   <a class="nav-link " href="bioanthro.html">Bioanthro</a>
-  <a class="nav-link " href="luwian.html">Luwian</a>
+  <a class="nav-link " href="luwian.html">Anatolia</a>
+  <a class="nav-link " href="numismatics.html">Ancient Economy</a>
   <a class="nav-link " href="upload.html">Upload</a>
   <a class="nav-link " href="lidar.html">LiDAR</a>
   <a class="nav-link " href="conferences.html">Conferences</a>
@@ -323,24 +324,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     </div>
     <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:6px;line-height:1.45;">
       Open external archaeological atlases in a dedicated workspace above the map.
-    </div>
-  </div>
-  <div class="ctrl-card">
-    <div class="ctrl-label">Bible Geocoding</div>
-    <div class="filter-row">
-      <button class="filter-chip" id="bible-btn" onclick="toggleBibleLayer()">Show Bible Places</button>
-    </div>
-    <div id="bible-legend" style="display:none;margin-top:6px;">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#e8c06a;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Land place</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#6ab4e8;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Water / sea</span>
-      </div>
-      <div id="bible-status" style="font-family:var(--mono,monospace);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:4px;letter-spacing:.04em;"></div>
-      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:2px;">OpenBible.info geocoding</div>
     </div>
   </div>
   <div class="ctrl-card">
@@ -1809,180 +1792,6 @@ async function toggleLangs() {
     langOn = true;
   }
 }
-
-// ── BIBLE GEOCODING LAYER ────────────────────────────────────────────────────
-let bibleOn = false, bibleLayer = null, bibleDataPromise = null;
-
-function bibleIcon(isWater) {
-  const color = isWater ? '#6ab4e8' : '#e8c06a';
-  return L.divIcon({
-    html: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12">
-      <circle cx="6" cy="6" r="5" fill="${color}" fill-opacity=".88"
-        stroke="rgba(255,255,255,.45)" stroke-width="1.5"/>
-    </svg>`,
-    className: '', iconSize: [12, 12], iconAnchor: [6, 6]
-  });
-}
-
-async function loadBibleData() {
-  if (!bibleDataPromise) {
-    bibleDataPromise = (async () => {
-      // Fetch the KMZ (zip), extract doc.kml, parse it
-      const res = await fetch('./map-data/all.kmz');
-      if (!res.ok) throw new Error(`KMZ fetch failed: ${res.status}`);
-      const buf = await res.arrayBuffer();
-
-      // Use JSZip (loaded inline) to unzip
-      const JSZip = window.JSZip;
-      if (!JSZip) throw new Error('JSZip not available');
-      const zip = await JSZip.loadAsync(buf);
-      const kmlText = await zip.file('doc.kml').async('string');
-
-      // Parse KML XML
-      const parser = new DOMParser();
-      const kml = parser.parseFromString(kmlText, 'text/xml');
-
-      // Walk top-level Folders — each is one Bible place
-      const places = [];
-      const topFolders = kml.documentElement.querySelectorAll(':scope > Document > Folder');
-      topFolders.forEach(folder => {
-        const placeName = folder.querySelector(':scope > name')?.textContent?.trim() || '';
-        const descEl    = folder.querySelector(':scope > description');
-        const bibleRefs = descEl ? descEl.textContent.trim() : '';
-
-        // Find the representative Point placemark (landpoint or waterrepresentativepoint)
-        const placemarks = folder.querySelectorAll('Placemark');
-        placemarks.forEach(pm => {
-          const styleUrl = pm.querySelector('styleUrl')?.textContent || '';
-          const isRepPoint = styleUrl.includes('representativepoint') || styleUrl === '#landpoint' || styleUrl === '#waterpoint';
-          if (!isRepPoint) return;
-          const coordEl = pm.querySelector('Point > coordinates');
-          if (!coordEl) return;
-          const parts = coordEl.textContent.trim().split(',');
-          const lng = parseFloat(parts[0]);
-          const lat = parseFloat(parts[1]);
-          if (isNaN(lat) || isNaN(lng)) return;
-          const isWater = styleUrl.includes('water');
-          places.push({ name: placeName, lat, lng, bibleRefs, isWater });
-        });
-      });
-      return places;
-    })();
-  }
-  return bibleDataPromise;
-}
-
-async function buildBibleLayer() {
-  const places = await loadBibleData();
-  const g = L.layerGroup();
-  places.forEach(p => {
-    const marker = L.marker([p.lat, p.lng], { icon: bibleIcon(p.isWater) });
-
-    // Strip HTML tags from bibleRefs for tooltip, keep linked version for popup
-    const refsPlain = p.bibleRefs.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-    const refsHtml  = p.bibleRefs; // already contains <a> links to BibleGateway
-
-    marker.bindTooltip(
-      `<b>${p.name}</b>${refsPlain ? '<br><span style="color:rgba(240,220,160,.7);font-size:.62rem">' + refsPlain + '</span>' : ''}`,
-      { sticky: true, className: 'orbis-tip' }
-    );
-
-    marker.on('click', () => showBibleDetail(p, refsHtml));
-    g.addLayer(marker);
-  });
-  return { layer: g, count: places.length };
-}
-
-function showBibleDetail(p, refsHtml) {
-  document.getElementById('detailTier').textContent = p.isWater ? 'Water / River' : 'Biblical Land Place';
-  document.getElementById('detailTier').style.color  = p.isWater ? '#6ab4e8' : '#e8c06a';
-  document.getElementById('detailName').textContent  = p.name;
-
-  document.getElementById('detailBadges').innerHTML =
-    `<span class="badge badge-culture">OpenBible.info</span>` +
-    `<span class="badge badge-region">${p.isWater ? 'Water' : 'Land'}</span>`;
-
-  document.getElementById('detailDesc').textContent =
-    `${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}`;
-
-  // Repurpose stat cells
-  document.getElementById('detailMentions').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Type';
-  document.getElementById('detailMentions').textContent = p.isWater ? 'Water' : 'Land';
-  document.getElementById('detailAncientRefs').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Source';
-  document.getElementById('detailAncientRefs').textContent = 'OpenBible';
-
-  document.getElementById('detailTopos').style.display = 'none';
-
-  // Show bible refs in the mentions section
-  const mentSection = document.getElementById('detailMentionsList');
-  if (refsHtml) {
-    mentSection.style.display = 'block';
-    document.getElementById('mentionItems').innerHTML =
-      `<div class="mention-item">
-        <div class="mention-title" style="font-size:.78rem;line-height:1.5;">${refsHtml}</div>
-        <div class="mention-meta">Bible Gateway (ESV)</div>
-      </div>`;
-  } else {
-    mentSection.style.display = 'none';
-  }
-
-  const osm = `https://www.openstreetmap.org/?mlat=${p.lat}&mlon=${p.lng}&zoom=12`;
-  document.getElementById('extLinks').innerHTML =
-    `<a class="ext-link" href="https://www.openbible.info/geo/" target="_blank" rel="noopener">OpenBible</a>` +
-    `<a class="ext-link" href="${osm}" target="_blank" rel="noopener">OSM</a>`;
-
-  document.getElementById('sitePageBtn').style.display = 'none';
-  closeExternalAtlases();
-  document.getElementById('detailPanel').classList.add('open');
-}
-
-async function toggleBibleLayer() {
-  const btn = document.getElementById('bible-btn');
-  const leg = document.getElementById('bible-legend');
-  const status = document.getElementById('bible-status');
-
-  if (!bibleLayer) {
-    btn.disabled = true;
-    btn.textContent = 'Loading Places';
-    try {
-      // Dynamically load JSZip if not already present
-      if (!window.JSZip) {
-        await new Promise((resolve, reject) => {
-          const s = document.createElement('script');
-          s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
-          s.onload = resolve;
-          s.onerror = reject;
-          document.head.appendChild(s);
-        });
-      }
-      const { layer, count } = await buildBibleLayer();
-      bibleLayer = layer;
-      if (status) status.textContent = `${count} places loaded`;
-    } catch (e) {
-      console.warn('Bible layer failed to load:', e);
-      btn.textContent = 'Unavailable';
-      btn.disabled = false;
-      bibleDataPromise = null;
-      return;
-    }
-    btn.disabled = false;
-  }
-
-  if (bibleOn) {
-    map.removeLayer(bibleLayer);
-    btn.textContent = 'Show Bible Places';
-    btn.classList.remove('active');
-    leg.style.display = 'none';
-    bibleOn = false;
-  } else {
-    bibleLayer.addTo(map);
-    btn.textContent = 'Hide Bible Places';
-    btn.classList.add('active');
-    leg.style.display = 'block';
-    bibleOn = true;
-  }
-}
-// ── END BIBLE GEOCODING LAYER ────────────────────────────────────────────────
 
 // ── ETRUSCAN ARCHAEOLOGICAL SITES & MUSEUMS ──────────────────────────────────
 // Source: "Etruscan archaeological sites and museums" Google My Map by René
