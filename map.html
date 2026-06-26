@@ -243,6 +243,17 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       <div id="dare-places-status" style="font-family:var(--mono);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:.3rem;letter-spacing:.04em;"></div>
     </div>
   </div>
+  <div class="ctrl-card">
+    <div class="ctrl-label">Region</div>
+    <div class="filter-row">
+      <button class="filter-chip active" data-region="all">All</button>
+      <button class="filter-chip" data-region="europe">Europe</button>
+      <button class="filter-chip" data-region="near_east">Near East</button>
+      <button class="filter-chip" data-region="mesoamerica">Mesoamerica</button>
+      <button class="filter-chip" data-region="north_america">N. America</button>
+      <button class="filter-chip" data-region="south_america">S. America</button>
+    </div>
+  </div>
 </div>
 
 <div class="map-controls">
@@ -272,17 +283,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
     <div class="mentions-row">
       <span class="mentions-lbl">Corpus matches only</span>
       <input type="checkbox" id="mentionedOnly" style="accent-color:var(--ochre);">
-    </div>
-  </div>
-  <div class="ctrl-card">
-    <div class="ctrl-label">Region</div>
-    <div class="filter-row">
-      <button class="filter-chip active" data-region="all">All</button>
-      <button class="filter-chip" data-region="europe">Europe</button>
-      <button class="filter-chip" data-region="near_east">Near East</button>
-      <button class="filter-chip" data-region="mesoamerica">Mesoamerica</button>
-      <button class="filter-chip" data-region="north_america">N. America</button>
-      <button class="filter-chip" data-region="south_america">S. America</button>
     </div>
   </div>
   <div class="ctrl-card">
@@ -384,6 +384,32 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);}
       </div>
       <div id="jomon-status" style="font-family:var(--mono,monospace);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:4px;letter-spacing:.04em;"></div>
       <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:2px;">jomon-japan.jp · UNESCO WHC</div>
+    </div>
+  </div>
+  <div class="ctrl-card">
+    <div class="ctrl-label">Periplus of the Erythraean Sea</div>
+    <div class="filter-row">
+      <button class="filter-chip" id="periplus-btn" onclick="togglePeriplusLayer()">Show Periplus Sites</button>
+    </div>
+    <div id="periplus-legend" style="display:none;margin-top:6px;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#c45a32;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Port / Emporium</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#8b4513;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Inland City / Kingdom</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#4a7fa0;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Bay / Gulf / Island</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#7a5a2a;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
+        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Site / Region / Other</span>
+      </div>
+      <div id="periplus-status" style="font-family:var(--mono,monospace);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:4px;letter-spacing:.04em;"></div>
+      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:2px;">1st-century CE · Red Sea trade route</div>
     </div>
   </div>
 </div>
@@ -2274,6 +2300,142 @@ window.toggleJomonLayer = function () {
   }
 };
 // ── END JOMON PREHISTORIC SITES ───────────────────────────────────────────────
+
+// ── PERIPLUS OF THE ERYTHRAEAN SEA ───────────────────────────────────────────
+// 65 ports, cities, bays, islands, and geographical features from the
+// 1st-century CE Greek maritime periplus, covering the Red Sea, East Africa,
+// Arabia, Persia, and India. Converted from KMZ: Digital Map of the Periplus
+// of the Erythraean Sea (Google My Maps).
+// Source data: map-data/periplus-sites.json
+let periplusOn = false, periplusLayer = null, periplusDataPromise = null;
+
+const PERIPLUS_CATEGORY_STYLE = {
+  port:    { color: '#c45a32', label: 'Port / Emporium' },
+  city:    { color: '#8b4513', label: 'Inland City / Kingdom' },
+  bay:     { color: '#4a7fa0', label: 'Bay / Gulf' },
+  river:   { color: '#3a6b8a', label: 'River' },
+  named:   { color: '#5a7a3a', label: 'Named Place' },
+  ruin:    { color: '#7a5a2a', label: 'Site / Ruin' },
+  region:  { color: '#8a6a4a', label: 'Region' },
+  island:  { color: '#5a8a9a', label: 'Island' },
+  coast:   { color: '#6a7a8a', label: 'Coastal Feature' },
+  empire:  { color: '#6a3a6a', label: 'Empire / State' },
+};
+
+function periplusIcon(category) {
+  const style = PERIPLUS_CATEGORY_STYLE[category] || { color: '#c45a32' };
+  return L.divIcon({
+    html: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12">
+      <circle cx="6" cy="6" r="5" fill="${style.color}" fill-opacity=".9"
+        stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+    </svg>`,
+    className: '', iconSize: [12, 12], iconAnchor: [6, 6]
+  });
+}
+
+async function loadPeriplusData() {
+  if (!periplusDataPromise) {
+    periplusDataPromise = (async () => {
+      const res = await fetch('./map-data/periplus-sites.json');
+      if (!res.ok) throw new Error(`Periplus JSON fetch failed: ${res.status}`);
+      return await res.json();
+    })();
+  }
+  return periplusDataPromise;
+}
+
+async function buildPeriplusLayer() {
+  const sites = await loadPeriplusData();
+  const g = L.layerGroup();
+  sites.forEach(s => {
+    const marker = L.marker([s.lat, s.lng], { icon: periplusIcon(s.category) });
+    const style = PERIPLUS_CATEGORY_STYLE[s.category] || { label: 'Site' };
+    marker.bindTooltip(
+      `<b>${s.name}</b><br><span style="color:rgba(196,90,50,.9);font-size:.62rem">${style.label}</span>`,
+      { sticky: true, className: 'orbis-tip' }
+    );
+    marker.on('click', () => showPeriplusDetail(s, style));
+    g.addLayer(marker);
+  });
+  return { layer: g, count: sites.length };
+}
+
+function showPeriplusDetail(s, style) {
+  document.getElementById('detailTier').textContent = style.label;
+  document.getElementById('detailTier').style.color = style.color;
+  document.getElementById('detailName').textContent = s.name;
+
+  document.getElementById('detailBadges').innerHTML =
+    `<span class="badge badge-culture">Periplus</span>` +
+    `<span class="badge badge-region">${style.label}</span>`;
+
+  // Description with optional image
+  const imgTag = s.image
+    ? `<img src="${s.image}" alt="${s.name}"
+         onerror="this.style.display='none'"
+         style="width:100%;border-radius:4px;margin:6px 0 8px;display:block;object-fit:cover;max-height:160px;">`
+    : '';
+  document.getElementById('detailDesc').innerHTML =
+    `${imgTag}${s.desc ? s.desc : '<em style="color:rgba(240,220,180,.4)">No description in source.</em>'}`;
+
+  document.getElementById('detailMentions').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Category';
+  document.getElementById('detailMentions').textContent = style.label;
+  document.getElementById('detailAncientRefs').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Source';
+  document.getElementById('detailAncientRefs').textContent = '1st c. CE';
+
+  document.getElementById('detailTopos').style.display = 'none';
+  document.getElementById('detailMentionsList').style.display = 'none';
+
+  const osm = `https://www.openstreetmap.org/?mlat=${s.lat}&mlon=${s.lng}&zoom=9`;
+  document.getElementById('extLinks').innerHTML =
+    `<a class="ext-link" href="${osm}" target="_blank" rel="noopener">OSM</a>` +
+    `<a class="ext-link" href="https://en.wikipedia.org/wiki/Periplus_of_the_Erythraean_Sea" target="_blank" rel="noopener">Periplus (Wikipedia)</a>`;
+
+  document.getElementById('sitePageBtn').style.display = 'none';
+  closeExternalAtlases();
+  document.getElementById('detailPanel').classList.add('open');
+}
+
+window.togglePeriplusLayer = async function () {
+  const btn = document.getElementById('periplus-btn');
+  const leg = document.getElementById('periplus-legend');
+  const status = document.getElementById('periplus-status');
+
+  if (!periplusLayer) {
+    btn.disabled = true;
+    btn.textContent = 'Loading…';
+    try {
+      const { layer, count } = await buildPeriplusLayer();
+      periplusLayer = layer;
+      if (status) status.textContent = `${count} sites loaded`;
+    } catch (e) {
+      console.warn('Periplus layer failed:', e);
+      btn.textContent = 'Unavailable';
+      btn.disabled = false;
+      periplusDataPromise = null;
+      return;
+    }
+    btn.disabled = false;
+  }
+
+  if (periplusOn) {
+    map.removeLayer(periplusLayer);
+    btn.textContent = 'Show Periplus Sites';
+    btn.classList.remove('active');
+    leg.style.display = 'none';
+    periplusOn = false;
+  } else {
+    periplusLayer.addTo(map);
+    btn.textContent = 'Hide Periplus Sites';
+    btn.classList.add('active');
+    leg.style.display = 'block';
+    periplusOn = true;
+    // Fly to Red Sea / Indian Ocean on first enable
+    map.flyTo([15, 52], 4, { duration: 1.5 });
+  }
+};
+// ── END PERIPLUS OF THE ERYTHRAEAN SEA ───────────────────────────────────────
+
 
 
 
