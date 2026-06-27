@@ -104,82 +104,6 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .hero-secondary { display: none; }
 }
 
-/* ── PIONEER ARCHAEOLOGIST COLLAGE BACKGROUND ── */
-.hero-primary {
-  padding-right: 2.5rem;
-  border-right: 1px solid var(--rule);
-  position: relative;
-  isolation: isolate;
-}
-
-/* The collage sits behind all content as a ::before layer */
-.hero-primary::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-
-  /* Six pioneer archaeologist photos tiled across the space.
-     Each image is positioned and sized to cover its region of the grid.
-     Order in CSS background shorthand: last listed = bottom layer. */
-  background-image:
-    /* Grain texture overlay — pure CSS SVG noise */
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E"),
-    /* Photos */
-    url('petriehildafull-718x10240.jpeg'),
-    url('Proskouriakoff_Tatiana_full.jpg'),
-    url('Julio_C_Tello_-DíaDelArqueólogo.jpg'),
-    url('Sylvanus_Morley_copan.jpg'),
-    url('T_E_Lawrence__1888-1935__Q73536.jpg'),
-    url('Hrozny_Hittite_Archaeologist.jpg');
-
-  background-size:
-    200px 200px,                    /* grain tile */
-    22% auto,                       /* Petrie — tall portrait, left-mid strip */
-    18% auto,                       /* Proskouriakoff — portrait, far right strip */
-    20% auto,                       /* Tello — portrait, centre-right */
-    24% auto,                       /* Morley at Copan */
-    45% auto,                       /* Lawrence — wide landscape, top-right block */
-    55% auto;                       /* Hrozny at Hittite ruins — wide, anchors left */
-
-  background-position:
-    0 0,                            /* grain */
-    8% 60%,                         /* Petrie */
-    94% 55%,                        /* Proskouriakoff */
-    62% 80%,                        /* Tello */
-    38% 72%,                        /* Morley */
-    58% 5%,                         /* Lawrence */
-    0% 30%;                         /* Hrozny */
-
-  background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
-
-  /* Desaturate + slight contrast lift to unify the mixed-era photos */
-  filter: grayscale(1) contrast(0.82) brightness(0.86) sepia(0.12);
-}
-
-/* Parchment + vignette scrim over the collage to keep text readable */
-.hero-primary::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    /* Dark vignette at edges */
-    radial-gradient(ellipse 92% 88% at 50% 50%,
-      rgba(245,240,230,0.0) 30%,
-      rgba(245,240,230,0.55) 70%,
-      rgba(245,240,230,0.88) 100%),
-    /* Warm parchment wash — heavier at bottom where text sits */
-    linear-gradient(180deg,
-      rgba(245,240,230,0.55) 0%,
-      rgba(245,240,230,0.72) 40%,
-      rgba(245,240,230,0.92) 68%,
-      rgba(245,240,230,0.98) 100%);
-}
-
-/* Keep hero-primary children above the pseudo-layers */
-.hero-primary > * { position: relative; z-index: 1; }
-.hero-img { position: relative; z-index: 1; }
 
 .hero-img {
   height: 420px;
@@ -951,7 +875,96 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   flex: 1;
   min-width: 0;
   overflow-x: hidden;
+  position: relative;
+  /* Collage fills the column; page-wrap panels sit on top at --cream */
+  background-color: var(--cream);
+  background-image:
+    /* Warm parchment scrim so the photos don't compete with panel content */
+    linear-gradient(to bottom,
+      rgba(250,248,243,.0) 0%,
+      rgba(250,248,243,.0) 100%),
+    /* CSS grain — SVG feTurbulence tiled at low opacity */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E"),
+    /* Six pioneer archaeologist photographs */
+    url('petriehildafull-718x10240.jpeg'),
+    url('Proskouriakoff_Tatiana_full.jpg'),
+    url('Julio_C_Tello_-D%C3%ADaDelArque%C3%B3logo.jpg'),
+    url('Sylvanus_Morley_copan.jpg'),
+    url('T_E_Lawrence__1888-1935__Q73536.jpg'),
+    url('Hrozny_Hittite_Archaeologist.jpg');
+
+  background-repeat:
+    no-repeat,          /* parchment */
+    repeat,             /* grain */
+    no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+
+  background-size:
+    cover,              /* parchment */
+    180px 180px,        /* grain tile */
+    /* photos — sized to visible outer strip, not overlapping the 1100px panel */
+    auto 55%,   /* Petrie — tall portrait, left gutter */
+    auto 42%,   /* Proskouriakoff — right gutter */
+    auto 48%,   /* Tello */
+    auto 38%,   /* Morley */
+    55% auto,   /* Lawrence — wide landscape, spans top */
+    60% auto;   /* Hrozny — wide, anchors bottom-left */
+
+  background-position:
+    0 0,                /* parchment */
+    0 0,                /* grain */
+    /* Deliberately placed in the outer gutters beyond the 1100px page-wrap */
+    left 1.5% bottom 8%,      /* Petrie — far left gutter */
+    right 1.5% center,        /* Proskouriakoff — far right gutter */
+    right 4% bottom 4%,       /* Tello — right gutter lower */
+    left 4%   bottom 18%,     /* Morley — left gutter lower */
+    right 0%  top 12%,        /* Lawrence — top-right outer */
+    left 0%   bottom 0%;      /* Hrozny — bottom-left outer */
+
+  background-attachment: local, local, local, local, local, local, local, local;
+
+  /* Grayscale + sepia on the whole column background via a filter trick:
+     use isolation + mix-blend-mode on a ::before instead, since filter
+     on content-col would also desaturate the panels. */
 }
+
+/* Pseudo-element carries the actual desaturated collage so the
+   page-wrap panels above it retain full color */
+.content-col::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    url('petriehildafull-718x10240.jpeg'),
+    url('Proskouriakoff_Tatiana_full.jpg'),
+    url('Julio_C_Tello_-D%C3%ADaDelArque%C3%B3logo.jpg'),
+    url('Sylvanus_Morley_copan.jpg'),
+    url('T_E_Lawrence__1888-1935__Q73536.jpg'),
+    url('Hrozny_Hittite_Archaeologist.jpg');
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-size:
+    auto 52%,
+    auto 40%,
+    auto 45%,
+    auto 36%,
+    52% auto,
+    58% auto;
+  background-position:
+    left 1.5% bottom 8%,
+    right 1.5% center,
+    right 4%   bottom 4%,
+    left 4%    bottom 18%,
+    right 0%   top 12%,
+    left 0%    bottom 0%;
+  filter: grayscale(1) contrast(0.78) brightness(0.84) sepia(0.18);
+  /* Blend into the parchment cream so photos feel embedded not pasted */
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+}
+
+/* Ensure page-wrap and all content sits above the collage pseudo-element */
+.content-col > * { position: relative; z-index: 1; }
 
 /* Keep topbar full-width inside content col */
 .topbar {
