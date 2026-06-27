@@ -606,6 +606,91 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .partners-grid { grid-template-columns: 1fr; }
 }
 
+/* ── PARTNER BANNERS ── */
+.partner-banners {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--rule);
+  margin-bottom: 0;
+}
+.partner-banner {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 140px;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  color: inherit;
+  transition: background .15s;
+  overflow: hidden;
+}
+.partner-banner:last-child { border-bottom: none; }
+.partner-banner:hover { background: rgba(0,0,0,.022); }
+.partner-banner-logo {
+  background: var(--linen);
+  border-right: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.4rem;
+  overflow: hidden;
+}
+.partner-banner-logo img {
+  max-width: 100%;
+  max-height: 90px;
+  object-fit: contain;
+  display: block;
+  transition: opacity .2s;
+}
+.partner-banner:hover .partner-banner-logo img { opacity: .85; }
+.partner-banner-body {
+  padding: 1.4rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .4rem;
+}
+.partner-banner-eyebrow {
+  font-family: var(--sans);
+  font-size: .55rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+.partner-banner-name {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+}
+.partner-banner-desc {
+  font-family: var(--sans);
+  font-size: .75rem;
+  color: #5a5248;
+  line-height: 1.55;
+}
+.partner-banner-cta {
+  margin-top: .5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-family: var(--sans);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  transition: color .2s;
+}
+.partner-banner:hover .partner-banner-cta { color: var(--terra); }
+@media (max-width: 640px) {
+  .partner-banner { grid-template-columns: 1fr; min-height: auto; }
+  .partner-banner-logo { border-right: none; border-bottom: 1px solid var(--rule); max-height: 100px; }
+}
+
+
 /* â”€â”€ MISSION BAND â”€â”€ */
 .mission-band {
   background: var(--forest);
@@ -1454,28 +1539,71 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 </div>
 
 
-<!-- PARTNER & AFFILIATE TILES -->
+<!-- PARTNER & AFFILIATE BANNERS -->
 <div class="page-wrap">
   <div class="partners-section reveal">
     <div class="partners-eyebrow">Partners &amp; Affiliates</div>
-    <div class="partners-grid">
 
-      <!-- 1: Maya Heritage Center -->
-      <a class="partner-tile" href="https://www.zeffy.com/en-US/donation-form/967cd480-311d-438c-abd5-f79dae1cffa8" target="_blank" rel="noopener" aria-label="Donate to Maya Heritage Center">
-        <img src="mayaheritagedonate.jpg" alt="Maya Heritage Center — Preserving Maya Culture Past and Present" loading="lazy">
-        <div class="partner-tile-label">Maya Heritage Center &rarr;</div>
+    <div class="partner-banners">
+
+      <!-- Maya Heritage Center — Donate -->
+      <a class="partner-banner"
+         href="https://www.zeffy.com/en-US/donation-form/967cd480-311d-438c-abd5-f79dae1cffa8"
+         target="_blank" rel="noopener" aria-label="Donate to Maya Heritage Center">
+        <div class="partner-banner-logo">
+          <img src="mayaheritagelogo.jpg" alt="Maya Heritage Center logo" loading="lazy">
+        </div>
+        <div class="partner-banner-body">
+          <div class="partner-banner-eyebrow">Cultural Preservation &middot; Dallas, TX</div>
+          <div class="partner-banner-name">Maya Heritage Center</div>
+          <div class="partner-banner-desc">Preserving Maya heritage past &amp; present — through education, community, and cultural stewardship. archAIology is proud to support the Maya Heritage Center's mission.</div>
+          <div class="partner-banner-cta">Donate Now &rarr;</div>
+        </div>
       </a>
 
-      <!-- 2: Bearspray AI -->
-      <a class="partner-tile" href="https://www.bearspray.ai/" target="_blank" rel="noopener" aria-label="Bearspray AI">
-        <img src="Bearsprayaithumbnail.jpg" alt="Bearspray AI — AI Excavation, Survey and Method" loading="lazy">
-        <div class="partner-tile-label">Bearspray AI &rarr;</div>
+      <!-- Touring Dallas -->
+      <a class="partner-banner"
+         href="https://www.bucranica.org/tours.html"
+         target="_blank" rel="noopener" aria-label="Touring Dallas — historical tours">
+        <div class="partner-banner-logo">
+          <img src="Touring_Dallas_logo.jpg" alt="Touring Dallas logo" loading="lazy">
+        </div>
+        <div class="partner-banner-body">
+          <div class="partner-banner-eyebrow">History Tours &middot; Dallas, TX</div>
+          <div class="partner-banner-name">Touring Dallas</div>
+          <div class="partner-banner-desc">Journeys through history. Stories that shaped Dallas. Walking and driving tours of the people, places, and moments that built one of America's most dynamic cities.</div>
+          <div class="partner-banner-cta">Explore Tours &rarr;</div>
+        </div>
       </a>
 
-      <!-- 3: Bucranica -->
-      <a class="partner-tile" href="https://www.bucranica.org/" target="_blank" rel="noopener" aria-label="Bucranica — The Bull Corridor">
-        <img src="bucranicathumbnail.jpg" alt="Bucranica — The Bull Corridor of the Eastern Mediterranean" loading="lazy">
-        <div class="partner-tile-label">Bucranica.org &rarr;</div>
+      <!-- Bearspray AI -->
+      <a class="partner-banner"
+         href="https://www.bearspray.ai/"
+         target="_blank" rel="noopener" aria-label="Bearspray AI">
+        <div class="partner-banner-logo">
+          <img src="Bearsprayaithumbnail.jpg" alt="Bearspray AI" loading="lazy">
+        </div>
+        <div class="partner-banner-body">
+          <div class="partner-banner-eyebrow">AI Research Tools</div>
+          <div class="partner-banner-name">Bearspray AI</div>
+          <div class="partner-banner-desc">AI-powered tools for archaeological survey, excavation support, and field method — the technology behind archAIology's research pipeline.</div>
+          <div class="partner-banner-cta">Visit Bearspray AI &rarr;</div>
+        </div>
+      </a>
+
+      <!-- Bucranica -->
+      <a class="partner-banner"
+         href="https://www.bucranica.org/"
+         target="_blank" rel="noopener" aria-label="Bucranica — The Bull Corridor">
+        <div class="partner-banner-logo">
+          <img src="bucranicathumbnail.jpg" alt="Bucranica — The Bull Corridor" loading="lazy">
+        </div>
+        <div class="partner-banner-body">
+          <div class="partner-banner-eyebrow">Research Platform &middot; Eastern Mediterranean</div>
+          <div class="partner-banner-name">Bucranica.org</div>
+          <div class="partner-banner-desc">The Bull Corridor — a research platform exploring the ancient sacred landscape of the Eastern Mediterranean through the symbolic lens of cattle, bull-sacrifice, and bucranium iconography.</div>
+          <div class="partner-banner-cta">Visit Bucranica &rarr;</div>
+        </div>
       </a>
 
     </div>
