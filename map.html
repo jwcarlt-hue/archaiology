@@ -1,2274 +1,925 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Corpus Map | archAIology</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
-<style>
-:root{
-  --ink:#1c1814;--cream:#faf8f3;--ochre:#b8892a;--ochre-lt:#d4a84b;
-  --ash:#8a8070;--rule:#d5ccb8;--linen:#e8e0d0;--forest:#2a3d2e;
-  --serif:'Playfair Display',Georgia,serif;
-  --sans:'DM Sans',system-ui,sans-serif;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow:hidden;font-family:var(--sans);}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map — The Bull Corridor · Bucranica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400;500&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* MASTHEAD */
-.masthead{position:fixed;top:0;left:0;right:0;z-index:1000;height:44px;
-  background:var(--ink);display:flex;align-items:center;padding:0 1.2rem;gap:1.5rem;}
-.logo{font-family:var(--serif);font-size:1.1rem;font-weight:900;color:var(--cream);text-decoration:none;}
-.logo span{color:var(--ochre);font-style:italic;}
-.nav-link{font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--ash);text-decoration:none;transition:color .2s;}
-.nav-link:hover,.nav-link.active{color:var(--cream);}
-.masthead-right{margin-left:auto;display:flex;align-items:center;gap:1rem;}
-.map-stats{font-size:.65rem;color:var(--ash);}
-.map-stats strong{color:var(--ochre);}
+    :root {
+      --tc:        #B85C38;
+      --tc-light:  #D4845E;
+      --tc-pale:   #3A1A0A;
+      --gold:      #C9A84C;
+      --gold-dim:  #8A6E2C;
+      --ink:       #0A0205;
+      --ink2:      #110308;
+      --parchment: #E8D5C0;
+      --parch-dim: #A08060;
 
-/* MAP */
-#map{position:fixed;top:44px;left:0;right:0;bottom:0;z-index:1;}
+      /* tier colors */
+      --tier-a:   #C9A84C;
+      --tier-ab:  #B85C38;
+      --tier-b:   #7A9E7E;
+    }
 
-/* tile filter applied per-tile by JS */
+    html, body { height: 100%; overflow: hidden; }
 
-/* CONTROLS */
-.map-controls{position:fixed;top:56px;left:12px;z-index:500;
-  display:flex;flex-direction:column;gap:6px;width:195px;}
-.ctrl-card{background:rgba(15,13,10,.9);border:1px solid rgba(255,255,255,.1);
-  backdrop-filter:blur(8px);padding:.65rem .8rem;}
-.ctrl-label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--ochre);margin-bottom:.5rem;}
-.tier-row{display:flex;align-items:center;gap:.5rem;padding:.22rem 0;cursor:pointer;}
-.tier-dot{border-radius:50%;flex-shrink:0;border:1.5px solid rgba(255,255,255,.2);}
-.tier-label{font-size:.67rem;color:rgba(232,224,208,.8);}
-.tier-count{margin-left:auto;font-size:.58rem;font-weight:700;color:var(--ochre);}
-.ctrl-sep{height:1px;background:rgba(255,255,255,.06);margin:.3rem 0;}
-.filter-row{display:flex;flex-wrap:wrap;gap:3px;margin-top:.3rem;}
-.filter-chip{font-size:.58rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
-  padding:.18rem .45rem;border:1px solid rgba(255,255,255,.1);background:none;
-  color:var(--ash);cursor:pointer;border-radius:2px;transition:all .15s;white-space:nowrap;}
-.filter-chip:hover{color:var(--cream);border-color:rgba(255,255,255,.3);}
-.filter-chip.active{background:rgba(184,137,42,.2);color:var(--ochre);border-color:var(--ochre);}
-.mentions-row{display:flex;align-items:center;justify-content:space-between;margin-top:.4rem;}
-.mentions-lbl{font-size:.62rem;color:var(--ash);}
+    body {
+      font-family: 'Spectral', Georgia, serif;
+      background: var(--ink);
+      color: var(--parchment);
+      display: flex;
+      flex-direction: column;
+    }
 
-/* SEARCH */
-.search-wrap{position:fixed;top:56px;right:12px;z-index:500;}
-.basemap-panel-right{position:fixed;top:104px;right:12px;z-index:500;width:195px;}
-.search-inner{position:relative;}
-.search-icon{position:absolute;left:.55rem;top:50%;transform:translateY(-50%);
-  color:var(--ash);font-size:.7rem;pointer-events:none;}
-.search-input{background:rgba(15,13,10,.9);border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(8px);color:var(--cream);font-family:var(--sans);font-size:.75rem;
-  padding:.4rem .8rem .4rem 1.8rem;width:220px;outline:none;transition:all .2s;}
-.search-input:focus{border-color:var(--ochre);width:280px;}
-.search-input::placeholder{color:var(--ash);}
+    /* ── TOPBAR ── */
+    .topbar {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.5rem;
+      border-bottom: 0.5px solid rgba(180,120,60,0.2);
+      background: rgba(10,2,5,0.95);
+      z-index: 1000;
+    }
 
-/* DETAIL PANEL */
-.detail-panel{position:fixed;right:0;top:44px;bottom:0;width:340px;
-  background:var(--ink);border-left:1px solid rgba(255,255,255,.08);
-  overflow-y:auto;transform:translateX(100%);transition:transform .3s ease;z-index:600;}
-.detail-panel.open{transform:translateX(0);}
-.detail-close{position:absolute;top:.8rem;right:.8rem;
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
-  color:var(--ash);width:28px;height:28px;cursor:pointer;border-radius:2px;
-  font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-.detail-close:hover{color:var(--cream);}
-.detail-header{padding:1.2rem 1.2rem .8rem;}
-.detail-tier{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.4rem;}
-.detail-name{font-family:var(--serif);font-size:1.4rem;font-weight:900;color:var(--cream);line-height:1.2;margin-bottom:.5rem;}
-.detail-badges{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.8rem;}
-.badge{font-size:.56rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.14rem .42rem;border-radius:2px;}
-.badge-culture{background:rgba(184,137,42,.15);color:var(--ochre);}
-.badge-region{background:rgba(42,61,46,.3);color:#7ab890;}
-.badge-period{background:rgba(255,255,255,.06);color:var(--ash);}
-.detail-desc{font-family:Georgia,serif;font-size:.82rem;line-height:1.6;
-  color:rgba(232,224,208,.65);padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.05);}
-.detail-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;
-  background:rgba(255,255,255,.05);border-top:1px solid rgba(255,255,255,.05);}
-.stat-cell{background:var(--ink);padding:.7rem 1.2rem;}
-.stat-num{font-family:var(--serif);font-size:1.4rem;font-weight:900;color:var(--ochre);display:block;line-height:1;}
-.stat-lbl{font-size:.58rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ash);margin-top:.15rem;}
-.detail-section{padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.05);}
-.section-label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);margin-bottom:.6rem;}
-.mention-item{padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.04);}
-.mention-item:last-child{border-bottom:none;}
-.mention-title{font-size:.8rem;font-weight:600;color:rgba(232,224,208,.8);line-height:1.35;margin-bottom:.2rem;}
-.mention-title a{color:inherit;text-decoration:none;}
-.mention-title a:hover{color:var(--ochre);}
-.mention-meta{font-size:.62rem;color:var(--ash);}
-.topos-block{display:flex;align-items:center;justify-content:space-between;gap:1rem;
-  background:rgba(42,61,46,.3);padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.05);}
-.topos-num{font-family:var(--serif);font-size:1.6rem;font-weight:900;color:var(--ochre);}
-.topos-lbl{font-size:.58rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(232,224,208,.5);margin-top:.1rem;}
-.topos-btn{font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--ochre);border:1px solid rgba(184,137,42,.35);padding:.3rem .7rem;
-  text-decoration:none;transition:all .2s;white-space:nowrap;}
-.topos-btn:hover{background:rgba(184,137,42,.15);}
-.ext-links{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.05);}
-.ext-link{font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--ash);border:1px solid rgba(255,255,255,.1);padding:.25rem .6rem;
-  text-decoration:none;transition:all .2s;border-radius:2px;}
-.ext-link:hover{color:var(--ochre);border-color:var(--ochre);}
-.site-page-btn{display:block;margin:.8rem 1.2rem;
-  background:rgba(184,137,42,.15);border:1px solid rgba(184,137,42,.3);
-  color:var(--ochre);font-size:.65rem;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;padding:.5rem;text-align:center;text-decoration:none;transition:all .2s;}
-.atlas-panel{position:fixed;left:210px;right:12px;top:56px;bottom:12px;z-index:650;
-  background:rgba(15,13,10,.96);border:1px solid rgba(255,255,255,.1);
-  backdrop-filter:blur(10px);display:none;flex-direction:column;overflow:hidden;}
-.atlas-panel.open{display:flex;}
-.atlas-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;
-  padding:.8rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);}
-.atlas-title-wrap{min-width:0;}
-.atlas-kicker{font-size:.56rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);margin-bottom:.25rem;}
-.atlas-title{font-family:var(--serif);font-size:1.1rem;font-weight:900;color:var(--cream);line-height:1.15;}
-.atlas-meta{font-size:.65rem;color:var(--ash);margin-top:.22rem;line-height:1.5;}
-.atlas-meta a{color:var(--ochre);text-decoration:none;}
-.atlas-actions{display:flex;align-items:center;gap:.45rem;flex-shrink:0;}
-.atlas-link,.atlas-close{display:inline-flex;align-items:center;justify-content:center;min-height:34px;
-  padding:0 .75rem;border:1px solid rgba(255,255,255,.12);text-decoration:none;background:rgba(255,255,255,.03);
-  color:var(--ash);font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;}
-.atlas-link:hover,.atlas-close:hover{color:var(--cream);border-color:var(--ochre);}
-.atlas-body{position:relative;flex:1;min-height:0;background:#0d1118;}
-.atlas-frame{width:100%;height:100%;border:0;background:#0d1118;}
-.atlas-note{position:absolute;left:14px;bottom:14px;max-width:360px;padding:.6rem .7rem;
-  background:rgba(15,13,10,.82);border:1px solid rgba(255,255,255,.08);font-size:.63rem;line-height:1.55;color:rgba(232,224,208,.62);z-index:3;}
-@media(max-width:960px){
-  .atlas-panel{left:12px;right:12px;top:56px;bottom:12px;}
-}
-.site-page-btn:hover{background:rgba(184,137,42,.25);}
+    .topbar-back {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(200,160,100,0.45);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .topbar-back:hover { color: var(--gold); }
+    .topbar-back::before { content: '← '; }
 
-/* LOADING */
-.map-loading{position:fixed;inset:0;top:44px;background:rgba(15,13,10,.92);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;z-index:900;}
-.loading-dots span{display:inline-block;width:8px;height:8px;border-radius:50%;
-  background:var(--ochre);margin:0 3px;animation:ldot 1.2s ease infinite;}
-.loading-dots span:nth-child(2){animation-delay:.2s;}
-.loading-dots span:nth-child(3){animation-delay:.4s;}
-@keyframes ldot{0%,100%{opacity:.2;transform:translateY(0)}50%{opacity:1;transform:translateY(-5px)}}
-.loading-text{font-size:.78rem;color:var(--ash);}
+    .topbar-center {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+    }
 
-/* Leaflet popup override */
-.leaflet-popup-content-wrapper{
-  background:rgba(15,13,10,.95);border:1px solid rgba(255,255,255,.1);
-  border-radius:2px;box-shadow:0 4px 20px rgba(0,0,0,.6);color:var(--cream);
-}
-.leaflet-popup-tip{background:rgba(15,13,10,.95);}
-.leaflet-popup-content{margin:.7rem .9rem;font-family:var(--sans);}
-.popup-name{font-family:var(--serif);font-size:1rem;font-weight:900;color:var(--cream);margin-bottom:.3rem;}
-.popup-sub{font-size:.65rem;color:var(--ochre);}
-.popup-btn{display:block;margin-top:.5rem;font-size:.6rem;font-weight:700;
-  letter-spacing:.07em;text-transform:uppercase;color:var(--ochre);
-  border:1px solid rgba(184,137,42,.3);padding:.25rem .5rem;text-align:center;
-  background:none;cursor:pointer;width:100%;transition:all .2s;}
-.popup-btn:hover{background:rgba(184,137,42,.15);}
+    .topbar-brand {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
 
-/* Cluster override */
-.marker-cluster-small,.marker-cluster-medium,.marker-cluster-large{
-  background:rgba(184,137,42,.25)!important;}
-.marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{
-  background:rgba(184,137,42,.7)!important;color:#1c1814!important;
-  font-family:var(--sans)!important;font-weight:700!important;font-size:.7rem!important;}
+    .topbar-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: var(--parch-dim);
+    }
 
-.orbis-tip { background:rgba(8,11,18,.93)!important; border:1px solid rgba(212,168,75,.2)!important;
-  color:#e8dfc8!important; font-size:.68rem!important; padding:4px 8px!important;
-  border-radius:2px!important; white-space:nowrap; }
-.orbis-tip::before { display:none!important; }
+    .topbar-count {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      color: rgba(180,120,60,0.4);
+      text-transform: uppercase;
+    }
 
-.lang-tip { background:rgba(8,11,18,.93)!important; border:1px solid rgba(160,100,200,.25)!important;
-  color:#e8dfc8!important; font-size:.68rem!important; padding:4px 8px!important;
-  border-radius:2px!important; white-space:nowrap; max-width:280px; white-space:normal; }
-.lang-tip::before { display:none!important; }
-</style>
+    /* ── LAYOUT: sidebar + map ── */
+    .workspace {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      background: var(--ink2);
+      border-right: 0.5px solid rgba(180,120,60,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 500;
+    }
+
+    .sidebar-filters {
+      flex-shrink: 0;
+      padding: 1rem;
+      border-bottom: 0.5px solid rgba(180,120,60,0.12);
+    }
+
+    .filter-label {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(180,120,60,0.4);
+      margin-bottom: 0.6rem;
+      display: block;
+    }
+
+    .filter-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 0.75rem;
+    }
+
+    .ftag {
+      font-family: 'Spectral', serif;
+      font-size: 10px;
+      font-style: italic;
+      color: var(--parch-dim);
+      padding: 2px 8px;
+      border: 0.5px solid rgba(180,120,60,0.2);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: transparent;
+    }
+
+    .ftag:hover { border-color: rgba(180,120,60,0.5); color: var(--parchment); }
+    .ftag.active { border-color: var(--tc); color: var(--parchment); background: rgba(184,92,56,0.15); }
+
+    .search-input {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 0.5px solid rgba(180,120,60,0.2);
+      border-radius: 2px;
+      padding: 7px 10px;
+      font-family: 'Spectral', serif;
+      font-size: 12px;
+      font-style: italic;
+      color: var(--parchment);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input::placeholder { color: rgba(200,160,100,0.25); }
+    .search-input:focus { border-color: rgba(180,120,60,0.45); }
+
+    /* site list */
+    .site-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.5rem 0;
+    }
+
+    .site-list::-webkit-scrollbar { width: 3px; }
+    .site-list::-webkit-scrollbar-track { background: transparent; }
+    .site-list::-webkit-scrollbar-thumb { background: rgba(180,120,60,0.2); border-radius: 2px; }
+
+    .site-item {
+      padding: 0.75rem 1rem;
+      border-bottom: 0.5px solid rgba(180,120,60,0.07);
+      cursor: pointer;
+      transition: background 0.15s;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+
+    .site-item:hover { background: rgba(184,92,56,0.07); }
+    .site-item.active { background: rgba(184,92,56,0.14); border-left: 2px solid var(--tc); }
+
+    .site-tier-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+
+    .site-info { flex: 1; min-width: 0; }
+
+    .site-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--parchment);
+      line-height: 1.2;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .site-region {
+      font-family: 'Spectral', serif;
+      font-size: 10px;
+      font-style: italic;
+      color: var(--parch-dim);
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .site-period {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      color: rgba(180,120,60,0.45);
+    }
+
+    /* ── MAP ── */
+    .map-wrap {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Custom Leaflet tile override for dark mode */
+    .leaflet-tile { filter: brightness(0.35) sepia(0.4) hue-rotate(10deg) saturate(0.6); }
+
+    /* Corridor segment legend */
+    .map-legend {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 1rem;
+      z-index: 800;
+      background: rgba(10,2,5,0.88);
+      border: 0.5px solid rgba(180,120,60,0.2);
+      border-radius: 3px;
+      padding: 0.9rem 1rem;
+      backdrop-filter: blur(6px);
+      min-width: 180px;
+    }
+
+    .legend-title {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(180,120,60,0.5);
+      margin-bottom: 0.65rem;
+    }
+
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .legend-dot.tier-a  { background: var(--tier-a);  box-shadow: 0 0 5px rgba(201,168,76,0.6); }
+    .legend-dot.tier-ab { background: var(--tier-ab); box-shadow: 0 0 5px rgba(184,92,56,0.6);  }
+    .legend-dot.tier-b  { background: var(--tier-b);  box-shadow: 0 0 5px rgba(122,158,126,0.5);}
+
+    .legend-text {
+      font-family: 'Spectral', serif;
+      font-size: 10px;
+      font-style: italic;
+      color: var(--parch-dim);
+    }
+
+    .legend-rule {
+      height: 0.5px;
+      background: rgba(180,120,60,0.15);
+      margin: 7px 0;
+    }
+
+    /* ── POPUP ── */
+    .leaflet-popup-content-wrapper {
+      background: rgba(10,2,5,0.95) !important;
+      border: 0.5px solid rgba(180,120,60,0.3) !important;
+      border-radius: 3px !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.7) !important;
+      color: var(--parchment) !important;
+      backdrop-filter: blur(8px);
+    }
+
+    .leaflet-popup-tip { background: rgba(10,2,5,0.95) !important; }
+    .leaflet-popup-close-button { color: rgba(180,120,60,0.5) !important; font-size: 18px !important; }
+    .leaflet-popup-close-button:hover { color: var(--gold) !important; }
+
+    .popup-inner { min-width: 220px; max-width: 280px; }
+
+    .popup-kicker {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--tc-light);
+      margin-bottom: 5px;
+    }
+
+    .popup-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--parchment);
+      margin-bottom: 4px;
+    }
+
+    .popup-region {
+      font-family: 'Spectral', serif;
+      font-size: 11px;
+      font-style: italic;
+      color: var(--parch-dim);
+      margin-bottom: 8px;
+    }
+
+    .popup-rule {
+      height: 0.5px;
+      background: rgba(180,120,60,0.2);
+      margin-bottom: 8px;
+    }
+
+    .popup-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+
+    .popup-key {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(180,120,60,0.45);
+    }
+
+    .popup-val {
+      font-family: 'Spectral', serif;
+      font-size: 11px;
+      font-style: italic;
+      color: var(--parchment);
+      text-align: right;
+      max-width: 160px;
+    }
+
+    .popup-evidence {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .ev-chip {
+      font-family: 'Cinzel', serif;
+      font-size: 7px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--tc-light);
+      background: rgba(184,92,56,0.12);
+      border: 0.5px solid rgba(184,92,56,0.25);
+      border-radius: 2px;
+      padding: 1px 5px;
+    }
+
+    /* Leaflet attribution dim */
+    .leaflet-control-attribution {
+      background: rgba(10,2,5,0.7) !important;
+      color: rgba(180,120,60,0.3) !important;
+      font-size: 9px !important;
+    }
+
+    .leaflet-control-attribution a { color: rgba(180,120,60,0.4) !important; }
+
+    .leaflet-control-zoom a {
+      background: rgba(10,2,5,0.9) !important;
+      color: rgba(200,160,100,0.6) !important;
+      border-color: rgba(180,120,60,0.2) !important;
+    }
+    .leaflet-control-zoom a:hover {
+      background: rgba(30,8,12,0.95) !important;
+      color: var(--gold) !important;
+    }
+  </style>
 </head>
 <body>
 
-<header class="masthead">
-  <a href="index.html" class="logo">arch<span>AI</span>ology</a>
-  <a class="nav-link " href="index.html">Home</a>
-  <a class="nav-link " href="news.html">Feed</a>
-  <a class="nav-link active " href="map.html">Map</a>
-  <a class="nav-link " href="sky.html">Archaeoastronomy</a>
-  <a class="nav-link " href="maritime.html">Maritime</a>
-  <a class="nav-link " href="linguistics.html">Linguistics</a>
-  <a class="nav-link " href="inscriptions.html">Inscriptions</a>
-  <a class="nav-link " href="maya_inscriptions.html">Maya</a>
-  <a class="nav-link " href="bioanthro.html">Bioanthro</a>
-  <a class="nav-link " href="luwian.html">Anatolia</a>
-  <a class="nav-link " href="numismatics.html">Ancient Economy</a>
-  <a class="nav-link " href="upload.html">Upload</a>
-  <a class="nav-link " href="lidar.html">LiDAR</a>
-  <a class="nav-link " href="conferences.html">Conferences</a>
-<div class="masthead-right">
-    <div class="map-stats">
-      <strong id="statShown">0</strong>
-      <strong id="statTotal">0</strong>
-      <strong id="statMentioned">0</strong>
+  <header class="topbar">
+    <a class="topbar-back" href="index.html">Bucranica</a>
+    <div class="topbar-center">
+      <span class="topbar-brand">The Bull Corridor</span>
+      <span class="topbar-title">Eastern Mediterranean sites</span>
     </div>
-  </div>
-</header>
+    <span class="topbar-count" id="site-count">17 sites</span>
+  </header>
 
-<div id="map"></div>
+  <div class="workspace">
 
-<div class="map-loading" id="mapLoading">
-  <div class="loading-dots"><span></span><span></span><span></span></div>
-  <div class="loading-text" id="loadingText">Loading gazetteer</div>
-</div>
-
-<div class="search-wrap">
-  <div class="search-inner">
-    <span class="search-icon">&#128269;</span>
-    <input class="search-input" id="siteSearch" type="text" placeholder="Search sites">
-  </div>
-</div>
-
-<div class="basemap-panel-right">
-  <div class="ctrl-card">
-    <div class="ctrl-label">Base Map</div>
-    <div class="filter-row">
-      <button class="filter-chip tile-chip" data-tile="OSM" onclick="_setTile('OSM')">OSM</button>
-      <button class="filter-chip tile-chip" data-tile="Topo" onclick="_setTile('Topo')">Topo</button>
-      <button class="filter-chip tile-chip" data-tile="Antique" onclick="_setTile('Antique')">Antique</button>
-      <button class="filter-chip tile-chip" data-tile="Satellite" onclick="_setTile('Satellite')">Satellite</button>
-      <button class="filter-chip tile-chip" data-tile="Light" onclick="_setTile('Light')">Light</button>
-      <button class="filter-chip tile-chip" data-tile="Dark" onclick="_setTile('Dark')">Dark</button>
-      <button class="filter-chip tile-chip" data-tile="Voyager" onclick="_setTile('Voyager')">Voyager</button>
-      <button class="filter-chip tile-chip active" data-tile="NatGeo" onclick="_setTile('NatGeo')">NatGeo</button>
-      <button class="filter-chip tile-chip" data-tile="DARE" onclick="_setTile('DARE')">DARE</button>
-      <div id="dare-places-status" style="font-family:var(--mono);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:.3rem;letter-spacing:.04em;"></div>
-    </div>
-  </div>
-  <div class="ctrl-card">
-    <div class="ctrl-label">Region</div>
-    <div class="filter-row">
-      <button class="filter-chip active" data-region="all">All</button>
-      <button class="filter-chip" data-region="europe">Europe</button>
-      <button class="filter-chip" data-region="near_east">Near East</button>
-      <button class="filter-chip" data-region="mesoamerica">Mesoamerica</button>
-      <button class="filter-chip" data-region="north_america">N. America</button>
-      <button class="filter-chip" data-region="south_america">S. America</button>
-    </div>
-  </div>
-</div>
-
-<div class="map-controls">
-  <div class="ctrl-card">
-    <div class="ctrl-label">Site Tiers</div>
-    <div class="tier-row">
-      <div class="tier-dot" style="background:#f4a234;width:14px;height:14px;"></div>
-      <span class="tier-label">Major sites</span>
-      <span class="tier-count" id="cnt1">0</span>
-    </div>
-    <div class="tier-row">
-      <div class="tier-dot" style="background:#d4a84b;width:10px;height:10px;"></div>
-      <span class="tier-label">Regional centers</span>
-      <span class="tier-count" id="cnt2">0</span>
-    </div>
-    <div class="tier-row">
-      <div class="tier-dot" style="background:#8a7050;width:7px;height:7px;"></div>
-      <span class="tier-label">Local sites</span>
-      <span class="tier-count" id="cnt3">0</span>
-    </div>
-    <div class="tier-row">
-      <div class="tier-dot" style="background:#5a4a35;width:5px;height:5px;"></div>
-      <span class="tier-label">Port / minor</span>
-      <span class="tier-count" id="cnt4">0</span>
-    </div>
-    <div class="ctrl-sep"></div>
-    <div class="mentions-row">
-      <span class="mentions-lbl">Corpus matches only</span>
-      <input type="checkbox" id="mentionedOnly" style="accent-color:var(--ochre);">
-    </div>
-  </div>
-  <div class="ctrl-card">
-    <div class="ctrl-label">ORBIS Routes</div>
-    <div class="filter-row">
-      <button class="filter-chip" id="orbis-btn" onclick="toggleOrbis()">Show Routes</button>
-    </div>
-    <div id="orbis-legend" style="display:none;margin-top:6px;">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:20px;height:3px;background:#d4a84b;border-radius:1px;flex-shrink:0"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Roads (978)</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:20px;height:3px;background:#4a90c0;border-radius:1px;flex-shrink:0"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Rivers (204)</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <div style="width:20px;height:3px;background:#5bbca0;border-radius:1px;flex-shrink:0;opacity:.8"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Sea lanes (1026)</span>
-      </div>
-    </div>
-  </div>
-  <div class="ctrl-card">
-    <div class="ctrl-label">External Atlas</div>
-    <div class="filter-row">
-      <button class="filter-chip" id="arabia-atlas-btn" onclick="toggleArabiaAtlas()">Ancient Arabia</button>
-      <button class="filter-chip" id="armep-atlas-btn" onclick="toggleArmepAtlas()">ARMEP</button>
-      <button class="filter-chip" id="fasti-atlas-btn" onclick="toggleFastiAtlas()">Fasti</button>
-      <button class="filter-chip" id="cyprus-atlas-btn" onclick="toggleCyprusAtlas()">Cyprus</button>
-      <button class="filter-chip" id="roman-letters-atlas-btn" onclick="toggleRomanLettersAtlas()">Roman Letters</button>
-      <button class="filter-chip" id="mosaic-btn" onclick="toggleMosaics()">Roman Mosaics</button>
-      <button class="filter-chip" id="iran-gazetteer-atlas-btn" onclick="toggleIranGazetteeerAtlas()">Iran Gazetteer</button>
-      <button class="filter-chip" id="pliny-atlas-btn" onclick="togglePlinyAtlas()">Pliny the Elder</button>
-      <button class="filter-chip" id="omnesviae-atlas-btn" onclick="toggleOmnesViaeAtlas()">OmnesViae</button>
-      <button class="filter-chip" id="proxeny-atlas-btn" onclick="toggleProxenyAtlas()">Proxeny Networks</button>
-      <button class="filter-chip" id="mithraeum-atlas-btn" onclick="toggleMithraeumAtlas()">Mithraeum</button>
-      <button class="filter-chip" id="dmarc-atlas-btn" onclick="toggleDmarcAtlas()">DMARC</button>
-    </div>
-    <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:6px;line-height:1.45;">
-      Open external archaeological atlases in a dedicated workspace above the map.
-    </div>
-  </div>
-  <div class="ctrl-card">
-    <div class="ctrl-label">Etruscan Sites</div>
-    <div class="filter-row">
-      <button class="filter-chip" id="etruscan-btn" onclick="toggleEtruscanLayer()">Show Etruscan Sites</button>
-    </div>
-    <div id="etruscan-legend" style="display:none;margin-top:6px;">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#b85c38;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Necropolis</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#8a6a9e;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Tomb / tumulus</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#5b8a72;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Site / monument</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#5687c2;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Museum</span>
-      </div>
-      <div id="etruscan-status" style="font-family:var(--mono,monospace);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:4px;letter-spacing:.04em;"></div>
-      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:2px;">Data: René Kauffmann</div>
-    </div>
-  </div>
-  <div class="ctrl-card">
-    <div class="ctrl-label">Jomon Prehistoric Sites</div>
-    <div class="filter-row">
-      <button class="filter-chip" id="jomon-btn" onclick="toggleJomonLayer()">Show Jomon Sites</button>
-    </div>
-    <div id="jomon-legend" style="display:none;margin-top:6px;">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" style="flex-shrink:0">
-          <circle cx="6.5" cy="6.5" r="5.5" fill="#d4793a" fill-opacity=".9" stroke="rgba(255,255,255,.35)" stroke-width="1.4"/>
-          <circle cx="6.5" cy="6.5" r="2.2" fill="rgba(255,255,255,.7)"/>
-        </svg>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">UNESCO WH 1632 component site</span>
-      </div>
-      <div id="jomon-status" style="font-family:var(--mono,monospace);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:4px;letter-spacing:.04em;"></div>
-      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:2px;">jomon-japan.jp · UNESCO WHC</div>
-    </div>
-  </div>
-  <div class="ctrl-card">
-    <div class="ctrl-label">Periplus of the Erythraean Sea</div>
-    <div class="filter-row">
-      <button class="filter-chip" id="periplus-btn" onclick="togglePeriplusLayer()">Show Periplus Sites</button>
-    </div>
-    <div id="periplus-legend" style="display:none;margin-top:6px;">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#c45a32;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Port / Emporium</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#8b4513;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Inland City / Kingdom</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#4a7fa0;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Bay / Gulf / Island</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#7a5a2a;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35);"></div>
-        <span style="font-size:.6rem;color:rgba(240,234,216,.45)">Site / Region / Other</span>
-      </div>
-      <div id="periplus-status" style="font-family:var(--mono,monospace);font-size:.58rem;color:rgba(240,220,180,.4);margin-top:4px;letter-spacing:.04em;"></div>
-      <div style="font-size:.58rem;color:rgba(240,234,216,.3);margin-top:2px;">1st-century CE · Red Sea trade route</div>
-    </div>
-  </div>
-</div>
-
-<div class="detail-panel" id="detailPanel">
-  <button class="detail-close" id="detailClose">&times;</button>
-  <div class="detail-header">
-    <div class="detail-tier" id="detailTier"></div>
-    <div class="detail-name" id="detailName"></div>
-    <div class="detail-badges" id="detailBadges"></div>
-  </div>
-  <div class="detail-desc" id="detailDesc"></div>
-  <div class="detail-stats">
-    <div class="stat-cell"><span class="stat-num" id="detailMentions">0</span><div class="stat-lbl">Modern papers</div></div>
-    <div class="stat-cell"><span class="stat-num" id="detailAncientRefs">0</span><div class="stat-lbl">Ancient refs</div></div>
-  </div>
-  <div id="detailTopos" style="display:none">
-    <div class="topos-block">
-      <div><div class="topos-num" id="toposNum">0</div><div class="topos-lbl">Ancient text references</div></div>
-      <a class="topos-btn" id="toposBtn" href="#" target="_blank">Read Source</a>
-    </div>
-  </div>
-  <div id="detailMentionsList" class="detail-section" style="display:none">
-    <div class="section-label">Recent Scholarship</div>
-    <div id="mentionItems"></div>
-  </div>
-  <div class="ext-links" id="extLinks"></div>
-  <a class="site-page-btn" id="sitePageBtn" href="#" style="display:none">Open Site Research Page</a>
-</div>
-
-<div class="atlas-panel" id="arabiaAtlasPanel">
-  <div class="atlas-head">
-    <div class="atlas-title-wrap">
-      <div class="atlas-kicker">External atlas layer</div>
-      <div class="atlas-title">Ancient Arabia Public Atlas</div>
-      <div class="atlas-meta">
-        Source: <a href="https://ancientarabia.huma-num.fr/public/atlas" target="_blank" rel="noopener">ancientarabia.huma-num.fr/public/atlas</a>
-      </div>
-    </div>
-    <div class="atlas-actions">
-      <a class="atlas-link" href="https://ancientarabia.huma-num.fr/public/atlas" target="_blank" rel="noopener">Open in new tab</a>
-      <button class="atlas-close" type="button" onclick="toggleArabiaAtlas(false)">Close</button>
-    </div>
-  </div>
-  <div class="atlas-body">
-    <iframe
-      class="atlas-frame"
-      src="https://ancientarabia.huma-num.fr/public/atlas"
-      title="Ancient Arabia public atlas"
-      loading="lazy"
-      referrerpolicy="strict-origin-when-cross-origin"
-    ></iframe>
-    <div class="atlas-note">
-      If the atlas does not render here, the host site is likely blocking iframe embedding. Use the open-in-new-tab link instead.
-    </div>
-  </div>
-</div>
-
-<div class="atlas-panel" id="armepAtlasPanel">
-  <div class="atlas-head">
-    <div class="atlas-title-wrap">
-      <div class="atlas-kicker">External atlas layer</div>
-      <div class="atlas-title">ARMEP Interactive Map</div>
-      <div class="atlas-meta">
-        Source: <a href="https://www.armep.gwi.uni-muenchen.de/#map" target="_blank" rel="noopener">www.armep.gwi.uni-muenchen.de/#map</a>
-      </div>
-    </div>
-    <div class="atlas-actions">
-      <a class="atlas-link" href="https://www.armep.gwi.uni-muenchen.de/#map" target="_blank" rel="noopener">Open in new tab</a>
-      <button class="atlas-close" type="button" onclick="toggleArmepAtlas(false)">Close</button>
-    </div>
-  </div>
-  <div class="atlas-body">
-    <iframe
-      class="atlas-frame"
-      src="https://www.armep.gwi.uni-muenchen.de/#map"
-      title="ARMEP interactive map"
-      loading="lazy"
-      referrerpolicy="strict-origin-when-cross-origin"
-    ></iframe>
-    <div class="atlas-note">
-      If the ARMEP map does not render here, the host site is likely blocking iframe embedding. Use the open-in-new-tab link instead.
-    </div>
-  </div>
-</div>
-
-<div class="atlas-panel" id="fastiAtlasPanel">
-  <div class="atlas-head">
-    <div class="atlas-title-wrap">
-      <div class="atlas-kicker">External atlas layer</div>
-      <div class="atlas-title">Fasti Online Excavation Atlas</div>
-      <div class="atlas-meta">
-        Source: <a href="https://www.fastionline.org/s/excavation/page/home" target="_blank" rel="noopener">www.fastionline.org/s/excavation/page/home</a>
-      </div>
-    </div>
-    <div class="atlas-actions">
-      <a class="atlas-link" href="https://www.fastionline.org/s/excavation/page/home" target="_blank" rel="noopener">Open in new tab</a>
-      <button class="atlas-close" type="button" onclick="toggleFastiAtlas(false)">Close</button>
-    </div>
-  </div>
-  <div class="atlas-body">
-    <iframe
-      class="atlas-frame"
-      src="https://www.fastionline.org/s/excavation/page/home"
-      title="Fasti Online excavation atlas"
-      loading="lazy"
-      referrerpolicy="strict-origin-when-cross-origin"
-    ></iframe>
-    <div class="atlas-note">
-      If the Fasti Online atlas does not render here, the host site is likely blocking iframe embedding. Use the open-in-new-tab link instead.
-    </div>
-  </div>
-</div>
-
-<div class="atlas-panel" id="cyprusAtlasPanel">
-  <div class="atlas-head">
-    <div class="atlas-title-wrap">
-      <div class="atlas-kicker">External atlas layer</div>
-      <div class="atlas-title">Cyprus Gazetteer</div>
-      <div class="atlas-meta">
-        Source: <a href="https://cyprusgazetteer.org/" target="_blank" rel="noopener">cyprusgazetteer.org/</a>
-      </div>
-    </div>
-    <div class="atlas-actions">
-      <a class="atlas-link" href="https://cyprusgazetteer.org/" target="_blank" rel="noopener">Open in new tab</a>
-      <button class="atlas-close" type="button" onclick="toggleCyprusAtlas(false)">Close</button>
-    </div>
-  </div>
-  <div class="atlas-body">
-    <iframe
-      class="atlas-frame"
-      src="https://cyprusgazetteer.org/"
-      title="Cyprus Gazetteer"
-      loading="lazy"
-      referrerpolicy="strict-origin-when-cross-origin"
-    ></iframe>
-    <div class="atlas-note">
-      If the Cyprus Gazetteer does not render here, the host site is likely blocking iframe embedding. Use the Open in new tab control above.
-    </div>
-  </div>
-</div>
-<div class="atlas-panel" id="romanLettersAtlasPanel">
-  <div class="atlas-head">
-    <div class="atlas-title-wrap">
-      <div class="atlas-kicker">External atlas layer</div>
-      <div class="atlas-title">Roman Letters — Geographic Timelapse</div>
-      <div class="atlas-meta">
-        Source: <a href="https://romanletters.org/map/" target="_blank" rel="noopener">romanletters.org/map/</a>
-      </div>
-    </div>
-    <div class="atlas-actions">
-      <a class="atlas-link" href="https://romanletters.org/map/" target="_blank" rel="noopener">Open in new tab</a>
-      <button class="atlas-close" type="button" onclick="toggleRomanLettersAtlas(false)">Close</button>
-    </div>
-  </div>
-  <div class="atlas-body">
-    <iframe
-      class="atlas-frame"
-      src="https://romanletters.org/map/"
-      title="Roman Letters geographic timelapse — 7,049 letters across the late Roman world, 100–800 AD"
-      loading="lazy"
-      referrerpolicy="strict-origin-when-cross-origin"
-    ></iframe>
-    <div class="atlas-note">
-      Animated letter-flow map across the late Roman world (100–800 AD), built on DARE tiles. If it does not render here, the host site may be blocking iframe embedding. Use the open-in-new-tab link instead.
-    </div>
-  </div>
-</div>
-
-<div class="atlas-panel" id="iranGazetteeerAtlasPanel">
-  <div class="atlas-head">
-    <div class="atlas-title-wrap">
-      <div class="atlas-kicker">External atlas layer</div>
-      <div class="atlas-title">Archaeological Gazetteer of Iran — UCLA Pourdavoud Institute</div>
-      <div class="atlas-meta">
-        Source: <a href="https://irangazetteer.ucla.edu/map/" target="_blank" rel="noopener">irangazetteer.ucla.edu/map/</a>
-        &nbsp;·&nbsp; Paleolithic through 14th century &nbsp;·&nbsp; Iranian World incl. Mesopotamia &amp; Transoxiana
-      </div>
-    </div>
-    <div class="atlas-actions">
-      <a class="atlas-link" href="https://irangazetteer.ucla.edu/map/" target="_blank" rel="noopener">Open in new tab</a>
-      <button class="atlas-close" type="button" onclick="toggleIranGazetteeerAtlas(false)">Close</button>
-    </div>
-  </div>
-  <div class="atlas-body">
-    <iframe
-      class="atlas-frame"
-      src="https://gisucla.maps.arcgis.com/apps/webappviewer/index.html?id=61539fbc135740279c471edee7ed6e01"
-      title="Archaeological Gazetteer of Iran — UCLA Pourdavoud Institute interactive site map"
-      loading="lazy"
-      referrerpolicy="strict-origin-when-cross-origin"
-    ></iframe>
-    <div class="atlas-note">
-      UCLA Pourdavoud Institute. Free-access encyclopedia of Iranian archaeological sites, Paleolithic to 14th century. Hosted on ArcGIS Online — if the frame is blocked, use the open-in-new-tab link to access the full interactive map.
-    </div>
-  </div>
-</div>
-
-<div class="atlas-panel" id="plinyAtlasPanel">
-  <div class="atlas-head">
-    <div class="atlas-title-wrap">
-      <div class="atlas-kicker">External atlas layer</div>
-      <div class="atlas-title">The Geography of Pliny the Elder — AWMC / ISAW</div>
-      <div class="atlas-meta">
-        Source: <a href="https://experience.arcgis.com/experience/34c49dbd58984226aa213243f3787ff9" target="_blank" rel="noopener">experience.arcgis.com</a>
-        &nbsp;·&nbsp; 6,500 entries from the <em>Natural Historia</em> &nbsp;·&nbsp; Coordinates from Pleiades &nbsp;·&nbsp; Ancient World Mapping Center &amp; ISAW/NYU
-      </div>
-    </div>
-    <div class="atlas-actions">
-      <a class="atlas-link" href="https://experience.arcgis.com/experience/34c49dbd58984226aa213243f3787ff9" target="_blank" rel="noopener">Open in new tab</a>
-      <button class="atlas-close" type="button" onclick="togglePlinyAtlas(false)">Close</button>
-    </div>
-  </div>
-  <div class="atlas-body">
-    <iframe
-      class="atlas-frame"
-      src="https://experience.arcgis.com/experience/34c49dbd58984226aa213243f3787ff9"
-      title="The Geography of Pliny the Elder — 6,500 place entries from the Natural Historia mapped with Pleiades coordinates"
-      loading="lazy"
-      referrerpolicy="strict-origin-when-cross-origin"
-    ></iframe>
-    <div class="atlas-note">
-      Ancient World Mapping Center (UNC) &amp; ISAW/NYU. Maps every locatable entry in Pliny's <em>Natural Historia</em> — click any point for citations and its linked Pleiades entry. Hosted on ArcGIS Experience — if the frame is blocked, use the open-in-new-tab link.
-    </div>
-  </div>
-</div>
-
-<div class="atlas-panel" id="omnesViaeAtlasPanel">
-  <div class="atlas-head">
-    <div class="atlas-title-wrap">
-      <div class="atlas-kicker">External atlas layer</div>
-      <div class="atlas-title">OmnesViae — Roman Route Planner</div>
-      <div class="atlas-meta">
-        Source: <a href="https://omnesviae.org" target="_blank" rel="noopener">omnesviae.org</a>
-        &nbsp;·&nbsp; Tabula Peutingeriana &amp; Antonine Itinerary &nbsp;·&nbsp; Cursus publicus road network &nbsp;·&nbsp; Shortest-path routing
-      </div>
-    </div>
-    <div class="atlas-actions">
-      <a class="atlas-link" href="https://omnesviae.org" target="_blank" rel="noopener">Open OmnesViae ↗</a>
-      <button class="atlas-close" type="button" onclick="toggleOmnesViaeAtlas(false)">Close</button>
-    </div>
-  </div>
-  <div class="atlas-body" style="display:flex;flex-direction:row;gap:0;min-height:0;overflow:hidden;">
-    <!-- Main iframe -->
-    <iframe
-      src="https://omnesviae.org/nobis"
-      id="omnesviae-iframe"
-      style="flex:1;min-width:0;border:none;display:block;background:#1a1a2e;"
-      title="OmnesViae Roman Route Planner"
-      allow="fullscreen"
-      loading="lazy"
-    ></iframe>
-    <!-- Tabula Peutingeriana reference card -->
-    <div style="
-      width:260px;flex-shrink:0;background:#13110e;border-left:1px solid #2e2a22;
-      display:flex;flex-direction:column;padding:1.25rem 1.1rem;gap:1rem;overflow-y:auto;
-    ">
-      <div>
-        <div style="font-size:.52rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ochre);margin-bottom:.4rem;">Related resource</div>
-        <div style="font-family:var(--serif);font-size:.95rem;font-weight:900;color:var(--cream);line-height:1.2;margin-bottom:.35rem;">Tabula Peutingeriana</div>
-        <div style="font-size:.62rem;color:#8a8070;line-height:1.55;">
-          The 13th-century parchment copy of the Roman road map stretching from Britain to India — the primary source behind OmnesViae's route data.
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-filters">
+        <span class="filter-label">Corridor segment</span>
+        <div class="filter-tags" id="segment-filters">
+          <button class="ftag active" data-segment="all">All</button>
+          <button class="ftag" data-segment="Aegean Source">Aegean</button>
+          <button class="ftag" data-segment="Island Hinge">Island Hinge</button>
+          <button class="ftag" data-segment="Anatolian Gate">Anatolia</button>
+          <button class="ftag" data-segment="Cilician Gateway">Cilicia</button>
+          <button class="ftag" data-segment="Levantine Emporia">Levant</button>
+          <button class="ftag" data-segment="Cyprus Copper Complex">Cyprus</button>
+          <button class="ftag" data-segment="Egyptian Delta">Egypt</button>
+          <button class="ftag" data-segment="Egyptian Littoral">Egypt Littoral</button>
+          <button class="ftag" data-segment="Open-Sea Control">Open Sea</button>
+          <button class="ftag" data-segment="Aegean Palatial Admin">Palatial Admin</button>
+          <button class="ftag" data-segment="Aegean Manufacture">Manufacture</button>
         </div>
+        <span class="filter-label" style="margin-top:0.5rem;">Tier</span>
+        <div class="filter-tags" id="tier-filters">
+          <button class="ftag active" data-tier="all">All</button>
+          <button class="ftag" data-tier="A">Tier A</button>
+          <button class="ftag" data-tier="A/B">Tier A/B</button>
+          <button class="ftag" data-tier="B">Tier B</button>
+        </div>
+        <input class="search-input" id="search" type="text" placeholder="search sites…">
       </div>
-      <div style="display:flex;flex-direction:column;gap:.55rem;">
-        <a href="https://www.cambridge.org/core/books/romes-world/A8A5A4B2E42EA1D4D58EFD8A5E2C6A5A" target="_blank" rel="noopener"
-          style="display:block;padding:.55rem .7rem;background:#1e1a14;border:1px solid #2e2a22;border-radius:4px;text-decoration:none;color:var(--cream);font-size:.62rem;line-height:1.45;transition:border-color .15s;">
-          <span style="display:block;font-weight:700;color:var(--ochre);margin-bottom:.2rem;">Talbert, Rome's World ↗</span>
-          The canonical scholarly edition. OmnesViae data is based on Talbert's reconstructions.
-        </a>
-        <a href="https://piggin.net/ta.svg" target="_blank" rel="noopener"
-          style="display:block;padding:.55rem .7rem;background:#1e1a14;border:1px solid #2e2a22;border-radius:4px;text-decoration:none;color:var(--cream);font-size:.62rem;line-height:1.45;transition:border-color .15s;">
-          <span style="display:block;font-weight:700;color:var(--ochre);margin-bottom:.2rem;">Piggin Digital Plot SVG ↗</span>
-          Jean-Baptiste Piggin's complete digital vector rendering (CC BY-SA) — color-coded Italian routes, 3,300+ places. Open raw SVG for full horizontal scroll.
-        </a>
-        <a href="https://www.tabula-peutingeriana.de/" target="_blank" rel="noopener"
-          style="display:block;padding:.55rem .7rem;background:#1e1a14;border:1px solid #2e2a22;border-radius:4px;text-decoration:none;color:var(--cream);font-size:.62rem;line-height:1.45;transition:border-color .15s;">
-          <span style="display:block;font-weight:700;color:var(--ochre);margin-bottom:.2rem;">tabula-peutingeriana.de ↗</span>
-          High-resolution facsimile and segment viewer of the Vienna parchment scroll (ÖNB Cod. 324).
-        </a>
-        <a href="https://commons.wikimedia.org/wiki/Tabula_Peutingeriana" target="_blank" rel="noopener"
-          style="display:block;padding:.55rem .7rem;background:#1e1a14;border:1px solid #2e2a22;border-radius:4px;text-decoration:none;color:var(--cream);font-size:.62rem;line-height:1.45;transition:border-color .15s;">
-          <span style="display:block;font-weight:700;color:var(--ochre);margin-bottom:.2rem;">Wikimedia Commons ↗</span>
-          Public domain segment scans for direct download and scholarly reuse.
-        </a>
-      </div>
-      <div style="margin-top:auto;padding-top:.75rem;border-top:1px solid #2e2a22;">
-        <div style="font-size:.55rem;color:#5a5248;line-height:1.5;">
-          Original: Vienna, Österreichische Nationalbibliothek, Cod. Vindob. 324. Parchment scroll, 13th c. CE copy of 4th c. original. 6.82 m × 0.34 m. England → Sri Lanka.
+      <div class="site-list" id="site-list"></div>
+    </aside>
+
+    <!-- MAP -->
+    <div class="map-wrap">
+      <div id="map"></div>
+
+      <div class="map-legend">
+        <p class="legend-title">Evidence Tier</p>
+        <div class="legend-row"><div class="legend-dot tier-a"></div><span class="legend-text">Tier A — explicit texts</span></div>
+        <div class="legend-row"><div class="legend-dot tier-ab"></div><span class="legend-text">Tier A/B — strong traces</span></div>
+        <div class="legend-row"><div class="legend-dot tier-b"></div><span class="legend-text">Tier B — structural</span></div>
+        <div class="legend-rule"></div>
+        <div class="legend-row">
+          <div class="legend-dot" style="background:rgba(122,158,126,0.4);border:1.5px solid #7A9E7E;border-radius:0;width:9px;height:9px;"></div>
+          <span class="legend-text">Shipwreck / sea route</span>
         </div>
       </div>
     </div>
-  </div>
-  <div class="atlas-note">
-    OmnesViae routes the Roman <em>cursus publicus</em> using distances from the Tabula Peutingeriana and Antonine Itinerary. Enter two cities to find the shortest Roman road path. Developed by René Voorburg. The sidebar links to primary facsimiles and the Piggin SVG for direct study of the map itself.
-  </div>
-</div>
 
-<div class="atlas-panel" id="proxenyAtlasPanel">
-  <div class="atlas-head">
-    <div class="atlas-title-wrap">
-      <div class="atlas-kicker">External atlas layer</div>
-      <div class="atlas-title">Proxeny Networks of Ancient Greece — CSAD / Oxford</div>
-      <div class="atlas-meta">
-        Source: <a href="http://proxenies.csad.ox.ac.uk/places/home" target="_blank" rel="noopener">proxenies.csad.ox.ac.uk</a>
-        &nbsp;·&nbsp; Proxeny decrees 500–31 BCE &nbsp;·&nbsp; 1,000+ inscriptions &nbsp;·&nbsp; Centre for the Study of Ancient Documents, Oxford
-      </div>
-    </div>
-    <div class="atlas-actions">
-      <a class="atlas-link" href="http://proxenies.csad.ox.ac.uk/places/home" target="_blank" rel="noopener">Open in new tab</a>
-      <button class="atlas-close" type="button" onclick="toggleProxenyAtlas(false)">Close</button>
-    </div>
   </div>
-  <div class="atlas-body">
-    <iframe
-      class="atlas-frame"
-      src="http://proxenies.csad.ox.ac.uk/places/home"
-      title="Proxeny Networks of Ancient Greece — CSAD Oxford, proxeny decrees 500–31 BCE"
-      loading="lazy"
-      referrerpolicy="strict-origin-when-cross-origin"
-    ></iframe>
-    <div class="atlas-note">
-      Centre for the Study of Ancient Documents, Oxford. Maps proxeny decrees — civic grants of guest-friendship — across the Greek world, 500–31 BCE. Over 1,000 inscriptions linking honorands to poleis. A unique spatial dataset for Greek interstate diplomacy. If the frame is blocked, use the open-in-new-tab link.
-    </div>
-  </div>
-</div>
 
-<div class="atlas-panel" id="mithraeumAtlasPanel">
-  <div class="atlas-head">
-    <div class="atlas-title-wrap">
-      <div class="atlas-kicker">External atlas layer</div>
-      <div class="atlas-title">Map of Mithraic Monuments — The New Mithraeum</div>
-      <div class="atlas-meta">
-        Source: <a href="https://www.mithraeum.eu/map?tag=all" target="_blank" rel="noopener">mithraeum.eu/map</a>
-        &nbsp;·&nbsp; Temples, shrines, caves &amp; spelaea of Mithras &nbsp;·&nbsp; City-level findspot coordinates &nbsp;·&nbsp; Roman Empire-wide coverage
-      </div>
-    </div>
-    <div class="atlas-actions">
-      <a class="atlas-link" href="https://www.mithraeum.eu/map?tag=all" target="_blank" rel="noopener">Open in new tab</a>
-      <button class="atlas-close" type="button" onclick="toggleMithraeumAtlas(false)">Close</button>
-    </div>
-  </div>
-  <div class="atlas-body">
-    <iframe
-      class="atlas-frame"
-      src="https://www.mithraeum.eu/map?tag=all"
-      title="Map of Mithraic monuments — The New Mithraeum — temples, shrines, and spelaea of Mithras across the Roman Empire"
-      loading="lazy"
-      referrerpolicy="strict-origin-when-cross-origin"
-    ></iframe>
-    <div class="atlas-note">
-      The New Mithraeum. Interactive map of Mithraic temples, shrines, caves, and spelaea across the Roman Empire — with associated objects, reliefs, and sculpture at city-level findspot resolution. If the frame is blocked, use the open-in-new-tab link.
-    </div>
-  </div>
-</div>
-
-<div class="atlas-panel" id="dmarcAtlasPanel">
-  <div class="atlas-head">
-    <div class="atlas-title-wrap">
-      <div class="atlas-kicker">External atlas layer · Harvard Center for Geographic Analysis</div>
-      <div class="atlas-title">DMARC — Digital Map Archive of the Roman Campagna</div>
-      <div class="atlas-meta">
-        Source: <a href="https://harvard-cga.maps.arcgis.com/apps/webappviewer/index.html?id=9e7b4e361f5940d5bd399ec6c2ca2197" target="_blank" rel="noopener">harvard-cga.maps.arcgis.com</a>
-        &nbsp;·&nbsp; Roman Campagna survey data &nbsp;·&nbsp; Harvard CGA &nbsp;·&nbsp; ArcGIS Web App
-      </div>
-    </div>
-    <div class="atlas-actions">
-      <a class="atlas-link" href="https://harvard-cga.maps.arcgis.com/apps/webappviewer/index.html?id=9e7b4e361f5940d5bd399ec6c2ca2197" target="_blank" rel="noopener">Open in new tab ↗</a>
-      <button class="atlas-close" type="button" onclick="toggleDmarcAtlas(false)">Close</button>
-    </div>
-  </div>
-  <div class="atlas-body">
-    <iframe
-      class="atlas-frame"
-      src="https://harvard-cga.maps.arcgis.com/apps/webappviewer/index.html?id=9e7b4e361f5940d5bd399ec6c2ca2197"
-      title="DMARC — Digital Map Archive of the Roman Campagna — Harvard Center for Geographic Analysis"
-      loading="lazy"
-      referrerpolicy="strict-origin-when-cross-origin"
-      allow="fullscreen"
-    ></iframe>
-    <div class="atlas-note">
-      The Digital Map Archive of the Roman Campagna (DMARC), produced by the Harvard Center for Geographic Analysis. An ArcGIS-based interactive atlas of historical cartographic and survey data covering the Roman Campagna — the landscape surrounding ancient Rome. If the frame is blocked by ArcGIS CORS policy, use the open-in-new-tab link above.
-    </div>
-  </div>
-</div>
-
-<script>
-(function(){
-  const atlasConfigs = [
-    ['arabiaAtlasPanel','arabia-atlas-btn','Ancient Arabia','Hide Arabia Atlas'],
-    ['armepAtlasPanel','armep-atlas-btn','ARMEP','Hide ARMEP'],
-    ['fastiAtlasPanel','fasti-atlas-btn','Fasti','Hide Fasti'],
-    ['cyprusAtlasPanel','cyprus-atlas-btn','Cyprus','Hide Cyprus'],
-    ['romanLettersAtlasPanel','roman-letters-atlas-btn','Roman Letters','Hide Roman Letters'],
-    ['iranGazetteeerAtlasPanel','iran-gazetteer-atlas-btn','Iran Gazetteer','Hide Iran Gazetteer'],
-    ['plinyAtlasPanel','pliny-atlas-btn','Pliny the Elder','Hide Pliny'],
-    ['omnesViaeAtlasPanel','omnesviae-atlas-btn','OmnesViae','Hide OmnesViae'],
-    ['proxenyAtlasPanel','proxeny-atlas-btn','Proxeny Networks','Hide Proxeny'],
-    ['mithraeumAtlasPanel','mithraeum-atlas-btn','Mithraeum','Hide Mithraeum'],
-    ['dmarcAtlasPanel','dmarc-atlas-btn','DMARC','Hide DMARC']
-  ];
-
-  function safeCloseAtlases(){
-    atlasConfigs.forEach(([panelId, btnId, label]) => {
-      const panel = document.getElementById(panelId);
-      const btn = document.getElementById(btnId);
-      if(panel) panel.classList.remove('open');
-      if(btn){
-        btn.classList.remove('active');
-        btn.textContent = label;
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // ── SITE DATA ──
+    const SITES = [
+      {
+        id: "KNO-KNOSSOS",
+        name: "Knossos",
+        subname: "Toreador Façade",
+        region: "Crete / Central Aegean",
+        period: "MM II–LM II (~1900–1400 BCE)",
+        tier: "B",
+        segment: "Aegean Source",
+        role: "Aegean source / program seed",
+        evidence: ["fresco","borders","counts"],
+        confidence: "high",
+        lat: 35.2985, lng: 25.1631,
+        sea_route: false
+      },
+      {
+        id: "CRE-KOMMOS",
+        name: "Kommos",
+        subname: "harbour",
+        region: "South Crete",
+        period: "LM I–III (~1600–1100 BCE)",
+        tier: "B",
+        segment: "Aegean Source",
+        role: "Aegean export node",
+        evidence: ["harbor","ceramics","admin"],
+        confidence: "medium",
+        lat: 34.9939, lng: 24.8075,
+        sea_route: false
+      },
+      {
+        id: "THR-AKROTIRI",
+        name: "Akrotiri",
+        subname: "Thera",
+        region: "Cyclades",
+        period: "LC I (~17th–16th c. BCE)",
+        tier: "B",
+        segment: "Aegean Source",
+        role: "Aegean display hub",
+        evidence: ["fresco","technique"],
+        confidence: "medium",
+        lat: 36.3519, lng: 25.4054,
+        sea_route: false
+      },
+      {
+        id: "CRO-RHODES",
+        name: "Rhodes",
+        subname: "Ialysos / Kameiros / Lindos",
+        region: "Dodecanese",
+        period: "MBA–LBA",
+        tier: "B",
+        segment: "Island Hinge",
+        role: "Island hinge — sailing gate",
+        evidence: ["harbors","ceramics","routes"],
+        confidence: "medium",
+        lat: 36.1408, lng: 28.0024,
+        sea_route: false
+      },
+      {
+        id: "ION-MILETUS",
+        name: "Miletus",
+        subname: "",
+        region: "SW Anatolia / Ionia",
+        period: "MBA–LBA",
+        tier: "B",
+        segment: "Anatolian Gate",
+        role: "Anatolian gateway to Aegean",
+        evidence: ["harbor","ceramics","festival"],
+        confidence: "medium",
+        lat: 37.5300, lng: 27.2769,
+        sea_route: false
+      },
+      {
+        id: "ANA-TARSUS",
+        name: "Tarsus",
+        subname: "Gözlü Kule",
+        region: "Cilicia",
+        period: "MBA–LBA–IA (18th–8th c. BCE)",
+        tier: "B",
+        segment: "Cilician Gateway",
+        role: "Cilician hinge — riverine/coastal",
+        evidence: ["urban stratigraphy","kilns","ceramics"],
+        confidence: "medium",
+        lat: 36.9172, lng: 34.8950,
+        sea_route: false
+      },
+      {
+        id: "ANA-URA",
+        name: "Ura",
+        subname: "Hittite port",
+        region: "Rough Cilicia / SE Anatolia coast",
+        period: "LBA (13th c. BCE)",
+        tier: "A/B",
+        segment: "Cilician Gateway",
+        role: "Hittite shipment port",
+        evidence: ["tablets","routes","harbor"],
+        confidence: "medium",
+        lat: 36.5200, lng: 34.0600,
+        sea_route: false
+      },
+      {
+        id: "LEV-ALALAKH",
+        name: "Alalakh",
+        subname: "Tell Atchana",
+        region: "Amuq Plain / N Syria",
+        period: "MBA–LBA (18th–13th c. BCE)",
+        tier: "B",
+        segment: "Levantine Emporia",
+        role: "Levantine court node",
+        evidence: ["fresco","panel syntax"],
+        confidence: "high",
+        lat: 36.2325, lng: 36.4069,
+        sea_route: false
+      },
+      {
+        id: "LEV-UGARIT",
+        name: "Ugarit",
+        subname: "Ras Shamra / Minet el-Beida",
+        region: "N Levant / Syria",
+        period: "LBA (14th–12th c. BCE)",
+        tier: "A/B",
+        segment: "Levantine Emporia",
+        role: "Levantine entrepôt / palace emporion",
+        evidence: ["tablets","harbor","weights","ceramics"],
+        confidence: "high",
+        lat: 35.6028, lng: 35.7797,
+        sea_route: false
+      },
+      {
+        id: "LEV-BYBLOS",
+        name: "Byblos",
+        subname: "Gebal",
+        region: "Central Levant / Lebanon",
+        period: "MBA–LBA",
+        tier: "B",
+        segment: "Levantine Emporia",
+        role: "Cedar-export hub — Egypt interface",
+        evidence: ["harbor","inscriptions","weights","ceramics"],
+        confidence: "medium",
+        lat: 34.1234, lng: 35.6488,
+        sea_route: false
+      },
+      {
+        id: "CYP-ENKOMI",
+        name: "Enkomi",
+        subname: "& Hala Sultan Tekke / Kition",
+        region: "Cyprus",
+        period: "LBA (16th–12th c. BCE)",
+        tier: "B",
+        segment: "Cyprus Copper Complex",
+        role: "Copper export & entrepôt",
+        evidence: ["metals","weights","ceramics"],
+        confidence: "high",
+        lat: 35.1390, lng: 33.8622,
+        sea_route: false
+      },
+      {
+        id: "EGY-AVARIS",
+        name: "Avaris",
+        subname: "Tell el-Dab'a",
+        region: "Eastern Nile Delta / Egypt",
+        period: "2nd Intermediate–New Kingdom",
+        tier: "B",
+        segment: "Egyptian Delta",
+        role: "Courtly display — Aegean artisans",
+        evidence: ["stucco relief","fresco","technique"],
+        confidence: "high",
+        lat: 30.7870, lng: 31.8220,
+        sea_route: false
+      },
+      {
+        id: "EGY-MERSA",
+        name: "Mersa Matruh",
+        subname: "western coast",
+        region: "NW Egypt littoral",
+        period: "LBA (14th–12th c. BCE)",
+        tier: "B",
+        segment: "Egyptian Littoral",
+        role: "Way-station — provisioning node",
+        evidence: ["harbor","storerooms","ceramics"],
+        confidence: "medium",
+        lat: 31.3520, lng: 27.2368,
+        sea_route: false
+      },
+      {
+        id: "SEA-ULU_BURUN",
+        name: "Ulu Burun",
+        subname: "shipwreck",
+        region: "S Levantine route / off Kaş",
+        period: "c. 1320–1300 BCE",
+        tier: "A/B",
+        segment: "Open-Sea Control",
+        role: "Open-sea logistics control",
+        evidence: ["shipwreck","weights","ingots","jars"],
+        confidence: "high",
+        lat: 36.1780, lng: 29.6340,
+        sea_route: true
+      },
+      {
+        id: "SEA-GELIDONYA",
+        name: "Cape Gelidonya",
+        subname: "shipwreck",
+        region: "SW Anatolia coast",
+        period: "c. 1200 BCE",
+        tier: "B",
+        segment: "Open-Sea Control",
+        role: "Late LBA logistics",
+        evidence: ["shipwreck","ingots","tools"],
+        confidence: "high",
+        lat: 36.1700, lng: 30.4100,
+        sea_route: true
+      },
+      {
+        id: "GRE-PYLOS",
+        name: "Pylos",
+        subname: "Palace of Nestor",
+        region: "Messenia / SW Greece",
+        period: "LH IIIB (13th c. BCE)",
+        tier: "A/B",
+        segment: "Aegean Palatial Admin",
+        role: "Palatial administration — maritime provisioning",
+        evidence: ["tablets","measures","ceramics"],
+        confidence: "high",
+        lat: 36.9130, lng: 21.6990,
+        sea_route: false
+      },
+      {
+        id: "GRE-ARGOLID",
+        name: "Mycenae / Tiryns",
+        subname: "Argolid",
+        region: "NE Peloponnese",
+        period: "LH III (14th–12th c. BCE)",
+        tier: "B",
+        segment: "Aegean Manufacture",
+        role: "Argolid export/manufacture node",
+        evidence: ["workshops","ceramics","coastal route"],
+        confidence: "medium",
+        lat: 37.7310, lng: 22.7560,
+        sea_route: false
       }
-    });
-  }
+    ];
 
-  function toggleAtlas(panelId, btnId, label, activeLabel, force){
-    const panel = document.getElementById(panelId);
-    const btn = document.getElementById(btnId);
-    if(!panel || !btn) return;
-    const shouldOpen = typeof force === 'boolean' ? force : !panel.classList.contains('open');
-    safeCloseAtlases();
-    if(shouldOpen){
-      panel.classList.add('open');
-      btn.classList.add('active');
-      btn.textContent = activeLabel;
-      const detail = document.getElementById('detailPanel');
-      if(detail) detail.classList.remove('open');
-    }
-  }
+    // ── TIER CONFIG ──
+    const TIER_COLOR = { "A": "#C9A84C", "A/B": "#B85C38", "B": "#7A9E7E" };
+    const TIER_GLOW  = { "A": "rgba(201,168,76,0.55)", "A/B": "rgba(184,92,56,0.55)", "B": "rgba(122,158,126,0.45)" };
 
-  window.toggleArabiaAtlas = function(force){
-    toggleAtlas('arabiaAtlasPanel','arabia-atlas-btn','Ancient Arabia','Hide Arabia Atlas',force);
-  };
-  window.toggleArmepAtlas = function(force){
-    toggleAtlas('armepAtlasPanel','armep-atlas-btn','ARMEP','Hide ARMEP',force);
-  };
-  window.toggleFastiAtlas = function(force){
-    toggleAtlas('fastiAtlasPanel','fasti-atlas-btn','Fasti','Hide Fasti',force);
-  };
-  window.toggleCyprusAtlas = function(force){
-    toggleAtlas('cyprusAtlasPanel','cyprus-atlas-btn','Cyprus','Hide Cyprus',force);
-  };
-  window.toggleRomanLettersAtlas = function(force){
-    toggleAtlas('romanLettersAtlasPanel','roman-letters-atlas-btn','Roman Letters','Hide Roman Letters',force);
-  };
-  window.toggleIranGazetteeerAtlas = function(force){
-    toggleAtlas('iranGazetteeerAtlasPanel','iran-gazetteer-atlas-btn','Iran Gazetteer','Hide Iran Gazetteer',force);
-  };
-  window.togglePlinyAtlas = function(force){
-    toggleAtlas('plinyAtlasPanel','pliny-atlas-btn','Pliny the Elder','Hide Pliny',force);
-  };
-  window.toggleOmnesViaeAtlas = function(force){
-    toggleAtlas('omnesViaeAtlasPanel','omnesviae-atlas-btn','OmnesViae','Hide OmnesViae',force);
-  };
-  window.toggleProxenyAtlas = function(force){
-    toggleAtlas('proxenyAtlasPanel','proxeny-atlas-btn','Proxeny Networks','Hide Proxeny',force);
-  };
-  window.toggleMithraeumAtlas = function(force){
-    toggleAtlas('mithraeumAtlasPanel','mithraeum-atlas-btn','Mithraeum','Hide Mithraeum',force);
-  };
-  window.toggleDmarcAtlas = function(force){
-    toggleAtlas('dmarcAtlasPanel','dmarc-atlas-btn','DMARC','Hide DMARC',force);
-  };
-  window.closeExternalAtlases = safeCloseAtlases;
-})();
-</script><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
-<script>
-const SUPABASE_URL      = "https://ucsgtbpeuqeamuvuvojs.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA";
-const PAGE_SIZE = 1000;
-
-function getTier(site, mentionCount) {
-  const refs  = site.ancient_refs  || 0;
-  const ments = mentionCount || 0;
-  if (refs > 500 || ments > 5) return 1;
-  if (refs > 50  || ments > 1) return 2;
-  if (refs > 0   || ments > 0) return 3;
-  if (['mithraic','adriatic','black_sea'].includes(site.subregion)) return 4;
-  return 3;
-}
-
-const TIER_COLORS  = {1:'#f4a234', 2:'#d4a84b', 3:'#a07840', 4:'#6a5230'};
-const TIER_RADIUS  = {1:7, 2:5, 3:4, 4:3};
-const TIER_LABELS  = {1:'Major site', 2:'Regional center', 3:'Archaeological site', 4:'Port / minor site'};
-const TIER_ZOOM    = {1:0, 2:3, 3:5, 4:7};
-
-function makeIcon(tier, mentioned) {
-  const r = TIER_RADIUS[tier];
-  const c = TIER_COLORS[tier];
-  const stroke = mentioned ? '#ffffff' : 'rgba(255,255,255,0.2)';
-  const sw     = mentioned ? 1.5 : 0.5;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+4}" height="${r*2+4}">
-    <circle cx="${r+2}" cy="${r+2}" r="${r}" fill="${c}" fill-opacity="${mentioned?1:.65}"
-      stroke="${stroke}" stroke-width="${sw}"/>
-  </svg>`;
-  return L.divIcon({
-    html: svg,
-    className: '',
-    iconSize:   [r*2+4, r*2+4],
-    iconAnchor: [r+2,   r+2],
-  });
-}
-
-let map, clusterGroups = {1:null,2:null,3:null,4:null};
-let allSites = [], allMarkerData = [], corpusMap = {};
-let activeRegion = 'all', mentionedOnly = false, searchTerm = '';
-
-async function sbFetch(path) {
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
-    headers:{apikey:SUPABASE_ANON_KEY, Authorization:`Bearer ${SUPABASE_ANON_KEY}`}
-  });
-  if (!r.ok) throw new Error(`Supabase ${r.status}`);
-  return r.json();
-}
-
-async function loadTier1() {
-  const corpusSites = await sbFetch(`corpus_map?select=site_id,mention_count&mention_count=gt.0&limit=500`);
-  const corpusIds = corpusSites.map((r) => r.site_id).filter(Boolean);
-  const major = await sbFetch(
-    `archaeology_sites?select=id,name,region,subregion,culture,period,lat,lng,country,description,wikipedia_url,topostext_url,ancient_refs`+
-    `&ancient_refs=gt.200&limit=1000&order=ancient_refs.desc`
-  );
-  let corpusMatched = [];
-  for (let i = 0; i < Math.min(corpusIds.length, 200); i += 50) {
-    const chunk = corpusIds.slice(i, i+50);
-    if (!chunk.length) break;
-    const batch = await sbFetch(`archaeology_sites?select=id,name,region,subregion,culture,period,lat,lng,country,description,wikipedia_url,topostext_url,ancient_refs&id=in.(${chunk.join(',')})&limit=50`);
-    corpusMatched.push(...batch);
-  }
-  const seen = new Set();
-  [...major, ...corpusMatched].forEach(s => { if (!seen.has(s.id)) { seen.add(s.id); allSites.push(s); } });
-  document.getElementById('loadingText').textContent = `Loaded ${allSites.length} major sites`;
-}
-
-async function loadTier2() {
-  const batch = await sbFetch(
-    `archaeology_sites?select=id,name,region,subregion,culture,period,lat,lng,country,description,wikipedia_url,topostext_url,ancient_refs`+
-    `&ancient_refs=gte.10&ancient_refs=lte.200&limit=2000&order=ancient_refs.desc`
-  );
-  const existing = new Set(allSites.map(s => s.id));
-  batch.filter((s) => !existing.has(s.id)).forEach(s => allSites.push(s));
-}
-
-async function loadViewport(bounds, zoom) {
-  if (zoom < 6) return;
-  const pad = 1;
-  const q = `lat=gte.${(bounds.getSouth()-pad).toFixed(2)}&lat=lte.${(bounds.getNorth()+pad).toFixed(2)}&lng=gte.${(bounds.getWest()-pad).toFixed(2)}&lng=lte.${(bounds.getEast()+pad).toFixed(2)}`;
-  const batch = await sbFetch(`archaeology_sites?select=id,name,region,subregion,culture,period,lat,lng,country,description,wikipedia_url,topostext_url,ancient_refs&${q}&ancient_refs=lt.10&limit=500&order=ancient_refs.desc.nullslast`);
-  const existing = new Set(allSites.map(s => s.id));
-  const newSites = batch.filter((s) => !existing.has(s.id));
-  if (!newSites.length) return;
-  newSites.forEach(s => allSites.push(s));
-  addMarkersForSites(newSites);
-}
-
-function addMarkersForSites(sites) {
-  sites.forEach(site => {
-    if (!site.lat || !site.lng) return;
-    const corpus = corpusMap[site.id] || {};
-    const mentions = corpus.mention_count || 0;
-    const tier = getTier(site, mentions);
-    const marker = L.marker([site.lat, site.lng], {icon:makeIcon(tier,mentions>0),title:site.name});
-    marker.on('click', () => showDetail(site, corpus));
-    marker.bindPopup(`<div class="popup-name">${site.name}</div><div class="popup-sub">${[site.culture,site.period].filter(Boolean).join(' | ')||''}</div>`,{maxWidth:220,closeButton:false});
-    allMarkerData.push({site,corpus,tier,marker});
-    clusterGroups[tier].addLayer(marker);
-  });
-  updateCounts();
-}
-
-function updateCounts() {
-  const counts = {1:0,2:0,3:0,4:0};
-  allMarkerData.forEach(d => counts[d.tier]++);
-  [1,2,3,4].forEach(t => { const el=document.getElementById(`cnt${t}`); if(el) el.textContent=counts[t].toLocaleString(); });
-  document.getElementById('statTotal').textContent = allSites.length.toLocaleString();
-}
-
-async function loadCorpus() {
-  document.getElementById('loadingText').textContent = 'Loading corpus';
-  const rows = await sbFetch(`corpus_map?select=site_id,mention_count,latest_title,latest_url,latest_source`);
-  rows.forEach(r => { corpusMap[r.site_id] = r; });
-}
-
-function buildMarkers() {
-  document.getElementById('loadingText').textContent = 'Building markers';
-
-  // Init cluster groups per tier
-  for (let t = 1; t <= 4; t++) {
-    clusterGroups[t] = L.markerClusterGroup({
-      maxClusterRadius: t === 1 ? 40 : t === 2 ? 60 : t === 3 ? 80 : 100,
-      disableClusteringAtZoom: t === 1 ? 4 : t === 2 ? 6 : t === 3 ? 8 : 10,
-      spiderfyOnMaxZoom: true,
-      showCoverageOnHover: false,
-      zoomToBoundsOnClick: true,
-    });
-  }
-
-  const counts = {1:0,2:0,3:0,4:0};
-
-  allSites.forEach(site => {
-    if (!site.lat || !site.lng) return;
-    const corpus = corpusMap[site.id] || {};
-    const mentions = corpus.mention_count || 0;
-    const tier = getTier(site, mentions);
-    counts[tier]++;
-
-    const marker = L.marker([site.lat, site.lng], {
-      icon: makeIcon(tier, mentions > 0),
-      title: site.name,
+    // ── MAP INIT ──
+    const map = L.map('map', {
+      center: [35.5, 28.5],
+      zoom: 5,
+      zoomControl: true,
+      attributionControl: true
     });
 
-    marker.on('click', () => showDetail(site, corpus));
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 18
+    }).addTo(map);
 
-    // Popup on hover
-    marker.bindPopup(`
-      <div class="popup-name">${site.name}</div>
-      <div class="popup-sub">${[site.culture, site.period].filter(Boolean).join(' | ') || site.region || ''}</div>
-      <button class="popup-btn" onclick="showDetailById(${site.id})">View details</button>
-    `, { maxWidth: 220, closeButton: false });
+    // ── STATE ──
+    let activeSegment = 'all';
+    let activeTier    = 'all';
+    let searchTerm    = '';
+    let activeMarkers = {};
+    let activeSiteId  = null;
 
-    allMarkerData.push({ site, corpus, tier, marker });
-    clusterGroups[tier].addLayer(marker);
-  });
+    // ── CUSTOM MARKER ──
+    function makeIcon(site, highlighted) {
+      const color = TIER_COLOR[site.tier] || '#7A9E7E';
+      const glow  = TIER_GLOW[site.tier]  || 'rgba(122,158,126,0.4)';
+      const size  = highlighted ? 14 : 10;
+      const shape = site.sea_route ? 'rect' : 'circle';
 
-  // Add tier groups to map (tier 1 always, others based on zoom)
-  map.addLayer(clusterGroups[1]);
-  map.addLayer(clusterGroups[2]);
-
-  map.on('zoomend', () => {
-    const z = map.getZoom();
-    [3,4].forEach(t => {
-      const minZ = TIER_ZOOM[t];
-      if (z >= minZ && !map.hasLayer(clusterGroups[t])) map.addLayer(clusterGroups[t]);
-      else if (z < minZ && map.hasLayer(clusterGroups[t])) map.removeLayer(clusterGroups[t]);
-    });
-  });
-
-  for (let t = 1; t <= 4; t++) {
-    document.getElementById(`cnt${t}`).textContent = counts[t].toLocaleString();
-  }
-
-  document.getElementById('statTotal').textContent    = allSites.length.toLocaleString();
-  document.getElementById('statMentioned').textContent = Object.keys(corpusMap).length.toLocaleString();
-  updateShownCount();
-}
-
-function updateShownCount() {
-  let shown = 0;
-  allMarkerData.forEach(d => {
-    if (d.marker._map) shown++;
-  });
-  document.getElementById('statShown').textContent = shown.toLocaleString();
-}
-
-function applyFilters() {
-  for (let t = 1; t <= 4; t++) clusterGroups[t].clearLayers();
-
-  let shown = 0;
-  allMarkerData.forEach(d => {
-    const { site, corpus, tier, marker } = d;
-    const regionOk  = activeRegion === 'all' || site.region === activeRegion;
-    const mentionOk = !mentionedOnly || (corpus.mention_count || 0) > 0;
-    const searchOk  = !searchTerm ||
-      site.name.toLowerCase().includes(searchTerm) ||
-      (site.culture || '').toLowerCase().includes(searchTerm);
-
-    if (regionOk && mentionOk && searchOk) {
-      clusterGroups[tier].addLayer(marker);
-      shown++;
-    }
-  });
-
-  document.getElementById('statShown').textContent = shown.toLocaleString();
-}
-
-window.showDetailById = function(id) {
-  const d = allMarkerData.find(x => x.site.id === id);
-  if (d) showDetail(d.site, d.corpus);
-};
-
-function showDetail(site, corpus) {
-  const mentions = corpus.mention_count || 0;
-  const tier = getTier(site, mentions);
-
-  document.getElementById('detailTier').textContent  = TIER_LABELS[tier];
-  document.getElementById('detailTier').style.color  = TIER_COLORS[tier];
-  document.getElementById('detailName').textContent  = site.name;
-
-  const badges = [
-    site.culture ? `<span class="badge badge-culture">${site.culture}</span>` : '',
-    site.region  ? `<span class="badge badge-region">${regionLabel(site.region)}</span>` : '',
-    site.period  ? `<span class="badge badge-period">${site.period}</span>` : '',
-    site.country ? `<span class="badge badge-period">${site.country}</span>` : '',
-  ].filter(Boolean).join('');
-  document.getElementById('detailBadges').innerHTML = badges;
-  document.getElementById('detailDesc').textContent  = site.description || '';
-  document.getElementById('detailMentions').textContent   = mentions.toString();
-  document.getElementById('detailAncientRefs').textContent = (site.ancient_refs || 0).toLocaleString();
-
-  const toposEl = document.getElementById('detailTopos');
-  if (site.ancient_refs > 0 && site.topostext_url) {
-    toposEl.style.display = 'block';
-    document.getElementById('toposNum').textContent = site.ancient_refs.toLocaleString();
-    document.getElementById('toposBtn').href = site.topostext_url;
-  } else { toposEl.style.display = 'none'; }
-
-  const mentSection = document.getElementById('detailMentionsList');
-  if (corpus.latest_title) {
-    mentSection.style.display = 'block';
-    document.getElementById('mentionItems').innerHTML = `
-      <div class="mention-item">
-        <div class="mention-title"><a href="${corpus.latest_url||'#'}" target="_blank">${corpus.latest_title}</a></div>
-        <div class="mention-meta">${corpus.latest_source||''}</div>
-      </div>`;
-  } else { mentSection.style.display = 'none'; }
-
-  const links = [
-    site.wikipedia_url  ? `<a class="ext-link" href="${site.wikipedia_url}"  target="_blank">Wikipedia</a>` : '',
-    site.topostext_url  ? `<a class="ext-link" href="${site.topostext_url}"  target="_blank">ToposText</a>` : '',
-    `<a class="ext-link" href="https://www.openstreetmap.org/?mlat=${site.lat}&mlon=${site.lng}&zoom=14" target="_blank">OSM</a>`,
-  ].filter(Boolean).join('');
-  document.getElementById('extLinks').innerHTML = links;
-
-  const siteBtn = document.getElementById('sitePageBtn');
-  siteBtn.href = `site.html?id=${encodeURIComponent(site.name)}`;
-  siteBtn.style.display = 'block';
-
-  closeExternalAtlases();
-  document.getElementById('detailPanel').classList.add('open');
-}
-
-function regionLabel(r) {
-  return {europe:'Europe',near_east:'Near East',mesoamerica:'Mesoamerica',
-    north_america:'N. America',south_america:'S. America',general:'General'}[r] || r;
-}
-
-
-
-async function init() {
-  map = L.map('map', {
-    center: [35, 18], zoom: 3,
-    zoomControl: false,
-    attributionControl: true,
-    maxZoom: 19,
-  });
-
-  L.control.zoom({ position: 'bottomright' }).addTo(map);
-
-  // Tile layers
-  // maxNativeZoom = highest zoom the tile server actually has tiles for
-  // maxZoom = highest zoom Leaflet will render (upscales tiles beyond maxNativeZoom)
-  const TILES = {
-    'OSM':      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution:'&copy; OpenStreetMap contributors',
-      maxNativeZoom: 19, maxZoom: 19 }),
-    'Topo':     L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-      attribution:'Map data: &copy; OpenStreetMap contributors | Map style: OpenTopoMap',
-      maxNativeZoom: 17, maxZoom: 19 }),
-    'Satellite':L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      attribution:'Tiles &copy; Esri',
-      maxNativeZoom: 19, maxZoom: 19 }),
-    'Antique':  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
-      attribution:'Tiles &copy; Esri &mdash; Source: US National Park Service',
-      maxNativeZoom: 13, maxZoom: 19 }),
-    'NatGeo':   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-      attribution:'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-      maxNativeZoom: 16, maxZoom: 19 }),
-    'Voyager':  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      attribution:'&copy; OpenStreetMap contributors | &copy; CARTO',
-      maxNativeZoom: 19, maxZoom: 19 }),
-    'Light':    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution:'&copy; OpenStreetMap contributors | &copy; CARTO',
-      maxNativeZoom: 19, maxZoom: 19 }),
-    'Dark':     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution:'&copy; OpenStreetMap contributors | &copy; CARTO',
-      maxNativeZoom: 19, maxZoom: 19 }),
-    'DARE':     L.tileLayer('https://dh.gu.se/tiles/imperium/{z}/{x}/{y}.png', {
-      attribution:'Digital Atlas of the Roman Empire',
-      minZoom: 4, maxNativeZoom: 11, maxZoom: 19 }),
-  };
-  let activeTile = TILES['NatGeo'];
-  activeTile.addTo(map);
-  window._setTile = function(name) {
-    if (activeTile) map.removeLayer(activeTile);
-    activeTile = TILES[name];
-    activeTile.addTo(map);
-    document.querySelectorAll('.tile-chip').forEach(b => b.classList.toggle('active', b.dataset.tile===name));
-    // Toggle DARE places layer
-    if (name === 'DARE') {
-      darePlacesEnabled = true;
-      loadDarePlaces();
-    } else {
-      darePlacesEnabled = false;
-      if (darePlacesLayer) { map.removeLayer(darePlacesLayer); darePlacesLayer = null; }
-      document.getElementById('dare-places-status').textContent = '';
-    }
-  };
-  const DARE_API = 'https://imperium.ahlfeldt.se/api/geojson.php';
-  let darePlacesLayer = null;
-  let darePlacesEnabled = false;
-  let dareDebounceTimer = null;
-
-  const DARE_TYPE_LABELS = {
-    '11':'City','12':'Town','13':'Village','14':'Villa','15':'Fort',
-    '16':'Road station','17':'Temple','18':'Harbour','19':'Mine',
-    '20':'Amphitheatre','21':'Theatre','22':'Bath','23':'Aqueduct',
-    '24':'Bridge','25':'Pass','26':'Lighthouse','27':'Cemetery',
-    '28':'Inscription site','29':'Vicus','30':'Sanctuary',
-    '31':'Camp','32':'Spa','33':'Unknown',
-  };
-
-  function dareTypeLabel(id) {
-    return DARE_TYPE_LABELS[String(id)] || 'Ancient site';
-  }
-
-  function darePlacesIcon() {
-    return L.divIcon({
-      html:`<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10">
-        <circle cx="5" cy="5" r="4" fill="#c09050" fill-opacity=".75" stroke="rgba(240,230,200,.5)" stroke-width="1"/>
-      </svg>`,
-      className:'', iconSize:[10,10], iconAnchor:[5,5]
-    });
-  }
-
-  async function loadDarePlaces() {
-    if (!darePlacesEnabled) return;
-    const z = map.getZoom();
-    if (z < 4) {
-      document.getElementById('dare-places-status').textContent = 'Zoom in to see DARE places';
-      return;
-    }
-    const b = map.getBounds();
-    const bbox = [
-      b.getWest().toFixed(4), b.getSouth().toFixed(4),
-      b.getEast().toFixed(4), b.getNorth().toFixed(4)
-    ].join(',');
-    // DARE tiles are capped at zoom 11; use zoom for API density control
-    const apiZoom = Math.min(z, 10);
-    const url = `${DARE_API}?bbox=${bbox}&zoom=${apiZoom}`;
-
-    document.getElementById('dare-places-status').textContent = 'Loading DARE places';
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(res.status);
-      const data = await res.json();
-      if (!darePlacesEnabled) return; // tile switched while loading
-
-      if (darePlacesLayer) { map.removeLayer(darePlacesLayer); darePlacesLayer = null; }
-
-      const features = data.features || [];
-      darePlacesLayer = L.geoJSON(data, {
-        pointToLayer: (feature, latlng) => L.marker(latlng, { icon: darePlacesIcon() }),
-        onEachFeature: (feature, layer) => {
-          const p = feature.properties || {};
-          const coords = feature.geometry && feature.geometry.coordinates;
-          const ancientName = p.ancient_name || p.name || '(unnamed)';
-          layer.bindPopup(
-            `<div class="popup-name">${ancientName}</div>` +
-            `<div class="popup-sub">${dareTypeLabel(p.ftype)}</div>`, 
-            { maxWidth:220, closeButton:false }
-          );
-          layer.on('click', () => showDareDetail({
-            ...p,
-            lng: coords ? coords[0] : null,
-            lat: coords ? coords[1] : null,
-          }));
-        }
-      }).addTo(map);
-
-      document.getElementById('dare-places-status').textContent =
-        `${features.length} DARE place${features.length !== 1 ? 's' : ''}${features.length === 500 ? ' (max; zoom in)' : ''}`;
-    } catch(e) {
-      document.getElementById('dare-places-status').textContent = 'DARE API error';
-      console.warn('DARE places fetch failed:', e);
-    }
-  }
-
-  async function showDareDetail(props) {
-    // If we have a DARE id, fetch extended data from the ?id= endpoint
-    const id = props.dare_id || props.id;
-    let extended = { ...props };
-    if (id) {
-      try {
-        const res = await fetch(`${DARE_API}?id=${id}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.features && data.features[0]) {
-            const fp = data.features[0].properties || {};
-            const fc = data.features[0].geometry && data.features[0].geometry.coordinates;
-            extended = {
-              ...props,
-              ...fp,
-              lng: fc ? fc[0] : props.lng,
-              lat: fc ? fc[1] : props.lat,
-            };
-          }
-        }
-      } catch(e) { /* use basic props */ }
-    }
-
-    // DARE API field names (from documented response + id endpoint)
-    const ancientName = extended.ancient_name  || extended.name || '(unnamed)';
-    const modernName  = extended.modern_name   || extended.spatial_coverage || '';
-    const country     = extended.country       || '';
-    const ftype       = dareTypeLabel(extended.ftype || extended.place_type);
-    const pleiadesId  = extended.pleiades      || extended.pleiades_id;
-    const dareId      = extended.dare_id       || extended.id || id;
-    const startDate   = extended.start_date    || extended.temporal_coverage_start;
-    const endDate     = extended.end_date      || extended.temporal_coverage_end;
-    const nuts3       = extended.nuts3         || extended.nuts_3;
-    const lau2        = extended.lau2          || extended.lau_2;
-    const lat         = extended.lat;
-    const lng         = extended.lng;
-
-    // Format date as BCE/CE
-    function fmtDate(d) {
-      if (!d && d !== 0) return null;
-      const n = parseInt(d);
-      return n < 0 ? `${Math.abs(n)} BCE` : `${n} CE`;
-    }
-
-    // Populate detail panel with DARE data
-    document.getElementById('detailTier').textContent = 'DARE place';
-    document.getElementById('detailTier').style.color = '#c09050';
-    document.getElementById('detailName').textContent = ancientName;
-
-    const badges = [
-      `<span class="badge badge-culture">${ftype}</span>`,
-      country    ? `<span class="badge badge-region">${country}</span>` : '',
-      modernName ? `<span class="badge badge-period">${modernName}</span>` : '',
-    ].filter(Boolean).join('');
-    document.getElementById('detailBadges').innerHTML = badges;
-
-    const descParts = [];
-    const s = fmtDate(startDate), e = fmtDate(endDate);
-    if (s || e) descParts.push(`Active: ${s||'?'} to ${e||'?'}`);
-    if (nuts3)  descParts.push(`Region: ${nuts3}`);
-    if (lau2)   descParts.push(lau2);
-    if (lat && lng) descParts.push(`${parseFloat(lng).toFixed(5)}, ${parseFloat(lat).toFixed(5)}`);
-    document.getElementById('detailDesc').textContent = descParts.join(' | ');
-
-    // Repurpose stat cells for DARE-specific data
-    const mentCell = document.getElementById('detailMentions');
-    const refsCell = document.getElementById('detailAncientRefs');
-    mentCell.closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Place type';
-    mentCell.textContent = ftype;
-    refsCell.closest('.stat-cell').querySelector('.stat-lbl').textContent = 'DARE ID';
-    refsCell.textContent = dareId || '';
-
-    document.getElementById('detailTopos').style.display = 'none';
-    document.getElementById('detailMentionsList').style.display = 'none';
-
-    const extLinks = [
-      dareId     ? `<a class="ext-link" href="https://imperium.ahlfeldt.se/places/${dareId}" target="_blank" rel="noopener">DARE</a>` : '',
-      pleiadesId ? `<a class="ext-link" href="https://pleiades.stoa.org/places/${pleiadesId}" target="_blank" rel="noopener">Pleiades</a>` : '',
-      lat && lng ? `<a class="ext-link" href="https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}&zoom=14" target="_blank" rel="noopener">OSM</a>` : '',
-    ].filter(Boolean).join('');
-    document.getElementById('extLinks').innerHTML = extLinks;
-
-    document.getElementById('sitePageBtn').style.display = 'none';
-    document.getElementById('detailPanel').classList.add('open');
-  }
-
-  // Debounced reload on map move (only when DARE is active)
-  map.on('moveend', () => {
-    if (!darePlacesEnabled) return;
-    clearTimeout(dareDebounceTimer);
-    dareDebounceTimer = setTimeout(loadDarePlaces, 500);
-  });
-
-  try {
-    await loadCorpus();
-    await loadTier1();
-  } catch(e) {
-    document.getElementById('loadingText').textContent = 'Error: ' + e.message;
-    return;
-  }
-
-  buildMarkers();
-  document.getElementById('mapLoading').style.display = 'none';
-
-  // Tier 2 in background
-  setTimeout(async () => {
-    await loadTier2();
-    const existing = new Set(allMarkerData.map(d => d.site.id));
-    addMarkersForSites(allSites.filter(s => !existing.has(s.id)));
-    applyFilters();
-  }, 1500);
-
-  // Viewport loading at zoom 6+
-  let vpTimer;
-  map.on('moveend zoomend', () => {
-    clearTimeout(vpTimer);
-    vpTimer = setTimeout(async () => {
-      if (map.getZoom() >= 6) { await loadViewport(map.getBounds(), map.getZoom()); applyFilters(); }
-    }, 800);
-  });
-}
-
-document.getElementById('detailClose').addEventListener('click', () => {
-  document.getElementById('detailPanel').classList.remove('open');
-});
-
-document.querySelectorAll('[data-region]').forEach(btn => {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('[data-region]').forEach(b => b.classList.remove('active'));
-    this.classList.add('active');
-    activeRegion = this.dataset.region;
-    applyFilters();
-  });
-});
-
-document.getElementById('mentionedOnly').addEventListener('change', function() {
-  mentionedOnly = this.checked;
-  applyFilters();
-});
-
-let searchTimer;
-document.getElementById('siteSearch').addEventListener('input', function() {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(async () => {
-    searchTerm = this.value.trim().toLowerCase();
-    if (searchTerm) {
-      // 1. Try a match among already-loaded sites first (instant)
-      let match = allMarkerData.find(d =>
-        d.site.name.toLowerCase().includes(searchTerm));
-
-      // 2. If nothing loaded matches, query Supabase directly — this covers
-      //    sites with low ancient_refs that haven't been loaded into the
-      //    viewport yet (e.g. renamed sites, minor sites far from view).
-      if (!match) {
-        try {
-          const remote = await sbFetch(
-            `archaeology_sites?select=id,name,region,subregion,culture,period,lat,lng,country,description,wikipedia_url,topostext_url,ancient_refs`+
-            `&name=ilike.*${encodeURIComponent(searchTerm)}*&limit=10`
-          );
-          const existing = new Set(allSites.map(s => s.id));
-          const newSites = remote.filter(s => !existing.has(s.id) && s.lat && s.lng);
-          if (newSites.length) {
-            newSites.forEach(s => allSites.push(s));
-            addMarkersForSites(newSites);
-            applyFilters();
-            match = allMarkerData.find(d => d.site.id === newSites[0].id);
-          }
-        } catch (e) {
-          console.warn('Remote site search failed', e);
-        }
+      let svg;
+      if (shape === 'rect') {
+        const s = size - 2;
+        svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size+8}" height="${size+8}" viewBox="0 0 ${size+8} ${size+8}">
+          <rect x="4" y="4" width="${s}" height="${s}" rx="1"
+            fill="${color}" fill-opacity="0.85"
+            stroke="${color}" stroke-width="1"
+            filter="url(#g)"/>
+          <defs><filter id="g"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+        </svg>`;
+      } else {
+        svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size+8}" height="${size+8}" viewBox="0 0 ${size+8} ${size+8}">
+          <circle cx="${(size+8)/2}" cy="${(size+8)/2}" r="${size/2}"
+            fill="${color}" fill-opacity="${highlighted ? 0.95 : 0.8}"
+            stroke="${color}" stroke-width="${highlighted ? 1.5 : 0.5}"
+            filter="url(#g)"/>
+          <defs><filter id="g"><feGaussianBlur stdDeviation="${highlighted?3:2}" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+        </svg>`;
       }
 
-      if (match) map.flyTo([match.site.lat, match.site.lng], 8, {duration:1.2});
-    }
-    applyFilters();
-  }, 300);
-});
-
-init();
-
-// DARE only serves HTTP — browsers block mixed-content from HTTPS pages.
-// Route through a Supabase Edge Function that proxies the request server-side.
-const MOSAIC_API = 'https://ucsgtbpeuqeamuvuvojs.supabase.co/functions/v1/dare-proxy';
-let mosaicLayer   = null;
-let mosaicEnabled = false;
-let mosaicLoaded  = false; // fetch once
-
-function mosaicIcon() {
-  // Small terracotta triangle
-  return L.divIcon({
-    html: `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13">
-      <polygon points="6.5,1 12.5,12 0.5,12"
-        fill="#c87050" fill-opacity=".85"
-        stroke="rgba(255,200,150,.55)" stroke-width="1"/>
-    </svg>`,
-    className: '', iconSize: [13, 13], iconAnchor: [6.5, 12]
-  });
-}
-
-async function loadMosaicLayer() {
-  if (mosaicLoaded) return;
-  document.getElementById('mosaic-status').textContent = 'Loading…';
-  try {
-    const res = await fetch(`${MOSAIC_API}?typeid=98`, {
-      headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA' }
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    const features = data.features || [];
-
-    mosaicLayer = L.geoJSON(data, {
-      pointToLayer: (feature, latlng) => L.marker(latlng, { icon: mosaicIcon() }),
-      onEachFeature: (feature, layer) => {
-        const p    = feature.properties || {};
-        const coords = feature.geometry && feature.geometry.coordinates;
-        const name = p.ancient_name || p.modern_name || p.name || '(mosaic site)';
-        const country = p.country || '';
-        layer.bindPopup(
-          `<div class="popup-name">${name}</div>` +
-          `<div class="popup-sub">Mosaic floor site${country ? ' | ' + country : ''}</div>`,
-          { maxWidth: 220, closeButton: false }
-        );
-        layer.on('click', () => showMosaicDetail({
-          ...p,
-          lng: coords ? coords[0] : null,
-          lat: coords ? coords[1] : null,
-        }));
-      }
-    });
-
-    mosaicLoaded = true;
-    const n = features.length;
-    document.getElementById('mosaic-status').textContent =
-      `${n} site${n !== 1 ? 's' : ''} | DARE typeid=98`;
-
-  } catch (e) {
-    document.getElementById('mosaic-status').textContent = 'DARE API error — retry';
-    console.warn('Mosaic layer fetch failed:', e);
-    mosaicLoaded = false; // reset so user can retry by toggling again
-    mosaicEnabled = false;
-  }
-}
-
-function showMosaicDetail(props) {
-  // Optionally fetch extended ?id= data for richer panel
-  const id      = props.dare_id || props.id;
-  const name    = props.ancient_name || props.modern_name || props.name || '(mosaic site)';
-  const country = props.country || '';
-  const lat     = props.lat;
-  const lng     = props.lng;
-
-  document.getElementById('detailTier').textContent = 'Roman Mosaic Floor';
-  document.getElementById('detailTier').style.color  = '#c87050';
-  document.getElementById('detailName').textContent  = name;
-
-  const badges = [
-    `<span class="badge badge-culture">Mosaic floor</span>`,
-    country ? `<span class="badge badge-region">${country}</span>` : '',
-  ].filter(Boolean).join('');
-  document.getElementById('detailBadges').innerHTML = badges;
-
-  document.getElementById('detailDesc').textContent =
-    (lat && lng)
-      ? `${parseFloat(lng).toFixed(5)}, ${parseFloat(lat).toFixed(5)}`
-      : '';
-
-  const mentCell = document.getElementById('detailMentions');
-  const refsCell = document.getElementById('detailAncientRefs');
-  mentCell.closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Place type';
-  mentCell.textContent = 'Mosaic floor';
-  refsCell.closest('.stat-cell').querySelector('.stat-lbl').textContent = 'DARE ID';
-  refsCell.textContent = id || '';
-
-  document.getElementById('detailTopos').style.display       = 'none';
-  document.getElementById('detailMentionsList').style.display = 'none';
-
-  // Fetch extended data asynchronously to enrich panel
-  if (id) {
-    fetch(`${MOSAIC_API}?id=${id}`, {
-      headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjc2d0YnBldXFlYW11dnV2b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzI1ODgsImV4cCI6MjA4OTU0ODU4OH0.X6xIwg0CD6jPY8OQBCL6PejepmUeztUZQwolrfCmHXA' }
-    })
-      .then(r => r.json())
-      .then(data => {
-        if (!data.features || !data.features[0]) return;
-        const ep  = data.features[0].properties || {};
-        const ec  = data.features[0].geometry && data.features[0].geometry.coordinates;
-        const eLat = ec ? ec[1] : lat;
-        const eLng = ec ? ec[0] : lng;
-        const richName = ep.ancient_name || ep.modern_name || ep.name || name;
-        const modern   = ep.modern_name  || ep.spatial_coverage || '';
-        const nuts3    = ep.nuts3  || ep.nuts_3 || '';
-        const lau2     = ep.lau2   || '';
-
-        document.getElementById('detailName').textContent = richName;
-
-        const richBadges = [
-          `<span class="badge badge-culture">Mosaic floor</span>`,
-          ep.country ? `<span class="badge badge-region">${ep.country}</span>` : '',
-          modern     ? `<span class="badge badge-period">${modern}</span>`     : '',
-        ].filter(Boolean).join('');
-        document.getElementById('detailBadges').innerHTML = richBadges;
-
-        const descParts = [];
-        if (nuts3)      descParts.push(`Region: ${nuts3}`);
-        if (lau2)       descParts.push(lau2);
-        if (eLat && eLng) descParts.push(`${parseFloat(eLng).toFixed(5)}, ${parseFloat(eLat).toFixed(5)}`);
-        document.getElementById('detailDesc').textContent = descParts.join(' | ');
-
-        const pleiadesId = ep.pleiades || ep.pleiades_id;
-        const extLinks = [
-          id         ? `<a class="ext-link" href="https://imperium.ahlfeldt.se/places/${id}" target="_blank" rel="noopener">DARE</a>` : '',
-          pleiadesId ? `<a class="ext-link" href="https://pleiades.stoa.org/places/${pleiadesId}" target="_blank" rel="noopener">Pleiades</a>` : '',
-          eLat && eLng ? `<a class="ext-link" href="https://www.openstreetmap.org/?mlat=${eLat}&mlon=${eLng}&zoom=16" target="_blank" rel="noopener">OSM</a>` : '',
-        ].filter(Boolean).join('');
-        document.getElementById('extLinks').innerHTML = extLinks;
-      })
-      .catch(() => {}); // silently fall back to basic display
-  }
-
-  const extLinks = [
-    id   ? `<a class="ext-link" href="https://imperium.ahlfeldt.se/places/${id}" target="_blank" rel="noopener">DARE</a>` : '',
-    lat && lng ? `<a class="ext-link" href="https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}&zoom=16" target="_blank" rel="noopener">OSM</a>` : '',
-  ].filter(Boolean).join('');
-  document.getElementById('extLinks').innerHTML = extLinks;
-
-  document.getElementById('sitePageBtn').style.display = 'none';
-  document.getElementById('detailPanel').classList.add('open');
-}
-
-window.toggleMosaics = async function () {
-  mosaicEnabled = !mosaicEnabled;
-  const btn = document.getElementById('mosaic-btn');
-  const leg = document.getElementById('mosaic-legend');
-
-  if (mosaicEnabled) {
-    btn.classList.add('active');
-    btn.textContent = 'Loading…';
-    btn.disabled = true;
-    leg.style.display = 'block';
-    try {
-      await loadMosaicLayer();
-    } catch(e) {
-      // loadMosaicLayer already resets mosaicEnabled/mosaicLoaded on failure
-    }
-    btn.disabled = false;
-    if (mosaicLoaded && mosaicLayer) {
-      mosaicLayer.addTo(map);
-      btn.textContent = 'Hide Mosaics';
-    } else {
-      // load failed — reset state so button is usable again
-      mosaicEnabled = false;
-      btn.classList.remove('active');
-      btn.textContent = 'Roman Mosaics';
-      leg.style.display = 'none';
-    }
-  } else {
-    btn.classList.remove('active');
-    btn.textContent = 'Roman Mosaics';
-    leg.style.display = 'none';
-    if (mosaicLayer) map.removeLayer(mosaicLayer);
-  }
-};
-
-
-const MAP_DATA_PATHS = {
-  orbisRoutes: './map-data/orbis-routes.json',
-  orbisSites: './map-data/orbis-sites.json',
-  glottologLangs: './map-data/glottolog-langs.json'
-};
-let orbisOn = false, orbisLayer = null;
-let orbisDataPromise = null;
-let glottologLangsData = null;
-let glottologDataPromise = null;
-
-async function loadJson(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
-  return res.json();
-}
-
-async function loadOrbisData() {
-  if (!orbisDataPromise) {
-    orbisDataPromise = Promise.all([
-      loadJson(MAP_DATA_PATHS.orbisRoutes),
-      loadJson(MAP_DATA_PATHS.orbisSites),
-    ]).then(([routes, sites]) => ({ routes, sites }));
-  }
-  return orbisDataPromise;
-}
-
-async function loadGlottologLangs() {
-  if (!glottologDataPromise) {
-    glottologDataPromise = loadJson(MAP_DATA_PATHS.glottologLangs).then((langs) => {
-      glottologLangsData = langs;
-      return langs;
-    });
-  }
-  return glottologDataPromise;
-}
-
-async function buildOrbisLayer() {
-  const { routes, sites } = await loadOrbisData();
-  const g = L.layerGroup();
-  const S = {
-    road:  {color:'#d4a84b',weight:1.4,opacity:.8},
-    river: {color:'#4a90c0',weight:1.8,opacity:.75},
-    sea:   {color:'#5bbca0',weight:1.1,opacity:.45},
-  };
-  ['sea','river','road'].forEach(type => {
-    routes.features
-      .filter(f => f.properties.type === type)
-      .forEach(f => {
-        const coords = f.geometry.coordinates.map(c=>[c[1],c[0]]);
-        L.polyline(coords, S[type])
-          .bindTooltip(
-            `<b>${f.properties.from}</b> to <b>${f.properties.to}</b> &nbsp;` +
-            `${f.properties.km}km | ${f.properties.subtype}`,
-            {sticky:true, className:'orbis-tip'}
-          ).addTo(g);
+      const encoded = 'data:image/svg+xml,' + encodeURIComponent(svg);
+      return L.icon({
+        iconUrl: encoded,
+        iconSize: [size + 8, size + 8],
+        iconAnchor: [(size + 8) / 2, (size + 8) / 2],
+        popupAnchor: [0, -(size / 2 + 6)]
       });
-  });
-  sites.features.forEach(f => {
-    const [lng,lat] = f.geometry.coordinates;
-    const r = f.properties.rank <= 2 ? 5 : 3;
-    const icon = L.divIcon({
-      html:`<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+2}" height="${r*2+2}"><circle cx="${r+1}" cy="${r+1}" r="${r}" fill="#d4a84b" fill-opacity=".55" stroke="#fff" stroke-width=".5" stroke-opacity=".35"/></svg>`,
-      className:'', iconSize:[r*2+2,r*2+2], iconAnchor:[r+1,r+1]
+    }
+
+    // ── POPUP HTML ──
+    function popupHtml(site) {
+      const tierLabel = site.tier === 'A' ? 'Tier A — explicit texts'
+                      : site.tier === 'A/B' ? 'Tier A/B — strong traces'
+                      : 'Tier B — structural';
+      const chips = site.evidence.map(e =>
+        `<span class="ev-chip">${e}</span>`).join('');
+      return `<div class="popup-inner">
+        <p class="popup-kicker">${site.segment}</p>
+        <h3 class="popup-title">${site.name}</h3>
+        <p class="popup-region">${site.region}</p>
+        <div class="popup-rule"></div>
+        <div class="popup-row">
+          <span class="popup-key">Period</span>
+          <span class="popup-val">${site.period}</span>
+        </div>
+        <div class="popup-row">
+          <span class="popup-key">Tier</span>
+          <span class="popup-val">${tierLabel}</span>
+        </div>
+        <div class="popup-row">
+          <span class="popup-key">Role</span>
+          <span class="popup-val">${site.role}</span>
+        </div>
+        <div class="popup-row">
+          <span class="popup-key">Confidence</span>
+          <span class="popup-val">${site.confidence}</span>
+        </div>
+        <div class="popup-evidence">${chips}</div>
+      </div>`;
+    }
+
+    // ── RENDER ──
+    function filteredSites() {
+      return SITES.filter(s => {
+        const segOk = activeSegment === 'all' || s.segment === activeSegment;
+        const tierOk = activeTier === 'all' || s.tier === activeTier;
+        const q = searchTerm.toLowerCase();
+        const textOk = !q ||
+          s.name.toLowerCase().includes(q) ||
+          s.region.toLowerCase().includes(q) ||
+          s.segment.toLowerCase().includes(q) ||
+          s.evidence.some(e => e.toLowerCase().includes(q));
+        return segOk && tierOk && textOk;
+      });
+    }
+
+    function renderAll() {
+      const sites = filteredSites();
+
+      // clear markers
+      Object.values(activeMarkers).forEach(m => map.removeLayer(m));
+      activeMarkers = {};
+
+      // render markers
+      sites.forEach(site => {
+        const marker = L.marker([site.lat, site.lng], {
+          icon: makeIcon(site, site.id === activeSiteId)
+        }).addTo(map);
+
+        marker.bindPopup(popupHtml(site), {
+          maxWidth: 300,
+          className: 'buc-popup'
+        });
+
+        marker.on('click', () => selectSite(site.id));
+        activeMarkers[site.id] = marker;
+      });
+
+      // render list
+      const list = document.getElementById('site-list');
+      list.innerHTML = '';
+      sites.forEach(site => {
+        const el = document.createElement('div');
+        el.className = 'site-item' + (site.id === activeSiteId ? ' active' : '');
+        el.dataset.id = site.id;
+        el.innerHTML = `
+          <div class="site-tier-dot" style="background:${TIER_COLOR[site.tier]};box-shadow:0 0 4px ${TIER_GLOW[site.tier]}"></div>
+          <div class="site-info">
+            <p class="site-name">${site.name}${site.subname ? ' <span style="opacity:0.5;font-size:11px">· ' + site.subname + '</span>' : ''}</p>
+            <p class="site-region">${site.region}</p>
+            <p class="site-period">${site.period}</p>
+          </div>`;
+        el.addEventListener('click', () => selectSite(site.id));
+        list.appendChild(el);
+      });
+
+      document.getElementById('site-count').textContent = sites.length + ' site' + (sites.length !== 1 ? 's' : '');
+    }
+
+    function selectSite(id) {
+      activeSiteId = id;
+      const site = SITES.find(s => s.id === id);
+      if (!site) return;
+
+      // update markers
+      Object.entries(activeMarkers).forEach(([sid, m]) => {
+        m.setIcon(makeIcon(SITES.find(s => s.id === sid), sid === id));
+      });
+
+      // open popup
+      if (activeMarkers[id]) {
+        map.setView([site.lat, site.lng], Math.max(map.getZoom(), 6), { animate: true });
+        activeMarkers[id].openPopup();
+      }
+
+      // highlight list item
+      document.querySelectorAll('.site-item').forEach(el => {
+        el.classList.toggle('active', el.dataset.id === id);
+      });
+
+      // scroll list item into view
+      const el = document.querySelector(`.site-item[data-id="${id}"]`);
+      if (el) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+
+    // ── FILTERS ──
+    document.getElementById('segment-filters').addEventListener('click', e => {
+      const btn = e.target.closest('.ftag');
+      if (!btn) return;
+      document.querySelectorAll('#segment-filters .ftag').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeSegment = btn.dataset.segment;
+      activeSiteId = null;
+      renderAll();
     });
-    L.marker([lat,lng],{icon})
-      .bindTooltip(f.properties.name, {sticky:true,className:'orbis-tip'})
-      .addTo(g);
-  });
-  return g;
-}
 
-async function toggleOrbis() {
-  const btn = document.getElementById('orbis-btn');
-  const leg = document.getElementById('orbis-legend');
-  if (!orbisLayer) {
-    btn.disabled = true;
-    btn.textContent = 'Loading Routes';
-    try {
-      orbisLayer = await buildOrbisLayer();
-    } catch (e) {
-      console.warn('ORBIS layer failed to load:', e);
-      btn.textContent = 'Routes unavailable';
-      btn.disabled = false;
-      orbisDataPromise = null; // reset so user can retry
-      return;
-    }
-    btn.disabled = false;
-  }
-  if (orbisOn) {
-    map.removeLayer(orbisLayer);
-    btn.textContent = 'Show Routes';
-    btn.classList.remove('active');
-    leg.style.display = 'none';
-    orbisOn = false;
-  } else {
-    orbisLayer.addTo(map);
-    btn.textContent = 'Hide Routes';
-    btn.classList.add('active');
-    leg.style.display = 'block';
-    orbisOn = true;
-  }
-}
-
-let langOn = false, langLayer = null;
-
-
-const AES_COLORS = {
-  1:'#40b060', 2:'#90c040', 3:'#f0c020',
-  4:'#f07020', 5:'#d03030', 6:'#808080'
-};
-const AES_LABELS = {
-  1:'Safe', 2:'Vulnerable', 3:'Definitely Endangered',
-  4:'Severely Endangered', 5:'Critically Endangered', 6:'Dormant/Extinct'
-};
-
-async function buildLangLayer() {
-  const langs = await loadGlottologLangs();
-  const g = L.layerGroup();
-  langs.forEach(lang => {
-    const color = AES_COLORS[lang.aes] || '#808080';
-    const r = lang.aes >= 5 ? 7 : lang.aes >= 3 ? 5 : 4;
-    const icon = L.divIcon({
-      html:`<svg xmlns="http://www.w3.org/2000/svg" width="${r*2+4}" height="${r*2+4}">
-        <circle cx="${r+2}" cy="${r+2}" r="${r}" fill="${color}" fill-opacity=".85"
-          stroke="#fff" stroke-width="1.5" stroke-opacity=".6"/>
-        ${lang.aes >= 5 ? `<circle cx="${r+2}" cy="${r+2}" r="${r+3}" fill="none" stroke="${color}" stroke-width="1" stroke-opacity=".4"/>` : ''}
-      </svg>`,
-      className:'', iconSize:[r*2+4,r*2+4], iconAnchor:[r+2,r+2]
+    document.getElementById('tier-filters').addEventListener('click', e => {
+      const btn = e.target.closest('.ftag');
+      if (!btn) return;
+      document.querySelectorAll('#tier-filters .ftag').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeTier = btn.dataset.tier;
+      activeSiteId = null;
+      renderAll();
     });
-    const spk = lang.speakers > 0 ? `${lang.speakers.toLocaleString()} speakers` : 'Dormant/Extinct';
-    const note = lang.note ? `<br><i style="color:rgba(240,234,216,.5)">${lang.note}</i>` : '';
-    L.marker([lang.lat,lang.lng],{icon})
-      .bindTooltip(
-        `<b>${lang.name}</b> <span style="color:${color}">[AES ${lang.aes}: ${AES_LABELS[lang.aes]}]</span><br>` +
-        `${lang.family} | ${spk}${note}`,
-        {sticky:true, className:'lang-tip'}
-      ).addTo(g);
-  });
-  return g;
-}
 
-async function toggleLangs() {
-  const btn = document.getElementById('lang-btn');
-  const leg = document.getElementById('lang-legend');
-  if (!langLayer) {
-    btn.disabled = true;
-    btn.textContent = 'Loading Languages';
-    try {
-      langLayer = await buildLangLayer();
-    } catch (e) {
-      console.warn('Language layer failed to load:', e);
-      btn.textContent = 'Languages unavailable';
-      btn.disabled = false;
-      glottologDataPromise = null; // reset so user can retry
-      return;
-    }
-    btn.disabled = false;
-  }
-  if (langOn) {
-    map.removeLayer(langLayer);
-    btn.textContent = 'Show Languages';
-    btn.classList.remove('active');
-    leg.style.display = 'none';
-    langOn = false;
-  } else {
-    langLayer.addTo(map);
-    btn.textContent = 'Hide Languages';
-    btn.classList.add('active');
-    leg.style.display = 'block';
-    langOn = true;
-  }
-}
+    document.getElementById('search').addEventListener('input', e => {
+      searchTerm = e.target.value;
+      activeSiteId = null;
+      renderAll();
+    });
 
-// ── ETRUSCAN ARCHAEOLOGICAL SITES & MUSEUMS ──────────────────────────────────
-// Source: "Etruscan archaeological sites and museums" Google My Map by René
-// Kauffmann, exported as KMZ and converted to static JSON (map-data/etruscan-
-// sites.json) for fast client-side loading. 379 sites across 4 categories:
-// necropolises, tombs/tumuli, sites/monuments, and museums. Some entries
-// include a hosted photo; if that image fails to load (the host URLs are
-// Google My Maps session-scoped links and may not always resolve), the
-// description text and citation still render normally.
-let etruscanOn = false, etruscanLayer = null, etruscanDataPromise = null;
-
-const ETRUSCAN_CATEGORY_STYLE = {
-  necropolis: { color: '#b85c38', label: 'Necropolis' },
-  tomb:       { color: '#8a6a9e', label: 'Tomb / Tumulus' },
-  site:       { color: '#5b8a72', label: 'Site / Monument' },
-  museum:     { color: '#5687c2', label: 'Museum' },
-};
-
-function etruscanIcon(category) {
-  const style = ETRUSCAN_CATEGORY_STYLE[category] || { color: '#999' };
-  return L.divIcon({
-    html: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12">
-      <circle cx="6" cy="6" r="5" fill="${style.color}" fill-opacity=".88"
-        stroke="rgba(255,255,255,.45)" stroke-width="1.5"/>
-    </svg>`,
-    className: '', iconSize: [12, 12], iconAnchor: [6, 6]
-  });
-}
-
-async function loadEtruscanData() {
-  if (!etruscanDataPromise) {
-    etruscanDataPromise = (async () => {
-      const res = await fetch('./map-data/etruscan-sites.json');
-      if (!res.ok) throw new Error(`Etruscan JSON fetch failed: ${res.status}`);
-      return await res.json();
-    })();
-  }
-  return etruscanDataPromise;
-}
-
-async function buildEtruscanLayer() {
-  const sites = await loadEtruscanData();
-  const g = L.layerGroup();
-  sites.forEach(s => {
-    const marker = L.marker([s.lat, s.lng], { icon: etruscanIcon(s.category) });
-    const style = ETRUSCAN_CATEGORY_STYLE[s.category] || { label: 'Site' };
-    marker.bindTooltip(`<b>${s.name}</b>`, { sticky: true, className: 'orbis-tip' });
-    marker.on('click', () => showEtruscanDetail(s, style));
-    g.addLayer(marker);
-  });
-  return { layer: g, count: sites.length };
-}
-
-function showEtruscanDetail(s, style) {
-  document.getElementById('detailTier').textContent = style.label;
-  document.getElementById('detailTier').style.color = style.color;
-  document.getElementById('detailName').textContent = s.name;
-
-  document.getElementById('detailBadges').innerHTML =
-    `<span class="badge badge-culture">Etruscan</span>` +
-    `<span class="badge badge-region">${style.label}</span>`;
-
-  // Description: render the original KML HTML (img/br only — sanitized at
-  // build time, no scripts or unexpected tags). If the embedded photo 404s
-  // (Google My Maps hosted-image links are session-scoped and may expire),
-  // hide it gracefully rather than showing a broken-image icon.
-  document.getElementById('detailDesc').innerHTML =
-    s.desc.replace(/<img /g, '<img onerror="this.style.display=\'none\'" style="max-width:100%;border-radius:4px;margin:6px 0;" ');
-
-  document.getElementById('detailMentions').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Category';
-  document.getElementById('detailMentions').textContent = style.label;
-  document.getElementById('detailAncientRefs').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Source';
-  document.getElementById('detailAncientRefs').textContent = 'R. Kauffmann';
-
-  document.getElementById('detailTopos').style.display = 'none';
-  document.getElementById('detailMentionsList').style.display = 'none';
-
-  const osm = `https://www.openstreetmap.org/?mlat=${s.lat}&mlon=${s.lng}&zoom=14`;
-  document.getElementById('extLinks').innerHTML =
-    `<a class="ext-link" href="${osm}" target="_blank" rel="noopener">OSM</a>`;
-
-  document.getElementById('sitePageBtn').style.display = 'none';
-  closeExternalAtlases();
-  document.getElementById('detailPanel').classList.add('open');
-}
-
-async function toggleEtruscanLayer() {
-  const btn = document.getElementById('etruscan-btn');
-  const leg = document.getElementById('etruscan-legend');
-  const status = document.getElementById('etruscan-status');
-
-  if (!etruscanLayer) {
-    btn.disabled = true;
-    btn.textContent = 'Loading Sites';
-    try {
-      const { layer, count } = await buildEtruscanLayer();
-      etruscanLayer = layer;
-      if (status) status.textContent = `${count} sites loaded`;
-    } catch (e) {
-      console.warn('Etruscan layer failed to load:', e);
-      btn.textContent = 'Unavailable';
-      btn.disabled = false;
-      etruscanDataPromise = null;
-      return;
-    }
-    btn.disabled = false;
-  }
-
-  if (etruscanOn) {
-    map.removeLayer(etruscanLayer);
-    btn.textContent = 'Show Etruscan Sites';
-    btn.classList.remove('active');
-    leg.style.display = 'none';
-    etruscanOn = false;
-  } else {
-    etruscanLayer.addTo(map);
-    btn.textContent = 'Hide Etruscan Sites';
-    btn.classList.add('active');
-    leg.style.display = 'block';
-    etruscanOn = true;
-  }
-}
-// ── END ETRUSCAN ARCHAEOLOGICAL SITES & MUSEUMS ──────────────────────────────
-
-// 19 Jomon Prehistoric Sites in Northern Japan
-// Source: jomon-japan.jp / UNESCO WH List 1632
-const JOMON_SITES = [
-  {id:1, name:'Irie Site', prefecture:'Hokkaido', lat:42.5428, lng:140.7753,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/irie',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A009b000004-861x640.jpg',
-   dates:'ca. 3500 BCE – 800 BCE',
-   desc:'The Irie Site in Toyako Town, Hokkaido, is a Jomon period coastal settlement on a terrace overlooking Uchiura Bay, featuring residential and burial areas with large shell mounds containing shells, fish and mammal bones, and bone tools indicating active fishing and hunting. It exemplifies early sedentism and communal support, as evidenced by remains of an individual with disabilities who lived long with community aid.'},
-  {id:2, name:'Odai Yamamoto Site', prefecture:'Aomori', lat:41.0656, lng:140.555,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/odai-yamamoto',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/02/A001b000001-913x640.jpg',
-   dates:'ca. 13,000 BCE (Stage Ia Jomon, earliest pottery in Northeast Asia)',
-   desc:'The Odai Yamamoto Site in Sotogahama Town, Aomori Prefecture, yielded some of the earliest known pottery in Northeast Asia (ca. 13,000 BCE) along with late Paleolithic stone tools, attesting to the transition from mobile hunter-gatherer lifestyles to Jomon sedentism.'},
-  {id:3, name:'Ofune Site', prefecture:'Hokkaido', lat:41.95778, lng:140.92528,
-   url:'https://kitano-jomon.jp/en/ruins/ofune_site_en/',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/02/A007b000002-960x640.jpg',
-   dates:'ca. 3500–2000 BCE',
-   desc:'The Ofune Site is a large Mid-Jomon settlement in Hakodate, Hokkaido, featuring over 100 deep pit dwellings, earthen mounds used for rituals, and evidence of fishing, hunting, and gathering from marine and forest resources.'},
-  {id:4, name:'Sannai Maruyama Site', prefecture:'Aomori', lat:40.81028, lng:140.69750,
-   url:'https://sannaimaruyama.pref.aomori.jp/english/',
-   image:'https://sannaimaruyama.pref.aomori.jp/english/wp-content/uploads/2020/08/main_img01.jpg',
-   dates:'ca. 3900–2200 BCE',
-   desc:'The Sannai-Maruyama Site is Japan\'s largest known Jomon-period settlement, featuring extensive pit dwellings, pillar buildings, and artifacts from a large village community. Designated a Special Historic Site and part of the UNESCO World Heritage-listed Jomon Prehistoric Sites in Northern Japan.'},
-  {id:5, name:'Isedotai Stone Circles', prefecture:'Akita', lat:40.2011, lng:140.3481,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/isedotai',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A011a000002a-960x640.jpg',
-   dates:'ca. 2000 BCE – 1700 BCE',
-   desc:'Isedotai Stone Circles is Japan\'s only site with four large stone circles (largest 45m diameter) concentrated together on a river terrace, associated with ritual activities, pit graves, and numerous clay figurines from the Jomon maturation stage.'},
-  {id:6, name:'Kakinoshima Site', prefecture:'Hokkaido', lat:41.9292, lng:140.9483,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/kakinoshima',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/02/002-1_%E5%9E%A3%E3%83%8E%E5%B3%B6%E5%B7%AE%E6%9B%BF%EF%BC%88%E9%81%BA%E8%B7%A1%E5%85%A8%E6%99%AF%EF%BC%89-907x640.jpg',
-   dates:'ca. 7000 BCE to 1000 BCE',
-   desc:'The Kakinoshima Site is a Jomon period settlement in Hakodate, Hokkaido, featuring separated residential and burial areas, a large U-shaped earthwork for rituals (over 190m long, built ca. 2000 BCE), and artifacts like footprint-imprinted clay tablets. It is part of the UNESCO World Heritage-listed Jomon Prehistoric Sites in Northern Japan.'},
-  {id:7, name:'Futatsumori Site', prefecture:'Aomori', lat:40.74806, lng:141.23000,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/futatsumori',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A005a000001-853x640.jpg',
-   dates:'ca. 3500–2000 BCE',
-   desc:'The Futatsumori Site is a large Jomon period settlement with shell middens on a terrace overlooking Lake Ogawara in Shichinohe Town, Aomori Prefecture, featuring numerous pit dwellings, storage pits, and artifacts reflecting adaptation to environmental changes from marine transgression to regression.'},
-  {id:8, name:'Tagoyano Site', prefecture:'Aomori', lat:40.88806, lng:140.33917,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/tagoyano',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A004b000001-853x640.jpg',
-   dates:'ca. 4000 BCE – 2000 BCE',
-   desc:'The Tagoyano Site is a Jomon period settlement with shell mounds located on a hill along the Iwaki River in Tsugaru City, Aomori Prefecture, attesting to early sedentism, shellfish harvesting, fishing, and trade across the Tsugaru Strait evidenced by shell bracelets and Hokkaido obsidian.'},
-  {id:9, name:'Choshichiyachi Site', prefecture:'Aomori', lat:40.572000, lng:141.458806,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/choshichiyachi',
-   image:'https://upload.wikimedia.org/wikipedia/commons/f/fe/Choshichiyachi_Shell_Midden.jpg',
-   dates:'ca. 6000 BCE (Initial Jomon period)',
-   desc:'Choshichiyachi Site is a Jomon period shell midden and settlement in Hachinohe City, Aomori Prefecture, located along the ancient Oirase Bay, attesting to early fishing-based livelihoods with evidence of rod and harpoon fishing, hunting, and rich marine resources.'},
-  {id:10, name:'Korekawa Site', prefecture:'Aomori', lat:40.47556, lng:141.48836,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/korekawa',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A017b000010-956x640.jpg',
-   dates:'ca. 4000 BCE – 400 BCE',
-   desc:'The Korekawa Site in Hachinohe City, Aomori Prefecture, consists of the Ichioji, Hotta, and Nakai sites, featuring a Final Jomon settlement with residential areas, burials, dumping grounds, and ritual features yielding sophisticated pottery, lacquerware, wooden artifacts, and evidence of hunting, fishing, gathering, and spiritual practices.'},
-  {id:11, name:'Kamegaoka Burial Site', prefecture:'Aomori', lat:40.884242, lng:140.339351,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/kamegaoka',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A016b000002-853x640.jpg',
-   dates:'ca. 1000 BCE – 400 BCE (Final Jomon period)',
-   desc:'The Kamegaoka Burial Site is a large late Jomon period cemetery on a plateau along the Iwaki River in Tsugaru City, Aomori Prefecture, featuring pit graves and ritual dumping grounds in surrounding lowlands that yielded famous goggle-eyed clay figurines, lacquered pottery, and jade artifacts indicative of advanced spirituality and artistry.'},
-  {id:12, name:'Kitakogane Site', prefecture:'Hokkaido', lat:42.4020333, lng:140.9106472,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/kitakogane',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/02_%E5%8C%97%E9%BB%84%E9%87%91%E8%B2%9D%E5%A1%9A-%E3%83%AC%E3%82%BF%E3%83%83%E3%83%81.jpg',
-   dates:'ca. 5000 BCE – 3500 BCE',
-   desc:'Kitakogane Site is a Jōmon period shell mound settlement on a hillside facing Uchiura Bay in Date City, Hokkaido, featuring pit dwellings, graves, shell mounds with marine remains, and ritual areas evidencing fishing-based livelihood and adaptation to environmental changes.'},
-  {id:13, name:'Komakino Stone Circle', prefecture:'Aomori', lat:40.7375, lng:140.7278,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/komakino',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A010a000001-960x640.jpg',
-   dates:'ca. 2000 BCE (early Late Jōmon period)',
-   desc:'Komakino Stone Circle is a large Late Jōmon period ritual site featuring concentric stone rings up to 55m in diameter on a leveled plateau in Aomori City, constructed in the rare \'Komakino-style\' with vertically placed stones forming walls, associated with pit dwellings, burials, and over 400 triangular ritual stone plates.'},
-  {id:14, name:'Goshono Site', prefecture:'Iwate', lat:40.1978, lng:141.3064,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/goshono',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A008b000011.jpg',
-   dates:'ca. 2500 BCE – 2000 BCE',
-   desc:'The Goshono Site is a large Middle Jomon period settlement in Ichinohe Town, Iwate Prefecture, featuring over 800 pit dwellings, a central burial area with stone arrangements, and ritual earthen mounds, attesting to the sedentism and spiritual life in an inland river area.'},
-  {id:15, name:'Washinoki Stone Circle', prefecture:'Hokkaido', lat:42.1161, lng:140.5263,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/washinoki',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A018b000001-937x640.jpg',
-   dates:'ca. 2000 BCE (Jomon Stage IIIa)',
-   desc:'One of the largest stone circles in Hokkaido, featuring double outer rings and a central oval arrangement of 602 stones, located on a river terrace near Uchiura Bay. It served as a ritual site with an adjacent pit burial area and was well-preserved under volcanic ash.'},
-  {id:16, name:'Oyu Stone Circles', prefecture:'Akita', lat:40.27167, lng:140.80389,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/oyu',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A012a000013.jpg',
-   dates:'ca. 2000 BCE – 1500 BCE',
-   desc:'The Oyu Stone Circles site in Kazuno City, Akita Prefecture, features two large stone circles (Manza, 52m diameter; Nonakado, 44m) made of river stones, surrounded by pillar-supported buildings, pits, and graves in concentric arrangements, with ritual artifacts like clay figurines unearthed. Aligned with solar events such as summer solstice sunset, it attests to Jomon spiritual culture in an inland setting near rivers and forests.'},
-  {id:17, name:'Takasago Burial Site', prefecture:'Hokkaido', lat:42.548175, lng:140.771444,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/takasago',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/%E3%80%90%E5%B7%AE%E6%9B%BF%E3%80%91015-4_%E9%AB%98%E7%A0%82%E8%B2%9D%E5%A1%9A%EF%BC%88%E5%85%A5%E6%B1%9F%E3%83%BB%E9%AB%98%E7%A0%82%E8%B2%9D%E5%A1%9A%E9%A4%A8%EF%BC%89-960x600.jpg',
-   dates:'ca. 3500–800 BCE (Stage IIIb ca. 1000 BCE)',
-   desc:'The Takasago Burial Site in Toyako Town, Hokkaido, features shell mounds and a burial area with pit graves and stone arrangements containing burial goods, red pigment, and human remains showing tooth extraction and pregnancy. It attests to Jomon coastal livelihoods and spiritual rituals during a period of sedentism maturation.'},
-  {id:18, name:'Omori Katsuyama Stone Circle', prefecture:'Aomori', lat:40.69889, lng:140.35833,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/omori-katsuyama',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/03/A014b000019-960x640.jpg',
-   dates:'ca. 1000 BCE (Late Jomon, Stage IIIb)',
-   desc:'Omori Katsuyama Stone Circle is a Late Jomon ritual site in Hirosaki City, Aomori Prefecture, featuring an oval arrangement of 77 stone clusters (48.5m x 39.1m) on a leveled hilltop at the foot of Mt. Iwaki, aligned to the winter solstice sunset over the mountain.'},
-  {id:19, name:'Kiusu Earthwork Burial Circles', prefecture:'Hokkaido', lat:42.88556, lng:141.71611,
-   url:'https://jomon-japan.jp/en/learn/jomon-sites/kiusu',
-   image:'https://jomon-japan.jp/en/wp-content/uploads/2021/02/A013b000002.jpg',
-   dates:'ca. 1200 BCE (Final Jomon period)',
-   desc:'The Kiusu Earthwork Burial Circles consist of nine large communal grave sites in Chitose, Hokkaido, with earthworks ranging 30-83m in diameter, attesting to complex burial practices in late Jomon settled communities.'},
-];
-
-
-// ── JOMON PREHISTORIC SITES — Northern Japan ─────────────────────────────────
-// UNESCO World Heritage List 1632 (2021): "Jomon Prehistoric Sites in Northern
-// Japan". 17 component sites across Hokkaido, Aomori, Iwate, and Akita.
-// Source data: jomon-japan.jp / whc.unesco.org/en/list/1632
-// Images served directly from jomon-japan.jp and partner sites (no API key needed).
-let jomonOn = false, jomonLayer = null;
-
-function jomonIcon() {
-  return L.divIcon({
-    html: `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13">
-      <circle cx="6.5" cy="6.5" r="5.5" fill="#d4793a" fill-opacity=".9"
-        stroke="rgba(255,255,255,.5)" stroke-width="1.4"/>
-      <circle cx="6.5" cy="6.5" r="2.2" fill="rgba(255,255,255,.7)"/>
-    </svg>`,
-    className: '', iconSize: [13, 13], iconAnchor: [6, 6]
-  });
-}
-
-function buildJomonLayer() {
-  const g = L.layerGroup();
-  JOMON_SITES.forEach(s => {
-    const marker = L.marker([s.lat, s.lng], { icon: jomonIcon() });
-    marker.bindTooltip(
-      `<b>${s.name}</b><br><span style="color:rgba(212,121,58,.9);font-size:.62rem">${s.prefecture} · ${s.dates}</span>`,
-      { sticky: true, className: 'orbis-tip' }
-    );
-    marker.on('click', () => showJomonDetail(s));
-    g.addLayer(marker);
-  });
-  return { layer: g, count: JOMON_SITES.length };
-}
-
-function showJomonDetail(s) {
-  document.getElementById('detailTier').textContent = 'Jomon Prehistoric Site';
-  document.getElementById('detailTier').style.color = '#d4793a';
-  document.getElementById('detailName').textContent = s.name;
-
-  document.getElementById('detailBadges').innerHTML =
-    `<span class="badge badge-culture">Jomon</span>` +
-    `<span class="badge badge-region">${s.prefecture}</span>` +
-    `<span class="badge badge-period">UNESCO WH 1632</span>`;
-
-  // Description with inline image — gracefully hide image on error
-  const imgTag = s.image
-    ? `<img src="${s.image}" alt="${s.name}"
-         onerror="this.style.display='none'"
-         style="width:100%;border-radius:4px;margin:6px 0 8px;display:block;object-fit:cover;max-height:160px;">`
-    : '';
-  document.getElementById('detailDesc').innerHTML =
-    `${imgTag}<span style="font-size:.74rem;font-style:italic;color:rgba(240,220,180,.6);">${s.dates}</span><br><br>${s.desc}`;
-
-  document.getElementById('detailMentions').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Period';
-  document.getElementById('detailMentions').textContent = 'Jomon';
-  document.getElementById('detailAncientRefs').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Prefecture';
-  document.getElementById('detailAncientRefs').textContent = s.prefecture;
-
-  document.getElementById('detailTopos').style.display = 'none';
-  document.getElementById('detailMentionsList').style.display = 'none';
-
-  const osm = `https://www.openstreetmap.org/?mlat=${s.lat}&mlon=${s.lng}&zoom=14`;
-  document.getElementById('extLinks').innerHTML =
-    `<a class="ext-link" href="${s.url}" target="_blank" rel="noopener">jomon-japan.jp</a>` +
-    `<a class="ext-link" href="https://whc.unesco.org/en/list/1632" target="_blank" rel="noopener">UNESCO WHC</a>` +
-    `<a class="ext-link" href="${osm}" target="_blank" rel="noopener">OSM</a>`;
-
-  document.getElementById('sitePageBtn').style.display = 'none';
-  closeExternalAtlases();
-  document.getElementById('detailPanel').classList.add('open');
-}
-
-window.toggleJomonLayer = function () {
-  const btn = document.getElementById('jomon-btn');
-  const leg = document.getElementById('jomon-legend');
-  const status = document.getElementById('jomon-status');
-
-  if (!jomonLayer) {
-    const { layer, count } = buildJomonLayer();
-    jomonLayer = layer;
-    if (status) status.textContent = `${count} sites loaded`;
-  }
-
-  if (jomonOn) {
-    map.removeLayer(jomonLayer);
-    btn.textContent = 'Show Jomon Sites';
-    btn.classList.remove('active');
-    leg.style.display = 'none';
-    jomonOn = false;
-  } else {
-    jomonLayer.addTo(map);
-    btn.textContent = 'Hide Jomon Sites';
-    btn.classList.add('active');
-    leg.style.display = 'block';
-    jomonOn = true;
-    // Fly to northern Japan on first enable
-    map.flyTo([41.5, 140.5], 7, { duration: 1.5 });
-  }
-};
-// ── END JOMON PREHISTORIC SITES ───────────────────────────────────────────────
-
-// ── PERIPLUS OF THE ERYTHRAEAN SEA ───────────────────────────────────────────
-// 65 ports, cities, bays, islands, and geographical features from the
-// 1st-century CE Greek maritime periplus, covering the Red Sea, East Africa,
-// Arabia, Persia, and India. Converted from KMZ: Digital Map of the Periplus
-// of the Erythraean Sea (Google My Maps).
-// Source data: map-data/periplus-sites.json
-let periplusOn = false, periplusLayer = null, periplusDataPromise = null;
-
-const PERIPLUS_CATEGORY_STYLE = {
-  port:    { color: '#c45a32', label: 'Port / Emporium' },
-  city:    { color: '#8b4513', label: 'Inland City / Kingdom' },
-  bay:     { color: '#4a7fa0', label: 'Bay / Gulf' },
-  river:   { color: '#3a6b8a', label: 'River' },
-  named:   { color: '#5a7a3a', label: 'Named Place' },
-  ruin:    { color: '#7a5a2a', label: 'Site / Ruin' },
-  region:  { color: '#8a6a4a', label: 'Region' },
-  island:  { color: '#5a8a9a', label: 'Island' },
-  coast:   { color: '#6a7a8a', label: 'Coastal Feature' },
-  empire:  { color: '#6a3a6a', label: 'Empire / State' },
-};
-
-function periplusIcon(category) {
-  const style = PERIPLUS_CATEGORY_STYLE[category] || { color: '#c45a32' };
-  return L.divIcon({
-    html: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12">
-      <circle cx="6" cy="6" r="5" fill="${style.color}" fill-opacity=".9"
-        stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
-    </svg>`,
-    className: '', iconSize: [12, 12], iconAnchor: [6, 6]
-  });
-}
-
-async function loadPeriplusData() {
-  if (!periplusDataPromise) {
-    periplusDataPromise = (async () => {
-      const res = await fetch('./map-data/periplus-sites.json');
-      if (!res.ok) throw new Error(`Periplus JSON fetch failed: ${res.status}`);
-      return await res.json();
-    })();
-  }
-  return periplusDataPromise;
-}
-
-async function buildPeriplusLayer() {
-  const sites = await loadPeriplusData();
-  const g = L.layerGroup();
-  sites.forEach(s => {
-    const marker = L.marker([s.lat, s.lng], { icon: periplusIcon(s.category) });
-    const style = PERIPLUS_CATEGORY_STYLE[s.category] || { label: 'Site' };
-    marker.bindTooltip(
-      `<b>${s.name}</b><br><span style="color:rgba(196,90,50,.9);font-size:.62rem">${style.label}</span>`,
-      { sticky: true, className: 'orbis-tip' }
-    );
-    marker.on('click', () => showPeriplusDetail(s, style));
-    g.addLayer(marker);
-  });
-  return { layer: g, count: sites.length };
-}
-
-function showPeriplusDetail(s, style) {
-  document.getElementById('detailTier').textContent = style.label;
-  document.getElementById('detailTier').style.color = style.color;
-  document.getElementById('detailName').textContent = s.name;
-
-  document.getElementById('detailBadges').innerHTML =
-    `<span class="badge badge-culture">Periplus</span>` +
-    `<span class="badge badge-region">${style.label}</span>`;
-
-  // Description with optional image
-  const imgTag = s.image
-    ? `<img src="${s.image}" alt="${s.name}"
-         onerror="this.style.display='none'"
-         style="width:100%;border-radius:4px;margin:6px 0 8px;display:block;object-fit:cover;max-height:160px;">`
-    : '';
-  document.getElementById('detailDesc').innerHTML =
-    `${imgTag}${s.desc ? s.desc : '<em style="color:rgba(240,220,180,.4)">No description in source.</em>'}`;
-
-  document.getElementById('detailMentions').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Category';
-  document.getElementById('detailMentions').textContent = style.label;
-  document.getElementById('detailAncientRefs').closest('.stat-cell').querySelector('.stat-lbl').textContent = 'Source';
-  document.getElementById('detailAncientRefs').textContent = '1st c. CE';
-
-  document.getElementById('detailTopos').style.display = 'none';
-  document.getElementById('detailMentionsList').style.display = 'none';
-
-  const osm = `https://www.openstreetmap.org/?mlat=${s.lat}&mlon=${s.lng}&zoom=9`;
-  document.getElementById('extLinks').innerHTML =
-    `<a class="ext-link" href="${osm}" target="_blank" rel="noopener">OSM</a>` +
-    `<a class="ext-link" href="https://en.wikipedia.org/wiki/Periplus_of_the_Erythraean_Sea" target="_blank" rel="noopener">Periplus (Wikipedia)</a>`;
-
-  document.getElementById('sitePageBtn').style.display = 'none';
-  closeExternalAtlases();
-  document.getElementById('detailPanel').classList.add('open');
-}
-
-window.togglePeriplusLayer = async function () {
-  const btn = document.getElementById('periplus-btn');
-  const leg = document.getElementById('periplus-legend');
-  const status = document.getElementById('periplus-status');
-
-  if (!periplusLayer) {
-    btn.disabled = true;
-    btn.textContent = 'Loading…';
-    try {
-      const { layer, count } = await buildPeriplusLayer();
-      periplusLayer = layer;
-      if (status) status.textContent = `${count} sites loaded`;
-    } catch (e) {
-      console.warn('Periplus layer failed:', e);
-      btn.textContent = 'Unavailable';
-      btn.disabled = false;
-      periplusDataPromise = null;
-      return;
-    }
-    btn.disabled = false;
-  }
-
-  if (periplusOn) {
-    map.removeLayer(periplusLayer);
-    btn.textContent = 'Show Periplus Sites';
-    btn.classList.remove('active');
-    leg.style.display = 'none';
-    periplusOn = false;
-  } else {
-    periplusLayer.addTo(map);
-    btn.textContent = 'Hide Periplus Sites';
-    btn.classList.add('active');
-    leg.style.display = 'block';
-    periplusOn = true;
-    // Fly to Red Sea / Indian Ocean on first enable
-    map.flyTo([15, 52], 4, { duration: 1.5 });
-  }
-};
-// ── END PERIPLUS OF THE ERYTHRAEAN SEA ───────────────────────────────────────
-
-
-
-
-</script>
-<div id="mosaic-status" style="display:none"></div>
+    // ── INITIAL RENDER ──
+    renderAll();
+  </script>
 </body>
 </html>
