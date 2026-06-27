@@ -43,7 +43,16 @@ body {
 }
 
 a { text-decoration: none; color: inherit; }
-img { display: block; width: 100%; height: 100%; object-fit: cover; }
+img { display: block; max-width: 100%; height: auto; }
+
+/* Images that genuinely need to fill a fixed-height container get their own rule */
+.hero-img img,
+.feature-img img,
+.secondary-thumb img,
+.partner-banner-logo img,
+.partner-tile img,
+.region-card::after,
+.ac-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
 
 /* â”€â”€ TOPBAR â”€â”€ */
 .topbar {
