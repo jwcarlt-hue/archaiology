@@ -288,6 +288,88 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 }
 .section-divider-link:hover { color: var(--terra); }
 
+/* ── FEATURE ROW — two secondary feature articles below the hero ── */
+.feature-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+@media (max-width: 700px) { .feature-row { grid-template-columns: 1fr; } }
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.6rem 2rem 2rem;
+  border-right: 1px solid var(--rule);
+  transition: background .15s;
+}
+.feature-card:last-child { border-right: none; }
+.feature-card:hover { background: rgba(0,0,0,.018); }
+.feature-img {
+  height: 200px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background: var(--linen);
+}
+.feature-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity .2s;
+  opacity: .9;
+}
+.feature-card:hover .feature-img img { opacity: 1; }
+.feature-tag {
+  font-family: var(--sans);
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  margin-bottom: .35rem;
+}
+.feature-tag-mesoamerica { color: var(--terra); }
+.feature-tag-general     { color: var(--forest); }
+.feature-title {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+  margin-bottom: .5rem;
+  transition: color .2s;
+}
+.feature-card:hover .feature-title { color: var(--ochre); }
+.feature-dek {
+  font-size: .85rem;
+  line-height: 1.55;
+  color: #5a5248;
+  flex: 1;
+  margin-bottom: .9rem;
+}
+.feature-byline {
+  font-family: var(--sans);
+  font-size: .62rem;
+  color: var(--ash);
+  margin-bottom: .85rem;
+}
+.feature-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--sans);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .5rem 1.1rem;
+  align-self: flex-start;
+  transition: background .2s;
+}
+.feature-btn:hover { background: var(--forest); }
+
 /* â”€â”€ REGION GRID â”€â”€ */
 .regions-grid {
   display: grid;
@@ -1132,6 +1214,49 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 </aside>
   </div><!-- /hero-grid -->
 </div><!-- /page-wrap -->
+
+<!-- FEATURE ROW — two secondary articles, updated periodically -->
+<div class="page-wrap">
+  <div class="feature-row">
+
+    <!-- FEATURE 1: Minanbé, new Maya site -->
+    <article class="feature-card">
+      <div class="feature-img">
+        <img src="minanbe.jpg"
+             alt="Stone ruins of Minanbé emerging through jungle canopy, Calakmul Biosphere Reserve, Campeche, Mexico"
+             loading="lazy">
+      </div>
+      <div class="feature-tag feature-tag-mesoamerica">Mesoamerica &middot; Maya Archaeology</div>
+      <h2 class="feature-title">Minanbé: A Virgin Maya City Discovered in the Calakmul Biosphere</h2>
+      <p class="feature-dek">INAH researchers have baptised a previously unrecorded major Maya centre
+        deep within the Calakmul Biosphere Reserve in Campeche — a site so remote it retains
+        near-intact stratigraphy, with palatial architecture, a ballcourt complex, and cave systems
+        still to be fully mapped.</p>
+      <div class="feature-byline">INAH &middot; 2026 &middot; Campeche, Mexico</div>
+      <a href="https://inah.gob.mx/boletines/bautizan-como-minanbe-no-hay-camino-a-ciudad-maya-virgen-al-norte-de-la-biosfera-de-calakmul"
+         target="_blank" rel="noopener" class="feature-btn">Read Report &rarr;</a>
+    </article>
+
+    <!-- FEATURE 2: Ballcourt discoveries at Nacimiento -->
+    <article class="feature-card">
+      <div class="feature-img">
+        <img src="ballcourts_Nacimiento.jpg"
+             alt="Site map and excavation plan of ballcourt complexes at Nacimiento, Petén"
+             loading="lazy">
+      </div>
+      <div class="feature-tag feature-tag-mesoamerica">Mesoamerica &middot; Ritual Architecture</div>
+      <h2 class="feature-title">New Ballcourt Discoveries at Nacimiento Reframe Late Classic Maya Ritual Landscape</h2>
+      <p class="feature-dek">Excavations at the Late Classic Maya village of Nacimiento in the Petén
+        document an unusually dense concentration of ballcourts alongside residential groups —
+        challenging assumptions about the exclusivity of the ballgame and its role in non-urban
+        community settings.</p>
+      <div class="feature-byline">Journal of Ancient Mesoamerica &middot; ScienceDirect &middot; 2026</div>
+      <a href="https://www.sciencedirect.com/science/article/pii/S0278416526000292?via%3Dihub"
+         target="_blank" rel="noopener" class="feature-btn">Read Article &rarr;</a>
+    </article>
+
+  </div>
+</div><!-- /feature-row page-wrap -->
 
 <!-- EVENTS STRIP -->
 <div class="events-strip reveal">
