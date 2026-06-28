@@ -1149,7 +1149,7 @@ img { display: block; max-width: 100%; height: auto; }
 
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/news_feed?select=title,content_type,region,published_at,source_url,publisher,image_url&order=published_at.desc&limit=5`,
+      `${SUPABASE_URL}/rest/v1/news_feed?select=title,content_type,region,published_at,source_url,publisher,image_url&image_url=not.is.null&order=published_at.desc&limit=5`,
       { headers: { apikey: KEY, Authorization: `Bearer ${KEY}` } }
     );
     const items = await res.json();
