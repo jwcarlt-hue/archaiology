@@ -107,10 +107,16 @@ img { display: block; max-width: 100%; height: auto; }
   gap: 0;
   border-bottom: 1px solid var(--rule);
   margin-top: 2.5rem;
+  align-items: start;
 }
 @media (max-width: 900px) {
   .hero-grid { grid-template-columns: 1fr; }
   .hero-secondary { display: none; }
+}
+
+.hero-primary {
+  padding: 0 2.5rem 2rem 0;
+  border-right: 1px solid var(--rule);
 }
 
 
@@ -206,10 +212,11 @@ img { display: block; max-width: 100%; height: auto; }
 
 /* Hero secondary stack */
 .hero-secondary {
-  padding-left: 2rem;
+  padding: 0 0 2rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 0;
+  align-self: start;
 }
 .secondary-item {
   padding: 1.2rem 0;
