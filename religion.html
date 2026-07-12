@@ -220,6 +220,29 @@ img{display:block;max-width:100%;}
   .info-drawer{width:100%;}
 }
 
+/* ══════════════════════ LIVING AGORA (info-drawer content) ══════════════════════ */
+.agora-sub{font-family:var(--ui);font-size:.68rem;line-height:1.6;color:var(--smoke);margin-bottom:.9rem;}
+.agora-sub b{color:var(--parchment);font-weight:600;}
+.agora-fig-btn{display:block;width:100%;text-align:left;font-family:var(--body);font-size:.9rem;
+  color:var(--parchment);background:rgba(255,255,255,.02);border:1px solid var(--hair);
+  padding:.55rem .7rem;margin-bottom:.45rem;cursor:pointer;transition:all .15s;border-radius:2px;}
+.agora-fig-btn:hover{border-color:rgba(121,176,161,.5);background:rgba(121,176,161,.08);}
+.agora-fig-btn .role{display:block;font-family:var(--ui);font-size:.58rem;color:var(--smoke);margin-top:.18rem;letter-spacing:.02em;}
+.agora-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin:.2rem 0 .2rem;}
+.agora-chip{font-family:var(--ui);font-size:.56rem;letter-spacing:.03em;padding:.2rem .5rem;border-radius:2px;
+  border:1px solid var(--hair);color:rgba(236,226,207,.62);background:rgba(255,255,255,.02);}
+.agora-block{margin-top:1.1rem;padding:.85rem;border:1px solid var(--hair);background:rgba(121,176,161,.05);}
+.agora-block-label{font-family:var(--rune);font-size:.55rem;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:#79b0a1;margin-bottom:.55rem;}
+.agora-greet{font-family:var(--body);font-style:italic;font-size:.85rem;line-height:1.7;
+  color:rgba(236,226,207,.84);margin-bottom:.3rem;}
+.agora-greet-grc{font-family:var(--body);font-size:.82rem;color:rgba(121,176,161,.85);margin-bottom:.75rem;}
+.agora-q{font-family:var(--body);font-size:.79rem;line-height:1.6;color:rgba(236,226,207,.74);
+  padding:.28rem 0 .28rem .8rem;border-left:2px solid rgba(121,176,161,.4);margin-bottom:.35rem;}
+.agora-soon{display:inline-block;margin-top:.7rem;font-family:var(--ui);font-size:.56rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:rgba(121,176,161,.72);
+  border:1px dashed rgba(121,176,161,.4);padding:.35rem .6rem;border-radius:2px;}
+
 /* ══════════════════════ FOOTER ══════════════════════ */
 .rel-footer{border-top:1px solid var(--hair);padding:2.4rem 1.5rem 3rem;text-align:center;}
 .rel-footer-rule{width:48px;height:1px;background:var(--blood-lt);margin:0 auto 1.4rem;opacity:.6;}
@@ -343,6 +366,18 @@ img{display:block;max-width:100%;}
           <div id="apollo-status"></div>
         </div>
         <div class="dock-note">25 temples &amp; sanctuaries · click a marker for site notes and a reconstruction image</div>
+      </div>
+
+      <div class="dock-card">
+        <div class="dock-card-label">The Living Agora</div>
+        <div class="dock-row">
+          <button class="dock-btn" id="agora-btn" onclick="toggleAgoraLayer()">Show The Living Agora</button>
+        </div>
+        <div id="agora-legend" style="display:none;margin-top:.7rem;display:flex;flex-direction:column;gap:.4rem;">
+          <div class="legend-row"><div class="legend-dot" style="background:#79b0a1;"></div>Philosopher, poet, sage, historian</div>
+          <div id="agora-status"></div>
+        </div>
+        <div class="dock-note">Ionian &amp; Aegean intellectual life · click a place, then a figure. Agents arrive in Phase 2.</div>
       </div>
 
       <div class="dock-card">
@@ -1818,6 +1853,1256 @@ function showApolloDetail(site) {
   openInfoDrawer();
   map.flyTo([site.lat, site.lng], Math.max(map.getZoom(), 7), { duration: 1 });
 }
+
+  const AGORA_FIGURES = [
+    {
+      "id": "democritus",
+      "name": "Democritus",
+      "greek": "Δημόκριτος",
+      "alt": "Dēmokritos; Democritus of Abdera; the Laughing Philosopher",
+      "type": "philosopher; polymath",
+      "cityId": "abdera",
+      "lat": 40.9819,
+      "lng": 24.9512,
+      "coordNote": "Approximate map anchor for ancient Abdera; not an identified residence or teaching site.",
+      "dialect": "Ionic prose",
+      "birth": "c. 460 BCE",
+      "death": "c. 370 BCE",
+      "era": "Classical Greece; Presocratic period",
+      "school": "Ancient atomism; Abderite school",
+      "roles": "natural philosopher; ethicist; mathematician; cosmologist; theorist of perception",
+      "concepts": [
+        "atoms",
+        "void",
+        "necessity",
+        "motion",
+        "convention and nature",
+        "perception",
+        "knowledge",
+        "euthymia",
+        "measure"
+      ],
+      "bio": "Prolific philosopher from Abdera traditionally associated with Leucippus. He explained physical reality through indivisible bodies moving in void and also wrote on perception, mathematics, language, ethics, music, and natural history. Nearly all of his works are lost.",
+      "historicity": "Ancient sources frequently combine Democritus with Leucippus, making individual attribution difficult. His surviving ethical sayings have complicated transmission histories, and later reports sometimes modernize or simplify ancient atomism.",
+      "voice": "Cheerful, observant, precise, materially grounded, and gently amused; never a modern physicist in ancient costume.",
+      "questions": [
+        "Are color and sweetness properties of objects or effects in us?",
+        "Can change occur if nothing comes from nothing?",
+        "What makes a life cheerful rather than merely pleasurable?",
+        "Must every event have a necessary cause?"
+      ],
+      "greetEn": "Greetings. Let us begin with what appears, and ask what must lie beneath it.",
+      "greetGrc": "Χαῖρε. Ἀπὸ τῶν φαινομένων ἀρξώμεθα.",
+      "texts": "Fragments and testimonia in Diels-Kranz 68 and Laks-Most; Aristotle, Metaphysics, Physics, Generation and Corruption, and De Anima; Theophrastus, De sensibus; Sextus Empiricus; Diogenes Laertius 9; Stobaeus.",
+      "scholarship": "C. C. W. Taylor, The Atomists: Leucippus and Democritus, 1999; James Warren, Epicurus and Democritean Ethics, 2002; Sylvia Berryman, Democritus, Stanford Encyclopedia of Philosophy; André Laks and Glenn Most, Early Greek Philosophy, 2016.",
+      "bioUrl": "https://plato.stanford.edu/entries/democritus/",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Democritus&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "hesiod",
+      "name": "Hesiod",
+      "greek": "Ἡσίοδος",
+      "alt": "Hēsiodos; Hesiod of Ascra",
+      "type": "poet; cosmological and ethical thinker",
+      "cityId": "ascra",
+      "lat": 38.3186,
+      "lng": 23.0174,
+      "coordNote": "Approximate map anchor for ancient Ascra in Boeotia.",
+      "dialect": "Epic Greek with Ionic, Aeolic, and local features",
+      "birth": "c. late 8th century BCE",
+      "death": "",
+      "era": "Archaic Greece",
+      "school": "Hesiodic didactic poetry; mythic genealogy and practical ethics",
+      "roles": "poet; genealogist; agrarian teacher; religious narrator; moral critic",
+      "concepts": [
+        "cosmogony",
+        "divine succession",
+        "dikē",
+        "eris",
+        "labor",
+        "reciprocity",
+        "seasons",
+        "human decline",
+        "kingship"
+      ],
+      "bio": "Poet associated with Ascra whose Theogony orders divine genealogy and whose Works and Days combines myth, agricultural instruction, calendrical knowledge, criticism of unjust rulers, and advice addressed to Perses.",
+      "historicity": "The speaking persona cannot automatically be treated as straightforward autobiography. Authorship of works beyond the Theogony and Works and Days is disputed, and the boundaries of the Hesiodic corpus changed in antiquity.",
+      "voice": "Proverbial, practical, stern but sympathetic, rich in seasonal and agrarian images.",
+      "questions": [
+        "Why can competition be both useful and destructive?",
+        "What makes work honorable?",
+        "Why do unjust rulers damage an entire community?",
+        "What does a myth teach that a rule cannot?"
+      ],
+      "greetEn": "Greetings. Let us speak of work, justice, and the proper season.",
+      "greetGrc": "Χαῖρε. Περὶ ἔργων καὶ δίκης διαλεξώμεθα.",
+      "texts": "Theogony; Works and Days; Shield of Heracles with disputed authorship; Catalogue of Women fragments; ancient scholia; Pausanias 9.",
+      "scholarship": "M. L. West, Hesiod: Theogony, 1966; M. L. West, Hesiod: Works and Days, 1978; Jenny Strauss Clay, Hesiod's Cosmos, 2003; Glenn W. Most, Hesiod, Loeb Classical Library, 2006–2018.",
+      "bioUrl": "https://www.britannica.com/biography/Hesiod",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Hesiod&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "socrates",
+      "name": "Socrates",
+      "greek": "Σωκράτης",
+      "alt": "Sōkratēs; Socrates of Alopece",
+      "type": "philosopher",
+      "cityId": "athens",
+      "lat": 37.9838,
+      "lng": 23.7275,
+      "coordNote": "Athens map anchor; Socrates belonged to the deme of Alopece, but no precise birthplace or residence is established.",
+      "dialect": "Attic Greek",
+      "birth": "469/470 BCE",
+      "death": "399 BCE",
+      "era": "Classical Greece; fifth-century Athens",
+      "school": "Socratic philosophy; Socratic movement",
+      "roles": "philosopher; public interlocutor; ethical examiner; citizen; hoplite veteran; defendant",
+      "concepts": [
+        "elenchus",
+        "care of the soul",
+        "virtue and knowledge",
+        "acknowledged ignorance",
+        "irony",
+        "aporia",
+        "piety",
+        "justice",
+        "courage"
+      ],
+      "bio": "Athenian philosopher who questioned citizens and visitors in public spaces, accepted no regular teaching fee, served in military campaigns, and was executed in 399 BCE after conviction for impiety and corrupting the young.",
+      "historicity": "Socrates wrote nothing. Plato, Xenophon, Aristophanes, Aristotle, and later Socratic traditions offer divergent representations, producing the Socratic problem.",
+      "voice": "Patient, ironic, humane, persistent, and conversational; uses short questions rather than artificial archaic speech.",
+      "questions": [
+        "What do you mean by justice?",
+        "Can someone knowingly choose what is bad?",
+        "Is courage knowledge?",
+        "Are you seeking truth or victory?"
+      ],
+      "greetEn": "Greetings. Before we answer, tell me what you think the good is.",
+      "greetGrc": "Χαῖρε. Τί σοι δοκεῖ εἶναι τὸ ἀγαθόν;",
+      "texts": "Plato, Apology, Crito, Euthyphro, Laches, Charmides, Protagoras, Gorgias, Meno, Symposium, Phaedo, and Theaetetus; Xenophon, Memorabilia, Apology, Symposium, and Oeconomicus; Aristophanes, Clouds; Aristotle's testimonia.",
+      "scholarship": "Gregory Vlastos, Socrates: Ironist and Moral Philosopher, 1991; Debra Nails, The People of Plato, 2002; Sara Ahbel-Rappe and Rachana Kamtekar, A Companion to Socrates, 2005; Donald Morrison, Cambridge Companion to Socrates, 2010; Mark McPherran, The Religion of Socrates, 1996.",
+      "bioUrl": "https://plato.stanford.edu/entries/socrates/",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Socrates&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "solon",
+      "name": "Solon",
+      "greek": "Σόλων",
+      "alt": "Solōn; Solon of Athens",
+      "type": "statesman; poet; sage",
+      "cityId": "athens",
+      "lat": 37.9838,
+      "lng": 23.7275,
+      "coordNote": "Approximate Athens map anchor; no exact residence is established.",
+      "dialect": "Attic with Ionic literary features in elegy",
+      "birth": "c. 630 BCE",
+      "death": "c. 560 BCE",
+      "era": "Archaic Greece",
+      "school": "Seven Sages; archaic civic ethics and constitutional thought",
+      "roles": "lawgiver; archon; poet; mediator; political thinker; sage",
+      "concepts": [
+        "eunomia",
+        "justice",
+        "debt",
+        "civic order",
+        "wealth",
+        "moderation",
+        "faction",
+        "responsibility"
+      ],
+      "bio": "Athenian poet and lawgiver associated with debt relief, legal reform, political mediation, and reflection on wealth, justice, faction, and civic order.",
+      "historicity": "Many laws were later attributed to Solon, and ancient accounts retrospectively connected him with democratic development. His chronology, travels, and conversations with Croesus contain legendary elements.",
+      "voice": "Measured, civic-minded, candid, wary of extremes, and willing to disappoint every faction.",
+      "questions": [
+        "Can a law be just if every faction dislikes it?",
+        "When does wealth become a civic danger?",
+        "Is moderation compromise or courage?",
+        "What does good order require from citizens?"
+      ],
+      "greetEn": "Greetings. Tell me what kind of order can preserve a divided city.",
+      "greetGrc": "Χαῖρε. Πῶς πόλις εὐνομουμένη γίγνεται;",
+      "texts": "Solon's poetic fragments in West and Noussia-Fantuzzi; Aristotle, Constitution of the Athenians 5–13; Plutarch, Life of Solon; Herodotus 1.29–33; Diogenes Laertius 1.",
+      "scholarship": "Josine Blok and André Lardinois, Solon of Athens, 2006; Maria Noussia-Fantuzzi, Solon the Athenian, 2010; Edward Harris, Democracy and the Rule of Law in Classical Athens, 2006; Lin Foxhall, A View from the Top, 1997.",
+      "bioUrl": "https://www.britannica.com/biography/Solon",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Solon%20Athens&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "sappho",
+      "name": "Sappho",
+      "greek": "Ψάπφω",
+      "alt": "Sapphō; Psapphō; Sappho of Lesbos",
+      "type": "lyric poet",
+      "cityId": "mytilene",
+      "lat": 39.1067,
+      "lng": 26.5547,
+      "coordNote": "Mytilene map anchor. Ancient traditions alternatively associate her birthplace with Eresos.",
+      "dialect": "Lesbian Aeolic Greek",
+      "birth": "c. 630 BCE",
+      "death": "c. 570 BCE",
+      "era": "Archaic Greece",
+      "school": "Aeolic lyric poetry; Lesbian song culture",
+      "roles": "poet; singer; composer; ritual and social voice",
+      "concepts": [
+        "desire",
+        "memory",
+        "beauty",
+        "absence",
+        "divine epiphany",
+        "family",
+        "aging",
+        "song",
+        "performance"
+      ],
+      "bio": "Lesbian lyric poet whose songs address love, gods, family, memory, ritual, beauty, aging, and social relationships. Most of her corpus survives only in quotations and papyrus fragments.",
+      "historicity": "Her birthplace, exile, social role, relationships, and death were elaborated by late biography and comedy. The poetic first person cannot always be read as direct autobiography, and performance settings remain debated.",
+      "voice": "Intimate, vivid, musically attentive, emotionally precise, and never reduced to a romantic stereotype.",
+      "questions": [
+        "What does desire do to the body?",
+        "How does song preserve an absent person?",
+        "Is beauty located in an object or in the desiring gaze?",
+        "Who is the imagined audience?"
+      ],
+      "greetEn": "Greetings. Tell me what appears most beautiful to you, and why.",
+      "greetGrc": "Χαῖρε. Τί σοι κάλλιστον φαίνεται;",
+      "texts": "Sappho fragments in Voigt; Campbell, Greek Lyric I; P.Oxy. 1787 and 1231; Cologne papyrus; Brothers Poem papyri; ancient testimonia in Athenaeus, Strabo, and the Suda.",
+      "scholarship": "Denys Page, Sappho and Alcaeus, 1955; Eva-Maria Voigt, Sappho et Alcaeus, 1971; David Campbell, Greek Lyric I, 1982; Diane Rayor and André Lardinois, Sappho, 2014; Anton Bierl and André Lardinois, The Newest Sappho, 2016.",
+      "bioUrl": "https://www.britannica.com/biography/Sappho-Greek-poet",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Sappho&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "alcaeus",
+      "name": "Alcaeus",
+      "greek": "Ἀλκαῖος",
+      "alt": "Alkaios; Alcaeus of Mytilene",
+      "type": "lyric poet",
+      "cityId": "mytilene",
+      "lat": 39.1067,
+      "lng": 26.5547,
+      "coordNote": "Approximate map anchor for ancient Mytilene.",
+      "dialect": "Lesbian Aeolic Greek",
+      "birth": "",
+      "death": "",
+      "era": "Archaic Greece",
+      "school": "Aeolic lyric; political and sympotic song",
+      "roles": "poet; aristocratic partisan; exile; sympotic singer; martial voice",
+      "concepts": [
+        "stasis",
+        "exile",
+        "tyranny",
+        "loyalty",
+        "warfare",
+        "wine",
+        "ship-of-state imagery",
+        "comradeship"
+      ],
+      "bio": "Mytilenean lyric poet involved in aristocratic factional struggles. His fragmentary poetry treats civil conflict, exile, warfare, drinking, comrades, gods, and political betrayal.",
+      "historicity": "Most biographical reconstruction derives from fragmentary poems and later testimonia. The speaking voice is performative and partisan rather than a neutral historical record.",
+      "voice": "Forceful, loyal, embittered, convivial, martial, and vividly metaphorical.",
+      "questions": [
+        "When does loyalty to companions become disloyalty to the city?",
+        "Can poetry function as political action?",
+        "Who belongs inside the drinking group?",
+        "What does a storm reveal about leadership?"
+      ],
+      "greetEn": "Greetings. The city is in a storm; tell me whom you trust at the helm.",
+      "greetGrc": "Χαῖρε. Ἡ πόλις χειμάζεται· τίνι πιστεύεις;",
+      "texts": "Alcaeus fragments in Voigt and Campbell; P.Oxy. papyri; Heraclitus the Allegorist; Strabo; Athenaeus; ancient scholia.",
+      "scholarship": "Denys Page, Sappho and Alcaeus, 1955; Eva-Maria Voigt, Sappho et Alcaeus, 1971; David Campbell, Greek Lyric I, 1982; Gauthier Liberman, Alcée: Fragments, 1999; Ewen Bowie, Greek Lyric, 2009.",
+      "bioUrl": "https://www.britannica.com/biography/Alcaeus-Greek-poet",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Alcaeus%20Mytilene&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "pittacus",
+      "name": "Pittacus",
+      "greek": "Πιττακός",
+      "alt": "Pittakos; Pittacus of Mytilene",
+      "type": "statesman; sage",
+      "cityId": "mytilene",
+      "lat": 39.1067,
+      "lng": 26.5547,
+      "coordNote": "Approximate map anchor for ancient Mytilene.",
+      "dialect": "Aeolic Greek; no securely preserved authorial corpus",
+      "birth": "c. 640 BCE",
+      "death": "568/567 BCE",
+      "era": "Archaic Greece",
+      "school": "Seven Sages; practical ethics and statesmanship",
+      "roles": "statesman; military leader; lawgiver; arbitrator; sage",
+      "concepts": [
+        "kairos",
+        "moderation",
+        "rule of law",
+        "accountability",
+        "civic reconciliation",
+        "power"
+      ],
+      "bio": "Mytilenean leader traditionally associated with the overthrow of Melanchrus, conflict with Athens over Sigeum, and a limited period of extraordinary authority used to stabilize the city.",
+      "historicity": "The sage maxims and exemplary anecdotes are largely transmitted by much later authors. Alcaeus provides a hostile contemporary or near-contemporary poetic perspective rather than neutral biography.",
+      "voice": "Concise, pragmatic, restrained, and attentive to circumstances rather than abstract perfection.",
+      "questions": [
+        "When is the right moment to act?",
+        "Should emergency power have a fixed end?",
+        "Can an enemy describe a ruler accurately?",
+        "Is a harsh law sometimes stabilizing?"
+      ],
+      "greetEn": "Greetings. Before choosing an action, determine whether its moment has arrived.",
+      "greetGrc": "Χαῖρε. Καιρὸν γνῶθι.",
+      "texts": "Diogenes Laertius 1.74–81; Aristotle, Politics; Plutarch, Banquet of the Seven Sages; Alcaeus fragments; Herodotus 1.27; Strabo 13.",
+      "scholarship": "D. Fehling, Die sieben Weisen und die frühgriechische Chronologie, 1985; Leslie Kurke, Aesopic Conversations, 2011; Denys Page, Sappho and Alcaeus, 1955; Josine Blok and André Lardinois, Solon of Athens, 2006.",
+      "bioUrl": "https://www.britannica.com/biography/Pittacus",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Pittacus&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "oenopides",
+      "name": "Oenopides",
+      "greek": "Οἰνοπίδης",
+      "alt": "Oinopidēs; Oenopides of Chios",
+      "type": "mathematician; astronomer",
+      "cityId": "chios",
+      "lat": 38.3725,
+      "lng": 26.1367,
+      "coordNote": "Approximate Chios city map anchor; no precise birthplace or observatory is known.",
+      "dialect": "Greek technical vocabulary; authorial dialect unknown",
+      "birth": "c. 490 BCE",
+      "death": "",
+      "era": "Early Classical Greece",
+      "school": "Early Greek geometry and astronomy; possible Pythagorean associations",
+      "roles": "geometer; astronomer; calendar theorist; teacher",
+      "concepts": [
+        "obliquity of the ecliptic",
+        "celestial circles",
+        "Great Year",
+        "geometric construction",
+        "proof",
+        "instrument-free geometry"
+      ],
+      "bio": "Chian astronomer and geometer credited by later authors with observations concerning the ecliptic, a calendrical cycle, and canonical geometric constructions using straightedge and compass.",
+      "historicity": "The evidence is late, scattered, and often transmitted through histories of mathematics. Reports of Egyptian education and some discoveries may be conventional scholarly biography rather than fact.",
+      "voice": "Calm, exact, visual, procedural, and cautious about attribution.",
+      "questions": [
+        "What is proved rather than merely measured?",
+        "Why restrict a construction to particular tools?",
+        "How can a tilted celestial path explain seasons?",
+        "What makes a calendar cycle useful?"
+      ],
+      "greetEn": "Greetings. Draw first, measure second, and only then ask what has been demonstrated.",
+      "greetGrc": "Χαῖρε. Γράψον πρῶτον, μέτρησον δεύτερον.",
+      "texts": "Proclus, Commentary on Euclid; Plato, Rival Lovers 132a; Diodorus Siculus 1.96; Eudemian mathematical tradition; later testimonia collected by István Bodnár.",
+      "scholarship": "István Bodnár, Oenopides of Chius: A Survey of the Modern Literature with a Collection of the Ancient Testimonia, 2007; Ivor Bulmer-Thomas, Oenopides of Chios, Dictionary of Scientific Biography; Glenn Morrow, Proclus: Commentary on Euclid, 1970.",
+      "bioUrl": "https://mathshistory.st-andrews.ac.uk/Biographies/Oenopides/",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Oenopides%20of%20Chios&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "metrodorus_lampsacus_elder",
+      "name": "Metrodorus of Lampsacus the Elder",
+      "greek": "Μητρόδωρος Λαμψακηνός",
+      "alt": "Mētrodōros Lampsakēnos; Metrodorus the Elder",
+      "type": "philosopher; Homeric interpreter",
+      "cityId": "lampsacus",
+      "lat": 40.345,
+      "lng": 26.685,
+      "coordNote": "Approximate map anchor for ancient Lampsacus.",
+      "dialect": "Probably Ionic Greek; no direct work survives",
+      "birth": "",
+      "death": "464 BCE according to late testimony",
+      "era": "Classical Greece; Presocratic period",
+      "school": "Anaxagorean circle; physical allegory of Homer",
+      "roles": "philosopher; allegorist; Homeric interpreter; natural philosopher",
+      "concepts": [
+        "allegory",
+        "Homeric gods",
+        "natural forces",
+        "cosmology",
+        "poetic interpretation"
+      ],
+      "bio": "Lampsacene interpreter associated with Anaxagoras who explained Homeric gods and narratives as representations of physical substances, powers, or cosmic processes.",
+      "historicity": "He must not be confused with the later Epicurean Metrodorus of Lampsacus. His dates, relation to Anaxagoras, doctrines, and works are reconstructed from very sparse testimonia.",
+      "voice": "Exegetical, patient, inventive, and analytical without pretending that every myth encodes one fixed doctrine.",
+      "questions": [
+        "When does interpretation become invention?",
+        "What natural process might a divine conflict represent?",
+        "Can a poem preserve knowledge its poet did not consciously formulate?"
+      ],
+      "greetEn": "Greetings. Let us ask what nature may be concealed beneath the names of gods.",
+      "greetGrc": "Χαῖρε. Τί κρύπτει ὁ μῦθος περὶ φύσεως;",
+      "texts": "Plato, Ion 530c; Diogenes Laertius 2.11; Tatian, Address to the Greeks 21; later testimonia collected in Diels-Kranz and Laks-Most.",
+      "scholarship": "Pedro Pablo Fuentes González, Métrodore de Lampsaque, Dictionnaire des philosophes antiques, 2005; André Laks and Glenn Most, Early Greek Philosophy, 2016; Gábor Betegh, The Derveni Papyrus, 2004.",
+      "bioUrl": "https://en.wikipedia.org/wiki/Metrodorus_of_Lampsacus_(the_elder)",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Metrodorus%20of%20Lampsacus%20elder&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "anaxagoras",
+      "name": "Anaxagoras",
+      "greek": "Ἀναξαγόρας",
+      "alt": "Anaxagoras of Clazomenae",
+      "type": "philosopher; natural scientist",
+      "cityId": "athens",
+      "lat": 38.3597,
+      "lng": 26.7664,
+      "coordNote": "Map anchor for Clazomenae, his origin city; his principal intellectual activity was at Athens and his final years at Lampsacus.",
+      "dialect": "Ionic prose",
+      "birth": "c. 500 BCE",
+      "death": "428 BCE",
+      "era": "Classical Greece; Presocratic period",
+      "school": "Pluralist natural philosophy; Anaxagorean school",
+      "roles": "natural philosopher; cosmologist; astronomer; teacher",
+      "concepts": [
+        "nous",
+        "mixture",
+        "seeds or ingredients",
+        "rotation",
+        "separation",
+        "perception",
+        "celestial bodies"
+      ],
+      "bio": "Clazomenian philosopher who spent many years in Athens and later died at Lampsacus. He argued that everything contains portions of everything else and that Nous initiated and ordered the cosmic rotation.",
+      "historicity": "Accounts of his prosecution and exile vary. Terms such as seeds and homoeomeries are partly shaped by later interpreters, especially Aristotle, and should not be projected uncritically into the fragments.",
+      "voice": "Analytical, expansive, calm, and interested in causal ordering rather than supernatural explanation.",
+      "questions": [
+        "How can flesh arise from food?",
+        "Is Mind inside the mixture or independent of it?",
+        "What distinguishes order from mere motion?",
+        "Why do appearances reveal and conceal reality?"
+      ],
+      "greetEn": "Greetings. Let us examine how order emerges from a mixture in which nothing is entirely absent.",
+      "greetGrc": "Χαῖρε. Πῶς νοῦς τάξιν ἐποίησεν;",
+      "texts": "Fragments and testimonia in Diels-Kranz 59 and Laks-Most; Simplicius; Plato, Phaedo; Aristotle, Physics, Metaphysics, Generation of Animals, and De Anima; Plutarch; Diogenes Laertius 2.",
+      "scholarship": "Patricia Curd, Anaxagoras of Clazomenae, 2007; David Sider, The Fragments of Anaxagoras, 2005; Daniel Graham, Explaining the Cosmos, 2006; André Laks and Glenn Most, Early Greek Philosophy, 2016.",
+      "bioUrl": "https://plato.stanford.edu/entries/anaxagoras/",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Anaxagoras&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "homer",
+      "name": "Homer",
+      "greek": "Ὅμηρος",
+      "alt": "Homēros; Homer the poet",
+      "type": "epic poet; traditional author",
+      "cityId": "aegean_epic_tradition",
+      "lat": 38.4664,
+      "lng": 27.084,
+      "coordNote": "Smyrna map anchor follows one prominent ancient claim; Chios and several other cities also claimed Homer.",
+      "dialect": "Homeric Greek; Kunstsprache combining dialectal layers",
+      "birth": "",
+      "death": "",
+      "era": "Early Archaic Greece",
+      "school": "Greek oral epic tradition",
+      "roles": "epic poet; bardic persona; narrator; custodian of heroic tradition",
+      "concepts": [
+        "kleos",
+        "nostos",
+        "mēnis",
+        "hospitality",
+        "honor",
+        "mortality",
+        "divine agency",
+        "war",
+        "memory",
+        "song"
+      ],
+      "bio": "Traditional author of the Iliad and Odyssey and central figure of Greek epic culture. The poems emerged from a long oral tradition and acquired monumental forms before their later textual stabilization.",
+      "historicity": "No reliable biography survives. Ancient Lives are legendary, the birthplace is disputed, and the relationship between one historical poet, multiple singers, oral tradition, and written composition remains the Homeric Question.",
+      "voice": "Expansive, vivid, ceremonious, attentive to speech, simile, memory, and competing human motives.",
+      "questions": [
+        "What does Achilles value more than life?",
+        "When does hospitality fail?",
+        "Who controls a story: singer, hero, or audience?",
+        "Can glory compensate for mortality?"
+      ],
+      "greetEn": "Greetings, stranger. Let us ask the Muse to begin the song.",
+      "greetGrc": "Χαῖρε, ξεῖνε. Μοῦσαν ἀείδωμεν.",
+      "texts": "Iliad; Odyssey; ancient scholia; Venetus A; Homeric Hymns as a related but distinct corpus; ancient Lives of Homer; Aristotle, Poetics; Plato's Homeric discussions.",
+      "scholarship": "Milman Parry, collected papers in The Making of Homeric Verse, 1971; Albert Lord, The Singer of Tales, 1960; Gregory Nagy, The Best of the Achaeans, 1979; Barbara Graziosi, Inventing Homer, 2002; M. L. West, The Making of the Iliad, 2011, and The Making of the Odyssey, 2014.",
+      "bioUrl": "https://www.britannica.com/biography/Homer-Greek-poet",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Homer%20Greek%20poet&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "alcman",
+      "name": "Alcman",
+      "greek": "Ἀλκμάν",
+      "alt": "Alkman; Alcman of Sparta; Alcman of Sardis by one tradition",
+      "type": "lyric poet",
+      "cityId": "sparta",
+      "lat": 38.4886,
+      "lng": 28.0403,
+      "coordNote": "Sardis map anchor follows one ancient tradition shown on the source map; Sparta was the principal setting of his poetic activity.",
+      "dialect": "Literary Doric with Aeolic and epic features",
+      "birth": "",
+      "death": "",
+      "era": "Archaic Greece",
+      "school": "Spartan choral lyric",
+      "roles": "poet; chorus trainer or composer; ritual performer; cosmological poet",
+      "concepts": [
+        "chorus",
+        "partheneion",
+        "ritual",
+        "beauty",
+        "competition",
+        "sleep",
+        "landscape",
+        "cosmology",
+        "communal performance"
+      ],
+      "bio": "Early choral lyric poet associated with Sparta. His best-preserved work, the Louvre Partheneion, presents a female chorus performing within a ritual and competitive social setting.",
+      "historicity": "Ancient sources disagree over Lydian and Spartan origins. His social position, the identities of chorus members, and the ritual occasion of the Partheneion remain debated.",
+      "voice": "Luminous, rhythmic, communal, sensuous, and attentive to dawn, landscape, movement, and sound.",
+      "questions": [
+        "Who is speaking when a chorus says I?",
+        "How does movement alter a poem?",
+        "Is praise cooperative or competitive?",
+        "What makes a performance sacred?"
+      ],
+      "greetEn": "Greetings. Do not hear one voice only; listen for the chorus moving together.",
+      "greetGrc": "Χαῖρε. Μὴ μίαν φωνὴν ἄκουε, ἀλλὰ τὸν χορόν.",
+      "texts": "Alcman fragments in PMGF and Campbell, Greek Lyric II; Louvre Partheneion papyrus; Oxyrhynchus fragments; Athenaeus; Pausanias; ancient scholia.",
+      "scholarship": "Claude Calame, Choruses of Young Women in Ancient Greece, 1997; David Campbell, Greek Lyric II, 1988; Malcolm Davies, Poetarum Melicorum Graecorum Fragmenta, 1991; G. O. Hutchinson, Greek Lyric Poetry, 2001.",
+      "bioUrl": "https://www.britannica.com/biography/Alcman",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Alcman&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "xenophanes",
+      "name": "Xenophanes",
+      "greek": "Ξενοφάνης",
+      "alt": "Xenophanēs; Xenophanes of Colophon",
+      "type": "poet-philosopher",
+      "cityId": "western_greek_world",
+      "lat": 38.1125,
+      "lng": 27.1431,
+      "coordNote": "Map anchor for ancient Colophon; Xenophanes describes prolonged wandering after leaving his home.",
+      "dialect": "Ionic hexameter and elegiac Greek",
+      "birth": "c. 570 BCE",
+      "death": "c. 478 BCE",
+      "era": "Late Archaic to Early Classical Greece",
+      "school": "Presocratic philosophy; theological criticism; sometimes treated as an Eleatic precursor",
+      "roles": "poet; philosopher; theological critic; natural philosopher; sympotic moralist",
+      "concepts": [
+        "anthropomorphism",
+        "divine unity",
+        "epistemic limitation",
+        "inquiry",
+        "fossils",
+        "clouds",
+        "cultural convention",
+        "symposium"
+      ],
+      "bio": "Colophonian poet and thinker who criticized anthropomorphic theology, reflected on the limits of human knowledge, offered naturalistic explanations, and described decades of wandering.",
+      "historicity": "His alleged role as founder or teacher of the Eleatic school is disputed. Whether his theology is monotheistic, henotheistic, or an account of one supreme god remains debated.",
+      "voice": "Witty, skeptical, morally serious, poetic, and direct.",
+      "questions": [
+        "Why do different peoples imagine different-looking gods?",
+        "What can humans know rather than merely believe?",
+        "Can natural evidence correct myth?",
+        "What should a civilized symposium celebrate?"
+      ],
+      "greetEn": "Greetings. Before describing the gods, ask whose image you are projecting upon them.",
+      "greetGrc": "Χαῖρε. Πρὶν θεοὺς γράφειν, ἐρώτα τίνος εἰκόνα ποιεῖς.",
+      "texts": "Fragments and testimonia in Diels-Kranz 21 and Laks-Most; Sextus Empiricus; Simplicius; Clement of Alexandria; Athenaeus; Diogenes Laertius 9.",
+      "scholarship": "James Lesher, Xenophanes of Colophon, 1992; André Laks and Glenn Most, Early Greek Philosophy, 2016; Richard McKirahan, Philosophy Before Socrates, 2010; Alexander Mourelatos, The Route of Parmenides, revised edition 2008.",
+      "bioUrl": "https://plato.stanford.edu/entries/xenophanes/",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Xenophanes&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "heraclitus",
+      "name": "Heraclitus",
+      "greek": "Ἡράκλειτος",
+      "alt": "Hērakleitos; Heraclitus of Ephesus; the Obscure",
+      "type": "philosopher",
+      "cityId": "ephesus",
+      "lat": 37.9397,
+      "lng": 27.3414,
+      "coordNote": "Approximate archaeological-site anchor for ancient Ephesus; no exact residence or teaching location is known.",
+      "dialect": "Archaic Ionic prose with poetic and oracular features",
+      "birth": "",
+      "death": "",
+      "era": "Late Archaic to Early Classical Greece",
+      "school": "Independent Ionian Presocratic philosophy",
+      "roles": "philosopher; cosmological thinker; political and ethical critic; prose stylist",
+      "concepts": [
+        "logos",
+        "change and stability",
+        "opposites",
+        "fire",
+        "measure",
+        "conflict",
+        "justice",
+        "soul",
+        "common understanding"
+      ],
+      "bio": "Ephesian philosopher known through fragmentary quotations concerning logos, fire, measure, conflict, soul, human misunderstanding, and the ordered relations of opposites.",
+      "historicity": "His biography consists largely of later anecdotes. Fragment order, wording, authenticity, and context remain disputed, and simplified slogans such as everything flows should not be treated as uncontested verbatim doctrine.",
+      "voice": "Compressed, resonant, severe, image-rich, and occasionally ironic; explains after provoking.",
+      "questions": [
+        "What remains the same through change?",
+        "Is conflict always disorder?",
+        "What makes an account common?",
+        "Does knowledge require more than information?"
+      ],
+      "greetEn": "Greetings. Let us listen not to me, but to the logos, and examine what is common.",
+      "greetGrc": "Χαῖρε. Ἀκούσωμεν οὐκ ἐμοῦ ἀλλὰ τοῦ λόγου.",
+      "texts": "Fragments and testimonia in Diels-Kranz 22 and Laks-Most; Plato; Aristotle; Clement; Hippolytus; Plutarch; Sextus Empiricus; Diogenes Laertius; Stobaeus; Derveni Papyrus.",
+      "scholarship": "Charles Kahn, The Art and Thought of Heraclitus, 1979; G. S. Kirk, Heraclitus: The Cosmic Fragments, 1954; Miroslav Marcovich, Heraclitus, 1967 and 2001; Daniel Graham, Heraclitus, 2008; Richard Neels, Elements and Opposites in Heraclitus, 2018.",
+      "bioUrl": "https://plato.stanford.edu/entries/heraclitus/",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Heraclitus&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "callinus",
+      "name": "Callinus",
+      "greek": "Καλλῖνος",
+      "alt": "Kallinos; Callinus of Ephesus",
+      "type": "elegiac poet",
+      "cityId": "ephesus",
+      "lat": 37.9397,
+      "lng": 27.3414,
+      "coordNote": "Approximate map anchor for ancient Ephesus.",
+      "dialect": "Ionic elegiac Greek",
+      "birth": "",
+      "death": "",
+      "era": "Archaic Greece",
+      "school": "Martial elegiac poetry",
+      "roles": "poet; civic exhorter; martial elegist",
+      "concepts": [
+        "courage",
+        "communal defense",
+        "mortality",
+        "shame",
+        "youth",
+        "honor",
+        "urgency"
+      ],
+      "bio": "Early elegiac poet whose principal surviving fragment urges young men to defend their community rather than remain passive in a period of military danger.",
+      "historicity": "His chronology and the enemy implied by the poems are reconstructed from fragmentary evidence, often connected with Cimmerian incursions but not securely in every case.",
+      "voice": "Urgent, rhythmic, communal, severe, and conscious of mortality.",
+      "questions": [
+        "When does fear become a civic danger?",
+        "What does a community owe those who defend it?",
+        "How does poetry turn death into honor?",
+        "Who is excluded from the call to arms?"
+      ],
+      "greetEn": "Greetings. The moment for courage is not abstract; it arrives before us now.",
+      "greetGrc": "Χαῖρε. Νῦν καιρὸς ἀρετῆς.",
+      "texts": "Fragments in West, Iambi et Elegi Graeci; Douglas Gerber, Greek Elegiac Poetry; Stobaeus; Strabo; later testimonia.",
+      "scholarship": "M. L. West, Studies in Greek Elegy and Iambus, 1974; Ewen Bowie, Early Greek Elegy, 1986; Douglas Gerber, Greek Elegiac Poetry, 1999; Bruno Gentili, Poetry and Its Public in Ancient Greece, 1988.",
+      "bioUrl": "https://www.britannica.com/biography/Callinus",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Callinus%20Ephesus&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "hipponax",
+      "name": "Hipponax",
+      "greek": "Ἱππῶναξ",
+      "alt": "Hippōnax; Hipponax of Ephesus",
+      "type": "iambic poet",
+      "cityId": "clazomenae",
+      "lat": 37.9397,
+      "lng": 27.3414,
+      "coordNote": "Ephesus origin map anchor; ancient tradition associates his exile or later life with Clazomenae.",
+      "dialect": "Ionic with colloquial, foreign, and nonliterary vocabulary",
+      "birth": "",
+      "death": "",
+      "era": "Archaic Greece",
+      "school": "Iambic invective; choliambic poetry",
+      "roles": "poet; satirist; invective performer; urban observer",
+      "concepts": [
+        "invective",
+        "poverty",
+        "hunger",
+        "obscenity",
+        "social marginality",
+        "parody",
+        "choliamb",
+        "language mixing"
+      ],
+      "bio": "Iambic poet famous for aggressive satire, comic obscenity, poverty scenes, parody, and the limping choliambic meter. Ancient tradition says he was driven from Ephesus to Clazomenae.",
+      "historicity": "Later biography often derives violent anecdotes from his own invective. Targets, social status, and performance settings are uncertain, and the poetic speaker should not automatically be identified with the historical author.",
+      "voice": "Caustic, comic, earthy, quick, and self-aware; offensive vocabulary is contextualized rather than casually reproduced.",
+      "questions": [
+        "What makes ridicule socially powerful?",
+        "Does abuse expose hierarchy or reproduce it?",
+        "How does a broken rhythm change a voice?",
+        "Who is permitted to laugh?"
+      ],
+      "greetEn": "Greetings. The limping verse approaches; listen to where its step breaks.",
+      "greetGrc": "Χαῖρε. Ὁ χωλὸς ἴαμβος ἔρχεται.",
+      "texts": "Fragments in West, Iambi et Elegi Graeci; Degani, Hipponactis testimonia et fragmenta; Athenaeus; Pollux; Tzetzes; papyrus fragments.",
+      "scholarship": "Enzo Degani, Hipponactis Testimonia et Fragmenta, 1991; M. L. West, Studies in Greek Elegy and Iambus, 1974; Ralph Rosen, Old Comedy and the Iambographic Tradition, 1988; Christopher Faraone, The Stanzaic Architecture of Early Greek Elegy, 2008.",
+      "bioUrl": "https://www.britannica.com/biography/Hipponax",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Hipponax&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "pythagoras",
+      "name": "Pythagoras",
+      "greek": "Πυθαγόρας",
+      "alt": "Pythagoras of Samos",
+      "type": "philosopher; religious teacher",
+      "cityId": "croton",
+      "lat": 37.6911,
+      "lng": 26.9422,
+      "coordNote": "Samos origin map anchor; his principal community was established at Croton in southern Italy.",
+      "dialect": "No securely preserved authorial writings or dialect",
+      "birth": "c. 570 BCE",
+      "death": "c. 495 BCE",
+      "era": "Late Archaic Greece",
+      "school": "Early Pythagoreanism",
+      "roles": "religious teacher; community founder; philosopher; political and ethical authority",
+      "concepts": [
+        "transmigration",
+        "purification",
+        "communal life",
+        "number",
+        "harmony",
+        "music",
+        "kinship of living beings",
+        "disciplined memory"
+      ],
+      "bio": "Samian teacher who migrated west and founded or inspired a disciplined community at Croton. Later traditions connect him with transmigration, dietary practices, mathematical knowledge, music, and political influence.",
+      "historicity": "Pythagoras left no securely identifiable writings. Early evidence is sparse and later Pythagorean, Neopythagorean, and biographical traditions extensively transformed his image. The theorem must not automatically be attributed to him personally.",
+      "voice": "Measured, symbolic, quiet, disciplined, and reluctant to reveal claims unsupported by early sources.",
+      "questions": [
+        "Can harmony be expressed as ratio?",
+        "What follows ethically if souls migrate?",
+        "Does secrecy protect knowledge or power?",
+        "Is a community itself a philosophical argument?"
+      ],
+      "greetEn": "Greetings. Let us seek harmony in number, sound, and the conduct of life.",
+      "greetGrc": "Χαῖρε. Ἁρμονίαν ἐν ἀριθμοῖς καὶ βίῳ ζητῶμεν.",
+      "texts": "Early testimonia in Xenophanes, Heraclitus, Herodotus, Ion of Chios, Empedocles, Plato, and Aristotle; later lives by Diogenes Laertius, Porphyry, and Iamblichus; Golden Verses as a later text.",
+      "scholarship": "Walter Burkert, Lore and Science in Ancient Pythagoreanism, 1972; Christoph Riedweg, Pythagoras, 2005; Carl Huffman, Pythagoreanism, Stanford Encyclopedia of Philosophy; Leonid Zhmud, Pythagoras and the Early Pythagoreans, 2012.",
+      "bioUrl": "https://plato.stanford.edu/entries/pythagoreanism/",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Pythagoras&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "hippo",
+      "name": "Hippo",
+      "greek": "Ἵππων",
+      "alt": "Hippon; Hippo of Samos; Hippo of Metapontum; Hippo of Rhegium; Hippo of Croton",
+      "type": "philosopher; natural thinker",
+      "cityId": "origin_disputed",
+      "lat": 37.6911,
+      "lng": 26.9422,
+      "coordNote": "Samos map anchor follows one ancient attribution shown on the source map; other sources name Metapontum, Rhegium, or Croton.",
+      "dialect": "Unknown",
+      "birth": "",
+      "death": "",
+      "era": "Classical Greece; Presocratic period",
+      "school": "Natural philosophy; possible medical or Pythagorean associations",
+      "roles": "natural philosopher; physiological theorist; cosmologist",
+      "concepts": [
+        "water",
+        "moisture",
+        "fire from water",
+        "health balance",
+        "generation",
+        "soul",
+        "physiology"
+      ],
+      "bio": "Obscure thinker associated with water or moisture as a principle and with biological, embryological, or physiological explanations. Some testimonia accuse him of atheism.",
+      "historicity": "The sources may refer to more than one person named Hippo. Home city, chronology, doctrines, school affiliation, and the interpretation of his alleged atheism are all uncertain.",
+      "voice": "Tentative, clinical, investigative, and transparent about uncertainty.",
+      "questions": [
+        "Does life require a balance of moisture?",
+        "When do conflicting reports indicate development, distortion, or two different people?",
+        "What counted as atheism in antiquity?"
+      ],
+      "greetEn": "Greetings. Our evidence is thin; let us test each report before joining it to the next.",
+      "greetGrc": "Χαῖρε. Ἕκαστον τεκμήριον πρὶν συνάψαι δοκιμάζωμεν.",
+      "texts": "Diels-Kranz 38; Aristotle, Metaphysics 984a; Simplicius, Commentary on Physics; Hippolytus, Refutation 1.14; Censorinus; Clement of Alexandria; London medical papyrus.",
+      "scholarship": "André Laks and Glenn Most, Early Greek Philosophy, 2016; Philip van der Eijk, Medicine and Philosophy in Classical Antiquity, 2005; Richard McKirahan, Philosophy Before Socrates, 2010; studies of early Greek embryology and physiological doxography.",
+      "bioUrl": "https://en.wikipedia.org/wiki/Hippo_(philosopher)",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Hippo%20Presocratic%20philosopher&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "melissus",
+      "name": "Melissus",
+      "greek": "Μέλισσος",
+      "alt": "Melissos; Melissus of Samos",
+      "type": "philosopher; naval commander",
+      "cityId": "samos",
+      "lat": 37.6911,
+      "lng": 26.9422,
+      "coordNote": "Approximate map anchor for ancient Samos.",
+      "dialect": "Ionic prose",
+      "birth": "c. 500 BCE",
+      "death": "",
+      "era": "Classical Greece; Presocratic period",
+      "school": "Eleatic philosophy",
+      "roles": "philosopher; admiral; political and military leader",
+      "concepts": [
+        "the One",
+        "infinity",
+        "eternity",
+        "changelessness",
+        "indivisibility",
+        "absence of void",
+        "impossibility of generation"
+      ],
+      "bio": "Samian philosopher and naval commander who systematized Eleatic arguments, maintaining that what is must be one, ungenerated, indestructible, changeless, and unlimited.",
+      "historicity": "His life is sparsely documented beyond association with the Samian War. Claims that he studied with Parmenides or taught Leucippus are late and uncertain.",
+      "voice": "Linear, austere, confident, and methodical, while allowing users to challenge each premise.",
+      "questions": [
+        "Can what exists ever begin from what does not exist?",
+        "Does change require empty space?",
+        "Must what is unlimited also be one?",
+        "Is an invalid argument necessarily philosophically unimportant?"
+      ],
+      "greetEn": "Greetings. Accept no conclusion until you have followed each step that claims to require it.",
+      "greetGrc": "Χαῖρε. Μηδὲν δέχου πρὶν ἕκαστον βῆμα ἐξετάσαι.",
+      "texts": "Fragments in Diels-Kranz 30 and Laks-Most; Simplicius, Commentary on Aristotle's Physics and On the Heavens; Pseudo-Aristotle, On Melissus, Xenophanes and Gorgias; Plutarch, Life of Pericles.",
+      "scholarship": "Patricia Curd, The Legacy of Parmenides, 1998; Richard McKirahan, Philosophy Before Socrates, 2010; André Laks and Glenn Most, Early Greek Philosophy, 2016; Jonathan Barnes, The Presocratic Philosophers, 1979.",
+      "bioUrl": "https://iep.utm.edu/melissus/",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Melissus%20of%20Samos&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "thales",
+      "name": "Thales",
+      "greek": "Θαλῆς",
+      "alt": "Thalēs; Thales of Miletus",
+      "type": "philosopher; sage; mathematician",
+      "cityId": "miletus",
+      "lat": 37.5308,
+      "lng": 27.2783,
+      "coordNote": "Approximate map anchor for ancient Miletus.",
+      "dialect": "No surviving authorial text; reported teachings transmitted in later Greek",
+      "birth": "c. 624 BCE",
+      "death": "c. 546 BCE",
+      "era": "Archaic Greece; early Presocratic period",
+      "school": "Milesian natural philosophy; Seven Sages",
+      "roles": "natural philosopher; mathematician; astronomer; engineer; statesman; sage",
+      "concepts": [
+        "water as arche",
+        "natural explanation",
+        "geometry",
+        "astronomy",
+        "measurement",
+        "unity beneath change"
+      ],
+      "bio": "Milesian thinker traditionally treated as the earliest Greek natural philosopher and credited with claims about water, geometry, astronomy, engineering, and political advice.",
+      "historicity": "Nearly every detailed achievement is reported by later writers. The famous eclipse prediction, geometric discoveries, travels, and even the formulation that all is water require careful qualification.",
+      "voice": "Direct, curious, pragmatic, economical, and fond of observable demonstrations.",
+      "questions": [
+        "What makes something a first principle?",
+        "Can geometry discover an inaccessible distance?",
+        "Does predicting an event explain it?",
+        "Why seek one underlying source?"
+      ],
+      "greetEn": "Greetings. Begin with what can be observed, but do not confuse observation with explanation.",
+      "greetGrc": "Χαῖρε. Τί τῶν πάντων ἀρχή;",
+      "texts": "Aristotle, Metaphysics and De Anima; Herodotus 1; Proclus on Euclid; Diogenes Laertius 1; testimonia in Diels-Kranz 11 and Laks-Most.",
+      "scholarship": "Patricia O'Grady, Thales of Miletus, 2002; Daniel Graham, Explaining the Cosmos, 2006; Dirk Couprie, Heaven and Earth in Ancient Greek Cosmology, 2011; D. R. Dicks, Early Greek Astronomy to Aristotle, 1970.",
+      "bioUrl": "https://iep.utm.edu/thales/",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Thales%20of%20Miletus&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "anaximander",
+      "name": "Anaximander",
+      "greek": "Ἀναξίμανδρος",
+      "alt": "Anaximandros; Anaximander of Miletus",
+      "type": "philosopher; cosmologist; geographer",
+      "cityId": "miletus",
+      "lat": 37.5308,
+      "lng": 27.2783,
+      "coordNote": "Approximate map anchor for ancient Miletus.",
+      "dialect": "Ionic prose",
+      "birth": "c. 610 BCE",
+      "death": "c. 546 BCE",
+      "era": "Archaic Greece; Presocratic period",
+      "school": "Milesian natural philosophy",
+      "roles": "natural philosopher; cosmologist; geographer; cartographer; astronomical theorist",
+      "concepts": [
+        "apeiron",
+        "cosmic justice",
+        "equilibrium",
+        "unsupported Earth",
+        "celestial rings",
+        "generation and dissolution",
+        "origins of life"
+      ],
+      "bio": "Milesian thinker credited with an early prose work, a map, astronomical devices, the apeiron as origin, a model of the unsupported Earth, and naturalistic accounts of cosmic and biological development.",
+      "historicity": "Only one brief passage may preserve his wording, and even it is embedded in Simplicius' report. Maps, instruments, colonizing activity, and scientific doctrines are reconstructed from later testimony.",
+      "voice": "Expansive, diagrammatic, speculative, and explicit about the difference between model and observation.",
+      "questions": [
+        "Why does the Earth remain where it is?",
+        "Can the origin of opposites be one of the opposites?",
+        "In what sense can natural processes give justice?",
+        "What does a map claim to know?"
+      ],
+      "greetEn": "Greetings. Let us place the Earth where no support is visible and ask why it does not fall.",
+      "greetGrc": "Χαῖρε. Ἐκ τίνος γίγνεται τὰ ὄντα;",
+      "texts": "Diels-Kranz 12 B1 and testimonia; Simplicius, Commentary on Physics; Aristotle, Physics, De caelo, Meteorology; Hippolytus; Pseudo-Plutarch; Diogenes Laertius 2.",
+      "scholarship": "Dirk Couprie, Robert Hahn, and Gerard Naddaf, Anaximander in Context, 2003; Daniel Graham, Explaining the Cosmos, 2006; Gerard Naddaf, The Greek Concept of Nature, 2005; Carlo Rovelli, Anaximander, 2023 English edition.",
+      "bioUrl": "https://iep.utm.edu/anaximander/",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Anaximander&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "anaximenes",
+      "name": "Anaximenes",
+      "greek": "Ἀναξιμένης",
+      "alt": "Anaximenēs; Anaximenes of Miletus",
+      "type": "philosopher; cosmologist",
+      "cityId": "miletus",
+      "lat": 37.5308,
+      "lng": 27.2783,
+      "coordNote": "Approximate map anchor for ancient Miletus.",
+      "dialect": "Ionic prose",
+      "birth": "c. 586 BCE",
+      "death": "c. 526 BCE",
+      "era": "Archaic Greece; Presocratic period",
+      "school": "Milesian natural philosophy",
+      "roles": "natural philosopher; cosmologist; meteorological theorist",
+      "concepts": [
+        "air",
+        "breath",
+        "rarefaction",
+        "condensation",
+        "density",
+        "qualitative change",
+        "celestial bodies"
+      ],
+      "bio": "Milesian thinker who selected air as the underlying substance and explained transformations through rarefaction and condensation, linking observable differences in density with cosmic change.",
+      "historicity": "All original writings are lost except possible traces in quotation. His cosmological details come through later doxography and are sometimes inconsistent.",
+      "voice": "Clear, physical, economical, and demonstration-oriented.",
+      "questions": [
+        "Can one material explain both fire and stone?",
+        "What changes when matter becomes denser?",
+        "Is breath merely an analogy for the cosmos?",
+        "Why prefer a familiar substance to the apeiron?"
+      ],
+      "greetEn": "Greetings. Breathe upon your hand, and ask what change in one substance can produce.",
+      "greetGrc": "Χαῖρε. Πῶς ἀὴρ μεταβάλλει τὰ πάντα;",
+      "texts": "Diels-Kranz 13 and Laks-Most; Simplicius; Aristotle, Metaphysics and De caelo; Hippolytus; Pseudo-Plutarch; Aetius.",
+      "scholarship": "Daniel Graham, Explaining the Cosmos, 2006; Richard McKirahan, Philosophy Before Socrates, 2010; C. J. Classen, Anaximander and Anaximenes: The Earliest Greek Theories of Change, 1977; Radim Kočandrle, The Cosmology of Anaximenes, 2020.",
+      "bioUrl": "https://iep.utm.edu/anaximen/",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Anaximenes%20of%20Miletus&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "hippodamus",
+      "name": "Hippodamus",
+      "greek": "Ἱππόδαμος",
+      "alt": "Hippodamos; Hippodamus of Miletus",
+      "type": "urban planner; political theorist",
+      "cityId": "piraeus",
+      "lat": 37.5308,
+      "lng": 27.2783,
+      "coordNote": "Miletus origin map anchor; ancient sources and archaeology associate him especially with the Piraeus and other planned settlements.",
+      "dialect": "Greek technical and political vocabulary; no securely surviving authorial text",
+      "birth": "c. 498 BCE",
+      "death": "c. 408 BCE",
+      "era": "Classical Greece",
+      "school": "Urban planning and constitutional theory",
+      "roles": "planner; architect; political theorist; social classifier",
+      "concepts": [
+        "orthogonal planning",
+        "zoning",
+        "civic space",
+        "tripartite classes",
+        "land division",
+        "legal categories",
+        "institutional design"
+      ],
+      "bio": "Milesian planner and theorist associated with orthogonal urban design and with a model constitution dividing citizens, territory, and legal actions into three categories.",
+      "historicity": "Grid plans existed before Hippodamus, and the precise scope of his work at the Piraeus, Thurii, Rhodes, or other cities is debated. His political theory is known chiefly through Aristotle's criticism.",
+      "voice": "Schematic, analytical, civic-minded, orderly, and willing to revise a plan after user critique.",
+      "questions": [
+        "Does an orderly plan produce an orderly society?",
+        "Who benefits from zoning?",
+        "Can three social classes represent a complex city?",
+        "Where should sacred and commercial space meet?"
+      ],
+      "greetEn": "Greetings. A city plan is an argument about how its inhabitants should live.",
+      "greetGrc": "Χαῖρε. Πῶς τάξις πόλιν ποιεῖ;",
+      "texts": "Aristotle, Politics 2.1267b–1269a; archaeological plans of Miletus and the Piraeus; Hesychius and later testimonia.",
+      "scholarship": "Alfred Burns, Hippodamus and the Planned City, Historia 1976; Vanessa Gorman, Miletos, the Ornament of Ionia, 2001; Wolfram Hoepfner and Ernst-Ludwig Schwandner, Haus und Stadt im klassischen Griechenland, 1994; Ferdinand Castagnoli, Orthogonal Town Planning in Antiquity, 1971.",
+      "bioUrl": "https://www.britannica.com/biography/Hippodamus",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Hippodamus%20of%20Miletus&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "herodotus",
+      "name": "Herodotus",
+      "greek": "Ἡρόδοτος",
+      "alt": "Hērodotos; Herodotus of Halicarnassus",
+      "type": "historian; ethnographer",
+      "cityId": "halicarnassus",
+      "lat": 37.0379,
+      "lng": 27.4241,
+      "coordNote": "Approximate map anchor for ancient Halicarnassus; Herodotus' life and work connect many regions, and later tradition associates him with Thurii.",
+      "dialect": "Ionic prose with epic, dialectal, and poetic features",
+      "birth": "c. 484 BCE",
+      "death": "c. 425 BCE",
+      "era": "Classical Greece",
+      "school": "Ionian historiē; ethnographic and historical inquiry",
+      "roles": "historian; inquirer; ethnographer; geographer; storyteller; political observer",
+      "concepts": [
+        "historiē",
+        "causation",
+        "custom",
+        "empire",
+        "freedom",
+        "contingency",
+        "divine signs",
+        "ethnography",
+        "memory"
+      ],
+      "bio": "Author of the Histories, an inquiry into the causes and course of conflict between Greeks and the Persian Empire that also preserves geography, ethnography, oral accounts, political debate, marvels, and competing explanations.",
+      "historicity": "The extent of Herodotus' travels, use of written and oral sources, accuracy of individual reports, and relation between narrator and informants remain debated. His work is literary inquiry, not a modern field report.",
+      "voice": "Curious, hospitable, digressive, fair-minded, alert to irony, and willing to report multiple versions.",
+      "questions": [
+        "Why preserve a story one doubts?",
+        "Is custom stronger than universal morality?",
+        "What causes an empire to expand and fail?",
+        "How should an inquirer compare conflicting witnesses?"
+      ],
+      "greetEn": "Greetings, stranger. Let us inquire so that human deeds do not fade from memory.",
+      "greetGrc": "Χαῖρε, ξεῖνε. Ἱστορέω, ἵνα τὰ γενόμενα μὴ ἐξίτηλα γένηται.",
+      "texts": "Herodotus, Histories; ancient manuscript and papyrus witnesses; Aristotle, Poetics and Rhetoric; Plutarch, On the Malice of Herodotus; later geographical and historical reception.",
+      "scholarship": "Rosalind Thomas, Herodotus in Context, 2000; Carolyn Dewald and John Marincola, Cambridge Companion to Herodotus, 2006; François Hartog, The Mirror of Herodotus, 1988; Robert Fowler, Herodotus and His Contemporaries, 1996; Nino Luraghi, The Historian's Craft in the Age of Herodotus, 2001.",
+      "bioUrl": "https://www.britannica.com/biography/Herodotus-Greek-historian",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Herodotus&title=Special:MediaSearch&type=image"
+    },
+    {
+      "id": "aeschines_miletus",
+      "name": "Aeschines of Miletus",
+      "greek": "Αἰσχίνης ὁ Μιλήσιος",
+      "alt": "Aischinēs ho Milēsios; Aeschines the Milesian",
+      "type": "orator; political writer",
+      "cityId": "miletus",
+      "lat": 37.5308,
+      "lng": 27.2783,
+      "coordNote": "Approximate map anchor for ancient Miletus.",
+      "dialect": "Post-Classical Greek; associated with Asiatic rhetorical style",
+      "birth": "",
+      "death": "",
+      "era": "Late Hellenistic or Roman Republican period",
+      "school": "Asiatic rhetoric",
+      "roles": "orator; political writer; rhetorical performer; exile",
+      "concepts": [
+        "ornamented prose",
+        "fluency",
+        "rhythm",
+        "amplification",
+        "delivery",
+        "parrhesia",
+        "political risk"
+      ],
+      "bio": "Milesian orator contemporary with Cicero, praised or described as a prominent practitioner of the flowing and ornamented Asiatic style. Later testimony says he wrote on politics and died in exile after speaking too freely to Pompey.",
+      "historicity": "The evidence is extremely sparse. He must not be confused with Aeschines the Athenian orator or Aeschines of Sphettus, the Socratic writer. No speeches securely survive.",
+      "voice": "Fluent, polished, energetic, ornamented, and theatrically controlled, followed by plain-language self-analysis.",
+      "questions": [
+        "Can ornament improve reasoning or conceal its absence?",
+        "What risks accompany free speech before powerful men?",
+        "When does rhythm become manipulation?",
+        "Can style be politically regional?"
+      ],
+      "greetEn": "Greetings. First hear how a speech carries you; afterward we shall examine where it carried you and why.",
+      "greetGrc": "Χαῖρε. Λόγος ῥέων πείθει· εἶτα τὴν πειθὼ ἐξετάσωμεν.",
+      "texts": "Cicero, Brutus 95; Strabo 14; Seneca the Elder, Controversiae 1.8; Diogenes Laertius 2.64; later biographical dictionaries.",
+      "scholarship": "George Kennedy, The Art of Rhetoric in the Roman World, 1972; Jakob Wisse, Ethos and Pathos from Aristotle to Cicero, 1989; Richard Jebb, The Attic Orators, for rhetorical context; William Smith, Dictionary of Greek and Roman Biography and Mythology, Aeschines of Miletus.",
+      "bioUrl": "https://en.wikipedia.org/wiki/Aeschines_of_Miletus",
+      "commonsUrl": "https://commons.wikimedia.org/w/index.php?search=Aeschines%20of%20Miletus&title=Special:MediaSearch&type=image"
+    }
+  ];
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // THE LIVING AGORA — Ionian & Aegean intellectual life. Figures are plotted
+  // at their birthplace coordinate; primary_city_id may record a later career
+  // city (e.g. Pythagoras→Croton, Hippodamus→Piraeus), shown inside each card.
+  // Multiple figures share a birthplace, so pins cluster by coordinate: a place
+  // card lists the inhabitants, and each opens an individual figure card. Agent
+  // conversation (opening greeting + signature questions) is previewed here but
+  // not yet wired to a model — that is Phase 2.
+  // ══════════════════════════════════════════════════════════════════════════
+  let agoraOn = false, agoraLayer = null;
+
+  /* Physical-place labels for coordinates whose figures carry a career-city id
+     instead of the birthplace at that point. Edit freely to relocate a pin's
+     label, or delete an entry to fall back to the figures' own city ids. */
+  const PLACE_ANCHORS = {
+    '37.5308,27.2783': { label: 'Miletus' },      // + Hippodamus (career: Piraeus)
+    '37.9397,27.3414': { label: 'Ephesus' },      // + Hipponax (id: Clazomenae)
+    '37.6911,26.9422': { label: 'Samos' },        // Pythagoras (Croton), Hippo, Melissus
+    '38.3597,26.7664': { label: 'Clazomenae' },   // Anaxagoras (career: Athens)
+    '38.4886,28.0403': { label: 'Sardis' },       // Alcman (career: Sparta)
+    '38.1125,27.1431': { label: 'Colophon' },     // Xenophanes (career: western Greek world)
+    '38.4664,27.0840': { label: 'Ionian coast' }, // Homer (traditional)
+  };
+  const AGORA_CITY_PLACEHOLDER = new Set(['origin_disputed','aegean_epic_tradition','western_greek_world']);
+
+  function agoraTitleCase(s){ return (s||'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()); }
+  function agoraCityDisplay(id){ return (!id || AGORA_CITY_PLACEHOLDER.has(id)) ? '' : agoraTitleCase(id); }
+
+  const AGORA_CLUSTERS = {};
+  const AGORA_BY_ID = {};
+  AGORA_FIGURES.forEach(f => {
+    AGORA_BY_ID[f.id] = f;
+    const k = f.lat.toFixed(4) + ',' + f.lng.toFixed(4);
+    (AGORA_CLUSTERS[k] || (AGORA_CLUSTERS[k] = { key:k, lat:f.lat, lng:f.lng, figs:[] })).figs.push(f);
+  });
+
+  function agoraAnchorLabel(cl){
+    if (PLACE_ANCHORS[cl.key]) return PLACE_ANCHORS[cl.key].label;
+    const ids = [...new Set(cl.figs.map(f => agoraCityDisplay(f.cityId)).filter(Boolean))];
+    return ids.join(' · ') || 'Uncertain location';
+  }
+
+  function agoraIcon(count){
+    const r = count > 1 ? 7 : 5.5;
+    const badge = count > 1
+      ? `<text x="8" y="10.7" text-anchor="middle" font-size="8" font-family="DM Sans,sans-serif" font-weight="700" fill="#0d0907">${count}</text>`
+      : '';
+    return L.divIcon({
+      html:`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="${r}" fill="#79b0a1" fill-opacity=".92" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/>
+        ${badge}</svg>`,
+      className:'', iconSize:[16,16], iconAnchor:[8,8]
+    });
+  }
+
+  function buildAgoraLayer(){
+    const g = L.layerGroup();
+    Object.values(AGORA_CLUSTERS).forEach(cl => {
+      const label = agoraAnchorLabel(cl);
+      const names = cl.figs.map(f => f.name).join(', ');
+      const m = L.marker([cl.lat, cl.lng], { icon: agoraIcon(cl.figs.length) });
+      m.bindTooltip(
+        `<b>${label}</b><br><span style="color:rgba(121,176,161,.9);font-size:.62rem">${names}</span>`,
+        { sticky:true }
+      );
+      m.on('click', () => cl.figs.length === 1
+        ? showAgoraPerson(cl.figs[0].id, null)
+        : showAgoraPlace(cl.key));
+      g.addLayer(m);
+    });
+    return { layer:g, count:AGORA_FIGURES.length, places:Object.keys(AGORA_CLUSTERS).length };
+  }
+
+  window.toggleAgoraLayer = function(){
+    const btn = document.getElementById('agora-btn');
+    const leg = document.getElementById('agora-legend');
+    const status = document.getElementById('agora-status');
+
+    if (!agoraLayer){
+      const { layer, count, places } = buildAgoraLayer();
+      agoraLayer = layer;
+      if (status) status.textContent = `${count} figures · ${places} places`;
+    }
+
+    if (agoraOn){
+      map.removeLayer(agoraLayer);
+      btn.textContent = 'Show The Living Agora';
+      btn.classList.remove('active');
+      leg.style.display = 'none';
+      agoraOn = false;
+    } else {
+      agoraLayer.addTo(map);
+      btn.textContent = 'Hide The Living Agora';
+      btn.classList.add('active');
+      leg.style.display = 'flex';
+      agoraOn = true;
+    }
+  };
+
+  // ── Place card: the "city as container" — lists figures at one birthplace ───
+  function showAgoraPlace(key){
+    const cl = AGORA_CLUSTERS[key];
+    if (!cl) return;
+    resetInfoDrawer();
+    const label = agoraAnchorLabel(cl);
+
+    document.getElementById('infoKicker').textContent = 'Ancient Intellectual Life';
+    document.getElementById('infoKicker').style.color = '#79b0a1';
+    document.getElementById('infoTitle').textContent = label;
+    document.getElementById('infoBadges').innerHTML =
+      `<span class="info-badge" style="color:#79b0a1;border-color:#79b0a166;">${cl.figs.length} figures</span>`;
+    document.getElementById('infoCoords').textContent = `${cl.lat.toFixed(4)}, ${cl.lng.toFixed(4)}`;
+
+    const desc = document.getElementById('infoDesc');
+    desc.style.display = 'block';
+    desc.innerHTML =
+      `<div class="agora-sub">Figures anchored to <b>${label}</b>. Select one to enter their card.</div>` +
+      cl.figs.map(f => {
+        const role = (f.type || '').split(';')[0].trim();
+        const cd = agoraCityDisplay(f.cityId);
+        const career = (cd && cd.toLowerCase() !== label.toLowerCase()) ? ` · active at ${cd}` : '';
+        return `<button class="agora-fig-btn" onclick="_agoraPerson('${f.id}','${key}')">${f.name}` +
+               `<span class="role">${role}${f.birth ? ' · ' + f.birth : ''}${career}</span></button>`;
+      }).join('');
+
+    document.getElementById('infoLinks').innerHTML =
+      `<a class="info-link" href="https://www.openstreetmap.org/?mlat=${cl.lat}&mlon=${cl.lng}&zoom=9" target="_blank" rel="noopener">OSM ↗</a>`;
+
+    openInfoDrawer();
+    map.flyTo([cl.lat, cl.lng], Math.max(map.getZoom(), 6), { duration:1 });
+  }
+
+  // ── Figure card: biography, concepts, source policy, and an agent preview ───
+  function showAgoraPerson(id, fromKey){
+    const f = AGORA_BY_ID[id];
+    if (!f) return;
+    resetInfoDrawer();
+
+    const role = (f.type || '').split(';')[0].trim();
+    const k = document.getElementById('infoKicker');
+    k.textContent = agoraTitleCase(role);
+    k.style.color = '#79b0a1';
+    document.getElementById('infoTitle').textContent = f.name;
+
+    const shortEra = (f.era || '').split(';')[0].trim();
+    const shortSchool = (f.school || '').split(';')[0].trim();
+    const badges = [];
+    if (shortEra) badges.push(`<span class="info-badge">${shortEra}</span>`);
+    if (shortSchool) badges.push(`<span class="info-badge" style="color:#79b0a1;border-color:#79b0a166;">${shortSchool}</span>`);
+    document.getElementById('infoBadges').innerHTML = badges.join('');
+
+    const cd = agoraCityDisplay(f.cityId);
+    const line = [];
+    if (f.greek) line.push(f.greek);
+    if (f.birth || f.death) line.push(`${f.birth || '?'} – ${f.death || '?'}`);
+    document.getElementById('infoCoords').innerHTML = line.join(' &middot; ') + (cd ? `<br>of ${cd}` : '');
+
+    const desc = document.getElementById('infoDesc');
+    desc.style.display = 'block';
+    let html = `<p style="margin-bottom:.9rem">${f.bio || ''}</p>`;
+    if (f.concepts && f.concepts.length){
+      html += `<div class="agora-chips">` + f.concepts.map(c => `<span class="agora-chip">${c}</span>`).join('') + `</div>`;
+    }
+    html += `<div class="agora-block"><div class="agora-block-label">Meet ${f.name}</div>`;
+    if (f.greetEn)  html += `<div class="agora-greet">\u201C${f.greetEn}\u201D</div>`;
+    if (f.greetGrc) html += `<div class="agora-greet-grc">${f.greetGrc}</div>`;
+    if (f.questions && f.questions.length){
+      html += f.questions.slice(0, 4).map(q => `<div class="agora-q">${q}</div>`).join('');
+    }
+    html += `<span class="agora-soon">Enter the Agora · agent coming in Phase 2</span></div>`;
+    desc.innerHTML = html;
+
+    if (f.historicity){
+      const n = document.getElementById('infoNote');
+      n.style.display = 'block';
+      n.innerHTML = `<b style="color:rgba(121,176,161,.78)">Disputed traditions.</b> ${f.historicity}`;
+    }
+
+    const refsParts = [];
+    if (f.texts)       refsParts.push(`<b>Primary sources &amp; testimonia.</b> ${f.texts}`);
+    if (f.scholarship) refsParts.push(`<b>Modern scholarship.</b> ${f.scholarship}`);
+    if (refsParts.length){
+      const rb = document.getElementById('infoRefs');
+      rb.style.display = 'block';
+      rb.innerHTML = refsParts.join('<br><br>');
+    }
+
+    const osm = `https://www.openstreetmap.org/?mlat=${f.lat}&mlon=${f.lng}&zoom=10`;
+    const items = [];
+    const cl = AGORA_CLUSTERS[fromKey];
+    if (fromKey && cl && cl.figs.length > 1){
+      items.push(`<a class="info-link" href="javascript:void(0)" onclick="_agoraPlace('${fromKey}')">\u2039 ${agoraAnchorLabel(cl)}</a>`);
+    }
+    let bioLabel = 'Biography';
+    try { bioLabel = new URL(f.bioUrl).hostname.replace('www.',''); } catch(e){}
+    if (f.bioUrl)     items.push(`<a class="info-link" href="${f.bioUrl}" target="_blank" rel="noopener">${bioLabel} ↗</a>`);
+    if (f.commonsUrl) items.push(`<a class="info-link" href="${f.commonsUrl}" target="_blank" rel="noopener">Images ↗</a>`);
+    items.push(`<a class="info-link" href="${osm}" target="_blank" rel="noopener">OSM ↗</a>`);
+    document.getElementById('infoLinks').innerHTML = items.join('');
+
+    openInfoDrawer();
+    map.flyTo([f.lat, f.lng], Math.max(map.getZoom(), 6), { duration:1 });
+  }
+
+  window._agoraPerson = function(id, key){ showAgoraPerson(id, key || null); };
+  window._agoraPlace  = function(key){ showAgoraPlace(key); };
 
 })();
 </script>
