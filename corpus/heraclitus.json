@@ -1,0 +1,452 @@
+{
+  "figure": {
+    "id": "heraclitus",
+    "name": "Heraclitus",
+    "greek": "Ἡράκλειτος",
+    "epithet": " — called the Obscure",
+    "city": "Ephesus",
+    "era": "Late Archaic to Early Classical Greece",
+    "floruit": "c. 500 BCE",
+    "role": "philosopher and critic of common understanding",
+    "voice": "Compressed, resonant, severe, image-rich, and occasionally ironic. You provoke first with an image or a paradox, then explain. You do not chatter, and you do not flatter the crowd.",
+    "greetingEn": "Greetings. Let us listen not to me, but to the logos, and examine what is common.",
+    "greetingGrc": "Χαῖρε. Ἀκούσωμεν οὐκ ἐμοῦ ἀλλὰ τοῦ λόγου.",
+    "concepts": [
+      "logos",
+      "the unity of opposites",
+      "fire",
+      "measure",
+      "flux and stability",
+      "strife",
+      "soul",
+      "the common",
+      "justice"
+    ],
+    "signatureQuestions": [
+      "What remains the same through change?",
+      "Is conflict always disorder?",
+      "What makes an account common rather than private?",
+      "Does knowledge require more than the learning of many things?"
+    ],
+    "disputed": "Heraclitus's biography is largely later anecdote, and the order, wording, and authenticity of the fragments are debated. Simplified slogans such as 'everything flows' (panta rhei) are a later summary — they are not preserved among his own words."
+  },
+  "provenance_key": {
+    "P": "Primary fragment — words transmitted as Heraclitus's own, quoted by a named ancient author.",
+    "T": "Ancient testimonium — a later ancient author's report or paraphrase about Heraclitus (none are loaded in this pilot corpus).",
+    "R": "Modern reconstruction — a scholarly consensus or reconstruction, not a direct quotation.",
+    "L": "Later reception — how a later tradition (Stoic, Christian, modern) used or transformed the idea.",
+    "S": "Speculative — an interpretive extension or analogy offered by the agent, going beyond the evidence."
+  },
+  "fragments": [
+    {
+      "id": "B1",
+      "type": "P",
+      "witness": "Sextus Empiricus, Against the Mathematicians 7.132",
+      "translation": "Though this Word is true evermore, yet men are as unable to understand it when they hear it for the first time as before they have heard it at all. For, though all things come to pass in accordance with this Word, men seem as if they had no experience of them, when they make trial of words and deeds such as I set forth, dividing each thing according to its kind and showing how it truly is. But other men know not what they are doing when awake, even as they forget what they do in sleep.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "logos",
+        "understanding",
+        "the common",
+        "waking and sleeping"
+      ]
+    },
+    {
+      "id": "B2",
+      "type": "P",
+      "witness": "Sextus Empiricus, Against the Mathematicians 7.133",
+      "translation": "Though wisdom is common, yet the many live as if they had a wisdom of their own.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "logos",
+        "the common",
+        "the many"
+      ]
+    },
+    {
+      "id": "B50",
+      "type": "P",
+      "witness": "Hippolytus, Refutation of All Heresies 9.9.1",
+      "translation": "It is wise to hearken, not to me, but to my Word (logos), and to confess that all things are one.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "logos",
+        "unity",
+        "all things are one"
+      ],
+      "greek": "οὐκ ἐμοῦ ἀλλὰ τοῦ λόγου ἀκούσαντας ὁμολογεῖν σοφόν ἐστιν ἓν πάντα εἶναι."
+    },
+    {
+      "id": "B17",
+      "type": "P",
+      "witness": "Clement of Alexandria, Stromateis 2.8",
+      "translation": "The many have not as many thoughts as the things they meet with; nor, if they do remark them, do they understand them, though they believe they do.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "the many",
+        "understanding",
+        "perception"
+      ]
+    },
+    {
+      "id": "B34",
+      "type": "P",
+      "witness": "Clement of Alexandria, Stromateis 5.115",
+      "translation": "Fools, when they do hear, are like the deaf: of them does the saying bear witness that they are absent when present.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "the many",
+        "understanding",
+        "the common"
+      ]
+    },
+    {
+      "id": "B12",
+      "type": "P",
+      "witness": "Arius Didymus, in Eusebius, Preparation for the Gospel 15.20",
+      "translation": "You cannot step twice into the same rivers; for fresh waters are ever flowing in upon you.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "flux",
+        "change",
+        "rivers",
+        "soul"
+      ],
+      "greek": "ποταμοῖσι τοῖσιν αὐτοῖσιν ἐμβαίνουσιν ἕτερα καὶ ἕτερα ὕδατα ἐπιρρεῖ.",
+      "note": "The authentic wording is debated: the 'twice' phrasing here is close to how Plato and later writers summarised the thought; DK B12 itself speaks of ever-different waters flowing upon those who step in."
+    },
+    {
+      "id": "B49a",
+      "type": "P",
+      "witness": "Heraclitus Homericus, Homeric Questions 24",
+      "translation": "We step and do not step into the same rivers; we are and are not.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "flux",
+        "change",
+        "opposites",
+        "being and not-being"
+      ],
+      "note": "Authenticity is disputed; many scholars regard this as a later paraphrase or elaboration rather than Heraclitus's own words."
+    },
+    {
+      "id": "B60",
+      "type": "P",
+      "witness": "Hippolytus, Refutation of All Heresies 9.10.4",
+      "translation": "The way up and the way down is one and the same.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "opposites",
+        "unity of opposites",
+        "the road"
+      ],
+      "greek": "ὁδὸς ἄνω κάτω μία καὶ ὡυτή."
+    },
+    {
+      "id": "B6",
+      "type": "P",
+      "witness": "Aristotle, Meteorology 2.2, 355a13",
+      "translation": "The sun is new every day.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "change",
+        "cosmos",
+        "the sun"
+      ]
+    },
+    {
+      "id": "B51",
+      "type": "P",
+      "witness": "Hippolytus, Refutation of All Heresies 9.9.2",
+      "translation": "Men do not know how that which is drawn in different directions harmonises with itself. The harmonious structure of the world depends upon opposite tension, like that of the bow and the lyre.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "opposites",
+        "harmony",
+        "tension",
+        "bow and lyre"
+      ],
+      "greek": "οὐ ξυνιᾶσιν ὅκως διαφερόμενον ἑωυτῷ ὁμολογέει· παλίντροπος ἁρμονίη ὅκωσπερ τόξου καὶ λύρης.",
+      "note": "Sources vary between palintropos ('back-turning') and palintonos ('back-stretched') harmoniē; the reading is a known textual dispute."
+    },
+    {
+      "id": "B53",
+      "type": "P",
+      "witness": "Hippolytus, Refutation of All Heresies 9.9.4",
+      "translation": "War is the father of all and the king of all; and some he has made gods and some men, some bond and some free.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "war",
+        "strife",
+        "opposites",
+        "conflict"
+      ],
+      "greek": "πόλεμος πάντων μὲν πατήρ ἐστι, πάντων δὲ βασιλεύς, καὶ τοὺς μὲν θεοὺς ἔδειξε τοὺς δὲ ἀνθρώπους, τοὺς μὲν δούλους ἐποίησε τοὺς δὲ ἐλευθέρους."
+    },
+    {
+      "id": "B80",
+      "type": "P",
+      "witness": "Origen, Against Celsus 6.42",
+      "translation": "We must know that war is common to all, and strife is justice, and that all things come into being and pass away through strife.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "war",
+        "strife",
+        "justice"
+      ],
+      "note": "Included here on the strength of its wide attestation; confirm the exact Burnet wording against your edition before treating it as fixed."
+    },
+    {
+      "id": "B54",
+      "type": "P",
+      "witness": "Hippolytus, Refutation of All Heresies 9.9.5",
+      "translation": "The hidden harmony is better than the open.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "opposites",
+        "harmony",
+        "the hidden",
+        "nature"
+      ],
+      "greek": "ἁρμονίη ἀφανὴς φανερῆς κρείττων."
+    },
+    {
+      "id": "B62",
+      "type": "P",
+      "witness": "Hippolytus, Refutation of All Heresies 9.10.6",
+      "translation": "Mortals are immortals and immortals are mortals, the one living the other's death and dying the other's life.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "opposites",
+        "life and death",
+        "soul"
+      ],
+      "greek": "ἀθάνατοι θνητοί, θνητοὶ ἀθάνατοι, ζῶντες τὸν ἐκείνων θάνατον, τὸν δὲ ἐκείνων βίον τεθνεῶτες."
+    },
+    {
+      "id": "B67",
+      "type": "P",
+      "witness": "Hippolytus, Refutation of All Heresies 9.10.7",
+      "translation": "God is day and night, winter and summer, war and peace, satiety and hunger; but he takes various shapes, just as fire, when it is mingled with different incenses, is named according to the savour of each.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "opposites",
+        "god",
+        "fire",
+        "unity of opposites"
+      ],
+      "greek": "ὁ θεὸς ἡμέρη εὐφρόνη, χειμὼν θέρος, πόλεμος εἰρήνη, κόρος λιμός."
+    },
+    {
+      "id": "B61",
+      "type": "P",
+      "witness": "Hippolytus, Refutation of All Heresies 9.10.5",
+      "translation": "The sea is the purest and the impurest water. Fish can drink it, and it is good for them; to men it is undrinkable and destructive.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "opposites",
+        "relativity",
+        "the sea"
+      ]
+    },
+    {
+      "id": "B57",
+      "type": "P",
+      "witness": "Hippolytus, Refutation of All Heresies 9.10.2",
+      "translation": "Hesiod is most men's teacher. Men think he knew very many things, a man who did not know day or night! They are one.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "opposites",
+        "the many",
+        "polymathy",
+        "Hesiod"
+      ]
+    },
+    {
+      "id": "B23",
+      "type": "P",
+      "witness": "Clement of Alexandria, Stromateis 4.10",
+      "translation": "Men would not have known the name of justice if these things were not.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "opposites",
+        "justice",
+        "relativity"
+      ]
+    },
+    {
+      "id": "B30",
+      "type": "P",
+      "witness": "Clement of Alexandria, Stromateis 5.104",
+      "translation": "This world, which is the same for all, no one of gods or men has made; but it was ever, is now, and ever shall be an ever-living Fire, with measures of it kindling, and measures going out.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "fire",
+        "cosmos",
+        "measure",
+        "kosmos"
+      ],
+      "greek": "κόσμον τόνδε, τὸν αὐτὸν ἁπάντων, οὔτε τις θεῶν οὔτε ἀνθρώπων ἐποίησεν, ἀλλ' ἦν ἀεὶ καὶ ἔστιν καὶ ἔσται πῦρ ἀείζωον, ἁπτόμενον μέτρα καὶ ἀποσβεννύμενον μέτρα."
+    },
+    {
+      "id": "B40",
+      "type": "P",
+      "witness": "Diogenes Laertius, Lives 9.1",
+      "translation": "The learning of many things teacheth not understanding, else would it have taught Hesiod and Pythagoras, and again Xenophanes and Hekataios.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "polymathy",
+        "understanding",
+        "wisdom"
+      ],
+      "greek": "πολυμαθίη νόον ἔχειν οὐ διδάσκει· Ἡσίοδον γὰρ ἂν ἐδίδαξε καὶ Πυθαγόρην αὖτίς τε Ξενοφάνεά τε καὶ Ἑκαταῖον."
+    },
+    {
+      "id": "B41",
+      "type": "P",
+      "witness": "Diogenes Laertius, Lives 9.1",
+      "translation": "Wisdom is one thing. It is to know the thought by which all things are steered through all things.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "wisdom",
+        "logos",
+        "gnome",
+        "steering"
+      ],
+      "greek": "εἶναι γὰρ ἓν τὸ σοφόν, ἐπίστασθαι γνώμην, ὁτέη ἐκυβέρνησε πάντα διὰ πάντων."
+    },
+    {
+      "id": "B32",
+      "type": "P",
+      "witness": "Clement of Alexandria, Stromateis 5.115",
+      "translation": "Wisdom is one only. It is willing and unwilling to be called by the name of Zeus.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "wisdom",
+        "god",
+        "the one"
+      ]
+    },
+    {
+      "id": "B18",
+      "type": "P",
+      "witness": "Clement of Alexandria, Stromateis 2.24",
+      "translation": "If you do not expect the unexpected, you will not find it; for it is hard to be sought out and difficult.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "inquiry",
+        "knowledge",
+        "the unexpected"
+      ]
+    },
+    {
+      "id": "B22",
+      "type": "P",
+      "witness": "Clement of Alexandria, Stromateis 4.2",
+      "translation": "Those who seek for gold dig up much earth and find a little.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "inquiry",
+        "knowledge",
+        "labour"
+      ]
+    },
+    {
+      "id": "B36",
+      "type": "P",
+      "witness": "Clement of Alexandria, Stromateis 6.17",
+      "translation": "For it is death to souls to become water, and death to water to become earth. But water comes from earth; and from water, soul.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "soul",
+        "elements",
+        "transformation",
+        "death"
+      ]
+    },
+    {
+      "id": "B45",
+      "type": "P",
+      "witness": "Diogenes Laertius, Lives 9.7",
+      "translation": "You will not find the boundaries of soul by travelling in any direction, so deep is the measure of it.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "soul",
+        "logos",
+        "depth",
+        "measure"
+      ]
+    },
+    {
+      "id": "B43",
+      "type": "P",
+      "witness": "Diogenes Laertius, Lives 9.2",
+      "translation": "Wantonness (hubris) needs to be extinguished even more than a conflagration.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "ethics",
+        "hubris",
+        "measure",
+        "politics"
+      ]
+    },
+    {
+      "id": "B44",
+      "type": "P",
+      "witness": "Diogenes Laertius, Lives 9.2",
+      "translation": "The people must fight for its law as for its walls.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "politics",
+        "law",
+        "the city"
+      ]
+    },
+    {
+      "id": "B52",
+      "type": "P",
+      "witness": "Hippolytus, Refutation of All Heresies 9.9.4",
+      "translation": "Time is a child playing draughts: the kingly power is a child's.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "time",
+        "play",
+        "cosmos"
+      ],
+      "greek": "αἰὼν παῖς ἐστι παίζων, πεττεύων· παιδὸς ἡ βασιληίη."
+    },
+    {
+      "id": "B48",
+      "type": "P",
+      "witness": "Etymologicum Magnum, s.v. bios",
+      "translation": "The bow is called life (bios), but its work is death.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "opposites",
+        "word-play",
+        "life and death",
+        "the bow"
+      ],
+      "greek": "τῷ οὖν τόξῳ ὄνομα βίος, ἔργον δὲ θάνατος."
+    },
+    {
+      "id": "B26",
+      "type": "P",
+      "witness": "Clement of Alexandria, Stromateis 4.141",
+      "translation": "Man is kindled and put out like a light in the night-time.",
+      "translation_source": "John Burnet, Early Greek Philosophy (1912/1920), public domain",
+      "theme": [
+        "soul",
+        "fire",
+        "life and death"
+      ]
+    }
+  ],
+  "_meta": {
+    "figure_id": "heraclitus",
+    "translations": "John Burnet, Early Greek Philosophy (1912/1920), public domain. Lightly cleaned of OCR artifacts.",
+    "greek_and_witnesses": "Diels–Kranz numbering and ancient witnesses cross-checked against the parallel Greek/Burnet edition at philoctetes.free.fr.",
+    "status": "curated starter corpus — review recommended before production; B80 wording flagged for verification.",
+    "count": 31
+  }
+}
