@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Living Agora | archAIology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500;1,600&family=Cinzel:wght@400;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#0d0907; --void-2:#171009; --ember:#c9952f; --ember-lt:#e0b65c;
+  --blood:#6e2a1f; --blood-lt:#a1503c; --jade:#79b0a1; --jade-dk:#33524a;
+  --parchment:#ece2cf; --smoke:rgba(236,226,207,.46); --hair:rgba(236,226,207,.1);
+  --display:'Cormorant Garamond',Georgia,serif; --rune:'Cinzel',serif;
+  --body:'Source Serif 4',Georgia,serif; --ui:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--void);color:var(--parchment);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;}
+a{color:var(--ember-lt);}
+img{display:block;max-width:100%;}
+
+/* ─── masthead ─── */
+.masthead{position:sticky;top:0;z-index:1000;height:44px;background:var(--void-2);border-bottom:1px solid var(--hair);
+  display:flex;align-items:center;padding:0 1.2rem;gap:1.5rem;overflow-x:auto;}
+.masthead::-webkit-scrollbar{display:none;}
+.rel-logo{font-family:var(--display);font-style:italic;font-size:1.05rem;font-weight:600;color:var(--parchment);text-decoration:none;white-space:nowrap;}
+.rel-logo span{color:var(--ember);}
+.rel-nav-link{font-family:var(--ui);font-size:.64rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--smoke);text-decoration:none;transition:color .2s;white-space:nowrap;}
+.rel-nav-link:hover,.rel-nav-link.active{color:var(--jade);}
+
+/* ─── hero ─── */
+.hero{position:relative;min-height:64vh;display:flex;align-items:flex-end;overflow:hidden;background:var(--void);}
+.hero-bg{position:absolute;inset:0;background:center 30%/cover no-repeat url('The_Agora.jpg');
+  filter:saturate(.86) contrast(1.03) brightness(.82);}
+.hero-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,9,7,.28) 0%,rgba(13,9,7,.5) 46%,rgba(13,9,7,.96) 100%);}
+.hero-inner{position:relative;max-width:1200px;margin:0 auto;padding:0 1.4rem 2.6rem;width:100%;}
+.hero-eyebrow{font-family:var(--rune);font-size:.62rem;font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:var(--jade);margin-bottom:.7rem;}
+.hero-title{font-family:var(--display);font-style:italic;font-weight:600;font-size:clamp(2.6rem,6.5vw,4.6rem);line-height:1;color:var(--parchment);}
+.hero-sub{font-family:var(--body);font-size:clamp(.95rem,1.6vw,1.12rem);color:rgba(236,226,207,.82);max-width:660px;margin-top:1rem;}
+.hero-credit{position:absolute;right:1rem;bottom:.5rem;font-family:var(--ui);font-size:.52rem;letter-spacing:.05em;color:rgba(236,226,207,.4);}
+
+/* ─── intro ─── */
+.intro{max-width:820px;margin:0 auto;padding:3rem 1.4rem 1rem;}
+.intro p{font-size:1.02rem;line-height:1.85;color:rgba(236,226,207,.82);margin-bottom:1rem;}
+.intro .lead{font-family:var(--display);font-style:italic;font-size:1.3rem;line-height:1.5;color:var(--parchment);}
+.intro b{color:var(--jade);font-weight:600;}
+
+/* ─── agora stage ─── */
+.stage{max-width:1200px;margin:2.2rem auto 4rem;padding:0 1.4rem;
+  display:grid;grid-template-columns:1fr 340px;gap:1.4rem;align-items:start;}
+
+/* figure header */
+.fig-head{border:1px solid var(--hair);background:var(--void-2);padding:1.1rem 1.2rem;margin-bottom:1rem;}
+.fig-kicker{font-family:var(--rune);font-size:.55rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--jade);margin-bottom:.4rem;}
+.fig-name{font-family:var(--display);font-style:italic;font-size:1.9rem;font-weight:600;line-height:1;}
+.fig-name .grc{font-style:normal;color:var(--jade);font-size:1.3rem;margin-left:.5rem;}
+.fig-meta{font-family:var(--ui);font-size:.66rem;color:var(--smoke);margin-top:.45rem;letter-spacing:.02em;}
+
+/* chat */
+.chat{border:1px solid var(--hair);background:var(--void-2);display:flex;flex-direction:column;min-height:520px;}
+.transcript{flex:1;overflow-y:auto;padding:1.2rem;display:flex;flex-direction:column;gap:1rem;max-height:60vh;}
+.msg{max-width:88%;font-size:.92rem;line-height:1.7;}
+.msg-fig{align-self:flex-start;}
+.msg-user{align-self:flex-end;background:rgba(201,149,47,.1);border:1px solid rgba(201,149,47,.28);
+  padding:.6rem .8rem;border-radius:3px;color:var(--parchment);}
+.msg-fig .who{font-family:var(--rune);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--jade);margin-bottom:.35rem;}
+.msg-fig .body{color:rgba(236,226,207,.9);}
+.msg-fig .body p{margin-bottom:.6rem;}
+.msg-grc{font-family:var(--display);font-style:italic;color:rgba(121,176,161,.85);margin-top:.2rem;}
+.msg-sys{align-self:center;font-family:var(--ui);font-size:.66rem;letter-spacing:.03em;color:var(--smoke);
+  text-align:center;border:1px dashed var(--hair);padding:.5rem .8rem;border-radius:3px;max-width:92%;}
+.typing{align-self:flex-start;font-family:var(--ui);font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--jade);opacity:.7;}
+
+/* provenance chips inside replies */
+.pv{display:inline-flex;align-items:center;gap:.16em;font-family:var(--ui);font-size:.62em;font-weight:700;
+  letter-spacing:.03em;padding:.05em .4em;margin:0 .12em;border-radius:2px;vertical-align:.08em;cursor:default;
+  border:1px solid var(--hair);color:var(--smoke);white-space:nowrap;}
+.pv-frag{cursor:pointer;color:var(--jade);border-color:rgba(121,176,161,.5);background:rgba(121,176,161,.08);}
+.pv-frag:hover{background:rgba(121,176,161,.18);}
+.pv-R{color:var(--ember-lt);border-color:rgba(201,149,47,.45);}
+.pv-L{color:var(--blood-lt);border-color:rgba(161,80,60,.5);}
+.pv-S{color:rgba(236,226,207,.6);}
+.pv-unknown{color:var(--blood-lt);border-style:dashed;}
+
+/* composer */
+.composer{border-top:1px solid var(--hair);padding:.8rem;display:flex;gap:.6rem;align-items:flex-end;}
+.composer textarea{flex:1;resize:none;font-family:var(--body);font-size:.9rem;line-height:1.5;color:var(--parchment);
+  background:rgba(255,255,255,.02);border:1px solid var(--hair);border-radius:3px;padding:.6rem .7rem;min-height:44px;max-height:140px;}
+.composer textarea:focus{outline:none;border-color:rgba(121,176,161,.5);}
+.send{font-family:var(--ui);font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--void);background:var(--jade);border:none;border-radius:3px;padding:.7rem 1rem;cursor:pointer;transition:opacity .15s;}
+.send:hover{opacity:.88;} .send:disabled{opacity:.4;cursor:not-allowed;}
+
+/* suggested prompts */
+.prompts{display:flex;flex-wrap:wrap;gap:.4rem;padding:.7rem .8rem;border-top:1px solid var(--hair);}
+.prompt-chip{font-family:var(--body);font-size:.78rem;color:rgba(236,226,207,.72);background:rgba(255,255,255,.02);
+  border:1px solid var(--hair);border-radius:2px;padding:.35rem .6rem;cursor:pointer;transition:all .15s;text-align:left;}
+.prompt-chip:hover{border-color:rgba(121,176,161,.5);color:var(--parchment);}
+
+/* rail */
+.rail{position:sticky;top:56px;display:flex;flex-direction:column;gap:1rem;}
+.rail-card{border:1px solid var(--hair);background:var(--void-2);padding:1rem;}
+.rail-label{font-family:var(--rune);font-size:.55rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--jade);margin-bottom:.7rem;}
+.legend-item{display:flex;gap:.5rem;font-family:var(--ui);font-size:.66rem;line-height:1.5;color:var(--smoke);margin-bottom:.5rem;}
+.legend-key{flex-shrink:0;font-weight:700;width:1.5em;color:var(--parchment);}
+.cite-empty{font-family:var(--ui);font-size:.66rem;color:rgba(236,226,207,.34);line-height:1.6;}
+.cite-id{font-family:var(--rune);font-size:.9rem;letter-spacing:.06em;color:var(--jade);}
+.cite-type{font-family:var(--ui);font-size:.56rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--smoke);margin:.3rem 0 .6rem;}
+.cite-tr{font-family:var(--display);font-style:italic;font-size:1.02rem;line-height:1.55;color:var(--parchment);margin-bottom:.6rem;}
+.cite-grc{font-family:var(--body);font-size:.82rem;color:rgba(121,176,161,.85);margin-bottom:.6rem;line-height:1.6;}
+.cite-wit{font-family:var(--ui);font-size:.62rem;color:var(--smoke);line-height:1.6;}
+.cite-wit b{color:rgba(236,226,207,.75);font-weight:600;}
+.cite-note{font-family:var(--ui);font-size:.6rem;color:var(--ember-lt);line-height:1.6;margin-top:.5rem;border-top:1px solid var(--hair);padding-top:.5rem;}
+.frag-list{display:flex;flex-wrap:wrap;gap:.3rem;}
+.frag-btn{font-family:var(--ui);font-size:.58rem;font-weight:600;letter-spacing:.03em;color:var(--jade);
+  background:rgba(121,176,161,.06);border:1px solid rgba(121,176,161,.35);border-radius:2px;padding:.22rem .45rem;cursor:pointer;transition:all .15s;}
+.frag-btn:hover{background:rgba(121,176,161,.18);}
+.rail-note{font-family:var(--ui);font-size:.58rem;color:rgba(236,226,207,.32);line-height:1.6;margin-top:.6rem;}
+
+footer{border-top:1px solid var(--hair);padding:2rem 1.4rem;text-align:center;
+  font-family:var(--ui);font-size:.62rem;letter-spacing:.04em;color:var(--smoke);}
+footer a{color:var(--smoke);}
+
+@media(max-width:900px){
+  .stage{grid-template-columns:1fr;}
+  .rail{position:static;}
+  .transcript{max-height:none;}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a class="rel-logo" href="index.html">arch<span>AI</span>ology</a>
+  <a class="rel-nav-link" href="index.html">Home</a>
+  <a class="rel-nav-link" href="map.html">Map</a>
+  <a class="rel-nav-link" href="religion.html">Religion</a>
+  <a class="rel-nav-link active" href="agora.html">Agora</a>
+  <a class="rel-nav-link" href="sky.html">Sky Archive</a>
+  <a class="rel-nav-link" href="linguistics.html">Linguistics</a>
+  <a class="rel-nav-link" href="inscriptions.html">Inscriptions</a>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-scrim"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">The Living Agora · Ancient Intellectual Life</div>
+    <h1 class="hero-title">Meet the thinkers where they spoke</h1>
+    <p class="hero-sub">Enter into conversation with figures of the ancient Aegean world — grounded in what
+      actually survives of them. Each answer marks its own footing: a surviving fragment, a modern
+      reconstruction, or an interpretation. The first to open the gate is Heraclitus of Ephesus.</p>
+  </div>
+  <div class="hero-credit">Reconstruction of the Athenian Agora · illustrative</div>
+</section>
+
+<section class="intro">
+  <p class="lead">The distinction that matters: these are not modern chatbots wearing ancient costume.</p>
+  <p>Heraclitus below speaks only from what ancient authors actually preserved of him — a small,
+    curated set of fragments, each with the writer who quoted it and a public-domain translation.
+    When he grounds a point in his own words, he <b>cites the fragment</b>, and you can open it in the
+    panel to the side. When he reasons past the evidence, he says so and marks it: <b>reconstruction</b>,
+    <b>later reception</b>, or <b>speculation</b>. If your question runs past the surviving text, he will
+    tell you that plainly rather than invent a source.</p>
+  <p>This is Phase&nbsp;2 of the project: one figure, text only. The grounding is the point.</p>
+</section>
+
+<section class="stage">
+  <!-- main column -->
+  <div class="main-col">
+    <div class="fig-head" id="figHead"></div>
+    <div class="chat">
+      <div class="transcript" id="transcript"></div>
+      <div class="prompts" id="prompts"></div>
+      <div class="composer">
+        <textarea id="input" rows="1" placeholder="Ask Heraclitus…" aria-label="Your message"></textarea>
+        <button class="send" id="send">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- rail -->
+  <aside class="rail">
+    <div class="rail-card">
+      <div class="rail-label">Reading the markers</div>
+      <div id="legend"></div>
+    </div>
+    <div class="rail-card">
+      <div class="rail-label">Cited fragment</div>
+      <div id="cite"><div class="cite-empty">Tap a marker like <span class="pv pv-frag">B30</span>
+        in Heraclitus's reply, or a number below, to read the fragment it rests on.</div></div>
+    </div>
+    <div class="rail-card">
+      <div class="rail-label">Fragments he can cite</div>
+      <div class="frag-list" id="fragList"></div>
+      <div class="rail-note" id="fragNote"></div>
+    </div>
+  </aside>
+</section>
+
+<footer>
+  Translations after John Burnet, <i>Early Greek Philosophy</i> (1912), public domain ·
+  fragment numbering after Diels–Kranz · part of <a href="index.html">archAIology</a>
+</footer>
+
+<script>
+(function(){
+  // ── CONFIG ────────────────────────────────────────────────────────────────
+  // Set AGORA_ENDPOINT to your deployed Edge Function URL, e.g.
+  //   https://YOUR-PROJECT-REF.functions.supabase.co/agora-chat
+  // Leave "" to run in read-only preview (greeting + fragments, no live chat).
+  const AGORA_ENDPOINT = "";
+  const CORPUS_URL     = "corpus/heraclitus.json";
+  const FIGURE_ID      = "heraclitus";
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  let corpus = null, fragById = {}, history = [], busy = false;
+
+  // ── Load corpus, then build the UI ─────────────────────────────────────────
+  fetch(CORPUS_URL).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(data => { corpus = data; corpus.fragments.forEach(f => fragById[f.id.toUpperCase()] = f); boot(); })
+    .catch(err => {
+      $('transcript').innerHTML =
+        `<div class="msg-sys">Couldn't load the fragment corpus (<code>${CORPUS_URL}</code>). ` +
+        `Make sure that file is deployed, then reload.</div>`;
+      console.error('corpus load failed', err);
+    });
+
+  function boot(){
+    const f = corpus.figure;
+    $('figHead').innerHTML =
+      `<div class="fig-kicker">Philosopher · ${esc(f.city)} · fl. ${esc(f.floruit)}</div>` +
+      `<div class="fig-name">${esc(f.name)}<span class="grc">${esc(f.greek)}</span></div>` +
+      `<div class="fig-meta">${esc(f.era)} · concepts: ${f.concepts.slice(0,6).map(esc).join(', ')}</div>`;
+
+    // legend from the corpus's own provenance key
+    const pk = corpus.provenance_key;
+    $('legend').innerHTML = ['P','R','L','S','T'].map(k =>
+      `<div class="legend-item"><span class="legend-key">${k}</span><span>${esc(pk[k])}</span></div>`).join('');
+
+    // fragment browser
+    $('fragList').innerHTML = corpus.fragments
+      .map(fr => `<button class="frag-btn" data-id="${fr.id}">${fr.id}</button>`).join('');
+    $('fragList').addEventListener('click', e => {
+      const id = e.target.getAttribute('data-id'); if (id) showCite(id);
+    });
+    $('fragNote').textContent = `${corpus.fragments.length} verified fragments · ${corpus._meta.status}`;
+
+    // opening greeting (client-side; not sent to the model)
+    addFigure(`${esc(f.greetingEn)}`, f.greetingGrc);
+
+    // suggested prompts from signature questions
+    $('prompts').innerHTML = f.signatureQuestions
+      .map(q => `<button class="prompt-chip">${esc(q)}</button>`).join('');
+    $('prompts').addEventListener('click', e => {
+      if (e.target.classList.contains('prompt-chip')) { $('input').value = e.target.textContent; send(); }
+    });
+
+    if (!AGORA_ENDPOINT) {
+      addSystem("Read-only preview. Connect the agora-chat endpoint in this page's config to begin the conversation. You can still browse every fragment on the right.");
+      $('send').disabled = true; $('input').disabled = true;
+      $('input').placeholder = "Chat is offline in preview";
+    }
+  }
+
+  // ── Rendering ──────────────────────────────────────────────────────────────
+  function addUser(text){
+    const el = document.createElement('div');
+    el.className = 'msg msg-user'; el.textContent = text;
+    $('transcript').appendChild(el); scroll();
+  }
+  function addFigure(text, grc){
+    const el = document.createElement('div');
+    el.className = 'msg msg-fig';
+    el.innerHTML = `<div class="who">${esc(corpus.figure.name)}</div><div class="body">${renderReply(text)}</div>` +
+      (grc ? `<div class="msg-grc">${esc(grc)}</div>` : '');
+    $('transcript').appendChild(el); wireChips(el); scroll();
+  }
+  function addSystem(text){
+    const el = document.createElement('div');
+    el.className = 'msg-sys'; el.textContent = text;
+    $('transcript').appendChild(el); scroll();
+  }
+  function scroll(){ const t = $('transcript'); t.scrollTop = t.scrollHeight; }
+
+  // turn [B30], [B51, B53], [R], [S], [L] into chips; split paragraphs
+  function renderReply(text){
+    return esc(text).split(/\n{2,}/).map(para =>
+      '<p>' + para.replace(/\n/g,'<br>').replace(/\[([^\]\n]{1,60})\]/g, (m, inner) => {
+        const parts = inner.split(',').map(s => s.trim()).filter(Boolean);
+        return parts.map(tok => {
+          const up = tok.toUpperCase();
+          if (fragById[up]) return `<span class="pv pv-frag" data-frag="${up}">${up}</span>`;
+          if (['P','R','L','S','T'].includes(up)) return `<span class="pv pv-${up}" title="${esc(corpus.provenance_key[up]||'')}">${up}</span>`;
+          return `<span class="pv pv-unknown" title="Not a fragment in the loaded corpus">${esc(tok)}</span>`;
+        }).join('');
+      }) + '</p>').join('');
+  }
+  function wireChips(scope){
+    scope.querySelectorAll('.pv-frag').forEach(chip =>
+      chip.addEventListener('click', () => showCite(chip.getAttribute('data-frag'))));
+  }
+
+  function showCite(id){
+    const fr = fragById[id.toUpperCase()]; if (!fr) return;
+    const t = corpus.provenance_key[fr.type] || '';
+    $('cite').innerHTML =
+      `<div class="cite-id">${esc(fr.id)}</div>` +
+      `<div class="cite-type">${fr.type} · ${esc(t.split('—')[0].trim())}</div>` +
+      `<div class="cite-tr">“${esc(fr.translation)}”</div>` +
+      (fr.greek ? `<div class="cite-grc">${esc(fr.greek)}</div>` : '') +
+      `<div class="cite-wit"><b>Preserved by</b> ${esc(fr.witness)}<br>${esc(fr.translation_source)}</div>` +
+      (fr.note ? `<div class="cite-note">Disputed: ${esc(fr.note)}</div>` : '');
+  }
+
+  // ── Sending ────────────────────────────────────────────────────────────────
+  async function send(){
+    if (busy || !AGORA_ENDPOINT) return;
+    const input = $('input'); const text = input.value.trim();
+    if (!text) return;
+    input.value = ''; autogrow(); addUser(text);
+    history.push({ role:'user', content:text });
+    busy = true; $('send').disabled = true;
+
+    const typing = document.createElement('div');
+    typing.className = 'typing'; typing.textContent = 'Heraclitus is considering…';
+    $('transcript').appendChild(typing); scroll();
+
+    try {
+      const res = await fetch(AGORA_ENDPOINT, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ figure_id: FIGURE_ID, messages: history })
+      });
+      typing.remove();
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.error) {
+        addSystem(data.error || `The agora is quiet (error ${res.status}). Try again in a moment.`);
+      } else {
+        addFigure(data.reply || '…');
+        history.push({ role:'assistant', content: data.reply || '' });
+      }
+    } catch (e) {
+      typing.remove();
+      addSystem("Couldn't reach the agora. Check your connection and try again.");
+      console.error(e);
+    } finally {
+      busy = false; $('send').disabled = false; input.focus();
+    }
+  }
+
+  // ── Composer wiring ────────────────────────────────────────────────────────
+  function autogrow(){ const i = $('input'); i.style.height='auto'; i.style.height = Math.min(i.scrollHeight,140)+'px'; }
+  $('input').addEventListener('input', autogrow);
+  $('input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+  $('send').addEventListener('click', send);
+})();
+</script>
+</body>
+</html>
