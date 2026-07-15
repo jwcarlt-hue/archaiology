@@ -6,6 +6,7 @@
 <title>Sky Archive — archAIology Archaeoastronomy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 <style>
 :root {
   --cream:#faf8f3; --paper:#f2ede3; --linen:#e8e0d0; --rule:#d5ccb8;
@@ -148,6 +149,101 @@ a{text-decoration:none;color:inherit;}
 /* FOOTER */
 .footer{background:rgba(5,8,16,.95);color:rgba(200,216,240,.3);text-align:center;padding:1.5rem;font-family:var(--sans);font-size:.68rem;border-top:1px solid rgba(200,216,240,.06);}
 .footer a{color:var(--ochre);}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* SKY TABS                                                    */
+/* ═══════════════════════════════════════════════════════════ */
+.sky-tabs{
+  background:rgba(5,8,16,.92);
+  border-bottom:1px solid rgba(200,216,240,.08);
+  position:sticky;top:48px;z-index:90;
+  backdrop-filter:blur(8px);
+}
+.sky-tabs-inner{
+  max-width:1280px;margin:0 auto;padding:0 2rem;
+  display:flex;gap:0;overflow-x:auto;scrollbar-width:none;
+}
+.sky-tabs-inner::-webkit-scrollbar{display:none;}
+.sky-tab{
+  font-family:var(--sans);font-size:.66rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.45);
+  background:none;border:none;border-bottom:2px solid transparent;
+  padding:.9rem 1.1rem;cursor:pointer;white-space:nowrap;
+  transition:color .18s,border-color .18s;
+}
+.sky-tab:hover{color:rgba(200,216,240,.8);}
+.sky-tab.active{color:var(--ochre-lt);border-bottom-color:var(--ochre);}
+.tabpanel{display:none;}
+.tabpanel.active{display:block;}
+@media(max-width:900px){.sky-tabs-inner{padding:0 1rem;}.sky-tab{padding:.8rem .7rem;font-size:.6rem;}}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* ASTRONOMER AVATAR (model-viewer — same pattern as maritime)  */
+/* ═══════════════════════════════════════════════════════════ */
+.astro-hero{
+  max-width:1280px;margin:0 auto;padding:2rem 2rem 0;
+  display:grid;grid-template-columns:minmax(0,420px) 1fr;gap:2rem;align-items:center;
+}
+@media(max-width:900px){.astro-hero{grid-template-columns:1fr;padding:1.5rem 1rem 0;}}
+.astro-viewer{
+  position:relative;height:380px;overflow:hidden;
+  border:1px solid rgba(200,216,240,.08);
+  background:radial-gradient(ellipse at 50% 60%, rgba(26,58,92,.55) 0%, var(--night) 72%);
+}
+@media(max-width:900px){.astro-viewer{height:300px;}}
+.astro-viewer model-viewer{
+  width:100%;height:100%;background:transparent;
+  --progress-bar-color:var(--ochre);
+  --progress-mask:transparent;
+}
+.astro-viewer-label{
+  position:absolute;bottom:.9rem;left:50%;transform:translateX(-50%);
+  font-family:var(--sans);font-size:.54rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.28);pointer-events:none;white-space:nowrap;
+}
+.astro-viewer-controls{
+  position:absolute;top:.8rem;right:.8rem;
+  display:flex;flex-direction:column;gap:.35rem;z-index:2;
+}
+.astro-vc-btn{
+  width:28px;height:28px;background:rgba(5,8,16,.7);
+  border:1px solid rgba(200,216,240,.1);
+  color:rgba(200,216,240,.45);cursor:pointer;font-size:.75rem;
+  display:flex;align-items:center;justify-content:center;transition:all .14s;
+}
+.astro-vc-btn:hover{color:var(--star);border-color:rgba(200,216,240,.25);}
+.astro-placeholder{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:100%;height:100%;gap:.8rem;color:rgba(200,216,240,.2);
+  font-family:var(--sans);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+}
+.astro-meta{min-width:0;}
+.astro-eyebrow{
+  font-family:var(--sans);font-size:.58rem;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ochre);
+  display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem;
+}
+.astro-eyebrow::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--ochre);box-shadow:0 0 8px var(--ochre);
+}
+.astro-name{
+  font-family:var(--serif);font-size:clamp(1.5rem,2.6vw,2.1rem);
+  font-weight:900;color:var(--cream);line-height:1.15;
+  letter-spacing:-.01em;margin-bottom:.35rem;
+}
+.astro-name em{color:var(--ochre-lt);font-style:italic;}
+.astro-dates{
+  font-family:var(--sans);font-size:.66rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.4);margin-bottom:.9rem;
+}
+.astro-bio{
+  font-family:var(--body);font-size:.86rem;line-height:1.7;
+  color:rgba(200,216,240,.62);max-width:56ch;
+}
 </style>
 </head>
 <body>
@@ -181,6 +277,21 @@ a{text-decoration:none;color:inherit;}
   </div>
 </div>
 
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SKY ARCHIVE TAB BAR                                         -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<nav class="sky-tabs">
+  <div class="sky-tabs-inner" id="skyTabsInner">
+    <button class="sky-tab active" data-tab="main">Sky Archive</button>
+    <button class="sky-tab" data-tab="maya">Maya Astronomy</button>
+    <button class="sky-tab" data-tab="greco">Greek &amp; Roman Astronomy</button>
+    <button class="sky-tab" data-tab="neareast">Near Eastern Astronomy</button>
+    <button class="sky-tab" data-tab="egypt">Egyptian Astronomy</button>
+  </div>
+</nav>
+
+<div class="tabpanel active" id="tab-main">
 <!-- CONTROLS -->
 <div class="sky-controls">
   <div class="sky-controls-inner">
@@ -274,11 +385,6 @@ a{text-decoration:none;color:inherit;}
 <!-- SIDEBAR -->
 <aside class="sky-sidebar">
 
-  <!-- CONFERENCE CALENDAR LINK -->
-  <div style="margin-bottom:1rem;">
-    <a href="conferences.html" style="display:block;background:rgba(184,137,42,.08);border:1px solid rgba(184,137,42,.25);padding:.7rem 1rem;font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ochre);text-align:center;text-decoration:none;transition:background .2s;">Conference Calendar →</a>
-  </div>
-
   <!-- CURRENT SKY INFO -->
   <div class="sidebar-card">
     <div class="sidebar-label">Current Selection</div>
@@ -355,10 +461,783 @@ a{text-decoration:none;color:inherit;}
     </div>
   </div>
 </div>
+<section class="moon-section">
+<div class="moon-section-inner">
 
+  <div class="moon-eyebrow">Meeus · Astronomical Formulae for Calculators · Ch. 32</div>
+  <h2 class="moon-title">Moon <em>Phase</em> Calculator</h2>
+  <p class="moon-intro">Precise lunar phase times computed from Meeus (1988) Ch. 32 formulae — accurate to within ~2 minutes over thousands of years. Enter any date to find the nearest New Moon, First Quarter, Full Moon, and Last Quarter, with Julian Day numbers and Maya Long Count cross-references.</p>
+
+  <!-- MAIN: dial + input -->
+  <div class="moon-main-grid">
+
+    <!-- Phase dial -->
+    <div class="moon-dial-card">
+      <svg class="moon-svg" viewBox="0 0 180 180" id="moonSVG">
+        <defs>
+          <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#e8d8b0" stop-opacity=".12"/>
+            <stop offset="100%" stop-color="#050810" stop-opacity="0"/>
+          </radialGradient>
+          <clipPath id="moonClip">
+            <circle cx="90" cy="90" r="72"/>
+          </clipPath>
+        </defs>
+        <!-- Glow -->
+        <circle cx="90" cy="90" r="84" fill="url(#moonGlow)"/>
+        <!-- Dark disc -->
+        <circle cx="90" cy="90" r="72" fill="#0a0e1a" stroke="rgba(200,216,240,.12)" stroke-width="1"/>
+        <!-- Illuminated portion — drawn by JS -->
+        <g id="moonIllum" clip-path="url(#moonClip)"></g>
+        <!-- Subtle crater marks -->
+        <g clip-path="url(#moonClip)" opacity=".08">
+          <circle cx="74" cy="80" r="8" fill="none" stroke="#c8d8f0" stroke-width="1.5"/>
+          <circle cx="102" cy="68" r="5" fill="none" stroke="#c8d8f0" stroke-width="1"/>
+          <circle cx="88" cy="108" r="6" fill="none" stroke="#c8d8f0" stroke-width="1"/>
+          <circle cx="115" cy="95" r="4" fill="none" stroke="#c8d8f0" stroke-width="1"/>
+        </g>
+      </svg>
+
+      <div class="moon-phase-name-lg" id="dialPhaseName">—</div>
+      <div class="moon-age-text" id="dialAgeText">Enter a date to calculate</div>
+      <div class="moon-illumination" id="dialIllum"></div>
+    </div>
+
+    <!-- Input -->
+    <div class="moon-input-card">
+      <div class="moon-card-title">Calculate Phase for Date</div>
+
+      <div class="moon-field">
+        <label class="moon-label">Date</label>
+        <input class="moon-input" type="date" id="moonDateInput">
+      </div>
+
+      <button class="moon-btn" onclick="calcMoonPhase()">Calculate Lunar Phase →</button>
+
+      <div id="moonResults" style="display:none; margin-top:1.2rem;">
+        <div class="moon-results-grid" id="moonResultGrid"></div>
+        <div class="moon-maya-xref" id="moonMayaXref"></div>
+        <p class="moon-source">Formulae: Meeus, <em>Astronomical Formulae for Calculators</em>, 4th ed. (1988), Ch. 32. Accuracy ~2 min over 3000 BCE–3000 CE.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase sequence strip — nearest 4 phases -->
+  <div class="moon-card-title" style="margin-bottom:.6rem;">Nearest phases from selected date</div>
+  <div class="phase-strip" id="phaseStrip">
+    <div class="phase-cell" style="grid-column:span 8;color:rgba(200,216,240,.3);font-size:.72rem;text-align:center;padding:1rem;">
+      Enter a date above to see the phase sequence.
+    </div>
+  </div>
+
+  <!-- Range finder -->
+  <div class="moon-range-card">
+    <div class="moon-card-title">Phase Range Finder</div>
+    <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.4);margin-bottom:1rem;line-height:1.5;">
+      Find all New Moons, Full Moons, or all phases within a year — useful for
+      locating eclipse windows and cross-referencing with the Dresden Codex.
+    </p>
+    <div class="moon-range-grid">
+      <div class="moon-range-field">
+        <label class="moon-label">Year</label>
+        <input class="moon-mini-input" type="number" id="rangeYear" value="771" min="-3000" max="3000" style="width:90px;">
+      </div>
+      <div class="moon-range-field">
+        <label class="moon-label">Phase</label>
+        <select class="moon-mini-input" id="rangePhase" style="width:140px;">
+          <option value="0">New Moon</option>
+          <option value="0.25">First Quarter</option>
+          <option value="0.5">Full Moon</option>
+          <option value="0.75">Last Quarter</option>
+          <option value="all">All phases</option>
+        </select>
+      </div>
+      <button class="moon-btn moon-btn-sm" onclick="calcRange()">Find →</button>
+    </div>
+    <div id="rangeResults" style="margin-top:1rem;"></div>
+  </div>
+
+</div>
+</section>
+<section class="ecl-section">
+<div class="ecl-inner">
+
+  <div class="ecl-eyebrow">Meeus · Astronomical Formulae for Calculators · Ch. 33</div>
+  <h2 class="ecl-title">Eclipse <em>Finder</em></h2>
+  <p class="ecl-intro">Full Meeus Ch. 33 eclipse algorithm — computes solar and lunar eclipse type, magnitude, and (for lunar) partial and total phase semiduration for any New or Full Moon back to 3000 BCE. Includes Dresden Codex cross-reference against the 405-lunation eclipse table.</p>
+
+  <!-- Controls -->
+  <div class="ecl-controls">
+    <div class="ecl-field">
+      <label class="ecl-label">Date</label>
+      <input class="ecl-input" type="date" id="eclDateInput" style="width:150px;">
+    </div>
+    <div class="ecl-field">
+      <label class="ecl-label">Eclipse type</label>
+      <select class="ecl-input ecl-select" id="eclTypeInput" style="width:130px;">
+        <option value="both">Solar &amp; Lunar</option>
+        <option value="solar">Solar only</option>
+        <option value="lunar">Lunar only</option>
+      </select>
+    </div>
+    <button class="ecl-btn" onclick="calcEclipse()">Analyse →</button>
+  </div>
+
+  <!-- Main layout: diagram + detail -->
+  <div class="ecl-main-grid">
+
+    <!-- Diagram -->
+    <div class="ecl-diagram-card">
+      <svg class="ecl-svg" viewBox="0 0 240 240" id="eclSVG">
+        <defs>
+          <radialGradient id="earthGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1a3a6c"/>
+            <stop offset="100%" stop-color="#0a1428"/>
+          </radialGradient>
+          <radialGradient id="moonGrad2" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#d0c8a0"/>
+            <stop offset="100%" stop-color="#7a7260"/>
+          </radialGradient>
+          <radialGradient id="sunGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fff8d0"/>
+            <stop offset="100%" stop-color="#f0c040"/>
+          </radialGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Background -->
+        <rect width="240" height="240" fill="#050810"/>
+        <!-- Placeholder text -->
+        <text x="120" y="110" text-anchor="middle" font-family="sans-serif"
+              font-size="11" fill="rgba(200,216,240,.2)">Enter a date to</text>
+        <text x="120" y="128" text-anchor="middle" font-family="sans-serif"
+              font-size="11" fill="rgba(200,216,240,.2)">analyse eclipses</text>
+      </svg>
+
+      <div class="ecl-type-badge ecl-type-none" id="eclTypeBadge">—</div>
+
+      <div class="ecl-magnitude-row" id="eclMagRow" style="display:none">
+        <div class="ecl-mag-label"><span>Magnitude</span><span id="eclMagVal">—</span></div>
+        <div class="ecl-mag-track"><div class="ecl-mag-fill" id="eclMagFill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Detail -->
+    <div class="ecl-detail-card">
+      <div class="ecl-card-title" id="eclDetailTitle">Nearest Eclipse Analysis</div>
+
+      <div id="eclNoResult" style="color:rgba(200,216,240,.3);font-size:.78rem;padding:.5rem 0;">
+        Enter a date above to find the nearest solar and lunar eclipses.
+      </div>
+
+      <div id="eclDetailBody" style="display:none">
+        <div class="ecl-result-grid" id="eclResultGrid"></div>
+
+        <!-- Lunar durations (shown only for lunar eclipses) -->
+        <div id="eclDurBlock" style="display:none; margin:.8rem 0;">
+          <div class="ecl-card-title">Umbral phase durations</div>
+          <div class="ecl-dur-row">
+            <div class="ecl-dur-lbl">Partial phase</div>
+            <div class="ecl-dur-track"><div class="ecl-dur-fill" id="durPartialFill" style="width:0%"></div></div>
+            <div class="ecl-dur-val" id="durPartialVal">—</div>
+          </div>
+          <div class="ecl-dur-row">
+            <div class="ecl-dur-lbl">Total phase</div>
+            <div class="ecl-dur-track"><div class="ecl-dur-fill" id="durTotalFill" style="width:0%;background:#ff7050"></div></div>
+            <div class="ecl-dur-val" id="durTotalVal">—</div>
+          </div>
+        </div>
+
+        <div class="ecl-dresden" id="eclDresden"></div>
+        <p class="ecl-source">Formulae: Meeus, <em>Astronomical Formulae for Calculators</em>, 4th ed. (1988), Ch. 33. Solar magnitude is at point of greatest eclipse; times in Ephemeris Time. Lunar durations are semidurations (half the total phase length).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Range scanner -->
+  <div class="ecl-list-card">
+    <div class="ecl-card-title">Eclipse Range Scanner</div>
+    <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.4);margin-bottom:1rem;line-height:1.5;">
+      Scan any year range for all solar and lunar eclipses. Click a row to load it into the analyser above.
+      Useful for mapping eclipse windows against the 405-lunation Dresden Codex table.
+    </p>
+    <div class="ecl-range-controls">
+      <div class="ecl-field">
+        <label class="ecl-label">From year</label>
+        <input class="ecl-input" type="number" id="scanFrom" value="750" style="width:90px;" min="-3000" max="3000">
+      </div>
+      <div class="ecl-field">
+        <label class="ecl-label">To year</label>
+        <input class="ecl-input" type="number" id="scanTo"   value="775" style="width:90px;" min="-3000" max="3000">
+      </div>
+      <div class="ecl-field">
+        <label class="ecl-label">Filter</label>
+        <select class="ecl-input ecl-select" id="scanFilter" style="width:140px;">
+          <option value="all">All eclipses</option>
+          <option value="solar">Solar only</option>
+          <option value="lunar">Lunar only</option>
+          <option value="total">Total/Annular only</option>
+        </select>
+      </div>
+      <button class="ecl-btn" onclick="scanEclipses()">Scan →</button>
+    </div>
+    <div id="eclListWrap">
+      <div style="color:rgba(200,216,240,.25);font-size:.72rem;">
+        Default range 750–775 CE spans Katun 9.17 and the Dresden Codex Venus table era. Click Scan to populate.
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+<section class="sol-section">
+<div class="sol-inner">
+
+  <div class="sol-eyebrow">Meeus &middot; Astronomical Formulae for Calculators &middot; Ch. 20 &amp; 18</div>
+  <h2 class="sol-title">Solar <em>Stations</em> Panel</h2>
+  <p class="sol-intro">The four solar turning points &mdash; vernal equinox, summer solstice, autumnal equinox, winter solstice &mdash; computed to ~15-minute accuracy from Meeus (1988) Ch. 20 polynomial formulae for any year 3000 BCE&ndash;3000 CE. Includes obliquity of the ecliptic (Ch. 18), Maya Long Count cross-references, and a multi-year timeline for archaeoastronomical range studies.</p>
+
+  <div class="sol-controls">
+    <div class="sol-field">
+      <label class="sol-label">Year</label>
+      <input class="sol-input" type="number" id="solYear" value="771" min="-3000" max="3000" style="width:110px;">
+    </div>
+    <button class="sol-btn" onclick="calcStations()">Calculate &rarr;</button>
+    <button class="sol-btn sol-btn-sm" onclick="setSolYear(new Date().getFullYear())">Today</button>
+    <button class="sol-btn sol-btn-sm" onclick="setSolYear(-3113)">Maya Creation</button>
+    <button class="sol-btn sol-btn-sm" onclick="setSolYear(771)">9.17.0.0.0</button>
+    <button class="sol-btn sol-btn-sm" onclick="setSolYear(-2780)">Giza Era</button>
+    <button class="sol-btn sol-btn-sm" onclick="setSolYear(-559)">Athens Classical</button>
+  </div>
+
+  <div class="sol-station-grid" id="solStationGrid">
+    <div class="sol-card spring" style="grid-column:1/-1">
+      <div style="color:rgba(200,216,240,.2);font-size:.75rem;padding:.5rem 0;">Enter a year above to calculate solar stations.</div>
+    </div>
+  </div>
+
+  <div class="sol-context-grid">
+    <div class="sol-context-card">
+      <div class="sol-context-title">Obliquity of the Ecliptic &mdash; &epsilon;</div>
+      <div class="sol-obliq-value" id="solObliqVal">&mdash;</div>
+      <div class="sol-obliq-sub" id="solObliqSub">The tilt of Earth's axis to the ecliptic plane</div>
+      <div class="sol-obliq-gauge">
+        <div class="sol-obliq-fill" id="solObliqFill" style="width:50%"></div>
+        <div class="sol-obliq-marker" id="solObliqMarker" style="left:48%"></div>
+      </div>
+      <div class="sol-obliq-labels"><span>22.0&deg;</span><span>23.0&deg;</span><span>24.0&deg;</span><span>25.0&deg;</span></div>
+      <div style="margin-top:.8rem">
+        <div class="sol-info-row"><span class="sol-info-k">Current value (2026)</span><span class="sol-info-v">23&deg;26&prime;13&Prime;</span></div>
+        <div class="sol-info-row"><span class="sol-info-k">Maya creation (3114 BCE)</span><span class="sol-info-v" id="solMayaObliq">&mdash;</span></div>
+        <div class="sol-info-row"><span class="sol-info-k">Giza pyramid era (~2780 BCE)</span><span class="sol-info-v" id="solGizaObliq">&mdash;</span></div>
+        <div class="sol-info-row"><span class="sol-info-k">Range over 40,000 years</span><span class="sol-info-v">22.1&deg; &ndash; 24.5&deg;</span></div>
+      </div>
+    </div>
+    <div class="sol-context-card">
+      <div class="sol-context-title">Year Summary</div>
+      <div id="solYearSummary" style="color:rgba(200,216,240,.25);font-size:.72rem;">
+        Calculate a year to see its solar calendar summary.
+      </div>
+    </div>
+  </div>
+
+  <div class="sol-timeline-card">
+    <div class="sol-context-title">Multi-Year Solar Station Timeline</div>
+    <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.4);margin-bottom:1rem;line-height:1.5;">
+      Generate a timeline of solstice and equinox dates for any year range. Click any year to load it into the main calculator. Useful for correlating architectural alignments and Long Count period endings.
+    </p>
+    <div class="sol-range-controls">
+      <div class="sol-field">
+        <label class="sol-label">From year</label>
+        <input class="sol-input" type="number" id="solRangeFrom" value="768" style="width:90px;" min="-3000" max="3000">
+      </div>
+      <div class="sol-field">
+        <label class="sol-label">To year</label>
+        <input class="sol-input" type="number" id="solRangeTo" value="775" style="width:90px;" min="-3000" max="3000">
+      </div>
+      <div class="sol-field">
+        <label class="sol-label">Show</label>
+        <select class="sol-input" id="solRangeShow" style="width:160px;-webkit-appearance:none;">
+          <option value="all">All four stations</option>
+          <option value="equinox">Equinoxes only</option>
+          <option value="solstice">Solstices only</option>
+          <option value="march">March equinox only</option>
+          <option value="june">June solstice only</option>
+          <option value="sept">September equinox only</option>
+          <option value="dec">December solstice only</option>
+        </select>
+      </div>
+      <button class="sol-btn sol-btn-sm" onclick="calcTimeline()">Generate &rarr;</button>
+    </div>
+    <div id="solTimeline">
+      <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.25);">
+        Default range 768&ndash;775 CE spans the Katun 9.17 era. Click Generate to populate.
+      </p>
+    </div>
+  </div>
+
+</div>
+</section>
+$\n</div><!-- /tabpanel -->\n
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB: Maya Astronomy · Xultun ───────-->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="tabpanel" id="tab-maya">
+
+  <div class="astro-hero">
+    <div class="astro-viewer" id="astroViewer_maya">
+      <div class="astro-placeholder" id="astroPlaceholder_maya">
+        <div style="font-size:1.6rem;opacity:.5;">✦</div>
+        <div>Loading astronomer…</div>
+      </div>
+      <div class="astro-viewer-controls" id="astroControls_maya" style="display:none;">
+        <button class="astro-vc-btn" id="astroRotateBtn_maya" onclick="astroToggleAutoRotate('maya')" title="Toggle auto-rotate">↻</button>
+        <button class="astro-vc-btn" onclick="astroResetCamera('maya')" title="Reset view">⌂</button>
+      </div>
+      <div class="astro-viewer-label" id="astroLabel_maya"></div>
+    </div>
+    <div class="astro-meta">
+      <div class="astro-eyebrow">Maya Astronomy · Xultun</div>
+      <div class="astro-name">Sak Tahn <em>Waax</em></div>
+      <div class="astro-dates">Maya astronomer · Xultun · 8th century CE</div>
+      <p class="astro-bio">Named in the painted numerals of Structure 10K-2 at Xultun, Guatemala — a scribal workroom whose walls carry lunar tables and long-interval calculations running far beyond a single human lifetime. The Xultun texts show working astronomers refining the fit between the 260-day count, the solar year, and the cycles of the Moon and Venus.</p>
+    </div>
+  </div>
+<section class="maya-section">
+<div class="maya-section-inner">
+
+  <div class="maya-eyebrow">TWKM · Bonn · Maya Calendar Engine</div>
+  <h2 class="maya-title">Maya <em>Calendar</em> & Astronomy</h2>
+  <p class="maya-intro">Convert any date between the Maya Long Count, Calendar Round (Tzolkʼin + Haabʼ), and Gregorian calendar. Calculate moon age, eclipse windows, and the 819-day count. Powered by the same algorithms as the TWKM Calendar Calculator (Universität Bonn).</p>
+
+  <div class="maya-calc-grid">
+
+    <!-- LEFT: Date converter -->
+    <div class="maya-card">
+      <div class="maya-card-title">Date Converter</div>
+
+      <div class="maya-presets" id="maya-presets">
+        <button class="maya-preset" data-lc="13.0.0.0.0"    data-label="13th Bʼakʼtun">13th Bʼakʼtun</button>
+        <button class="maya-preset" data-lc="9.17.0.0.0"    data-label="Katun 9.17">Katun 9.17</button>
+        <button class="maya-preset" data-lc="9.9.2.4.8"     data-label="Pakal's Birth">Pakal's Birth</button>
+        <button class="maya-preset" data-lc="9.12.11.5.18"  data-label="Pakal's Accession">Accession</button>
+        <button class="maya-preset" data-lc="0.0.0.0.0"     data-label="Creation Date">Creation</button>
+        <button class="maya-preset" data-lc="9.15.0.0.0"    data-label="Venus Table">Venus Table</button>
+      </div>
+
+      <div class="maya-field" style="margin-bottom:.7rem;">
+        <label class="maya-label">Long Count Date</label>
+        <div style="display:flex;gap:.5rem;">
+          <input class="maya-input" id="lc-input" placeholder="e.g. 9.17.0.0.0" style="font-family:'DM Mono',monospace;letter-spacing:.06em;">
+          <button class="maya-btn" onclick="convertLC()">Convert</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:.7rem;margin:.5rem 0;">
+        <div style="flex:1;height:1px;background:rgba(200,216,240,.06)"></div>
+        <span style="font-size:.55rem;color:rgba(200,216,240,.25);letter-spacing:.1em">OR</span>
+        <div style="flex:1;height:1px;background:rgba(200,216,240,.06)"></div>
+      </div>
+
+      <div class="maya-field" style="margin-bottom:.7rem;">
+        <label class="maya-label">Gregorian Date</label>
+        <div style="display:flex;gap:.5rem;">
+          <input class="maya-input" id="greg-input" type="date" value="2024-12-21">
+          <button class="maya-btn" onclick="convertGreg()">Convert</button>
+        </div>
+      </div>
+
+      <div id="convert-results" style="display:none;">
+        <div class="maya-result-grid" id="result-grid"></div>
+        <div class="moon-phase-display" id="moon-display">
+          <div class="moon-phase-icon" id="moon-icon">🌕</div>
+          <div class="moon-phase-info">
+            <div class="moon-phase-name" id="moon-name">Full Moon</div>
+            <div class="moon-phase-age" id="moon-age">Day 15 of lunar month</div>
+          </div>
+        </div>
+        <div class="eclipse-alert" id="eclipse-alert">
+          <div class="eclipse-alert-title">☀️ Eclipse window</div>
+          <div class="eclipse-alert-body" id="eclipse-body"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Cycle explorer -->
+    <div class="maya-card">
+      <div class="maya-card-title">Cycle Explorer</div>
+
+      <div id="cycle-display" style="color:rgba(200,216,240,.3);font-size:.78rem;padding:.5rem 0;">
+        Enter a date above to explore its position in each Maya cycle.
+      </div>
+
+      <div id="cycle-bars" style="display:none;">
+        <div class="cycle-bar-wrap">
+          <div class="cycle-bar-row">
+            <div class="cycle-bar-lbl">Tzolkʼin (260)</div>
+            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-tzolkin" style="width:0%"></div></div>
+            <div class="cycle-bar-val" id="val-tzolkin">—</div>
+          </div>
+          <div class="cycle-bar-row">
+            <div class="cycle-bar-lbl">Haabʼ (365)</div>
+            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-haab" style="width:0%"></div></div>
+            <div class="cycle-bar-val" id="val-haab">—</div>
+          </div>
+          <div class="cycle-bar-row">
+            <div class="cycle-bar-lbl">Cal. Round (52 yr)</div>
+            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-cr" style="width:0%;background:#80a8d8"></div></div>
+            <div class="cycle-bar-val" id="val-cr">—</div>
+          </div>
+          <div class="cycle-bar-row">
+            <div class="cycle-bar-lbl">819-Day</div>
+            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-819" style="width:0%;background:#9070b0"></div></div>
+            <div class="cycle-bar-val" id="val-819">—</div>
+          </div>
+          <div class="cycle-bar-row">
+            <div class="cycle-bar-lbl">Venus (584)</div>
+            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-venus" style="width:0%;background:#c8a030"></div></div>
+            <div class="cycle-bar-val" id="val-venus">—</div>
+          </div>
+          <div class="cycle-bar-row">
+            <div class="cycle-bar-lbl">Katun (7200)</div>
+            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-katun" style="width:0%;background:#507080"></div></div>
+            <div class="cycle-bar-val" id="val-katun">—</div>
+          </div>
+        </div>
+
+        <div style="margin-top:1.2rem;">
+          <div class="maya-card-title">Day glyphs</div>
+          <div class="maya-glyph-row" id="glyph-row"></div>
+        </div>
+
+        <div style="margin-top:1rem;">
+          <div class="maya-card-title">819-Day station</div>
+          <div id="station-819" style="font-size:.75rem;color:rgba(200,216,240,.5);line-height:1.6;"></div>
+        </div>
+      </div>
+
+      <a class="twkm-link" id="twkm-link" href="https://classicmayan.org/calendar-calculations/" target="_blank" rel="noopener">
+        → Open in TWKM Calculator
+      </a>
+    </div>
+  </div>
+
+  <!-- Notable Maya dates -->
+  <div class="maya-card-title" style="margin-bottom:.8rem;">Notable dates in the Maya calendar</div>
+  <div class="maya-dates-grid" id="notable-dates"></div>
+
+</div>
+</section>
+$\n</div><!-- /tabpanel -->\n
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB: Greek & Roman Astronomy · Miletus -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="tabpanel" id="tab-greco">
+
+  <div class="astro-hero">
+    <div class="astro-viewer" id="astroViewer_greco">
+      <div class="astro-placeholder" id="astroPlaceholder_greco">
+        <div style="font-size:1.6rem;opacity:.5;">✦</div>
+        <div>Loading astronomer…</div>
+      </div>
+      <div class="astro-viewer-controls" id="astroControls_greco" style="display:none;">
+        <button class="astro-vc-btn" id="astroRotateBtn_greco" onclick="astroToggleAutoRotate('greco')" title="Toggle auto-rotate">↻</button>
+        <button class="astro-vc-btn" onclick="astroResetCamera('greco')" title="Reset view">⌂</button>
+      </div>
+      <div class="astro-viewer-label" id="astroLabel_greco"></div>
+    </div>
+    <div class="astro-meta">
+      <div class="astro-eyebrow">Greek &amp; Roman Astronomy · Miletus</div>
+      <div class="astro-name">Anaximander <em>of Miletus</em></div>
+      <div class="astro-dates">c. 610 – c. 546 BCE</div>
+      <p class="astro-bio">The Milesian who first proposed that the Earth hangs unsupported at the centre of things, held in place by nothing but symmetry. He is credited in the doxographic tradition with the gnomon, a map of the inhabited world, and a model of the heavens built from proportion rather than myth — the earliest surviving attempt to give the cosmos a geometry.</p>
+    </div>
+  </div>
+<section class="rom-section" id="roman-calendar">
+<div class="rom-section-inner">
+
+  <div class="rom-eyebrow">Cambridge School Classics Project · Cambridge Latin Anthology</div>
+  <h2 class="rom-title">Roman <em>Date</em> Calculator</h2>
+  <p class="rom-intro">Convert any Gregorian date into the Roman civil calendar — Kalends, Nones, and Ides, reckoned inclusively backward from the next fixed point in the month, in the manner of Roman timekeeping. Widget maintained by the Cambridge School Classics Project (University of Cambridge).</p>
+
+  <div class="rom-grid">
+
+    <!-- LEFT: main converter widget -->
+    <div class="rom-card">
+      <div class="rom-card-title">
+        <span>Date Converter</span>
+        <a class="rom-open-link" href="https://www.cla.cambridgescp.com/roman-date-calculator" target="_blank" rel="noopener">Open source page ↗</a>
+      </div>
+      <div class="rom-iframe-wrap" id="romConverterWrap">
+        <iframe
+          id="romConverterIframe"
+          data-src="https://files.cambridgescp.com/Widgets/datecalculator.html"
+          src=""
+          title="Roman Date Calculator — Cambridge School Classics Project"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          sandbox="allow-scripts allow-same-origin allow-forms"
+        ></iframe>
+      </div>
+      <div class="rom-blocked" id="romConverterBlocked">
+        <div class="rom-blocked-title">Widget could not be embedded</div>
+        <div class="rom-blocked-body">The Cambridge widget may be blocking cross-origin frames. Use the direct link instead.</div>
+        <a class="rom-blocked-link" href="https://www.cla.cambridgescp.com/roman-date-calculator" target="_blank" rel="noopener">Open calculator in new tab ↗</a>
+      </div>
+      <div class="rom-source">Widget © University of Cambridge School Classics Project. Source: <a href="https://www.cla.cambridgescp.com/roman-date-calculator" target="_blank" rel="noopener">cla.cambridgescp.com/roman-date-calculator</a></div>
+    </div>
+
+    <!-- RIGHT: today's date widget + notes -->
+    <div>
+      <div class="rom-card">
+        <div class="rom-card-title"><span>Today, in Roman Reckoning</span></div>
+        <div class="rom-iframe-wrap rom-today-wrap" id="romTodayWrap">
+          <iframe
+            id="romTodayIframe"
+            data-src="https://files.cambridgescp.com/Widgets/date.html"
+            src=""
+            title="Today's date in the Roman calendar"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            sandbox="allow-scripts allow-same-origin allow-forms"
+          ></iframe>
+        </div>
+        <div class="rom-blocked" id="romTodayBlocked">
+          <div class="rom-blocked-title">Widget could not be embedded</div>
+          <div class="rom-blocked-body">Try the direct link instead.</div>
+          <a class="rom-blocked-link" href="https://www.cla.cambridgescp.com/roman-date-calculator" target="_blank" rel="noopener">Open in new tab ↗</a>
+        </div>
+      </div>
+
+      <div class="rom-note-card">
+        <div class="rom-note-title">How it works</div>
+        <div class="rom-note-body">Romans counted days inclusively backward from three fixed points: <strong>Kalendae</strong> (1st), <strong>Nonae</strong> (5th or 7th), and <strong>Idus</strong> (13th or 15th, depending on month). A date is expressed as "the Nth day before" the next of these — e.g. June 21st falls "ante diem XI Kalendas Iulias."</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+$\n</div><!-- /tabpanel -->\n
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB: Near Eastern Astronomy · Babylon -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="tabpanel" id="tab-neareast">
+
+  <div class="astro-hero">
+    <div class="astro-viewer" id="astroViewer_neareast">
+      <div class="astro-placeholder" id="astroPlaceholder_neareast">
+        <div style="font-size:1.6rem;opacity:.5;">✦</div>
+        <div>Loading astronomer…</div>
+      </div>
+      <div class="astro-viewer-controls" id="astroControls_neareast" style="display:none;">
+        <button class="astro-vc-btn" id="astroRotateBtn_neareast" onclick="astroToggleAutoRotate('neareast')" title="Toggle auto-rotate">↻</button>
+        <button class="astro-vc-btn" onclick="astroResetCamera('neareast')" title="Reset view">⌂</button>
+      </div>
+      <div class="astro-viewer-label" id="astroLabel_neareast"></div>
+    </div>
+    <div class="astro-meta">
+      <div class="astro-eyebrow">Near Eastern Astronomy · Babylon</div>
+      <div class="astro-name"><em>Berossus</em></div>
+      <div class="astro-dates">Early 3rd century BCE</div>
+      <p class="astro-bio">Priest of Marduk at Babylon and author of the <em>Babyloniaca</em>, written in Greek for a Hellenistic readership. Berossus stands at the hinge where the cuneiform astronomical tradition — the MUL.APIN star lists, the Diaries, the mathematical lunar theory — passed into the Greek world. Later writers made him a teacher of astronomy on Kos; how much is biography and how much legend remains unsettled.</p>
+    </div>
+  </div>
+<section class="bab-section">
+<div class="bab-inner">
+
+  <div class="bab-eyebrow">MUL.APIN · Tablet I · Hunger &amp; Steele 2018 · Taylor &amp; Francis</div>
+  <h2 class="bab-title">Babylonian <em>Star Catalogue</em></h2>
+  <p class="bab-intro">The three star paths of MUL.APIN — the most widely copied astronomical text in ancient Mesopotamia, composed before the 8th century BCE. 71 stars and constellations assigned to the paths of Enlil (north, &gt;+17° dec.), Anu (equatorial, ±17°), and Ea (south, &lt;−17°), with their Babylonian names, associated deities, heliacal rising months, and modern identifications. Rising/setting pairs from Tablet I section iii.</p>
+
+  <!-- Path tabs + search -->
+  <div class="bab-path-tabs">
+    <button class="bab-path-btn active" data-path="all" onclick="filterPath('all',this)">All Paths</button>
+    <button class="bab-path-btn enlil" data-path="enlil" onclick="filterPath('enlil',this)">⬆ Path of Enlil (N)</button>
+    <button class="bab-path-btn anu"   data-path="anu"   onclick="filterPath('anu',this)">↔ Path of Anu (Eq.)</button>
+    <button class="bab-path-btn ea"    data-path="ea"    onclick="filterPath('ea',this)">⬇ Path of Ea (S)</button>
+  </div>
+
+  <div class="bab-search-row">
+    <input class="bab-search" id="babSearch" placeholder="Search star, deity, modern name…" oninput="renderCatalogue()">
+    <select class="bab-filter-sel" id="babMonthFilter" onchange="renderCatalogue()">
+      <option value="">All heliacal months</option>
+      <option value="I">Month I (spring)</option>
+      <option value="II">Month II</option>
+      <option value="III">Month III</option>
+      <option value="IV">Month IV (summer solstice)</option>
+      <option value="V">Month V</option>
+      <option value="VI">Month VI</option>
+      <option value="VII">Month VII (autumnal eq.)</option>
+      <option value="VIII">Month VIII</option>
+      <option value="IX">Month IX</option>
+      <option value="X">Month X (winter solstice)</option>
+      <option value="XI">Month XI</option>
+      <option value="XII">Month XII</option>
+      <option value="ziqpu">Ziqpu stars only</option>
+      <option value="zodiac">Zodiac path only</option>
+    </select>
+    <span class="bab-count" id="babCount"></span>
+  </div>
+
+  <!-- Star grid -->
+  <div class="bab-grid" id="babGrid"></div>
+
+  <!-- Detail panel -->
+  <div class="bab-detail-wrap" id="babDetail" style="display:none">
+    <div class="bab-detail-card">
+      <div class="bab-detail-title">Star Record</div>
+      <div class="bab-detail-name" id="detName"></div>
+      <div class="bab-detail-cuneiform" id="detCuneiform"></div>
+      <div id="detRows"></div>
+      <div class="bab-quote" id="detQuote"></div>
+      <a class="bab-stellarium-btn" id="detStellariumBtn" href="#" target="_blank" rel="noopener">
+        ✦ View in Stellarium Web
+      </a>
+    </div>
+    <div class="bab-detail-card">
+      <div class="bab-detail-title">Astronomical Notes</div>
+      <div id="detNotes" style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.5);line-height:1.7;"></div>
+    </div>
+  </div>
+
+  <!-- Rising / Setting pairs -->
+  <div class="bab-pairs-card">
+    <div class="bab-detail-title">Simultaneously Rising &amp; Setting Stars — MUL.APIN I iii 13–33</div>
+    <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.4);margin-bottom:1rem;line-height:1.5;">
+      When one star rises on the eastern horizon, its paired star sets in the west. These 21 pairings encode Babylonian knowledge of the sky's symmetry across the meridian. Click a row to highlight both stars in the catalogue above.
+    </p>
+    <div class="bab-pairs-grid" id="babPairsGrid"></div>
+  </div>
+
+  <p class="bab-source">Source: Hunger, H. &amp; Steele, J. (2018). <em>The Babylonian Astronomical Compendium MUL.APIN.</em> Taylor &amp; Francis. Edition based on all sources known as of September 2017. Heliacal rising dates are in the Babylonian 360-day schematic calendar; Month I = Nisannu (spring). Modern identifications follow standard Assyriological scholarship (Pingree, Hunger, Koch-Westenholz). Babylonian months placed in the 360-day schematic calendar, not the observed lunar calendar.</p>
+
+</div>
+</section>
+$\n</div><!-- /tabpanel -->\n
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB: Egyptian Astronomy · Thebes ───-->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="tabpanel" id="tab-egypt">
+
+  <div class="astro-hero">
+    <div class="astro-viewer" id="astroViewer_egypt">
+      <div class="astro-placeholder" id="astroPlaceholder_egypt">
+        <div style="font-size:1.6rem;opacity:.5;">✦</div>
+        <div>Loading astronomer…</div>
+      </div>
+      <div class="astro-viewer-controls" id="astroControls_egypt" style="display:none;">
+        <button class="astro-vc-btn" id="astroRotateBtn_egypt" onclick="astroToggleAutoRotate('egypt')" title="Toggle auto-rotate">↻</button>
+        <button class="astro-vc-btn" onclick="astroResetCamera('egypt')" title="Reset view">⌂</button>
+      </div>
+      <div class="astro-viewer-label" id="astroLabel_egypt"></div>
+    </div>
+    <div class="astro-meta">
+      <div class="astro-eyebrow">Egyptian Astronomy · Thebes</div>
+      <div class="astro-name"><em>Senenmut</em></div>
+      <div class="astro-dates">Steward of Amun under Hatshepsut · c. 1470 BCE</div>
+      <p class="astro-bio">Overseer of works for Hatshepsut and the man whose unfinished tomb at Deir el-Bahari (TT353) carries the earliest surviving Egyptian astronomical ceiling. Its northern panel sets out the circumpolar constellations and the Bull's Foreleg; its southern panel lays out the decanal belt whose heliacal risings divided the night into hours.</p>
+    </div>
+  </div>
+<section class="egy-section">
+<div class="egy-inner">
+
+  <div class="egy-eyebrow">Egyptian Archaeoastronomy</div>
+  <h2 class="egy-title">The <em>Decan</em> Catalogue</h2>
+  <p class="egy-intro">
+    The 36 decans are groups of stars used by ancient Egyptians to divide the sky into 10-degree segments, each rising heliacally every ten days. Together they mark the 360-day Egyptian civil year (plus five epagomenal days). Used as a sidereal star clock from at least the 9th Dynasty (c.2100 BCE), each decan governed one hour of the night sky and carried a corresponding deity.
+  </p>
+  <p class="egy-caveat">
+    Scholarly caveat (Sarah Symons, AEA McMaster): "Although we know the names of the decans, and in some cases can translate the names, the locations of the decanal stars and their relationships to modern star names are not known." Stellar identifications below are marked CONFIRMED (broad consensus), PROBABLE (strong argument, contested), or UNCERTAIN (proposed only). Source: AEA Database · Neugebauer &amp; Parker, <em>Egyptian Astronomical Texts</em> I–III (1960–1969).
+  </p>
+
+  <!-- Calendar wheel -->
+  <div class="egy-wheel-wrap">
+    <div class="egy-wheel-svg-wrap">
+      <svg id="egyWheel" viewBox="0 0 260 260" width="260" height="260" style="display:block;">
+        <circle cx="130" cy="130" r="120" fill="none" stroke="rgba(200,216,240,.06)" stroke-width="1"/>
+        <circle cx="130" cy="130" r="80"  fill="none" stroke="rgba(200,216,240,.04)" stroke-width="1"/>
+        <circle cx="130" cy="130" r="40"  fill="rgba(200,216,240,.02)"/>
+        <text x="130" y="126" text-anchor="middle" font-family="var(--serif)" font-size="11" fill="rgba(200,216,240,.5)">Egyptian</text>
+        <text x="130" y="140" text-anchor="middle" font-family="var(--serif)" font-size="11" fill="rgba(200,216,240,.5)">Year</text>
+        <text x="130" y="155" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="rgba(200,216,240,.3)">360+5 days</text>
+      </svg>
+    </div>
+    <div class="egy-wheel-legend">
+      <div class="egy-wheel-legend-title">Decan Families (T-list order)</div>
+      <div id="egyFamilyLegend"></div>
+    </div>
+  </div>
+
+  <!-- Calendar strip -->
+  <div style="margin-bottom:.4rem;">
+    <span style="font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,216,240,.3);">Decan Calendar — click any segment</span>
+  </div>
+  <div class="egy-cal-strip" id="egyCalStrip"></div>
+  <div class="egy-cal-label" id="egyCalLabel">36 decans × 10 days = 360-day civil year · hover to identify</div>
+
+  <!-- Family tabs -->
+  <div class="egy-family-tabs" id="egyFamilyTabs" style="margin-top:1.5rem;"></div>
+
+  <!-- Search row -->
+  <div class="egy-search-row">
+    <input class="egy-search" id="egySearch" type="search" placeholder="Search decan, translation, star…" oninput="renderEgyGrid()">
+    <select class="egy-cert-sel" id="egyCertFilter" onchange="renderEgyGrid()">
+      <option value="all">All identifications</option>
+      <option value="CONFIRMED">Confirmed only</option>
+      <option value="PROBABLE">Probable &amp; above</option>
+      <option value="UNCERTAIN">Uncertain</option>
+    </select>
+    <span class="egy-count" id="egyCount"></span>
+  </div>
+
+  <!-- Detail panel -->
+  <div class="egy-detail" id="egyDetail"></div>
+
+  <!-- Grid -->
+  <div class="egy-grid" id="egyGrid"></div>
+
+  <p class="egy-source">
+    Sources: Ancient Egyptian Astronomy Database (AEA), Department of Physics &amp; Astronomy, McMaster University (Sarah Symons et al.), <a href="https://aea.physics.mcmaster.ca" target="_blank" style="color:#c09050;">aea.physics.mcmaster.ca</a>. · Neugebauer, O. &amp; Parker, R.A. (1960–1969). <em>Egyptian Astronomical Texts</em> I–III. Brown University Press. · Leitz, C. (1995). <em>Altägyptische Sternuhren</em>. Leuven. · Symons, S. (2002, 2007, 2013). Classification and analysis of the ancient Egyptian astronomical corpus. · Decan order follows the T-family canonical list. Epagomenal days (days 361–365) governed by additional deities not listed here.
+  </p>
+
+  <article class="senenmut-feature">
+    <a class="senenmut-feature-link" href="./senenmut-ceiling.html">
+      <img
+        class="senenmut-feature-img"
+        src="./senenmut-grab.jpg"
+        onerror="this.onerror=null;this.src='./assets/senenmut-grab.jpg';"
+        alt="Astronomical ceiling from the tomb of Senenmut, TT353"
+      >
+      <div class="senenmut-feature-body">
+        <div>
+          <div class="senenmut-feature-kicker">TT353 ceiling map</div>
+          <h3 class="senenmut-feature-title">The firmament above Thebes</h3>
+          <p class="senenmut-feature-copy">
+            The astronomical ceiling in Senenmut's tomb at Deir el-Bahari brings the decanal tradition into a painted cosmic map. Following Jose Lull and Juan Antonio Belmonte's <strong>A Firmament Above Thebes</strong>, the interactive version separates the southern decans from the northern constellation field, marking secure identifications such as Sopdet/Sirius, Sah/Orion, and the Bull's Foreleg while keeping probable and disputed readings visible.
+          </p>
+        </div>
+        <span class="senenmut-feature-cta">Open interactive ceiling</span>
+      </div>
+    </a>
+  </article>
+
+</div>
+</section>
+$\n</div><!-- /tabpanel -->\n
 <footer class="footer">
   <a href="index.html">archAIology</a> · archaiology.org · Archaeoastronomy Sky Archive · © 2026
 </footer>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- STYLES + SCRIPTS — original document order preserved.       -->
+<!-- The Moon, Eclipse and Solar scripts depend on CORRELATION,  -->
+<!-- tzolkin(), haab() and lcToJDN() from the Maya engine, so    -->
+<!-- the Maya block MUST stay ahead of them regardless of which  -->
+<!-- tab its markup now lives in. Do not reorder.                -->
+<!-- ═══════════════════════════════════════════════════════════ -->
 
 <script>
 // ── State ─────────────────────────────────────────────────────
@@ -703,131 +1582,6 @@ document.getElementById('siteSelect').addEventListener('change', function() {
 .maya-date-desc { font-size:.65rem; color:rgba(200,216,240,.45); margin-top:.35rem; line-height:1.5; }
 </style>
 
-<section class="maya-section">
-<div class="maya-section-inner">
-
-  <div class="maya-eyebrow">TWKM · Bonn · Maya Calendar Engine</div>
-  <h2 class="maya-title">Maya <em>Calendar</em> & Astronomy</h2>
-  <p class="maya-intro">Convert any date between the Maya Long Count, Calendar Round (Tzolkʼin + Haabʼ), and Gregorian calendar. Calculate moon age, eclipse windows, and the 819-day count. Powered by the same algorithms as the TWKM Calendar Calculator (Universität Bonn).</p>
-
-  <div class="maya-calc-grid">
-
-    <!-- LEFT: Date converter -->
-    <div class="maya-card">
-      <div class="maya-card-title">Date Converter</div>
-
-      <div class="maya-presets" id="maya-presets">
-        <button class="maya-preset" data-lc="13.0.0.0.0"    data-label="13th Bʼakʼtun">13th Bʼakʼtun</button>
-        <button class="maya-preset" data-lc="9.17.0.0.0"    data-label="Katun 9.17">Katun 9.17</button>
-        <button class="maya-preset" data-lc="9.9.2.4.8"     data-label="Pakal's Birth">Pakal's Birth</button>
-        <button class="maya-preset" data-lc="9.12.11.5.18"  data-label="Pakal's Accession">Accession</button>
-        <button class="maya-preset" data-lc="0.0.0.0.0"     data-label="Creation Date">Creation</button>
-        <button class="maya-preset" data-lc="9.15.0.0.0"    data-label="Venus Table">Venus Table</button>
-      </div>
-
-      <div class="maya-field" style="margin-bottom:.7rem;">
-        <label class="maya-label">Long Count Date</label>
-        <div style="display:flex;gap:.5rem;">
-          <input class="maya-input" id="lc-input" placeholder="e.g. 9.17.0.0.0" style="font-family:'DM Mono',monospace;letter-spacing:.06em;">
-          <button class="maya-btn" onclick="convertLC()">Convert</button>
-        </div>
-      </div>
-
-      <div style="display:flex;align-items:center;gap:.7rem;margin:.5rem 0;">
-        <div style="flex:1;height:1px;background:rgba(200,216,240,.06)"></div>
-        <span style="font-size:.55rem;color:rgba(200,216,240,.25);letter-spacing:.1em">OR</span>
-        <div style="flex:1;height:1px;background:rgba(200,216,240,.06)"></div>
-      </div>
-
-      <div class="maya-field" style="margin-bottom:.7rem;">
-        <label class="maya-label">Gregorian Date</label>
-        <div style="display:flex;gap:.5rem;">
-          <input class="maya-input" id="greg-input" type="date" value="2024-12-21">
-          <button class="maya-btn" onclick="convertGreg()">Convert</button>
-        </div>
-      </div>
-
-      <div id="convert-results" style="display:none;">
-        <div class="maya-result-grid" id="result-grid"></div>
-        <div class="moon-phase-display" id="moon-display">
-          <div class="moon-phase-icon" id="moon-icon">🌕</div>
-          <div class="moon-phase-info">
-            <div class="moon-phase-name" id="moon-name">Full Moon</div>
-            <div class="moon-phase-age" id="moon-age">Day 15 of lunar month</div>
-          </div>
-        </div>
-        <div class="eclipse-alert" id="eclipse-alert">
-          <div class="eclipse-alert-title">☀️ Eclipse window</div>
-          <div class="eclipse-alert-body" id="eclipse-body"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RIGHT: Cycle explorer -->
-    <div class="maya-card">
-      <div class="maya-card-title">Cycle Explorer</div>
-
-      <div id="cycle-display" style="color:rgba(200,216,240,.3);font-size:.78rem;padding:.5rem 0;">
-        Enter a date above to explore its position in each Maya cycle.
-      </div>
-
-      <div id="cycle-bars" style="display:none;">
-        <div class="cycle-bar-wrap">
-          <div class="cycle-bar-row">
-            <div class="cycle-bar-lbl">Tzolkʼin (260)</div>
-            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-tzolkin" style="width:0%"></div></div>
-            <div class="cycle-bar-val" id="val-tzolkin">—</div>
-          </div>
-          <div class="cycle-bar-row">
-            <div class="cycle-bar-lbl">Haabʼ (365)</div>
-            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-haab" style="width:0%"></div></div>
-            <div class="cycle-bar-val" id="val-haab">—</div>
-          </div>
-          <div class="cycle-bar-row">
-            <div class="cycle-bar-lbl">Cal. Round (52 yr)</div>
-            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-cr" style="width:0%;background:#80a8d8"></div></div>
-            <div class="cycle-bar-val" id="val-cr">—</div>
-          </div>
-          <div class="cycle-bar-row">
-            <div class="cycle-bar-lbl">819-Day</div>
-            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-819" style="width:0%;background:#9070b0"></div></div>
-            <div class="cycle-bar-val" id="val-819">—</div>
-          </div>
-          <div class="cycle-bar-row">
-            <div class="cycle-bar-lbl">Venus (584)</div>
-            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-venus" style="width:0%;background:#c8a030"></div></div>
-            <div class="cycle-bar-val" id="val-venus">—</div>
-          </div>
-          <div class="cycle-bar-row">
-            <div class="cycle-bar-lbl">Katun (7200)</div>
-            <div class="cycle-bar-track"><div class="cycle-bar-fill" id="bar-katun" style="width:0%;background:#507080"></div></div>
-            <div class="cycle-bar-val" id="val-katun">—</div>
-          </div>
-        </div>
-
-        <div style="margin-top:1.2rem;">
-          <div class="maya-card-title">Day glyphs</div>
-          <div class="maya-glyph-row" id="glyph-row"></div>
-        </div>
-
-        <div style="margin-top:1rem;">
-          <div class="maya-card-title">819-Day station</div>
-          <div id="station-819" style="font-size:.75rem;color:rgba(200,216,240,.5);line-height:1.6;"></div>
-        </div>
-      </div>
-
-      <a class="twkm-link" id="twkm-link" href="https://classicmayan.org/calendar-calculations/" target="_blank" rel="noopener">
-        → Open in TWKM Calculator
-      </a>
-    </div>
-  </div>
-
-  <!-- Notable Maya dates -->
-  <div class="maya-card-title" style="margin-bottom:.8rem;">Notable dates in the Maya calendar</div>
-  <div class="maya-dates-grid" id="notable-dates"></div>
-
-</div>
-</section>
 
 <script>
 // ════════════════════════════════════════════════════════════════
@@ -1328,71 +2082,6 @@ function loadNotable(lc) {
 .rom-note-body { font-size:.72rem; color:rgba(200,216,240,.5); line-height:1.6; }
 </style>
 
-<section class="rom-section" id="roman-calendar">
-<div class="rom-section-inner">
-
-  <div class="rom-eyebrow">Cambridge School Classics Project · Cambridge Latin Anthology</div>
-  <h2 class="rom-title">Roman <em>Date</em> Calculator</h2>
-  <p class="rom-intro">Convert any Gregorian date into the Roman civil calendar — Kalends, Nones, and Ides, reckoned inclusively backward from the next fixed point in the month, in the manner of Roman timekeeping. Widget maintained by the Cambridge School Classics Project (University of Cambridge).</p>
-
-  <div class="rom-grid">
-
-    <!-- LEFT: main converter widget -->
-    <div class="rom-card">
-      <div class="rom-card-title">
-        <span>Date Converter</span>
-        <a class="rom-open-link" href="https://www.cla.cambridgescp.com/roman-date-calculator" target="_blank" rel="noopener">Open source page ↗</a>
-      </div>
-      <div class="rom-iframe-wrap" id="romConverterWrap">
-        <iframe
-          id="romConverterIframe"
-          data-src="https://files.cambridgescp.com/Widgets/datecalculator.html"
-          src=""
-          title="Roman Date Calculator — Cambridge School Classics Project"
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"
-          sandbox="allow-scripts allow-same-origin allow-forms"
-        ></iframe>
-      </div>
-      <div class="rom-blocked" id="romConverterBlocked">
-        <div class="rom-blocked-title">Widget could not be embedded</div>
-        <div class="rom-blocked-body">The Cambridge widget may be blocking cross-origin frames. Use the direct link instead.</div>
-        <a class="rom-blocked-link" href="https://www.cla.cambridgescp.com/roman-date-calculator" target="_blank" rel="noopener">Open calculator in new tab ↗</a>
-      </div>
-      <div class="rom-source">Widget © University of Cambridge School Classics Project. Source: <a href="https://www.cla.cambridgescp.com/roman-date-calculator" target="_blank" rel="noopener">cla.cambridgescp.com/roman-date-calculator</a></div>
-    </div>
-
-    <!-- RIGHT: today's date widget + notes -->
-    <div>
-      <div class="rom-card">
-        <div class="rom-card-title"><span>Today, in Roman Reckoning</span></div>
-        <div class="rom-iframe-wrap rom-today-wrap" id="romTodayWrap">
-          <iframe
-            id="romTodayIframe"
-            data-src="https://files.cambridgescp.com/Widgets/date.html"
-            src=""
-            title="Today's date in the Roman calendar"
-            loading="lazy"
-            referrerpolicy="strict-origin-when-cross-origin"
-            sandbox="allow-scripts allow-same-origin allow-forms"
-          ></iframe>
-        </div>
-        <div class="rom-blocked" id="romTodayBlocked">
-          <div class="rom-blocked-title">Widget could not be embedded</div>
-          <div class="rom-blocked-body">Try the direct link instead.</div>
-          <a class="rom-blocked-link" href="https://www.cla.cambridgescp.com/roman-date-calculator" target="_blank" rel="noopener">Open in new tab ↗</a>
-        </div>
-      </div>
-
-      <div class="rom-note-card">
-        <div class="rom-note-title">How it works</div>
-        <div class="rom-note-body">Romans counted days inclusively backward from three fixed points: <strong>Kalendae</strong> (1st), <strong>Nonae</strong> (5th or 7th), and <strong>Idus</strong> (13th or 15th, depending on month). A date is expressed as "the Nth day before" the next of these — e.g. June 21st falls "ante diem XI Kalendas Iulias."</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-</section>
 
 <script>
 // ── Roman date widgets: lazy-load with blocked-iframe fallback ──
@@ -1610,104 +2299,6 @@ function loadNotable(lc) {
 }
 </style>
 
-<section class="moon-section">
-<div class="moon-section-inner">
-
-  <div class="moon-eyebrow">Meeus · Astronomical Formulae for Calculators · Ch. 32</div>
-  <h2 class="moon-title">Moon <em>Phase</em> Calculator</h2>
-  <p class="moon-intro">Precise lunar phase times computed from Meeus (1988) Ch. 32 formulae — accurate to within ~2 minutes over thousands of years. Enter any date to find the nearest New Moon, First Quarter, Full Moon, and Last Quarter, with Julian Day numbers and Maya Long Count cross-references.</p>
-
-  <!-- MAIN: dial + input -->
-  <div class="moon-main-grid">
-
-    <!-- Phase dial -->
-    <div class="moon-dial-card">
-      <svg class="moon-svg" viewBox="0 0 180 180" id="moonSVG">
-        <defs>
-          <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#e8d8b0" stop-opacity=".12"/>
-            <stop offset="100%" stop-color="#050810" stop-opacity="0"/>
-          </radialGradient>
-          <clipPath id="moonClip">
-            <circle cx="90" cy="90" r="72"/>
-          </clipPath>
-        </defs>
-        <!-- Glow -->
-        <circle cx="90" cy="90" r="84" fill="url(#moonGlow)"/>
-        <!-- Dark disc -->
-        <circle cx="90" cy="90" r="72" fill="#0a0e1a" stroke="rgba(200,216,240,.12)" stroke-width="1"/>
-        <!-- Illuminated portion — drawn by JS -->
-        <g id="moonIllum" clip-path="url(#moonClip)"></g>
-        <!-- Subtle crater marks -->
-        <g clip-path="url(#moonClip)" opacity=".08">
-          <circle cx="74" cy="80" r="8" fill="none" stroke="#c8d8f0" stroke-width="1.5"/>
-          <circle cx="102" cy="68" r="5" fill="none" stroke="#c8d8f0" stroke-width="1"/>
-          <circle cx="88" cy="108" r="6" fill="none" stroke="#c8d8f0" stroke-width="1"/>
-          <circle cx="115" cy="95" r="4" fill="none" stroke="#c8d8f0" stroke-width="1"/>
-        </g>
-      </svg>
-
-      <div class="moon-phase-name-lg" id="dialPhaseName">—</div>
-      <div class="moon-age-text" id="dialAgeText">Enter a date to calculate</div>
-      <div class="moon-illumination" id="dialIllum"></div>
-    </div>
-
-    <!-- Input -->
-    <div class="moon-input-card">
-      <div class="moon-card-title">Calculate Phase for Date</div>
-
-      <div class="moon-field">
-        <label class="moon-label">Date</label>
-        <input class="moon-input" type="date" id="moonDateInput">
-      </div>
-
-      <button class="moon-btn" onclick="calcMoonPhase()">Calculate Lunar Phase →</button>
-
-      <div id="moonResults" style="display:none; margin-top:1.2rem;">
-        <div class="moon-results-grid" id="moonResultGrid"></div>
-        <div class="moon-maya-xref" id="moonMayaXref"></div>
-        <p class="moon-source">Formulae: Meeus, <em>Astronomical Formulae for Calculators</em>, 4th ed. (1988), Ch. 32. Accuracy ~2 min over 3000 BCE–3000 CE.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Phase sequence strip — nearest 4 phases -->
-  <div class="moon-card-title" style="margin-bottom:.6rem;">Nearest phases from selected date</div>
-  <div class="phase-strip" id="phaseStrip">
-    <div class="phase-cell" style="grid-column:span 8;color:rgba(200,216,240,.3);font-size:.72rem;text-align:center;padding:1rem;">
-      Enter a date above to see the phase sequence.
-    </div>
-  </div>
-
-  <!-- Range finder -->
-  <div class="moon-range-card">
-    <div class="moon-card-title">Phase Range Finder</div>
-    <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.4);margin-bottom:1rem;line-height:1.5;">
-      Find all New Moons, Full Moons, or all phases within a year — useful for
-      locating eclipse windows and cross-referencing with the Dresden Codex.
-    </p>
-    <div class="moon-range-grid">
-      <div class="moon-range-field">
-        <label class="moon-label">Year</label>
-        <input class="moon-mini-input" type="number" id="rangeYear" value="771" min="-3000" max="3000" style="width:90px;">
-      </div>
-      <div class="moon-range-field">
-        <label class="moon-label">Phase</label>
-        <select class="moon-mini-input" id="rangePhase" style="width:140px;">
-          <option value="0">New Moon</option>
-          <option value="0.25">First Quarter</option>
-          <option value="0.5">Full Moon</option>
-          <option value="0.75">Last Quarter</option>
-          <option value="all">All phases</option>
-        </select>
-      </div>
-      <button class="moon-btn moon-btn-sm" onclick="calcRange()">Find →</button>
-    </div>
-    <div id="rangeResults" style="margin-top:1rem;"></div>
-  </div>
-
-</div>
-</section>
 
 <script>
 // ════════════════════════════════════════════════════════════════
@@ -2404,139 +2995,6 @@ function calcRange() {
 }
 </style>
 
-<section class="ecl-section">
-<div class="ecl-inner">
-
-  <div class="ecl-eyebrow">Meeus · Astronomical Formulae for Calculators · Ch. 33</div>
-  <h2 class="ecl-title">Eclipse <em>Finder</em></h2>
-  <p class="ecl-intro">Full Meeus Ch. 33 eclipse algorithm — computes solar and lunar eclipse type, magnitude, and (for lunar) partial and total phase semiduration for any New or Full Moon back to 3000 BCE. Includes Dresden Codex cross-reference against the 405-lunation eclipse table.</p>
-
-  <!-- Controls -->
-  <div class="ecl-controls">
-    <div class="ecl-field">
-      <label class="ecl-label">Date</label>
-      <input class="ecl-input" type="date" id="eclDateInput" style="width:150px;">
-    </div>
-    <div class="ecl-field">
-      <label class="ecl-label">Eclipse type</label>
-      <select class="ecl-input ecl-select" id="eclTypeInput" style="width:130px;">
-        <option value="both">Solar &amp; Lunar</option>
-        <option value="solar">Solar only</option>
-        <option value="lunar">Lunar only</option>
-      </select>
-    </div>
-    <button class="ecl-btn" onclick="calcEclipse()">Analyse →</button>
-  </div>
-
-  <!-- Main layout: diagram + detail -->
-  <div class="ecl-main-grid">
-
-    <!-- Diagram -->
-    <div class="ecl-diagram-card">
-      <svg class="ecl-svg" viewBox="0 0 240 240" id="eclSVG">
-        <defs>
-          <radialGradient id="earthGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#1a3a6c"/>
-            <stop offset="100%" stop-color="#0a1428"/>
-          </radialGradient>
-          <radialGradient id="moonGrad2" cx="40%" cy="35%" r="60%">
-            <stop offset="0%" stop-color="#d0c8a0"/>
-            <stop offset="100%" stop-color="#7a7260"/>
-          </radialGradient>
-          <radialGradient id="sunGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#fff8d0"/>
-            <stop offset="100%" stop-color="#f0c040"/>
-          </radialGradient>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-        </defs>
-        <!-- Background -->
-        <rect width="240" height="240" fill="#050810"/>
-        <!-- Placeholder text -->
-        <text x="120" y="110" text-anchor="middle" font-family="sans-serif"
-              font-size="11" fill="rgba(200,216,240,.2)">Enter a date to</text>
-        <text x="120" y="128" text-anchor="middle" font-family="sans-serif"
-              font-size="11" fill="rgba(200,216,240,.2)">analyse eclipses</text>
-      </svg>
-
-      <div class="ecl-type-badge ecl-type-none" id="eclTypeBadge">—</div>
-
-      <div class="ecl-magnitude-row" id="eclMagRow" style="display:none">
-        <div class="ecl-mag-label"><span>Magnitude</span><span id="eclMagVal">—</span></div>
-        <div class="ecl-mag-track"><div class="ecl-mag-fill" id="eclMagFill" style="width:0%"></div></div>
-      </div>
-    </div>
-
-    <!-- Detail -->
-    <div class="ecl-detail-card">
-      <div class="ecl-card-title" id="eclDetailTitle">Nearest Eclipse Analysis</div>
-
-      <div id="eclNoResult" style="color:rgba(200,216,240,.3);font-size:.78rem;padding:.5rem 0;">
-        Enter a date above to find the nearest solar and lunar eclipses.
-      </div>
-
-      <div id="eclDetailBody" style="display:none">
-        <div class="ecl-result-grid" id="eclResultGrid"></div>
-
-        <!-- Lunar durations (shown only for lunar eclipses) -->
-        <div id="eclDurBlock" style="display:none; margin:.8rem 0;">
-          <div class="ecl-card-title">Umbral phase durations</div>
-          <div class="ecl-dur-row">
-            <div class="ecl-dur-lbl">Partial phase</div>
-            <div class="ecl-dur-track"><div class="ecl-dur-fill" id="durPartialFill" style="width:0%"></div></div>
-            <div class="ecl-dur-val" id="durPartialVal">—</div>
-          </div>
-          <div class="ecl-dur-row">
-            <div class="ecl-dur-lbl">Total phase</div>
-            <div class="ecl-dur-track"><div class="ecl-dur-fill" id="durTotalFill" style="width:0%;background:#ff7050"></div></div>
-            <div class="ecl-dur-val" id="durTotalVal">—</div>
-          </div>
-        </div>
-
-        <div class="ecl-dresden" id="eclDresden"></div>
-        <p class="ecl-source">Formulae: Meeus, <em>Astronomical Formulae for Calculators</em>, 4th ed. (1988), Ch. 33. Solar magnitude is at point of greatest eclipse; times in Ephemeris Time. Lunar durations are semidurations (half the total phase length).</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Range scanner -->
-  <div class="ecl-list-card">
-    <div class="ecl-card-title">Eclipse Range Scanner</div>
-    <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.4);margin-bottom:1rem;line-height:1.5;">
-      Scan any year range for all solar and lunar eclipses. Click a row to load it into the analyser above.
-      Useful for mapping eclipse windows against the 405-lunation Dresden Codex table.
-    </p>
-    <div class="ecl-range-controls">
-      <div class="ecl-field">
-        <label class="ecl-label">From year</label>
-        <input class="ecl-input" type="number" id="scanFrom" value="750" style="width:90px;" min="-3000" max="3000">
-      </div>
-      <div class="ecl-field">
-        <label class="ecl-label">To year</label>
-        <input class="ecl-input" type="number" id="scanTo"   value="775" style="width:90px;" min="-3000" max="3000">
-      </div>
-      <div class="ecl-field">
-        <label class="ecl-label">Filter</label>
-        <select class="ecl-input ecl-select" id="scanFilter" style="width:140px;">
-          <option value="all">All eclipses</option>
-          <option value="solar">Solar only</option>
-          <option value="lunar">Lunar only</option>
-          <option value="total">Total/Annular only</option>
-        </select>
-      </div>
-      <button class="ecl-btn" onclick="scanEclipses()">Scan →</button>
-    </div>
-    <div id="eclListWrap">
-      <div style="color:rgba(200,216,240,.25);font-size:.72rem;">
-        Default range 750–775 CE spans Katun 9.17 and the Dresden Codex Venus table era. Click Scan to populate.
-      </div>
-    </div>
-  </div>
-
-</div>
-</section>
 
 <script>
 // ════════════════════════════════════════════════════════════════
@@ -3302,94 +3760,6 @@ function loadEclipseRow(jd) {
 }
 </style>
 
-<section class="sol-section">
-<div class="sol-inner">
-
-  <div class="sol-eyebrow">Meeus &middot; Astronomical Formulae for Calculators &middot; Ch. 20 &amp; 18</div>
-  <h2 class="sol-title">Solar <em>Stations</em> Panel</h2>
-  <p class="sol-intro">The four solar turning points &mdash; vernal equinox, summer solstice, autumnal equinox, winter solstice &mdash; computed to ~15-minute accuracy from Meeus (1988) Ch. 20 polynomial formulae for any year 3000 BCE&ndash;3000 CE. Includes obliquity of the ecliptic (Ch. 18), Maya Long Count cross-references, and a multi-year timeline for archaeoastronomical range studies.</p>
-
-  <div class="sol-controls">
-    <div class="sol-field">
-      <label class="sol-label">Year</label>
-      <input class="sol-input" type="number" id="solYear" value="771" min="-3000" max="3000" style="width:110px;">
-    </div>
-    <button class="sol-btn" onclick="calcStations()">Calculate &rarr;</button>
-    <button class="sol-btn sol-btn-sm" onclick="setSolYear(new Date().getFullYear())">Today</button>
-    <button class="sol-btn sol-btn-sm" onclick="setSolYear(-3113)">Maya Creation</button>
-    <button class="sol-btn sol-btn-sm" onclick="setSolYear(771)">9.17.0.0.0</button>
-    <button class="sol-btn sol-btn-sm" onclick="setSolYear(-2780)">Giza Era</button>
-    <button class="sol-btn sol-btn-sm" onclick="setSolYear(-559)">Athens Classical</button>
-  </div>
-
-  <div class="sol-station-grid" id="solStationGrid">
-    <div class="sol-card spring" style="grid-column:1/-1">
-      <div style="color:rgba(200,216,240,.2);font-size:.75rem;padding:.5rem 0;">Enter a year above to calculate solar stations.</div>
-    </div>
-  </div>
-
-  <div class="sol-context-grid">
-    <div class="sol-context-card">
-      <div class="sol-context-title">Obliquity of the Ecliptic &mdash; &epsilon;</div>
-      <div class="sol-obliq-value" id="solObliqVal">&mdash;</div>
-      <div class="sol-obliq-sub" id="solObliqSub">The tilt of Earth's axis to the ecliptic plane</div>
-      <div class="sol-obliq-gauge">
-        <div class="sol-obliq-fill" id="solObliqFill" style="width:50%"></div>
-        <div class="sol-obliq-marker" id="solObliqMarker" style="left:48%"></div>
-      </div>
-      <div class="sol-obliq-labels"><span>22.0&deg;</span><span>23.0&deg;</span><span>24.0&deg;</span><span>25.0&deg;</span></div>
-      <div style="margin-top:.8rem">
-        <div class="sol-info-row"><span class="sol-info-k">Current value (2026)</span><span class="sol-info-v">23&deg;26&prime;13&Prime;</span></div>
-        <div class="sol-info-row"><span class="sol-info-k">Maya creation (3114 BCE)</span><span class="sol-info-v" id="solMayaObliq">&mdash;</span></div>
-        <div class="sol-info-row"><span class="sol-info-k">Giza pyramid era (~2780 BCE)</span><span class="sol-info-v" id="solGizaObliq">&mdash;</span></div>
-        <div class="sol-info-row"><span class="sol-info-k">Range over 40,000 years</span><span class="sol-info-v">22.1&deg; &ndash; 24.5&deg;</span></div>
-      </div>
-    </div>
-    <div class="sol-context-card">
-      <div class="sol-context-title">Year Summary</div>
-      <div id="solYearSummary" style="color:rgba(200,216,240,.25);font-size:.72rem;">
-        Calculate a year to see its solar calendar summary.
-      </div>
-    </div>
-  </div>
-
-  <div class="sol-timeline-card">
-    <div class="sol-context-title">Multi-Year Solar Station Timeline</div>
-    <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.4);margin-bottom:1rem;line-height:1.5;">
-      Generate a timeline of solstice and equinox dates for any year range. Click any year to load it into the main calculator. Useful for correlating architectural alignments and Long Count period endings.
-    </p>
-    <div class="sol-range-controls">
-      <div class="sol-field">
-        <label class="sol-label">From year</label>
-        <input class="sol-input" type="number" id="solRangeFrom" value="768" style="width:90px;" min="-3000" max="3000">
-      </div>
-      <div class="sol-field">
-        <label class="sol-label">To year</label>
-        <input class="sol-input" type="number" id="solRangeTo" value="775" style="width:90px;" min="-3000" max="3000">
-      </div>
-      <div class="sol-field">
-        <label class="sol-label">Show</label>
-        <select class="sol-input" id="solRangeShow" style="width:160px;-webkit-appearance:none;">
-          <option value="all">All four stations</option>
-          <option value="equinox">Equinoxes only</option>
-          <option value="solstice">Solstices only</option>
-          <option value="march">March equinox only</option>
-          <option value="june">June solstice only</option>
-          <option value="sept">September equinox only</option>
-          <option value="dec">December solstice only</option>
-        </select>
-      </div>
-      <button class="sol-btn sol-btn-sm" onclick="calcTimeline()">Generate &rarr;</button>
-    </div>
-    <div id="solTimeline">
-      <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.25);">
-        Default range 768&ndash;775 CE spans the Katun 9.17 era. Click Generate to populate.
-      </p>
-    </div>
-  </div>
-
-</div>
-</section>
 
 <script>
 // ============================================================
@@ -3812,77 +4182,6 @@ function calcTimeline() {
 }
 </style>
 
-<section class="bab-section">
-<div class="bab-inner">
-
-  <div class="bab-eyebrow">MUL.APIN · Tablet I · Hunger &amp; Steele 2018 · Taylor &amp; Francis</div>
-  <h2 class="bab-title">Babylonian <em>Star Catalogue</em></h2>
-  <p class="bab-intro">The three star paths of MUL.APIN — the most widely copied astronomical text in ancient Mesopotamia, composed before the 8th century BCE. 71 stars and constellations assigned to the paths of Enlil (north, &gt;+17° dec.), Anu (equatorial, ±17°), and Ea (south, &lt;−17°), with their Babylonian names, associated deities, heliacal rising months, and modern identifications. Rising/setting pairs from Tablet I section iii.</p>
-
-  <!-- Path tabs + search -->
-  <div class="bab-path-tabs">
-    <button class="bab-path-btn active" data-path="all" onclick="filterPath('all',this)">All Paths</button>
-    <button class="bab-path-btn enlil" data-path="enlil" onclick="filterPath('enlil',this)">⬆ Path of Enlil (N)</button>
-    <button class="bab-path-btn anu"   data-path="anu"   onclick="filterPath('anu',this)">↔ Path of Anu (Eq.)</button>
-    <button class="bab-path-btn ea"    data-path="ea"    onclick="filterPath('ea',this)">⬇ Path of Ea (S)</button>
-  </div>
-
-  <div class="bab-search-row">
-    <input class="bab-search" id="babSearch" placeholder="Search star, deity, modern name…" oninput="renderCatalogue()">
-    <select class="bab-filter-sel" id="babMonthFilter" onchange="renderCatalogue()">
-      <option value="">All heliacal months</option>
-      <option value="I">Month I (spring)</option>
-      <option value="II">Month II</option>
-      <option value="III">Month III</option>
-      <option value="IV">Month IV (summer solstice)</option>
-      <option value="V">Month V</option>
-      <option value="VI">Month VI</option>
-      <option value="VII">Month VII (autumnal eq.)</option>
-      <option value="VIII">Month VIII</option>
-      <option value="IX">Month IX</option>
-      <option value="X">Month X (winter solstice)</option>
-      <option value="XI">Month XI</option>
-      <option value="XII">Month XII</option>
-      <option value="ziqpu">Ziqpu stars only</option>
-      <option value="zodiac">Zodiac path only</option>
-    </select>
-    <span class="bab-count" id="babCount"></span>
-  </div>
-
-  <!-- Star grid -->
-  <div class="bab-grid" id="babGrid"></div>
-
-  <!-- Detail panel -->
-  <div class="bab-detail-wrap" id="babDetail" style="display:none">
-    <div class="bab-detail-card">
-      <div class="bab-detail-title">Star Record</div>
-      <div class="bab-detail-name" id="detName"></div>
-      <div class="bab-detail-cuneiform" id="detCuneiform"></div>
-      <div id="detRows"></div>
-      <div class="bab-quote" id="detQuote"></div>
-      <a class="bab-stellarium-btn" id="detStellariumBtn" href="#" target="_blank" rel="noopener">
-        ✦ View in Stellarium Web
-      </a>
-    </div>
-    <div class="bab-detail-card">
-      <div class="bab-detail-title">Astronomical Notes</div>
-      <div id="detNotes" style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.5);line-height:1.7;"></div>
-    </div>
-  </div>
-
-  <!-- Rising / Setting pairs -->
-  <div class="bab-pairs-card">
-    <div class="bab-detail-title">Simultaneously Rising &amp; Setting Stars — MUL.APIN I iii 13–33</div>
-    <p style="font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.4);margin-bottom:1rem;line-height:1.5;">
-      When one star rises on the eastern horizon, its paired star sets in the west. These 21 pairings encode Babylonian knowledge of the sky's symmetry across the meridian. Click a row to highlight both stars in the catalogue above.
-    </p>
-    <div class="bab-pairs-grid" id="babPairsGrid"></div>
-  </div>
-
-  <p class="bab-source">Source: Hunger, H. &amp; Steele, J. (2018). <em>The Babylonian Astronomical Compendium MUL.APIN.</em> Taylor &amp; Francis. Edition based on all sources known as of September 2017. Heliacal rising dates are in the Babylonian 360-day schematic calendar; Month I = Nisannu (spring). Modern identifications follow standard Assyriological scholarship (Pingree, Hunger, Koch-Westenholz). Babylonian months placed in the 360-day schematic calendar, not the observed lunar calendar.</p>
-
-</div>
-</section>
 
 <script>
 // ============================================================
@@ -4799,91 +5098,6 @@ function highlightPair(rises, sets) {
 }
 </style>
 
-<section class="egy-section">
-<div class="egy-inner">
-
-  <div class="egy-eyebrow">Egyptian Archaeoastronomy</div>
-  <h2 class="egy-title">The <em>Decan</em> Catalogue</h2>
-  <p class="egy-intro">
-    The 36 decans are groups of stars used by ancient Egyptians to divide the sky into 10-degree segments, each rising heliacally every ten days. Together they mark the 360-day Egyptian civil year (plus five epagomenal days). Used as a sidereal star clock from at least the 9th Dynasty (c.2100 BCE), each decan governed one hour of the night sky and carried a corresponding deity.
-  </p>
-  <p class="egy-caveat">
-    Scholarly caveat (Sarah Symons, AEA McMaster): "Although we know the names of the decans, and in some cases can translate the names, the locations of the decanal stars and their relationships to modern star names are not known." Stellar identifications below are marked CONFIRMED (broad consensus), PROBABLE (strong argument, contested), or UNCERTAIN (proposed only). Source: AEA Database · Neugebauer &amp; Parker, <em>Egyptian Astronomical Texts</em> I–III (1960–1969).
-  </p>
-
-  <!-- Calendar wheel -->
-  <div class="egy-wheel-wrap">
-    <div class="egy-wheel-svg-wrap">
-      <svg id="egyWheel" viewBox="0 0 260 260" width="260" height="260" style="display:block;">
-        <circle cx="130" cy="130" r="120" fill="none" stroke="rgba(200,216,240,.06)" stroke-width="1"/>
-        <circle cx="130" cy="130" r="80"  fill="none" stroke="rgba(200,216,240,.04)" stroke-width="1"/>
-        <circle cx="130" cy="130" r="40"  fill="rgba(200,216,240,.02)"/>
-        <text x="130" y="126" text-anchor="middle" font-family="var(--serif)" font-size="11" fill="rgba(200,216,240,.5)">Egyptian</text>
-        <text x="130" y="140" text-anchor="middle" font-family="var(--serif)" font-size="11" fill="rgba(200,216,240,.5)">Year</text>
-        <text x="130" y="155" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="rgba(200,216,240,.3)">360+5 days</text>
-      </svg>
-    </div>
-    <div class="egy-wheel-legend">
-      <div class="egy-wheel-legend-title">Decan Families (T-list order)</div>
-      <div id="egyFamilyLegend"></div>
-    </div>
-  </div>
-
-  <!-- Calendar strip -->
-  <div style="margin-bottom:.4rem;">
-    <span style="font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,216,240,.3);">Decan Calendar — click any segment</span>
-  </div>
-  <div class="egy-cal-strip" id="egyCalStrip"></div>
-  <div class="egy-cal-label" id="egyCalLabel">36 decans × 10 days = 360-day civil year · hover to identify</div>
-
-  <!-- Family tabs -->
-  <div class="egy-family-tabs" id="egyFamilyTabs" style="margin-top:1.5rem;"></div>
-
-  <!-- Search row -->
-  <div class="egy-search-row">
-    <input class="egy-search" id="egySearch" type="search" placeholder="Search decan, translation, star…" oninput="renderEgyGrid()">
-    <select class="egy-cert-sel" id="egyCertFilter" onchange="renderEgyGrid()">
-      <option value="all">All identifications</option>
-      <option value="CONFIRMED">Confirmed only</option>
-      <option value="PROBABLE">Probable &amp; above</option>
-      <option value="UNCERTAIN">Uncertain</option>
-    </select>
-    <span class="egy-count" id="egyCount"></span>
-  </div>
-
-  <!-- Detail panel -->
-  <div class="egy-detail" id="egyDetail"></div>
-
-  <!-- Grid -->
-  <div class="egy-grid" id="egyGrid"></div>
-
-  <p class="egy-source">
-    Sources: Ancient Egyptian Astronomy Database (AEA), Department of Physics &amp; Astronomy, McMaster University (Sarah Symons et al.), <a href="https://aea.physics.mcmaster.ca" target="_blank" style="color:#c09050;">aea.physics.mcmaster.ca</a>. · Neugebauer, O. &amp; Parker, R.A. (1960–1969). <em>Egyptian Astronomical Texts</em> I–III. Brown University Press. · Leitz, C. (1995). <em>Altägyptische Sternuhren</em>. Leuven. · Symons, S. (2002, 2007, 2013). Classification and analysis of the ancient Egyptian astronomical corpus. · Decan order follows the T-family canonical list. Epagomenal days (days 361–365) governed by additional deities not listed here.
-  </p>
-
-  <article class="senenmut-feature">
-    <a class="senenmut-feature-link" href="./senenmut-ceiling.html">
-      <img
-        class="senenmut-feature-img"
-        src="./senenmut-grab.jpg"
-        onerror="this.onerror=null;this.src='./assets/senenmut-grab.jpg';"
-        alt="Astronomical ceiling from the tomb of Senenmut, TT353"
-      >
-      <div class="senenmut-feature-body">
-        <div>
-          <div class="senenmut-feature-kicker">TT353 ceiling map</div>
-          <h3 class="senenmut-feature-title">The firmament above Thebes</h3>
-          <p class="senenmut-feature-copy">
-            The astronomical ceiling in Senenmut's tomb at Deir el-Bahari brings the decanal tradition into a painted cosmic map. Following Jose Lull and Juan Antonio Belmonte's <strong>A Firmament Above Thebes</strong>, the interactive version separates the southern decans from the northern constellation field, marking secure identifications such as Sopdet/Sirius, Sah/Orion, and the Bull's Foreleg while keeping probable and disputed readings visible.
-          </p>
-        </div>
-        <span class="senenmut-feature-cta">Open interactive ceiling</span>
-      </div>
-    </a>
-  </article>
-
-</div>
-</section>
 
 <script>
 // ═══════════════════════════════════════════════════════════════
@@ -5214,6 +5428,158 @@ function closeEgyDetail() {
   buildFamilyUI();
   renderEgyGrid();
 })();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB CONTROLLER + ASTRONOMER AVATAR LOADER                   -->
+<!-- Same model-viewer pattern as maritime.html Ships Gallery    -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+// ── Avatar registry ───────────────────────────────────────────
+const ASTRONOMERS = {
+  maya: {
+    glb:  '3d_models/Maya_Astronomer.min.glb',
+    name: 'Sak Tahn Waax'
+  },
+  greco: {
+    glb:  '3d_models/Greek_Astronomer.min.glb',
+    name: 'Anaximander of Miletus'
+  },
+  neareast: {
+    glb:  '3d_models/Babylonian_Astronomer.min.glb',
+    name: 'Berossus'
+  },
+  egypt: {
+    glb:  '3d_models/egyptian_astronomer.min.glb',
+    name: 'Senenmut'
+  }
+};
+
+const astroViewerEls  = {};   // key -> <model-viewer>
+const astroAutoRotate = {};   // key -> bool
+const astroLoaded     = {};   // key -> bool (guard against double-build)
+
+// ── Build one avatar viewer (called on first show of its tab) ──
+function buildAstronomer(key) {
+  if (astroLoaded[key]) return;
+  const cfg = ASTRONOMERS[key];
+  if (!cfg) return;
+  astroLoaded[key] = true;
+
+  const host = document.getElementById('astroViewer_' + key);
+  if (!host) { astroLoaded[key] = false; return; }
+
+  const ph = document.getElementById('astroPlaceholder_' + key);
+  if (ph) ph.style.display = 'none';
+  const ctrls = document.getElementById('astroControls_' + key);
+  if (ctrls) ctrls.style.display = 'flex';
+  const label = document.getElementById('astroLabel_' + key);
+  if (label) label.textContent = cfg.name + ' · drag to rotate · scroll to zoom';
+
+  // innerHTML so the custom element registry upgrades the tag
+  const shell = document.createElement('div');
+  shell.style.cssText = 'position:absolute;inset:0;';
+  shell.innerHTML = `
+    <model-viewer
+      src="${cfg.glb}"
+      alt="${cfg.name}"
+      camera-controls
+      auto-rotate
+      rotation-per-second="20deg"
+      shadow-intensity="1.2"
+      environment-image="neutral"
+      exposure="0.85"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      loading="eager"
+      style="width:100%;height:100%;background:transparent;--progress-bar-color:#b8892a;"
+    >
+      <div slot="progress-bar" style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(200,216,240,.08);">
+        <div id="astroProgress_${key}" style="height:100%;background:#b8892a;width:0%;transition:width .2s;"></div>
+      </div>
+      <div slot="error" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;gap:.6rem;color:rgba(184,137,42,.7);font-family:var(--sans);font-size:.72rem;letter-spacing:.06em;text-align:center;padding:2rem;">
+        <div style="font-size:2rem;opacity:.5;">⚠</div>
+        <div>Could not load model<br><span style="font-size:.6rem;opacity:.6;">${cfg.glb}</span></div>
+      </div>
+    </model-viewer>
+  `;
+  host.appendChild(shell);
+
+  const mv = shell.querySelector('model-viewer');
+  astroViewerEls[key]  = mv;
+  astroAutoRotate[key] = true;
+
+  mv.addEventListener('progress', e => {
+    const fill = document.getElementById('astroProgress_' + key);
+    if (fill) fill.style.width = (e.detail.totalProgress * 100) + '%';
+  });
+  mv.addEventListener('load', () => {
+    const fill = document.getElementById('astroProgress_' + key);
+    if (fill) { fill.style.width = '100%'; setTimeout(() => { fill.style.opacity = '0'; }, 400); }
+  });
+  mv.addEventListener('error', e => {
+    console.error('[Astro] model-viewer ERROR for ' + key + ':', e.detail);
+  });
+}
+
+// Defer until the custom element is registered (module script loads async)
+function loadAstronomer(key) {
+  if (astroLoaded[key]) return;
+  if (customElements.get('model-viewer')) {
+    buildAstronomer(key);
+  } else {
+    customElements.whenDefined('model-viewer').then(() => buildAstronomer(key));
+  }
+}
+
+function astroResetCamera(key) {
+  const mv = astroViewerEls[key];
+  if (!mv) return;
+  mv.resetTurntableRotation();
+  mv.cameraOrbit = 'auto auto auto';
+}
+
+function astroToggleAutoRotate(key) {
+  const mv = astroViewerEls[key];
+  if (!mv) return;
+  astroAutoRotate[key] = !astroAutoRotate[key];
+  const btn = document.getElementById('astroRotateBtn_' + key);
+  if (astroAutoRotate[key]) {
+    mv.setAttribute('auto-rotate', '');
+    if (btn) btn.style.color = 'var(--ochre-lt)';
+  } else {
+    mv.removeAttribute('auto-rotate');
+    if (btn) btn.style.color = '';
+  }
+}
+
+// ── Tab controller ────────────────────────────────────────────
+function showSkyTab(key, push) {
+  const panel = document.getElementById('tab-' + key);
+  if (!panel) return;
+
+  document.querySelectorAll('.tabpanel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sky-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === key));
+  panel.classList.add('active');
+
+  // Lazy-build the avatar the first time this tab is opened
+  if (ASTRONOMERS[key]) loadAstronomer(key);
+
+  if (push !== false) {
+    const hash = (key === 'main') ? ' ' : '#' + key;
+    history.replaceState(null, '', key === 'main' ? location.pathname : hash);
+  }
+  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.sky-tab').forEach(btn => {
+    btn.addEventListener('click', () => showSkyTab(btn.dataset.tab));
+  });
+  // Deep link support: sky.html#maya
+  const h = location.hash.replace('#', '');
+  if (h && document.getElementById('tab-' + h)) showSkyTab(h, false);
+});
 </script>
 
 
