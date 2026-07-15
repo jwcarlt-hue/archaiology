@@ -208,10 +208,9 @@ footer a{color:var(--smoke);}
 <script>
 (function(){
   // ── CONFIG ────────────────────────────────────────────────────────────────
-  // Set AGORA_ENDPOINT to your deployed Edge Function URL, e.g.
-  //   https://ucsgtbpeuqeamuvuvojs.supabase.co/functions/v1/agora-chat
-  // Leave "" to run in read-only preview (greeting + fragments, no live chat).
-  const AGORA_ENDPOINT = "";
+  // AGORA_ENDPOINT is the deployed Edge Function URL.
+  // Set it to "" to run in read-only preview (greeting + fragments, no live chat).
+  const AGORA_ENDPOINT = "https://ucsgtbpeuqeamuvuvojs.supabase.co/functions/v1/agora-chat";
   const CORPUS_URL     = "corpus/heraclitus.json";
   const FIGURE_ID      = "heraclitus";
 
