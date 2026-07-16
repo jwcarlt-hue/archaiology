@@ -780,7 +780,9 @@ a{text-decoration:none;color:inherit;}
 
 </div>
 </section>
-$\n</div><!-- /tabpanel -->\n
+
+</div><!-- /tabpanel -->
+
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!-- TAB: Maya Astronomy · Xultun ───────-->
 <!-- ═══════════════════════════════════════════════════════════ -->
@@ -930,7 +932,9 @@ $\n</div><!-- /tabpanel -->\n
 
 </div>
 </section>
-$\n</div><!-- /tabpanel -->\n
+
+</div><!-- /tabpanel -->
+
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!-- TAB: Greek & Roman Astronomy · Miletus -->
 <!-- ═══════════════════════════════════════════════════════════ -->
@@ -1020,7 +1024,86 @@ $\n</div><!-- /tabpanel -->\n
   </div>
 </div>
 </section>
-$\n</div><!-- /tabpanel -->\n
+
+<section class="rcv-section" id="roman-conversion">
+<div class="rcv-inner">
+
+  <div class="rom-eyebrow">Chris Bennett · Ptolemaic Chronology · Tyndale House</div>
+  <h2 class="rom-title">Republican <em>Conversion</em> Table</h2>
+  <p class="rom-intro">The calculator above assumes the Julian calendar. Before Caesar's reform of 46&nbsp;BC the Roman civil year was a 355-day lunar-ish year kept in rough step with the sun by intercalation at the discretion of the pontifex maximus — so a Republican date maps onto no fixed Julian day without reconstruction. This is Chris Bennett's reconstruction: for every civil year from 263&nbsp;BC to AD&nbsp;60 it gives the Julian date on which each Roman month began.</p>
+
+  <div class="rcv-controls">
+    <div class="rcv-ctrl">
+      <label class="rcv-ctrl-label" for="rcvSearch">Find a year</label>
+      <input class="rcv-input" id="rcvSearch" type="text" placeholder="e.g. 44, AUC 710, 46 BC" autocomplete="off">
+    </div>
+    <div class="rcv-ctrl">
+      <span class="rcv-ctrl-label">Era</span>
+      <div class="rcv-seg" id="rcvEra">
+        <button data-era="all" class="active">All</button>
+        <button data-era="BC">B.C.</button>
+        <button data-era="AD">A.D.</button>
+      </div>
+    </div>
+    <div class="rcv-ctrl">
+      <span class="rcv-ctrl-label">Year type</span>
+      <div class="rcv-seg" id="rcvType">
+        <button data-type="all" class="active">All</button>
+        <button data-type="int">Intercalary</button>
+        <button data-type="reg">Regular</button>
+      </div>
+    </div>
+    <div class="rcv-count" id="rcvCount"></div>
+  </div>
+
+  <div class="rcv-table-wrap">
+    <table class="rcv-table">
+      <thead>
+        <tr id="rcvHead"></tr>
+      </thead>
+      <tbody id="rcvBody"></tbody>
+    </table>
+  </div>
+
+  <div class="rcv-detail" id="rcvDetail"></div>
+
+  <div class="rcv-legend">
+    <div class="rcv-leg-card">
+      <div class="rcv-leg-title">Reading a row</div>
+      <div class="rcv-leg-body">Each row is one Roman civil year. <strong>Year</strong> is the Julian year in which it began (it may end in the next). <strong>AUC</strong> is the Varronian year <em>ab urbe condita</em>, counting AUC&nbsp;1 = 753&nbsp;BC. Each month cell gives the Julian date of that month's <strong>Kalends</strong> — its first day. Click any row to expand it.</div>
+    </div>
+    <div class="rcv-leg-card">
+      <div class="rcv-leg-title">Intercalaris</div>
+      <div class="rcv-leg-body">The intercalary month, inserted after the Terminalia in late Februarius to hold the calendar against the sun. A date here means the year was <strong>intercalary</strong> (377 or 378 days). Caesar abolished it in 46&nbsp;BC; that year's two replacement months appear as <strong>Int I</strong> and <strong>Int II</strong>, giving the famous 445-day <em>annus confusionis</em>.</div>
+    </div>
+    <div class="rcv-leg-card">
+      <div class="rcv-leg-title">Δ = ±N cells</div>
+      <div class="rcv-leg-body">Between AUC 492 = 262&nbsp;BC and AUC 564 = 190&nbsp;BC the <em>number</em> of intercalations between two years is often recoverable while their individual lengths are not. Bennett records the resulting slack in the Intercalaris cell as <code>Δ = +N/−M</code> — the maximum days the true date may fall after or before the one shown. These cells are <strong>not</strong> intercalations.</div>
+    </div>
+    <div class="rcv-leg-card">
+      <div class="rcv-leg-title">Nundinal letters</div>
+      <div class="rcv-leg-body">The letter A–H of the <strong>market day</strong> in the eight-day <em>nundinal</em> cycle — one of the strongest checks on any reconstruction. A pair marks an intercalary year (before and after insertion). Note Bennett's letters are the mod-8 complement of the usual modern convention:<br><code>Roman&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A B C D E F G H</code><br><code>Conventional A H G F E D C B</code></div>
+    </div>
+    <div class="rcv-leg-card">
+      <div class="rcv-leg-title">Month names</div>
+      <div class="rcv-leg-body">Republican names are used throughout. <strong>Quintilis</strong> became <strong>Iulius</strong> in 44&nbsp;BC; <strong>Sextilis</strong> became <strong>Augustus</strong> in 8&nbsp;BC; <strong>September</strong> was briefly <strong>Germanicus</strong> under Caligula, AD&nbsp;37–40.</div>
+    </div>
+    <div class="rcv-leg-card">
+      <div class="rcv-leg-title">Source</div>
+      <div class="rcv-leg-body">Chris Bennett, <em>Ptolemaic Chronology: Roman to Julian Conversion</em>, © 2001–2012, hosted by David Instone-Brewer (formerly Tyndale House, Cambridge).<br><a href="https://www.instonebrewer.com/TyndaleSites/Egypt/ptolemies/chron/roman/chron_rom_howto.htm" target="_blank" rel="noopener">How to read the tables ↗</a><br><a href="https://www.instonebrewer.com/TyndaleSites/Egypt/ptolemies/chron/roman/roman_civil.htm" target="_blank" rel="noopener">Original HTML table ↗</a></div>
+    </div>
+  </div>
+
+  <div class="rcv-caveat">
+    <div class="rcv-leg-title">What this copy does not carry</div>
+    <div class="rcv-leg-body">Bennett's published table encodes much of its meaning in <strong>colour and font</strong>, and that layer is lost in the CSV this page is built from. In the original, black dates are certain; brown depend on his reconstructed <em>Lex Acilia</em>; orange rest on a nundinal argument alone; magenta are a best guess. Red, green and violet mark astronomical, loose and cross-calendar synchronisms, and boxing around Intercalaris records whether intercalation is attested or merely inferred. <strong>Every date below is shown in the same weight, so this table cannot tell you how firm any given date is.</strong> For that, consult the original — and treat the pre-Julian dates here as a reconstruction, not a record.</div>
+  </div>
+
+</div>
+</section>
+
+</div><!-- /tabpanel -->
+
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!-- TAB: Near Eastern Astronomy · Babylon -->
 <!-- ═══════════════════════════════════════════════════════════ -->
@@ -1116,7 +1199,9 @@ $\n</div><!-- /tabpanel -->\n
 
 </div>
 </section>
-$\n</div><!-- /tabpanel -->\n
+
+</div><!-- /tabpanel -->
+
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!-- TAB: Egyptian Astronomy · Thebes ───-->
 <!-- ═══════════════════════════════════════════════════════════ -->
@@ -1226,7 +1311,9 @@ $\n</div><!-- /tabpanel -->\n
 
 </div>
 </section>
-$\n</div><!-- /tabpanel -->\n
+
+</div><!-- /tabpanel -->
+
 <footer class="footer">
   <a href="index.html">archAIology</a> · archaiology.org · Archaeoastronomy Sky Archive · © 2026
 </footer>
@@ -2049,11 +2136,25 @@ function loadNotable(lc) {
 }
 .rom-open-link:hover { color:var(--ochre-lt); }
 
+/* The Cambridge widgets are cross-origin, so their internals cannot be
+   restyled from here. They draw dark text on a transparent body, which
+   vanishes against the night palette — so the frame sits on its own light
+   parchment panel rather than the page background. */
 .rom-iframe-wrap {
   position:relative; width:100%; min-height:260px;
-  background:rgba(200,216,240,.015);
+  background:var(--paper);
+  background-image:
+    radial-gradient(ellipse at 18% 12%, rgba(184,137,42,.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 82% 88%, rgba(122,62,26,.05) 0%, transparent 55%);
+  border:1px solid rgba(184,137,42,.22);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.5), 0 2px 14px rgba(0,0,0,.35);
+  padding:.4rem;
+  color-scheme: light;   /* keep native selects/buttons light inside the frame */
 }
-.rom-iframe-wrap iframe { width:100%; height:260px; border:0; display:block; }
+.rom-iframe-wrap iframe {
+  width:100%; height:260px; border:0; display:block;
+  background:transparent; color-scheme: light;
+}
 .rom-today-wrap iframe { height:210px; }
 
 .rom-blocked {
@@ -2122,6 +2223,765 @@ function loadNotable(lc) {
 })();
 </script>
 
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- REPUBLICAN CALENDAR CONVERSION TABLE                        -->
+<!-- Chris Bennett, "Ptolemaic Chronology" (2001-2012)           -->
+<!-- instonebrewer.com/TyndaleSites/Egypt/ptolemies/chron/roman  -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<style>
+.rcv-section {
+  background: var(--night);
+  border-top: 1px solid rgba(200,216,240,.06);
+  padding: 3rem 2rem 4rem;
+}
+.rcv-inner { max-width: 1240px; margin: 0 auto; }
+
+/* ── Controls ── */
+.rcv-controls {
+  display:flex; flex-wrap:wrap; align-items:flex-end; gap:1rem;
+  margin-bottom:1.2rem; padding-bottom:1.2rem;
+  border-bottom:1px solid rgba(200,216,240,.07);
+}
+.rcv-ctrl { display:flex; flex-direction:column; gap:.35rem; }
+.rcv-ctrl-label {
+  font-family:var(--sans); font-size:.54rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:rgba(200,216,240,.35);
+}
+.rcv-input {
+  background:rgba(200,216,240,.05); border:1px solid rgba(200,216,240,.14);
+  color:var(--star); font-family:var(--sans); font-size:.78rem;
+  padding:.45rem .7rem; width:190px; outline:none;
+}
+.rcv-input:focus { border-color:var(--ochre); background:rgba(200,216,240,.08); }
+.rcv-input::placeholder { color:rgba(200,216,240,.25); }
+.rcv-seg { display:flex; border:1px solid rgba(200,216,240,.14); }
+.rcv-seg button {
+  background:none; border:none; cursor:pointer;
+  font-family:var(--sans); font-size:.6rem; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase;
+  color:rgba(200,216,240,.4); padding:.45rem .8rem; transition:all .15s;
+}
+.rcv-seg button + button { border-left:1px solid rgba(200,216,240,.14); }
+.rcv-seg button:hover { color:var(--star); background:rgba(200,216,240,.05); }
+.rcv-seg button.active { background:rgba(184,137,42,.18); color:var(--ochre-lt); }
+.rcv-count {
+  margin-left:auto; font-family:var(--sans); font-size:.62rem;
+  color:rgba(200,216,240,.35); letter-spacing:.06em; padding-bottom:.45rem;
+}
+.rcv-count strong { color:var(--ochre-lt); font-weight:700; }
+
+/* ── Table ── */
+.rcv-table-wrap {
+  overflow:auto; max-height:560px;
+  border:1px solid rgba(200,216,240,.09);
+  background:rgba(200,216,240,.015);
+}
+.rcv-table { border-collapse:separate; border-spacing:0; width:100%; font-family:var(--sans); }
+.rcv-table th, .rcv-table td { white-space:nowrap; }
+.rcv-table thead th {
+  position:sticky; top:0; z-index:3;
+  background:#0a0f1c; color:rgba(200,216,240,.55);
+  font-size:.55rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:.6rem .55rem; text-align:left;
+  border-bottom:1px solid rgba(200,216,240,.16);
+}
+.rcv-table thead th small {
+  display:block; font-size:.5rem; font-weight:500; letter-spacing:.05em;
+  color:rgba(184,137,42,.75); text-transform:none; margin-top:.12rem;
+}
+.rcv-table thead th.rcv-int { color:rgba(184,137,42,.7); }
+.rcv-table tbody td {
+  font-size:.68rem; color:rgba(200,216,240,.62);
+  padding:.42rem .55rem; border-bottom:1px solid rgba(200,216,240,.05);
+  font-variant-numeric:tabular-nums;
+}
+.rcv-row { cursor:pointer; transition:background .12s; }
+.rcv-row:hover { background:rgba(184,137,42,.07); }
+.rcv-row.active { background:rgba(184,137,42,.14); }
+.rcv-row.active td { color:var(--star); }
+
+/* sticky year + AUC columns */
+.rcv-table th.rcv-sticky1, .rcv-table td.rcv-sticky1 { position:sticky; left:0;  z-index:2; }
+.rcv-table th.rcv-sticky2, .rcv-table td.rcv-sticky2 { position:sticky; left:74px; z-index:2; }
+.rcv-table thead th.rcv-sticky1, .rcv-table thead th.rcv-sticky2 { z-index:4; }
+.rcv-table td.rcv-sticky1, .rcv-table td.rcv-sticky2 { background:#070b15; }
+.rcv-row:hover td.rcv-sticky1, .rcv-row:hover td.rcv-sticky2 { background:#141a28; }
+.rcv-row.active td.rcv-sticky1, .rcv-row.active td.rcv-sticky2 { background:#1d2033; }
+.rcv-yr { color:var(--star) !important; font-weight:700; }
+.rcv-yr .rcv-era { color:rgba(200,216,240,.3); font-weight:500; font-size:.58rem; margin-left:.15rem; }
+.rcv-auc { color:rgba(184,137,42,.8) !important; font-weight:600; }
+.rcv-nun { color:var(--ochre-lt) !important; font-weight:700; letter-spacing:.08em; }
+.rcv-lead { color:rgba(200,216,240,.4) !important; font-size:.62rem !important; }
+.rcv-lead.is-shift { color:rgba(143,189,224,.75) !important; }
+.rcv-shift { margin-left:.2rem; color:#8fbde0; font-weight:700; cursor:help; }
+.rcv-delta { color:rgba(160,150,90,.85) !important; font-style:italic; font-size:.62rem !important; }
+.rcv-icell { color:rgba(212,168,75,.9) !important; font-weight:600; }
+.rcv-empty { color:rgba(200,216,240,.12) !important; }
+.rcv-flag {
+  display:inline-block; margin-left:.3rem; color:#e0803a; font-weight:700;
+  cursor:help; font-size:.7rem;
+}
+
+/* ── Detail panel ── */
+.rcv-detail {
+  display:none; margin-top:1.2rem;
+  background:rgba(200,216,240,.03); border:1px solid rgba(184,137,42,.2);
+  padding:1.3rem 1.5rem;
+}
+.rcv-detail.open { display:block; }
+.rcv-d-head {
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:.8rem;
+  padding-bottom:.8rem; margin-bottom:1rem;
+  border-bottom:1px solid rgba(200,216,240,.08);
+}
+.rcv-d-year { font-family:var(--serif); font-size:1.5rem; font-weight:900; color:var(--cream); }
+.rcv-d-auc {
+  font-family:var(--sans); font-size:.62rem; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ochre-lt);
+  border:1px solid rgba(184,137,42,.3); padding:.2rem .5rem;
+}
+.rcv-d-tag {
+  font-family:var(--sans); font-size:.55rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; padding:.2rem .5rem;
+}
+.rcv-t-int  { background:rgba(212,168,75,.16); color:#e8c473; }
+.rcv-t-reg  { background:rgba(200,216,240,.07); color:rgba(200,216,240,.5); }
+.rcv-t-jul  { background:rgba(90,150,200,.14); color:#8fbde0; }
+.rcv-t-warn { background:rgba(224,128,58,.16); color:#e0803a; }
+.rcv-d-close {
+  margin-left:auto; background:none; border:1px solid rgba(200,216,240,.14);
+  color:rgba(200,216,240,.4); cursor:pointer; font-size:.7rem;
+  width:26px; height:26px; line-height:1;
+}
+.rcv-d-close:hover { color:var(--star); border-color:rgba(200,216,240,.3); }
+.rcv-d-months {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:.5rem;
+}
+.rcv-d-mon {
+  background:rgba(200,216,240,.03); border-left:2px solid rgba(184,137,42,.35);
+  padding:.5rem .65rem;
+}
+.rcv-d-mon.is-int { border-left-color:#d4a84b; background:rgba(212,168,75,.07); }
+.rcv-d-mon-n {
+  font-family:var(--sans); font-size:.54rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:rgba(184,137,42,.85); margin-bottom:.2rem;
+}
+.rcv-d-mon-d { font-family:var(--sans); font-size:.8rem; color:var(--star); font-variant-numeric:tabular-nums; }
+.rcv-d-mon-y { font-family:var(--sans); font-size:.56rem; color:rgba(200,216,240,.3); margin-top:.1rem; }
+.rcv-d-note {
+  margin-top:1rem; font-family:var(--sans); font-size:.68rem;
+  color:rgba(200,216,240,.45); line-height:1.6;
+}
+.rcv-d-note strong { color:var(--ochre-lt); }
+.rcv-d-warn {
+  margin-top:1rem; padding:.7rem .9rem;
+  background:rgba(224,128,58,.07); border-left:2px solid #e0803a;
+  font-family:var(--sans); font-size:.66rem; color:rgba(230,190,160,.8); line-height:1.6;
+}
+
+/* ── Legend / provenance ── */
+.rcv-legend {
+  margin-top:1.6rem; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem;
+}
+.rcv-leg-card {
+  background:rgba(200,216,240,.02); border:1px solid rgba(200,216,240,.06);
+  padding:1rem 1.1rem;
+}
+.rcv-leg-title {
+  font-family:var(--sans); font-size:.55rem; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:rgba(200,216,240,.32); margin-bottom:.55rem;
+}
+.rcv-leg-body { font-family:var(--sans); font-size:.68rem; color:rgba(200,216,240,.48); line-height:1.65; }
+.rcv-leg-body strong { color:var(--ochre-lt); font-weight:600; }
+.rcv-leg-body em { color:rgba(200,216,240,.62); font-style:italic; }
+.rcv-leg-body a { color:var(--ochre-lt); text-decoration:underline; }
+.rcv-leg-body code {
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.62rem;
+  color:#e8c473; background:rgba(212,168,75,.08); padding:.05rem .25rem;
+}
+.rcv-caveat {
+  margin-top:1rem; padding:.9rem 1.1rem;
+  background:rgba(224,128,58,.05); border-left:2px solid rgba(224,128,58,.5);
+}
+.rcv-caveat .rcv-leg-title { color:#e0803a; }
+@media(max-width:820px){
+  .rcv-section{ padding:2.5rem 1rem 3rem; }
+  .rcv-count{ margin-left:0; }
+  .rcv-input{ width:100%; }
+}
+</style>
+
+<script>
+const RCV_ROWS=[
+["BC","263",491,"492","262","C","2-Dec|31-Dec|Δ = −14/+15|28-Jan|28-Feb|29-Mar|29-Apr|28-May|28-Jun|27-Jul|25-Aug|25-Sep|||24-Oct"],
+["BC","262",492,"493","261","HA","22-Nov|21-Dec|14-Jan|10-Feb|12-Mar|10-Apr|11-May|9-Jun|10-Jul|8-Aug|6-Sep|7-Oct|||5-Nov"],
+["BC","261",493,"494","260","F","4-Dec|2-Jan|Δ = ±14|30-Jan|2-Mar|31-Mar|1-May|30-May|30-Jun|29-Jul|27-Aug|27-Sep|||26-Oct"],
+["BC","260",494,"495","259","CE","24-Nov|23-Dec|15-Jan|11-Feb|14-Mar|12-Apr|13-May|11-Jun|12-Jul|10-Aug|8-Sep|9-Oct|||7-Nov"],
+["BC","259",495,"496","258","B","6-Dec|4-Jan|Δ = −13/+14|1-Feb|4-Mar|2-Apr|3-May|1-Jun|2-Jul|31-Jul|29-Aug|29-Sep|||28-Oct"],
+["BC","258",496,"497","257","GH","26-Nov|25-Dec|18-Jan|14-Feb|16-Mar|14-Apr|15-May|13-Jun|14-Jul|12-Aug|10-Sep|11-Oct|||9-Nov"],
+["BC","257",497,"498","256","E","8-Dec|6-Jan|Δ = ±13|3-Feb|6-Mar|4-Apr|5-May|3-Jun|4-Jul|2-Aug|31-Aug|1-Oct|||30-Oct"],
+["BC","256",498,"499","255","BD","28-Nov|27-Dec|19-Jan|15-Feb|18-Mar|16-Apr|17-May|15-Jun|16-Jul|14-Aug|12-Sep|13-Oct|||11-Nov"],
+["BC","255",499,"500","254","A","10-Dec|8-Jan|Δ = −12/+13|5-Feb|8-Mar|6-Apr|7-May|5-Jun|6-Jul|4-Aug|2-Sep|3-Oct|||1-Nov"],
+["BC","254",500,"501","253","FG","30-Nov|29-Dec|22-Jan|18-Feb|20-Mar|18-Apr|19-May|17-Jun|18-Jul|16-Aug|14-Sep|15-Oct|||13-Nov"],
+["BC","253",501,"502","252","D","12-Dec|10-Jan|Δ = ±12|7-Feb|10-Mar|8-Apr|9-May|7-Jun|8-Jul|6-Aug|4-Sep|5-Oct|||3-Nov"],
+["BC","252",502,"503","251","AC","2-Dec|31-Dec|23-Jan|19-Feb|22-Mar|20-Apr|21-May|19-Jun|20-Jul|18-Aug|16-Sep|17-Oct|||15-Nov"],
+["BC","251",503,"504","250","H","14-Dec|12-Jan|Δ = −11/+12|9-Feb|12-Mar|10-Apr|11-May|9-Jun|10-Jul|8-Aug|6-Sep|7-Oct|||5-Nov"],
+["BC","250",504,"505","249","EF","4-Dec|2-Jan|26-Jan|22-Feb|24-Mar|22-Apr|23-May|21-Jun|22-Jul|20-Aug|18-Sep|19-Oct|||17-Nov"],
+["BC","249",505,"506","248","C","16-Dec|14-Jan|Δ = ±11|11-Feb|14-Mar|12-Apr|13-May|11-Jun|12-Jul|10-Aug|8-Sep|9-Oct|||7-Nov"],
+["BC","248",506,"507","247","HB","6-Dec|4-Jan|27-Jan|23-Feb|26-Mar|24-Apr|25-May|23-Jun|24-Jul|22-Aug|20-Sep|21-Oct|||19-Nov"],
+["BC","247",507,"508","246","G","18-Dec|16-Jan|Δ = −10/+11|13-Feb|16-Mar|14-Apr|15-May|13-Jun|14-Jul|12-Aug|10-Sep|11-Oct|||9-Nov"],
+["BC","246",508,"509","245","DE","8-Dec|6-Jan|30-Jan|26-Feb|28-Mar|26-Apr|27-May|25-Jun|26-Jul|24-Aug|22-Sep|23-Oct|||21-Nov"],
+["BC","245",509,"510","244","B","20-Dec|18-Jan|Δ = ±10|15-Feb|18-Mar|16-Apr|17-May|15-Jun|16-Jul|14-Aug|12-Sep|13-Oct|||11-Nov"],
+["BC","244",510,"511","243","GA","10-Dec|8-Jan|31-Jan|27-Feb|30-Mar|28-Apr|29-May|27-Jun|28-Jul|26-Aug|24-Sep|25-Oct|||23-Nov"],
+["BC","243",511,"512","242","F","22-Dec|20-Jan|Δ = −9/+10|17-Feb|20-Mar|18-Apr|19-May|17-Jun|18-Jul|16-Aug|14-Sep|15-Oct|||13-Nov"],
+["BC","242",512,"513","241","CD","12-Dec|10-Jan|3-Feb|1-Mar|1-Apr|30-Apr|31-May|29-Jun|30-Jul|28-Aug|26-Sep|27-Oct|||25-Nov"],
+["BC","241",513,"514","240","A","24-Dec|22-Jan|Δ = ±9|19-Feb|22-Mar|20-Apr|21-May|19-Jun|20-Jul|18-Aug|16-Sep|17-Oct|||15-Nov"],
+["BC","240",514,"515","239","FH","14-Dec|12-Jan|4-Feb|3-Mar|3-Apr|2-May|2-Jun|1-Jul|1-Aug|30-Aug|28-Sep|29-Oct|||27-Nov"],
+["BC","239",515,"516","238","E","26-Dec|24-Jan|Δ = −8/+9|21-Feb|24-Mar|22-Apr|23-May|21-Jun|22-Jul|20-Aug|18-Sep|19-Oct|||17-Nov"],
+["BC","238",516,"517","237","BC","16-Dec|14-Jan|7-Feb|5-Mar|5-Apr|4-May|4-Jun|3-Jul|3-Aug|1-Sep|30-Sep|31-Oct|||29-Nov"],
+["BC","237",517,"518","236","H","28-Dec|26-Jan|Δ = ±8|23-Feb|26-Mar|24-Apr|25-May|23-Jun|24-Jul|22-Aug|20-Sep|21-Oct|||19-Nov"],
+["BC","236",518,"519","235","EG","18-Dec|16-Jan|8-Feb|7-Mar|7-Apr|6-May|6-Jun|5-Jul|5-Aug|3-Sep|2-Oct|2-Nov|||1-Dec"],
+["BC","235",519,"520","234","D","30-Dec|28-Jan|Δ = −7/+8|25-Feb|28-Mar|26-Apr|27-May|25-Jun|26-Jul|24-Aug|22-Sep|23-Oct|||21-Nov"],
+["BC","234",520,"521","233","AB","20-Dec|18-Jan|11-Feb|9-Mar|9-Apr|8-May|8-Jun|7-Jul|7-Aug|5-Sep|4-Oct|4-Nov|||3-Dec"],
+["BC","233",521,"522","232","G","1-Jan|30-Jan|Δ = ±7|27-Feb|30-Mar|28-Apr|29-May|27-Jun|28-Jul|26-Aug|24-Sep|25-Oct|||23-Nov"],
+["BC","232",522,"523","230","DF","22-Dec|20-Jan|12-Feb|11-Mar|11-Apr|10-May|10-Jun|9-Jul|9-Aug|7-Sep|6-Oct|6-Nov|||5-Dec"],
+["BC","230",523,"524","230","C","3-Jan|1-Feb|Δ = −6/+7|1-Mar|1-Apr|30-Apr|31-May|29-Jun|30-Jul|28-Aug|26-Sep|27-Oct|||25-Nov"],
+["BC","230",524,"525","228","HA","24-Dec|22-Jan|15-Feb|13-Mar|13-Apr|12-May|12-Jun|11-Jul|11-Aug|9-Sep|8-Oct|8-Nov|||7-Dec"],
+["BC","228",525,"526","228","F","5-Jan|3-Feb|Δ = ±6|3-Mar|3-Apr|2-May|2-Jun|1-Jul|1-Aug|30-Aug|28-Sep|29-Oct|||27-Nov"],
+["BC","228",526,"527","226","CE","26-Dec|24-Jan|16-Feb|15-Mar|15-Apr|14-May|14-Jun|13-Jul|13-Aug|11-Sep|10-Oct|10-Nov|||9-Dec"],
+["BC","226",527,"528","226","B","7-Jan|5-Feb|Δ = −5/+6|5-Mar|5-Apr|4-May|4-Jun|3-Jul|3-Aug|1-Sep|30-Sep|31-Oct|||29-Nov"],
+["BC","226",528,"529","224","GH","28-Dec|26-Jan|19-Feb|17-Mar|17-Apr|16-May|16-Jun|15-Jul|15-Aug|13-Sep|12-Oct|12-Nov|||11-Dec"],
+["BC","224",529,"530","224","E","9-Jan|7-Feb|Δ = ±5|7-Mar|7-Apr|6-May|6-Jun|5-Jul|5-Aug|3-Sep|2-Oct|2-Nov|||1-Dec"],
+["BC","224",530,"531","222","BD","30-Dec|28-Jan|20-Feb|19-Mar|19-Apr|18-May|18-Jun|17-Jul|17-Aug|15-Sep|14-Oct|14-Nov|||13-Dec"],
+["BC","222",531,"532","222","A","11-Jan|9-Feb|Δ = −4/+5|9-Mar|9-Apr|8-May|8-Jun|7-Jul|7-Aug|5-Sep|4-Oct|4-Nov|||3-Dec"],
+["BC","221",532,"533","220","FG","1-Jan|30-Jan|23-Feb|21-Mar|21-Apr|20-May|20-Jun|19-Jul|19-Aug|17-Sep|16-Oct|16-Nov|||15-Dec"],
+["BC","220",533,"534","219","D","13-Jan|11-Feb|Δ = ±4|11-Mar|11-Apr|10-May|10-Jun|9-Jul|9-Aug|7-Sep|6-Oct|6-Nov|||5-Dec"],
+["BC","219",534,"535","218","AC","3-Jan|1-Feb|24-Feb|23-Mar|23-Apr|22-May|22-Jun|21-Jul|21-Aug|19-Sep|18-Oct|18-Nov|||17-Dec"],
+["BC","218",535,"536","217","H","15-Jan|13-Feb|Δ = −3/+4|13-Mar|13-Apr|12-May|12-Jun|11-Jul|11-Aug|9-Sep|8-Oct|8-Nov|||7-Dec"],
+["BC","217",536,"537","217","E","5-Jan|3-Feb|Δ = −3/+4|2-Mar|2-Apr|1-May|1-Jun|30-Jun|31-Jul|29-Aug|27-Sep|28-Oct|||26-Nov"],
+["BC","217",537,"538","215","BC","25-Dec|23-Jan|16-Feb|15-Mar|15-Apr|14-May|14-Jun|13-Jul|13-Aug|11-Sep|10-Oct|10-Nov|||9-Dec"],
+["BC","215",538,"539","214","HB","7-Jan|5-Feb|28-Feb|27-Mar|27-Apr|26-May|26-Jun|25-Jul|25-Aug|23-Sep|22-Oct|22-Nov|||21-Dec"],
+["BC","214",539,"540","213","G","19-Jan|17-Feb|Δ = −2/+3|17-Mar|17-Apr|16-May|16-Jun|15-Jul|15-Aug|13-Sep|12-Oct|12-Nov|||11-Dec"],
+["BC","213",540,"541","213","D","9-Jan|7-Feb|Δ = −2/+3|6-Mar|6-Apr|5-May|5-Jun|4-Jul|4-Aug|2-Sep|1-Oct|1-Nov|||30-Nov"],
+["BC","213",541,"542","212","A","29-Dec|27-Jan|Δ = −2/+3|24-Feb|27-Mar|25-Apr|26-May|24-Jun|25-Jul|23-Aug|21-Sep|22-Oct|||20-Nov"],
+["BC","212",542,"543","211","F","19-Dec|17-Jan|Δ = −2/+3|14-Feb|17-Mar|15-Apr|16-May|14-Jun|15-Jul|13-Aug|11-Sep|12-Oct|||10-Nov"],
+["BC","211",543,"544","210","CD","9-Dec|7-Jan|31-Jan|27-Feb|30-Mar|28-Apr|29-May|27-Jun|28-Jul|26-Aug|24-Sep|25-Oct|||23-Nov"],
+["BC","210",544,"545","209","A","22-Dec|20-Jan|Δ = ±2|17-Feb|19-Mar|17-Apr|18-May|16-Jun|17-Jul|15-Aug|13-Sep|14-Oct|||12-Nov"],
+["BC","209",545,"546","208","F","11-Dec|9-Jan|Δ = ±2|6-Feb|9-Mar|7-Apr|8-May|6-Jun|7-Jul|5-Aug|3-Sep|4-Oct|||2-Nov"],
+["BC","208",546,"547","207","C","1-Dec|30-Dec|Δ = ±2|27-Jan|27-Feb|28-Mar|28-Apr|27-May|27-Jun|26-Jul|24-Aug|24-Sep|||23-Oct"],
+["BC","207",547,"548","206","HB","21-Nov|20-Dec|12-Jan|8-Feb|11-Mar|9-Apr|10-May|8-Jun|9-Jul|7-Aug|5-Sep|6-Oct|||4-Nov"],
+["BC","206",548,"549","205","G","3-Dec|1-Jan|Δ = −1/+2|29-Jan|29-Feb|29-Mar|29-Apr|28-May|28-Jun|27-Jul|25-Aug|25-Sep|||24-Oct"],
+["BC","205",549,"550","204","DE","22-Nov|21-Dec|14-Jan|10-Feb|13-Mar|11-Apr|12-May|10-Jun|11-Jul|9-Aug|7-Sep|8-Oct|||6-Nov"],
+["BC","204",550,"551","203","B","5-Dec|3-Jan|Δ = ±1|31-Jan|3-Mar|1-Apr|2-May|31-May|1-Jul|30-Jul|28-Aug|28-Sep|||27-Oct"],
+["BC","203",551,"552","202","G","25-Nov|24-Dec|Δ = ±1|21-Jan|21-Feb|22-Mar|22-Apr|21-May|21-Jun|20-Jul|18-Aug|18-Sep|||17-Oct"],
+["BC","202",552,"553","201","DF","15-Nov|14-Dec|6-Jan|2-Feb|4-Mar|2-Apr|3-May|1-Jun|2-Jul|31-Jul|29-Aug|29-Sep|||28-Oct"],
+["BC","201",553,"554","200","C","26-Nov|25-Dec|Δ = +1|22-Jan|22-Feb|23-Mar|23-Apr|22-May|22-Jun|21-Jul|19-Aug|19-Sep|||18-Oct"],
+["BC","200",554,"555","199","H","16-Nov|15-Dec|Δ = +1|12-Jan|12-Feb|13-Mar|13-Apr|12-May|12-Jun|11-Jul|9-Aug|9-Sep|||8-Oct"],
+["BC","199",555,"556","198","E","6-Nov|5-Dec|Δ = +1|2-Jan|2-Feb|3-Mar|3-Apr|2-May|2-Jun|1-Jul|30-Jul|30-Aug|||28-Sep"],
+["BC","198",556,"557","197","B","27-Oct|25-Nov|Δ = +1|23-Dec|23-Jan|21-Feb|23-Mar|21-Apr|22-May|20-Jun|19-Jul|19-Aug|||17-Sep"],
+["BC","197",557,"558","196","G","16-Oct|14-Nov|Δ = +1|12-Dec|12-Jan|10-Feb|13-Mar|11-Apr|12-May|10-Jun|9-Jul|9-Aug|||7-Sep"],
+["BC","196",558,"559","195","D","6-Oct|4-Nov|Δ = +1|2-Dec|2-Jan|31-Jan|3-Mar|1-Apr|2-May|31-May|29-Jun|30-Jul|||28-Aug"],
+["BC","195",559,"560","194","A","26-Sep|25-Oct|Δ = +1|22-Nov|23-Dec|21-Jan|21-Feb|22-Mar|22-Apr|21-May|19-Jun|20-Jul|||18-Aug"],
+["BC","194",560,"561","193","F","16-Sep|15-Oct|Δ = +1|12-Nov|13-Dec|11-Jan|11-Feb|11-Mar|11-Apr|10-May|8-Jun|9-Jul|||7-Aug"],
+["BC","193",561,"562","192","C","5-Sep|4-Oct|Δ = +1|1-Nov|2-Dec|31-Dec|31-Jan|1-Mar|1-Apr|30-Apr|29-May|29-Jun|||28-Jul"],
+["BC","192",562,"563","191","H","26-Aug|24-Sep|Δ = +1|22-Oct|22-Nov|21-Dec|21-Jan|19-Feb|22-Mar|20-Apr|19-May|19-Jun|||18-Jul"],
+["BC","191",563,"564","190","EF","16-Aug|14-Sep|8-Oct|4-Nov|5-Dec|3-Jan|3-Feb|4-Mar|4-Apr|3-May|1-Jun|2-Jul|||31-Jul"],
+["BC","190",564,"565","189","C","29-Aug|27-Sep||25-Oct|25-Nov|24-Dec|24-Jan|22-Feb|24-Mar|22-Apr|21-May|21-Jun|||20-Jul"],
+["BC","189",565,"566","188","HA","18-Aug|16-Sep|10-Oct|6-Nov|7-Dec|5-Jan|5-Feb|6-Mar|6-Apr|5-May|3-Jun|4-Jul|||2-Aug"],
+["BC","188",566,"567","187","F","31-Aug|29-Sep||27-Oct|27-Nov|26-Dec|26-Jan|24-Feb|27-Mar|25-Apr|24-May|24-Jun|||23-Jul"],
+["BC","187",567,"568","186","CE","21-Aug|19-Sep|12-Oct|8-Nov|9-Dec|7-Jan|7-Feb|8-Mar|8-Apr|7-May|5-Jun|6-Jul|||4-Aug"],
+["BC","186",568,"569","185","BC","2-Sep|1-Oct|25-Oct|21-Nov|22-Dec|20-Jan|20-Feb|20-Mar|20-Apr|19-May|17-Jun|18-Jul|||16-Aug"],
+["BC","185",569,"570","184","H","14-Sep|13-Oct||10-Nov|11-Dec|9-Jan|9-Feb|10-Mar|10-Apr|9-May|7-Jun|8-Jul|||6-Aug"],
+["BC","184",570,"571","183","EF","4-Sep|3-Oct|27-Oct|23-Nov|24-Dec|22-Jan|22-Feb|23-Mar|23-Apr|22-May|20-Jun|21-Jul|||19-Aug"],
+["BC","183",571,"572","182","C","17-Sep|16-Oct||13-Nov|14-Dec|12-Jan|12-Feb|13-Mar|13-Apr|12-May|10-Jun|11-Jul|||9-Aug"],
+["BC","182",572,"573","181","HB","7-Sep|6-Oct|29-Oct|25-Nov|26-Dec|24-Jan|24-Feb|24-Mar|24-Apr|23-May|21-Jun|22-Jul|||20-Aug"],
+["BC","181",573,"574","180","GH","18-Sep|17-Oct|10-Nov|7-Dec|7-Jan|5-Feb|8-Mar|6-Apr|7-May|5-Jun|4-Jul|4-Aug|||2-Sep"],
+["BC","180",574,"575","179","E","1-Oct|30-Oct||27-Nov|28-Dec|26-Jan|26-Feb|27-Mar|27-Apr|26-May|24-Jun|25-Jul|||23-Aug"],
+["BC","179",575,"576","178","BC","21-Sep|20-Oct|13-Nov|10-Dec|10-Jan|8-Feb|11-Mar|9-Apr|10-May|8-Jun|7-Jul|7-Aug|||5-Sep"],
+["BC","178",576,"577","177","H","4-Oct|2-Nov||30-Nov|31-Dec|29-Jan|29-Feb|29-Mar|29-Apr|28-May|26-Jun|27-Jul|||25-Aug"],
+["BC","177",577,"578","176","EF","23-Sep|22-Oct|15-Nov|12-Dec|12-Jan|10-Feb|13-Mar|11-Apr|12-May|10-Jun|9-Jul|9-Aug|||7-Sep"],
+["BC","176",578,"579","175","C","6-Oct|4-Nov||2-Dec|2-Jan|31-Jan|3-Mar|1-Apr|2-May|31-May|29-Jun|30-Jul|||28-Aug"],
+["BC","175",579,"580","174","HB","26-Sep|25-Oct|17-Nov|14-Dec|14-Jan|12-Feb|15-Mar|13-Apr|14-May|12-Jun|11-Jul|11-Aug|||9-Sep"],
+["BC","174",580,"581","173","GH","8-Oct|6-Nov|30-Nov|27-Dec|27-Jan|25-Feb|27-Mar|25-Apr|26-May|24-Jun|23-Jul|23-Aug|||21-Sep"],
+["BC","173",581,"582","172","E","20-Oct|18-Nov||16-Dec|16-Jan|14-Feb|17-Mar|15-Apr|16-May|14-Jun|13-Jul|13-Aug|||11-Sep"],
+["BC","172",582,"583","171","BC","10-Oct|8-Nov|2-Dec|29-Dec|29-Jan|27-Feb|30-Mar|28-Apr|29-May|27-Jun|26-Jul|26-Aug|||24-Sep"],
+["BC","171",583,"584","170","H","23-Oct|21-Nov||19-Dec|19-Jan|17-Feb|20-Mar|18-Apr|19-May|17-Jun|16-Jul|16-Aug|||14-Sep"],
+["BC","170",584,"585","169","EF","13-Oct|11-Nov|5-Dec|1-Jan|1-Feb|1-Mar|1-Apr|30-Apr|31-May|29-Jun|28-Jul|28-Aug|||26-Sep"],
+["BC","169",585,"586","168","C","25-Oct|23-Nov||21-Dec|21-Jan|19-Feb|22-Mar|20-Apr|21-May|19-Jun|18-Jul|18-Aug|||16-Sep"],
+["BC","168",586,"587","167","H","15-Oct|13-Nov||11-Dec|11-Jan|9-Feb|12-Mar|10-Apr|11-May|9-Jun|8-Jul|8-Aug|||6-Sep"],
+["BC","167",587,"588","166","EG","5-Oct|3-Nov|26-Nov|23-Dec|23-Jan|21-Feb|24-Mar|22-Apr|23-May|21-Jun|20-Jul|20-Aug|||18-Sep"],
+["BC","166",588,"589","165","DE","17-Oct|15-Nov|9-Dec|5-Jan|5-Feb|5-Mar|5-Apr|4-May|4-Jun|3-Jul|1-Aug|1-Sep|||30-Sep"],
+["BC","165",589,"590","164","B","29-Oct|27-Nov||25-Dec|25-Jan|23-Feb|26-Mar|24-Apr|25-May|23-Jun|22-Jul|22-Aug|||20-Sep"],
+["BC","164",590,"591","163","GA","19-Oct|17-Nov|10-Dec|6-Jan|6-Feb|7-Mar|7-Apr|6-May|6-Jun|5-Jul|3-Aug|3-Sep|||2-Oct"],
+["BC","163",591,"592","162","FG","31-Oct|29-Nov|23-Dec|19-Jan|19-Feb|20-Mar|20-Apr|19-May|19-Jun|18-Jul|16-Aug|16-Sep|||15-Oct"],
+["BC","162",592,"593","161","D","13-Nov|12-Dec||9-Jan|9-Feb|9-Mar|9-Apr|8-May|8-Jun|7-Jul|5-Aug|5-Sep|||4-Oct"],
+["BC","161",593,"594","160","AC","2-Nov|1-Dec|24-Dec|20-Jan|20-Feb|21-Mar|21-Apr|20-May|20-Jun|19-Jul|17-Aug|17-Sep|||16-Oct"],
+["BC","160",594,"595","159","HA","14-Nov|13-Dec|6-Jan|2-Feb|5-Mar|3-Apr|4-May|2-Jun|3-Jul|1-Aug|30-Aug|30-Sep|||29-Oct"],
+["BC","159",595,"596","158","F","27-Nov|26-Dec||23-Jan|23-Feb|24-Mar|24-Apr|23-May|23-Jun|22-Jul|20-Aug|20-Sep|||19-Oct"],
+["BC","158",596,"597","157","CE","17-Nov|16-Dec|8-Jan|4-Feb|6-Mar|4-Apr|5-May|3-Jun|4-Jul|2-Aug|31-Aug|1-Oct|||30-Oct"],
+["BC","157",597,"598","156","BC","28-Nov|27-Dec|20-Jan|16-Feb|19-Mar|17-Apr|18-May|16-Jun|17-Jul|15-Aug|13-Sep|14-Oct|||12-Nov"],
+["BC","156",598,"599","155","H","11-Dec|9-Jan||6-Feb|9-Mar|7-Apr|8-May|6-Jun|7-Jul|5-Aug|3-Sep|4-Oct|||2-Nov"],
+["BC","155",599,"600","154","EF","1-Dec|30-Dec|23-Jan|19-Feb|22-Mar|20-Apr|21-May|19-Jun|20-Jul|18-Aug|16-Sep|17-Oct|||15-Nov"],
+["BC","154",601,"601","153","C","14-Dec|12-Jan||9-Feb|11-Mar|9-Apr|10-May|8-Jun|9-Jul|7-Aug|5-Sep|6-Oct|||4-Nov"],
+["BC","153",602,"602","152","HA","3-Dec|1-Jan|25-Jan|21-Feb|24-Mar|22-Apr|23-May|21-Jun|22-Jul|20-Aug|18-Sep|19-Oct|||17-Nov"],
+["BC","152",603,"603","151","F","16-Dec|14-Jan||11-Feb|14-Mar|12-Apr|13-May|11-Jun|12-Jul|10-Aug|8-Sep|9-Oct|||7-Nov"],
+["BC","151",604,"604","150","CD","6-Dec|4-Jan|28-Jan|24-Feb|27-Mar|25-Apr|26-May|24-Jun|25-Jul|23-Aug|21-Sep|22-Oct|||20-Nov"],
+["BC","150",605,"605","149","A","19-Dec|17-Jan||14-Feb|16-Mar|14-Apr|15-May|13-Jun|14-Jul|12-Aug|10-Sep|11-Oct|||9-Nov"],
+["BC","149",606,"606","148","FG","8-Dec|6-Jan|30-Jan|26-Feb|29-Mar|27-Apr|28-May|26-Jun|27-Jul|25-Aug|23-Sep|24-Oct|||22-Nov"],
+["BC","148",607,"607","147","D","21-Dec|19-Jan||16-Feb|19-Mar|17-Apr|18-May|16-Jun|17-Jul|15-Aug|13-Sep|14-Oct|||12-Nov"],
+["BC","147",608,"608","146","AB","11-Dec|9-Jan|2-Feb|1-Mar|1-Apr|30-Apr|31-May|29-Jun|30-Jul|28-Aug|26-Sep|27-Oct|||25-Nov"],
+["BC","146",609,"609","145","G","24-Dec|22-Jan||19-Feb|21-Mar|19-Apr|20-May|18-Jun|19-Jul|17-Aug|15-Sep|16-Oct|||14-Nov"],
+["BC","145",610,"610","144","DE","13-Dec|11-Jan|4-Feb|3-Mar|3-Apr|2-May|2-Jun|1-Jul|1-Aug|30-Aug|28-Sep|29-Oct|||27-Nov"],
+["BC","144",611,"611","143","B","26-Dec|24-Jan||21-Feb|24-Mar|22-Apr|23-May|21-Jun|22-Jul|20-Aug|18-Sep|19-Oct|||17-Nov"],
+["BC","143",612,"612","142","GH","16-Dec|14-Jan|7-Feb|6-Mar|6-Apr|5-May|5-Jun|4-Jul|4-Aug|2-Sep|1-Oct|1-Nov|||30-Nov"],
+["BC","142",613,"613","141","E","29-Dec|27-Jan||24-Feb|26-Mar|24-Apr|25-May|23-Jun|24-Jul|22-Aug|20-Sep|21-Oct|||19-Nov"],
+["BC","141",614,"614","140","BC","18-Dec|16-Jan|9-Feb|8-Mar|8-Apr|7-May|7-Jun|6-Jul|6-Aug|4-Sep|3-Oct|3-Nov|||2-Dec"],
+["BC","140",615,"615","139","H","31-Dec|29-Jan||26-Feb|29-Mar|27-Apr|28-May|26-Jun|27-Jul|25-Aug|23-Sep|24-Oct|||22-Nov"],
+["BC","139",616,"616","138","E","21-Dec|19-Jan||16-Feb|19-Mar|17-Apr|18-May|16-Jun|17-Jul|15-Aug|13-Sep|14-Oct|||12-Nov"],
+["BC","138",617,"617","137","BC","11-Dec|9-Jan|2-Feb|29-Feb|31-Mar|29-Apr|30-May|28-Jun|29-Jul|27-Aug|25-Sep|26-Oct|||24-Nov"],
+["BC","137",618,"618","136","H","23-Dec|21-Jan||18-Feb|21-Mar|19-Apr|20-May|18-Jun|19-Jul|17-Aug|15-Sep|16-Oct|||14-Nov"],
+["BC","136",619,"619","135","EF","13-Dec|11-Jan|4-Feb|3-Mar|3-Apr|2-May|2-Jun|1-Jul|1-Aug|30-Aug|28-Sep|29-Oct|||27-Nov"],
+["BC","135",620,"620","134","C","26-Dec|24-Jan||21-Feb|24-Mar|22-Apr|23-May|21-Jun|22-Jul|20-Aug|18-Sep|19-Oct|||17-Nov"],
+["BC","134",621,"621","133","HA","16-Dec|14-Jan|7-Feb|5-Mar|5-Apr|4-May|4-Jun|3-Jul|3-Aug|1-Sep|30-Sep|31-Oct|||29-Nov"],
+["BC","133",622,"622","132","F","28-Dec|26-Jan||23-Feb|26-Mar|24-Apr|25-May|23-Jun|24-Jul|22-Aug|20-Sep|21-Oct|||19-Nov"],
+["BC","132",623,"623","131","CD","18-Dec|16-Jan|9-Feb|8-Mar|8-Apr|7-May|7-Jun|6-Jul|6-Aug|4-Sep|3-Oct|3-Nov|||2-Dec"],
+["BC","131",624,"624","130","A","31-Dec|29-Jan||26-Feb|29-Mar|27-Apr|28-May|26-Jun|27-Jul|25-Aug|23-Sep|24-Oct|||22-Nov"],
+["BC","130",625,"625","128","FG","21-Dec|19-Jan|12-Feb|10-Mar|10-Apr|9-May|9-Jun|8-Jul|8-Aug|6-Sep|5-Oct|5-Nov|||4-Dec"],
+["BC","128",626,"626","128","D","2-Jan|31-Jan||28-Feb|31-Mar|29-Apr|30-May|28-Jun|29-Jul|27-Aug|25-Sep|26-Oct|||24-Nov"],
+["BC","128",627,"627","126","AB","23-Dec|21-Jan|14-Feb|13-Mar|13-Apr|12-May|12-Jun|11-Jul|11-Aug|9-Sep|8-Oct|8-Nov|||7-Dec"],
+["BC","126",628,"628","126","G","5-Jan|3-Feb||3-Mar|3-Apr|2-May|2-Jun|1-Jul|1-Aug|30-Aug|28-Sep|29-Oct|||27-Nov"],
+["BC","126",629,"629","124","DE","26-Dec|24-Jan|17-Feb|15-Mar|15-Apr|14-May|14-Jun|13-Jul|13-Aug|11-Sep|10-Oct|10-Nov|||9-Dec"],
+["BC","124",630,"630","124","B","7-Jan|5-Feb||5-Mar|5-Apr|4-May|4-Jun|3-Jul|3-Aug|1-Sep|30-Sep|31-Oct|||29-Nov"],
+["BC","124",631,"631","122","GH","28-Dec|26-Jan|19-Feb|18-Mar|18-Apr|17-May|17-Jun|16-Jul|16-Aug|14-Sep|13-Oct|13-Nov|||12-Dec"],
+["BC","122",632,"632","122","E","10-Jan|8-Feb||8-Mar|8-Apr|7-May|7-Jun|6-Jul|6-Aug|4-Sep|3-Oct|3-Nov|||2-Dec"],
+["BC","122",633,"633","120","BC","31-Dec|29-Jan|22-Feb|20-Mar|20-Apr|19-May|19-Jun|18-Jul|18-Aug|16-Sep|15-Oct|15-Nov|||14-Dec"],
+["BC","120",634,"634","119","H","12-Jan|10-Feb||10-Mar|10-Apr|9-May|9-Jun|8-Jul|8-Aug|6-Sep|5-Oct|5-Nov|||4-Dec"],
+["BC","119",635,"635","118","EF","2-Jan|31-Jan|24-Feb|23-Mar|23-Apr|22-May|22-Jun|21-Jul|21-Aug|19-Sep|18-Oct|18-Nov|||17-Dec"],
+["BC","118",636,"636","117","C","15-Jan|13-Feb||13-Mar|13-Apr|12-May|12-Jun|11-Jul|11-Aug|9-Sep|8-Oct|8-Nov|||7-Dec"],
+["BC","117",637,"637","116","HA","5-Jan|3-Feb|27-Feb|25-Mar|25-Apr|24-May|24-Jun|23-Jul|23-Aug|21-Sep|20-Oct|20-Nov|||19-Dec"],
+["BC","116",638,"638","115","F","17-Jan|15-Feb||15-Mar|15-Apr|14-May|14-Jun|13-Jul|13-Aug|11-Sep|10-Oct|10-Nov|||9-Dec"],
+["BC","115",639,"639","114","CD","7-Jan|5-Feb|1-Mar|28-Mar|28-Apr|27-May|27-Jun|26-Jul|26-Aug|24-Sep|23-Oct|23-Nov|||22-Dec"],
+["BC","114",640,"640","113","A","20-Jan|18-Feb||18-Mar|18-Apr|17-May|17-Jun|16-Jul|16-Aug|14-Sep|13-Oct|13-Nov|||12-Dec"],
+["BC","113",641,"641","113","F","10-Jan|8-Feb||7-Mar|7-Apr|6-May|6-Jun|5-Jul|5-Aug|3-Sep|2-Oct|2-Nov|||1-Dec"],
+["BC","113",642,"642","111","CD","30-Dec|28-Jan|21-Feb|20-Mar|20-Apr|19-May|19-Jun|18-Jul|18-Aug|16-Sep|15-Oct|15-Nov|||14-Dec"],
+["BC","111",643,"643","110","A","12-Jan|10-Feb||10-Mar|10-Apr|9-May|9-Jun|8-Jul|8-Aug|6-Sep|5-Oct|5-Nov|||4-Dec"],
+["BC","110",644,"644","110","F","2-Jan|31-Jan||28-Feb|31-Mar|29-Apr|30-May|28-Jun|29-Jul|27-Aug|25-Sep|26-Oct|||24-Nov"],
+["BC","110",645,"645","108","CD","23-Dec|21-Jan|14-Feb|12-Mar|12-Apr|11-May|11-Jun|10-Jul|10-Aug|8-Sep|7-Oct|7-Nov|||6-Dec"],
+["BC","108",646,"646","108","A","4-Jan|2-Feb||2-Mar|2-Apr|1-May|1-Jun|30-Jun|31-Jul|29-Aug|27-Sep|28-Oct|||26-Nov"],
+["BC","108",647,"647","107","F","25-Dec|23-Jan||20-Feb|23-Mar|21-Apr|22-May|20-Jun|21-Jul|19-Aug|17-Sep|18-Oct|||16-Nov"],
+["BC","107",648,"648","106","CD","15-Dec|13-Jan|6-Feb|5-Mar|5-Apr|4-May|4-Jun|3-Jul|3-Aug|1-Sep|30-Sep|31-Oct|||29-Nov"],
+["BC","106",649,"649","105","A","28-Dec|26-Jan||23-Feb|25-Mar|23-Apr|24-May|22-Jun|23-Jul|21-Aug|19-Sep|20-Oct|||18-Nov"],
+["BC","105",650,"650","104","F","17-Dec|15-Jan||12-Feb|15-Mar|13-Apr|14-May|12-Jun|13-Jul|11-Aug|9-Sep|10-Oct|||8-Nov"],
+["BC","104",651,"651","103","CD","7-Dec|5-Jan|29-Jan|25-Feb|28-Mar|26-Apr|27-May|25-Jun|26-Jul|24-Aug|22-Sep|23-Oct|||21-Nov"],
+["BC","103",652,"652","102","A","20-Dec|18-Jan||15-Feb|18-Mar|16-Apr|17-May|15-Jun|16-Jul|14-Aug|12-Sep|13-Oct|||11-Nov"],
+["BC","102",653,"653","101","F","10-Dec|8-Jan||5-Feb|7-Mar|5-Apr|6-May|4-Jun|5-Jul|3-Aug|1-Sep|2-Oct|||31-Oct"],
+["BC","101",654,"654","100","CD","29-Nov|28-Dec|21-Jan|17-Feb|20-Mar|18-Apr|19-May|17-Jun|18-Jul|16-Aug|14-Sep|15-Oct|||13-Nov"],
+["BC","100",655,"655","99","A","12-Dec|10-Jan||7-Feb|10-Mar|8-Apr|9-May|7-Jun|8-Jul|6-Aug|4-Sep|5-Oct|||3-Nov"],
+["BC","99",656,"656","98","FG","2-Dec|31-Dec|24-Jan|20-Feb|23-Mar|21-Apr|22-May|20-Jun|21-Jul|19-Aug|17-Sep|18-Oct|||16-Nov"],
+["BC","98",657,"657","97","D","15-Dec|13-Jan||10-Feb|12-Mar|10-Apr|11-May|9-Jun|10-Jul|8-Aug|6-Sep|7-Oct|||5-Nov"],
+["BC","97",658,"658","96","AB","4-Dec|2-Jan|26-Jan|22-Feb|25-Mar|23-Apr|24-May|22-Jun|23-Jul|21-Aug|19-Sep|20-Oct|||18-Nov"],
+["BC","96",659,"659","95","G","17-Dec|15-Jan||12-Feb|15-Mar|13-Apr|14-May|12-Jun|13-Jul|11-Aug|9-Sep|10-Oct|||8-Nov"],
+["BC","95",660,"660","94","DE","7-Dec|5-Jan|29-Jan|25-Feb|28-Mar|26-Apr|27-May|25-Jun|26-Jul|24-Aug|22-Sep|23-Oct|||21-Nov"],
+["BC","94",661,"661","93","B","20-Dec|18-Jan||15-Feb|17-Mar|15-Apr|16-May|14-Jun|15-Jul|13-Aug|11-Sep|12-Oct|||10-Nov"],
+["BC","93",662,"662","92","GH","9-Dec|7-Jan|31-Jan|27-Feb|30-Mar|28-Apr|29-May|27-Jun|28-Jul|26-Aug|24-Sep|25-Oct|||23-Nov"],
+["BC","92",663,"663","91","E","22-Dec|20-Jan||17-Feb|20-Mar|18-Apr|19-May|17-Jun|18-Jul|16-Aug|14-Sep|15-Oct|||13-Nov"],
+["BC","91",664,"664","90","BC","12-Dec|10-Jan|3-Feb|2-Mar|2-Apr|1-May|1-Jun|30-Jun|31-Jul|29-Aug|27-Sep|28-Oct|||26-Nov"],
+["BC","90",665,"665","89","H","25-Dec|23-Jan||20-Feb|22-Mar|20-Apr|21-May|19-Jun|20-Jul|18-Aug|16-Sep|17-Oct|||15-Nov"],
+["BC","89",666,"666","88","EF","14-Dec|12-Jan|5-Feb|4-Mar|4-Apr|3-May|3-Jun|2-Jul|2-Aug|31-Aug|29-Sep|30-Oct|||28-Nov"],
+["BC","88",667,"667","87","C","27-Dec|25-Jan||22-Feb|25-Mar|23-Apr|24-May|22-Jun|23-Jul|21-Aug|19-Sep|20-Oct|||18-Nov"],
+["BC","87",668,"668","86","H","17-Dec|15-Jan||12-Feb|15-Mar|13-Apr|14-May|12-Jun|13-Jul|11-Aug|9-Sep|10-Oct|||8-Nov"],
+["BC","86",669,"669","85","EF","7-Dec|5-Jan|29-Jan|25-Feb|27-Mar|25-Apr|26-May|24-Jun|25-Jul|23-Aug|21-Sep|22-Oct|||20-Nov"],
+["BC","85",670,"670","84","C","19-Dec|17-Jan||14-Feb|17-Mar|15-Apr|16-May|14-Jun|15-Jul|13-Aug|11-Sep|12-Oct|||10-Nov"],
+["BC","84",671,"671","83","HA","9-Dec|7-Jan|31-Jan|27-Feb|30-Mar|28-Apr|29-May|27-Jun|28-Jul|26-Aug|24-Sep|25-Oct|||23-Nov"],
+["BC","83",672,"672","82","F","22-Dec|20-Jan||17-Feb|20-Mar|18-Apr|19-May|17-Jun|18-Jul|16-Aug|14-Sep|15-Oct|||13-Nov"],
+["BC","82",673,"673","81","CD","12-Dec|10-Jan|3-Feb|1-Mar|1-Apr|30-Apr|31-May|29-Jun|30-Jul|28-Aug|26-Sep|27-Oct|||25-Nov"],
+["BC","81",674,"674","80","A","24-Dec|22-Jan||19-Feb|22-Mar|20-Apr|21-May|19-Jun|20-Jul|18-Aug|16-Sep|17-Oct|||15-Nov"],
+["BC","80",675,"675","79","FG","14-Dec|12-Jan|5-Feb|4-Mar|4-Apr|3-May|3-Jun|2-Jul|2-Aug|31-Aug|29-Sep|30-Oct|||28-Nov"],
+["BC","79",676,"676","78","D","27-Dec|25-Jan||22-Feb|25-Mar|23-Apr|24-May|22-Jun|23-Jul|21-Aug|19-Sep|20-Oct|||18-Nov"],
+["BC","78",677,"677","77","AB","17-Dec|15-Jan|8-Feb|6-Mar|6-Apr|5-May|5-Jun|4-Jul|4-Aug|2-Sep|1-Oct|1-Nov|||30-Nov"],
+["BC","77",678,"678","76","G","29-Dec|27-Jan||24-Feb|27-Mar|25-Apr|26-May|24-Jun|25-Jul|23-Aug|21-Sep|22-Oct|||20-Nov"],
+["BC","76",679,"679","75","DE","19-Dec|17-Jan|10-Feb|9-Mar|9-Apr|8-May|8-Jun|7-Jul|7-Aug|5-Sep|4-Oct|4-Nov|||3-Dec"],
+["BC","74",680,"680","74","B","1-Jan|30-Jan||27-Feb|30-Mar|28-Apr|29-May|27-Jun|28-Jul|26-Aug|24-Sep|25-Oct|||23-Nov"],
+["BC","74",681,"681","72","GH","22-Dec|20-Jan|13-Feb|11-Mar|11-Apr|10-May|10-Jun|9-Jul|9-Aug|7-Sep|6-Oct|6-Nov|||5-Dec"],
+["BC","72",682,"682","72","E","3-Jan|1-Feb||1-Mar|1-Apr|30-Apr|31-May|29-Jun|30-Jul|28-Aug|26-Sep|27-Oct|||25-Nov"],
+["BC","72",683,"683","70","BC","24-Dec|22-Jan|15-Feb|14-Mar|14-Apr|13-May|13-Jun|12-Jul|12-Aug|10-Sep|9-Oct|9-Nov|||8-Dec"],
+["BC","70",684,"684","70","H","6-Jan|4-Feb||4-Mar|4-Apr|3-May|3-Jun|2-Jul|2-Aug|31-Aug|29-Sep|30-Oct|||28-Nov"],
+["BC","70",685,"685","68","EF","27-Dec|25-Jan|18-Feb|16-Mar|16-Apr|15-May|15-Jun|14-Jul|14-Aug|12-Sep|11-Oct|11-Nov|||10-Dec"],
+["BC","68",686,"686","68","C","8-Jan|6-Feb||6-Mar|6-Apr|5-May|5-Jun|4-Jul|4-Aug|2-Sep|1-Oct|1-Nov|||30-Nov"],
+["BC","68",687,"687","66","HA","29-Dec|27-Jan|20-Feb|19-Mar|19-Apr|18-May|18-Jun|17-Jul|17-Aug|15-Sep|14-Oct|14-Nov|||13-Dec"],
+["BC","66",688,"688","66","F","11-Jan|9-Feb||9-Mar|9-Apr|8-May|8-Jun|7-Jul|7-Aug|5-Sep|4-Oct|4-Nov|||3-Dec"],
+["BC","65",689,"689","65","C","1-Jan|30-Jan||27-Feb|29-Mar|27-Apr|28-May|26-Jun|27-Jul|25-Aug|23-Sep|24-Oct|||22-Nov"],
+["BC","65",690,"690","63","HA","21-Dec|19-Jan|12-Feb|11-Mar|11-Apr|10-May|10-Jun|9-Jul|9-Aug|7-Sep|6-Oct|6-Nov|||5-Dec"],
+["BC","63",691,"691","63","F","3-Jan|1-Feb||1-Mar|1-Apr|30-Apr|31-May|29-Jun|30-Jul|28-Aug|26-Sep|27-Oct|||25-Nov"],
+["BC","63",692,"692","62","C","24-Dec|22-Jan||19-Feb|22-Mar|20-Apr|21-May|19-Jun|20-Jul|18-Aug|16-Sep|17-Oct|||15-Nov"],
+["BC","62",693,"693","61","HA","14-Dec|12-Jan|5-Feb|3-Mar|3-Apr|2-May|2-Jun|1-Jul|1-Aug|30-Aug|28-Sep|29-Oct|||27-Nov"],
+["BC","61",694,"694","60","F","26-Dec|24-Jan||21-Feb|24-Mar|22-Apr|23-May|21-Jun|22-Jul|20-Aug|18-Sep|19-Oct|||17-Nov"],
+["BC","60",695,"695","59","C","16-Dec|14-Jan||11-Feb|14-Mar|12-Apr|13-May|11-Jun|12-Jul|10-Aug|8-Sep|9-Oct|||7-Nov"],
+["BC","59",696,"696","58","HA","6-Dec|4-Jan|28-Jan|24-Feb|27-Mar|25-Apr|26-May|24-Jun|25-Jul|23-Aug|21-Sep|22-Oct|||20-Nov"],
+["BC","58",697,"697","57","F","19-Dec|17-Jan||14-Feb|16-Mar|14-Apr|15-May|13-Jun|14-Jul|12-Aug|10-Sep|11-Oct|||9-Nov"],
+["BC","57",698,"698","56","C","8-Dec|6-Jan||3-Feb|6-Mar|4-Apr|5-May|3-Jun|4-Jul|2-Aug|31-Aug|1-Oct|||30-Oct"],
+["BC","56",699,"699","55","HB","28-Nov|27-Dec|19-Jan|15-Feb|18-Mar|16-Apr|17-May|15-Jun|16-Jul|14-Aug|12-Sep|13-Oct|||11-Nov"],
+["BC","55",700,"700","54","G","10-Dec|8-Jan||5-Feb|8-Mar|6-Apr|7-May|5-Jun|6-Jul|4-Aug|2-Sep|3-Oct|||1-Nov"],
+["BC","54",701,"701","53","D","30-Nov|29-Dec||26-Jan|26-Feb|26-Mar|26-Apr|25-May|25-Jun|24-Jul|22-Aug|22-Sep|||21-Oct"],
+["BC","53",702,"702","52","AB","19-Nov|18-Dec|11-Jan|7-Feb|10-Mar|8-Apr|9-May|7-Jun|8-Jul|6-Aug|4-Sep|5-Oct|||3-Nov"],
+["BC","52",703,"703","51","G","2-Dec|31-Dec||28-Jan|28-Feb|29-Mar|29-Apr|28-May|28-Jun|27-Jul|25-Aug|25-Sep|||24-Oct"],
+["BC","51",704,"704","50","D","22-Nov|21-Dec||18-Jan|18-Feb|19-Mar|19-Apr|18-May|18-Jun|17-Jul|15-Aug|15-Sep|||14-Oct"],
+["BC","50",705,"705","49","A","12-Nov|11-Dec||8-Jan|8-Feb|8-Mar|8-Apr|7-May|7-Jun|6-Jul|4-Aug|4-Sep|||3-Oct"],
+["BC","49",706,"706","48","F","1-Nov|30-Nov||28-Dec|28-Jan|26-Feb|29-Mar|27-Apr|28-May|26-Jun|25-Jul|25-Aug|||23-Sep"],
+["BC","48",707,"707","47","C","22-Oct|20-Nov||18-Dec|18-Jan|16-Feb|19-Mar|17-Apr|18-May|16-Jun|15-Jul|15-Aug|||13-Sep"],
+["BC","47",708,"708","46","HA","12-Oct|10-Nov|4-Dec|31-Dec|31-Jan|1-Mar|1-Apr|30-Apr|31-May|29-Jun|28-Jul|28-Aug|1-Oct|1-Nov|2-Dec"],
+["BC","46",709,"709","45","C","31-Dec|31-Jan||28-Feb|30-Mar|29-Apr|30-May|29-Jun|30-Jul|30-Aug|29-Sep|30-Oct|||29-Nov"],
+["BC","45",710,"710","44","FE","30-Dec|30-Jan||28-Feb|31-Mar|30-Apr|31-May|30-Jun|31-Jul|31-Aug|30-Sep|31-Oct|||30-Nov"],
+["BC","44",711,"711","43","H","31-Dec|31-Jan||28-Feb|31-Mar|30-Apr|31-May|30-Jun|31-Jul|31-Aug|30-Sep|31-Oct|||30-Nov"],
+["BC","43",712,"712","42","C","31-Dec|31-Jan||28-Feb|31-Mar|30-Apr|31-May|30-Jun|31-Jul|31-Aug|30-Sep|31-Oct|||30-Nov"],
+["BC","42",713,"713","41","FE","31-Dec|31-Jan||29-Feb|31-Mar|30-Apr|31-May|30-Jun|31-Jul|31-Aug|30-Sep|31-Oct|||30-Nov"],
+["BC","41",714,"714","40","H","31-Dec|31-Jan||28-Feb|31-Mar|30-Apr|31-May|30-Jun|31-Jul|31-Aug|30-Sep|31-Oct|||30-Nov"],
+["BC","40",715,"715","39","C","31-Dec|31-Jan||28-Feb|31-Mar|30-Apr|31-May|30-Jun|31-Jul|31-Aug|30-Sep|31-Oct|||30-Nov"],
+["BC","39",716,"716","38","FE","31-Dec|31-Jan||1-Mar|1-Apr|1-May|1-Jun|1-Jul|1-Aug|1-Sep|1-Oct|1-Nov|||1-Dec"],
+["BC","37",717,"717","37","H","1-Jan|1-Feb||29-Feb|31-Mar|30-Apr|31-May|30-Jun|31-Jul|31-Aug|30-Sep|31-Oct|||30-Nov"],
+["BC","37",718,"718","36","C","31-Dec|31-Jan||28-Feb|31-Mar|30-Apr|31-May|30-Jun|31-Jul|31-Aug|30-Sep|31-Oct|||30-Nov"],
+["BC","36",719,"719","35","FE","31-Dec|31-Jan||1-Mar|1-Apr|1-May|1-Jun|1-Jul|1-Aug|1-Sep|1-Oct|1-Nov|||1-Dec"],
+["BC","34",720,"720","34","H","J"],
+["BC","33",721,"721","33","C","1-Jan|1-Feb||29-Feb|31-Mar|30-Apr|31-May|30-Jun|31-Jul|31-Aug|30-Sep|31-Oct|||30-Nov"],
+["BC","33",722,"722","32","FE","31-Dec|31-Jan||1-Mar|1-Apr|1-May|1-Jun|1-Jul|1-Aug|1-Sep|1-Oct|1-Nov|||1-Dec"],
+["BC","31",723,"723","31","H","J"],
+["BC","30",724,"724","30","C","J"],
+["BC","29",725,"725","29","FE","J"],
+["BC","28",726,"726","28","H","J"],
+["BC","27",727,"727","27","C","J"],
+["BC","26",728,"728","25","FE","1-Jan|1-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","25",729,"729","25","H","2-Jan|2-Feb||1-Mar|1-Apr|1-May|1-Jun|1-Jul|1-Aug|1-Sep|1-Oct|1-Nov|||1-Dec"],
+["BC","24",730,"730","24","C","J"],
+["BC","23",731,"731","22","FE","1-Jan|1-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","22",732,"732","21","H","2-Jan|2-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","21",733,"733","21","C","2-Jan|2-Feb||1-Mar|1-Apr|1-May|1-Jun|1-Jul|1-Aug|1-Sep|1-Oct|1-Nov|||1-Dec"],
+["BC","20",734,"734","19","FE","1-Jan|1-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","19",735,"735","18","H","2-Jan|2-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","18",736,"736","17","C","2-Jan|2-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","17",737,"737","16","FE","2-Jan|2-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","16",738,"738","15","H","2-Jan|2-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","15",739,"739","14","C","2-Jan|2-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","14",740,"740","13","FE","2-Jan|2-Feb||3-Mar|3-Apr|3-May|3-Jun|3-Jul|3-Aug|3-Sep|3-Oct|3-Nov|||3-Dec"],
+["BC","13",741,"741","12","H","3-Jan|3-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","12",742,"742","11","C","2-Jan|2-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","11",743,"743","10","FE","2-Jan|2-Feb||3-Mar|3-Apr|3-May|3-Jun|3-Jul|3-Aug|3-Sep|3-Oct|3-Nov|||3-Dec"],
+["BC","10",744,"744","9","H","3-Jan|3-Feb||3-Mar|3-Apr|3-May|3-Jun|3-Jul|3-Aug|3-Sep|3-Oct|3-Nov|||3-Dec"],
+["BC","9",745,"745","8","C","3-Jan|3-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","8",746,"746","7","F","2-Jan|2-Feb||3-Mar|3-Apr|3-May|3-Jun|3-Jul|3-Aug|3-Sep|3-Oct|3-Nov|||3-Dec"],
+["BC","7",747,"747","6","A","3-Jan|3-Feb||3-Mar|3-Apr|3-May|3-Jun|3-Jul|3-Aug|3-Sep|3-Oct|3-Nov|||3-Dec"],
+["BC","6",748,"748","5","D","3-Jan|3-Feb||3-Mar|3-Apr|3-May|3-Jun|3-Jul|3-Aug|3-Sep|3-Oct|3-Nov|||3-Dec"],
+["BC","5",749,"749","4","G","3-Jan|3-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","4",750,"750","3","B","2-Jan|2-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","3",751,"751","2","E","2-Jan|2-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","2",752,"752","1","H","2-Jan|2-Feb||2-Mar|2-Apr|2-May|2-Jun|2-Jul|2-Aug|2-Sep|2-Oct|2-Nov|||2-Dec"],
+["BC","1",753,"753","1 BC","C","2-Jan|2-Feb||1-Mar|1-Apr|1-May|1-Jun|1-Jul|1-Aug|1-Sep|1-Oct|1-Nov|||1-Dec"],
+["AD","1",754,"754","1","F","J"],
+["AD","2",755,"755","2","A","J"],
+["AD","3",756,"756","3","D","J"],
+["AD","4",757,"757","4","G","J"],
+["AD","5",758,"758","5","B","J"],
+["AD","6",759,"759","6","E","J"],
+["AD","7",760,"760","7","H","J"],
+["AD","8",761,"761","8","C","J"],
+["AD","9",762,"762","9","F","J"],
+["AD","10",763,"763","10","A","J"],
+["AD","11",764,"764","11","D","J"],
+["AD","12",765,"765","12","G","J"],
+["AD","13",766,"766","13","B","J"],
+["AD","14",767,"767","14","E","J"],
+["AD","15",768,"768","15","H","J"],
+["AD","16",769,"769","16","C","J"],
+["AD","17",770,"770","17","F","J"],
+["AD","18",771,"771","18","A","J"],
+["AD","19",772,"772","19","D","J"],
+["AD","20",773,"773","20","G","J"],
+["AD","21",774,"774","21","B","J"],
+["AD","22",775,"775","22","E","J"],
+["AD","23",776,"776","23","H","J"],
+["AD","24",777,"777","24","C","J"],
+["AD","25",778,"778","25","F","J"],
+["AD","26",779,"779","26","A","J"],
+["AD","27",780,"780","27","D","J"],
+["AD","28",781,"781","28","G","J"],
+["AD","29",782,"782","29","B","J"],
+["AD","30",783,"783","30","E","J"],
+["AD","31",784,"784","31","H","J"],
+["AD","32",785,"785","32","C","J"],
+["AD","33",786,"786","33","F","J"],
+["AD","34",787,"787","34","A","J"],
+["AD","35",788,"788","35","D","J"],
+["AD","36",789,"789","36","G","J"],
+["AD","37",790,"790","37","B","J"],
+["AD","38",791,"791","38","E","J"],
+["AD","39",792,"792","39","H","J"],
+["AD","40",793,"793","40","C","J"],
+["AD","41",794,"794","41","F","J"],
+["AD","42",795,"795","42","A","J"],
+["AD","43",796,"796","43","D","J"],
+["AD","44",797,"797","44","G","J"],
+["AD","45",798,"798","45","B","J"],
+["AD","46",799,"799","46","E","J"],
+["AD","47",800,"800","47","H","J"],
+["AD","48",801,"801","48","C","J"],
+["AD","49",802,"802","49","F","J"],
+["AD","50",803,"803","50","A","J"],
+["AD","51",804,"804","51","D","J"],
+["AD","52",805,"805","52","G","J"],
+["AD","53",806,"806","53","B","J"],
+["AD","54",807,"807","54","E","J"],
+["AD","55",808,"808","55","H","J"],
+["AD","56",809,"809","56","C","J"],
+["AD","57",810,"810","57","F","J"],
+["AD","58",811,"811","58","A","J"],
+["AD","59",812,"812","59","D","J"],
+["AD","60",813,"813","60","G","J"]
+];
+
+// ═══════════════════════════════════════════════════════════════
+// REPUBLICAN CALENDAR CONVERSION TABLE
+// Data: Chris Bennett, "Ptolemaic Chronology" (2001-2012),
+// instonebrewer.com/TyndaleSites/Egypt/ptolemies/chron/roman
+// Row format: [era, leadYear, aucKalIan, aucKalDec, trailYear, nundinal, months]
+//   months = 'J' (pure Julian: Kalends on the 1st throughout)
+//            or 15 '|'-separated cells in RCV_MONTHS order
+// ═══════════════════════════════════════════════════════════════
+
+const RCV_MONTHS = ['Ianuarius','Februarius','Intercalaris','Martius','Aprilis','Maius',
+                    'Iunius','Quintilis','Sextilis','September','October','November',
+                    'Int I','Int II','December'];
+// Imperial renames, keyed by month index -> {name, fromAUC, toAUC}
+const RCV_RENAME = { 7:{n:'Iulius',from:710}, 8:{n:'Augustus',from:746}, 9:{n:'Germanicus',from:790,to:793} };
+const RCV_JULIAN = ['1-Jan','1-Feb','','1-Mar','1-Apr','1-May','1-Jun','1-Jul','1-Aug','1-Sep','1-Oct','1-Nov','','','1-Dec'];
+const RCV_MON3 = {Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
+
+// Julian-calendar JDN, astronomical year numbering (1 BC = 0, 2 BC = -1 …)
+function rcvJDN(y, m, d) {
+  const a = Math.floor((14 - m) / 12), y2 = y + 4800 - a, m2 = m + 12 * a - 3;
+  return d + Math.floor((153 * m2 + 2) / 5) + 365 * y2 + Math.floor(y2 / 4) - 32083;
+}
+function rcvAstro(era, n) { return era === 'BC' ? 1 - n : n; }
+function rcvParseCell(c) {
+  const m = /^(\d{1,2})-([A-Za-z]{3})$/.exec((c || '').trim());
+  return m ? { d: +m[1], m: RCV_MON3[m[2]] } : null;
+}
+
+// ── Conventional (Varronian) year from AUC ────────────────────
+// AUC 1 = 753 BC, so AUC n = (754 - n) BC, and AUC 754 = AD 1.
+// Verified against every worked example in Bennett's "how to read"
+// page: AUC 492=262 BC, 564=190, 601=153, 708=46, 746=8, 754=AD 1,
+// 790=AD 37. This — NOT the left-hand Julian column — is the number a
+// year is cited by. The two differ in 110 of 322 rows, because under
+// Bennett's reconstruction Kal. Ian. often falls back into December of
+// the preceding Julian year (e.g. Kal. Ian. AUC 709 = 31 Dec 46 BC).
+function rcvConv(auc) {
+  return auc <= 753 ? { era: 'BC', y: 754 - auc } : { era: 'AD', y: auc - 753 };
+}
+
+// ── Normalise rows ────────────────────────────────────────────
+const RCV = RCV_ROWS.map(r => {
+  const months = r[6] === 'J' ? RCV_JULIAN.slice() : r[6].split('|');
+  const cv = rcvConv(r[2]);
+  return {
+    era: r[0], lead: +r[1], auc: r[2], auc2: r[3], trail: r[4], nun: r[5],
+    year: cv.y,                       // conventional year — the citable label
+    shifted: +r[1] !== cv.y,          // Kal. Ian. fell in the previous Julian year
+    months,
+    isInt: !!rcvParseCell(months[2]) || !!rcvParseCell(months[12]),
+    isJul: r[6] === 'J',
+    delta: (months[2] || '').startsWith('\u0394') ? months[2] : null
+  };
+});
+
+// ── Kal. Ian. JDN + year-length integrity check ───────────────
+// Roman civil years must be contiguous with legal lengths. Any row that
+// breaks this is FLAGGED IN THE UI rather than silently patched — the
+// published table is reproduced as-is.
+const RCV_LEGAL = new Set([355, 377, 378, 365, 366, 445]);
+(function rcvAudit() {
+  RCV.forEach(r => {
+    const c = rcvParseCell(r.months[0]);
+    r.kal = c ? rcvJDN(rcvAstro(r.era, r.lead), c.m, c.d) : null;
+  });
+  for (let i = 0; i < RCV.length - 1; i++) {
+    const a = RCV[i], b = RCV[i + 1];
+    if (a.kal == null || b.kal == null) continue;
+    a.len = b.kal - a.kal;
+    if (!RCV_LEGAL.has(a.len)) a.warn =
+      'The Julian year printed for this row implies a civil year of ' + a.len +
+      ' days, which is not a legal Roman year length (355 regular, 377/378 intercalary, ' +
+      '365/366 Julian, 445 for 46 BC). The month dates and AUC are reproduced as published; ' +
+      'the printed Julian year appears to be a CSV export artefact. Check the original table.';
+  }
+})();
+
+// ── Per-month Julian year (walk months, bump at 1 January) ────
+function rcvMonthYears(r) {
+  let y = rcvAstro(r.era, r.lead), prev = null;
+  return r.months.map(cell => {
+    const c = rcvParseCell(cell);
+    if (!c) return null;
+    if (prev !== null && c.m < prev) y++;
+    prev = c.m;
+    return y;
+  });
+}
+function rcvYearLabel(astroY) {
+  return astroY <= 0 ? (1 - astroY) + ' BC' : 'AD ' + astroY;
+}
+function rcvMonthName(i, auc) {
+  const rn = RCV_RENAME[i];
+  if (rn && auc >= rn.from && (!rn.to || auc <= rn.to)) return rn.n;
+  return RCV_MONTHS[i];
+}
+
+// ── State ─────────────────────────────────────────────────────
+let rcvEra = 'all', rcvType = 'all', rcvQuery = '', rcvActive = null;
+
+function rcvFilter() {
+  const q = rcvQuery.trim().toLowerCase();
+  const aucM = /^auc\s*(\d+)$/.exec(q);
+  const yrM  = /^(\d+)\s*(bc|ad)?$/.exec(q);
+  return RCV.filter(r => {
+    if (rcvEra !== 'all' && r.era !== rcvEra) return false;
+    if (rcvType === 'int' && !r.isInt) return false;
+    if (rcvType === 'reg' && r.isInt) return false;
+    if (!q) return true;
+    if (aucM) return r.auc === +aucM[1];
+    if (yrM) {
+      if (yrM[2] && r.era !== yrM[2].toUpperCase()) return false;
+      return r.year === +yrM[1] || r.lead === +yrM[1] || r.auc === +yrM[1];
+    }
+    return r.nun.toLowerCase() === q;
+  });
+}
+
+// ── Render ────────────────────────────────────────────────────
+function rcvBuildHead() {
+  const head = document.getElementById('rcvHead');
+  let h = '<th class="rcv-sticky1">Roman year</th><th class="rcv-sticky2">AUC</th>' +
+          '<th>Kal. Ian.<small>Julian year</small></th>';
+  RCV_MONTHS.forEach((m, i) => {
+    const rn = RCV_RENAME[i];
+    const isInt = i === 2 || i === 12 || i === 13;
+    h += '<th' + (isInt ? ' class="rcv-int"' : '') + '>' + m +
+         (rn ? '<small>' + rn.n + '</small>' : '') + '</th>';
+  });
+  h += '<th>Nundinal</th>';
+  head.innerHTML = h;
+}
+
+function rcvRender() {
+  const rows = rcvFilter();
+  const body = document.getElementById('rcvBody');
+  const cnt  = document.getElementById('rcvCount');
+  cnt.innerHTML = '<strong>' + rows.length + '</strong> of ' + RCV.length + ' civil years';
+  if (!rows.length) {
+    body.innerHTML = '<tr><td colspan="19" style="padding:2rem;text-align:center;color:rgba(200,216,240,.3)">No year matches that search.</td></tr>';
+    return;
+  }
+  body.innerHTML = rows.map(r => {
+    let t = '<tr class="rcv-row' + (rcvActive === r.auc ? ' active' : '') + '" data-auc="' + r.auc + '">';
+    t += '<td class="rcv-sticky1 rcv-yr">' + r.year + '<span class="rcv-era">' + r.era + '</span>' +
+         (r.warn ? '<span class="rcv-flag" title="Data integrity note — click row">&#9888;</span>' : '') + '</td>';
+    t += '<td class="rcv-sticky2 rcv-auc">' + r.auc + '</td>';
+    t += '<td class="rcv-lead' + (r.shifted ? ' is-shift' : '') + '">' + r.lead + ' ' + r.era +
+         (r.shifted ? '<span class="rcv-shift" title="Kal. Ian. fell in the December of the previous Julian year">\u2190</span>' : '') + '</td>';
+    r.months.forEach((c, i) => {
+      const v = (c || '').trim();
+      if (!v) { t += '<td class="rcv-empty">·</td>'; return; }
+      if (v.startsWith('\u0394')) { t += '<td class="rcv-delta">' + v + '</td>'; return; }
+      const isInt = (i === 2 || i === 12 || i === 13);
+      t += '<td' + (isInt ? ' class="rcv-icell"' : '') + '>' + v + '</td>';
+    });
+    t += '<td class="rcv-nun">' + r.nun + '</td></tr>';
+    return t;
+  }).join('');
+}
+
+function rcvShowDetail(auc) {
+  const r = RCV.find(x => x.auc === auc);
+  const el = document.getElementById('rcvDetail');
+  if (!r) { el.classList.remove('open'); return; }
+  rcvActive = auc;
+  const ys = rcvMonthYears(r);
+  const tags = [];
+  if (r.len === 445) tags.push(['rcv-t-warn', 'Annus confusionis · 445 days']);
+  else if (r.isJul)  tags.push(['rcv-t-jul', 'Julian calendar' + (r.len ? ' · ' + r.len + ' days' : '')]);
+  else if (r.isInt)  tags.push(['rcv-t-int', 'Intercalary' + (r.len ? ' · ' + r.len + ' days' : '')]);
+  else               tags.push(['rcv-t-reg', 'Regular' + (r.len ? ' · ' + r.len + ' days' : '')]);
+  if (r.delta) tags.push(['rcv-t-warn', 'Imprecise · ' + r.delta]);
+
+  let h = '<div class="rcv-d-head">';
+  h += '<span class="rcv-d-year">' + r.year + ' ' + r.era + '</span>';
+  h += '<span class="rcv-d-auc">AUC ' + r.auc + (r.auc2 && r.auc2 !== String(r.auc) ? ' \u2192 ' + r.auc2 : '') + '</span>';
+  tags.forEach(t => { h += '<span class="rcv-d-tag ' + t[0] + '">' + t[1] + '</span>'; });
+  h += '<button class="rcv-d-close" onclick="rcvCloseDetail()" title="Close">\u2715</button>';
+  h += '</div>';
+
+  h += '<div class="rcv-d-months">';
+  r.months.forEach((c, i) => {
+    const v = (c || '').trim();
+    if (!v || v.startsWith('\u0394')) return;
+    const isInt = (i === 2 || i === 12 || i === 13);
+    h += '<div class="rcv-d-mon' + (isInt ? ' is-int' : '') + '">';
+    h += '<div class="rcv-d-mon-n">Kal. ' + rcvMonthName(i, r.auc) + '</div>';
+    h += '<div class="rcv-d-mon-d">' + v + '</div>';
+    h += '<div class="rcv-d-mon-y">' + (ys[i] !== null ? rcvYearLabel(ys[i]) : '') + '</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+
+  h += '<div class="rcv-d-note">The Roman civil year AUC&nbsp;' + r.auc + ' opened on <strong>Kal. Ian. = ' +
+       r.months[0] + ' ' + rcvYearLabel(ys[0]) + '</strong> and closed at the end of December in <strong>' +
+       r.trail + (/BC|AD/.test(r.trail) ? '' : ' ' + r.era) + '</strong>. ' +
+       'Market day fell on nundinal <strong>' + r.nun + '</strong>' +
+       (r.nun.length > 1 ? ' (before and after intercalation)' : '') + '.';
+  if (r.shifted) h += ' Note that its Kalends of Ianuarius fell back in <strong>' + r.lead + ' ' + r.era +
+       '</strong> — the civil year ran ahead of the Julian year it is named for.';
+  if (r.delta) h += ' Bennett records accumulated imprecision of <strong>' + r.delta.replace('\u0394 = ', '') + ' days</strong> for this year.';
+  h += '</div>';
+
+  if (r.warn) h += '<div class="rcv-d-warn"><strong>\u26a0 Data integrity note.</strong> ' + r.warn + '</div>';
+
+  el.innerHTML = h;
+  el.classList.add('open');
+  rcvRender();
+  if (el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function rcvCloseDetail() {
+  rcvActive = null;
+  document.getElementById('rcvDetail').classList.remove('open');
+  rcvRender();
+}
+
+// ── Init ──────────────────────────────────────────────────────
+(function rcvInit() {
+  rcvBuildHead();
+  rcvRender();
+  document.getElementById('rcvBody').addEventListener('click', e => {
+    const tr = e.target.closest('.rcv-row');
+    if (tr) rcvShowDetail(+tr.dataset.auc);
+  });
+  document.getElementById('rcvSearch').addEventListener('input', e => {
+    rcvQuery = e.target.value; rcvRender();
+  });
+  document.getElementById('rcvEra').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    rcvEra = b.dataset.era;
+    document.querySelectorAll('#rcvEra button').forEach(x => x.classList.toggle('active', x === b));
+    rcvRender();
+  });
+  document.getElementById('rcvType').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    rcvType = b.dataset.type;
+    document.querySelectorAll('#rcvType button').forEach(x => x.classList.toggle('active', x === b));
+    rcvRender();
+  });
+})();
+
+</script>
 
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!-- MOON PHASE CALCULATOR  (Meeus, Astronomical Formulae      -->
