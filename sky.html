@@ -1200,6 +1200,80 @@ a{text-decoration:none;color:inherit;}
 </div>
 </section>
 
+<section class="bcv-section" id="babylonian-conversion">
+<div class="bcv-inner">
+
+  <div class="bab-eyebrow">Chris Bennett · Ptolemaic Chronology · after Parker &amp; Dubberstein 1956</div>
+  <h2 class="bab-title">Babylonian <em>Conversion</em> Table</h2>
+  <p class="bab-intro">The Babylonian civil year was lunar: twelve or thirteen months, each beginning with the evening first sighting of the new crescent, kept in step with the seasons by intercalating a thirteenth month. Converting a Babylonian or Seleucid date to the Julian calendar therefore means knowing exactly when each month began — recoverable, for this period, from the astronomical diaries, lunar tables and eclipse records. This is Bennett's <em>corrected</em> table: Parker &amp; Dubberstein's 1956 reconstruction overlaid with the contemporary cuneiform evidence. For every year from 331 to 30&nbsp;BC it gives the Julian date on which each month began. Because the Babylonian day began at sunset, each month actually opened on the <em>evening before</em> the Julian date shown.</p>
+
+  <div class="bcv-controls">
+    <div class="bcv-ctrl">
+      <label class="bcv-ctrl-label" for="bcvSearch">Find a year</label>
+      <input class="bcv-input" id="bcvSearch" type="text" placeholder="e.g. 323 BC, SE 100, Philip" autocomplete="off">
+    </div>
+    <div class="bcv-ctrl">
+      <span class="bcv-ctrl-label">Era column</span>
+      <div class="bcv-seg" id="bcvEraCol">
+        <button data-col="seb" class="active">Seleucid (SEB)</button>
+        <button data-col="sem">Macedonian (SEM)</button>
+      </div>
+    </div>
+    <div class="bcv-ctrl">
+      <span class="bcv-ctrl-label">Year type</span>
+      <div class="bcv-seg" id="bcvType">
+        <button data-type="all" class="active">All</button>
+        <button data-type="int">Intercalary</button>
+        <button data-type="reg">12-month</button>
+      </div>
+    </div>
+    <div class="bcv-count" id="bcvCount"></div>
+  </div>
+
+  <div class="bcv-table-wrap">
+    <table class="bcv-table">
+      <thead><tr id="bcvHead"></tr></thead>
+      <tbody id="bcvBody"></tbody>
+    </table>
+  </div>
+
+  <div class="bcv-detail" id="bcvDetail"></div>
+
+  <div class="bcv-legend">
+    <div class="bcv-leg-card">
+      <div class="bcv-leg-title">Reading a row</div>
+      <div class="bcv-leg-body">Each row is one Babylonian civil year, beginning in the spring with <strong>Nisanu</strong>. The <strong>Julian year</strong> is the year BC in which that Nisanu fell. Each month cell gives the Julian date of its first day; click a row to see the full year with month lengths and the Macedonian equivalents.</div>
+    </div>
+    <div class="bcv-leg-card">
+      <div class="bcv-leg-title">Seleucid Era · SEB &amp; SEM</div>
+      <div class="bcv-leg-body">The era was inaugurated in <strong>SE 7 = 305/4&nbsp;BC</strong>, reckoned retroactively to <strong>SE 1 = 311/0</strong>; those notional early years show in <em>parentheses</em>. The Babylonian count <strong>SEB</strong> begins each year at Nisanu; the Macedonian count <strong>SEM</strong> is one higher between Tashritu and the next Nisanu. Toggle which you see above.</div>
+    </div>
+    <div class="bcv-leg-card">
+      <div class="bcv-leg-title">Before the era</div>
+      <div class="bcv-leg-body">Years before SE&nbsp;7 are dated by the regnal years of <strong>Alexander&nbsp;III</strong>, <strong>Philip&nbsp;III</strong> and <strong>Alexander&nbsp;IV</strong>. The situation in these years is genuinely tangled — rival reckonings by Antigonus and Seleucus overlap — and Bennett's regnal column reflects one resolution of it.</div>
+    </div>
+    <div class="bcv-leg-card">
+      <div class="bcv-leg-title">Intercalation</div>
+      <div class="bcv-leg-body">A thirteenth month kept the lunar year aligned with the seasons: a second <strong>Ululu</strong> (Ululu&nbsp;II) at mid-year, or far more often a second <strong>Addaru</strong> (Addaru&nbsp;II) at year's end. Intercalary years run thirteen months; they are highlighted and filterable above.</div>
+    </div>
+    <div class="bcv-leg-card">
+      <div class="bcv-leg-title">Month lengths</div>
+      <div class="bcv-leg-body">Every length shown is <strong>recomputed here</strong> from the interval between consecutive Julian month-starts, so each is a clean 29 or 30 days. This corrects three cells in the source spreadsheet whose stored lengths (one showing 28) were artefacts of how BC dates were held in Excel across a February boundary — the month <em>dates</em> were always right; three <em>lengths</em> were not.</div>
+    </div>
+    <div class="bcv-leg-card">
+      <div class="bcv-leg-title">Source</div>
+      <div class="bcv-leg-body">Chris Bennett, <em>Ptolemaic Chronology: Babylonian to Julian Conversion</em>, © 2003–2011, hosted by David Instone-Brewer; corrected table after R. A. Parker &amp; W. H. Dubberstein, <em>Babylonian Chronology 626 B.C.–A.D. 75</em> (1956).<br><a href="https://www.instonebrewer.com/TyndaleSites/Egypt/ptolemies/chron/babylonian/chron_bab_howto.htm" target="_blank" rel="noopener">How to read the tables ↗</a><br><a href="https://www.instonebrewer.com/TyndaleSites/Egypt/ptolemies/chron/babylonian/babylonian.htm" target="_blank" rel="noopener">Original table ↗</a></div>
+    </div>
+  </div>
+
+  <div class="bcv-caveat">
+    <div class="bcv-leg-title">What this copy does not carry</div>
+    <div class="bcv-leg-body">Bennett's spreadsheet encodes the <strong>strength of the evidence in colour</strong>: month-starts fixed by an observed eclipse are red and take precedence over all else; predicted eclipses, diary observations, lunar-table data, source conflicts and the heads of unbroken month-sequences each have their own colour. <strong>That layer cannot survive extraction, so every date below is shown alike and this table cannot tell you how each was established.</strong> A date pinned by an eclipse and one interpolated by Parker &amp; Dubberstein look identical here. For the provenance of any single date, consult the original — and treat these as a reconstruction, very well founded in the astronomical record but a reconstruction nonetheless.</div>
+  </div>
+
+</div>
+</section>
+
 </div><!-- /tabpanel -->
 
 <!-- ═══════════════════════════════════════════════════════════ -->
@@ -5639,6 +5713,681 @@ function highlightPair(rises, sets) {
   renderCatalogue();
   renderPairs();
 })();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- BABYLONIAN / SELEUCID CONVERSION TABLE                      -->
+<!-- Chris Bennett, "Ptolemaic Chronology" (2003-2011), after    -->
+<!-- Parker & Dubberstein 1956 + astronomical diaries.           -->
+<!-- instonebrewer.com/.../chron/babylonian                      -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<style>
+.bcv-section {
+  background: var(--night);
+  border-top: 1px solid rgba(200,216,240,.06);
+  padding: 3rem 2rem 4rem;
+}
+.bcv-inner { max-width: 1240px; margin: 0 auto; }
+
+.bcv-controls {
+  display:flex; flex-wrap:wrap; align-items:flex-end; gap:1rem;
+  margin-bottom:1.2rem; padding-bottom:1.2rem;
+  border-bottom:1px solid rgba(200,216,240,.07);
+}
+.bcv-ctrl { display:flex; flex-direction:column; gap:.35rem; }
+.bcv-ctrl-label {
+  font-family:var(--sans); font-size:.54rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:rgba(200,216,240,.35);
+}
+.bcv-input {
+  background:rgba(200,216,240,.05); border:1px solid rgba(200,216,240,.14);
+  color:var(--star); font-family:var(--sans); font-size:.78rem;
+  padding:.45rem .7rem; width:210px; outline:none;
+}
+.bcv-input:focus { border-color:var(--ochre); background:rgba(200,216,240,.08); }
+.bcv-input::placeholder { color:rgba(200,216,240,.25); }
+.bcv-seg { display:flex; border:1px solid rgba(200,216,240,.14); }
+.bcv-seg button {
+  background:none; border:none; cursor:pointer;
+  font-family:var(--sans); font-size:.6rem; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase;
+  color:rgba(200,216,240,.4); padding:.45rem .8rem; transition:all .15s;
+}
+.bcv-seg button + button { border-left:1px solid rgba(200,216,240,.14); }
+.bcv-seg button:hover { color:var(--star); background:rgba(200,216,240,.05); }
+.bcv-seg button.active { background:rgba(184,137,42,.18); color:var(--ochre-lt); }
+.bcv-count {
+  margin-left:auto; font-family:var(--sans); font-size:.62rem;
+  color:rgba(200,216,240,.35); letter-spacing:.06em; padding-bottom:.45rem;
+}
+.bcv-count strong { color:var(--ochre-lt); font-weight:700; }
+
+.bcv-table-wrap {
+  overflow:auto; max-height:560px;
+  border:1px solid rgba(200,216,240,.09);
+  background:rgba(200,216,240,.015);
+}
+.bcv-table { border-collapse:separate; border-spacing:0; width:100%; font-family:var(--sans); }
+.bcv-table th, .bcv-table td { white-space:nowrap; }
+.bcv-table thead th {
+  position:sticky; top:0; z-index:3;
+  background:#0a0f1c; color:rgba(200,216,240,.55);
+  font-size:.55rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  padding:.55rem .5rem; text-align:left;
+  border-bottom:1px solid rgba(200,216,240,.16);
+}
+.bcv-table thead th small {
+  display:block; font-size:.5rem; font-weight:500; letter-spacing:.03em;
+  color:rgba(122,150,200,.85); text-transform:none; margin-top:.12rem; font-style:italic;
+}
+.bcv-table tbody td {
+  font-size:.68rem; color:rgba(200,216,240,.62);
+  padding:.4rem .5rem; border-bottom:1px solid rgba(200,216,240,.05);
+  font-variant-numeric:tabular-nums;
+}
+.bcv-row { cursor:pointer; transition:background .12s; }
+.bcv-row:hover { background:rgba(184,137,42,.07); }
+.bcv-row.active { background:rgba(184,137,42,.14); }
+.bcv-row.active td { color:var(--star); }
+
+.bcv-table th.bcv-s1, .bcv-table td.bcv-s1 { position:sticky; left:0;   z-index:2; }
+.bcv-table th.bcv-s2, .bcv-table td.bcv-s2 { position:sticky; left:78px; z-index:2; }
+.bcv-table thead th.bcv-s1, .bcv-table thead th.bcv-s2 { z-index:4; }
+.bcv-table td.bcv-s1, .bcv-table td.bcv-s2 { background:#070b15; }
+.bcv-row:hover td.bcv-s1, .bcv-row:hover td.bcv-s2 { background:#141a28; }
+.bcv-row.active td.bcv-s1, .bcv-row.active td.bcv-s2 { background:#1d2033; }
+.bcv-yr { color:var(--star) !important; font-weight:700; }
+.bcv-yr .bcv-era { color:rgba(200,216,240,.3); font-weight:500; font-size:.58rem; margin-left:.12rem; }
+.bcv-se  { color:rgba(184,137,42,.85) !important; font-weight:700; }
+.bcv-se .bcv-notion { color:rgba(200,216,240,.35); font-weight:500; }
+.bcv-king { color:rgba(160,190,220,.75) !important; font-size:.6rem !important; font-style:italic; }
+.bcv-mcell { }
+.bcv-mcell .bcv-md { color:rgba(200,216,240,.72); }
+.bcv-mcell .bcv-ml { color:rgba(200,216,240,.3); font-size:.58rem; margin-left:.2rem; }
+.bcv-icell .bcv-md { color:#d4a84b; font-weight:600; }
+.bcv-empty { color:rgba(200,216,240,.1) !important; text-align:center; }
+
+/* ── Detail panel ── */
+.bcv-detail {
+  display:none; margin-top:1.2rem;
+  background:rgba(200,216,240,.03); border:1px solid rgba(184,137,42,.2);
+  padding:1.3rem 1.5rem;
+}
+.bcv-detail.open { display:block; }
+.bcv-d-head {
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:.8rem;
+  padding-bottom:.8rem; margin-bottom:1rem;
+  border-bottom:1px solid rgba(200,216,240,.08);
+}
+.bcv-d-year { font-family:var(--serif); font-size:1.5rem; font-weight:900; color:var(--cream); }
+.bcv-d-se {
+  font-family:var(--sans); font-size:.62rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ochre-lt);
+  border:1px solid rgba(184,137,42,.3); padding:.2rem .5rem;
+}
+.bcv-d-tag {
+  font-family:var(--sans); font-size:.55rem; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; padding:.2rem .5rem;
+}
+.bcv-t-int  { background:rgba(212,168,75,.16); color:#e8c473; }
+.bcv-t-reg  { background:rgba(200,216,240,.07); color:rgba(200,216,240,.5); }
+.bcv-t-king { background:rgba(90,150,200,.14); color:#8fbde0; }
+.bcv-t-notion { background:rgba(200,216,240,.06); color:rgba(200,216,240,.5); font-style:italic; }
+.bcv-d-close {
+  margin-left:auto; background:none; border:1px solid rgba(200,216,240,.14);
+  color:rgba(200,216,240,.4); cursor:pointer; font-size:.7rem;
+  width:26px; height:26px; line-height:1;
+}
+.bcv-d-close:hover { color:var(--star); border-color:rgba(200,216,240,.3); }
+.bcv-d-months {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); gap:.5rem;
+}
+.bcv-d-mon {
+  background:rgba(200,216,240,.03); border-left:2px solid rgba(184,137,42,.35);
+  padding:.5rem .65rem;
+}
+.bcv-d-mon.is-int { border-left-color:#d4a84b; background:rgba(212,168,75,.07); }
+.bcv-d-mon-n {
+  font-family:var(--sans); font-size:.6rem; font-weight:700;
+  color:var(--star); margin-bottom:.1rem;
+}
+.bcv-d-mon-mac { font-family:var(--sans); font-size:.52rem; color:rgba(122,160,210,.7); font-style:italic; margin-bottom:.25rem; }
+.bcv-d-mon-d { font-family:var(--sans); font-size:.78rem; color:var(--ochre-lt); font-variant-numeric:tabular-nums; }
+.bcv-d-mon-meta { font-family:var(--sans); font-size:.54rem; color:rgba(200,216,240,.35); margin-top:.1rem; }
+.bcv-d-note {
+  margin-top:1rem; font-family:var(--sans); font-size:.68rem;
+  color:rgba(200,216,240,.45); line-height:1.6;
+}
+.bcv-d-note strong { color:var(--ochre-lt); }
+
+.bcv-legend {
+  margin-top:1.6rem; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem;
+}
+.bcv-leg-card {
+  background:rgba(200,216,240,.02); border:1px solid rgba(200,216,240,.06);
+  padding:1rem 1.1rem;
+}
+.bcv-leg-title {
+  font-family:var(--sans); font-size:.55rem; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:rgba(200,216,240,.32); margin-bottom:.55rem;
+}
+.bcv-leg-body { font-family:var(--sans); font-size:.68rem; color:rgba(200,216,240,.48); line-height:1.65; }
+.bcv-leg-body strong { color:var(--ochre-lt); font-weight:600; }
+.bcv-leg-body em { color:rgba(200,216,240,.62); font-style:italic; }
+.bcv-leg-body a { color:var(--ochre-lt); text-decoration:underline; }
+.bcv-leg-body code {
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.62rem;
+  color:#e8c473; background:rgba(212,168,75,.08); padding:.05rem .25rem;
+}
+.bcv-caveat {
+  margin-top:1rem; padding:.9rem 1.1rem;
+  background:rgba(224,128,58,.05); border-left:2px solid rgba(224,128,58,.5);
+}
+.bcv-caveat .bcv-leg-title { color:#e0803a; }
+@media(max-width:820px){
+  .bcv-section{ padding:2.5rem 1rem 3rem; }
+  .bcv-count{ margin-left:0; }
+  .bcv-input{ width:100%; }
+}
+</style>
+
+<script>
+const BCV_ROWS=[
+[331,0,0,"","5=6",0,0,330,"13-Apr|331|30~13-May|331|29~11-Jun|331|30~11-Jul|331|30~10-Aug|331|29~8-Sep|331|30~~8-Oct|331|29~6-Nov|331|30~6-Dec|331|30~5-Jan|330|29~3-Feb|330|29~4-Mar|330|30~"],
+[330,0,0,"Alexander III","7",0,0,329,"3-Apr|330|29~2-May|330|30~1-Jun|330|29~30-Jun|330|30~30-Jul|330|29~28-Aug|330|30~~27-Sep|330|30~27-Oct|330|29~25-Nov|330|30~25-Dec|330|30~24-Jan|329|29~22-Feb|329|29~22-Mar|329|30"],
+[329,0,0,"","8",0,0,328,"21-Apr|329|29~20-May|329|29~18-Jun|329|29~17-Jul|329|29~15-Aug|329|30~14-Sep|329|30~~14-Oct|329|30~13-Nov|329|30~13-Dec|329|30~12-Jan|328|30~11-Feb|328|29~12-Mar|328|29~"],
+[328,0,0,"","9",0,0,327,"10-Apr|328|30~10-May|328|29~8-Jun|328|29~7-Jul|328|30~6-Aug|328|29~4-Sep|328|30~~4-Oct|328|29~2-Nov|328|30~2-Dec|328|30~1-Jan|327|29~30-Jan|327|30~1-Mar|327|30~"],
+[327,0,0,"","10",0,0,326,"31-Mar|327|29~29-Apr|327|30~29-May|327|29~27-Jun|327|29~26-Jul|327|30~25-Aug|327|29~~23-Sep|327|30~23-Oct|327|29~21-Nov|327|30~21-Dec|327|30~20-Jan|326|29~18-Feb|326|30~20-Mar|326|30"],
+[326,0,0,"","11",0,0,325,"19-Apr|326|30~19-May|326|29~17-Jun|326|30~17-Jul|326|29~15-Aug|326|30~14-Sep|326|29~~13-Oct|326|30~12-Nov|326|29~11-Dec|326|30~10-Jan|325|29~8-Feb|325|29~8-Mar|325|30~"],
+[325,0,0,"","12",0,0,324,"7-Apr|325|29~6-May|325|30~5-Jun|325|29~4-Jul|325|30~3-Aug|325|29~1-Sep|325|30~~1-Oct|325|30~31-Oct|325|29~29-Nov|325|29~28-Dec|325|30~27-Jan|324|29~25-Feb|324|30~"],
+[324,0,0,"","13",0,0,323,"27-Mar|324|29~25-Apr|324|30~25-May|324|30~24-Jun|324|29~23-Jul|324|30~22-Aug|324|30~~21-Sep|324|29~20-Oct|324|30~19-Nov|324|29~18-Dec|324|29~16-Jan|323|30~15-Feb|323|30~17-Mar|323|29"],
+[323,0,0,"","14=1",0,0,322,"15-Apr|323|29~14-May|323|29~12-Jun|323|30~12-Jul|323|30~11-Aug|323|30~10-Sep|323|30~~10-Oct|323|29~8-Nov|323|30~8-Dec|323|29~6-Jan|322|29~4-Feb|322|29~5-Mar|322|30~"],
+[322,0,0,"Philip III","2",0,0,321,"4-Apr|322|29~3-May|322|30~2-Jun|322|29~1-Jul|322|30~31-Jul|322|30~30-Aug|322|29~~28-Sep|322|30~28-Oct|322|29~26-Nov|322|30~26-Dec|322|30~25-Jan|321|29~23-Feb|321|30~24-Mar|321|29"],
+[321,0,0,"","3",0,0,320,"22-Apr|321|29~21-May|321|30~20-Jun|321|29~19-Jul|321|30~18-Aug|321|30~17-Sep|321|30~~17-Oct|321|30~16-Nov|321|29~15-Dec|321|29~13-Jan|320|30~12-Feb|320|29~13-Mar|320|30~"],
+[320,0,0,"","4",0,0,319,"12-Apr|320|29~11-May|320|29~9-Jun|320|30~9-Jul|320|29~7-Aug|320|30~6-Sep|320|30~~6-Oct|320|30~5-Nov|320|29~4-Dec|320|30~3-Jan|319|29~1-Feb|319|30~3-Mar|319|29~"],
+[319,0,0,"","5",0,0,318,"1-Apr|319|30~1-May|319|29~30-May|319|29~28-Jun|319|30~28-Jul|319|29~26-Aug|319|30~~25-Sep|319|30~25-Oct|319|29~23-Nov|319|30~23-Dec|319|29~21-Jan|318|30~20-Feb|318|29~21-Mar|318|30"],
+[318,0,0,"","6",0,0,317,"20-Apr|318|30~20-May|318|29~18-Jun|318|30~18-Jul|318|29~16-Aug|318|30~15-Sep|318|29~~14-Oct|318|30~13-Nov|318|29~12-Dec|318|29~10-Jan|317|30~9-Feb|317|30~10-Mar|317|29~"],
+[317,0,0,"","7=1",0,0,316,"8-Apr|317|30~8-May|317|30~7-Jun|317|29~6-Jul|317|30~5-Aug|317|29~3-Sep|317|30~~3-Oct|317|29~1-Nov|317|29~30-Nov|317|30~30-Dec|317|29~28-Jan|316|30~27-Feb|316|29~"],
+[316,0,0,"Alex. IV","8=2=1",0,0,315,"28-Mar|316|30~27-Apr|316|30~27-May|316|29~25-Jun|316|30~25-Jul|316|30~24-Aug|316|29~~22-Sep|316|30~22-Oct|316|29~20-Nov|316|29~19-Dec|316|30~18-Jan|315|29~16-Feb|315|30~18-Mar|315|29"],
+[315,0,0,"","3=2",0,0,314,"16-Apr|315|30~16-May|315|30~15-Jun|315|29~14-Jul|315|30~13-Aug|315|30~12-Sep|315|29~~11-Oct|315|30~10-Nov|315|29~9-Dec|315|29~7-Jan|314|30~6-Feb|314|29~7-Mar|314|29~"],
+[314,0,0,"","4(=3)",0,0,313,"5-Apr|314|30~5-May|314|30~4-Jun|314|29~3-Jul|314|30~2-Aug|314|30~1-Sep|314|30~~1-Oct|314|29~30-Oct|314|29~28-Nov|314|30~28-Dec|314|29~26-Jan|313|30~25-Feb|313|29~"],
+[313,0,0,"","5(=4)",0,0,312,"25-Mar|313|29~23-Apr|313|30~23-May|313|30~22-Jun|313|29~21-Jul|313|30~20-Aug|313|30~19-Sep|313|29~18-Oct|313|30~17-Nov|313|29~16-Dec|313|30~15-Jan|312|29~13-Feb|312|30~15-Mar|312|29~"],
+[312,0,0,"","6(=5)",1,1,311,"13-Apr|312|29~12-May|312|30~11-Jun|312|29~10-Jul|312|30~9-Aug|312|30~8-Sep|312|29~~7-Oct|312|30~6-Nov|312|30~6-Dec|312|29~4-Jan|311|30~3-Feb|311|29~4-Mar|311|30~"],
+[311,1,1,"","7=6",2,1,310,"3-Apr|311|29~2-May|311|29~31-May|311|30~30-Jun|311|29~29-Jul|311|30~28-Aug|311|29~~26-Sep|311|30~26-Oct|311|30~25-Nov|311|29~24-Dec|311|30~23-Jan|310|30~22-Feb|310|29~23-Mar|310|30"],
+[310,2,1,"","7",3,1,309,"22-Apr|310|29~21-May|310|29~19-Jun|310|30~19-Jul|310|29~17-Aug|310|30~16-Sep|310|29~~15-Oct|310|30~14-Nov|310|29~13-Dec|310|30~12-Jan|309|30~11-Feb|309|30~12-Mar|309|29~"],
+[309,3,1,"","8",4,1,308,"10-Apr|309|30~10-May|309|29~8-Jun|309|29~7-Jul|309|30~6-Aug|309|29~4-Sep|309|30~~4-Oct|309|29~2-Nov|309|30~2-Dec|309|29~31-Dec|309|30~30-Jan|308|30~1-Mar|308|29~"],
+[308,4,1,"","9",5,1,307,"30-Mar|308|30~29-Apr|308|29~28-May|308|30~27-Jun|308|29~26-Jul|308|30~25-Aug|308|29~~23-Sep|308|30~23-Oct|308|29~21-Nov|308|30~21-Dec|308|29~19-Jan|307|30~18-Feb|307|29~19-Mar|307|30"],
+[307,5,1,"","10",6,1,306,"18-Apr|307|30~18-May|307|29~16-Jun|307|30~16-Jul|307|29~14-Aug|307|30~13-Sep|307|29~~12-Oct|307|30~11-Nov|307|29~10-Dec|307|30~9-Jan|306|29~7-Feb|306|30~9-Mar|306|29~"],
+[306,6,1,"","11",7,1,305,"7-Apr|306|30~7-May|306|29~5-Jun|306|30~5-Jul|306|30~4-Aug|306|29~2-Sep|306|30~~2-Oct|306|30~1-Nov|306|29~30-Nov|306|29~29-Dec|306|30~28-Jan|305|29~26-Feb|305|29~"],
+[305,7,0,"","",8,0,304,"26-Mar|305|30~25-Apr|305|29~24-May|305|30~23-Jun|305|30~23-Jul|305|29~21-Aug|305|30~~20-Sep|305|30~20-Oct|305|30~19-Nov|305|29~18-Dec|305|29~16-Jan|304|30~15-Feb|304|29~16-Mar|304|29"],
+[304,8,0,"","",9,0,303,"14-Apr|304|30~14-May|304|29~12-Jun|304|30~12-Jul|304|29~10-Aug|304|30~9-Sep|304|30~~9-Oct|304|30~8-Nov|304|30~8-Dec|304|29~6-Jan|303|29~4-Feb|303|30~6-Mar|303|29~"],
+[303,9,0,"","",10,0,302,"4-Apr|303|29~3-May|303|29~1-Jun|303|30~1-Jul|303|29~30-Jul|303|30~29-Aug|303|30~~28-Sep|303|30~28-Oct|303|30~27-Nov|303|30~27-Dec|303|29~25-Jan|302|29~23-Feb|302|30~25-Mar|302|29"],
+[302,10,0,"","",11,0,301,"23-Apr|302|29~22-May|302|29~20-Jun|302|30~20-Jul|302|30~19-Aug|302|29~17-Sep|302|30~~17-Oct|302|30~16-Nov|302|30~16-Dec|302|29~14-Jan|301|30~13-Feb|301|29~13-Mar|301|30~"],
+[301,11,0,"","",12,0,300,"12-Apr|301|29~11-May|301|29~9-Jun|301|30~9-Jul|301|29~7-Aug|301|30~6-Sep|301|29~~5-Oct|301|30~4-Nov|301|30~4-Dec|301|29~2-Jan|300|30~1-Feb|300|29~2-Mar|300|30~"],
+[300,12,0,"","",13,0,299,"1-Apr|300|30~1-May|300|29~30-May|300|29~28-Jun|300|30~28-Jul|300|29~26-Aug|300|30~~25-Sep|300|29~24-Oct|300|30~23-Nov|300|29~22-Dec|300|30~21-Jan|299|29~19-Feb|299|30~21-Mar|299|30"],
+[299,13,0,"","",14,0,298,"20-Apr|299|29~19-May|299|30~18-Jun|299|30~18-Jul|299|29~16-Aug|299|30~15-Sep|299|29~~14-Oct|299|29~12-Nov|299|30~12-Dec|299|29~10-Jan|298|30~9-Feb|298|29~10-Mar|298|30~"],
+[298,14,0,"","",15,0,297,"9-Apr|298|29~8-May|298|30~7-Jun|298|30~7-Jul|298|30~6-Aug|298|29~4-Sep|298|30~~4-Oct|298|29~2-Nov|298|29~1-Dec|298|29~30-Dec|298|30~29-Jan|297|29~27-Feb|297|30~"],
+[297,15,0,"","",16,0,296,"28-Mar|297|29~26-Apr|297|30~26-May|297|30~25-Jun|297|30~25-Jul|297|30~24-Aug|297|29~~22-Sep|297|30~22-Oct|297|29~20-Nov|297|29~19-Dec|297|30~18-Jan|296|29~16-Feb|296|29~17-Mar|296|30"],
+[296,16,0,"","",17,0,295,"16-Apr|296|29~15-May|296|30~14-Jun|296|30~14-Jul|296|30~13-Aug|296|29~11-Sep|296|30~~11-Oct|296|29~9-Nov|296|30~9-Dec|296|29~7-Jan|295|30~6-Feb|295|29~7-Mar|295|29~"],
+[295,17,0,"","",18,0,294,"5-Apr|295|30~5-May|295|29~3-Jun|295|30~3-Jul|295|29~1-Aug|295|30~31-Aug|295|30~~30-Sep|295|30~30-Oct|295|29~28-Nov|295|30~28-Dec|295|29~26-Jan|294|30~25-Feb|294|29~"],
+[294,18,0,"","",19,0,293,"26-Mar|294|29~24-Apr|294|30~24-May|294|29~22-Jun|294|30~22-Jul|294|29~20-Aug|294|30~19-Sep|294|30~19-Oct|294|30~18-Nov|294|29~17-Dec|294|30~16-Jan|293|29~14-Feb|293|30~15-Mar|293|29~"],
+[293,19,0,"","",20,0,292,"13-Apr|293|29~12-May|293|30~11-Jun|293|29~10-Jul|293|30~9-Aug|293|29~7-Sep|293|30~~7-Oct|293|29~5-Nov|293|30~5-Dec|293|30~4-Jan|292|29~2-Feb|292|30~4-Mar|292|30~"],
+[292,20,0,"","",21,0,291,"3-Apr|292|29~2-May|292|29~31-May|292|30~30-Jun|292|29~29-Jul|292|29~27-Aug|292|30~~26-Sep|292|29~25-Oct|292|30~24-Nov|292|30~24-Dec|292|30~23-Jan|291|29~21-Feb|291|30~23-Mar|291|30"],
+[291,21,0,"","",22,0,290,"22-Apr|291|29~21-May|291|29~19-Jun|291|30~19-Jul|291|29~17-Aug|291|29~15-Sep|291|30~~15-Oct|291|29~13-Nov|291|30~13-Dec|291|30~12-Jan|290|29~10-Feb|290|30~12-Mar|290|30~"],
+[290,22,0,"","",23,0,289,"11-Apr|290|29~10-May|290|30~9-Jun|290|29~8-Jul|290|30~7-Aug|290|29~5-Sep|290|30~~5-Oct|290|29~3-Nov|290|30~3-Dec|290|29~1-Jan|289|30~31-Jan|289|29~29-Feb|289|30~"],
+[289,23,0,"","",24,0,288,"30-Mar|289|29~28-Apr|289|30~28-May|289|30~27-Jun|289|29~26-Jul|289|30~25-Aug|289|29~~23-Sep|289|30~23-Oct|289|29~21-Nov|289|30~21-Dec|289|29~19-Jan|288|29~17-Feb|288|30~19-Mar|288|29"],
+[288,24,0,"","",25,0,287,"17-Apr|288|30~17-May|288|30~16-Jun|288|29~15-Jul|288|30~14-Aug|288|30~13-Sep|288|29~~12-Oct|288|30~11-Nov|288|29~10-Dec|288|30~9-Jan|287|29~7-Feb|287|29~8-Mar|287|30~"],
+[287,25,0,"","",26,0,286,"7-Apr|287|29~6-May|287|30~5-Jun|287|29~4-Jul|287|30~3-Aug|287|30~2-Sep|287|30~~2-Oct|287|29~31-Oct|287|30~30-Nov|287|29~29-Dec|287|30~28-Jan|286|29~26-Feb|286|29~"],
+[286,26,0,"","",27,0,285,"27-Mar|286|30~26-Apr|286|29~25-May|286|30~24-Jun|286|29~23-Jul|286|30~22-Aug|286|30~~21-Sep|286|30~21-Oct|286|29~19-Nov|286|30~19-Dec|286|29~17-Jan|285|30~16-Feb|285|30~17-Mar|285|29"],
+[285,27,0,"","",28,0,284,"15-Apr|285|29~14-May|285|29~12-Jun|285|30~12-Jul|285|30~11-Aug|285|29~9-Sep|285|30~~9-Oct|285|29~7-Nov|285|30~7-Dec|285|30~6-Jan|284|29~4-Feb|284|30~6-Mar|284|30~"],
+[284,28,0,"","",29,0,283,"5-Apr|284|29~4-May|284|29~2-Jun|284|29~1-Jul|284|29~30-Jul|284|30~29-Aug|284|30~~28-Sep|284|30~28-Oct|284|29~26-Nov|284|30~26-Dec|284|29~24-Jan|283|30~23-Feb|283|30~25-Mar|283|29"],
+[283,29,0,"","",30,0,282,"23-Apr|283|29~22-May|283|30~21-Jun|283|29~20-Jul|283|30~19-Aug|283|29~17-Sep|283|30~~17-Oct|283|29~15-Nov|283|30~15-Dec|283|29~13-Jan|282|30~12-Feb|282|30~14-Mar|282|29~"],
+[282,30,0,"","",31,0,281,"12-Apr|282|30~12-May|282|29~10-Jun|282|30~10-Jul|282|29~8-Aug|282|29~6-Sep|282|30~~6-Oct|282|30~5-Nov|282|29~4-Dec|282|29~2-Jan|281|30~1-Feb|281|30~2-Mar|281|29~"],
+[281,31,0,"","",32,0,280,"31-Mar|281|30~30-Apr|281|29~29-May|281|30~28-Jun|281|30~28-Jul|281|29~26-Aug|281|30~~25-Sep|281|29~24-Oct|281|30~23-Nov|281|29~22-Dec|281|29~20-Jan|280|30~19-Feb|280|29~20-Mar|280|30"],
+[280,32,0,"","",33,0,279,"19-Apr|280|30~19-May|280|29~17-Jun|280|30~17-Jul|280|30~16-Aug|280|30~15-Sep|280|29~~14-Oct|280|29~12-Nov|280|30~12-Dec|280|29~10-Jan|279|29~8-Feb|279|30~10-Mar|279|29~"],
+[279,33,0,"","",34,0,278,"8-Apr|279|30~8-May|279|29~6-Jun|279|30~6-Jul|279|30~5-Aug|279|30~4-Sep|279|30~~4-Oct|279|29~2-Nov|279|29~1-Dec|279|30~31-Dec|279|29~29-Jan|278|29~27-Feb|278|30~"],
+[278,34,0,"","",35,0,277,"29-Mar|278|29~27-Apr|278|30~27-May|278|29~25-Jun|278|30~25-Jul|278|30~24-Aug|278|30~~23-Sep|278|29~22-Oct|278|30~21-Nov|278|29~20-Dec|278|30~19-Jan|277|29~17-Feb|277|29~17-Mar|277|30"],
+[277,35,0,"","",36,0,276,"16-Apr|277|29~15-May|277|30~14-Jun|277|29~13-Jul|277|30~12-Aug|277|30~11-Sep|277|29~~10-Oct|277|30~9-Nov|277|29~8-Dec|277|30~7-Jan|276|30~6-Feb|276|29~7-Mar|276|29~"],
+[276,36,0,"","",37,0,275,"5-Apr|276|30~5-May|276|29~3-Jun|276|30~3-Jul|276|29~1-Aug|276|30~31-Aug|276|29~~29-Sep|276|30~29-Oct|276|30~28-Nov|276|29~27-Dec|276|30~26-Jan|275|30~25-Feb|275|29~"],
+[275,37,0,"","",38,0,274,"26-Mar|275|29~24-Apr|275|30~24-May|275|29~22-Jun|275|30~22-Jul|275|29~20-Aug|275|29~18-Sep|275|30~18-Oct|275|30~17-Nov|275|29~16-Dec|275|30~15-Jan|274|30~14-Feb|274|29~15-Mar|274|30~"],
+[274,38,0,"","",39,0,273,"14-Apr|274|29~13-May|274|30~12-Jun|274|29~11-Jul|274|30~10-Aug|274|29~8-Sep|274|29~~7-Oct|274|29~5-Nov|274|30~5-Dec|274|30~4-Jan|273|30~3-Feb|273|29~3-Mar|273|30~"],
+[273,39,0,"","",40,0,272,"2-Apr|273|30~2-May|273|30~1-Jun|273|29~30-Jun|273|29~29-Jul|273|29~27-Aug|273|30~~26-Sep|273|29~25-Oct|273|30~24-Nov|273|29~23-Dec|273|30~22-Jan|272|30~21-Feb|272|29~22-Mar|272|30"],
+[272,40,0,"","",41,0,271,"21-Apr|272|30~21-May|272|29~19-Jun|272|30~19-Jul|272|29~17-Aug|272|29~15-Sep|272|30~~15-Oct|272|29~13-Nov|272|30~13-Dec|272|29~11-Jan|271|30~10-Feb|271|29~11-Mar|271|30~"],
+[271,41,0,"","",42,0,270,"10-Apr|271|30~10-May|271|29~8-Jun|271|30~8-Jul|271|29~6-Aug|271|30~5-Sep|271|30~~5-Oct|271|29~3-Nov|271|30~3-Dec|271|29~1-Jan|270|29~30-Jan|270|30~1-Mar|270|29~"],
+[270,42,0,"","",43,0,269,"30-Mar|270|30~29-Apr|270|29~28-May|270|30~27-Jun|270|30~27-Jul|270|29~25-Aug|270|30~~24-Sep|270|30~24-Oct|270|29~22-Nov|270|30~22-Dec|270|29~20-Jan|269|29~18-Feb|269|30~19-Mar|269|29"],
+[269,43,0,"","",44,0,268,"17-Apr|269|30~17-May|269|29~15-Jun|269|29~14-Jul|269|30~13-Aug|269|30~12-Sep|269|30~~12-Oct|269|30~11-Nov|269|29~10-Dec|269|30~9-Jan|268|29~7-Feb|268|29~8-Mar|268|30~"],
+[268,44,0,"","",45,0,267,"7-Apr|268|29~6-May|268|29~4-Jun|268|30~4-Jul|268|29~2-Aug|268|30~1-Sep|268|30~~1-Oct|268|30~31-Oct|268|29~29-Nov|268|30~29-Dec|268|30~28-Jan|267|29~26-Feb|267|29~"],
+[267,45,0,"","",46,0,266,"27-Mar|267|30~26-Apr|267|29~25-May|267|29~23-Jun|267|29~22-Jul|267|30~21-Aug|267|30~~20-Sep|267|30~20-Oct|267|30~19-Nov|267|29~18-Dec|267|30~17-Jan|266|30~16-Feb|266|30~18-Mar|266|29"],
+[266,46,0,"","",47,0,265,"16-Apr|266|29~15-May|266|29~13-Jun|266|29~12-Jul|266|30~11-Aug|266|29~9-Sep|266|30~~9-Oct|266|30~8-Nov|266|29~7-Dec|266|30~6-Jan|265|30~5-Feb|265|29~5-Mar|265|30~"],
+[265,47,0,"","",48,0,264,"4-Apr|265|29~3-May|265|30~2-Jun|265|29~1-Jul|265|29~30-Jul|265|30~29-Aug|265|29~~27-Sep|265|30~27-Oct|265|30~26-Nov|265|29~25-Dec|265|30~24-Jan|264|29~22-Feb|264|30~24-Mar|264|30"],
+[264,48,0,"","",49,0,263,"23-Apr|264|29~22-May|264|30~21-Jun|264|29~20-Jul|264|29~18-Aug|264|30~17-Sep|264|30~~17-Oct|264|29~15-Nov|264|29~14-Dec|264|30~13-Jan|263|30~12-Feb|263|29~13-Mar|263|30~"],
+[263,49,0,"","",50,0,262,"12-Apr|263|29~11-May|263|30~10-Jun|263|30~10-Jul|263|29~8-Aug|263|30~7-Sep|263|29~~6-Oct|263|30~5-Nov|263|29~4-Dec|263|29~2-Jan|262|30~1-Feb|262|29~2-Mar|262|30~"],
+[262,50,0,"","",51,0,261,"1-Apr|262|29~30-Apr|262|30~30-May|262|30~29-Jun|262|30~29-Jul|262|29~27-Aug|262|30~~26-Sep|262|29~25-Oct|262|30~24-Nov|262|29~23-Dec|262|29~21-Jan|261|30~20-Feb|261|29~20-Mar|261|29"],
+[261,51,0,"","",52,0,260,"18-Apr|261|30~18-May|261|30~17-Jun|261|30~17-Jul|261|29~15-Aug|261|30~14-Sep|261|30~~14-Oct|261|29~12-Nov|261|30~12-Dec|261|29~10-Jan|260|29~8-Feb|260|30~10-Mar|260|29~"],
+[260,52,0,"","",53,0,259,"8-Apr|260|29~7-May|260|30~6-Jun|260|30~6-Jul|260|29~4-Aug|260|30~3-Sep|260|30~~3-Oct|260|30~2-Nov|260|29~1-Dec|260|29~30-Dec|260|30~29-Jan|259|29~27-Feb|259|30~"],
+[259,53,0,"","",54,0,258,"29-Mar|259|29~27-Apr|259|29~26-May|259|30~25-Jun|259|30~25-Jul|259|29~23-Aug|259|30~~22-Sep|259|30~22-Oct|259|29~20-Nov|259|30~20-Dec|259|29~18-Jan|258|29~16-Feb|258|30~18-Mar|258|30"],
+[258,54,0,"","",55,0,257,"17-Apr|258|29~16-May|258|29~14-Jun|258|30~14-Jul|258|29~12-Aug|258|30~11-Sep|258|30~~11-Oct|258|29~9-Nov|258|30~9-Dec|258|30~8-Jan|257|29~6-Feb|257|30~7-Mar|257|29~"],
+[257,55,0,"","",56,0,256,"5-Apr|257|30~5-May|257|29~3-Jun|257|30~3-Jul|257|29~1-Aug|257|29~30-Aug|257|30~~29-Sep|257|29~28-Oct|257|30~27-Nov|257|30~27-Dec|257|29~25-Jan|256|30~24-Feb|256|30~"],
+[256,56,0,"","",57,0,255,"26-Mar|256|29~24-Apr|256|30~24-May|256|29~22-Jun|256|29~21-Jul|256|30~20-Aug|256|29~18-Sep|256|30~18-Oct|256|29~16-Nov|256|30~16-Dec|256|29~14-Jan|255|30~13-Feb|255|30~15-Mar|255|30~"],
+[255,57,0,"","",58,0,254,"14-Apr|255|29~13-May|255|30~12-Jun|255|29~11-Jul|255|30~10-Aug|255|29~8-Sep|255|29~~7-Oct|255|30~6-Nov|255|29~5-Dec|255|30~4-Jan|254|29~2-Feb|254|30~4-Mar|254|30~"],
+[254,58,0,"","",59,0,253,"3-Apr|254|29~2-May|254|30~1-Jun|254|29~30-Jun|254|30~30-Jul|254|29~28-Aug|254|30~~27-Sep|254|29~26-Oct|254|30~25-Nov|254|29~24-Dec|254|30~23-Jan|253|29~21-Feb|253|30~22-Mar|253|29"],
+[253,59,0,"","",60,0,252,"20-Apr|253|30~20-May|253|30~19-Jun|253|29~18-Jul|253|30~17-Aug|253|29~15-Sep|253|30~~15-Oct|253|29~13-Nov|253|30~13-Dec|253|29~11-Jan|252|30~10-Feb|252|29~11-Mar|252|29~"],
+[252,60,0,"","",61,0,251,"9-Apr|252|30~9-May|252|29~7-Jun|252|30~7-Jul|252|30~6-Aug|252|29~4-Sep|252|30~~4-Oct|252|30~3-Nov|252|29~2-Dec|252|30~1-Jan|251|29~30-Jan|251|30~1-Mar|251|29~"],
+[251,61,0,"","",62,0,250,"30-Mar|251|29~28-Apr|251|30~28-May|251|29~26-Jun|251|30~26-Jul|251|30~25-Aug|251|29~~23-Sep|251|30~23-Oct|251|30~22-Nov|251|30~22-Dec|251|29~20-Jan|250|29~18-Feb|250|30~20-Mar|250|29"],
+[250,62,0,"","",63,0,249,"18-Apr|250|29~17-May|250|30~16-Jun|250|29~15-Jul|250|30~14-Aug|250|29~12-Sep|250|30~~12-Oct|250|30~11-Nov|250|30~11-Dec|250|29~9-Jan|249|30~8-Feb|249|29~8-Mar|249|29~"],
+[249,63,0,"","",64,0,248,"6-Apr|249|30~6-May|249|29~4-Jun|249|29~3-Jul|249|30~2-Aug|249|30~1-Sep|249|29~~30-Sep|249|30~30-Oct|249|30~29-Nov|249|30~29-Dec|249|29~27-Jan|248|30~26-Feb|248|29~"],
+[248,64,0,"","",65,0,247,"27-Mar|248|30~26-Apr|248|29~25-May|248|29~23-Jun|248|30~23-Jul|248|29~21-Aug|248|30~~20-Sep|248|30~20-Oct|248|29~18-Nov|248|30~18-Dec|248|29~16-Jan|247|30~15-Feb|247|30~17-Mar|247|29"],
+[247,65,0,"","-1",66,0,246,"15-Apr|247|30~15-May|247|29~13-Jun|247|29~12-Jul|247|30~11-Aug|247|29~9-Sep|247|30~~9-Oct|247|30~8-Nov|247|29~7-Dec|247|30~6-Jan|246|29~4-Feb|246|30~6-Mar|246|29~"],
+[246,66,0,"","-2",67,0,245,"4-Apr|246|30~4-May|246|29~2-Jun|246|30~2-Jul|246|30~1-Aug|246|30~31-Aug|246|29~~29-Sep|246|29~28-Oct|246|29~26-Nov|246|30~26-Dec|246|29~24-Jan|245|30~23-Feb|245|29~23-Mar|245|30"],
+[245,67,0,"","-3",68,0,244,"22-Apr|245|30~22-May|245|29~20-Jun|245|30~20-Jul|245|30~19-Aug|245|29~17-Sep|245|30~~17-Oct|245|29~15-Nov|245|29~14-Dec|245|30~13-Jan|244|29~11-Feb|244|29~12-Mar|244|30~"],
+[244,68,0,"","-4",69,0,243,"11-Apr|244|30~11-May|244|29~9-Jun|244|30~9-Jul|244|30~8-Aug|244|30~7-Sep|244|29~~6-Oct|244|30~5-Nov|244|29~4-Dec|244|29~2-Jan|243|29~31-Jan|243|30~2-Mar|243|29~"],
+[243,69,0,"","-5",70,0,242,"31-Mar|243|30~30-Apr|243|29~29-May|243|30~28-Jun|243|30~28-Jul|243|30~27-Aug|243|30~~26-Sep|243|29~25-Oct|243|30~24-Nov|243|29~23-Dec|243|29~21-Jan|242|30~20-Feb|242|30~22-Mar|242|29"],
+[242,70,0,"","-6",71,0,241,"20-Apr|242|29~19-May|242|30~18-Jun|242|29~17-Jul|242|30~16-Aug|242|30~15-Sep|242|29~~14-Oct|242|30~13-Nov|242|29~12-Dec|242|30~11-Jan|241|29~9-Feb|241|30~10-Mar|241|29~"],
+[241,71,0,"","-7",72,0,240,"8-Apr|241|29~7-May|241|30~6-Jun|241|29~5-Jul|241|30~4-Aug|241|30~3-Sep|241|29~~2-Oct|241|30~1-Nov|241|29~30-Nov|241|30~30-Dec|241|30~29-Jan|240|29~27-Feb|240|29~"],
+[240,72,0,"","-8",73,0,239,"28-Mar|240|30~27-Apr|240|29~26-May|240|30~25-Jun|240|29~24-Jul|240|30~23-Aug|240|29~~21-Sep|240|30~21-Oct|240|29~19-Nov|240|30~19-Dec|240|30~18-Jan|239|29~16-Feb|239|30~18-Mar|239|30"],
+[239,73,0,"","-9",74,0,238,"17-Apr|239|29~16-May|239|29~14-Jun|239|30~14-Jul|239|29~12-Aug|239|30~11-Sep|239|29~~10-Oct|239|30~9-Nov|239|29~8-Dec|239|30~7-Jan|238|30~6-Feb|238|29~7-Mar|238|30~"],
+[238,74,0,"","-10",75,0,237,"6-Apr|238|30~6-May|238|29~4-Jun|238|30~4-Jul|238|29~2-Aug|238|29~31-Aug|238|30~~30-Sep|238|29~29-Oct|238|29~27-Nov|238|30~27-Dec|238|30~26-Jan|237|29~24-Feb|237|30~"],
+[237,75,0,"","-11",76,0,236,"25-Mar|237|30~24-Apr|237|30~24-May|237|29~22-Jun|237|29~21-Jul|237|29~19-Aug|237|30~18-Sep|237|29~17-Oct|237|30~16-Nov|237|29~15-Dec|237|30~14-Jan|236|29~12-Feb|236|30~14-Mar|236|30~"],
+[236,76,0,"","-12",77,0,235,"13-Apr|236|30~13-May|236|29~11-Jun|236|29~10-Jul|236|30~9-Aug|236|29~7-Sep|236|30~~7-Oct|236|29~5-Nov|236|30~5-Dec|236|29~3-Jan|235|30~2-Feb|235|29~3-Mar|235|30~"],
+[235,77,0,"","-13",78,0,234,"2-Apr|235|30~2-May|235|29~31-May|235|30~30-Jun|235|30~30-Jul|235|29~28-Aug|235|30~~27-Sep|235|29~26-Oct|235|30~25-Nov|235|29~24-Dec|235|30~23-Jan|234|29~21-Feb|234|29~22-Mar|234|30"],
+[234,78,0,"","-14",79,0,233,"21-Apr|234|29~20-May|234|30~19-Jun|234|29~18-Jul|234|30~17-Aug|234|30~16-Sep|234|30~~16-Oct|234|29~14-Nov|234|30~14-Dec|234|29~12-Jan|233|30~11-Feb|233|29~11-Mar|233|29~"],
+[233,79,0,"","-15",80,0,232,"9-Apr|233|30~9-May|233|29~7-Jun|233|30~7-Jul|233|29~5-Aug|233|30~4-Sep|233|30~~4-Oct|233|29~2-Nov|233|30~2-Dec|233|30~1-Jan|232|29~30-Jan|232|30~1-Mar|232|29~"],
+[232,80,0,"","-16",81,0,231,"30-Mar|232|29~28-Apr|232|30~28-May|232|29~26-Jun|232|29~25-Jul|232|30~24-Aug|232|29~~22-Sep|232|30~22-Oct|232|30~21-Nov|232|30~21-Dec|232|30~20-Jan|231|29~18-Feb|231|30~20-Mar|231|29"],
+[231,81,0,"","-17",82,0,230,"18-Apr|231|29~17-May|231|29~15-Jun|231|29~14-Jul|231|30~13-Aug|231|30~12-Sep|231|30~~12-Oct|231|30~11-Nov|231|29~10-Dec|231|30~9-Jan|230|30~8-Feb|230|29~9-Mar|230|30~"],
+[230,82,0,"","-18",83,0,229,"8-Apr|230|29~7-May|230|29~5-Jun|230|29~4-Jul|230|30~3-Aug|230|29~1-Sep|230|30~~1-Oct|230|30~31-Oct|230|30~30-Nov|230|29~29-Dec|230|30~28-Jan|229|29~26-Feb|229|30~"],
+[229,83,0,"","-19",84,0,228,"27-Mar|229|29~25-Apr|229|30~25-May|229|29~23-Jun|229|30~23-Jul|229|29~21-Aug|229|30~~20-Sep|229|29~19-Oct|229|30~18-Nov|229|30~18-Dec|229|29~16-Jan|228|29~14-Feb|228|30~16-Mar|228|30"],
+[228,84,0,"","-20",85,0,227,"15-Apr|228|29~14-May|228|30~13-Jun|228|29~12-Jul|228|30~11-Aug|228|29~9-Sep|228|30~~9-Oct|228|29~7-Nov|228|30~7-Dec|228|29~5-Jan|227|29~3-Feb|227|30~5-Mar|227|30~"],
+[227,85,0,"","-21",86,0,226,"4-Apr|227|29~3-May|227|30~2-Jun|227|29~1-Jul|227|30~31-Jul|227|30~30-Aug|227|30~~29-Sep|227|29~28-Oct|227|29~26-Nov|227|30~26-Dec|227|29~24-Jan|226|29~22-Feb|226|30~24-Mar|226|29"],
+[226,86,0,"","-22",87,0,225,"22-Apr|226|30~22-May|226|30~21-Jun|226|29~20-Jul|226|30~19-Aug|226|30~18-Sep|226|30~~18-Oct|226|29~16-Nov|226|29~15-Dec|226|29~13-Jan|225|30~12-Feb|225|29~12-Mar|225|30~"],
+[225,87,0,"","-23",88,0,224,"11-Apr|225|29~10-May|225|30~9-Jun|225|29~8-Jul|225|30~7-Aug|225|30~6-Sep|225|30~~6-Oct|225|29~4-Nov|225|30~4-Dec|225|29~2-Jan|224|29~31-Jan|224|30~2-Mar|224|29~"],
+[224,88,0,"","-24",89,0,223,"31-Mar|224|30~30-Apr|224|29~29-May|224|30~28-Jun|224|29~27-Jul|224|30~26-Aug|224|30~~25-Sep|224|30~25-Oct|224|29~23-Nov|224|30~23-Dec|224|29~21-Jan|223|29~19-Feb|223|30~21-Mar|223|29"],
+[223,89,0,"","-25",90,0,222,"19-Apr|223|29~18-May|223|30~17-Jun|223|29~16-Jul|223|30~15-Aug|223|30~14-Sep|223|30~~14-Oct|223|30~13-Nov|223|30~13-Dec|223|29~11-Jan|222|30~10-Feb|222|29~11-Mar|222|29~"],
+[222,90,0,"","-26",91,0,221,"9-Apr|222|29~8-May|222|30~7-Jun|222|29~6-Jul|222|29~4-Aug|222|30~3-Sep|222|30~~3-Oct|222|29~1-Nov|222|30~1-Dec|222|29~30-Dec|222|30~29-Jan|221|30~28-Feb|221|29~"],
+[221,91,0,"","-27",92,0,220,"28-Mar|221|30~27-Apr|221|29~26-May|221|30~25-Jun|221|29~24-Jul|221|29~22-Aug|221|30~~21-Sep|221|29~20-Oct|221|30~19-Nov|221|29~18-Dec|221|30~17-Jan|220|30~16-Feb|220|30~18-Mar|220|29"],
+[220,92,0,"","-28",93,0,219,"16-Apr|220|30~16-May|220|29~14-Jun|220|30~14-Jul|220|29~12-Aug|220|29~10-Sep|220|29~~9-Oct|220|29~7-Nov|220|30~7-Dec|220|30~6-Jan|219|30~5-Feb|219|30~7-Mar|219|29~"],
+[219,93,0,"","-29",94,0,218,"5-Apr|219|30~5-May|219|30~4-Jun|219|29~3-Jul|219|30~2-Aug|219|29~31-Aug|219|30~~30-Sep|219|29~29-Oct|219|29~27-Nov|219|30~27-Dec|219|29~25-Jan|218|30~24-Feb|218|29~"],
+[218,94,0,"","-30",95,0,217,"25-Mar|218|30~24-Apr|218|30~24-May|218|30~23-Jun|218|29~22-Jul|218|30~21-Aug|218|29~19-Sep|218|30~19-Oct|218|29~17-Nov|218|29~16-Dec|218|30~15-Jan|217|29~13-Feb|217|30~14-Mar|217|29~"],
+[217,95,0,"","-31",96,0,216,"12-Apr|217|30~12-May|217|30~11-Jun|217|29~10-Jul|217|30~9-Aug|217|29~7-Sep|217|30~~7-Oct|217|30~6-Nov|217|29~5-Dec|217|30~4-Jan|216|29~2-Feb|216|29~3-Mar|216|30~"],
+[216,96,0,"","-32",97,0,215,"2-Apr|216|30~2-May|216|29~31-May|216|29~29-Jun|216|30~29-Jul|216|29~27-Aug|216|30~~26-Sep|216|30~26-Oct|216|30~25-Nov|216|29~24-Dec|216|30~23-Jan|215|29~21-Feb|215|29~22-Mar|215|30"],
+[215,97,0,"","-33",98,0,214,"21-Apr|215|29~20-May|215|29~18-Jun|215|30~18-Jul|215|29~16-Aug|215|30~15-Sep|215|30~~15-Oct|215|30~14-Nov|215|30~14-Dec|215|29~12-Jan|214|30~11-Feb|214|29~12-Mar|214|29~"],
+[214,98,0,"","-34",99,0,213,"10-Apr|214|30~10-May|214|29~8-Jun|214|29~7-Jul|214|30~6-Aug|214|29~4-Sep|214|30~~4-Oct|214|30~3-Nov|214|30~3-Dec|214|30~2-Jan|213|29~31-Jan|213|30~1-Mar|213|29~"],
+[213,99,0,"","-35",100,0,212,"30-Mar|213|29~28-Apr|213|30~28-May|213|29~26-Jun|213|29~25-Jul|213|30~24-Aug|213|29~~22-Sep|213|30~22-Oct|213|30~21-Nov|213|30~21-Dec|213|29~19-Jan|212|30~18-Feb|212|29~19-Mar|212|30"],
+[212,100,0,"","-36",101,0,211,"18-Apr|212|29~17-May|212|30~16-Jun|212|29~15-Jul|212|29~13-Aug|212|30~12-Sep|212|29~~11-Oct|212|30~10-Nov|212|30~10-Dec|212|29~8-Jan|211|30~7-Feb|211|30~9-Mar|211|29~"],
+[211,101,0,"","-37",102,0,210,"7-Apr|211|30~7-May|211|29~5-Jun|211|30~5-Jul|211|29~3-Aug|211|29~1-Sep|211|30~~1-Oct|211|30~31-Oct|211|29~29-Nov|211|30~29-Dec|211|29~27-Jan|210|30~26-Feb|210|29~"],
+[210,102,0,"","-38",103,0,209,"27-Mar|210|30~26-Apr|210|29~25-May|210|30~24-Jun|210|30~24-Jul|210|29~22-Aug|210|30~~21-Sep|210|29~20-Oct|210|30~19-Nov|210|29~18-Dec|210|29~16-Jan|209|30~15-Feb|209|29~15-Mar|209|30"],
+[209,103,0,"","-39",104,0,208,"14-Apr|209|29~13-May|209|30~12-Jun|209|30~12-Jul|209|30~11-Aug|209|29~9-Sep|209|30~~9-Oct|209|29~7-Nov|209|29~6-Dec|209|30~5-Jan|208|30~4-Feb|208|29~5-Mar|208|29~"],
+[208,104,0,"","-40",105,0,207,"3-Apr|208|29~2-May|208|30~1-Jun|208|30~1-Jul|208|30~31-Jul|208|30~30-Aug|208|29~~28-Sep|208|30~28-Oct|208|29~26-Nov|208|30~26-Dec|208|29~24-Jan|207|29~22-Feb|207|30~24-Mar|207|29"],
+[207,105,0,"","-41",106,0,206,"22-Apr|207|29~21-May|207|30~20-Jun|207|30~20-Jul|207|30~19-Aug|207|30~18-Sep|207|29~~17-Oct|207|30~16-Nov|207|29~15-Dec|207|30~14-Jan|206|29~12-Feb|206|29~13-Mar|206|30~"],
+[206,106,0,"","-42",107,0,205,"12-Apr|206|29~11-May|206|29~9-Jun|206|30~9-Jul|206|30~8-Aug|206|30~7-Sep|206|29~~6-Oct|206|30~5-Nov|206|30~5-Dec|206|29~3-Jan|205|29~1-Feb|205|30~2-Mar|205|29~"],
+[205,107,0,"","-43",108,0,204,"31-Mar|205|30~30-Apr|205|29~29-May|205|29~27-Jun|205|30~27-Jul|205|30~26-Aug|205|29~~24-Sep|205|30~24-Oct|205|30~23-Nov|205|29~22-Dec|205|30~21-Jan|204|29~19-Feb|204|30~21-Mar|204|29"],
+[204,108,0,"","-44",109,0,203,"19-Apr|204|30~19-May|204|29~17-Jun|204|30~17-Jul|204|29~15-Aug|204|30~14-Sep|204|29~~13-Oct|204|30~12-Nov|204|29~11-Dec|204|30~10-Jan|203|30~9-Feb|203|29~10-Mar|203|30~"],
+[203,109,0,"","-45",110,0,202,"9-Apr|203|29~8-May|203|30~7-Jun|203|29~6-Jul|203|30~5-Aug|203|29~3-Sep|203|30~~3-Oct|203|30~2-Nov|203|29~1-Dec|203|29~30-Dec|203|29~28-Jan|202|30~27-Feb|202|30~"],
+[202,110,0,"","-46",111,0,201,"29-Mar|202|29~27-Apr|202|30~27-May|202|30~26-Jun|202|29~25-Jul|202|30~24-Aug|202|29~~22-Sep|202|29~21-Oct|202|30~20-Nov|202|29~19-Dec|202|29~17-Jan|201|30~16-Feb|201|30~17-Mar|201|30"],
+[201,111,0,"","-47",112,0,200,"16-Apr|201|29~15-May|201|30~14-Jun|201|30~14-Jul|201|29~12-Aug|201|30~11-Sep|201|29~~10-Oct|201|29~8-Nov|201|30~8-Dec|201|29~6-Jan|200|29~4-Feb|200|30~6-Mar|200|30~"],
+[200,112,0,"","-48",113,0,199,"5-Apr|200|29~4-May|200|30~3-Jun|200|30~3-Jul|200|30~2-Aug|200|29~31-Aug|200|30~~30-Sep|200|29~29-Oct|200|29~27-Nov|200|30~27-Dec|200|29~25-Jan|199|30~24-Feb|199|29~"],
+[199,113,0,"","-49",114,0,198,"25-Mar|199|30~24-Apr|199|29~23-May|199|30~22-Jun|199|30~22-Jul|199|29~20-Aug|199|30~19-Sep|199|29~18-Oct|199|30~17-Nov|199|29~16-Dec|199|30~15-Jan|198|29~13-Feb|198|30~15-Mar|198|29~"],
+[198,114,0,"","-50",115,0,197,"13-Apr|198|29~12-May|198|30~11-Jun|198|30~11-Jul|198|29~9-Aug|198|30~8-Sep|198|30~~8-Oct|198|29~6-Nov|198|30~6-Dec|198|29~4-Jan|197|30~3-Feb|197|29~3-Mar|197|30~"],
+[197,115,0,"","-51",116,0,196,"2-Apr|197|29~1-May|197|29~30-May|197|30~29-Jun|197|29~28-Jul|197|30~27-Aug|197|29~~25-Sep|197|30~25-Oct|197|30~24-Nov|197|30~24-Dec|197|30~23-Jan|196|29~21-Feb|196|29~22-Mar|196|30"],
+[196,116,0,"","-52",117,0,195,"21-Apr|196|29~20-May|196|29~18-Jun|196|30~18-Jul|196|29~16-Aug|196|30~15-Sep|196|29~~14-Oct|196|30~13-Nov|196|30~13-Dec|196|30~12-Jan|195|29~10-Feb|195|30~12-Mar|195|29~"],
+[195,117,0,"","-53",118,0,194,"10-Apr|195|30~10-May|195|29~8-Jun|195|29~7-Jul|195|30~6-Aug|195|29~4-Sep|195|30~~4-Oct|195|29~2-Nov|195|30~2-Dec|195|30~1-Jan|194|30~31-Jan|194|29~1-Mar|194|30~"],
+[194,118,0,"","-54",119,0,193,"31-Mar|194|29~29-Apr|194|30~29-May|194|29~27-Jun|194|29~26-Jul|194|30~25-Aug|194|29~~23-Sep|194|30~23-Oct|194|29~21-Nov|194|30~21-Dec|194|30~20-Jan|193|29~18-Feb|193|30~19-Mar|193|29"],
+[193,119,0,"","-55",120,0,192,"17-Apr|193|30~17-May|193|29~15-Jun|193|30~15-Jul|193|29~13-Aug|193|30~12-Sep|193|29~~11-Oct|193|30~10-Nov|193|30~10-Dec|193|29~8-Jan|192|29~6-Feb|192|30~8-Mar|192|29~"],
+[192,120,0,"","-56",121,0,191,"6-Apr|192|30~6-May|192|30~5-Jun|192|29~4-Jul|192|30~3-Aug|192|30~2-Sep|192|29~~1-Oct|192|30~31-Oct|192|29~29-Nov|192|29~28-Dec|192|30~27-Jan|191|29~25-Feb|191|30~"],
+[191,121,0,"","-57",122,0,190,"27-Mar|191|29~25-Apr|191|30~25-May|191|29~23-Jun|191|30~23-Jul|191|30~22-Aug|191|30~~21-Sep|191|29~20-Oct|191|30~19-Nov|191|29~18-Dec|191|29~16-Jan|190|29~14-Feb|190|30~16-Mar|190|29"],
+[190,122,0,"","-58",123,0,189,"14-Apr|190|30~14-May|190|29~12-Jun|190|30~12-Jul|190|30~11-Aug|190|30~10-Sep|190|30~~10-Oct|190|29~8-Nov|190|30~8-Dec|190|29~6-Jan|189|29~4-Feb|189|29~4-Mar|189|30~"],
+[189,123,0,"","-59",124,0,188,"3-Apr|189|29~2-May|189|30~1-Jun|189|29~30-Jun|189|30~30-Jul|189|30~29-Aug|189|30~~28-Sep|189|29~27-Oct|189|30~26-Nov|189|30~26-Dec|189|29~24-Jan|188|29~22-Feb|188|30~24-Mar|188|29"],
+[188,124,0,"","-60",125,0,187,"22-Apr|188|29~21-May|188|30~20-Jun|188|29~19-Jul|188|30~18-Aug|188|30~17-Sep|188|30~~17-Oct|188|29~15-Nov|188|30~15-Dec|188|29~13-Jan|187|30~12-Feb|187|29~13-Mar|187|30~"],
+[187,125,0,"","-61",126,0,186,"12-Apr|187|29~11-May|187|29~9-Jun|187|30~9-Jul|187|29~7-Aug|187|30~6-Sep|187|30~~6-Oct|187|29~4-Nov|187|30~4-Dec|187|29~2-Jan|186|30~1-Feb|186|30~3-Mar|186|29~"],
+[186,126,0,"","-62",127,0,185,"1-Apr|186|30~1-May|186|29~30-May|186|29~28-Jun|186|30~28-Jul|186|29~26-Aug|186|30~~25-Sep|186|29~24-Oct|186|30~23-Nov|186|29~22-Dec|186|30~21-Jan|185|30~20-Feb|185|29~20-Mar|185|30"],
+[185,127,0,"","-63",128,0,184,"19-Apr|185|30~19-May|185|29~17-Jun|185|30~17-Jul|185|29~15-Aug|185|29~13-Sep|185|30~~13-Oct|185|29~11-Nov|185|30~11-Dec|185|29~9-Jan|184|30~8-Feb|184|30~10-Mar|184|29~"],
+[184,128,0,"","-64",129,0,183,"8-Apr|184|30~8-May|184|30~7-Jun|184|29~6-Jul|184|30~5-Aug|184|29~3-Sep|184|29~~2-Oct|184|30~1-Nov|184|29~30-Nov|184|29~29-Dec|184|30~28-Jan|183|30~27-Feb|183|29~"],
+[183,129,0,"","-65",130,0,182,"28-Mar|183|30~27-Apr|183|30~27-May|183|29~25-Jun|183|30~25-Jul|183|30~24-Aug|183|29~~22-Sep|183|29~21-Oct|183|30~20-Nov|183|29~19-Dec|183|29~17-Jan|182|30~16-Feb|182|29~17-Mar|182|30"],
+[182,130,0,"","-66",131,0,181,"16-Apr|182|30~16-May|182|29~14-Jun|182|30~14-Jul|182|30~13-Aug|182|29~11-Sep|182|30~~11-Oct|182|29~9-Nov|182|30~9-Dec|182|29~7-Jan|181|30~6-Feb|181|29~6-Mar|181|29~"],
+[181,131,0,"","-67",132,0,180,"4-Apr|181|30~4-May|181|29~2-Jun|181|30~2-Jul|181|30~1-Aug|181|30~31-Aug|181|29~~29-Sep|181|30~29-Oct|181|29~27-Nov|181|30~27-Dec|181|29~25-Jan|180|30~24-Feb|180|29~"],
+[180,132,0,"","-68",133,0,179,"25-Mar|180|29~23-Apr|180|30~23-May|180|29~21-Jun|180|30~21-Jul|180|29~19-Aug|180|30~18-Sep|180|30~18-Oct|180|30~17-Nov|180|29~16-Dec|180|30~15-Jan|179|29~13-Feb|179|30~15-Mar|179|29~"],
+[179,133,0,"","-69",134,0,178,"13-Apr|179|29~12-May|179|30~11-Jun|179|29~10-Jul|179|30~9-Aug|179|29~7-Sep|179|30~~7-Oct|179|30~6-Nov|179|29~5-Dec|179|30~4-Jan|178|30~3-Feb|178|29~4-Mar|178|30~"],
+[178,134,0,"","-70",135,0,177,"3-Apr|178|29~2-May|178|29~31-May|178|30~30-Jun|178|29~29-Jul|178|29~27-Aug|178|30~~26-Sep|178|30~26-Oct|178|29~24-Nov|178|30~24-Dec|178|30~23-Jan|177|30~22-Feb|177|29~22-Mar|177|30"],
+[177,135,0,"","-71",136,0,176,"21-Apr|177|29~20-May|177|29~18-Jun|177|30~18-Jul|177|29~16-Aug|177|29~14-Sep|177|30~~14-Oct|177|30~13-Nov|177|29~12-Dec|177|30~11-Jan|176|30~10-Feb|176|29~11-Mar|176|30~"],
+[176,136,0,"","-72",137,0,175,"10-Apr|176|30~10-May|176|29~8-Jun|176|29~7-Jul|176|30~6-Aug|176|29~4-Sep|176|30~~4-Oct|176|29~2-Nov|176|30~2-Dec|176|29~31-Dec|176|30~30-Jan|175|29~28-Feb|175|30~"],
+[175,137,0,"","-73",138,0,174,"30-Mar|175|30~29-Apr|175|29~28-May|175|30~27-Jun|175|29~26-Jul|175|30~25-Aug|175|29~~23-Sep|175|30~23-Oct|175|29~21-Nov|175|30~21-Dec|175|29~19-Jan|174|30~18-Feb|174|29~19-Mar|174|30"],
+[174,138,0,"","-74",139,0,173,"18-Apr|174|30~18-May|174|29~16-Jun|174|30~16-Jul|174|29~14-Aug|174|30~13-Sep|174|29~~12-Oct|174|30~11-Nov|174|29~10-Dec|174|30~9-Jan|173|29~7-Feb|173|29~7-Mar|173|30~"],
+[173,139,0,"","-75",140,0,172,"6-Apr|173|29~5-May|173|30~4-Jun|173|30~4-Jul|173|29~2-Aug|173|30~1-Sep|173|30~~1-Oct|173|30~31-Oct|173|29~29-Nov|173|29~28-Dec|173|30~27-Jan|172|29~25-Feb|172|29~"],
+[172,140,0,"","-76",141,0,171,"26-Mar|172|30~25-Apr|172|29~24-May|172|30~23-Jun|172|29~22-Jul|172|30~21-Aug|172|30~~20-Sep|172|30~20-Oct|172|30~19-Nov|172|29~18-Dec|172|29~16-Jan|171|30~15-Feb|171|29~16-Mar|171|29"],
+[171,141,0,"","-77",142,0,170,"14-Apr|171|30~14-May|171|30~13-Jun|171|29~12-Jul|171|29~10-Aug|171|30~9-Sep|171|30~~9-Oct|171|30~8-Nov|171|29~7-Dec|171|30~6-Jan|170|29~4-Feb|170|30~6-Mar|170|29~"],
+[170,142,0,"","-78",143,0,169,"4-Apr|170|29~3-May|170|29~1-Jun|170|30~1-Jul|170|30~31-Jul|170|29~29-Aug|170|30~~28-Sep|170|30~28-Oct|170|30~27-Nov|170|29~26-Dec|170|30~25-Jan|169|29~23-Feb|169|30~24-Mar|169|29"],
+[169,143,0,"","-79",144,0,168,"22-Apr|169|29~21-May|169|30~20-Jun|169|29~19-Jul|169|30~18-Aug|169|29~16-Sep|169|30~~16-Oct|169|30~15-Nov|169|29~14-Dec|169|30~13-Jan|168|29~11-Feb|168|30~13-Mar|168|29~"],
+[168,144,0,"","-80",145,0,167,"11-Apr|168|29~10-May|168|30~9-Jun|168|30~9-Jul|168|29~7-Aug|168|30~6-Sep|168|29~~5-Oct|168|30~4-Nov|168|29~3-Dec|168|30~2-Jan|167|30~1-Feb|167|29~2-Mar|167|30~"],
+[167,145,0,"","-81",146,0,166,"1-Apr|167|29~30-Apr|167|30~30-May|167|29~28-Jun|167|30~28-Jul|167|29~26-Aug|167|30~~25-Sep|167|29~24-Oct|167|29~22-Nov|167|30~22-Dec|167|29~20-Jan|166|30~19-Feb|166|30~21-Mar|166|30"],
+[166,146,0,"","-82",147,0,165,"20-Apr|166|29~19-May|166|30~18-Jun|166|29~17-Jul|166|30~16-Aug|166|29~14-Sep|166|30~~14-Oct|166|29~12-Nov|166|29~11-Dec|166|30~10-Jan|165|29~8-Feb|165|30~9-Mar|165|30~"],
+[165,147,0,"","-83",148,0,164,"8-Apr|165|29~7-May|165|30~6-Jun|165|30~6-Jul|165|29~4-Aug|165|30~3-Sep|165|29~~2-Oct|165|30~1-Nov|165|29~30-Nov|165|29~29-Dec|165|30~28-Jan|164|29~26-Feb|164|30~"],
+[164,148,0,"","-84",149,0,163,"28-Mar|164|29~26-Apr|164|30~26-May|164|30~25-Jun|164|30~25-Jul|164|29~23-Aug|164|30~~22-Sep|164|29~21-Oct|164|30~20-Nov|164|29~19-Dec|164|29~17-Jan|163|30~16-Feb|163|29~17-Mar|163|30"],
+[163,149,0,"","-85",150,0,162,"16-Apr|163|29~15-May|163|30~14-Jun|163|30~14-Jul|163|29~12-Aug|163|30~11-Sep|163|29~~10-Oct|163|30~9-Nov|163|30~9-Dec|163|29~7-Jan|162|30~6-Feb|162|29~7-Mar|162|29~"],
+[162,150,0,"","-86",151,0,161,"5-Apr|162|30~5-May|162|29~3-Jun|162|30~3-Jul|162|29~1-Aug|162|30~31-Aug|162|30~~30-Sep|162|29~29-Oct|162|30~28-Nov|162|30~28-Dec|162|29~26-Jan|161|30~25-Feb|161|29~"],
+[161,151,0,"","-87",152,0,160,"25-Mar|161|29~23-Apr|161|30~23-May|161|29~21-Jun|161|29~20-Jul|161|30~19-Aug|161|30~18-Sep|161|29~17-Oct|161|30~16-Nov|161|30~16-Dec|161|30~15-Jan|160|29~13-Feb|160|30~15-Mar|160|29~"],
+[160,152,0,"","-88",153,0,159,"13-Apr|160|29~12-May|160|30~11-Jun|160|29~10-Jul|160|29~8-Aug|160|29~6-Sep|160|30~~6-Oct|160|30~5-Nov|160|30~5-Dec|160|30~4-Jan|159|30~3-Feb|159|29~4-Mar|159|30~"],
+[159,153,0,"","-89",154,0,158,"3-Apr|159|29~2-May|159|29~31-May|159|30~30-Jun|159|29~29-Jul|159|29~27-Aug|159|30~~26-Sep|159|29~25-Oct|159|30~24-Nov|159|30~24-Dec|159|29~22-Jan|158|30~21-Feb|158|30~23-Mar|158|29"],
+[158,154,0,"","-90",155,0,157,"21-Apr|158|30~21-May|158|29~19-Jun|158|30~19-Jul|158|29~17-Aug|158|29~15-Sep|158|30~~15-Oct|158|29~13-Nov|158|30~13-Dec|158|30~12-Jan|157|29~10-Feb|157|30~11-Mar|157|29~"],
+[157,155,0,"","-91",156,0,156,"9-Apr|157|30~9-May|157|30~8-Jun|157|29~7-Jul|157|29~5-Aug|157|30~4-Sep|157|30~~4-Oct|157|29~2-Nov|157|30~2-Dec|157|29~31-Dec|157|29~29-Jan|156|30~28-Feb|156|30~"],
+[156,156,0,"","-92",157,0,155,"30-Mar|156|29~28-Apr|156|30~28-May|156|29~26-Jun|156|30~26-Jul|156|29~24-Aug|156|30~~23-Sep|156|30~23-Oct|156|29~21-Nov|156|30~21-Dec|156|29~19-Jan|155|29~17-Feb|155|30~19-Mar|155|29"],
+[155,157,0,"","-93",158,0,154,"17-Apr|155|30~17-May|155|29~15-Jun|155|30~15-Jul|155|30~14-Aug|155|30~13-Sep|155|29~~12-Oct|155|30~11-Nov|155|29~10-Dec|155|30~9-Jan|154|29~7-Feb|154|29~8-Mar|154|30~"],
+[154,158,0,"","-94",159,0,153,"7-Apr|154|29~6-May|154|29~4-Jun|154|30~4-Jul|154|30~3-Aug|154|30~2-Sep|154|30~~2-Oct|154|29~31-Oct|154|30~30-Nov|154|29~29-Dec|154|30~28-Jan|153|29~26-Feb|153|29~"],
+[153,159,0,"","-95",160,0,152,"26-Mar|153|30~25-Apr|153|29~24-May|153|29~22-Jun|153|30~22-Jul|153|30~21-Aug|153|30~~20-Sep|153|29~19-Oct|153|30~18-Nov|153|30~18-Dec|153|29~16-Jan|152|30~15-Feb|152|29~16-Mar|152|29"],
+[152,160,0,"","-96",161,0,151,"14-Apr|152|30~14-May|152|29~12-Jun|152|29~11-Jul|152|30~10-Aug|152|30~9-Sep|152|30~~9-Oct|152|29~7-Nov|152|30~7-Dec|152|29~5-Jan|151|30~4-Feb|151|29~5-Mar|151|30~"],
+[151,161,0,"","-97",162,0,150,"4-Apr|151|29~3-May|151|30~2-Jun|151|29~1-Jul|151|30~31-Jul|151|29~29-Aug|151|30~~28-Sep|151|29~27-Oct|151|30~26-Nov|151|29~25-Dec|151|30~24-Jan|150|30~23-Feb|150|29~24-Mar|150|30"],
+[150,162,0,"","-98",163,0,149,"23-Apr|150|29~22-May|150|30~21-Jun|150|29~20-Jul|150|30~19-Aug|150|29~17-Sep|150|30~~17-Oct|150|29~15-Nov|150|29~14-Dec|150|30~13-Jan|149|30~12-Feb|149|29~12-Mar|149|30~"],
+[149,163,0,"","-99",164,0,148,"11-Apr|149|30~11-May|149|29~9-Jun|149|30~9-Jul|149|29~7-Aug|149|30~6-Sep|149|29~~5-Oct|149|29~3-Nov|149|30~3-Dec|149|29~1-Jan|148|30~31-Jan|148|29~1-Mar|148|30~"],
+[148,164,0,"","-100",165,0,147,"31-Mar|148|29~29-Apr|148|30~29-May|148|30~28-Jun|148|30~28-Jul|148|29~26-Aug|148|30~~25-Sep|148|29~24-Oct|148|29~22-Nov|148|30~22-Dec|148|29~20-Jan|147|30~19-Feb|147|29~20-Mar|147|30"],
+[147,165,0,"","-101",166,0,146,"19-Apr|147|30~19-May|147|29~17-Jun|147|30~17-Jul|147|30~16-Aug|147|29~14-Sep|147|30~~14-Oct|147|29~12-Nov|147|29~11-Dec|147|30~10-Jan|146|29~8-Feb|146|29~9-Mar|146|30~"],
+[146,166,0,"","-102",167,0,145,"8-Apr|146|30~8-May|146|29~6-Jun|146|30~6-Jul|146|30~5-Aug|146|30~4-Sep|146|29~~3-Oct|146|30~2-Nov|146|29~1-Dec|146|29~30-Dec|146|30~29-Jan|145|29~27-Feb|145|30~"],
+[145,167,0,"","-103",168,0,144,"28-Mar|145|29~26-Apr|145|29~25-May|145|30~24-Jun|145|30~24-Jul|145|30~23-Aug|145|30~~22-Sep|145|29~21-Oct|145|29~19-Nov|145|30~19-Dec|145|29~17-Jan|144|30~16-Feb|144|29~17-Mar|144|30"],
+[144,168,0,"","-104",169,0,143,"16-Apr|144|29~15-May|144|29~13-Jun|144|30~13-Jul|144|30~12-Aug|144|29~10-Sep|144|30~~10-Oct|144|30~9-Nov|144|29~8-Dec|144|30~7-Jan|143|30~6-Feb|143|29~7-Mar|143|29~"],
+[143,169,0,"","-105",170,0,142,"5-Apr|143|30~5-May|143|29~3-Jun|143|29~2-Jul|143|30~1-Aug|143|29~30-Aug|143|30~~29-Sep|143|29~28-Oct|143|30~27-Nov|143|30~27-Dec|143|30~26-Jan|142|29~24-Feb|142|30~"],
+[142,170,0,"","-106",171,0,141,"26-Mar|142|29~24-Apr|142|30~24-May|142|29~22-Jun|142|29~21-Jul|142|30~20-Aug|142|29~18-Sep|142|30~18-Oct|142|29~16-Nov|142|30~16-Dec|142|30~15-Jan|141|30~14-Feb|141|29~14-Mar|141|30~"],
+[141,171,0,"","107",172,0,140,"13-Apr|141|29~12-May|141|30~11-Jun|141|29~10-Jul|141|29~8-Aug|141|30~7-Sep|141|29~~6-Oct|141|30~5-Nov|141|29~4-Dec|141|30~3-Jan|140|30~2-Feb|140|29~3-Mar|140|30~"],
+[140,172,0,"","108",173,0,139,"2-Apr|140|30~2-May|140|29~31-May|140|30~30-Jun|140|29~29-Jul|140|29~27-Aug|140|30~~26-Sep|140|29~25-Oct|140|30~24-Nov|140|29~23-Dec|140|30~22-Jan|139|29~20-Feb|139|30~22-Mar|139|30"],
+[139,173,0,"","109",174,0,138,"21-Apr|139|29~20-May|139|30~19-Jun|139|29~18-Jul|139|30~17-Aug|139|29~15-Sep|139|30~~15-Oct|139|29~13-Nov|139|30~13-Dec|139|29~11-Jan|138|30~10-Feb|138|29~11-Mar|138|30~"],
+[138,174,0,"","110",175,0,137,"10-Apr|138|29~9-May|138|30~8-Jun|138|30~8-Jul|138|29~6-Aug|138|30~5-Sep|138|30~~5-Oct|138|29~3-Nov|138|30~3-Dec|138|29~1-Jan|137|29~30-Jan|137|29~28-Feb|137|30~"],
+[137,175,0,"","111",176,0,136,"29-Mar|137|29~27-Apr|137|30~27-May|137|30~26-Jun|137|30~26-Jul|137|30~25-Aug|137|29~~23-Sep|137|30~23-Oct|137|29~21-Nov|137|29~20-Dec|137|30~19-Jan|136|29~17-Feb|136|29~18-Mar|136|30"],
+[136,176,0,"","112",177,0,135,"17-Apr|136|29~16-May|136|30~15-Jun|136|29~14-Jul|136|30~13-Aug|136|30~12-Sep|136|30~~12-Oct|136|30~11-Nov|136|29~10-Dec|136|30~9-Jan|135|29~7-Feb|135|29~8-Mar|135|29~"],
+[135,177,0,"","113",178,0,134,"6-Apr|135|30~6-May|135|29~4-Jun|135|30~4-Jul|135|29~2-Aug|135|30~1-Sep|135|30~~1-Oct|135|30~31-Oct|135|30~30-Nov|135|29~29-Dec|135|29~27-Jan|134|30~26-Feb|134|29~"],
+[134,178,0,"","114",179,0,133,"27-Mar|134|29~25-Apr|134|30~25-May|134|29~23-Jun|134|30~23-Jul|134|29~21-Aug|134|30~~20-Sep|134|30~20-Oct|134|30~19-Nov|134|29~18-Dec|134|30~17-Jan|133|29~15-Feb|133|30~16-Mar|133|29"],
+[133,179,0,"","115",180,0,132,"14-Apr|133|30~14-May|133|29~12-Jun|133|29~11-Jul|133|30~10-Aug|133|29~8-Sep|133|30~~8-Oct|133|30~7-Nov|133|29~6-Dec|133|30~5-Jan|132|29~3-Feb|132|30~5-Mar|132|30~"],
+[132,180,0,"","116",181,0,131,"4-Apr|132|29~3-May|132|30~2-Jun|132|29~1-Jul|132|30~31-Jul|132|29~29-Aug|132|30~~28-Sep|132|29~27-Oct|132|29~25-Nov|132|30~25-Dec|132|29~23-Jan|131|30~22-Feb|131|30~24-Mar|131|29"],
+[131,181,0,"","117",182,0,130,"22-Apr|131|30~22-May|131|30~21-Jun|131|29~20-Jul|131|30~19-Aug|131|29~17-Sep|131|30~~17-Oct|131|29~15-Nov|131|29~14-Dec|131|30~13-Jan|130|29~11-Feb|130|30~13-Mar|130|29~"],
+[130,182,0,"","118",183,0,129,"11-Apr|130|30~11-May|130|30~10-Jun|130|30~10-Jul|130|29~8-Aug|130|30~7-Sep|130|29~~6-Oct|130|30~5-Nov|130|29~4-Dec|130|29~2-Jan|129|30~1-Feb|129|29~1-Mar|129|30~"],
+[129,183,0,"","119",184,0,128,"31-Mar|129|29~29-Apr|129|30~29-May|129|30~28-Jun|129|29~27-Jul|129|30~26-Aug|129|30~~25-Sep|129|29~24-Oct|129|29~22-Nov|129|30~22-Dec|129|29~20-Jan|128|30~19-Feb|128|29~20-Mar|128|29"],
+[128,184,0,"","120",185,0,127,"18-Apr|128|30~18-May|128|30~17-Jun|128|30~17-Jul|128|29~15-Aug|128|29~13-Sep|128|30~~13-Oct|128|30~12-Nov|128|29~11-Dec|128|30~10-Jan|127|29~8-Feb|127|30~10-Mar|127|29~"],
+[127,185,0,"","121",186,0,126,"8-Apr|127|29~7-May|127|30~6-Jun|127|29~5-Jul|127|30~4-Aug|127|30~3-Sep|127|30~~3-Oct|127|29~1-Nov|127|30~1-Dec|127|29~30-Dec|127|30~29-Jan|126|29~27-Feb|126|30~"],
+[126,186,0,"","122",187,0,125,"29-Mar|126|29~27-Apr|126|29~26-May|126|30~25-Jun|126|29~24-Jul|126|30~23-Aug|126|29~~21-Sep|126|30~21-Oct|126|30~20-Nov|126|30~20-Dec|126|29~18-Jan|125|30~17-Feb|125|29~17-Mar|125|30"],
+[125,187,0,"","123",188,0,124,"16-Apr|125|29~15-May|125|29~13-Jun|125|30~13-Jul|125|29~11-Aug|125|30~10-Sep|125|30~~10-Oct|125|30~9-Nov|125|29~8-Dec|125|29~6-Jan|124|30~5-Feb|124|30~7-Mar|124|29~"],
+[124,188,0,"","124",189,0,123,"5-Apr|124|30~5-May|124|29~3-Jun|124|29~2-Jul|124|30~1-Aug|124|29~30-Aug|124|29~~28-Sep|124|30~28-Oct|124|30~27-Nov|124|29~26-Dec|124|30~25-Jan|123|30~24-Feb|123|30~"],
+[123,189,0,"","125",190,0,122,"26-Mar|123|29~24-Apr|123|30~24-May|123|29~22-Jun|123|29~21-Jul|123|30~20-Aug|123|29~18-Sep|123|29~17-Oct|123|30~16-Nov|123|30~16-Dec|123|29~14-Jan|122|30~13-Feb|122|30~15-Mar|122|29~"],
+[122,190,0,"","126",191,0,121,"13-Apr|122|30~13-May|122|29~11-Jun|122|30~11-Jul|122|29~9-Aug|122|30~8-Sep|122|29~~7-Oct|122|30~6-Nov|122|29~5-Dec|122|30~4-Jan|121|29~2-Feb|121|30~3-Mar|121|29~"],
+[121,191,0,"","127",192,0,120,"1-Apr|121|30~1-May|121|30~31-May|121|29~29-Jun|121|30~29-Jul|121|29~27-Aug|121|30~~26-Sep|121|29~25-Oct|121|30~24-Nov|121|29~23-Dec|121|30~22-Jan|120|29~20-Feb|120|29~21-Mar|120|30"],
+[120,192,0,"","128",193,0,119,"20-Apr|120|30~20-May|120|29~18-Jun|120|30~18-Jul|120|29~16-Aug|120|30~15-Sep|120|30~~15-Oct|120|29~13-Nov|120|30~13-Dec|120|29~11-Jan|119|30~10-Feb|119|29~11-Mar|119|29~"],
+[119,193,0,"","129",194,0,118,"9-Apr|119|30~9-May|119|30~8-Jun|119|30~8-Jul|119|29~6-Aug|119|30~5-Sep|119|29~~4-Oct|119|30~3-Nov|119|30~3-Dec|119|29~1-Jan|118|29~30-Jan|118|30~1-Mar|118|29~"],
+[118,194,0,"","130",195,0,117,"30-Mar|118|29~28-Apr|118|30~28-May|118|29~26-Jun|118|30~26-Jul|118|29~24-Aug|118|30~~23-Sep|118|30~23-Oct|118|30~22-Nov|118|30~22-Dec|118|29~20-Jan|117|29~18-Feb|117|30~19-Mar|117|29"],
+[117,195,0,"","131",196,0,116,"17-Apr|117|29~16-May|117|29~14-Jun|117|30~14-Jul|117|29~12-Aug|117|30~11-Sep|117|30~~11-Oct|117|30~10-Nov|117|30~10-Dec|117|29~8-Jan|116|30~7-Feb|116|29~8-Mar|116|30~"],
+[116,196,0,"","132",197,0,115,"7-Apr|116|29~6-May|116|29~4-Jun|116|29~3-Jul|116|30~2-Aug|116|30~1-Sep|116|29~~30-Sep|116|30~30-Oct|116|30~29-Nov|116|29~28-Dec|116|30~27-Jan|115|30~26-Feb|115|29~"],
+[115,197,0,"","133",198,0,114,"27-Mar|115|30~26-Apr|115|29~25-May|115|29~23-Jun|115|30~23-Jul|115|29~21-Aug|115|30~~20-Sep|115|29~19-Oct|115|30~18-Nov|115|29~17-Dec|115|30~16-Jan|114|30~15-Feb|114|29~16-Mar|114|30"],
+[114,198,0,"","134",199,0,113,"15-Apr|114|29~14-May|114|30~13-Jun|114|29~12-Jul|114|30~11-Aug|114|29~9-Sep|114|30~~9-Oct|114|29~7-Nov|114|30~7-Dec|114|29~5-Jan|113|30~4-Feb|113|29~4-Mar|113|30~"],
+[113,199,0,"","135",200,0,112,"3-Apr|113|30~3-May|113|29~1-Jun|113|30~1-Jul|113|30~31-Jul|113|29~29-Aug|113|30~~28-Sep|113|29~27-Oct|113|29~25-Nov|113|29~24-Dec|113|30~23-Jan|112|29~21-Feb|112|30~23-Mar|112|30"],
+[112,200,0,"","136",201,0,111,"22-Apr|112|29~21-May|112|30~20-Jun|112|30~20-Jul|112|30~19-Aug|112|29~17-Sep|112|30~~17-Oct|112|29~15-Nov|112|29~14-Dec|112|29~12-Jan|111|30~11-Feb|111|29~12-Mar|111|30~"],
+[111,201,0,"","137",202,0,110,"11-Apr|111|29~10-May|111|30~9-Jun|111|30~9-Jul|111|30~8-Aug|111|30~7-Sep|111|29~~6-Oct|111|30~5-Nov|111|29~4-Dec|111|29~2-Jan|110|30~1-Feb|110|29~2-Mar|110|29~"],
+[110,202,0,"","138",203,0,109,"31-Mar|110|30~30-Apr|110|29~29-May|110|30~28-Jun|110|30~28-Jul|110|30~27-Aug|110|29~~25-Sep|110|30~25-Oct|110|29~23-Nov|110|30~23-Dec|110|29~21-Jan|109|29~19-Feb|109|30~20-Mar|109|29"],
+[109,203,0,"","139",204,0,108,"18-Apr|109|30~18-May|109|29~16-Jun|109|30~16-Jul|109|30~15-Aug|109|29~13-Sep|109|30~~13-Oct|109|29~11-Nov|109|30~11-Dec|109|30~10-Jan|108|29~8-Feb|108|30~10-Mar|108|29~"],
+[108,204,0,"","140",205,0,107,"8-Apr|108|29~7-May|108|30~6-Jun|108|29~5-Jul|108|30~4-Aug|108|29~2-Sep|108|30~~2-Oct|108|29~31-Oct|108|30~30-Nov|108|30~30-Dec|108|30~29-Jan|107|29~27-Feb|107|30~"],
+[107,205,0,"","141",206,0,106,"29-Mar|107|29~27-Apr|107|29~26-May|107|30~25-Jun|107|29~24-Jul|107|30~23-Aug|107|29~~21-Sep|107|29~20-Oct|107|30~19-Nov|107|30~19-Dec|107|30~18-Jan|106|29~16-Feb|106|30~18-Mar|106|30"],
+[106,206,0,"","142",207,0,105,"17-Apr|106|29~16-May|106|29~14-Jun|106|30~14-Jul|106|29~12-Aug|106|29~10-Sep|106|30~~10-Oct|106|29~8-Nov|106|30~8-Dec|106|30~7-Jan|105|29~5-Feb|105|30~6-Mar|105|30~"],
+[105,207,0,"","143",208,0,104,"5-Apr|105|29~4-May|105|30~3-Jun|105|29~2-Jul|105|30~1-Aug|105|29~30-Aug|105|29~~28-Sep|105|30~28-Oct|105|29~26-Nov|105|30~26-Dec|105|29~24-Jan|104|30~23-Feb|104|30~"],
+[104,208,0,"","144",209,0,103,"25-Mar|104|30~24-Apr|104|29~23-May|104|30~22-Jun|104|29~21-Jul|104|30~20-Aug|104|29~18-Sep|104|29~17-Oct|104|30~16-Nov|104|29~15-Dec|104|30~14-Jan|103|29~12-Feb|103|30~14-Mar|103|30~"],
+[103,209,0,"","145",210,0,102,"13-Apr|103|29~12-May|103|30~11-Jun|103|29~10-Jul|103|30~9-Aug|103|30~8-Sep|103|29~~7-Oct|103|30~6-Nov|103|29~5-Dec|103|30~4-Jan|102|29~2-Feb|102|29~3-Mar|102|30~"],
+[102,210,0,"","146",211,0,101,"2-Apr|102|29~1-May|102|30~31-May|102|29~29-Jun|102|30~29-Jul|102|30~28-Aug|102|30~~27-Sep|102|29~26-Oct|102|30~25-Nov|102|29~24-Dec|102|30~23-Jan|101|29~21-Feb|101|29~21-Mar|101|30"],
+[101,211,0,"","147",212,0,100,"20-Apr|101|29~19-May|101|30~18-Jun|101|29~17-Jul|101|30~16-Aug|101|30~15-Sep|101|30~~15-Oct|101|29~13-Nov|101|30~13-Dec|101|29~11-Jan|100|30~10-Feb|100|29~11-Mar|100|29~"],
+[100,212,0,"","148",213,0,99,"9-Apr|100|30~9-May|100|29~7-Jun|100|29~6-Jul|100|30~5-Aug|100|30~4-Sep|100|30~~4-Oct|100|30~3-Nov|100|29~2-Dec|100|30~1-Jan|99|29~30-Jan|99|30~1-Mar|99|29~"],
+[99,213,0,"","149",214,0,98,"30-Mar|99|29~28-Apr|99|29~27-May|99|30~26-Jun|99|29~25-Jul|99|30~24-Aug|99|30~~23-Sep|99|30~23-Oct|99|29~21-Nov|99|30~21-Dec|99|30~20-Jan|98|29~18-Feb|98|29~19-Mar|98|30"],
+[98,214,0,"","150",215,0,97,"18-Apr|98|29~17-May|98|29~15-Jun|98|30~15-Jul|98|29~13-Aug|98|30~12-Sep|98|30~~12-Oct|98|29~10-Nov|98|30~10-Dec|98|30~9-Jan|97|29~7-Feb|97|30~8-Mar|97|29~"],
+[97,215,0,"","151",216,0,96,"6-Apr|97|30~6-May|97|29~4-Jun|97|29~3-Jul|97|30~2-Aug|97|29~31-Aug|97|30~~30-Sep|97|30~30-Oct|97|29~28-Nov|97|30~28-Dec|97|29~26-Jan|96|30~25-Feb|96|30~"],
+[96,216,0,"","152",217,0,95,"27-Mar|96|29~25-Apr|96|30~25-May|96|29~23-Jun|96|30~23-Jul|96|29~21-Aug|96|30~~20-Sep|96|29~19-Oct|96|30~18-Nov|96|29~17-Dec|96|29~15-Jan|95|30~14-Feb|95|30~16-Mar|95|29"],
+[95,217,0,"","153",218,0,94,"14-Apr|95|30~14-May|95|30~13-Jun|95|29~12-Jul|95|30~11-Aug|95|29~9-Sep|95|30~~9-Oct|95|29~7-Nov|95|29~6-Dec|95|30~5-Jan|94|29~3-Feb|94|30~5-Mar|94|29~"],
+[94,218,0,"","154",219,0,93,"3-Apr|94|30~3-May|94|30~2-Jun|94|29~1-Jul|94|30~31-Jul|94|30~30-Aug|94|30~~29-Sep|94|29~28-Oct|94|29~26-Nov|94|29~25-Dec|94|30~24-Jan|93|29~22-Feb|93|30~23-Mar|93|29"],
+[93,219,0,"","155",220,0,92,"21-Apr|93|30~21-May|93|30~20-Jun|93|29~19-Jul|93|30~18-Aug|93|30~17-Sep|93|29~~16-Oct|93|30~15-Nov|93|29~14-Dec|93|29~12-Jan|92|30~11-Feb|92|29~12-Mar|92|30~"],
+[92,220,0,"","156",221,0,91,"11-Apr|92|29~10-May|92|30~9-Jun|92|29~8-Jul|92|30~7-Aug|92|30~6-Sep|92|30~~6-Oct|92|29~4-Nov|92|30~4-Dec|92|29~2-Jan|91|29~31-Jan|91|30~2-Mar|91|29~"],
+[91,221,0,"","157",222,0,90,"31-Mar|91|30~30-Apr|91|29~29-May|91|30~28-Jun|91|29~27-Jul|91|30~26-Aug|91|30~~25-Sep|91|29~24-Oct|91|30~23-Nov|91|29~22-Dec|91|30~21-Jan|90|29~19-Feb|90|30~21-Mar|90|29"],
+[90,222,0,"","158",223,0,89,"19-Apr|90|30~19-May|90|29~17-Jun|90|29~16-Jul|90|30~15-Aug|90|30~14-Sep|90|29~~13-Oct|90|30~12-Nov|90|29~11-Dec|90|30~10-Jan|89|30~9-Feb|89|29~9-Mar|89|30~"],
+[89,223,0,"","159",224,0,88,"8-Apr|89|29~7-May|89|30~6-Jun|89|29~5-Jul|89|29~3-Aug|89|30~2-Sep|89|29~~1-Oct|89|30~31-Oct|89|29~29-Nov|89|30~29-Dec|89|30~28-Jan|88|30~27-Feb|88|29~"],
+[88,224,0,"","160",225,0,87,"28-Mar|88|30~27-Apr|88|29~26-May|88|30~25-Jun|88|29~24-Jul|88|29~22-Aug|88|30~~21-Sep|88|29~20-Oct|88|30~19-Nov|88|29~18-Dec|88|30~17-Jan|87|30~16-Feb|87|30~18-Mar|87|30"],
+[87,225,0,"","161",226,0,86,"17-Apr|87|29~16-May|87|29~14-Jun|87|30~14-Jul|87|29~12-Aug|87|29~10-Sep|87|30~~10-Oct|87|29~8-Nov|87|29~7-Dec|87|30~6-Jan|86|30~5-Feb|86|30~7-Mar|86|29~"],
+[86,226,0,"","162",227,0,85,"5-Apr|86|30~5-May|86|30~4-Jun|86|29~3-Jul|86|30~2-Aug|86|29~31-Aug|86|29~~29-Sep|86|30~29-Oct|86|29~27-Nov|86|30~27-Dec|86|29~25-Jan|85|30~24-Feb|85|29~"],
+[85,227,0,"","163",228,0,84,"24-Mar|85|30~23-Apr|85|30~23-May|85|29~21-Jun|85|30~21-Jul|85|29~19-Aug|85|30~18-Sep|85|29~17-Oct|85|30~16-Nov|85|29~15-Dec|85|30~14-Jan|84|29~12-Feb|84|30~14-Mar|84|29~"],
+[84,228,0,"","164",229,0,83,"12-Apr|84|30~12-May|84|29~10-Jun|84|30~10-Jul|84|30~9-Aug|84|29~7-Sep|84|30~~7-Oct|84|30~6-Nov|84|29~5-Dec|84|30~4-Jan|83|29~2-Feb|83|29~3-Mar|83|30~"],
+[83,229,0,"","165",230,0,82,"2-Apr|83|29~1-May|83|29~30-May|83|30~29-Jun|83|29~28-Jul|83|30~27-Aug|83|30~~26-Sep|83|30~26-Oct|83|30~25-Nov|83|29~24-Dec|83|30~23-Jan|82|29~21-Feb|82|29~22-Mar|82|30"],
+[82,230,0,"","166",231,0,81,"21-Apr|82|29~20-May|82|29~18-Jun|82|30~18-Jul|82|29~16-Aug|82|30~15-Sep|82|30~~15-Oct|82|30~14-Nov|82|30~14-Dec|82|29~12-Jan|81|30~11-Feb|81|29~11-Mar|81|29~"],
+[81,231,0,"","167",232,0,80,"9-Apr|81|30~9-May|81|29~7-Jun|81|29~6-Jul|81|30~5-Aug|81|29~3-Sep|81|30~~3-Oct|81|30~2-Nov|81|30~2-Dec|81|29~31-Dec|81|30~30-Jan|80|29~28-Feb|80|30~"],
+[80,232,0,"","168",233,0,79,"30-Mar|80|29~28-Apr|80|29~27-May|80|30~26-Jun|80|29~25-Jul|80|30~24-Aug|80|29~~22-Sep|80|30~22-Oct|80|30~21-Nov|80|29~20-Dec|80|30~19-Jan|79|30~18-Feb|79|29~19-Mar|79|30"],
+[79,233,0,"","169",234,0,78,"18-Apr|79|29~17-May|79|29~15-Jun|79|30~15-Jul|79|29~13-Aug|79|30~12-Sep|79|30~~12-Oct|79|29~10-Nov|79|30~10-Dec|79|29~8-Jan|78|30~7-Feb|78|29~8-Mar|78|30~"],
+[78,234,0,"","170",235,0,77,"7-Apr|78|30~7-May|78|29~5-Jun|78|29~4-Jul|78|30~3-Aug|78|30~2-Sep|78|29~~1-Oct|78|30~31-Oct|78|29~29-Nov|78|29~28-Dec|78|30~27-Jan|77|29~25-Feb|77|30~"],
+[77,235,0,"","171",236,0,76,"26-Mar|77|30~25-Apr|77|29~24-May|77|30~23-Jun|77|29~22-Jul|77|30~21-Aug|77|30~~20-Sep|77|29~19-Oct|77|30~18-Nov|77|29~17-Dec|77|29~15-Jan|76|30~14-Feb|76|29~15-Mar|76|30"],
+[76,236,0,"","172",237,0,75,"14-Apr|76|29~13-May|76|30~12-Jun|76|30~12-Jul|76|30~11-Aug|76|29~9-Sep|76|30~~9-Oct|76|29~7-Nov|76|29~6-Dec|76|30~5-Jan|75|29~3-Feb|75|29~4-Mar|75|30~"],
+[75,237,0,"","173",238,0,74,"3-Apr|75|29~2-May|75|30~1-Jun|75|30~1-Jul|75|30~31-Jul|75|29~29-Aug|75|30~~28-Sep|75|30~28-Oct|75|29~26-Nov|75|29~25-Dec|75|30~24-Jan|74|29~22-Feb|74|29~23-Mar|74|30"],
+[74,238,0,"","174",239,0,73,"22-Apr|74|29~21-May|74|30~20-Jun|74|30~20-Jul|74|29~18-Aug|74|30~17-Sep|74|30~~17-Oct|74|29~15-Nov|74|30~15-Dec|74|29~13-Jan|73|30~12-Feb|73|29~12-Mar|73|30~"],
+[73,239,0,"","175",240,0,72,"11-Apr|73|29~10-May|73|29~8-Jun|73|30~8-Jul|73|30~7-Aug|73|29~5-Sep|73|30~~5-Oct|73|29~3-Nov|73|30~3-Dec|73|30~2-Jan|72|29~31-Jan|72|30~2-Mar|72|29~"],
+[72,240,0,"","176",241,0,71,"31-Mar|72|30~30-Apr|72|29~29-May|72|29~27-Jun|72|30~27-Jul|72|29~25-Aug|72|30~~24-Sep|72|29~23-Oct|72|30~22-Nov|72|30~22-Dec|72|29~20-Jan|71|30~19-Feb|71|30~21-Mar|71|29"],
+[71,241,0,"","177",242,0,70,"19-Apr|71|30~19-May|71|29~17-Jun|71|29~16-Jul|71|30~15-Aug|71|29~13-Sep|71|30~~13-Oct|71|29~11-Nov|71|30~11-Dec|71|29~9-Jan|70|30~8-Feb|70|30~10-Mar|70|30~"],
+[70,242,0,"","178",243,0,69,"9-Apr|70|29~8-May|70|30~7-Jun|70|29~6-Jul|70|29~4-Aug|70|30~3-Sep|70|29~~2-Oct|70|30~1-Nov|70|29~30-Nov|70|30~30-Dec|70|29~28-Jan|69|30~27-Feb|69|30~"],
+[69,243,0,"","179",244,0,68,"28-Mar|69|29~26-Apr|69|30~26-May|69|30~25-Jun|69|29~24-Jul|69|29~22-Aug|69|30~~21-Sep|69|29~20-Oct|69|29~18-Nov|69|30~18-Dec|69|29~16-Jan|68|30~15-Feb|68|30~17-Mar|68|29"],
+[68,244,0,"","180",245,0,67,"15-Apr|68|30~15-May|68|30~14-Jun|68|29~13-Jul|68|30~12-Aug|68|29~10-Sep|68|30~~10-Oct|68|29~8-Nov|68|30~8-Dec|68|29~6-Jan|67|30~5-Feb|67|29~6-Mar|67|30~"],
+[67,245,0,"","181",246,0,66,"5-Apr|67|29~4-May|67|30~3-Jun|67|30~3-Jul|67|29~1-Aug|67|30~31-Aug|67|29~~29-Sep|67|30~29-Oct|67|29~27-Nov|67|30~27-Dec|67|29~25-Jan|66|30~24-Feb|66|29~"],
+[66,246,0,"","182",247,0,65,"25-Mar|66|29~23-Apr|66|30~23-May|66|29~21-Jun|66|30~21-Jul|66|30~20-Aug|66|29~18-Sep|66|30~18-Oct|66|30~17-Nov|66|29~16-Dec|66|30~15-Jan|65|29~13-Feb|65|30~14-Mar|65|29~"],
+[65,247,0,"","183",248,0,64,"12-Apr|65|29~11-May|65|30~10-Jun|65|29~9-Jul|65|30~8-Aug|65|29~6-Sep|65|30~~6-Oct|65|30~5-Nov|65|30~5-Dec|65|30~4-Jan|64|29~2-Feb|64|29~3-Mar|64|30~"],
+[64,248,0,"","184",249,0,63,"2-Apr|64|29~1-May|64|29~30-May|64|29~28-Jun|64|30~28-Jul|64|30~27-Aug|64|29~~25-Sep|64|30~25-Oct|64|30~24-Nov|64|30~24-Dec|64|29~22-Jan|63|30~21-Feb|63|29~22-Mar|63|30"],
+[63,249,0,"","185",250,0,62,"21-Apr|63|29~20-May|63|29~18-Jun|63|29~17-Jul|63|30~16-Aug|63|30~15-Sep|63|29~~14-Oct|63|30~13-Nov|63|30~13-Dec|63|30~12-Jan|62|29~10-Feb|62|30~12-Mar|62|29~"],
+[62,250,0,"","186",251,0,61,"10-Apr|62|30~10-May|62|29~8-Jun|62|29~7-Jul|62|29~5-Aug|62|30~4-Sep|62|30~~4-Oct|62|29~2-Nov|62|30~2-Dec|62|30~1-Jan|61|29~30-Jan|61|29~28-Feb|61|30~"],
+[61,251,0,"","187",252,0,60,"29-Mar|61|30~28-Apr|61|29~27-May|61|30~26-Jun|61|29~25-Jul|61|30~24-Aug|61|29~~22-Sep|61|30~22-Oct|61|29~20-Nov|61|30~20-Dec|61|29~18-Jan|60|30~17-Feb|60|29~18-Mar|60|30"],
+[60,252,0,"","188",253,0,59,"17-Apr|60|30~17-May|60|29~15-Jun|60|30~15-Jul|60|29~13-Aug|60|30~12-Sep|60|30~~12-Oct|60|29~10-Nov|60|29~9-Dec|60|30~8-Jan|59|29~6-Feb|59|30~8-Mar|59|29~"],
+[59,253,0,"","189",254,0,58,"6-Apr|59|30~6-May|59|29~4-Jun|59|30~4-Jul|59|30~3-Aug|59|30~2-Sep|59|29~~1-Oct|59|29~30-Oct|59|30~29-Nov|59|29~28-Dec|59|29~26-Jan|58|30~25-Feb|58|29~"],
+[58,254,0,"","190",255,0,57,"26-Mar|58|30~25-Apr|58|29~24-May|58|30~23-Jun|58|30~23-Jul|58|30~22-Aug|58|30~~21-Sep|58|29~20-Oct|58|30~19-Nov|58|29~18-Dec|58|29~16-Jan|57|29~14-Feb|57|30~15-Mar|57|29"],
+[57,255,0,"","191",256,0,56,"13-Apr|57|30~13-May|57|29~11-Jun|57|30~11-Jul|57|30~10-Aug|57|30~9-Sep|57|30~~9-Oct|57|29~7-Nov|57|29~6-Dec|57|30~5-Jan|56|29~3-Feb|56|29~4-Mar|56|30~"],
+[56,256,0,"","192",257,0,55,"3-Apr|56|29~2-May|56|30~1-Jun|56|29~30-Jun|56|30~30-Jul|56|30~29-Aug|56|30~~28-Sep|56|29~27-Oct|56|30~26-Nov|56|29~25-Dec|56|30~24-Jan|55|29~22-Feb|55|30~24-Mar|55|29"],
+[55,257,0,"","193",258,0,54,"22-Apr|55|29~21-May|55|30~20-Jun|55|29~19-Jul|55|30~18-Aug|55|30~17-Sep|55|29~~16-Oct|55|30~15-Nov|55|29~14-Dec|55|30~13-Jan|54|30~12-Feb|54|29~13-Mar|54|30~"],
+[54,258,0,"","194",259,0,53,"12-Apr|54|29~11-May|54|29~9-Jun|54|30~9-Jul|54|29~7-Aug|54|30~6-Sep|54|29~~5-Oct|54|30~4-Nov|54|29~3-Dec|54|30~2-Jan|53|30~1-Feb|53|29~1-Mar|53|30~"],
+[53,259,0,"","195",260,0,52,"31-Mar|53|30~30-Apr|53|29~29-May|53|29~27-Jun|53|30~27-Jul|53|29~25-Aug|53|30~~24-Sep|53|29~23-Oct|53|29~21-Nov|53|30~21-Dec|53|30~20-Jan|52|30~19-Feb|52|29~20-Mar|52|30"],
+[52,260,0,"","196",261,0,51,"19-Apr|52|29~18-May|52|30~17-Jun|52|29~16-Jul|52|30~15-Aug|52|29~13-Sep|52|29~~12-Oct|52|30~11-Nov|52|29~10-Dec|52|30~9-Jan|51|30~8-Feb|51|29~9-Mar|51|30~"],
+[51,261,0,"","197",262,0,50,"8-Apr|51|30~8-May|51|29~6-Jun|51|30~6-Jul|51|29~4-Aug|51|30~3-Sep|51|29~~2-Oct|51|29~31-Oct|51|30~30-Nov|51|29~29-Dec|51|30~28-Jan|50|30~27-Feb|50|29~"],
+[50,262,0,"","198",263,0,49,"28-Mar|50|30~27-Apr|50|29~26-May|50|30~25-Jun|50|30~25-Jul|50|29~23-Aug|50|30~~22-Sep|50|29~21-Oct|50|29~19-Nov|50|30~19-Dec|50|29~17-Jan|49|30~16-Feb|49|29~16-Mar|49|30"],
+[49,263,0,"","199",264,0,48,"15-Apr|49|29~14-May|49|30~13-Jun|49|30~13-Jul|49|29~11-Aug|49|30~10-Sep|49|30~~10-Oct|49|29~8-Nov|49|30~8-Dec|49|29~6-Jan|48|30~5-Feb|48|29~6-Mar|48|29~"],
+[48,264,0,"","200",265,0,47,"4-Apr|48|30~4-May|48|29~2-Jun|48|30~2-Jul|48|30~1-Aug|48|29~30-Aug|48|30~~29-Sep|48|29~28-Oct|48|30~27-Nov|48|30~27-Dec|48|29~25-Jan|47|30~24-Feb|47|29~"],
+[47,265,0,"","201",266,0,46,"25-Mar|47|29~23-Apr|47|30~23-May|47|29~21-Jun|47|29~20-Jul|47|30~19-Aug|47|30~18-Sep|47|30~18-Oct|47|30~17-Nov|47|29~16-Dec|47|30~15-Jan|46|29~13-Feb|46|30~15-Mar|46|29~"],
+[46,266,0,"","202",267,0,45,"13-Apr|46|29~12-May|46|29~10-Jun|46|30~10-Jul|46|29~8-Aug|46|30~7-Sep|46|30~~7-Oct|46|30~6-Nov|46|29~5-Dec|46|30~4-Jan|45|30~3-Feb|45|29~3-Mar|45|30~"],
+[45,267,0,"","203",268,0,44,"2-Apr|45|29~1-May|45|29~30-May|45|29~28-Jun|45|30~28-Jul|45|29~26-Aug|45|30~~25-Sep|45|30~25-Oct|45|29~23-Nov|45|30~23-Dec|45|30~22-Jan|44|29~20-Feb|44|30~22-Mar|44|29"],
+[44,268,0,"","204",269,0,43,"20-Apr|44|30~20-May|44|29~18-Jun|44|29~17-Jul|44|30~16-Aug|44|29~14-Sep|44|30~~14-Oct|44|30~13-Nov|44|29~12-Dec|44|30~11-Jan|43|29~9-Feb|43|30~11-Mar|43|30~"],
+[43,269,0,"","205",270,0,42,"10-Apr|43|29~9-May|43|30~8-Jun|43|29~7-Jul|43|30~6-Aug|43|29~4-Sep|43|30~~4-Oct|43|29~2-Nov|43|30~2-Dec|43|29~31-Dec|43|30~30-Jan|42|29~28-Feb|42|30~"],
+[42,270,0,"","206",271,0,41,"30-Mar|42|29~28-Apr|42|30~28-May|42|30~27-Jun|42|29~26-Jul|42|30~25-Aug|42|29~~23-Sep|42|30~23-Oct|42|29~21-Nov|42|30~21-Dec|42|29~19-Jan|41|29~17-Feb|41|30~18-Mar|41|29"],
+[41,271,0,"","207",272,0,40,"16-Apr|41|30~16-May|41|30~15-Jun|41|29~14-Jul|41|30~13-Aug|41|30~12-Sep|41|30~~12-Oct|41|29~10-Nov|41|29~9-Dec|41|29~7-Jan|40|30~6-Feb|40|29~7-Mar|40|30~"],
+[40,272,0,"","208",273,0,39,"6-Apr|40|29~5-May|40|30~4-Jun|40|29~3-Jul|40|30~2-Aug|40|30~1-Sep|40|30~~1-Oct|40|30~31-Oct|40|29~29-Nov|40|29~28-Dec|40|29~26-Jan|39|30~25-Feb|39|29~"],
+[39,273,0,"","209",274,0,38,"26-Mar|39|30~25-Apr|39|29~24-May|39|30~23-Jun|39|29~22-Jul|39|30~21-Aug|39|30~~20-Sep|39|30~20-Oct|39|29~18-Nov|39|30~18-Dec|39|29~16-Jan|38|29~14-Feb|38|30~16-Mar|38|29"],
+[38,274,0,"","210",275,0,37,"14-Apr|38|29~13-May|38|30~12-Jun|38|30~12-Jul|38|29~10-Aug|38|30~9-Sep|38|30~~9-Oct|38|30~8-Nov|38|29~7-Dec|38|30~6-Jan|37|29~4-Feb|37|29~4-Mar|37|30~"],
+[37,275,0,"","211",276,0,36,"3-Apr|37|29~2-May|37|30~1-Jun|37|29~30-Jun|37|30~30-Jul|37|29~28-Aug|37|30~~27-Sep|37|29~26-Oct|37|30~25-Nov|37|30~25-Dec|37|29~23-Jan|36|30~22-Feb|36|29~23-Mar|36|30"],
+[36,276,0,"","212",277,0,35,"22-Apr|36|29~21-May|36|30~20-Jun|36|29~19-Jul|36|30~18-Aug|36|29~16-Sep|36|30~~16-Oct|36|29~14-Nov|36|30~14-Dec|36|29~12-Jan|35|30~11-Feb|35|30~13-Mar|35|29~"],
+[35,277,0,"","213",278,0,34,"11-Apr|35|30~11-May|35|29~9-Jun|35|30~9-Jul|35|29~7-Aug|35|30~6-Sep|35|29~~5-Oct|35|29~3-Nov|35|30~3-Dec|35|29~1-Jan|34|30~31-Jan|34|30~2-Mar|34|30~"],
+[34,278,0,"","214",279,0,33,"1-Apr|34|29~30-Apr|34|30~30-May|34|29~28-Jun|34|30~28-Jul|34|29~26-Aug|34|30~~25-Sep|34|29~24-Oct|34|29~22-Nov|34|30~22-Dec|34|29~20-Jan|33|30~19-Feb|33|30~20-Mar|33|29"],
+[33,279,0,"","215",280,0,32,"18-Apr|33|30~18-May|33|30~17-Jun|33|29~16-Jul|33|30~15-Aug|33|29~13-Sep|33|29~~12-Oct|33|30~11-Nov|33|29~10-Dec|33|30~9-Jan|32|29~7-Feb|32|30~9-Mar|32|29~"],
+[32,280,0,"","216",281,0,31,"7-Apr|32|30~7-May|32|30~6-Jun|32|29~5-Jul|32|30~4-Aug|32|30~3-Sep|32|29~~2-Oct|32|30~1-Nov|32|29~30-Nov|32|29~29-Dec|32|30~28-Jan|31|29~26-Feb|31|30~"],
+[31,281,0,"","217",282,0,30,"28-Mar|31|29~26-Apr|31|30~26-May|31|29~24-Jun|31|30~24-Jul|31|30~23-Aug|31|29~~21-Sep|31|30~21-Oct|31|29~19-Nov|31|30~19-Dec|31|29~17-Jan|30|30~16-Feb|30|29~17-Mar|30|30"],
+[30,282,0,"","218",283,0,29,"16-Apr|30|29~15-May|30|30~14-Jun|30|29~13-Jul|30|30~12-Aug|30|29~10-Sep|30|30~~10-Oct|30|30~9-Nov|30|30~9-Dec|30|29~7-Jan|29|30~6-Feb|29|29~6-Mar|29|~"]
+];
+
+// ═══════════════════════════════════════════════════════════════
+// BABYLONIAN / SELEUCID CONVERSION TABLE
+// Data: Chris Bennett, "Ptolemaic Chronology" (2003-2011), corrected
+// table = Parker & Dubberstein 1956 overlaid with astronomical diaries,
+// lunar tables and eclipse records. instonebrewer.com/.../babylonian
+// Row: [jy, seN, seNotional, king, ae, rseN, rseNotional, rjul, monthsStr]
+//   monthsStr = 14 '~'-separated slots in BCV_MON order; each slot is
+//   '' (month absent) or 'D-Mon|byBC|len'.
+// ═══════════════════════════════════════════════════════════════
+
+const BCV_MON = ['Nisanu','Aiaru','Simanu','Duzu','Abu','Ululu','Ululu II','Tashritu',
+                    'Arahsamnu','Kislimu','Tebetu','Shabatu','Addaru','Addaru II'];
+const BCV_MAC    = ['Artemisios','Daisios','Panemos','Loios','Gorpiaios','Hyperberetaios','Emb.','Dios',
+                    'Apellaios','Audnaios','Peritios','Dystros','Xandikos','Emb.'];
+const BCV_INT = [6, 13];   // Ululu II, Addaru II
+
+const BCV_DATA = BCV_ROWS.map(r => {
+  const months = r[8].split('~').map((s, i) => {
+    if (!s) return null;
+    const p = s.split('|');
+    return { m: BCV_MON[i], mac: BCV_MAC[i], d: p[0], by: +p[1],
+             len: p[2] === '' ? null : +p[2], idx: i };
+  });
+  return {
+    jy: r[0],
+    se:  r[1] ? { n: r[1], notional: !!r[2] } : null,
+    king: r[3] || null,
+    ae:  r[4] || null,
+    sem: r[5] ? { n: r[5], notional: !!r[6] } : null,
+    rjul: r[7] || null,
+    months,
+    isInt: !!months[6] || !!months[13]
+  };
+});
+
+// ── State ─────────────────────────────────────────────────────
+let bcvCol = 'seb', bcvType = 'all', bcvQuery = '', bcvActive = null;
+
+function bcvSELabel(se) {
+  if (!se) return '';
+  return se.notional ? '(' + se.n + ')' : String(se.n);
+}
+
+function bcvFilter() {
+  const q = bcvQuery.trim().toLowerCase();
+  const seM = /^se[b m]?\s*(\d+)$/.exec(q);
+  const yrM = /^(\d+)\s*(bc)?$/.exec(q);
+  return BCV_DATA.filter(r => {
+    if (bcvType === 'int' && !r.isInt) return false;
+    if (bcvType === 'reg' && r.isInt) return false;
+    if (!q) return true;
+    if (seM) { const n = +seM[1]; return (r.se && r.se.n === n) || (r.sem && r.sem.n === n); }
+    if (yrM) return r.jy === +yrM[1];
+    if (r.king && r.king.toLowerCase().includes(q)) return true;
+    if (r.ae && String(r.ae).toLowerCase().includes(q)) return true;
+    return false;
+  });
+}
+
+// ── Render ────────────────────────────────────────────────────
+function bcvBuildHead() {
+  const head = document.getElementById('bcvHead');
+  let h = '<th class="bcv-s1">Julian year</th>' +
+          '<th class="bcv-s2">' + (bcvCol === 'seb' ? 'SEB' : 'SEM') +
+          '<small>' + (bcvCol === 'seb' ? 'Babylonian' : 'Macedonian') + '</small></th>';
+  BCV_MON.forEach((m, i) => {
+    const isInt = BCV_INT.includes(i);
+    h += '<th' + (isInt ? ' class="bcv-int"' : '') + '>' + m +
+         '<small>' + BCV_MAC[i] + '</small></th>';
+  });
+  head.innerHTML = h;
+}
+
+function bcvRender() {
+  const rows = bcvFilter();
+  const body = document.getElementById('bcvBody');
+  document.getElementById('bcvCount').innerHTML =
+    '<strong>' + rows.length + '</strong> of ' + BCV_DATA.length + ' Babylonian years';
+  if (!rows.length) {
+    body.innerHTML = '<tr><td colspan="16" style="padding:2rem;text-align:center;color:rgba(200,216,240,.3)">No year matches that search.</td></tr>';
+    return;
+  }
+  body.innerHTML = rows.map(r => {
+    let t = '<tr class="bcv-row' + (bcvActive === r.jy ? ' active' : '') + '" data-jy="' + r.jy + '">';
+    t += '<td class="bcv-s1 bcv-yr">' + r.jy + '<span class="bcv-era">BC</span></td>';
+    // era / king column
+    const se = bcvCol === 'seb' ? r.se : r.sem;
+    if (se) {
+      t += '<td class="bcv-s2 bcv-se">' + (se.notional ? '<span class="bcv-notion">(' + se.n + ')</span>' : se.n) + '</td>';
+    } else if (r.king) {
+      t += '<td class="bcv-s2 bcv-king">' + r.king + (r.ae ? ' ' + r.ae : '') + '</td>';
+    } else {
+      t += '<td class="bcv-s2 bcv-empty">·</td>';
+    }
+    r.months.forEach((m, i) => {
+      if (!m) { t += '<td class="bcv-empty">·</td>'; return; }
+      const isInt = BCV_INT.includes(i);
+      t += '<td class="bcv-mcell' + (isInt ? ' bcv-icell' : '') + '">' +
+           '<span class="bcv-md">' + m.d + '</span>' +
+           (m.len ? '<span class="bcv-ml">' + m.len + '</span>' : '') + '</td>';
+    });
+    t += '</tr>';
+    return t;
+  }).join('');
+}
+
+function bcvYearLabel(by) { return by + ' BC'; }
+
+function bcvShowDetail(jy) {
+  const r = BCV_DATA.find(x => x.jy === jy);
+  const el = document.getElementById('bcvDetail');
+  if (!r) { el.classList.remove('open'); return; }
+  bcvActive = jy;
+
+  const tags = [];
+  tags.push(r.isInt ? ['bcv-t-int', 'Intercalary · 13 months'] : ['bcv-t-reg', '12 months']);
+  if (r.king) tags.push(['bcv-t-king', r.king + (r.ae ? ' · regnal ' + r.ae : '')]);
+  if (r.se && r.se.notional) tags.push(['bcv-t-notion', 'Notional SE — pre-inauguration']);
+
+  let h = '<div class="bcv-d-head">';
+  h += '<span class="bcv-d-year">' + r.jy + ' BC</span>';
+  if (r.se)  h += '<span class="bcv-d-se">SEB ' + bcvSELabel(r.se) + '</span>';
+  if (r.sem) h += '<span class="bcv-d-se">SEM ' + bcvSELabel(r.sem) + '</span>';
+  tags.forEach(t => { h += '<span class="bcv-d-tag ' + t[0] + '">' + t[1] + '</span>'; });
+  h += '<button class="bcv-d-close" onclick="bcvCloseDetail()" title="Close">\u2715</button>';
+  h += '</div>';
+
+  h += '<div class="bcv-d-months">';
+  r.months.forEach((m, i) => {
+    if (!m) return;
+    const isInt = BCV_INT.includes(i);
+    h += '<div class="bcv-d-mon' + (isInt ? ' is-int' : '') + '">';
+    h += '<div class="bcv-d-mon-n">' + m.m + '</div>';
+    h += '<div class="bcv-d-mon-mac">' + m.mac + '</div>';
+    h += '<div class="bcv-d-mon-d">' + m.d + ' ' + bcvYearLabel(m.by) + '</div>';
+    h += '<div class="bcv-d-mon-meta">' + (m.len ? m.len + ' days' : 'to next Nisanu') + '</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+
+  const first = r.months.find(Boolean);
+  const last  = [...r.months].reverse().find(Boolean);
+  h += '<div class="bcv-d-note">The Babylonian year opened on <strong>1 Nisanu = ' +
+       first.d + ' ' + bcvYearLabel(first.by) + '</strong>' +
+       (r.se ? ' (SEB ' + bcvSELabel(r.se) + (r.se.notional ? ', notional' : '') + ')' :
+        r.king ? ' (' + r.king + ', regnal year ' + (r.ae || '?') + ')' : '') +
+       ' and ran ' + (r.isInt ? 'thirteen' : 'twelve') + ' lunar months to the following Nisanu. ' +
+       'Each month began at sunset on the evening before the Julian date shown.';
+  if (r.isInt) {
+    const which = r.months[6] ? 'a second Ululu (Ululu II) at mid-year' : 'a second Addaru (Addaru II) at year-end';
+    h += ' This year was intercalary, carrying <strong>' + which + '</strong>.';
+  }
+  h += '</div>';
+
+  el.innerHTML = h;
+  el.classList.add('open');
+  bcvRender();
+  if (el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function bcvCloseDetail() {
+  bcvActive = null;
+  document.getElementById('bcvDetail').classList.remove('open');
+  bcvRender();
+}
+
+// ── Init ──────────────────────────────────────────────────────
+(function bcvInit() {
+  bcvBuildHead();
+  bcvRender();
+  document.getElementById('bcvBody').addEventListener('click', e => {
+    const tr = e.target.closest('.bcv-row');
+    if (tr) bcvShowDetail(+tr.dataset.jy);
+  });
+  document.getElementById('bcvSearch').addEventListener('input', e => {
+    bcvQuery = e.target.value; bcvRender();
+  });
+  document.getElementById('bcvEraCol').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    bcvCol = b.dataset.col;
+    document.querySelectorAll('#bcvEraCol button').forEach(x => x.classList.toggle('active', x === b));
+    bcvBuildHead(); bcvRender();
+  });
+  document.getElementById('bcvType').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    bcvType = b.dataset.type;
+    document.querySelectorAll('#bcvType button').forEach(x => x.classList.toggle('active', x === b));
+    bcvRender();
+  });
+})();
+
 </script>
 
 <!-- ═══════════════════════════════════════════════════════════════
