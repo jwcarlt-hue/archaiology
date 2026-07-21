@@ -7245,7 +7245,6 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 .bpc-counter b { color:#c25b7a; }
 
-/* viewport + track */
 .bpc-viewport { position:relative; overflow:hidden; }
 .bpc-track { display:flex; transition:transform .45s cubic-bezier(.4,.0,.2,1); }
 .bpc-slide { min-width:100%; }
@@ -7294,7 +7293,6 @@ document.addEventListener('DOMContentLoaded', () => {
   background:rgba(194,91,122,.18); border-color:rgba(194,91,122,.65); transform:translateY(-1px);
 }
 
-/* controls */
 .bpc-arrow {
   position:absolute; top:50%; transform:translateY(-50%); z-index:3;
   width:38px; height:38px; display:flex; align-items:center; justify-content:center;
@@ -7324,14 +7322,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // ═══════════════════════════════════════════════════════════════
 // BORGIA PLATE CAROUSEL
 // To add a plate: append one entry to BPC_PLATES. Nothing else changes.
-//   n      – plate number (Codex Borgia page)
-//   href   – interactive page
-//   img    – primary image path (assets/site-images/…)
-//   imgFb  – fallback image path (same-dir), for GitHub Pages robustness
-//   badge  – short corner label
-//   eyebrow– small line above the title
-//   title  – headline
-//   desc   – one-paragraph blurb (may contain <strong>/<em>)
 // ═══════════════════════════════════════════════════════════════
 const BPC_PLATES = [
   {
@@ -7353,6 +7343,16 @@ const BPC_PLATES = [
     eyebrow: 'The Morning Star',
     title: 'The rising of the Morning Star',
     desc: "Its counterpart: Venus reborn in the east as a <strong>resplendent rayed disk</strong>, the heliacal rise of the Morning Star (M-first) in the festival of <em>Tititl</em>. Ten markers: the rayed orb, the dawn-wind Ehecatl figures within it, the four directional Tlalocs, the twenty day-signs turning counterclockwise, the bloodletters greeting the new star."
+  },
+  {
+    n: 31,
+    href: './codex-borgia-31.html',
+    img: './assets/site-images/codex-borgia-31.jpg',
+    imgFb: './codex-borgia-31.jpg',
+    badge: 'Plate 31',
+    eyebrow: 'Izcalli & the nemontemi',
+    title: 'The double frame of Izcalli',
+    desc: "The almanac's only page with <strong>two festival periods</strong> in two separate frames: the twenty days of <em>Izcalli</em> and the five <em>nemontemi</em> that close the year. Venus still rises low in the dawn; skeletal vegetation goddesses mark maize, grass, and maguey lying dormant in the cold, dry February \u2014 with a possible lunar eclipse among the blindfolded skeletal figures. Ten markers across both frames."
   }
 ];
 
@@ -7367,7 +7367,6 @@ const BPC_PLATES = [
   let i = 0;
   const N = BPC_PLATES.length;
 
-  // Build slides
   BPC_PLATES.forEach(p => {
     const a = document.createElement('a');
     a.className = 'bpc-slide';
@@ -7389,7 +7388,6 @@ const BPC_PLATES = [
     track.appendChild(a);
   });
 
-  // Build dots
   BPC_PLATES.forEach((p, idx) => {
     const b = document.createElement('button');
     b.className = 'bpc-dot';
@@ -7413,13 +7411,11 @@ const BPC_PLATES = [
   prev.addEventListener('click', () => go(i - 1));
   next.addEventListener('click', () => go(i + 1));
 
-  // Keyboard arrows when the carousel is in view / focused
   document.getElementById('bpc').addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft')  { go(i - 1); }
     if (e.key === 'ArrowRight') { go(i + 1); }
   });
 
-  // Basic touch swipe
   let x0 = null;
   const vp = document.querySelector('.bpc-viewport');
   vp.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, {passive:true});
