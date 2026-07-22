@@ -24,7 +24,6 @@
       "note": "The marble east façade was re-erected by anastylosis (V. M. Strocka, 1970–78) from excavated fragments and is well documented. The interior — niches, galleries, shelving — is known only in outline; any three-dimensional interior is a reasoned reconstruction, not a record."
     },
     "evidence_summary": "A combined public library and funerary monument for Tiberius Julius Celsus Polemaeanus, proconsul of Asia (c. 105–107 CE), commissioned by his son Tiberius Julius Aquila and completed under Hadrian. Celsus was interred in a sarcophagus in a vaulted crypt beneath the reading hall. Holdings were for on-site consultation rather than lending. The building burned c. 262 CE; only the façade survives.",
-    "anachronism_note": "This building dates to the 2nd century CE — about six centuries after Heraclitus. He appears here as an author OF Ephesus, not as an attested holding of this particular library. That distinction is what the evidence relationship on each text records.",
     "documentation": [
       {
         "label": "Pleiades — Ephesus",
@@ -38,7 +37,8 @@
         "label": "World History Encyclopedia",
         "url": "https://www.worldhistory.org/Library_of_Celsus/"
       }
-    ]
+    ],
+    "provenance_note": "This building dates to the 2nd century CE — about six centuries after Heraclitus. He appears here as an author OF Ephesus, not as an attested holding of this particular library. That distinction is what the evidence relationship on each text records."
   },
   "collections": [
     {
@@ -49,120 +49,61 @@
   ],
   "texts": [
     {
-      "ref": "B1",
-      "author": "Heraclitus",
-      "title": "On the Logos",
-      "language": "grc",
-      "translation_language": "en",
+      "text_id": "heraclitus-b1",
       "relationship": "author_from_site",
-      "source": "corpus/heraclitus.json",
-      "license": "public-domain",
       "collection": "ephesian-authors"
     },
     {
-      "ref": "B50",
-      "author": "Heraclitus",
-      "title": "All things are one",
-      "language": "grc",
-      "translation_language": "en",
+      "text_id": "heraclitus-b50",
       "relationship": "author_from_site",
-      "source": "corpus/heraclitus.json",
-      "license": "public-domain",
       "collection": "ephesian-authors"
     },
     {
-      "ref": "B30",
-      "author": "Heraclitus",
-      "title": "The ever-living fire",
-      "language": "grc",
-      "translation_language": "en",
+      "text_id": "heraclitus-b30",
       "relationship": "author_from_site",
-      "source": "corpus/heraclitus.json",
-      "license": "public-domain",
       "collection": "ephesian-authors"
     },
     {
-      "ref": "B51",
-      "author": "Heraclitus",
-      "title": "The bow and the lyre",
-      "language": "grc",
-      "translation_language": "en",
+      "text_id": "heraclitus-b51",
       "relationship": "author_from_site",
-      "source": "corpus/heraclitus.json",
-      "license": "public-domain",
       "collection": "ephesian-authors"
     },
     {
-      "ref": "B53",
-      "author": "Heraclitus",
-      "title": "War, father of all",
-      "language": "grc",
-      "translation_language": "en",
+      "text_id": "heraclitus-b53",
       "relationship": "author_from_site",
-      "source": "corpus/heraclitus.json",
-      "license": "public-domain",
       "collection": "ephesian-authors"
     },
     {
-      "ref": "B54",
-      "author": "Heraclitus",
-      "title": "The hidden harmony",
-      "language": "grc",
-      "translation_language": "en",
+      "text_id": "heraclitus-b54",
       "relationship": "author_from_site",
-      "source": "corpus/heraclitus.json",
-      "license": "public-domain",
       "collection": "ephesian-authors"
     },
     {
-      "ref": "B12",
-      "author": "Heraclitus",
-      "title": "Upon those who step into the same rivers",
-      "language": "grc",
-      "translation_language": "en",
+      "text_id": "heraclitus-b12",
       "relationship": "author_from_site",
-      "source": "corpus/heraclitus.json",
-      "license": "public-domain",
       "collection": "ephesian-authors"
     },
     {
-      "ref": "B62",
-      "author": "Heraclitus",
-      "title": "Mortals immortal, immortals mortal",
-      "language": "grc",
-      "translation_language": "en",
+      "text_id": "heraclitus-b62",
       "relationship": "author_from_site",
-      "source": "corpus/heraclitus.json",
-      "license": "public-domain",
       "collection": "ephesian-authors"
     },
     {
-      "ref": "B40",
-      "author": "Heraclitus",
-      "title": "Much learning does not teach understanding",
-      "language": "grc",
-      "translation_language": "en",
+      "text_id": "heraclitus-b40",
       "relationship": "author_from_site",
-      "source": "corpus/heraclitus.json",
-      "license": "public-domain",
       "collection": "ephesian-authors"
     },
     {
-      "ref": "B41",
-      "author": "Heraclitus",
-      "title": "The thought that steers all things",
-      "language": "grc",
-      "translation_language": "en",
+      "text_id": "heraclitus-b41",
       "relationship": "author_from_site",
-      "source": "corpus/heraclitus.json",
-      "license": "public-domain",
       "collection": "ephesian-authors"
     }
   ],
   "available_works": 31,
   "_meta": {
     "text_catalog": "corpus/heraclitus.json (Diels–Kranz fragments; Burnet 1912 translations, public domain)",
-    "relationship_note": "Every Heraclitus text here carries relationship 'author_from_site' — he was born and taught at Ephesus. None is 'attested_collection'; there is no evidence his scrolls were held in this specific (later) building.",
-    "status": "slice 1 — Heraclitus corpus only"
+    "relationship_note": "Every Heraclitus text here is 'author_from_site' — he was born and taught at Ephesus. None is 'attested_collection': there is no evidence his scrolls were held in this specific (later) building.",
+    "status": "slice 1 — Heraclitus corpus only",
+    "catalog": "data/texts.json"
   }
 }
