@@ -266,6 +266,7 @@ footer a{color:var(--smoke);}
 .conf-tier{font-family:var(--ui);font-size:.56rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
   padding:.22rem .5rem;border-radius:2px;border:1px solid var(--hair);}
 .conf-high{color:var(--jade);border-color:rgba(121,176,161,.5);}
+.conf-mid{color:rgba(236,226,207,.62);}
 .conf-low{color:var(--ember-lt);border-color:rgba(201,149,47,.45);border-style:dashed;}
 .lib-summary{font-family:var(--body);font-size:.85rem;line-height:1.7;color:rgba(236,226,207,.8);margin-bottom:.9rem;}
 .lib-meta{font-family:var(--ui);font-size:.62rem;line-height:1.7;color:var(--smoke);margin-bottom:.2rem;
@@ -1930,6 +1931,12 @@ footer a{color:var(--smoke);}
       .catch(() => ({}));
     return corpusPromise;
   }
+  const LIB_CATALOG = 'data/texts.json';
+  let catalogPromise = null;
+  function ensureCatalog(){
+    if (!catalogPromise) catalogPromise = fetch(LIB_CATALOG).then(r => r.json()).catch(() => ({}));
+    return catalogPromise;
+  }
 
   function libraryIcon(){
     return L.divIcon({
@@ -1973,10 +1980,19 @@ footer a{color:var(--smoke);}
       try { manifestCache[p.id] = await (await fetch(p.corpus_manifest)).json(); }
       catch(e){ manifestCache[p.id] = null; }
     }
-    showLibraryCard(p, manifestCache[p.id], latlng);
+    const cat = await ensureCatalog();
+    showLibraryCard(p, manifestCache[p.id], latlng, cat);
   }
 
-  function showLibraryCard(p, m, latlng){
+  // tier a confidence value by its wording (secure/high vs approximate/conjectural)
+  function confClass(v){
+    if (/secure|high|documented|attested/i.test(v)) return 'conf-high';
+    if (/approx|conjectur|low|debated|reconstruct/i.test(v)) return 'conf-low';
+    return 'conf-mid';
+  }
+
+  function showLibraryCard(p, m, latlng, cat){
+    cat = cat || {};
     resetInfoDrawer();
     const s = (m && m.site) || {};
     const k = document.getElementById('infoKicker');
@@ -1996,27 +2012,27 @@ footer a{color:var(--smoke);}
     if (p.model) {
       html += `<model-viewer class="lib-model" src="${p.model}" camera-controls auto-rotate ` +
         `shadow-intensity="1" exposure="0.9" interaction-prompt="none" alt="Reconstruction of ${p.name}"></model-viewer>` +
-        `<div class="lib-model-cap">Rotatable reconstruction · façade documented, interior conjectural</div>`;
+        `<div class="lib-model-cap">Rotatable reconstruction · confidence noted below</div>`;
     }
     const rc = s.reconstruction_confidence;
     if (rc) {
-      html += `<div class="lib-confidence">` +
-        `<span class="conf-tier conf-high">Façade: ${rc.facade || '—'}</span>` +
-        `<span class="conf-tier conf-low">Interior: ${rc.interior || '—'}</span></div>`;
+      const tiers = Object.keys(rc).filter(key => key !== 'note').map(key =>
+        `<span class="conf-tier ${confClass(String(rc[key]))}">${key}: ${rc[key]}</span>`).join('');
+      html += `<div class="lib-confidence">${tiers}</div>`;
     }
     if (s.evidence_summary) html += `<p class="lib-summary">${s.evidence_summary}</p>`;
     const meta = [];
     if (s.capacity) meta.push(`<b>Capacity</b> ${s.capacity}`);
     if (s.languages) meta.push(`<b>Languages</b> ${s.languages.join(', ')}`);
     if (s.formats) meta.push(`<b>Formats</b> ${s.formats.join(', ')}`);
-    if (m && typeof m.available_works === 'number') meta.push(`<b>Works available</b> ${m.available_works}`);
+    if (m && typeof m.available_works === 'number') meta.push(`<b>Readable works</b> ${m.available_works}`);
     if (meta.length) html += `<div class="lib-meta">${meta.map(x => `<div>${x}</div>`).join('')}</div>`;
     desc.innerHTML = html;
 
-    if (s.anachronism_note){
+    if (s.provenance_note){
       const n = document.getElementById('infoNote');
       n.style.display = 'block';
-      n.innerHTML = `<b style="color:rgba(201,149,47,.82)">On what this means.</b> ${s.anachronism_note}`;
+      n.innerHTML = `<b style="color:rgba(201,149,47,.82)">On what this means.</b> ${s.provenance_note}`;
     }
 
     const refs = document.getElementById('infoRefs');
@@ -2025,9 +2041,12 @@ footer a{color:var(--smoke);}
     if (rc && rc.note) refHtml += `<div class="lib-recnote">${rc.note}</div>`;
     if (texts.length){
       refHtml += `<div class="lib-texts-label">Featured texts</div><div class="lib-texts">` +
-        texts.map(t => `<button class="lib-text" data-ref="${t.ref}" data-rel="${t.relationship}" ` +
-          `data-title="${(t.title||'').replace(/"/g,'&quot;')}" data-author="${t.author||''}">` +
-          `<span class="lib-text-title">${t.author}, ${t.title}</span>${relChip(t.relationship)}</button>`).join('') +
+        texts.map(t => {
+          const c = cat[t.text_id] || {};
+          const author = c.author || '', title = c.title || t.text_id;
+          return `<button class="lib-text" data-textid="${t.text_id}" data-rel="${t.relationship}">` +
+            `<span class="lib-text-title">${author ? author + ', ' : ''}${title}</span>${relChip(t.relationship)}</button>`;
+        }).join('') +
         `</div>`;
     }
     if (refHtml){ refs.style.display = 'block'; refs.innerHTML = refHtml; }
@@ -2039,26 +2058,40 @@ footer a{color:var(--smoke);}
       (links ? `<div class="lib-doclinks">${links}</div>` : '');
 
     refs.querySelectorAll('.lib-text').forEach(btn => btn.addEventListener('click', () =>
-      openReading(btn.getAttribute('data-ref'), btn.getAttribute('data-rel'),
-                  btn.getAttribute('data-title'), btn.getAttribute('data-author'))));
+      openReading(btn.getAttribute('data-textid'), btn.getAttribute('data-rel'))));
 
     openInfoDrawer();
     if (latlng) map.flyTo(latlng, Math.max(map.getZoom(), 7), { duration:1 });
   }
 
-  // ── Reading panel — resolves each text against the verified corpus ─────────
-  async function openReading(ref, rel, title, author){
-    const by = await ensureCorpus();
-    const fr = by[(ref || '').toUpperCase()];
-    document.getElementById('readKicker').textContent = author || 'Text';
-    document.getElementById('readTitle').textContent = title || (fr ? fr.id : ref);
+  // ── Reading panel — resolves a text via the shared catalog, then (if the
+  //    catalog points at the corpus) shows the fragment; otherwise a record. ──
+  async function openReading(textId, rel){
+    const cat = await ensureCatalog();
+    const c = cat[textId] || {};
+    document.getElementById('readKicker').textContent = c.author || 'Text';
+    document.getElementById('readTitle').textContent = c.title || textId;
     document.getElementById('readRel').innerHTML = relChip(rel);
     const grcEl = document.getElementById('readGrc');
-    grcEl.textContent = fr && fr.greek ? fr.greek : '';
-    grcEl.style.display = fr && fr.greek ? 'block' : 'none';
-    document.getElementById('readEn').textContent = fr ? '“' + fr.translation + '”' : 'This text is not yet in the local catalog.';
-    document.getElementById('readWit').innerHTML = fr
-      ? `Preserved by ${fr.witness}<br>${fr.id} · ${fr.translation_source}` : '';
+    const enEl = document.getElementById('readEn');
+    const witEl = document.getElementById('readWit');
+
+    if (c.source_repository === 'corpus/heraclitus.json' && c.ref){
+      const by = await ensureCorpus();
+      const fr = by[c.ref.toUpperCase()];
+      grcEl.textContent = fr && fr.greek ? fr.greek : '';
+      grcEl.style.display = fr && fr.greek ? 'block' : 'none';
+      enEl.textContent = fr ? '“' + fr.translation + '”' : 'This fragment is not in the corpus.';
+      witEl.innerHTML = fr ? `Preserved by ${fr.witness}<br>${fr.id} · ${fr.translation_source}` : '';
+    } else {
+      grcEl.style.display = 'none';
+      enEl.textContent = 'Full text not yet loaded in this build.';
+      const bits = [];
+      if (c.original_language) bits.push(`Language: ${c.original_language === 'grc' ? 'Ancient Greek' : c.original_language}`);
+      if (c.source_repository) bits.push(`Where to find it: ${c.source_repository}`);
+      if (c.license && c.license !== '—') bits.push(`Edition: ${c.license}`);
+      witEl.innerHTML = bits.join('<br>');
+    }
     document.getElementById('readModal').classList.add('open');
   }
   (function wireReading(){
