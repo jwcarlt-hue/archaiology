@@ -3,12 +3,18 @@
   "_meta": {
     "layer": "The Living Agora — Libraries",
     "note": "Ancient libraries, archives, and manuscript findspots. Marker properties are lightweight; each site's full detail (metadata, evidence, texts) lives in its corpus_manifest. Place identifiers from Pleiades (CC BY 3.0).",
-    "status": "slice 1 — Ephesus / Library of Celsus"
+    "status": "slice 2 — Ephesus (Celsus) + Pergamon"
   },
   "features": [
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [27.3417, 37.9395] },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.3417,
+          37.9395
+        ]
+      },
       "properties": {
         "id": "ephesus-celsus",
         "name": "Library of Celsus",
@@ -21,6 +27,29 @@
         "model": "3d_models/celsus_library.glb",
         "reconstruction_confidence": "high-facade",
         "corpus_manifest": "data/libraries/ephesus-celsus.json"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.1844,
+          39.1335
+        ]
+      },
+      "properties": {
+        "id": "pergamon-library",
+        "name": "Library of Pergamon",
+        "place": "Pergamon",
+        "culture": "Hellenistic (Attalid kingdom)",
+        "pleiades_uri": "https://pleiades.stoa.org/places/550595",
+        "period_start": -197,
+        "period_end": -159,
+        "period_label": "c. 197–159 BCE",
+        "model": "3d_models/pergamon_library.glb",
+        "reconstruction_confidence": "identified-interior-approximate",
+        "corpus_manifest": "data/libraries/pergamon-library.json"
       }
     }
   ]
