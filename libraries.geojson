@@ -1,0 +1,27 @@
+{
+  "type": "FeatureCollection",
+  "_meta": {
+    "layer": "The Living Agora — Libraries",
+    "note": "Ancient libraries, archives, and manuscript findspots. Marker properties are lightweight; each site's full detail (metadata, evidence, texts) lives in its corpus_manifest. Place identifiers from Pleiades (CC BY 3.0).",
+    "status": "slice 1 — Ephesus / Library of Celsus"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [27.3417, 37.9395] },
+      "properties": {
+        "id": "ephesus-celsus",
+        "name": "Library of Celsus",
+        "place": "Ephesus",
+        "culture": "Roman Imperial (Greek East)",
+        "pleiades_uri": "https://pleiades.stoa.org/places/599612",
+        "period_start": 110,
+        "period_end": 135,
+        "period_label": "c. 110–135 CE",
+        "model": "3d_models/celsus_library.glb",
+        "reconstruction_confidence": "high-facade",
+        "corpus_manifest": "data/libraries/ephesus-celsus.json"
+      }
+    }
+  ]
+}
