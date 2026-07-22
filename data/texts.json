@@ -1,0 +1,142 @@
+{
+  "heraclitus-b1": {
+    "author": "Heraclitus",
+    "title": "Fragment B1 — On the Logos",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain",
+    "source_repository": "corpus/heraclitus.json",
+    "ref": "B1",
+    "loaded": true
+  },
+  "heraclitus-b50": {
+    "author": "Heraclitus",
+    "title": "Fragment B50 — All things are one",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain",
+    "source_repository": "corpus/heraclitus.json",
+    "ref": "B50",
+    "loaded": true
+  },
+  "heraclitus-b30": {
+    "author": "Heraclitus",
+    "title": "Fragment B30 — The ever-living fire",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain",
+    "source_repository": "corpus/heraclitus.json",
+    "ref": "B30",
+    "loaded": true
+  },
+  "heraclitus-b51": {
+    "author": "Heraclitus",
+    "title": "Fragment B51 — The bow and the lyre",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain",
+    "source_repository": "corpus/heraclitus.json",
+    "ref": "B51",
+    "loaded": true
+  },
+  "heraclitus-b53": {
+    "author": "Heraclitus",
+    "title": "Fragment B53 — War, father of all",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain",
+    "source_repository": "corpus/heraclitus.json",
+    "ref": "B53",
+    "loaded": true
+  },
+  "heraclitus-b54": {
+    "author": "Heraclitus",
+    "title": "Fragment B54 — The hidden harmony",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain",
+    "source_repository": "corpus/heraclitus.json",
+    "ref": "B54",
+    "loaded": true
+  },
+  "heraclitus-b12": {
+    "author": "Heraclitus",
+    "title": "Fragment B12 — Upon those who step into the same rivers",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain",
+    "source_repository": "corpus/heraclitus.json",
+    "ref": "B12",
+    "loaded": true
+  },
+  "heraclitus-b62": {
+    "author": "Heraclitus",
+    "title": "Fragment B62 — Mortals immortal, immortals mortal",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain",
+    "source_repository": "corpus/heraclitus.json",
+    "ref": "B62",
+    "loaded": true
+  },
+  "heraclitus-b40": {
+    "author": "Heraclitus",
+    "title": "Fragment B40 — Much learning does not teach understanding",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain",
+    "source_repository": "corpus/heraclitus.json",
+    "ref": "B40",
+    "loaded": true
+  },
+  "heraclitus-b41": {
+    "author": "Heraclitus",
+    "title": "Fragment B41 — The thought that steers all things",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain",
+    "source_repository": "corpus/heraclitus.json",
+    "ref": "B41",
+    "loaded": true
+  },
+  "galen-natural-faculties": {
+    "author": "Galen of Pergamon",
+    "title": "On the Natural Faculties",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain (Brock, 1916)",
+    "source_repository": "Perseus Digital Library",
+    "loaded": false
+  },
+  "crates-mallos-fragments": {
+    "author": "Crates of Mallos",
+    "title": "Homeric criticism (surviving fragments & testimonia)",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "—",
+    "source_repository": "transmitted in later scholia and testimonia",
+    "loaded": false
+  },
+  "homer-iliad": {
+    "author": "Homer",
+    "title": "Iliad",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain",
+    "source_repository": "Perseus Digital Library",
+    "loaded": false
+  },
+  "apollonius-perge-conics": {
+    "author": "Apollonius of Perge",
+    "title": "Conics",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain (Heath, 1896)",
+    "source_repository": "public-domain edition (Heath)",
+    "loaded": false
+  },
+  "_meta": {
+    "role": "Shared text catalog — the single record for each work; library manifests link to these by text_id and add the site-specific evidence relationship. Prevents duplicating a text that belongs to several libraries (e.g. heraclitus-b1 sits in both Ephesus and Pergamon, under different relationships).",
+    "content_note": "Entries with source_repository 'corpus/heraclitus.json' resolve to full readable text via that file; entries with loaded:false are records only in this build."
+  }
+}
