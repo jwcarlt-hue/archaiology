@@ -596,6 +596,17 @@ footer a{color:var(--smoke);}
   $('send').addEventListener('click', send);
 })();
 </script>
+<div class="read-modal" id="readModal">
+  <div class="read-card">
+    <button class="read-close" id="readClose">&times;</button>
+    <div class="read-kicker" id="readKicker"></div>
+    <div class="read-title" id="readTitle"></div>
+    <div class="read-rel" id="readRel"></div>
+    <div class="read-grc" id="readGrc" style="display:none;"></div>
+    <div class="read-en" id="readEn"></div>
+    <div class="read-wit" id="readWit"></div>
+  </div>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 (function(){
@@ -2052,7 +2063,9 @@ footer a{color:var(--smoke);}
   }
   (function wireReading(){
     const modal = document.getElementById('readModal');
-    document.getElementById('readClose').onclick = () => modal.classList.remove('open');
+    if (!modal) return;
+    const close = document.getElementById('readClose');
+    if (close) close.onclick = () => modal.classList.remove('open');
     modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('open'); });
   })();
@@ -2082,16 +2095,5 @@ footer a{color:var(--smoke);}
 })();
 
 </script>
-<div class="read-modal" id="readModal">
-  <div class="read-card">
-    <button class="read-close" id="readClose">&times;</button>
-    <div class="read-kicker" id="readKicker"></div>
-    <div class="read-title" id="readTitle"></div>
-    <div class="read-rel" id="readRel"></div>
-    <div class="read-grc" id="readGrc" style="display:none;"></div>
-    <div class="read-en" id="readEn"></div>
-    <div class="read-wit" id="readWit"></div>
-  </div>
-</div>
 </body>
 </html>
