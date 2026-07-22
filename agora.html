@@ -240,7 +240,69 @@ footer a{color:var(--smoke);}
   letter-spacing:.1em;text-transform:uppercase;color:rgba(121,176,161,.72);
   border:1px dashed rgba(121,176,161,.4);padding:.35rem .6rem;border-radius:2px;}
 
+
+/* ═══════════════════════ LIBRARIES MODE (Phase 3) ═══════════════════════ */
+.mode-switch{display:inline-flex;border:1px solid var(--hair);border-radius:3px;overflow:hidden;margin-top:1rem;}
+.mode-btn{font-family:var(--ui);font-size:.66rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  padding:.5rem 1.1rem;background:transparent;border:none;color:var(--smoke);cursor:pointer;transition:all .18s;}
+.mode-btn:not(:last-child){border-right:1px solid var(--hair);}
+.mode-btn.active{background:var(--jade);color:var(--void);}
+.mode-btn:not(.active):hover{color:var(--parchment);}
+
+.rel-legend{display:flex;flex-direction:column;gap:.35rem;margin-top:.6rem;}
+.rel-chip{display:inline-block;font-family:var(--ui);font-size:.54rem;font-weight:700;letter-spacing:.05em;
+  text-transform:uppercase;padding:.16rem .45rem;border-radius:2px;border:1px solid var(--hair);white-space:nowrap;}
+.rel-doc{color:var(--jade);border-color:rgba(121,176,161,.55);background:rgba(121,176,161,.1);}
+.rel-strong{color:var(--ember-lt);border-color:rgba(201,149,47,.5);background:rgba(201,149,47,.08);}
+.rel-regional{color:rgba(236,226,207,.6);}
+.rel-comparative{color:rgba(236,226,207,.5);border-style:dashed;}
+.rel-spec{color:var(--blood-lt);border-color:rgba(161,80,60,.5);border-style:dashed;}
+
+/* library site card (inside the info drawer) */
+.lib-model{width:100%;height:200px;background:#0b0908;border:1px solid var(--hair);display:block;
+  margin-bottom:.35rem;--poster-color:transparent;}
+.lib-model-cap{font-family:var(--ui);font-size:.54rem;color:rgba(236,226,207,.34);margin-bottom:.9rem;letter-spacing:.03em;}
+.lib-confidence{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem;}
+.conf-tier{font-family:var(--ui);font-size:.56rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:.22rem .5rem;border-radius:2px;border:1px solid var(--hair);}
+.conf-high{color:var(--jade);border-color:rgba(121,176,161,.5);}
+.conf-low{color:var(--ember-lt);border-color:rgba(201,149,47,.45);border-style:dashed;}
+.lib-summary{font-family:var(--body);font-size:.85rem;line-height:1.7;color:rgba(236,226,207,.8);margin-bottom:.9rem;}
+.lib-meta{font-family:var(--ui);font-size:.62rem;line-height:1.7;color:var(--smoke);margin-bottom:.2rem;
+  display:flex;flex-direction:column;gap:.15rem;}
+.lib-meta b{color:rgba(236,226,207,.72);font-weight:600;}
+.lib-recnote{font-family:var(--ui);font-size:.6rem;line-height:1.65;color:rgba(236,226,207,.5);margin-bottom:.8rem;}
+.lib-texts-label{font-family:var(--rune);font-size:.55rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ember);margin-bottom:.5rem;}
+.lib-texts{display:flex;flex-direction:column;gap:.4rem;}
+.lib-text{display:flex;align-items:center;justify-content:space-between;gap:.5rem;width:100%;text-align:left;
+  font-family:var(--body);font-size:.82rem;color:var(--parchment);background:rgba(255,255,255,.02);
+  border:1px solid var(--hair);padding:.45rem .55rem;cursor:pointer;transition:all .15s;border-radius:2px;}
+.lib-text:hover{border-color:rgba(201,149,47,.5);background:rgba(201,149,47,.06);}
+.lib-text-title{flex:1;line-height:1.35;}
+.lib-doclinks{margin-top:.6rem;display:flex;gap:.5rem;flex-wrap:wrap;}
+
+/* reading modal */
+.read-modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;
+  background:rgba(8,5,4,.82);padding:1.4rem;}
+.read-modal.open{display:flex;}
+.read-card{position:relative;max-width:560px;width:100%;max-height:86vh;overflow-y:auto;background:var(--void-2);
+  border:1px solid var(--hair);padding:1.8rem 1.7rem;box-shadow:0 30px 80px rgba(0,0,0,.6);}
+.read-close{position:absolute;top:.8rem;right:1rem;background:none;border:none;color:var(--smoke);
+  font-size:1.4rem;line-height:1;cursor:pointer;}
+.read-close:hover{color:var(--ember-lt);}
+.read-kicker{font-family:var(--rune);font-size:.58rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ember);margin-bottom:.4rem;}
+.read-title{font-family:var(--display);font-style:italic;font-size:1.6rem;font-weight:600;color:var(--parchment);
+  line-height:1.2;margin-bottom:.7rem;}
+.read-rel{margin-bottom:1.1rem;}
+.read-grc{font-family:var(--body);font-size:1.05rem;line-height:1.8;color:rgba(121,176,161,.9);margin-bottom:.8rem;}
+.read-en{font-family:var(--display);font-style:italic;font-size:1.25rem;line-height:1.6;color:var(--parchment);margin-bottom:1.1rem;}
+.read-wit{font-family:var(--ui);font-size:.66rem;line-height:1.7;color:var(--smoke);
+  border-top:1px solid var(--hair);padding-top:.8rem;}
+
 </style>
+<script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
 </head>
 <body>
 
@@ -286,10 +348,16 @@ footer a{color:var(--smoke);}
     <p class="atlas-section-sub">Twenty-five thinkers, poets, and historians, plotted at their birthplace
       across the eastern Greek world. Click a place, then a figure — Heraclitus opens into the conversation below.</p>
   </div>
+  <div style="text-align:center;">
+    <div class="mode-switch">
+      <button class="mode-btn active" data-mode="thinkers">Thinkers</button>
+      <button class="mode-btn" data-mode="libraries">Libraries</button>
+    </div>
+  </div>
 
   <div class="atlas-layout">
     <nav class="atlas-dock">
-      <div class="dock-card">
+      <div class="dock-card" id="dock-thinkers">
         <div class="dock-card-label">The Living Agora</div>
         <div class="dock-row">
           <button class="dock-btn" id="agora-btn" onclick="toggleAgoraLayer()">Show The Living Agora</button>
@@ -299,6 +367,18 @@ footer a{color:var(--smoke);}
           <div id="agora-status"></div>
         </div>
         <div class="dock-note">Ionian &amp; Aegean intellectual life · pins cluster by birthplace.</div>
+      </div>
+      <div class="dock-card" id="dock-libraries" style="display:none;">
+        <div class="dock-card-label">Ancient Libraries</div>
+        <div class="legend-row"><div class="legend-dot" style="background:#c9952f;"></div>Library, archive, or findspot</div>
+        <div class="dock-note" style="margin-top:.6rem;">Click a site for its reconstruction, evidence, and shelf of texts. Each text is tagged by how it relates to the place:</div>
+        <div class="rel-legend">
+          <span class="rel-chip rel-doc">Documented</span>
+          <span class="rel-chip rel-strong">Strong association</span>
+          <span class="rel-chip rel-regional">Regional</span>
+          <span class="rel-chip rel-comparative">Comparative</span>
+          <span class="rel-chip rel-spec">Speculative</span>
+        </div>
       </div>
     </nav>
 
@@ -1804,8 +1884,214 @@ footer a{color:var(--smoke);}
     const b = L.latLngBounds(AGORA_FIGURES.map(f => [f.lat, f.lng]));
     map.fitBounds(b, { padding: [45, 45] });
   } catch (e) { /* fitBounds is best-effort */ }
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // LIBRARIES — ancient libraries as a second mode on the same map. Site detail
+  // and texts load from libraries.geojson + per-site manifests. Every text
+  // carries an evidence RELATIONSHIP to the site (author_from_site,
+  // attested_collection, …), shown as a chip — the same honesty the fragment
+  // markers apply to Heraclitus, now applied to shelves and buildings.
+  // ══════════════════════════════════════════════════════════════════════════
+  const LIB_GEOJSON = 'libraries.geojson';
+  const LIB_CORPUS  = 'corpus/heraclitus.json';
+
+  const REL = {
+    attested_collection:    { label:'Documented',        cls:'rel-doc' },
+    manuscript_found_here:  { label:'Documented',        cls:'rel-doc' },
+    work_composed_here:     { label:'Documented',        cls:'rel-doc' },
+    author_from_site:       { label:'Strong association', cls:'rel-strong' },
+    work_about_site:        { label:'Strong association', cls:'rel-strong' },
+    regional_context:       { label:'Regional',          cls:'rel-regional' },
+    comparative_collection: { label:'Comparative',       cls:'rel-comparative' },
+    speculative_shelf:      { label:'Speculative',       cls:'rel-spec' },
+  };
+  function relChip(rel){
+    const r = REL[rel] || { label: rel || 'Unspecified', cls:'rel-comparative' };
+    return `<span class="rel-chip ${r.cls}">${r.label}</span>`;
+  }
+
+  let librariesLayer = null, librariesLoaded = false, libGeo = null, currentMode = 'thinkers';
+  const manifestCache = {};
+  let corpusPromise = null;
+  function ensureCorpus(){
+    if (!corpusPromise) corpusPromise = fetch(LIB_CORPUS).then(r => r.json())
+      .then(d => { const by = {}; d.fragments.forEach(f => by[f.id.toUpperCase()] = f); return by; })
+      .catch(() => ({}));
+    return corpusPromise;
+  }
+
+  function libraryIcon(){
+    return L.divIcon({
+      html:`<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+        <rect x="4" y="4.5" width="12" height="11" fill="#c9952f" fill-opacity=".92" stroke="rgba(255,255,255,.6)" stroke-width="1.3"/>
+        <line x1="7" y1="6.5" x2="7" y2="13.5" stroke="#0d0907" stroke-width="1.1"/>
+        <line x1="10" y1="6.5" x2="10" y2="13.5" stroke="#0d0907" stroke-width="1.1"/>
+        <line x1="13" y1="6.5" x2="13" y2="13.5" stroke="#0d0907" stroke-width="1.1"/>
+      </svg>`,
+      className:'', iconSize:[20,20], iconAnchor:[10,10]
+    });
+  }
+
+  async function loadLibraries(){
+    if (librariesLoaded) return;
+    librariesLoaded = true;
+    try {
+      libGeo = await (await fetch(LIB_GEOJSON)).json();
+      librariesLayer = L.geoJSON(libGeo, {
+        pointToLayer: (f, latlng) => L.marker(latlng, { icon: libraryIcon() }),
+        onEachFeature: (f, layer) => {
+          const p = f.properties;
+          layer.bindTooltip(`<b>${p.name}</b><br><span style="color:rgba(201,149,47,.9);font-size:.62rem">${p.place}${p.period_label ? ' · ' + p.period_label : ''}</span>`, { sticky:true });
+          const [lng, lat] = f.geometry.coordinates;
+          layer.on('click', () => openLibrary(f, [lat, lng]));
+        }
+      });
+    } catch(e){ console.error('libraries load failed', e); }
+  }
+
+  function frameLibraries(){
+    if (!libGeo) return;
+    const pts = (libGeo.features || []).map(f => [f.geometry.coordinates[1], f.geometry.coordinates[0]]);
+    if (pts.length === 1) map.setView(pts[0], 7);
+    else if (pts.length > 1) { try { map.fitBounds(L.latLngBounds(pts), { padding:[50,50] }); } catch(e){} }
+  }
+
+  async function openLibrary(feat, latlng){
+    const p = feat.properties;
+    if (manifestCache[p.id] === undefined) {
+      try { manifestCache[p.id] = await (await fetch(p.corpus_manifest)).json(); }
+      catch(e){ manifestCache[p.id] = null; }
+    }
+    showLibraryCard(p, manifestCache[p.id], latlng);
+  }
+
+  function showLibraryCard(p, m, latlng){
+    resetInfoDrawer();
+    const s = (m && m.site) || {};
+    const k = document.getElementById('infoKicker');
+    k.textContent = 'Ancient Library'; k.style.color = '#c9952f';
+    document.getElementById('infoTitle').textContent = p.name;
+
+    const badges = [];
+    if (p.period_label) badges.push(`<span class="info-badge">${p.period_label}</span>`);
+    if (p.culture) badges.push(`<span class="info-badge" style="color:#c9952f;border-color:#c9952f66;">${p.culture}</span>`);
+    document.getElementById('infoBadges').innerHTML = badges.join('');
+    document.getElementById('infoCoords').innerHTML = `${s.place || p.place || ''}` +
+      (p.pleiades_uri ? ` &middot; <a href="${p.pleiades_uri}" target="_blank" rel="noopener" style="color:var(--smoke)">Pleiades ↗</a>` : '');
+
+    const desc = document.getElementById('infoDesc');
+    desc.style.display = 'block';
+    let html = '';
+    if (p.model) {
+      html += `<model-viewer class="lib-model" src="${p.model}" camera-controls auto-rotate ` +
+        `shadow-intensity="1" exposure="0.9" interaction-prompt="none" alt="Reconstruction of ${p.name}"></model-viewer>` +
+        `<div class="lib-model-cap">Rotatable reconstruction · façade documented, interior conjectural</div>`;
+    }
+    const rc = s.reconstruction_confidence;
+    if (rc) {
+      html += `<div class="lib-confidence">` +
+        `<span class="conf-tier conf-high">Façade: ${rc.facade || '—'}</span>` +
+        `<span class="conf-tier conf-low">Interior: ${rc.interior || '—'}</span></div>`;
+    }
+    if (s.evidence_summary) html += `<p class="lib-summary">${s.evidence_summary}</p>`;
+    const meta = [];
+    if (s.capacity) meta.push(`<b>Capacity</b> ${s.capacity}`);
+    if (s.languages) meta.push(`<b>Languages</b> ${s.languages.join(', ')}`);
+    if (s.formats) meta.push(`<b>Formats</b> ${s.formats.join(', ')}`);
+    if (m && typeof m.available_works === 'number') meta.push(`<b>Works available</b> ${m.available_works}`);
+    if (meta.length) html += `<div class="lib-meta">${meta.map(x => `<div>${x}</div>`).join('')}</div>`;
+    desc.innerHTML = html;
+
+    if (s.anachronism_note){
+      const n = document.getElementById('infoNote');
+      n.style.display = 'block';
+      n.innerHTML = `<b style="color:rgba(201,149,47,.82)">On what this means.</b> ${s.anachronism_note}`;
+    }
+
+    const refs = document.getElementById('infoRefs');
+    const texts = (m && m.texts) || [];
+    let refHtml = '';
+    if (rc && rc.note) refHtml += `<div class="lib-recnote">${rc.note}</div>`;
+    if (texts.length){
+      refHtml += `<div class="lib-texts-label">Featured texts</div><div class="lib-texts">` +
+        texts.map(t => `<button class="lib-text" data-ref="${t.ref}" data-rel="${t.relationship}" ` +
+          `data-title="${(t.title||'').replace(/"/g,'&quot;')}" data-author="${t.author||''}">` +
+          `<span class="lib-text-title">${t.author}, ${t.title}</span>${relChip(t.relationship)}</button>`).join('') +
+        `</div>`;
+    }
+    if (refHtml){ refs.style.display = 'block'; refs.innerHTML = refHtml; }
+
+    const links = (s.documentation || []).map(d =>
+      `<a class="info-link" href="${d.url}" target="_blank" rel="noopener">${d.label} ↗</a>`).join('');
+    document.getElementById('infoLinks').innerHTML =
+      `<a class="agora-enter" href="#chat" onclick="setTimeout(function(){var i=document.getElementById('input'); if(i) i.focus();},450)">Enter the Library ↓</a>` +
+      (links ? `<div class="lib-doclinks">${links}</div>` : '');
+
+    refs.querySelectorAll('.lib-text').forEach(btn => btn.addEventListener('click', () =>
+      openReading(btn.getAttribute('data-ref'), btn.getAttribute('data-rel'),
+                  btn.getAttribute('data-title'), btn.getAttribute('data-author'))));
+
+    openInfoDrawer();
+    if (latlng) map.flyTo(latlng, Math.max(map.getZoom(), 7), { duration:1 });
+  }
+
+  // ── Reading panel — resolves each text against the verified corpus ─────────
+  async function openReading(ref, rel, title, author){
+    const by = await ensureCorpus();
+    const fr = by[(ref || '').toUpperCase()];
+    document.getElementById('readKicker').textContent = author || 'Text';
+    document.getElementById('readTitle').textContent = title || (fr ? fr.id : ref);
+    document.getElementById('readRel').innerHTML = relChip(rel);
+    const grcEl = document.getElementById('readGrc');
+    grcEl.textContent = fr && fr.greek ? fr.greek : '';
+    grcEl.style.display = fr && fr.greek ? 'block' : 'none';
+    document.getElementById('readEn').textContent = fr ? '“' + fr.translation + '”' : 'This text is not yet in the local catalog.';
+    document.getElementById('readWit').innerHTML = fr
+      ? `Preserved by ${fr.witness}<br>${fr.id} · ${fr.translation_source}` : '';
+    document.getElementById('readModal').classList.add('open');
+  }
+  (function wireReading(){
+    const modal = document.getElementById('readModal');
+    document.getElementById('readClose').onclick = () => modal.classList.remove('open');
+    modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('open'); });
+  })();
+
+  // ── Mode switch: Thinkers | Libraries on the one map ──────────────────────
+  function setMode(mode){
+    if (mode === currentMode) return;
+    currentMode = mode;
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === mode));
+    const thinkersDock = document.getElementById('dock-thinkers');
+    const libDock = document.getElementById('dock-libraries');
+    if (mode === 'libraries'){
+      if (agoraLayer) map.removeLayer(agoraLayer);
+      thinkersDock.style.display = 'none'; libDock.style.display = '';
+      loadLibraries().then(() => { if (librariesLayer){ librariesLayer.addTo(map); frameLibraries(); } });
+    } else {
+      if (librariesLayer) map.removeLayer(librariesLayer);
+      libDock.style.display = 'none'; thinkersDock.style.display = '';
+      if (agoraOn && agoraLayer) agoraLayer.addTo(map);
+      try { map.fitBounds(L.latLngBounds(AGORA_FIGURES.map(f => [f.lat, f.lng])), { padding:[45,45] }); } catch(e){}
+    }
+    closeInfoDrawer();
+  }
+  document.querySelectorAll('.mode-btn').forEach(b =>
+    b.addEventListener('click', () => setMode(b.getAttribute('data-mode'))));
+
 })();
 
 </script>
+<div class="read-modal" id="readModal">
+  <div class="read-card">
+    <button class="read-close" id="readClose">&times;</button>
+    <div class="read-kicker" id="readKicker"></div>
+    <div class="read-title" id="readTitle"></div>
+    <div class="read-rel" id="readRel"></div>
+    <div class="read-grc" id="readGrc" style="display:none;"></div>
+    <div class="read-en" id="readEn"></div>
+    <div class="read-wit" id="readWit"></div>
+  </div>
+</div>
 </body>
 </html>
