@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Codex Borgia 31 — Interactive Plate | archAIology</title>
+<title>Codex Borgia 32 — Interactive Plate | archAIology</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -37,6 +37,9 @@ a{text-decoration:none;color:inherit;}
 .cb-prov-badge{font-family:var(--sans);font-size:.52rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#8fbde0;border:1px solid rgba(122,160,210,.4);padding:.25rem .5rem;white-space:nowrap;margin-top:.1rem;}
 .cb-prov-body{font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.6);line-height:1.65;}
 .cb-prov-body strong{color:#a9cdec;font-weight:600;}
+.cb-note{max-width:1280px;margin:.8rem auto 0;padding:.8rem 1.1rem;display:flex;gap:.9rem;align-items:flex-start;background:rgba(184,137,42,.05);border-left:2px solid rgba(184,137,42,.4);}
+.cb-note-badge{font-family:var(--sans);font-size:.52rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre-lt);border:1px solid rgba(184,137,42,.35);padding:.25rem .5rem;white-space:nowrap;margin-top:.1rem;}
+.cb-note-body{font-family:var(--sans);font-size:.72rem;color:rgba(200,216,240,.55);line-height:1.65;}
 .cb-stage{max-width:1280px;margin:1.6rem auto 0;padding:0 2rem 3rem;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:1.8rem;align-items:start;}
 @media(max-width:900px){.cb-stage{grid-template-columns:1fr;}}
 .cb-plate-wrap{position:relative;}
@@ -102,9 +105,9 @@ a{text-decoration:none;color:inherit;}
 </header>
 
 <div class="cb-hero">
-  <div class="cb-eyebrow">Interactive Plate · Codex Borgia 31</div>
-  <h1 class="cb-title">The Double Frame of <em>Izcalli</em></h1>
-  <p class="cb-sub">Plate 31 is unique in the Venus almanac: it is the <strong>only page with two festival periods</strong>, drawn as two separate framed scenes. The upper and lower frames carry the twenty days of <em>Izcalli</em> and the five <em>nemontemi</em> — the "empty" days that closed the year. On Susan Milbrath's reading the page falls in the cold, dry February of 1496, when Venus still rose low in the dawn and the plants of the fields lay dormant. Tap a marker to explore the imagery.</p>
+  <div class="cb-eyebrow">Interactive Plate · Codex Borgia 32</div>
+  <h1 class="cb-title">Cosmogenesis and the <em>New Year</em></h1>
+  <p class="cb-sub">Plate 32 opens a new year — <strong>4 Flint</strong> — and with it the veintena of <em>Cuauhuitlehua</em>, honoring the rain gods, the Tlaloque. At the centre, Susan Milbrath reads an image of <strong>cosmogenesis</strong>: the birth of the planetary gods, among them four Tezcatlipocas and the first anthropomorphic Quetzalcoatl, shown as an infant Venus god. At the foot of the page, the same bearded Quetzalcoatl passes through a starry Milky Way goddess — marked, Milbrath suggests, by a comet sighted in February 1496. Tap a marker to explore the imagery.</p>
 </div>
 
 <div class="cb-prov">
@@ -112,16 +115,21 @@ a{text-decoration:none;color:inherit;}
   <div class="cb-prov-body">The Codex Borgia is a <strong>Central Mexican</strong> divinatory manuscript. Painted before the Spanish conquest in the <strong>Puebla-Tlaxcala Valley</strong> — most likely by Tlaxcaltec or Cholultec scribes of the "Mixteca-Puebla" tradition — its imagery is Nahua and its gods Aztec.</div>
 </div>
 
-<div class="cb-series"><a href="./codex-borgia-30.html">&larr; Previous plate: Borgia 30</a><a href="./codex-borgia-32.html">Next plate: Borgia 32 &rarr;</a></div>
+<div class="cb-note">
+  <span class="cb-note-badge">A note on this plate</span>
+  <div class="cb-note-body">This page's hotspot positions are placed from close reading of the facsimile and Milbrath's annotated synopsis, cross-checked against her published readings — but not verified against measured pixel coordinates the way plates 29 and 30 were. If a marker looks off against the image, that's why; flag it and it can be corrected.</div>
+</div>
+
+<div class="cb-series"><a href="./codex-borgia-31.html">&larr; Previous plate: Borgia 31</a><a class="disabled">Next plate &rarr;</a></div>
 
 <div class="cb-stage">
   <div>
     <div class="cb-plate-wrap">
       <div class="cb-plate" id="cbPlate">
         <img
-          src="./assets/site-images/codex-borgia-31.jpg"
-          onerror="this.onerror=null;this.src='./codex-borgia-31.jpg';"
-          alt="Codex Borgia, plate 31 — the double frame of Izcalli and the nemontemi"
+          src="./assets/site-images/codex-borgia-32.jpg"
+          onerror="this.onerror=null;this.src='./codex-borgia-32.jpg';"
+          alt="Codex Borgia, plate 32 — cosmogenesis and the beginning of the year 4 Flint"
           id="cbImg">
       </div>
     </div>
@@ -133,7 +141,7 @@ a{text-decoration:none;color:inherit;}
 
   <div class="cb-panel">
     <div class="cb-panel-card" id="cbPanel">
-      <div class="cb-panel-empty"><strong>Two frames, two festivals.</strong><br><br>Alone in the almanac, this page splits into an upper and a lower scene — the twenty days of Izcalli and the five closing nemontemi. Around them run bathing rites, dormant plants, circled day-signs for reckoning festivals across four years, and skeletal goddesses who may carry a lunar eclipse. Select a marker on the plate, or an entry below, to read each one.</div>
+      <div class="cb-panel-empty"><strong>A birth at the year's turn.</strong><br><br>At the centre, the gods of the planets are born; around them, four Tezcatlipocas take their places in the corners, the Tlaloque of the new year's rains carry severed heads in a knife-edged frame, and at the foot of the page Quetzalcoatl — marked with a comet's smoking eye — passes through the Milky Way. Select a marker on the plate, or an entry below, to read each one.</div>
     </div>
     <div class="cb-index" id="cbIndex">
       <div class="cb-index-title">Features on the plate</div>
@@ -146,32 +154,32 @@ a{text-decoration:none;color:inherit;}
   <div class="cb-section-sub">After Milbrath 1989, 2013 · synopsis after Byland 1993</div>
   <div class="cb-read-grid">
     <div class="cb-read-card">
-      <div class="cb-read-h">Two festivals, one page</div>
-      <div class="cb-read-b">This is the <strong>only page in the almanac with two festival periods</strong>, and it shows them in two separate frames: the twenty-day <em>veintena</em> of <em>Izcalli</em>, and the five <em>nemontemi</em> — the unlucky "empty" days that closed the 365-day year before the next cycle began. Milbrath dates the span to <strong>26 January–19 February 1496</strong> (Julian).</div>
+      <div class="cb-read-h">A new year begins</div>
+      <div class="cb-read-b">Plate 31 closed the old year in its double frame of Izcalli and the nemontemi; plate 32 opens the next, dated by Milbrath to <strong>20 February – 10 March 1496</strong> (Julian), the start of the year <strong>4 Flint</strong>. The veintena is <em>Cuauhuitlehua</em> — also called Xilomanaliztli or Atlcahualo — which honored the <strong>Tlaloque</strong>, the rain gods, shown here in a nocturnal frame with knives.</div>
     </div>
     <div class="cb-read-card">
-      <div class="cb-read-h">The dead season</div>
-      <div class="cb-read-b">The imagery is wintry. <strong>Skeletal vegetation goddesses</strong> and the death aspects of maize, grass (<em>malinalli</em>) and maguey show these plants lying <strong>dormant in the cold, dry February</strong>. The ritual bathing on the page refers to Izcalli itself, a festival that involved bathing and the warming of the fields toward the coming year.</div>
+      <div class="cb-read-h">Cosmogenesis</div>
+      <div class="cb-read-b">The central image, Milbrath suggests, depicts the <strong>birth of the planetary gods</strong> — a cosmogenesis celebrated in an annual ritual. Four Tezcatlipocas, each born with a smoking mirror on his brow, reappear elsewhere on the page with the mirror relocated to one foot; among Itztli's five offspring is the <strong>first anthropomorphic image of Quetzalcoatl</strong> in the manuscript, shown as an infant Venus god.</div>
     </div>
     <div class="cb-read-card">
-      <div class="cb-read-h">A possible lunar eclipse</div>
-      <div class="cb-read-b">Milbrath suggests the <strong>blindfolded skeletal goddesses</strong> may depict the <strong>lunar eclipse visible in central Mexico on 30 January 1496</strong>, linking them to the <em>Cihuateteo</em> — the dangerous deified women who died in childbirth and haunted the crossroads. Venus, meanwhile, still rises in the east but sits low in the dawn sky.</div>
+      <div class="cb-read-h">A comet in February 1496</div>
+      <div class="cb-read-b">At the base of the page, a bearded Quetzalcoatl passes through the starry body of a Milky Way goddess — the same Venus-through-the-Milky-Way motif seen on plates 29–31. Milbrath proposes that the <strong>"smoking eye"</strong> on this Quetzalcoatl figure may record a real comet, first sighted in February of 1496.</div>
     </div>
     <div class="cb-read-card">
-      <div class="cb-read-h">A contested manuscript</div>
-      <div class="cb-read-b">No single reading of Borgia 29–46 commands consensus. Others — Seler, Nowotny, Anders &amp; Jansen, Boone — have read the pages as ritual, as a journey through named places, or as a creation narrative. Milbrath's astronomical-seasonal reading is one influential interpretation among several, not a settled decipherment.</div>
+      <div class="cb-read-h">Itztli, the knife moon</div>
+      <div class="cb-read-b">A lunar deity, <strong>Itztli</strong> ("Obsidian Knife"), appears near the top of the page and may represent the moon in its <strong>waxing or waning quarter</strong> — a "knife moon" whose half-lit disk resembles a blade. Full moon fell on <strong>28 February 1496</strong>, within this veintena.</div>
     </div>
   </div>
 
   <div class="cb-caveat">
     <div class="cb-read-h">On certainty</div>
-    <div class="cb-read-b">Every marker on this plate carries an <strong>interpretation</strong>, not a caption the codex supplies for itself. The Codex Borgia has no glosses; its meaning is reconstructed from comparative iconography, colonial texts, and — in Milbrath's case — retrocalculated astronomy. The eclipse identification in particular is a proposal, not an established fact. Treat the identifications here as a well-argued reading that other specialists dispute.</div>
+    <div class="cb-read-b">Every marker on this plate carries an <strong>interpretation</strong>, not a caption the codex supplies for itself. The Codex Borgia has no glosses; its meaning is reconstructed from comparative iconography, colonial texts, and — in Milbrath's case — retrocalculated astronomy. The comet and lunar-phase identifications in particular are proposals, not established facts. Treat the identifications here as a well-argued reading that other specialists dispute.</div>
   </div>
 
   <div class="cb-read-grid" style="margin-top:1.2rem;">
     <div class="cb-read-card">
       <div class="cb-read-h">Sources</div>
-      <div class="cb-read-b">Susan Milbrath, <em>Heaven and Earth in Ancient Mexico: Astronomy and Seasonal Cycles in the Codex Borgia</em> (Univ. Press of Florida, 2013).<br>Milbrath, "A Seasonal Calendar with Venus Periods in Borgia 29–46," in D. Carrasco, ed., <em>The Imagination of Matter</em> (BAR, 1989).<br>Milbrath, "Decapitated Lunar Goddesses in Aztec Art, Myth, and Ritual," <em>Ancient Mesoamerica</em> 8 (1997). Synopsis annotations after B. Byland (1993).</div>
+      <div class="cb-read-b">Susan Milbrath, <em>Heaven and Earth in Ancient Mexico: Astronomy and Seasonal Cycles in the Codex Borgia</em> (Univ. Press of Florida, 2013).<br>Milbrath, "A Seasonal Calendar with Venus Periods in Borgia 29–46," in D. Carrasco, ed., <em>The Imagination of Matter</em> (BAR, 1989).<br>Synopsis annotations after B. Byland (1993).</div>
     </div>
     <div class="cb-read-card">
       <div class="cb-read-h">The facsimile</div>
@@ -181,21 +189,21 @@ a{text-decoration:none;color:inherit;}
 </div>
 
 <footer class="footer">
-  <a href="index.html">archAIology</a> · archaiology.org · Interactive Plate · Codex Borgia 31 · © 2026
+  <a href="index.html">archAIology</a> · archaiology.org · Interactive Plate · Codex Borgia 32 · © 2026
 </footer>
 
 <script>
 const BORGIA_HOTSPOTS = [
-  {"id":"milky-way","x":72,"y":9,"n":1,"title":"Venus glyphs / the Milky Way","tag":"Upper border · horizon","body":"A band of Venus glyphs across the upper frame is read as the <strong>Milky Way surrounding the horizon</strong>, the sky through which the Morning Star climbs while it is still low. As on plates 29 and 30, the star-band sets the scene at the edge of the visible sky — here framing the Izcalli festival above."},
-  {"id":"bathing","x":83,"y":26,"n":2,"title":"Ritual bathing","tag":"Izcalli · festival rite","body":"Figures at a bathing basin. Milbrath connects this to the <strong>Izcalli festival</strong> itself, which involved ritual bathing and the symbolic warming and \u201cgrowing\u201d of the fields as the year turned toward spring. The rite anchors the upper frame to its named twenty-day period."},
-  {"id":"circled-daysigns","x":88,"y":47,"n":3,"title":"Circled day-signs","tag":"Calendar · four-year reckoning","body":"Circled day-signs in the frame corners let the almanac be used to <strong>calculate the festival dates of Izcalli and of the nemontemi across a four-year span</strong> — the same instrumental use of circled signs seen on plate 30. The page works as a reckoning device, not only a picture."},
-  {"id":"cihuateteo","x":78,"y":70,"n":4,"title":"The \u201cbirth\u201d of skeletal babies","tag":"Cihuateteo · death in childbirth","body":"Skeletal infant figures in the lower frame suggest links with the <strong>Cihuateteo</strong> — the deified women who died in childbirth, associated with the west, the crossroads, and dangerous omens. Their presence ties the dead season to the cycle of death and rebirth running through the almanac."},
-  {"id":"dormant-plants","x":40,"y":90,"n":5,"title":"Dormant maize, grass & maguey","tag":"Dry season · dead vegetation","body":"The <strong>death aspects of maize, grass (<em>malinalli</em>) and maguey</strong>. Shown withered or skeletal, they mark the plants of the fields lying <strong>dormant through the cold, dry February</strong> — the seasonal core of the page, matching the festival moment at the tail of the dry season."},
-  {"id":"double-frame","x":50,"y":50,"n":6,"title":"The double frame","tag":"Structure · two festivals","body":"The page's defining feature: a <strong>two-part division into two framed scenes</strong>, upper and lower. Alone in the almanac, plate 31 carries two festival periods at once — the twenty days of Izcalli and the five nemontemi — because the closing days of the year had to be fitted onto a single page before the sequence could begin again."},
-  {"id":"eclipse-goddess","x":30,"y":68,"n":7,"title":"Blindfolded skeletal goddesses","tag":"Lunar eclipse · 30 Jan 1496","body":"Blindfolded skeletal goddesses that Milbrath reads as a possible depiction of the <strong>lunar eclipse visible in central Mexico on 30 January 1496</strong>. The blindfold — the darkened or \u201cblinded\u201d moon — and the skeletal death-aspect together suit an eclipsed full moon in the dead of the dry season."},
-  {"id":"izcalli-scene","x":26,"y":22,"n":8,"title":"The Izcalli frame","tag":"Upper scene · the veintena","body":"The upper framed scene carries the <strong>twenty-day festival of Izcalli</strong>, the last veintena of the year. Its deities and rites belong to the warming of the fields and the honoring of fire and new growth — the ceremonial half of the page, above the empty days below."},
-  {"id":"nemontemi-scene","x":30,"y":48,"n":9,"title":"The nemontemi","tag":"Lower scene · the empty days","body":"The <strong>five nemontemi</strong> — the \u201cempty\u201d or unlucky days that filled out the 365-day count (18 \u00d7 20 + 5). Considered dangerous and dead time, they closed the old year; here they occupy their own frame, set apart from the festival proper as they were set apart in the calendar."},
-  {"id":"venus-low","x":55,"y":32,"n":10,"title":"Venus low in the dawn","tag":"Morning Star · still rising","body":"Across the page Venus <strong>continues to rise in the east but sits relatively low</strong> in the dawn sky, weeks after its heliacal rise on plate 30. The almanac tracks the planet's slow climb morning by morning; on this page it has not yet reached the height it will hold in the plates that follow."}
+  {"id":"cosmogenesis","x":50,"y":47,"n":1,"title":"The birth of the planetary gods","tag":"Cosmogenesis · central image","body":"The central panel is read as an image of <strong>cosmogenesis</strong> — the birth of the planetary gods, celebrated, Milbrath suggests, in an annual ritual. This is the compositional heart of the page: everything in the surrounding frame (the Tezcatlipocas, Itztli's offspring, the Tlaloque) radiates outward from this originating birth."},
+  {"id":"itztli-moon","x":50,"y":20,"n":2,"title":"Itztli, the knife moon","tag":"Lunar deity · Obsidian Knife","body":"The lunar god <strong>Itztli</strong> (\u201cObsidian Knife\u201d) may represent the moon in its <strong>waxing or waning quarter</strong> — a half-lit disk shaped like a blade. Itztli is also credited with five offspring elsewhere on this page, tying the lunar and planetary themes together. Full moon fell on 28 February 1496, within this veintena."},
+  {"id":"tezcat-TL","x":15,"y":13,"n":3,"title":"A Tezcatlipoca, born with the mirror","tag":"Four Tezcatlipocas · smoking mirror","body":"One of <strong>four Tezcatlipocas</strong> at the corners of the page, each born with a smoking mirror on his brow. Milbrath notes the four reappear elsewhere on the page with the mirror relocated to one foot — a transformation that may track the planetary gods through a cycle of birth and change."},
+  {"id":"tezcat-TR","x":85,"y":13,"n":4,"title":"A Tezcatlipoca, the mirror on the foot","tag":"Four Tezcatlipocas · transformed","body":"The mirrored Tezcatlipoca on the opposite corner, now carrying the <strong>smoking mirror on one foot</strong> rather than the brow. The substitution echoes the god's more familiar Aztec iconography — Tezcatlipoca is often shown with an obsidian mirror in place of a foot, lost (in one myth) to the earth monster Tlaltecuhtli."},
+  {"id":"offspring","x":85,"y":52,"n":5,"title":"Itztli's five offspring","tag":"Genealogy · the infant Venus god","body":"Itztli's <strong>five offspring</strong> include the four Tezcatlipocas — who Milbrath proposes may represent planets — and, among them, the <strong>first anthropomorphic image of Quetzalcoatl</strong> in the Codex Borgia, depicted here as a baby Venus god. The page stages an entire divine genealogy of the visible planets at once."},
+  {"id":"tlaloque","x":15,"y":85,"n":6,"title":"A Tlaloque with a severed head","tag":"Rain gods · knife-edged frame","body":"One of <strong>four Tlaloque</strong>, the rain gods honored in the veintena of Cuauhuitlehua, shown with a <strong>severed head</strong> within the page's knife-edged frame. The nocturnal, blade-toothed border running around the whole composition belongs to this same festival register."},
+  {"id":"quetzalcoatl-comet","x":50,"y":82,"n":7,"title":"Quetzalcoatl and the comet","tag":"Venus · Milky Way · comet","body":"A bearded young Quetzalcoatl passes through the body of a <strong>Milky Way goddess</strong> represented as a starry border — the same passage-through-the-Milky-Way motif that runs through plates 29–31. Milbrath reads the <strong>\u201csmoking eye\u201d</strong> on this figure as a possible record of a real <strong>comet, first sighted in February of 1496</strong>."},
+  {"id":"knife-border","x":50,"y":4,"n":8,"title":"The knife-toothed frame","tag":"Border · nocturnal, Cuauhuitlehua","body":"The white, tooth-like blades running the full perimeter of the page mark the <strong>nocturnal frame</strong> proper to Cuauhuitlehua, the veintena honoring the Tlaloque. The same knife motif recurs inside the frame around the Tlaloque with severed heads — the border's teeth are not ornament but the festival's own iconography, repeated at every scale."},
+  {"id":"roundel-L","x":22,"y":47,"n":9,"title":"A day-sign roundel","tag":"Calendar · four-year reckoning","body":"A circular day-sign medallion, in the same family as the circled signs on plates 30 and 31. Milbrath reads these roundels as a device for <strong>calculating festival dates across a four-year span</strong> — the almanac doubling as a working calendar instrument alongside its narrative imagery."},
+  {"id":"roundel-R","x":78,"y":47,"n":10,"title":"A day-sign roundel","tag":"Calendar · four-year reckoning","body":"The mirrored roundel on the right side of the page. Paired left and right, the day-sign medallions frame the central cosmogenesis scene the way the four Tezcatlipocas frame it at the corners — the page organizing calendrical and mythic structure around the same central axis."}
 ];
 </script>
 <script>
