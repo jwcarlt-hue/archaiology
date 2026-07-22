@@ -1,0 +1,98 @@
+{
+  "site_id": "pergamon-library",
+  "site": {
+    "name": "Library of Pergamon",
+    "place": "Pergamon",
+    "culture": "Hellenistic (Attalid kingdom)",
+    "coordinates": [
+      39.1335,
+      27.1844
+    ],
+    "pleiades_uri": "https://pleiades.stoa.org/places/550595",
+    "pleiades_verified": false,
+    "period_label": "founded c. 197–159 BCE (Eumenes II)",
+    "capacity": "reputedly c. 200,000 scrolls (Plutarch; figure debated)",
+    "languages": [
+      "Greek"
+    ],
+    "formats": [
+      "papyrus scroll",
+      "parchment (charta pergamena)"
+    ],
+    "reconstruction_confidence": {
+      "site identification": "secure",
+      "interior layout": "approximate",
+      "note": "The reading rooms beside the Sanctuary of Athena Polias on the northern acropolis are among the few ancient library spaces securely identified by excavation — a colossal Athena statue was found there (now Berlin). But the arrangement of shelving and galleries is reconstructed by analogy, not recorded; any three-dimensional interior is an informed approximation."
+    },
+    "evidence_summary": "The library of the Attalid kings, built beside the Sanctuary of Athena Polias on the acropolis by Eumenes II (r. 197–159 BCE) as a rival to Alexandria. Reputedly some 200,000 scrolls; the city's demand for writing material is traditionally tied to the rise of parchment (charta pergamena) after a Ptolemaic papyrus embargo. It was the seat of the Pergamene school of Homeric criticism under Crates of Mallos.",
+    "provenance_note": "Few of these works can be shown to have sat on these shelves. Galen and Crates belong here as figures OF the place; the Iliad and Heraclitus are here as the comparative material the Pergamene school actually argued from — comparanda, not catalogued holdings. The chip on each text records which is which.",
+    "documentation": [
+      {
+        "label": "World History Encyclopedia — Library of Pergamon",
+        "url": "https://www.worldhistory.org/Library_of_Pergamon/"
+      },
+      {
+        "label": "Ancient Origins — Library of Pergamum",
+        "url": "https://www.ancient-origins.net/ancient-places-asia/library-pergamum-contender-greatest-library-ancient-world-007601"
+      },
+      {
+        "label": "Pleiades — Pergamon (confirm ID)",
+        "url": "https://pleiades.stoa.org/places/550595"
+      }
+    ]
+  },
+  "collections": [
+    {
+      "id": "pergamene-scholars",
+      "label": "Scholars of Pergamon",
+      "shelf": "north-hall-01"
+    },
+    {
+      "id": "homeric-criticism",
+      "label": "Homeric criticism",
+      "shelf": "north-hall-02"
+    },
+    {
+      "id": "anatolian-sciences",
+      "label": "Anatolian sciences",
+      "shelf": "north-hall-03"
+    },
+    {
+      "id": "philosophical-forerunners",
+      "label": "Philosophical forerunners",
+      "shelf": "north-hall-04"
+    }
+  ],
+  "texts": [
+    {
+      "text_id": "galen-natural-faculties",
+      "relationship": "author_from_site",
+      "collection": "pergamene-scholars"
+    },
+    {
+      "text_id": "crates-mallos-fragments",
+      "relationship": "author_from_site",
+      "collection": "pergamene-scholars"
+    },
+    {
+      "text_id": "homer-iliad",
+      "relationship": "comparative_collection",
+      "collection": "homeric-criticism"
+    },
+    {
+      "text_id": "apollonius-perge-conics",
+      "relationship": "regional_context",
+      "collection": "anatolian-sciences"
+    },
+    {
+      "text_id": "heraclitus-b1",
+      "relationship": "comparative_collection",
+      "collection": "philosophical-forerunners"
+    }
+  ],
+  "_meta": {
+    "catalog": "data/texts.json",
+    "relationship_note": "heraclitus-b1 also appears at Ephesus (as author_from_site); here it is comparative_collection — the Stoic Pergamene school read Heraclitus as a forerunner. One catalog record, two honest relationships.",
+    "status": "slice 2 — GLB + evidence relationships; Pergamon full texts not yet loaded"
+  }
+}
