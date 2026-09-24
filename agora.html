@@ -262,6 +262,22 @@ footer a{color:var(--smoke);}
 .lib-model{width:100%;height:200px;background:#0b0908;border:1px solid var(--hair);display:block;
   margin-bottom:.35rem;--poster-color:transparent;}
 .lib-model-cap{font-family:var(--ui);font-size:.54rem;color:rgba(236,226,207,.34);margin-bottom:.9rem;letter-spacing:.03em;}
+.lib-model-wrap{position:relative;}
+.lib-expand{position:absolute;top:.4rem;right:.4rem;width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  background:rgba(13,9,7,.72);border:1px solid var(--hair);color:var(--parchment);cursor:pointer;border-radius:2px;
+  font-size:.95rem;line-height:1;transition:all .15s;}
+.lib-expand:hover{border-color:#79b0a1;color:#79b0a1;background:rgba(13,9,7,.9);}
+.model-modal{position:fixed;inset:0;z-index:2100;display:none;align-items:center;justify-content:center;
+  background:rgba(8,5,4,.9);padding:2vh 2vw;}
+.model-modal.open{display:flex;}
+.model-card{position:relative;width:min(1200px,96vw);height:86vh;background:var(--void-2);border:1px solid var(--hair);
+  display:flex;flex-direction:column;box-shadow:0 30px 90px rgba(0,0,0,.7);}
+.model-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem 1.1rem;
+  border-bottom:1px solid var(--hair);font-family:var(--rune);font-size:.62rem;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:#79b0a1;}
+.model-close{background:none;border:none;color:var(--smoke);font-size:1.6rem;line-height:1;cursor:pointer;}
+.model-close:hover{color:#79b0a1;}
+.model-big{flex:1;width:100%;min-height:0;background:#0b0908;--poster-color:transparent;}
 .lib-confidence{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem;}
 .conf-tier{font-family:var(--ui);font-size:.56rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
   padding:.22rem .5rem;border-radius:2px;border:1px solid var(--hair);}
@@ -606,6 +622,12 @@ footer a{color:var(--smoke);}
     <div class="read-grc" id="readGrc" style="display:none;"></div>
     <div class="read-en" id="readEn"></div>
     <div class="read-wit" id="readWit"></div>
+  </div>
+</div>
+<div class="model-modal" id="modelModal">
+  <div class="model-card">
+    <div class="model-head"><span id="modelName"></span><button class="model-close" id="modelClose" aria-label="Close">&times;</button></div>
+    <model-viewer id="modelBig" class="model-big" camera-controls auto-rotate shadow-intensity="1" exposure="0.9" alt="3-D model"></model-viewer>
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -1967,11 +1989,11 @@ footer a{color:var(--smoke);}
     } catch(e){ console.error('libraries load failed', e); }
   }
 
+  // Framed to the ancient world we're building toward, not just the current
+  // markers: Rome to the west, Alexandria to the south, Uruk to the east.
+  const LIB_WORLD_BOUNDS = L.latLngBounds([[28.5, 10.5], [43.5, 47.5]]);
   function frameLibraries(){
-    if (!libGeo) return;
-    const pts = (libGeo.features || []).map(f => [f.geometry.coordinates[1], f.geometry.coordinates[0]]);
-    if (pts.length === 1) map.setView(pts[0], 7);
-    else if (pts.length > 1) { try { map.fitBounds(L.latLngBounds(pts), { padding:[50,50] }); } catch(e){} }
+    try { map.fitBounds(LIB_WORLD_BOUNDS, { padding:[30, 30] }); } catch(e){}
   }
 
   async function openLibrary(feat, latlng){
@@ -1987,7 +2009,7 @@ footer a{color:var(--smoke);}
   // tier a confidence value by its wording (secure/high vs approximate/conjectural)
   function confClass(v){
     if (/secure|high|documented|attested/i.test(v)) return 'conf-high';
-    if (/approx|conjectur|low|debated|reconstruct/i.test(v)) return 'conf-low';
+    if (/approx|conjectur|low|debated|reconstruct|speculat|unattested|unknown/i.test(v)) return 'conf-low';
     return 'conf-mid';
   }
 
@@ -2010,9 +2032,12 @@ footer a{color:var(--smoke);}
     desc.style.display = 'block';
     let html = '';
     if (p.model) {
-      html += `<model-viewer class="lib-model" src="${p.model}" camera-controls auto-rotate ` +
+      html += `<div class="lib-model-wrap">` +
+        `<model-viewer class="lib-model" src="${p.model}" camera-controls auto-rotate ` +
         `shadow-intensity="1" exposure="0.9" interaction-prompt="none" alt="Reconstruction of ${p.name}"></model-viewer>` +
-        `<div class="lib-model-cap">Rotatable reconstruction · confidence noted below</div>`;
+        `<button class="lib-expand" data-model="${p.model}" data-name="${(p.name||'').replace(/"/g,'&quot;')}" title="Expand model" aria-label="Expand model">⤢</button>` +
+        `</div>` +
+        `<div class="lib-model-cap">Rotatable reconstruction · tap ⤢ to enlarge · confidence noted below</div>`;
     }
     const rc = s.reconstruction_confidence;
     if (rc) {
@@ -2028,6 +2053,10 @@ footer a{color:var(--smoke);}
     if (m && typeof m.available_works === 'number') meta.push(`<b>Readable works</b> ${m.available_works}`);
     if (meta.length) html += `<div class="lib-meta">${meta.map(x => `<div>${x}</div>`).join('')}</div>`;
     desc.innerHTML = html;
+
+    const expandBtn = desc.querySelector('.lib-expand');
+    if (expandBtn) expandBtn.addEventListener('click', () =>
+      openModelModal(expandBtn.getAttribute('data-model'), expandBtn.getAttribute('data-name')));
 
     if (s.provenance_note){
       const n = document.getElementById('infoNote');
@@ -2094,6 +2123,24 @@ footer a{color:var(--smoke);}
     }
     document.getElementById('readModal').classList.add('open');
   }
+  // ── Expandable model window: opens the GLB in a map-sized popup ────────────
+  function openModelModal(src, name){
+    const big = document.getElementById('modelBig');
+    if (!big) return;
+    if (src) big.setAttribute('src', src);
+    const nm = document.getElementById('modelName');
+    if (nm) nm.textContent = name || '3-D model';
+    document.getElementById('modelModal').classList.add('open');
+  }
+  (function wireModel(){
+    const modal = document.getElementById('modelModal');
+    if (!modal) return;
+    const close = document.getElementById('modelClose');
+    if (close) close.onclick = () => modal.classList.remove('open');
+    modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('open'); });
+  })();
+
   (function wireReading(){
     const modal = document.getElementById('readModal');
     if (!modal) return;
