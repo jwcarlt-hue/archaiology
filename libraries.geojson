@@ -3,7 +3,7 @@
   "_meta": {
     "layer": "The Living Agora — Libraries",
     "note": "Ancient libraries, archives, and manuscript findspots. Marker properties are lightweight; each site's full detail (metadata, evidence, texts) lives in its corpus_manifest. Place identifiers from Pleiades (CC BY 3.0).",
-    "status": "slice 2 — Ephesus (Celsus) + Pergamon"
+    "status": "slice 3 — Ephesus (Celsus) + Pergamon + Alexandria (Mouseion)"
   },
   "features": [
     {
@@ -50,6 +50,29 @@
         "model": "3d_models/pergamon_library.glb",
         "reconstruction_confidence": "identified-interior-approximate",
         "corpus_manifest": "data/libraries/pergamon-library.json"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.9091,
+          31.2092
+        ]
+      },
+      "properties": {
+        "id": "alexandria-mouseion",
+        "name": "The Mouseion & Great Library",
+        "place": "Alexandria",
+        "culture": "Hellenistic (Ptolemaic Egypt)",
+        "pleiades_uri": "https://pleiades.stoa.org/places/727070",
+        "period_start": -285,
+        "period_end": -48,
+        "period_label": "c. 285 BCE onward",
+        "model": "3d_models/mouseion.min.glb",
+        "reconstruction_confidence": "location-approximate-architecture-speculative",
+        "corpus_manifest": "data/libraries/alexandria-mouseion.json"
       }
     }
   ]
