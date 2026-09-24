@@ -473,7 +473,7 @@ footer a{color:var(--smoke);}
   let corpus = null, fragById = {}, history = [], busy = false;
 
   // ── Load corpus, then build the UI ─────────────────────────────────────────
-  fetch(CORPUS_URL).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+  fetch(CORPUS_URL + (CORPUS_URL.indexOf('?')<0?'?':'&') + 'v=' + Date.now()).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
     .then(data => { corpus = data; corpus.fragments.forEach(f => fragById[f.id.toUpperCase()] = f); boot(); })
     .catch(err => {
       $('transcript').innerHTML =
@@ -1928,6 +1928,9 @@ footer a{color:var(--smoke);}
   // ══════════════════════════════════════════════════════════════════════════
   const LIB_GEOJSON = 'libraries.geojson';
   const LIB_CORPUS  = 'corpus/heraclitus.json';
+  // Always pull fresh data files — the browser aggressively disk-caches these,
+  // which silently serves stale libraries/manifests/corpus after an edit.
+  const freshUrl = (u) => u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + Date.now();
 
   const REL = {
     attested_collection:    { label:'Documented',        cls:'rel-doc' },
@@ -1948,7 +1951,7 @@ footer a{color:var(--smoke);}
   const manifestCache = {};
   let corpusPromise = null;
   function ensureCorpus(){
-    if (!corpusPromise) corpusPromise = fetch(LIB_CORPUS).then(r => r.json())
+    if (!corpusPromise) corpusPromise = fetch(freshUrl(LIB_CORPUS)).then(r => r.json())
       .then(d => { const by = {}; d.fragments.forEach(f => by[f.id.toUpperCase()] = f); return by; })
       .catch(() => ({}));
     return corpusPromise;
@@ -1956,7 +1959,7 @@ footer a{color:var(--smoke);}
   const LIB_CATALOG = 'data/texts.json';
   let catalogPromise = null;
   function ensureCatalog(){
-    if (!catalogPromise) catalogPromise = fetch(LIB_CATALOG).then(r => r.json()).catch(() => ({}));
+    if (!catalogPromise) catalogPromise = fetch(freshUrl(LIB_CATALOG)).then(r => r.json()).catch(() => ({}));
     return catalogPromise;
   }
 
@@ -1976,7 +1979,7 @@ footer a{color:var(--smoke);}
     if (librariesLoaded) return;
     librariesLoaded = true;
     try {
-      libGeo = await (await fetch(LIB_GEOJSON)).json();
+      libGeo = await (await fetch(freshUrl(LIB_GEOJSON))).json();
       librariesLayer = L.geoJSON(libGeo, {
         pointToLayer: (f, latlng) => L.marker(latlng, { icon: libraryIcon() }),
         onEachFeature: (f, layer) => {
@@ -1999,7 +2002,7 @@ footer a{color:var(--smoke);}
   async function openLibrary(feat, latlng){
     const p = feat.properties;
     if (manifestCache[p.id] === undefined) {
-      try { manifestCache[p.id] = await (await fetch(p.corpus_manifest)).json(); }
+      try { manifestCache[p.id] = await (await fetch(freshUrl(p.corpus_manifest))).json(); }
       catch(e){ manifestCache[p.id] = null; }
     }
     const cat = await ensureCatalog();
