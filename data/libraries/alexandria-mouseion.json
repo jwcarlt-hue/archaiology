@@ -1,0 +1,93 @@
+{
+  "site_id": "alexandria-mouseion",
+  "site": {
+    "name": "The Mouseion & Great Library",
+    "place": "Alexandria",
+    "culture": "Hellenistic (Ptolemaic Egypt)",
+    "coordinates": [
+      31.2092,
+      29.9091
+    ],
+    "pleiades_uri": "https://pleiades.stoa.org/places/727070",
+    "pleiades_verified": false,
+    "period_label": "founded c. 285 BCE (Ptolemy I–II)",
+    "capacity": "ancient estimates range wildly (tens of thousands to 400,000+ scrolls); no reliable figure survives",
+    "languages": [
+      "Greek",
+      "translations from many tongues"
+    ],
+    "formats": [
+      "papyrus scroll (volumen)"
+    ],
+    "reconstruction_confidence": {
+      "location": "approximate",
+      "architecture": "speculative",
+      "note": "No remains of the Mouseion or Great Library have been securely identified. The site is known only approximately — the royal Brucheion quarter — and the architecture is entirely unattested. The model shown is a conjectural evocation, not a reconstruction from evidence."
+    },
+    "evidence_summary": "The most famous library of antiquity: part of the Mouseion ('shrine of the Muses'), a royal research institution founded by the first Ptolemies. Under librarians such as Zenodotus, Callimachus, Apollonius of Rhodes, Eratosthenes and Aristarchus it became the engine of Hellenistic scholarship — textual criticism, geography, mathematics, astronomy. Its size and its destruction are wrapped in ancient exaggeration and later legend; almost nothing of its physical form is known.",
+    "provenance_note": "Of every library here, this is the one we know least as a building and most as a legend. The scholars below genuinely worked at Alexandria (Strong association); Callimachus's Pinakes was composed there, about the collection itself (Documented); the Iliad stands for the Alexandrian recension, the library's defining work of criticism (Comparative). None of it is an inventory of what physically sat on the shelves — no such inventory survives.",
+    "documentation": [
+      {
+        "label": "World History Encyclopedia — Library of Alexandria",
+        "url": "https://www.worldhistory.org/Library_of_Alexandria/"
+      },
+      {
+        "label": "Britannica — Library of Alexandria",
+        "url": "https://www.britannica.com/topic/Library-of-Alexandria"
+      },
+      {
+        "label": "Pleiades — Alexandria (confirm ID)",
+        "url": "https://pleiades.stoa.org/places/727070"
+      }
+    ]
+  },
+  "collections": [
+    {
+      "id": "library-catalogue",
+      "label": "The catalogue",
+      "shelf": "mouseion-01"
+    },
+    {
+      "id": "alexandrian-scholars",
+      "label": "Scholars of the Mouseion",
+      "shelf": "mouseion-02"
+    },
+    {
+      "id": "homeric-criticism",
+      "label": "Homeric criticism",
+      "shelf": "mouseion-03"
+    }
+  ],
+  "texts": [
+    {
+      "text_id": "callimachus-pinakes",
+      "relationship": "work_composed_here",
+      "collection": "library-catalogue"
+    },
+    {
+      "text_id": "apollonius-argonautica",
+      "relationship": "author_from_site",
+      "collection": "alexandrian-scholars"
+    },
+    {
+      "text_id": "euclid-elements",
+      "relationship": "author_from_site",
+      "collection": "alexandrian-scholars"
+    },
+    {
+      "text_id": "eratosthenes-geographica",
+      "relationship": "author_from_site",
+      "collection": "alexandrian-scholars"
+    },
+    {
+      "text_id": "homer-iliad",
+      "relationship": "comparative_collection",
+      "collection": "homeric-criticism"
+    }
+  ],
+  "_meta": {
+    "catalog": "data/texts.json",
+    "relationship_note": "First use of the 'Documented' tier: Callimachus's Pinakes (work_composed_here) was literally made at and about this library. homer-iliad is reused from the catalog (also at Pergamon), comparative_collection in both — the two rival schools of Homeric criticism.",
+    "status": "slice 3 — GLB + evidence relationships; Alexandria full texts not yet loaded"
+  }
+}
