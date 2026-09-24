@@ -138,5 +138,41 @@
   "_meta": {
     "role": "Shared text catalog — the single record for each work; library manifests link to these by text_id and add the site-specific evidence relationship. Prevents duplicating a text that belongs to several libraries (e.g. heraclitus-b1 sits in both Ephesus and Pergamon, under different relationships).",
     "content_note": "Entries with source_repository 'corpus/heraclitus.json' resolve to full readable text via that file; entries with loaded:false are records only in this build."
+  },
+  "callimachus-pinakes": {
+    "author": "Callimachus",
+    "title": "Pinakes (catalogue of the Library)",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "—",
+    "source_repository": "survives only in fragments and testimonia",
+    "loaded": false
+  },
+  "apollonius-argonautica": {
+    "author": "Apollonius of Rhodes",
+    "title": "Argonautica",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain (Seaton, 1912)",
+    "source_repository": "Perseus Digital Library",
+    "loaded": false
+  },
+  "euclid-elements": {
+    "author": "Euclid",
+    "title": "Elements",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "public-domain (Heath, 1908)",
+    "source_repository": "public-domain edition (Heath)",
+    "loaded": false
+  },
+  "eratosthenes-geographica": {
+    "author": "Eratosthenes",
+    "title": "Geographica (fragments)",
+    "original_language": "grc",
+    "translation_language": "en",
+    "license": "—",
+    "source_repository": "survives in fragments (Roller, reconstr.)",
+    "loaded": false
   }
 }
