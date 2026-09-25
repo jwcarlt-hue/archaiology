@@ -414,6 +414,7 @@ a { text-decoration: none; color: inherit; }
 .source-icon.crossref  { background: rgba(58,74,92,0.12); }
 .source-icon.wordpress { background: rgba(184,137,42,0.12); }
 .source-icon.gdelt     { background: rgba(122,62,26,0.12); }
+.source-icon.semanticscholar { background: rgba(90,70,120,0.12); }
 
 .feed-item-date {
   font-family: var(--sans);
@@ -834,6 +835,13 @@ a { text-decoration: none; color: inherit; }
           </span>
           <span class="source-row-count" id="countGdelt">—</span>
         </div>
+        <div class="source-row">
+          <span class="source-row-label">
+            <span class="source-dot" style="background:#7a64a0"></span>Semantic Scholar
+          </span>
+          <span class="source-row-count" id="countSemanticscholar">—</span>
+        </div>
+        <div id="loadedNote" style="display:none;margin-top:0.5rem;font-family:var(--sans);font-size:0.62rem;color:var(--ash);line-height:1.4"></div>
       </div>
 
       <div class="sidebar-card">
@@ -876,7 +884,7 @@ a { text-decoration: none; color: inherit; }
         <div class="sidebar-label">Feed Info</div>
         <div class="feed-info-item">
           <span class="feed-info-icon">⏱</span>
-          <span>Papers and news checked every 6 hours via OpenAlex, Crossref, and WordPress APIs</span>
+          <span>Papers and news checked every 6 hours via OpenAlex, Crossref, Semantic Scholar, and WordPress</span>
         </div>
         <div class="feed-info-item">
           <span class="feed-info-icon">🗺</span>
@@ -916,12 +924,18 @@ let filteredItems = [];
 
 // ── Fetch all items once ──────────────────────────────────────
 async function fetchAll() {
+  // Guard: some sources report future issue dates (e.g. 2029); exclude anything
+  // dated more than a day ahead so it can't pin itself to the top of the feed.
+  const cutoff = new Date(Date.now() + 86400000).toISOString();
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/news_feed?select=*&limit=1000`,
-    { headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` } }
+    `${SUPABASE_URL}/rest/v1/news_feed?select=*&or=(published_at.is.null,published_at.lte.${encodeURIComponent(cutoff)})&order=published_at.desc.nullslast&limit=1000`,
+    { headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}`, "Prefer": "count=exact" } }
   );
   if (!res.ok) throw new Error(`Supabase ${res.status}`);
-  return res.json();
+  const items = await res.json();
+  const range = res.headers.get("content-range");            // e.g. "0-999/5234"
+  const total = range ? parseInt(range.split("/")[1], 10) : NaN;
+  return { items, total: Number.isFinite(total) ? total : items.length };
 }
 
 // ── Helpers ───────────────────────────────────────────────────
@@ -947,7 +961,7 @@ function regionLabel(r) {
 }
 
 function sourceIcon(source) {
-  return { openalex:"📗", crossref:"📘", wordpress:"📰", gdelt:"🌐" }[source] ?? "📄";
+  return { openalex:"📗", crossref:"📘", wordpress:"📰", gdelt:"🌐", semanticscholar:"🔬" }[source] ?? "📄";
 }
 
 // ── Filter logic ──────────────────────────────────────────────
@@ -1099,8 +1113,8 @@ function goPage(p) {
 }
 
 // ── Sidebar stats ─────────────────────────────────────────────
-function updateStats(items) {
-  document.getElementById("statTotal").textContent = items.length;
+function updateStats(items, total) {
+  document.getElementById("statTotal").textContent = (total ?? items.length).toLocaleString("en-US");
 
   const counts = { source: {}, region: {} };
   for (const item of items) {
@@ -1113,6 +1127,14 @@ function updateStats(items) {
   set("countCrossref",  counts.source.crossref);
   set("countWordpress", counts.source.wordpress);
   set("countGdelt",     counts.source.gdelt);
+  set("countSemanticscholar", counts.source.semanticscholar);
+  set("statSources", Object.keys(counts.source).filter(k => k && k !== "null" && k !== "undefined").length);
+
+  const note = document.getElementById("loadedNote");
+  if (note && total > items.length) {
+    note.textContent = `Showing the newest ${items.length.toLocaleString("en-US")} of ${total.toLocaleString("en-US")} items; counts and filters apply to these.`;
+    note.style.display = "block";
+  }
   set("countMeso",    counts.region.mesoamerica);
   set("countNear",    counts.region.near_east);
   set("countEurope",  counts.region.europe);
@@ -1164,8 +1186,9 @@ document.getElementById("searchInput").addEventListener("input", function() {
 // ── Init ──────────────────────────────────────────────────────
 (async () => {
   try {
-    allItems = await fetchAll();
-    updateStats(allItems);
+    const { items, total } = await fetchAll();
+    allItems = items;
+    updateStats(allItems, total);
     applyFilters();
   } catch (err) {
     document.getElementById("feedList").innerHTML = `
