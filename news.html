@@ -831,12 +831,6 @@ a { text-decoration: none; color: inherit; }
         </div>
         <div class="source-row">
           <span class="source-row-label">
-            <span class="source-dot" style="background:#8a8070"></span>GDELT
-          </span>
-          <span class="source-row-count" id="countGdelt">—</span>
-        </div>
-        <div class="source-row">
-          <span class="source-row-label">
             <span class="source-dot" style="background:#7a64a0"></span>Semantic Scholar
           </span>
           <span class="source-row-count" id="countSemanticscholar">—</span>
@@ -1126,7 +1120,6 @@ function updateStats(items, total) {
   set("countOpenalex",  counts.source.openalex);
   set("countCrossref",  counts.source.crossref);
   set("countWordpress", counts.source.wordpress);
-  set("countGdelt",     counts.source.gdelt);
   set("countSemanticscholar", counts.source.semanticscholar);
   set("statSources", Object.keys(counts.source).filter(k => k && k !== "null" && k !== "undefined").length);
 
