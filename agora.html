@@ -627,7 +627,7 @@ footer a{color:var(--smoke);}
 <div class="model-modal" id="modelModal">
   <div class="model-card">
     <div class="model-head"><span id="modelName"></span><button class="model-close" id="modelClose" aria-label="Close">&times;</button></div>
-    <model-viewer id="modelBig" class="model-big" camera-controls auto-rotate shadow-intensity="1" exposure="0.9" alt="3-D model"></model-viewer>
+    <model-viewer id="modelBig" class="model-big" camera-controls shadow-intensity="1" exposure="0.9" alt="3-D model"></model-viewer>
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -2036,7 +2036,7 @@ footer a{color:var(--smoke);}
     let html = '';
     if (p.model) {
       html += `<div class="lib-model-wrap">` +
-        `<model-viewer class="lib-model" src="${p.model}" camera-controls auto-rotate ` +
+        `<model-viewer class="lib-model" src="${p.model}" camera-controls ` +
         `shadow-intensity="1" exposure="0.9" interaction-prompt="none" alt="Reconstruction of ${p.name}"></model-viewer>` +
         `<button class="lib-expand" data-model="${p.model}" data-name="${(p.name||'').replace(/"/g,'&quot;')}" title="Expand model" aria-label="Expand model">⤢</button>` +
         `</div>` +
