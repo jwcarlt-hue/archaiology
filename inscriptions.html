@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Latin Inscriptions — archAIology</title>
+<title>Latin &amp; Greek Inscriptions — archAIology</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
 :root{
@@ -79,7 +79,7 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 .filter-select option{background:#1a1510;}
 
 .range-row{display:flex;gap:.4rem;align-items:center;}
-.range-input{flex:1;background:rgba(242,234,216,.04);border:1px solid rgba(242,234,216,.1);
+.range-input{flex:1;min-width:0;background:rgba(242,234,216,.04);border:1px solid rgba(242,234,216,.1);
   color:var(--stone);font-family:var(--mono);font-size:.72rem;padding:.45rem .6rem;
   outline:none;text-align:center;}
 .range-sep{font-size:.65rem;color:rgba(242,234,216,.3);}
@@ -103,15 +103,19 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 /* ── Results area ── */
 .results-area{display:grid;grid-template-columns:minmax(0,1fr) 400px;align-items:start;min-width:0;}
 .results-area .results-list{border-left:1px solid rgba(242,234,216,.06);min-width:0;}
+/* Narrow results column: badges drop to their own row instead of overflowing (both tabs) */
+.results-area .insc-header{flex-wrap:wrap;}
+.results-area .insc-badges{flex-basis:100%;margin-left:0;flex-shrink:1;}
+.results-area .insc-header > div:nth-child(2){flex:1;min-width:0;}
 @media(max-width:1200px){
   .results-area{grid-template-columns:1fr;}
   .results-area .results-list{border-left:0;}
 }
 
 /* Map */
-#insc-map{position:sticky;top:32px;height:calc(100vh - 32px);min-height:480px;
+#insc-map,#g-map{position:sticky;top:32px;height:calc(100vh - 32px);min-height:480px;
   border-bottom:1px solid rgba(242,234,216,.06);}
-@media(max-width:1200px){#insc-map{position:relative;top:auto;height:62vh;}}
+@media(max-width:1200px){#insc-map,#g-map{position:relative;top:auto;height:62vh;}}
 
 /* Results list */
 .results-list{flex:1;padding:.8rem 1.2rem;}
@@ -287,6 +291,26 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 .insc-tab:hover{color:rgba(242,234,216,.7);}
 .insc-tab.active{color:#c8b88a;border-bottom-color:#b07030;}
 .tab-section{display:none;}
+/* ── Greek tab ── */
+.greek-text{font-family:'Noto Serif','GFS Didot',Georgia,serif;}
+.insc-text.greek-text{font-size:.82rem;line-height:1.6;color:rgba(242,234,216,.7);}
+.d-text.greek-text{font-size:1rem;line-height:1.85;white-space:pre-wrap;color:var(--stone);}
+.g-title{font-size:.7rem;color:rgba(242,234,216,.45);margin-top:.15rem;line-height:1.35;}
+.g-trans{font-size:.74rem;color:rgba(242,234,216,.5);font-style:italic;margin-top:.35rem;line-height:1.5;}
+.g-key{margin-top:.7rem;font-size:.66rem;color:rgba(242,234,216,.45);}
+.g-key summary{cursor:pointer;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;font-size:.55rem;color:var(--chisel);}
+.g-key dl{display:grid;grid-template-columns:auto 1fr;gap:.25rem .8rem;margin-top:.5rem;}
+.g-key dt{font-family:'Noto Serif',Georgia,serif;color:var(--stone);}
+.g-coverage{margin-top:1.4rem;padding-top:1rem;border-top:1px solid rgba(242,234,216,.06);}
+.g-cov-row{font-size:.68rem;line-height:1.5;color:rgba(242,234,216,.55);margin-bottom:.6rem;}
+.g-cov-row strong{color:var(--stone);font-weight:600;}
+.g-cov-row a{color:var(--chisel);text-decoration:none;}
+.g-cov-tag{display:inline-block;font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.05rem .35rem;border-radius:2px;margin-left:.3rem;vertical-align:middle;}
+.g-cov-tag.live{color:#7fb07f;border:1px solid rgba(127,176,127,.35);}
+.g-cov-tag.planned{color:var(--aged);border:1px solid rgba(200,184,138,.3);}
+.g-cov-tag.link{color:rgba(242,234,216,.4);border:1px solid rgba(242,234,216,.15);}
+.map-popup-list a{display:block;color:#7a4a18;font-size:.7rem;cursor:pointer;text-decoration:underline;}
 .tab-section.active{display:block;}
 </style>
 </head>
@@ -330,6 +354,7 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 <!-- Tab bar -->
 <div class="insc-tab-bar">
   <div class="insc-tab active" onclick="inscSetTab(this,'tab-inscriptions')">📜 Latin Inscriptions</div>
+  <div class="insc-tab" onclick="inscSetTab(this,'tab-greek')">🏛 Greek Inscriptions</div>
   <div class="insc-tab" onclick="inscSetTab(this,'tab-oracle')">🦴 Oracle Bone Sites</div>
 </div>
 
@@ -436,6 +461,78 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 </div>
 
 </div><!-- /#tab-inscriptions -->
+
+<!-- ── TAB: Greek Inscriptions ── -->
+<div id="tab-greek" class="tab-section">
+<div class="page-body">
+
+  <aside class="search-panel">
+    <div class="panel-label">Search text</div>
+    <input class="search-input" id="g-text" type="text" placeholder="e.g. θεοῖς, Ἀπόλλων, δᾶμος, honorific…" autocomplete="off">
+    <div style="font-size:.6rem;color:rgba(242,234,216,.3);margin-top:.3rem;line-height:1.4">Accents optional. Also searches titles and English translations.</div>
+
+    <div class="panel-label">Find-spot (ancient or modern)</div>
+    <input class="search-input" id="g-place" type="text" placeholder="e.g. Syracusae, Halaesa, Catania…">
+
+    <div class="panel-label">Inscription type</div>
+    <div class="chip-row" id="g-type-chips">
+      <button class="chip active" data-type="">All</button>
+      <button class="chip" data-type="funerary">Funerary</button>
+      <button class="chip" data-type="dedication">Dedication</button>
+      <button class="chip" data-type="honorific">Honorific</button>
+      <button class="chip" data-type="votive">Votive</button>
+      <button class="chip" data-type="defixio">Curse tablet</button>
+      <button class="chip" data-type="tessera">Tessera</button>
+      <button class="chip" data-type="building">Building</button>
+      <button class="chip" data-type="decree">Decree</button>
+    </div>
+
+    <div class="panel-label">Date range (CE; negative = BCE)</div>
+    <div class="range-row">
+      <input class="range-input" id="g-date-a" type="number" placeholder="-700">
+      <span class="range-sep">to</span>
+      <input class="range-input" id="g-date-e" type="number" placeholder="800">
+    </div>
+
+    <div class="panel-label">Translation</div>
+    <div class="chip-row" id="g-trans-chips">
+      <button class="chip active" data-trans="">Any</button>
+      <button class="chip" data-trans="yes">With English translation</button>
+    </div>
+
+    <button class="search-btn" onclick="gSearch(1)">Search Greek inscriptions</button>
+    <div class="result-count" id="g-result-count"></div>
+
+    <div class="g-coverage">
+      <div class="panel-label" style="margin-top:0">Coverage</div>
+      <div class="g-cov-row"><strong>I.Sicily</strong><span class="g-cov-tag live">Live</span><br>
+        <span id="g-cov-isicily">Greek texts</span> from ancient Sicily. J. Prag et al., CC-BY 4.0 ·
+        <a href="https://isicily.org" target="_blank" rel="noopener">isicily.org</a></div>
+      <div class="g-cov-row"><strong>Inscriptiones Graecae</strong><span class="g-cov-tag planned">Planned</span><br>
+        Greece and the Aegean. BBAW Berlin, CC-BY 4.0.</div>
+      <div class="g-cov-row"><strong>PHI Greek Inscriptions</strong><span class="g-cov-tag link">Links only</span><br>
+        The largest corpus, but its licence permits personal study only, so we link to PHI entries rather than copy them.</div>
+      <div class="g-cov-row" style="color:rgba(242,234,216,.35)">Coverage is regional for now: an empty map area means no open corpus yet, not an absence of inscriptions.</div>
+    </div>
+  </aside>
+
+  <div class="results-area">
+    <div id="g-map"></div>
+    <div class="results-list">
+      <div class="results-header">
+        <div class="results-n" id="g-results-n">Loading…</div>
+        <div class="sort-row">
+          <button class="sort-btn active" id="g-sort-date" onclick="gSetSort('date')">Date</button>
+          <button class="sort-btn" id="g-sort-place" onclick="gSetSort('place')">Place</button>
+          <button class="sort-btn" id="g-sort-id" onclick="gSetSort('id')">ID</button>
+        </div>
+      </div>
+      <div id="g-results-container"></div>
+      <div class="pagination" id="g-pagination" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /#tab-greek -->
 
 <!-- ── TAB: Oracle Bone Sites ── -->
 <div id="tab-oracle" class="tab-section">
@@ -1412,7 +1509,7 @@ document.getElementById('q-place').addEventListener('keydown', e => { if(e.key==
 
 function setSort(s) {
   currentSort = s;
-  document.querySelectorAll('.sort-btn').forEach(b => b.classList.toggle('active', b.id===`sort-${s}`));
+  document.querySelectorAll('#tab-inscriptions .sort-btn').forEach(b => b.classList.toggle('active', b.id===`sort-${s}`));
   doSearch(currentPage);
 }
 
@@ -1778,6 +1875,327 @@ window.addEventListener('load', () => {
 </script>
 
 <script>
+// ═══════════════════ GREEK INSCRIPTIONS (epidoc_inscriptions) ═══════════════════
+const G_TABLE   = `${SB_URL}/rest/v1/epidoc_inscriptions`;
+const G_PER     = 25;
+const G_FRAME   = [[36.55, 12.3], [38.35, 15.7]];   // Sicily — widen as corpora are added
+const G_CORPUS  = { isicily: { label: "I.Sicily", url: id => `http://sicily.classics.ox.ac.uk/inscription/${id}` } };
+const G_LIST    = "corpus,doc_id,title,place_ancient,place_modern,lat,lng,date_from,date_to,date_text,inscription_type,material,object_type,edition_text,translation_en,persons";
+let gMap = null, gMarkers = [], gSort = 'date', gPage = 1, gType = '', gTrans = '', gFirstFit = true, gInited = false;
+
+const gEsc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// Same folding the importer applies to search_text: no accents, lower case, final sigma → σ
+const gFold = s => (s || '').normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/ς/g, 'σ').trim();
+// Characters that would break a PostgREST filter value
+const gSafe = s => s.replace(/[,()"*\\]/g, ' ').replace(/\s+/g, ' ').trim();
+const gCap  = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+const gTitle = t => t && !/^(I\.Sicily inscription\b|ISic\d+$)/i.test(t.trim()) ? t : null;   // placeholder titles add nothing
+const gPlace = r => { const p = r.place_ancient || r.place_modern; return !p || /^unknown$/i.test(p) ? 'Find-spot unknown' : p; };
+
+function gHeroHTML() {
+  return `
+    <div class="hero-eyebrow">Open EpiDoc corpora · CC-BY 4.0</div>
+    <h1 class="hero-title">Greek <em>Inscriptions</em></h1>
+    <p class="hero-sub">Greek texts from open scholarly corpora, shown in Leiden conventions: [ ] restored by the editor, [- - -] lost, dotted letters uncertain. Beginning with Sicily; more regions follow as open corpora are added.</p>
+    <div class="stat-strip">
+      <div class="stat"><div class="stat-n" id="gs-total">—</div><div class="stat-l">Greek texts</div></div>
+      <div class="stat"><div class="stat-n" id="gs-mapped">—</div><div class="stat-l">Geocoded</div></div>
+      <div class="stat"><div class="stat-n" id="gs-trans">—</div><div class="stat-l">English translations</div></div>
+      <div class="stat"><div class="stat-n" id="gs-dated">—</div><div class="stat-l">Dated</div></div>
+      <div class="stat"><div class="stat-n" id="gs-earliest">—</div><div class="stat-l">Earliest</div></div>
+      <div class="stat"><div class="stat-n">1</div><div class="stat-l">Open corpus</div></div>
+    </div>`;
+}
+
+// Live stats: counts come from the table, never hard-coded
+async function gLoadStats() {
+  const count = async (extra) => {
+    const r = await fetch(`${G_TABLE}?select=doc_id&has_greek=is.true${extra}&limit=1`, {headers:{...HDR, Prefer:'count=exact'}});
+    const cr = r.headers.get('content-range'); return cr ? parseInt(cr.split('/')[1], 10) : null;
+  };
+  try {
+    const [total, mapped, trans, dated, first] = await Promise.all([
+      count(''), count('&lat=not.is.null'), count('&translation_en=not.is.null'), count('&date_from=not.is.null'),
+      fetch(`${G_TABLE}?select=date_from&has_greek=is.true&date_from=not.is.null&order=date_from.asc&limit=1`, {headers:HDR}).then(r => r.json()),
+    ]);
+    const fmt = n => n == null ? '—' : n.toLocaleString('en-US');
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    set('gs-total', fmt(total)); set('gs-mapped', fmt(mapped)); set('gs-trans', fmt(trans)); set('gs-dated', fmt(dated));
+    const y = first?.[0]?.date_from;
+    set('gs-earliest', y == null ? '—' : (y < 0 ? `${Math.abs(y)} BCE` : `${y} CE`));
+    set('g-cov-isicily', total == null ? 'Greek texts' : `${fmt(total)} Greek texts`);
+  } catch (e) { /* stats are decorative; search still works */ }
+}
+
+function gInit() {
+  if (gInited) return;
+  gInited = true;
+  gMap = L.map('g-map', {zoomSnap:0.25, zoomControl:false, attributionControl:false, maxZoom:19});
+  gMap.fitBounds(G_FRAME);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
+    {attribution:'Tiles © Esri — National Geographic', maxNativeZoom:16, maxZoom:19}).addTo(gMap);
+  L.control.zoom({position:'bottomright'}).addTo(gMap);
+  L.control.attribution({position:'bottomright', prefix:'I.Sicily · CC-BY 4.0'}).addTo(gMap);
+
+  document.querySelectorAll('#g-type-chips .chip').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('#g-type-chips .chip').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); gType = btn.dataset.type;
+  }));
+  document.querySelectorAll('#g-trans-chips .chip').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('#g-trans-chips .chip').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); gTrans = btn.dataset.trans;
+  }));
+  ['g-text', 'g-place'].forEach(id => document.getElementById(id)
+    .addEventListener('keydown', e => { if (e.key === 'Enter') gSearch(1); }));
+
+  gSearch(1);
+}
+
+function gSetSort(s) {
+  gSort = s;
+  document.querySelectorAll('#tab-greek .sort-btn').forEach(b => b.classList.toggle('active', b.id === `g-sort-${s}`));
+  gSearch(gPage);
+}
+
+function gBuildQuery(page) {
+  const qText  = gSafe(document.getElementById('g-text').value);
+  const qPlace = gSafe(document.getElementById('g-place').value);
+  const qA = document.getElementById('g-date-a').value, qE = document.getElementById('g-date-e').value;
+
+  const ors = [];
+  if (qText) {
+    const f = encodeURIComponent(gSafe(gFold(qText))), raw = encodeURIComponent(qText);
+    ors.push(`or(search_text.ilike.*${f}*,title.ilike.*${raw}*,translation_en.ilike.*${raw}*)`);
+  }
+  if (qPlace) {
+    const p = encodeURIComponent(qPlace);
+    ors.push(`or(place_ancient.ilike.*${p}*,place_modern.ilike.*${p}*)`);
+  }
+
+  let url = `${G_TABLE}?select=${G_LIST}&has_greek=is.true`;
+  if (ors.length) url += `&and=(${ors.join(',')})`;
+  if (gType)  url += `&inscription_type=ilike.${encodeURIComponent(gType)}*`;
+  if (qA)     url += `&date_from=gte.${parseInt(qA, 10)}`;
+  if (qE)     url += `&date_to=lte.${parseInt(qE, 10)}`;
+  if (gTrans === 'yes') url += `&translation_en=not.is.null`;
+  url += { date:'&order=date_from.asc.nullslast,doc_id.asc', place:'&order=place_ancient.asc.nullslast,doc_id.asc', id:'&order=doc_id.asc' }[gSort];
+  url += `&limit=${G_PER}&offset=${(page - 1) * G_PER}`;
+  return url;
+}
+
+async function gSearch(page = 1) {
+  gPage = page;
+  const box = document.getElementById('g-results-container');
+  box.innerHTML = `<div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div><p style="margin-top:1rem">Searching corpus…</p></div>`;
+  document.getElementById('g-pagination').style.display = 'none';
+  try {
+    const res = await fetch(gBuildQuery(page), {headers:{...HDR, Prefer:'count=exact'}});
+    if (!res.ok) throw new Error(`Database returned ${res.status}`);
+    const rows = await res.json();
+    const cr = res.headers.get('content-range');
+    const total = cr ? parseInt(cr.split('/')[1], 10) || 0 : rows.length;
+
+    if (!rows.length) {
+      box.innerHTML = `<div class="empty-state"><h3>No Greek inscriptions found</h3><p style="font-size:.78rem">Try fewer filters or a shorter word. Accents are optional.</p></div>`;
+      document.getElementById('g-results-n').textContent = '0 results';
+      document.getElementById('g-result-count').textContent = '';
+      gRenderMarkers([]);
+      return;
+    }
+    const pages = Math.ceil(total / G_PER);
+    document.getElementById('g-results-n').textContent = `${total.toLocaleString('en-US')} inscriptions`;
+    document.getElementById('g-result-count').textContent = `Page ${page} of ${pages}`;
+    gRenderResults(rows, box);
+    gRenderMarkers(rows);
+    gRenderPagination(page, pages);
+  } catch (e) {
+    box.innerHTML = `<div class="empty-state"><h3>Search error</h3><p style="font-size:.78rem">${gEsc(e.message)}</p></div>`;
+  }
+}
+
+function gRenderResults(rows, box) {
+  box.innerHTML = rows.map(r => {
+    const place = gPlace(r);
+    const modern = r.place_modern && r.place_ancient && r.place_modern !== r.place_ancient ? ` (${r.place_modern})` : '';
+    const date = fmtDate(r.date_from, r.date_to, null);
+    const text = (r.edition_text || '').replace(/\n/g, ' / ');
+    const trans = r.translation_en || '';
+    return `
+    <div class="insc-card" onclick="gShowDetail('${gEsc(r.corpus)}','${gEsc(r.doc_id)}')">
+      <div class="insc-header">
+        <div class="insc-id">${gEsc(r.doc_id)}</div>
+        <div>
+          <div class="insc-place">${gEsc(place)}${gEsc(modern)}</div>
+          ${gTitle(r.title) ? `<div class="g-title">${gEsc(r.title)}</div>` : ''}
+        </div>
+        <div class="insc-badges">
+          ${r.inscription_type ? `<span class="badge b-type">${gEsc(gCap(r.inscription_type))}</span>` : ''}
+          ${date !== '—' ? `<span class="badge b-date">${gEsc(date)}</span>` : ''}
+          ${r.object_type ? `<span class="badge b-mat">${gEsc(r.object_type.slice(0, 18))}</span>` : ''}
+        </div>
+      </div>
+      ${text ? `<div class="insc-text greek-text">${gEsc(text.slice(0, 160))}${text.length > 160 ? '…' : ''}</div>` : ''}
+      ${trans ? `<div class="g-trans">${gEsc(trans.slice(0, 140))}${trans.length > 140 ? '…' : ''}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// Many texts share a find-spot's coordinates, so group them: one marker per place
+function gRenderMarkers(rows) {
+  gMarkers.forEach(m => gMap?.removeLayer(m)); gMarkers = [];
+  if (!gMap) return;
+  const groups = new Map();
+  rows.filter(r => r.lat != null && r.lng != null).forEach(r => {
+    const k = `${r.lat},${r.lng}`;
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(r);
+  });
+  for (const list of groups.values()) {
+    const n = list.length, r0 = list[0], size = n > 1 ? 16 : 10;
+    const icon = L.divIcon({
+      html: `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2 - 1}" fill="#b07030" fill-opacity=".85" stroke="#f2ead8" stroke-width=".8"/>${n > 1 ? `<text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-size="8" font-family="sans-serif" fill="#fff">${n}</text>` : ''}</svg>`,
+      className: '', iconSize: [size, size], iconAnchor: [size/2, size/2],
+    });
+    const m = L.marker([r0.lat, r0.lng], {icon});
+    if (n === 1) {
+      m.bindPopup(`<div class="map-popup-id">${gEsc(r0.doc_id)}</div><div class="map-popup-place">${gEsc(r0.place_ancient || r0.place_modern || '—')}</div>`)
+       .on('click', () => gShowDetail(r0.corpus, r0.doc_id));
+    } else {
+      m.bindPopup(`<div class="map-popup-place">${gEsc(r0.place_ancient || r0.place_modern || '—')} · ${n} on this page</div>
+        <div class="map-popup-list">${list.map(r => `<a onclick="gShowDetail('${gEsc(r.corpus)}','${gEsc(r.doc_id)}')">${gEsc(r.doc_id)}${gTitle(r.title) ? ' · ' + gEsc(r.title.slice(0, 40)) : ''}</a>`).join('')}</div>`);
+    }
+    m.addTo(gMap); gMarkers.push(m);
+  }
+  if (!gMarkers.length) return;
+  if (gFirstFit) { gMap.fitBounds(G_FRAME); gFirstFit = false; }
+  else { try { gMap.fitBounds(L.featureGroup(gMarkers).getBounds(), {padding:[30, 30], maxZoom:11}); } catch (e) {} }
+}
+
+function gRenderPagination(page, total) {
+  const pag = document.getElementById('g-pagination');
+  if (total <= 1) { pag.style.display = 'none'; return; }
+  pag.style.display = 'flex';
+  const pages = [1];
+  if (page > 3) pages.push('…');
+  for (let p = Math.max(2, page - 1); p <= Math.min(total - 1, page + 1); p++) pages.push(p);
+  if (page < total - 2) pages.push('…');
+  pages.push(total);
+  pag.innerHTML = [
+    `<button class="page-btn" ${page === 1 ? 'disabled' : ''} onclick="gSearch(${page - 1})">‹</button>`,
+    ...pages.map(p => p === '…'
+      ? `<span style="color:rgba(242,234,216,.2);font-size:.7rem;padding:0 .3rem">…</span>`
+      : `<button class="page-btn ${p === page ? 'active' : ''}" onclick="gSearch(${p})">${p}</button>`),
+    `<button class="page-btn" ${page === total ? 'disabled' : ''} onclick="gSearch(${page + 1})">›</button>`,
+  ].join('');
+}
+
+async function gShowDetail(corpus, docId) {
+  const panel = document.getElementById('detail'), content = document.getElementById('detail-content');
+  panel.classList.add('open');
+  content.innerHTML = `<div style="padding:2rem;color:rgba(242,234,216,.3)">Loading…</div>`;
+  try {
+    const res = await fetch(`${G_TABLE}?corpus=eq.${encodeURIComponent(corpus)}&doc_id=eq.${encodeURIComponent(docId)}&select=*&limit=1`, {headers:HDR});
+    const rows = await res.json();
+    if (!rows.length) { content.innerHTML = `<div style="padding:2rem;color:rgba(242,234,216,.3)">Inscription not found.</div>`; return; }
+    const d = rows[0], C = G_CORPUS[d.corpus] || {label: d.corpus, url: () => d.source_url};
+    const place = gPlace(d);
+    const modern = d.place_modern && d.place_ancient && d.place_modern !== d.place_ancient ? ` (${d.place_modern})` : '';
+    const range = fmtDate(d.date_from, d.date_to, null);
+    const date = d.date_text ? `${d.date_text}${range !== '—' ? ` (${range})` : ''}` : range;
+    const material = d.material ? d.material.split(/\s\(|\. /)[0] : null;
+    const pleiadesId = (d.pleiades_uri || '').match(/places\/(\d+)/)?.[1];
+    const cell = (k, v, mono) => v ? `<div class="d-meta-cell"><div class="d-meta-k">${k}</div><div class="d-meta-v"${mono ? ' style="font-family:var(--mono);font-size:.7rem"' : ''}>${gEsc(v)}</div></div>` : '';
+    const link = (href, label) => `<a class="d-link" href="${gEsc(href)}" target="_blank" rel="noopener">→ ${gEsc(label)}</a>`;
+
+    content.innerHTML = `
+      <div class="d-hero">
+        <div class="d-hd">${gEsc(d.doc_id)} · ${gEsc(C.label)}</div>
+        <div class="d-place">${gEsc(place)}${gEsc(modern)}</div>
+        ${gTitle(d.title) ? `<div class="g-title" style="font-size:.8rem;margin-bottom:.5rem">${gEsc(d.title)}</div>` : ''}
+        <div class="d-badges">
+          ${d.inscription_type ? `<span class="badge b-type">${gEsc(gCap(d.inscription_type))}</span>` : ''}
+          ${range !== '—' ? `<span class="badge b-date">${gEsc(range)}</span>` : ''}
+          ${d.language_label ? `<span class="badge" style="background:rgba(100,80,50,.15);color:#a08060;border:1px solid rgba(100,80,50,.25)">${gEsc(d.language_label)}</span>` : ''}
+        </div>
+      </div>
+
+      ${d.edition_text ? `
+      <div class="d-section">
+        <div class="d-lbl">Text (Leiden conventions)</div>
+        <div class="d-text greek-text">${gEsc(d.edition_text)}</div>
+        <details class="g-key"><summary>How to read the brackets</summary>
+          <dl>
+            <dt>[αβγ]</dt><dd>lost on the stone, restored by the editor</dd>
+            <dt>[- - -]</dt><dd>lost, extent unknown</dd>
+            <dt>[· · ·]</dt><dd>lost, number of letters known</dd>
+            <dt>α̣</dt><dd>damaged letter, reading uncertain</dd>
+            <dt>α(βγ)</dt><dd>abbreviation expanded by the editor</dd>
+            <dt>⟨αβ⟩</dt><dd>omitted by the carver, added by the editor</dd>
+            <dt>{αβ}</dt><dd>written in error by the carver</dd>
+            <dt>⟦αβ⟧</dt><dd>deliberately erased in antiquity</dd>
+            <dt>vac.</dt><dd>space left blank on the stone</dd>
+          </dl>
+        </details>
+      </div>` : ''}
+
+      ${d.translation_en ? `
+      <div class="d-section">
+        <div class="d-lbl">English translation</div>
+        <div style="font-size:.85rem;line-height:1.7;color:rgba(242,234,216,.8)">${gEsc(d.translation_en)}</div>
+      </div>` : ''}
+
+      <div class="d-section">
+        <div class="d-lbl">Details</div>
+        <div class="d-meta-grid">
+          ${cell('Find-spot', place + modern)}
+          ${cell('Date', date)}
+          ${cell('Type', gCap(d.inscription_type))}
+          ${cell('Object', gCap(d.object_type))}
+          ${cell('Material', material)}
+          ${cell('Languages', d.language_label)}
+          ${cell('Now in', [d.repository, d.inventory && `inv. ${d.inventory}`].filter(Boolean).join(', '))}
+          ${d.lat != null ? cell('Coordinates', `${d.lat}, ${d.lng}`, true) : ''}
+          ${cell('Named persons', d.persons)}
+        </div>
+      </div>
+
+      ${d.commentary ? `
+      <div class="d-section">
+        <div class="d-lbl">Commentary</div>
+        <div style="font-size:.78rem;line-height:1.7;color:rgba(242,234,216,.65)">${gEsc(d.commentary)}</div>
+      </div>` : ''}
+
+      ${d.bibliography ? `
+      <div class="d-section">
+        <div class="d-lbl">Editions</div>
+        <div style="font-size:.72rem;line-height:1.7;color:rgba(242,234,216,.55)">${gEsc(d.bibliography)}</div>
+      </div>` : ''}
+
+      <div class="d-links">
+        ${link(d.source_url || C.url(d.doc_id), `View on ${C.label} (photos, full apparatus)`)}
+        ${d.doi ? link(`https://doi.org/${d.doi}`, `DOI ${d.doi}`) : ''}
+        ${pleiadesId ? link(`https://pleiades.stoa.org/places/${pleiadesId}`, `Pleiades: ${pleiadesId}`) : ''}
+        ${d.tm_id ? link(`https://www.trismegistos.org/text/${d.tm_id}`, `Trismegistos: ${d.tm_id}`) : ''}
+        ${d.phi_id ? link(`https://inscriptions.packhum.org/text/${d.phi_id}`, `PHI Greek Inscriptions: ${d.phi_id}`) : ''}
+      </div>
+      <div style="padding:0 1.4rem 1.4rem;font-size:.6rem;color:rgba(242,234,216,.3);line-height:1.5">
+        ${gEsc(d.attribution || C.label)} · ${gEsc(d.license || '')}. Text rendered from the project's EpiDoc edition.
+      </div>`;
+  } catch (e) {
+    content.innerHTML = `<div style="padding:2rem;color:rgba(242,234,216,.3)">Error loading inscription: ${gEsc(e.message)}</div>`;
+  }
+}
+
+// Hero swaps with the tab so the page header always describes what's shown
+const _latinHeroHTML = document.querySelector('.hero .container').innerHTML;
+function gSetHero(greek) {
+  const el = document.querySelector('.hero .container');
+  if (greek) { el.innerHTML = gHeroHTML(); gLoadStats(); }
+  else if (el.innerHTML !== _latinHeroHTML) el.innerHTML = _latinHeroHTML;
+}
+</script>
+
+<script>
 function inscSetTab(el, id) {
   document.querySelectorAll('.insc-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
@@ -1791,6 +2209,11 @@ function inscSetTab(el, id) {
       _initObMap();
       if (window._obMapRef) window._obMapRef.invalidateSize();
     });
+  }
+  // Greek tab: header, lazy map init (needs a visible container), resize on return
+  gSetHero(id === 'tab-greek');
+  if (id === 'tab-greek') {
+    requestAnimationFrame(() => { gInit(); gMap && gMap.invalidateSize(); });
   }
   // Invalidate Heidelberg map size when returning to it
   if (id === 'tab-inscriptions' && typeof map !== 'undefined' && map) {
