@@ -29,7 +29,7 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 .nav-group-btn{background:none;border:0;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:.35rem;padding:0;}
 .nav-caret{width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid currentColor;opacity:.7;}
 .nav-menu{display:none;position:absolute;top:100%;left:-.9rem;min-width:190px;padding:.4rem 0;
-  background:rgba(8,9,14,.98);border:1px solid rgba(242,234,216,.08);border-top:1px solid rgba(176,112,48,.35);}
+  background:var(--ink);border:1px solid rgba(242,234,216,.08);border-top:1px solid rgba(176,112,48,.35);}
 .nav-group:hover .nav-menu,.nav-group.open .nav-menu,.nav-group:focus-within .nav-menu{display:block;}
 .nav-menu-link{display:block;padding:.45rem .9rem;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
   color:rgba(242,234,216,.5);text-decoration:none;white-space:nowrap;}
@@ -325,6 +325,25 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 .map-popup-list a{display:block;color:#7a4a18;font-size:.7rem;cursor:pointer;text-decoration:underline;}
 .tab-section.active{display:block;}
 </style>
+<style>
+/* ── Phone menu (below 760px the bar collapses to logo + Menu; see site-navigation.md) ── */
+.nav-burger{display:none;background:none;border:0;cursor:pointer;align-items:center;gap:.45rem;padding:0;margin-left:auto;font-family:var(--sans);}
+.nav-burger-icon{width:14px;height:10px;position:relative;border-top:1.5px solid currentColor;border-bottom:1.5px solid currentColor;}
+.nav-burger-icon::after{content:'';position:absolute;left:0;right:0;top:50%;border-top:1.5px solid currentColor;transform:translateY(-50%);}
+.nav-phone{display:none;}
+@media(max-width:760px){
+  .masthead .nav-link:not(.nav-burger),.masthead .nav-group,.masthead-right{display:none !important;}
+  .nav-burger{display:inline-flex;}
+  .nav-phone.open{display:block;position:fixed;left:0;right:0;z-index:2000;overflow-y:auto;
+    background:var(--ink);border-top:1px solid var(--chisel);border-bottom:1px solid rgba(242,234,216,.08);padding:.4rem 0 .8rem;}
+  .nav-phone-group{font-family:var(--sans);font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--chisel);opacity:.8;padding:.9rem 1.2rem .3rem;}
+  .nav-phone-link{display:block;font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    color:rgba(242,234,216,.5);text-decoration:none;padding:.6rem 1.2rem;}
+  .nav-phone-link:hover,.nav-phone-link:focus{color:var(--stone);background:rgba(255,255,255,.05);outline:none;}
+  .nav-phone-link.active{color:var(--chisel);}
+}
+</style>
 </head>
 <body>
 
@@ -363,7 +382,32 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
       <a class="nav-menu-link" href="upload.html">Upload</a>
     </div>
   </div>
+  <button class="nav-link nav-burger" type="button" aria-expanded="false" aria-controls="nav-phone"><span class="nav-burger-icon" aria-hidden="true"></span>Menu</button>
 </header>
+<nav class="nav-phone" id="nav-phone" aria-label="Site">
+  <div class="nav-phone-group">Explore</div>
+  <a class="nav-phone-link" href="index.html">Home</a>
+  <a class="nav-phone-link" href="news.html">News</a>
+  <a class="nav-phone-link" href="map.html">Atlas</a>
+  <a class="nav-phone-link" href="agora.html">Living Agora</a>
+  <div class="nav-phone-group">Regions</div>
+  <a class="nav-phone-link" href="luwian.html">Anatolia</a>
+  <a class="nav-phone-link" href="maya_inscriptions.html">Mundo Maya</a>
+  <a class="nav-phone-link" href="minoans.html">Minoans</a>
+  <div class="nav-phone-group">Disciplines</div>
+  <a class="nav-phone-link" href="numismatics.html">Ancient Economy</a>
+  <a class="nav-phone-link" href="religion.html">Sacred Geography</a>
+  <a class="nav-phone-link" href="sky.html">Archaeoastronomy</a>
+  <a class="nav-phone-link active" href="inscriptions.html" aria-current="page">Epigraphy</a>
+  <a class="nav-phone-link" href="linguistics.html">Linguistics</a>
+  <a class="nav-phone-link" href="maritime.html">Maritime</a>
+  <a class="nav-phone-link" href="bioanthro.html">Bioanthropology</a>
+  <a class="nav-phone-link" href="lidar.html">LiDAR</a>
+  <div class="nav-phone-group">More</div>
+  <a class="nav-phone-link" href="games.html">Games</a>
+  <a class="nav-phone-link" href="conferences.html">Conferences</a>
+  <a class="nav-phone-link" href="upload.html">Upload</a>
+</nav>
 
 <div style="padding-top:32px;">
 
@@ -2267,6 +2311,26 @@ document.querySelectorAll('.nav-group-btn').forEach(btn => {
 document.addEventListener('click', e => e.isTrusted && document.querySelectorAll('.nav-group.open').forEach(x => {   // ignore script-generated clicks
   x.classList.remove('open'); x.firstElementChild.setAttribute('aria-expanded', 'false'); }));
 document.addEventListener('keydown', e => { if (e.key === 'Escape') document.activeElement?.blur(); });
+</script>
+<script>
+// Phone menu: open under the bar, close on outside tap, Escape, or widening past the breakpoint
+(() => {
+  const btn = document.querySelector('.nav-burger'), panel = document.getElementById('nav-phone');
+  if (!btn || !panel) return;
+  const bar = btn.closest('.masthead');
+  const set = open => {
+    if (open) {
+      const top = Math.max(0, bar.getBoundingClientRect().bottom);
+      panel.style.top = top + 'px'; panel.style.maxHeight = (innerHeight - top) + 'px';
+    }
+    panel.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open));
+  };
+  btn.addEventListener('click', e => { set(!panel.classList.contains('open')); e.stopPropagation(); });
+  panel.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', e => { if (e.isTrusted) set(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
+  matchMedia('(min-width: 761px)').addEventListener('change', m => { if (m.matches) set(false); });
+})();
 </script>
 </body>
 </html>
