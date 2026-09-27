@@ -27,9 +27,24 @@ a{text-decoration:none;color:inherit;}
 .masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px;}
 .logo{font-family:var(--serif);font-size:1.2rem;font-weight:900;color:var(--cream);}
 .logo span{color:var(--ochre);font-style:italic;}
-.nav-links{display:flex;gap:1.5rem;}
+.nav-links{display:flex;gap:1.5rem;align-self:stretch;align-items:center;}
 .nav-link{font-family:var(--sans);font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(200,216,240,.5);transition:color .2s;}
 .nav-link:hover,.nav-link.active{color:var(--star);}
+/* ── Site menu dropdowns (shared pattern; see site-navigation.md) ── */
+.nav-group{position:relative;display:flex;align-items:center;align-self:stretch;flex-shrink:0;}
+.nav-group-btn{background:none;border:0;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;padding:0;}
+.nav-group-btn,.nav-menu-link{font-family:var(--sans);}
+.nav-caret{width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid currentColor;opacity:.7;}
+.nav-menu{display:none;position:absolute;top:100%;left:-.9rem;min-width:190px;padding:.4rem 0;z-index:1001;
+  background:var(--night);border:1px solid rgba(200,216,240,.08);border-top:1px solid var(--ochre-lt);}
+.nav-group:hover .nav-menu,.nav-group.open .nav-menu,.nav-group:focus-within .nav-menu{display:block;}
+.nav-group:last-child .nav-menu{left:auto;right:-.9rem;}   /* last menu opens leftward so it never runs off-screen */
+.nav-menu-link{display:block;padding:.45rem .9rem;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,216,240,.5);text-decoration:none;white-space:nowrap;}
+.nav-menu-link:hover,.nav-menu-link:focus{color:var(--star);background:rgba(255,255,255,.05);outline:none;}
+.nav-menu-link.active{color:var(--ochre-lt);}
+.nav-link{white-space:nowrap;flex-shrink:0;}
+
 
 /* HERO */
 .sky-hero{
@@ -245,6 +260,26 @@ a{text-decoration:none;color:inherit;}
   color:rgba(200,216,240,.62);max-width:56ch;
 }
 </style>
+<style>
+/* ── Phone menu (below 760px the bar collapses to logo + Menu; see site-navigation.md) ── */
+.nav-burger{display:none;background:none;border:0;cursor:pointer;align-items:center;gap:.45rem;padding:0;margin-left:auto;font-family:var(--sans);}
+.nav-burger-icon{width:14px;height:10px;position:relative;border-top:1.5px solid currentColor;border-bottom:1.5px solid currentColor;}
+.nav-burger-icon::after{content:'';position:absolute;left:0;right:0;top:50%;border-top:1.5px solid currentColor;transform:translateY(-50%);}
+.nav-phone{display:none;}
+#nav-more.nav-menu{left:auto;right:-.9rem;}   /* More opens leftward even when the phone Menu button follows it */
+@media(max-width:760px){
+  .masthead .nav-link:not(.nav-burger),.masthead .nav-group,.masthead-right{display:none !important;}
+  .nav-burger{display:inline-flex;}
+  .nav-phone.open{display:block;position:fixed;left:0;right:0;z-index:2000;overflow-y:auto;
+    background:var(--night);border-top:1px solid var(--ochre-lt);border-bottom:1px solid rgba(200,216,240,.08);padding:.4rem 0 .8rem;}
+  .nav-phone-group{font-family:var(--sans);font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ochre-lt);opacity:.8;padding:.9rem 1.2rem .3rem;}
+  .nav-phone-link{display:block;font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    color:rgba(200,216,240,.5);text-decoration:none;padding:.6rem 1.2rem;}
+  .nav-phone-link:hover,.nav-phone-link:focus{color:var(--star);background:rgba(255,255,255,.05);outline:none;}
+  .nav-phone-link.active{color:var(--ochre-lt);}
+}
+</style>
 </head>
 <body>
 
@@ -252,21 +287,65 @@ a{text-decoration:none;color:inherit;}
   <div class="masthead-inner">
     <a href="index.html" class="logo">arch<span>AI</span>ology</a>
     <nav class="nav-links">
-                    <a class="nav-link " href="index.html">Home</a>
-  <a class="nav-link " href="news.html">Feed</a>
-  <a class="nav-link " href="map.html">Map</a>
-  <a class="nav-link active " href="sky.html">Sky Archive</a>
-  <a class="nav-link " href="maritime.html">Maritime</a>
-  <a class="nav-link " href="linguistics.html">Linguistics</a>
-  <a class="nav-link " href="inscriptions.html">Inscriptions</a>
-  <a class="nav-link " href="maya_inscriptions.html">Maya</a>
-  <a class="nav-link " href="bioanthro.html">Bioanthro</a>
-  <a class="nav-link " href="luwian.html">Luwian</a>
-  <a class="nav-link " href="upload.html">Upload</a>
-  <a class="nav-link " href="conferences.html">Conferences</a>
+  <a class="nav-link" href="index.html">Home</a>
+  <a class="nav-link" href="news.html">News</a>
+  <a class="nav-link" href="map.html">Atlas</a>
+  <a class="nav-link" href="agora.html">Living Agora</a>
+  <div class="nav-group">
+    <button class="nav-link nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-regions">Regions<span class="nav-caret" aria-hidden="true"></span></button>
+    <div class="nav-menu" id="nav-regions">
+      <a class="nav-menu-link" href="luwian.html">Anatolia</a>
+      <a class="nav-menu-link" href="maya_inscriptions.html">Mundo Maya</a>
+      <a class="nav-menu-link" href="minoans.html">Minoans</a>
+    </div>
+  </div>
+  <div class="nav-group">
+    <button class="nav-link nav-group-btn active" type="button" aria-expanded="false" aria-controls="nav-disciplines">Disciplines<span class="nav-caret" aria-hidden="true"></span></button>
+    <div class="nav-menu" id="nav-disciplines">
+      <a class="nav-menu-link" href="numismatics.html">Ancient Economy</a>
+      <a class="nav-menu-link" href="religion.html">Sacred Geography</a>
+      <a class="nav-menu-link active" href="sky.html" aria-current="page">Archaeoastronomy</a>
+      <a class="nav-menu-link" href="inscriptions.html">Epigraphy</a>
+      <a class="nav-menu-link" href="linguistics.html">Linguistics</a>
+      <a class="nav-menu-link" href="maritime.html">Maritime</a>
+      <a class="nav-menu-link" href="bioanthro.html">Bioanthropology</a>
+      <a class="nav-menu-link" href="lidar.html">LiDAR</a>
+    </div>
+  </div>
+  <div class="nav-group">
+    <button class="nav-link nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-more">More<span class="nav-caret" aria-hidden="true"></span></button>
+    <div class="nav-menu" id="nav-more">
+      <a class="nav-menu-link" href="games.html">Games</a>
+      <a class="nav-menu-link" href="conferences.html">Conferences</a>
+    </div>
+  </div>
+  <button class="nav-link nav-burger" type="button" aria-expanded="false" aria-controls="nav-phone"><span class="nav-burger-icon" aria-hidden="true"></span>Menu</button>
 </nav>
   </div>
 </header>
+<nav class="nav-phone" id="nav-phone" aria-label="Site">
+  <div class="nav-phone-group">Explore</div>
+  <a class="nav-phone-link" href="index.html">Home</a>
+  <a class="nav-phone-link" href="news.html">News</a>
+  <a class="nav-phone-link" href="map.html">Atlas</a>
+  <a class="nav-phone-link" href="agora.html">Living Agora</a>
+  <div class="nav-phone-group">Regions</div>
+  <a class="nav-phone-link" href="luwian.html">Anatolia</a>
+  <a class="nav-phone-link" href="maya_inscriptions.html">Mundo Maya</a>
+  <a class="nav-phone-link" href="minoans.html">Minoans</a>
+  <div class="nav-phone-group">Disciplines</div>
+  <a class="nav-phone-link" href="numismatics.html">Ancient Economy</a>
+  <a class="nav-phone-link" href="religion.html">Sacred Geography</a>
+  <a class="nav-phone-link active" href="sky.html" aria-current="page">Archaeoastronomy</a>
+  <a class="nav-phone-link" href="inscriptions.html">Epigraphy</a>
+  <a class="nav-phone-link" href="linguistics.html">Linguistics</a>
+  <a class="nav-phone-link" href="maritime.html">Maritime</a>
+  <a class="nav-phone-link" href="bioanthro.html">Bioanthropology</a>
+  <a class="nav-phone-link" href="lidar.html">LiDAR</a>
+  <div class="nav-phone-group">More</div>
+  <a class="nav-phone-link" href="games.html">Games</a>
+  <a class="nav-phone-link" href="conferences.html">Conferences</a>
+</nav>
 
 <div class="sky-hero">
   <div class="star-field"></div>
@@ -7451,5 +7530,39 @@ const BPC_PLATES = [
 
 </script>
 
+<script>
+// Site menu dropdowns: tap/click to open (hover and keyboard focus handled in CSS)
+document.querySelectorAll('.nav-group-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    const g = btn.parentElement, open = !g.classList.contains('open');
+    document.querySelectorAll('.nav-group.open').forEach(x => { x.classList.remove('open'); x.firstElementChild.setAttribute('aria-expanded', 'false'); });
+    g.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open));
+    e.stopPropagation();
+  });
+});
+document.addEventListener('click', e => e.isTrusted && document.querySelectorAll('.nav-group.open').forEach(x => {   // ignore script-generated clicks
+  x.classList.remove('open'); x.firstElementChild.setAttribute('aria-expanded', 'false'); }));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.activeElement?.blur(); });
+</script>
+<script>
+// Phone menu: open under the bar, close on outside tap, Escape, or widening past the breakpoint
+(() => {
+  const btn = document.querySelector('.nav-burger'), panel = document.getElementById('nav-phone');
+  if (!btn || !panel) return;
+  const bar = btn.closest('.masthead');
+  const set = open => {
+    if (open) {
+      const top = Math.max(0, bar.getBoundingClientRect().bottom);
+      panel.style.top = top + 'px'; panel.style.maxHeight = (innerHeight - top) + 'px';
+    }
+    panel.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open));
+  };
+  btn.addEventListener('click', e => { set(!panel.classList.contains('open')); e.stopPropagation(); });
+  panel.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', e => { if (e.isTrusted) set(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
+  matchMedia('(min-width: 761px)').addEventListener('change', m => { if (m.matches) set(false); });
+})();
+</script>
 </body>
 </html>

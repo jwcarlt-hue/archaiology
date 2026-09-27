@@ -137,6 +137,7 @@ a{text-decoration:none;color:inherit;}
 .nav-burger-icon{width:14px;height:10px;position:relative;border-top:1.5px solid currentColor;border-bottom:1.5px solid currentColor;}
 .nav-burger-icon::after{content:'';position:absolute;left:0;right:0;top:50%;border-top:1.5px solid currentColor;transform:translateY(-50%);}
 .nav-phone{display:none;}
+#nav-more.nav-menu{left:auto;right:-.9rem;}   /* More opens leftward even when the phone Menu button follows it */
 @media(max-width:760px){
   .masthead .nav-link:not(.nav-burger),.masthead .nav-group,.masthead-right{display:none !important;}
   .nav-burger{display:inline-flex;}
@@ -187,7 +188,6 @@ a{text-decoration:none;color:inherit;}
     <div class="nav-menu" id="nav-more">
       <a class="nav-menu-link" href="games.html">Games</a>
       <a class="nav-menu-link active" href="conferences.html" aria-current="page">Conferences</a>
-      <a class="nav-menu-link" href="upload.html">Upload</a>
     </div>
   </div>
   <button class="nav-link nav-burger" type="button" aria-expanded="false" aria-controls="nav-phone"><span class="nav-burger-icon" aria-hidden="true"></span>Menu</button>
@@ -216,7 +216,6 @@ a{text-decoration:none;color:inherit;}
   <div class="nav-phone-group">More</div>
   <a class="nav-phone-link" href="games.html">Games</a>
   <a class="nav-phone-link active" href="conferences.html" aria-current="page">Conferences</a>
-  <a class="nav-phone-link" href="upload.html">Upload</a>
 </nav>
 
 <div class="page-hero">
