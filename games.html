@@ -70,6 +70,8 @@ a{text-decoration:none;color:inherit;}
 .game-card:hover{box-shadow:0 4px 24px rgba(28,24,20,.08);border-color:var(--ochre);}
 
 .game-card-img{height:220px;overflow:hidden;background:var(--ink);position:relative;}
+.game-card-photo{width:100%;height:100%;display:block;transition:transform .4s ease;}
+.game-card:hover .game-card-photo{transform:scale(1.03);}
 .game-card-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;opacity:.35;}
 .game-card-body{padding:1.5rem;}
 
@@ -82,7 +84,7 @@ a{text-decoration:none;color:inherit;}
 .game-meta-label{color:var(--ash);display:block;margin-bottom:.1rem;letter-spacing:.05em;text-transform:uppercase;}
 .game-meta-value{color:var(--ink);font-weight:600;}
 
-.game-card-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:1rem;font-family:var(--sans);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre);border-bottom:1px solid rgba(184,137,42,.3);padding-bottom:.1rem;transition:all .2s;}
+.game-card-link{display:flex;width:fit-content;align-items:center;gap:.4rem;margin-top:1rem;font-family:var(--sans);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre);border-bottom:1px solid rgba(184,137,42,.3);padding-bottom:.1rem;transition:all .2s;}
 .game-card-link:hover{color:var(--terra);border-bottom-color:var(--terra);}
 
 /* ── ACCENT STRIPES ── */
@@ -210,7 +212,7 @@ a{text-decoration:none;color:inherit;}
     <!-- MESOAMERICAN BALLGAME -->
     <article class="game-card">
       <div class="game-card-img">
-        <div class="game-card-img-placeholder">⚽</div>
+        <img class="game-card-photo" src="assets/site-images/ballgamemarker.png" alt="Carved stone ballcourt marker showing a Maya ballplayer, ringed by hieroglyphs" loading="lazy" style="object-fit:contain;background:#000">
       </div>
       <div class="game-card-body">
         <div class="game-card-tag">Mesoamerica · Olmec–Maya–Aztec</div>
@@ -241,7 +243,7 @@ a{text-decoration:none;color:inherit;}
     <!-- EGYPT & NEAR EAST BOARD GAMES -->
     <article class="game-card">
       <div class="game-card-img">
-        <div class="game-card-img-placeholder" style="font-size:2.5rem">𓇳</div>
+        <img class="game-card-photo" src="assets/site-images/royalgameofur.jpg" alt="The Royal Game of Ur, inlaid board from the Royal Cemetery at Ur" loading="lazy" style="object-fit:contain;background:#000">
       </div>
       <div class="game-card-body">
         <div class="game-card-tag">Egypt &amp; Near East · 3500–500 BCE</div>
@@ -275,7 +277,7 @@ a{text-decoration:none;color:inherit;}
     <!-- GREEK BOARD GAMES -->
     <article class="game-card">
       <div class="game-card-img">
-        <div class="game-card-img-placeholder">⬡</div>
+        <img class="game-card-photo" src="assets/site-images/exekias.jpg" alt="Exekias amphora, c. 530 BCE: Achilles and Ajax playing a board game" loading="lazy" style="object-fit:cover;object-position:center 30%">
       </div>
       <div class="game-card-body">
         <div class="game-card-tag">Ancient Greece · c. 700–100 BCE</div>
@@ -302,7 +304,7 @@ a{text-decoration:none;color:inherit;}
     <!-- ROMAN BOARD GAMES -->
     <article class="game-card">
       <div class="game-card-img">
-        <div class="game-card-img-placeholder">🎲</div>
+        <img class="game-card-photo" src="assets/site-images/roman_gaming_board.JPG" alt="Roman stone gaming board with round counters" loading="lazy" style="object-fit:contain;background:#fff">
       </div>
       <div class="game-card-body">
         <div class="game-card-tag">Rome &amp; Byzantium · 200 BCE – 600 CE</div>
@@ -334,7 +336,7 @@ a{text-decoration:none;color:inherit;}
     <!-- EAST ASIAN & SOUTH ASIAN BOARD GAMES -->
     <article class="game-card">
       <div class="game-card-img">
-        <div class="game-card-img-placeholder" style="font-size:2.5rem;font-weight:700">圍</div>
+        <img class="game-card-photo" src="assets/site-images/liubo.jpg" alt="Han dynasty wooden figurines of two liubo players at a game board" loading="lazy" style="object-fit:cover">
       </div>
       <div class="game-card-body">
         <div class="game-card-tag">China &amp; India · 2000 BCE – 700 CE</div>
@@ -365,7 +367,7 @@ a{text-decoration:none;color:inherit;}
     <!-- NORTH AMERICAN STICK-AND-BALL -->
     <article class="game-card">
       <div class="game-card-img">
-        <div class="game-card-img-placeholder">🏑</div>
+        <img class="game-card-photo" src="assets/site-images/stickandballplayers.jpg" alt="Painting of three Indigenous stickball players holding their sticks" loading="lazy" style="object-fit:cover;object-position:center 30%">
       </div>
       <div class="game-card-body">
         <div class="game-card-tag">North America · Indigenous Traditions</div>
@@ -396,7 +398,7 @@ a{text-decoration:none;color:inherit;}
     <!-- ANCIENT OLYMPICS -->
     <article class="game-card">
       <div class="game-card-img">
-        <div class="game-card-img-placeholder">🏛️</div>
+        <img class="game-card-photo" src="assets/site-images/Ancient_Greek_sprinters_vase_cropped.jpg" alt="Black-figure vase painting of sprinters in a footrace" loading="lazy" style="object-fit:cover;object-position:center 8%">
       </div>
       <div class="game-card-body">
         <div class="game-card-tag">Greece · Panhellenic Games</div>
@@ -427,7 +429,7 @@ a{text-decoration:none;color:inherit;}
     <!-- ROMAN CHARIOT RACING -->
     <article class="game-card">
       <div class="game-card-img">
-        <div class="game-card-img-placeholder">🐎</div>
+        <img class="game-card-photo" src="assets/site-images/Winner_of_a_Roman_chariot_race.jpg" alt="Roman mosaic of a victorious charioteer with a palm branch and his four-horse team" loading="lazy" style="object-fit:cover;object-position:center 12%">
       </div>
       <div class="game-card-body">
         <div class="game-card-tag">Rome · Circus Maximus</div>
