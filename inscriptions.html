@@ -125,9 +125,9 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 }
 
 /* Map */
-#insc-map,#g-map{position:sticky;top:32px;height:calc(100vh - 32px);min-height:480px;
+#insc-map,#g-map,#p-map{position:sticky;top:32px;height:calc(100vh - 32px);min-height:480px;
   border-bottom:1px solid rgba(242,234,216,.06);}
-@media(max-width:1200px){#insc-map,#g-map{position:relative;top:auto;height:62vh;}}
+@media(max-width:1200px){#insc-map,#g-map,#p-map{position:relative;top:auto;height:62vh;}}
 
 /* Results list */
 .results-list{flex:1;padding:.8rem 1.2rem;}
@@ -296,7 +296,7 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 
 /* ── TAB BAR ── */
 .insc-tab-bar{display:flex;gap:0;border-bottom:1px solid rgba(242,234,216,.08);
-  background:rgba(8,9,14,.97);position:sticky;top:32px;z-index:200;padding:0 1.5rem;}
+  background:rgba(8,9,14,.97);position:sticky;top:32px;z-index:200;padding:0 1.5rem;overflow-x:auto;scrollbar-width:none;}
 .insc-tab{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
   color:rgba(242,234,216,.35);padding:.75rem 1.2rem;cursor:pointer;
   border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
@@ -304,6 +304,11 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 .insc-tab.active{color:#c8b88a;border-bottom-color:#b07030;}
 .tab-section{display:none;}
 /* ── Greek tab ── */
+.semitic-text{font-family:'Noto Serif Hebrew','SBL Hebrew','Frank Ruehl CLM','Times New Roman',serif;direction:rtl;text-align:right;unicode-bidi:plaintext;}
+.insc-text.semitic-text{font-size:.9rem;line-height:1.6;color:rgba(242,234,216,.7);}
+.d-text.semitic-text{font-size:1.1rem;line-height:1.9;white-space:pre-wrap;color:var(--stone);}
+.b-lang{background:rgba(90,110,140,.15);color:#8fa3c0;border:1px solid rgba(90,110,140,.3);}
+.b-rel{background:rgba(120,100,60,.12);color:#b8a070;border:1px solid rgba(120,100,60,.28);}
 .greek-text{font-family:'Noto Serif','GFS Didot',Georgia,serif;}
 .insc-text.greek-text{font-size:.82rem;line-height:1.6;color:rgba(242,234,216,.7);}
 .d-text.greek-text{font-size:1rem;line-height:1.85;white-space:pre-wrap;color:var(--stone);}
@@ -430,6 +435,7 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
 <div class="insc-tab-bar">
   <div class="insc-tab active" onclick="inscSetTab(this,'tab-inscriptions')">📜 Latin Inscriptions</div>
   <div class="insc-tab" onclick="inscSetTab(this,'tab-greek')">🏛 Greek Inscriptions</div>
+  <div class="insc-tab" onclick="inscSetTab(this,'tab-iip')">🕍 Israel/Palestine</div>
   <div class="insc-tab" onclick="inscSetTab(this,'tab-oracle')">🦴 Oracle Bone Sites</div>
 </div>
 
@@ -608,6 +614,91 @@ html,body{font-family:var(--sans);background:var(--ink);color:var(--stone);min-h
   </div>
 </div>
 </div><!-- /#tab-greek -->
+
+<!-- ── TAB: Inscriptions of Israel/Palestine ── -->
+<div id="tab-iip" class="tab-section">
+<div class="page-body">
+
+  <aside class="search-panel">
+    <div class="panel-label">Search text</div>
+    <input class="search-input" id="p-text" type="text" placeholder="e.g. שלום, ἐνθάδε κεῖται, menorah, Eleazar…" autocomplete="off">
+    <div style="font-size:.6rem;color:rgba(242,234,216,.3);margin-top:.3rem;line-height:1.4">Greek, Hebrew, Aramaic or Latin; accents and vowel points optional. Also searches English translations.</div>
+
+    <div class="panel-label">Find-spot or region</div>
+    <input class="search-input" id="p-place" type="text" placeholder="e.g. Jerusalem, Caesarea, Beth Shearim, Negev…">
+
+    <div class="panel-label">Language</div>
+    <div class="chip-row" id="p-lang-chips">
+      <button class="chip active" data-lang="">All</button>
+      <button class="chip" data-lang="grc">Greek</button>
+      <button class="chip" data-lang="arc">Aramaic</button>
+      <button class="chip" data-lang="he">Hebrew</button>
+      <button class="chip" data-lang="la">Latin</button>
+    </div>
+
+    <div class="panel-label">Inscription type</div>
+    <div class="chip-row" id="p-type-chips">
+      <button class="chip active" data-type="">All</button>
+      <button class="chip" data-type="Funerary">Funerary</button>
+      <button class="chip" data-type="Dedicatory">Dedicatory</button>
+      <button class="chip" data-type="Label">Label</button>
+      <button class="chip" data-type="Graffito">Graffito</button>
+      <button class="chip" data-type="Legal">Legal</button>
+      <button class="chip" data-type="Commodity chit">Commodity chit</button>
+      <button class="chip" data-type="Prayer">Prayer</button>
+    </div>
+
+    <div class="panel-label">Religious context</div>
+    <div class="chip-row" id="p-rel-chips">
+      <button class="chip active" data-rel="">Any</button>
+      <button class="chip" data-rel="Jewish">Jewish</button>
+      <button class="chip" data-rel="Christian">Christian</button>
+      <button class="chip" data-rel="Other">Other / pagan</button>
+    </div>
+
+    <div class="panel-label">Date range (CE; negative = BCE)</div>
+    <div class="range-row">
+      <input class="range-input" id="p-date-a" type="number" placeholder="-500">
+      <span class="range-sep">to</span>
+      <input class="range-input" id="p-date-e" type="number" placeholder="640">
+    </div>
+
+    <div class="panel-label">Translation</div>
+    <div class="chip-row" id="p-trans-chips">
+      <button class="chip active" data-trans="">Any</button>
+      <button class="chip" data-trans="yes">With English translation</button>
+    </div>
+
+    <button class="search-btn" onclick="pSearch(1)">Search Israel/Palestine</button>
+    <div class="result-count" id="p-result-count"></div>
+
+    <div class="g-coverage">
+      <div class="panel-label" style="margin-top:0">About this corpus</div>
+      <div class="g-cov-row"><strong>Inscriptions of Israel/Palestine</strong><span class="g-cov-tag live">Live</span><br>
+        <span id="p-cov-total">Inscriptions</span> up to 640 CE, in Greek, Aramaic, Hebrew, Latin and other languages.
+        Michael L. Satlow, ed., Brown University · CC BY-NC 4.0 ·
+        <a href="https://www.inscriptionsisraelpalestine.org/" target="_blank" rel="noopener">inscriptionsisraelpalestine.org</a></div>
+      <div class="g-cov-row" style="color:rgba(242,234,216,.35)">Map points are placed at the find-spot's settlement (from IIP or the Pleiades gazetteer), so many texts share one point. Ostraca recorded only as "Idumea" sit at the region's centre.</div>
+    </div>
+  </aside>
+
+  <div class="results-area">
+    <div id="p-map"></div>
+    <div class="results-list">
+      <div class="results-header">
+        <div class="results-n" id="p-results-n">Loading…</div>
+        <div class="sort-row">
+          <button class="sort-btn active" id="p-sort-date" onclick="pSetSort('date')">Date</button>
+          <button class="sort-btn" id="p-sort-place" onclick="pSetSort('place')">Place</button>
+          <button class="sort-btn" id="p-sort-id" onclick="pSetSort('id')">ID</button>
+        </div>
+      </div>
+      <div id="p-results-container"></div>
+      <div class="pagination" id="p-pagination" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /#tab-iip -->
 
 <!-- ── TAB: Oracle Bone Sites ── -->
 <div id="tab-oracle" class="tab-section">
@@ -2270,6 +2361,322 @@ function gSetHero(greek) {
 }
 </script>
 
+
+<script>
+// ═══════════════════ ISRAEL/PALESTINE (iip_inscriptions) ═══════════════════
+const P_TABLE = `${SB_URL}/rest/v1/iip_inscriptions`;
+const P_PER   = 25;
+const P_FRAME = [[29.5, 34.2], [33.35, 36.0]];
+const P_LIST  = "doc_id,title,place,region,site,lat,lng,date_from,date_to,date_text,inscription_type,religion,language_label,text_dir,main_lang,object_type,edition_text,translation_en";
+const P_RTL   = ['he', 'heb', 'arc', 'phn', 'syc', 'nbt', 'sam', 'smp'];
+let pMap = null, pMarkers = [], pSort = 'date', pPage = 1, pLang = '', pType = '', pRel = '', pTrans = '', pFirstFit = true, pInited = false;
+
+// Same folding the importer applies to search_text: no accents or vowel points, lower case, final letters folded
+const pFold = s => (s || '').normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/ς/g, 'σ')
+  .replace(/[ךםןףץ]/g, c => ({'ך':'כ','ם':'מ','ן':'נ','ף':'פ','ץ':'צ'}[c])).trim();
+const pTextClass = r => (r.text_dir === 'rtl' ? 'semitic-text' : (r.main_lang === 'grc' ? 'greek-text' : ''));
+const pPlace = r => r.place && !/^unknown$/i.test(r.place) ? r.place : (r.region || 'Find-spot unknown');
+
+function pHeroHTML() {
+  return `
+    <div class="hero-eyebrow">Inscriptions of Israel/Palestine · Brown University · CC BY-NC 4.0</div>
+    <h1 class="hero-title">Israel/<em>Palestine</em></h1>
+    <p class="hero-sub">Inscriptions from the Iron Age to the Muslim conquest in 640 CE: synagogue dedications, ossuaries, epitaphs, mosaics, graffiti and ostraca, in Greek, Aramaic, Hebrew and Latin. Shown in Leiden conventions: [ ] restored by the editor, [- - -] lost.</p>
+    <div class="stat-strip">
+      <div class="stat"><div class="stat-n" id="ps-total">—</div><div class="stat-l">Inscriptions</div></div>
+      <div class="stat"><div class="stat-n" id="ps-greek">—</div><div class="stat-l">Greek</div></div>
+      <div class="stat"><div class="stat-n" id="ps-semitic">—</div><div class="stat-l">Aramaic &amp; Hebrew</div></div>
+      <div class="stat"><div class="stat-n" id="ps-trans">—</div><div class="stat-l">English translations</div></div>
+      <div class="stat"><div class="stat-n" id="ps-mapped">—</div><div class="stat-l">Mapped</div></div>
+      <div class="stat"><div class="stat-n" id="ps-earliest">—</div><div class="stat-l">Earliest</div></div>
+    </div>`;
+}
+
+// Live stats: counts come from the table, never hard-coded
+async function pLoadStats() {
+  const count = async (extra) => {
+    const r = await fetch(`${P_TABLE}?select=doc_id${extra}&limit=1`, {headers:{...HDR, Prefer:'count=exact'}});
+    const cr = r.headers.get('content-range'); return cr ? parseInt(cr.split('/')[1], 10) : null;
+  };
+  try {
+    const [total, greek, semitic, trans, mapped, first] = await Promise.all([
+      count(''), count('&languages=ilike.*grc*'), count('&or=(languages.ilike.*arc*,languages.ilike.*he*)'),
+      count('&translation_en=not.is.null'), count('&lat=not.is.null'),
+      fetch(`${P_TABLE}?select=date_from&date_from=not.is.null&order=date_from.asc&limit=1`, {headers:HDR}).then(r => r.json()),
+    ]);
+    const fmt = n => n == null ? '—' : n.toLocaleString('en-US');
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    set('ps-total', fmt(total)); set('ps-greek', fmt(greek)); set('ps-semitic', fmt(semitic));
+    set('ps-trans', fmt(trans)); set('ps-mapped', fmt(mapped));
+    const y = first?.[0]?.date_from;
+    set('ps-earliest', y == null ? '—' : (y < 0 ? `${Math.abs(y)} BCE` : `${y} CE`));
+    set('p-cov-total', total == null ? 'Inscriptions' : `${fmt(total)} inscriptions`);
+  } catch (e) { /* stats are decorative; search still works */ }
+}
+
+function pInit() {
+  if (pInited) return;
+  pInited = true;
+  pMap = L.map('p-map', {zoomSnap:0.25, zoomControl:false, attributionControl:false, maxZoom:19});
+  pMap.fitBounds(P_FRAME);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
+    {attribution:'Tiles © Esri — National Geographic', maxNativeZoom:16, maxZoom:19}).addTo(pMap);
+  L.control.zoom({position:'bottomright'}).addTo(pMap);
+  L.control.attribution({position:'bottomright', prefix:'IIP · CC BY-NC 4.0 · places: Pleiades'}).addTo(pMap);
+
+  const chips = (id, attr, set) => document.querySelectorAll(`#${id} .chip`).forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll(`#${id} .chip`).forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); set(btn.dataset[attr]);
+  }));
+  chips('p-lang-chips', 'lang', v => pLang = v);
+  chips('p-type-chips', 'type', v => pType = v);
+  chips('p-rel-chips', 'rel', v => pRel = v);
+  chips('p-trans-chips', 'trans', v => pTrans = v);
+  ['p-text', 'p-place'].forEach(id => document.getElementById(id)
+    .addEventListener('keydown', e => { if (e.key === 'Enter') pSearch(1); }));
+
+  pSearch(1);
+}
+
+function pSetSort(s) {
+  pSort = s;
+  document.querySelectorAll('#tab-iip .sort-btn').forEach(b => b.classList.toggle('active', b.id === `p-sort-${s}`));
+  pSearch(pPage);
+}
+
+function pBuildQuery(page) {
+  const qText  = gSafe(document.getElementById('p-text').value);
+  const qPlace = gSafe(document.getElementById('p-place').value);
+  const qA = document.getElementById('p-date-a').value, qE = document.getElementById('p-date-e').value;
+
+  const ands = [];
+  if (qText) {
+    const f = encodeURIComponent(gSafe(pFold(qText))), raw = encodeURIComponent(qText);
+    ands.push(`or(search_text.ilike.*${f}*,translation_en.ilike.*${raw}*,summary.ilike.*${raw}*)`);
+  }
+  if (qPlace) {
+    const p = encodeURIComponent(qPlace);
+    ands.push(`or(place.ilike.*${p}*,region.ilike.*${p}*,site.ilike.*${p}*)`);
+  }
+  if (pLang === 'he') ands.push('or(languages.ilike.*he*)');
+
+  let url = `${P_TABLE}?select=${P_LIST}`;
+  if (ands.length) url += `&and=(${ands.join(',')})`;
+  if (pLang && pLang !== 'he') url += `&languages=ilike.*${pLang}*`;
+  if (pType) url += `&inscription_type=eq.${encodeURIComponent(pType)}`;
+  if (pRel)  url += `&religion=ilike.${encodeURIComponent(pRel)}*`;
+  if (qA)    url += `&date_from=gte.${parseInt(qA, 10)}`;
+  if (qE)    url += `&date_to=lte.${parseInt(qE, 10)}`;
+  if (pTrans === 'yes') url += `&translation_en=not.is.null`;
+  url += { date:'&order=date_from.asc.nullslast,doc_id.asc', place:'&order=place.asc.nullslast,doc_id.asc', id:'&order=doc_id.asc' }[pSort];
+  url += `&limit=${P_PER}&offset=${(page - 1) * P_PER}`;
+  return url;
+}
+
+async function pSearch(page = 1) {
+  pPage = page;
+  const box = document.getElementById('p-results-container');
+  box.innerHTML = `<div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div><p style="margin-top:1rem">Searching corpus…</p></div>`;
+  document.getElementById('p-pagination').style.display = 'none';
+  try {
+    const res = await fetch(pBuildQuery(page), {headers:{...HDR, Prefer:'count=exact'}});
+    if (!res.ok) throw new Error(`Database returned ${res.status}`);
+    const rows = await res.json();
+    const cr = res.headers.get('content-range');
+    const total = cr ? parseInt(cr.split('/')[1], 10) || 0 : rows.length;
+    if (!rows.length) {
+      box.innerHTML = `<div class="empty-state"><h3>No inscriptions found</h3><p style="font-size:.78rem">Try fewer filters or a shorter word. Accents and vowel points are optional.</p></div>`;
+      document.getElementById('p-results-n').textContent = '0 results';
+      document.getElementById('p-result-count').textContent = '';
+      pRenderMarkers([]);
+      return;
+    }
+    const pages = Math.ceil(total / P_PER);
+    document.getElementById('p-results-n').textContent = `${total.toLocaleString('en-US')} inscriptions`;
+    document.getElementById('p-result-count').textContent = `Page ${page} of ${pages}`;
+    pRenderResults(rows, box);
+    pRenderMarkers(rows);
+    pRenderPagination(page, pages);
+  } catch (e) {
+    box.innerHTML = `<div class="empty-state"><h3>Search error</h3><p style="font-size:.78rem">${gEsc(e.message)}</p></div>`;
+  }
+}
+
+function pRenderResults(rows, box) {
+  box.innerHTML = rows.map(r => {
+    const range = fmtDate(r.date_from, r.date_to, null), date = range !== '—' ? range : (r.date_text || '');
+    const text = (r.edition_text || '').replace(/\n/g, ' / ');
+    const trans = r.translation_en || '';
+    return `
+    <div class="insc-card" onclick="pShowDetail('${gEsc(r.doc_id)}')">
+      <div class="insc-header">
+        <div class="insc-id">${gEsc(r.doc_id.toUpperCase())}</div>
+        <div>
+          <div class="insc-place">${gEsc(pPlace(r))}${r.region && r.place && r.region !== r.place ? ` <span style="color:rgba(242,234,216,.35);font-weight:400">· ${gEsc(r.region)}</span>` : ''}</div>
+          ${r.site ? `<div class="g-title">${gEsc(gCap(r.site))}</div>` : ''}
+        </div>
+        <div class="insc-badges">
+          ${r.language_label ? `<span class="badge b-lang">${gEsc(r.language_label)}</span>` : ''}
+          ${r.inscription_type ? `<span class="badge b-type">${gEsc(r.inscription_type)}</span>` : ''}
+          ${date ? `<span class="badge b-date">${gEsc(date.slice(0, 28))}</span>` : ''}
+          ${r.religion ? `<span class="badge b-rel">${gEsc(r.religion.replace(' (incl. pagan)', ''))}</span>` : ''}
+        </div>
+      </div>
+      ${text ? `<div class="insc-text ${pTextClass(r)}" dir="${r.text_dir === 'rtl' ? 'rtl' : 'auto'}">${gEsc(text.slice(0, 160))}${text.length > 160 ? '…' : ''}</div>` : ''}
+      ${trans ? `<div class="g-trans">${gEsc(trans.slice(0, 140))}${trans.length > 140 ? '…' : ''}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// Many texts share a settlement's coordinates, so group them: one marker per place
+function pRenderMarkers(rows) {
+  pMarkers.forEach(m => pMap?.removeLayer(m)); pMarkers = [];
+  if (!pMap) return;
+  const groups = new Map();
+  rows.filter(r => r.lat != null && r.lng != null).forEach(r => {
+    const k = `${r.lat},${r.lng}`;
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(r);
+  });
+  for (const list of groups.values()) {
+    const n = list.length, r0 = list[0], size = n > 1 ? 16 : 10;
+    const icon = L.divIcon({
+      html: `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2 - 1}" fill="#b07030" fill-opacity=".85" stroke="#f2ead8" stroke-width=".8"/>${n > 1 ? `<text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-size="8" font-family="sans-serif" fill="#fff">${n}</text>` : ''}</svg>`,
+      className: '', iconSize: [size, size], iconAnchor: [size/2, size/2],
+    });
+    const m = L.marker([r0.lat, r0.lng], {icon});
+    if (n === 1) {
+      m.bindPopup(`<div class="map-popup-id">${gEsc(r0.doc_id.toUpperCase())}</div><div class="map-popup-place">${gEsc(pPlace(r0))}</div>`)
+       .on('click', () => pShowDetail(r0.doc_id));
+    } else {
+      m.bindPopup(`<div class="map-popup-place">${gEsc(pPlace(r0))} · ${n} on this page</div>
+        <div class="map-popup-list">${list.map(r => `<a onclick="pShowDetail('${gEsc(r.doc_id)}')">${gEsc(r.doc_id.toUpperCase())}${r.inscription_type ? ' · ' + gEsc(r.inscription_type) : ''}${r.language_label ? ' · ' + gEsc(r.language_label) : ''}</a>`).join('')}</div>`);
+    }
+    m.addTo(pMap); pMarkers.push(m);
+  }
+  if (!pMarkers.length) return;
+  if (pFirstFit) { pMap.fitBounds(P_FRAME); pFirstFit = false; }
+  else { try { pMap.fitBounds(L.featureGroup(pMarkers).getBounds(), {padding:[30, 30], maxZoom:11}); } catch (e) {} }
+}
+
+function pRenderPagination(page, total) {
+  const pag = document.getElementById('p-pagination');
+  if (total <= 1) { pag.style.display = 'none'; return; }
+  pag.style.display = 'flex';
+  const pages = [1];
+  if (page > 3) pages.push('…');
+  for (let p = Math.max(2, page - 1); p <= Math.min(total - 1, page + 1); p++) pages.push(p);
+  if (page < total - 2) pages.push('…');
+  pages.push(total);
+  pag.innerHTML = [
+    `<button class="page-btn" ${page === 1 ? 'disabled' : ''} onclick="pSearch(${page - 1})">‹</button>`,
+    ...pages.map(p => p === '…'
+      ? `<span style="color:rgba(242,234,216,.2);font-size:.7rem;padding:0 .3rem">…</span>`
+      : `<button class="page-btn ${p === page ? 'active' : ''}" onclick="pSearch(${p})">${p}</button>`),
+    `<button class="page-btn" ${page === total ? 'disabled' : ''} onclick="pSearch(${page + 1})">›</button>`,
+  ].join('');
+}
+
+async function pShowDetail(docId) {
+  const panel = document.getElementById('detail'), content = document.getElementById('detail-content');
+  panel.classList.add('open');
+  content.innerHTML = `<div style="padding:2rem;color:rgba(242,234,216,.3)">Loading…</div>`;
+  try {
+    const res = await fetch(`${P_TABLE}?doc_id=eq.${encodeURIComponent(docId)}&select=*&limit=1`, {headers:HDR});
+    const rows = await res.json();
+    if (!rows.length) { content.innerHTML = `<div style="padding:2rem;color:rgba(242,234,216,.3)">Inscription not found.</div>`; return; }
+    const d = rows[0], id = d.doc_id.toUpperCase();
+    const range = fmtDate(d.date_from, d.date_to, null);
+    const date = d.date_text || range;
+    const pleiadesId = (d.pleiades_uri || '').match(/places\/(\d+)/)?.[1];
+    const cell = (k, v, mono) => v ? `<div class="d-meta-cell"><div class="d-meta-k">${k}</div><div class="d-meta-v"${mono ? ' style="font-family:var(--mono);font-size:.7rem"' : ''}>${gEsc(v)}</div></div>` : '';
+    const link = (href, label) => `<a class="d-link" href="${gEsc(href)}" target="_blank" rel="noopener">→ ${gEsc(label)}</a>`;
+    const bibl = (d.bibliography || '').split('; ').filter(Boolean);
+    const cite = `${bibl[0] ? bibl[0] + ' ' : ''}[= IIP ${id}, ${d.source_url}]`;
+
+    content.innerHTML = `
+      <div class="d-hero">
+        <div class="d-hd">${gEsc(id)} · Inscriptions of Israel/Palestine</div>
+        <div class="d-place">${gEsc(pPlace(d))}${d.site ? ` <span style="font-size:.75em;color:rgba(242,234,216,.45)">· ${gEsc(gCap(d.site))}</span>` : ''}</div>
+        ${d.summary ? `<div class="g-title" style="font-size:.8rem;margin-bottom:.5rem">${gEsc(d.summary)}</div>` : ''}
+        <div class="d-badges">
+          ${d.language_label ? `<span class="badge b-lang">${gEsc(d.language_label)}</span>` : ''}
+          ${d.inscription_type ? `<span class="badge b-type">${gEsc(d.inscription_type)}</span>` : ''}
+          ${range !== '—' ? `<span class="badge b-date">${gEsc(range)}</span>` : ''}
+          ${d.religion ? `<span class="badge b-rel">${gEsc(d.religion)}</span>` : ''}
+        </div>
+      </div>
+
+      ${d.edition_text ? `
+      <div class="d-section">
+        <div class="d-lbl">Text (Leiden conventions)</div>
+        <div class="d-text ${pTextClass(d) || 'greek-text'}" dir="${d.text_dir === 'rtl' ? 'rtl' : 'auto'}">${gEsc(d.edition_text)}</div>
+        <details class="g-key"><summary>How to read the brackets</summary>
+          <dl>
+            <dt>[αβγ]</dt><dd>lost on the stone, restored by the editor</dd>
+            <dt>[- - -]</dt><dd>lost, extent unknown</dd>
+            <dt>[· · ·]</dt><dd>lost, number of letters known</dd>
+            <dt>α̣</dt><dd>damaged letter, reading uncertain</dd>
+            <dt>α(βγ)</dt><dd>abbreviation expanded by the editor</dd>
+            <dt>⟨αβ⟩</dt><dd>omitted by the carver, added by the editor</dd>
+            <dt>{αβ}</dt><dd>written in error by the carver</dd>
+            <dt>⟦αβ⟧</dt><dd>deliberately erased in antiquity</dd>
+          </dl>
+        </details>
+      </div>` : ''}
+
+      ${d.translation_en ? `
+      <div class="d-section">
+        <div class="d-lbl">English translation</div>
+        <div style="font-size:.85rem;line-height:1.7;color:rgba(242,234,216,.8)">${gEsc(d.translation_en)}</div>
+      </div>` : ''}
+
+      <div class="d-section">
+        <div class="d-lbl">Details</div>
+        <div class="d-meta-grid">
+          ${cell('Find-spot', pPlace(d))}
+          ${cell('Region', d.region)}
+          ${cell('Site', d.site && gCap(d.site))}
+          ${cell('Date', date)}
+          ${cell('Type', d.inscription_type)}
+          ${cell('Religious context', d.religion)}
+          ${cell('Object', d.object_type && gCap(d.object_type))}
+          ${cell('Material', d.material && gCap(d.material))}
+          ${cell('Languages', d.language_label)}
+          ${d.lat != null ? cell(d.geo_source === 'Pleiades' ? 'Coordinates (settlement, via Pleiades)' : 'Coordinates', `${d.lat}, ${d.lng}`, true) : ''}
+        </div>
+      </div>
+
+      ${d.commentary ? `
+      <div class="d-section">
+        <div class="d-lbl">Commentary</div>
+        <div style="font-size:.78rem;line-height:1.7;color:rgba(242,234,216,.65)">${gEsc(d.commentary)}</div>
+      </div>` : ''}
+
+      ${bibl.length ? `
+      <div class="d-section">
+        <div class="d-lbl">Editions</div>
+        <div style="font-size:.72rem;line-height:1.7;color:rgba(242,234,216,.55)">${bibl.map(gEsc).join('<br>')}</div>
+      </div>` : ''}
+
+      <div class="d-links">
+        ${link(d.source_url, 'View on IIP (photos, apparatus, full record)')}
+        ${pleiadesId ? link(`https://pleiades.stoa.org/places/${pleiadesId}`, `Pleiades: ${pleiadesId}`) : ''}
+      </div>
+      <div style="padding:0 1.4rem 1.4rem;font-size:.6rem;color:rgba(242,234,216,.3);line-height:1.5">
+        Cite as: ${gEsc(cite)}<br>
+        Michael L. Satlow, ed., <em>Inscriptions of Israel/Palestine</em>, 2002–, doi:10.26300/pz1d-st89 · CC BY-NC 4.0. Text rendered from the project's EpiDoc edition.
+      </div>`;
+  } catch (e) {
+    content.innerHTML = `<div style="padding:2rem;color:rgba(242,234,216,.3)">Error loading inscription: ${gEsc(e.message)}</div>`;
+  }
+}
+
+function pSetHero() {
+  document.querySelector('.hero .container').innerHTML = pHeroHTML();
+  pLoadStats();
+}
+</script>
 <script>
 function inscSetTab(el, id) {
   document.querySelectorAll('.insc-tab').forEach(t => t.classList.remove('active'));
@@ -2289,6 +2696,11 @@ function inscSetTab(el, id) {
   gSetHero(id === 'tab-greek');
   if (id === 'tab-greek') {
     requestAnimationFrame(() => { gInit(); gMap && gMap.invalidateSize(); });
+  }
+  // Israel/Palestine tab: same pattern
+  if (id === 'tab-iip') {
+    pSetHero();
+    requestAnimationFrame(() => { pInit(); pMap && pMap.invalidateSize(); });
   }
   // Invalidate Heidelberg map size when returning to it
   if (id === 'tab-inscriptions' && typeof map !== 'undefined' && map) {
