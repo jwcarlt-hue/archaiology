@@ -1162,7 +1162,9 @@ const G = {
     this.renderAwayMini();
     this.updateScoreboard();
     this.updateRightPanel();
-    this.log("The ball is placed at center court. Edzna Squad faces Tenochtitlan in a Prestige match.", "phase");
+    const _hN = this._careerFix ? this._careerFix.homeName : 'Edzna';
+    const _aN = this._careerFix ? this._careerFix.awayName : 'Tenochtitlan';
+    this.log(`The ball is placed at center court. ${_hN} Squad faces ${_aN} in a ${this.matchType.type} match.`, "phase");
     this.log("Full Moon rises — RF bonuses active. Kukulcán watches from above.", "cosmic");
     this.setStatus("Click a player in your roster to activate them, then choose an action.");
     this.startServePhase();
@@ -1243,7 +1245,9 @@ const G = {
     const awayTotal = awayDice[0]+awayDice[1]+awayMod;
     const homeWins = homeTotal >= awayTotal;
     this.isHomeTurn = homeWins;
-    this.log(`Serve: Edzna [${homeDice}+${homeMod}=${homeTotal}] vs Tenochtitlan [${awayDice}+${awayMod}=${awayTotal}] — ${homeWins?'Edzna wins serve':'Tenochtitlan wins serve'}!`, 'phase');
+    const _sH = this._careerFix ? this._careerFix.homeName : 'Edzna';
+    const _sA = this._careerFix ? this._careerFix.awayName : 'Tenochtitlan';
+    this.log(`Serve: ${_sH} [${homeDice}+${homeMod}=${homeTotal}] vs ${_sA} [${awayDice}+${awayMod}=${awayTotal}] — ${homeWins?_sH+' wins serve':_sA+' wins serve'}!`, 'phase');
     this.moveBall(homeWins ? 120 : 380);
     this.startActionPhase();
   },
@@ -1255,7 +1259,7 @@ const G = {
     if(this.lostActionNext && !this.isHomeTurn) {
       this.actionsLeft = 2;
       this.lostActionNext = false;
-      this.log("Tenochtitlan lost an action from previous critical!", "critical");
+      this.log(`${this._careerFix ? this._careerFix.awayName : 'Tenochtitlan'} lost an action from previous critical!`, "critical");
     }
     document.getElementById('opp-banner').style.display = 'none';
     if(this.isHomeTurn) {
@@ -1264,7 +1268,7 @@ const G = {
       this.setStatus("Your turn — select a player and choose an action.");
       this.updateButtons();
     } else {
-      this.setStatus("Tenochtitlan is taking their turn…");
+      this.setStatus(`${this._careerFix ? this._careerFix.awayName : 'Tenochtitlan'} is taking their turn…`);
       this.disableButtons();
       document.getElementById('opp-banner').style.display = 'block';
       setTimeout(()=>this.runOpponentTurn(), 800);
@@ -1616,7 +1620,9 @@ const G = {
     if(this.homeScore >= 7 || this.awayScore >= 7) {
       const homeWon = this.homeScore >= 7;
       if(homeWon) this.homeSets++; else this.awaySets++;
-      this.log(`SET OVER — ${homeWon?'Edzna':'Tenochtitlan'} wins the set! [${this.homeScore}–${this.awayScore}]`, 'phase');
+      const _csH = this._careerFix ? this._careerFix.homeName : 'Edzna';
+      const _csA = this._careerFix ? this._careerFix.awayName : 'Tenochtitlan';
+      this.log(`SET OVER — ${homeWon?_csH:_csA} wins the set! [${this.homeScore}–${this.awayScore}]`, 'phase');
       this.cosmicSignificance += homeWon ? 1 : -1;
       this.updateCosmic();
       if(this.homeSets >= 2 || this.awaySets >= 2) {
@@ -1642,17 +1648,37 @@ const G = {
 
   // ── MATCH OVER ────────────────────────────────────────────────────────────
   endMatch(homeWon) {
-    const mt = this.matchType;
+    const mt  = this.matchType;
+    const hN  = this._careerFix ? this._careerFix.homeName : 'Edzna';
+    const aN  = this._careerFix ? this._careerFix.awayName : 'Tenochtitlan';
     const stakes = homeWon
-      ? `Victory in the ${mt.type} match earns Edzna: <strong>${mt.winReward}</strong>. The crowd's roar echoes through the stone ring.`
-      : `Defeat in the ${mt.type} match costs Edzna: <strong>${mt.lossPenalty}</strong>. The captain bows before the losing verdict.`;
+      ? `Victory in the ${mt.type} match earns ${hN}: <strong>${mt.winReward}</strong>. The crowd's roar echoes through the stone ring.`
+      : `Defeat in the ${mt.type} match costs ${hN}: <strong>${mt.lossPenalty}</strong>. The captain bows before the losing verdict.`;
 
     document.getElementById('over-title').textContent = homeWon ? "Victory!" : "Defeat";
-    document.getElementById('over-subtitle').textContent = `Edzna ${this.homeSets} – ${this.awaySets} Tenochtitlan`;
+    document.getElementById('over-subtitle').textContent = `${hN} ${this.homeSets} – ${this.awaySets} ${aN}`;
     document.getElementById('over-stakes').innerHTML = stakes;
     document.getElementById('match-over').classList.add('show');
     document.getElementById('court-panel').style.display='none';
-    this.log(`MATCH OVER — Edzna ${this.homeSets}–${this.awaySets} Tenochtitlan. ${homeWon?mt.winReward:mt.lossPenalty}`, 'phase');
+    this.log(`MATCH OVER — ${hN} ${this.homeSets}–${this.awaySets} ${aN}. ${homeWon?mt.winReward:mt.lossPenalty}`, 'phase');
+
+    // Write result back to career hub via localStorage
+    if (this._careerFix) {
+      try {
+        localStorage.setItem('mbl_result', JSON.stringify({
+          careerMode:  true,
+          homeWon,
+          homeSets:    this.homeSets,
+          awaySets:    this.awaySets,
+          stakesType:  this._careerFix.stakesType,
+          homeName:    hN,
+          awayName:    aN,
+          matchType:   mt.type,
+          winReward:   mt.winReward,
+          lossPenalty: mt.lossPenalty,
+        }));
+      } catch(e) {}
+    }
   },
 
   newMatch() {
@@ -1678,7 +1704,9 @@ const G = {
     document.getElementById('court-panel').style.flexDirection='column';
     this.renderRosters(); this.renderAwayMini();
     this.updateRightPanel(); this.updateScoreboard();
-    this.log(`--- New Match: Edzna vs Tenochtitlan · ${this.matchType.type} · ${this.moonPhase.name} ---`, 'phase');
+    const _nmH = this._careerFix ? this._careerFix.homeName : 'Edzna';
+    const _nmA = this._careerFix ? this._careerFix.awayName : 'Tenochtitlan';
+    this.log(`--- New Match: ${_nmH} vs ${_nmA} · ${this.matchType.type} · ${this.moonPhase.name} ---`, 'phase');
     this.startServePhase();
   },
 
@@ -1691,7 +1719,7 @@ const G = {
       this.log("Momentum fades at end of turn.", '');
       this.momentumActive = false;
     }
-    this.log(`--- End of Edzna turn ${this.turn} ---`, 'phase');
+    this.log(`--- End of ${this._careerFix ? this._careerFix.homeName : 'Edzna'} turn ${this.turn} ---`, 'phase');
     this.isHomeTurn = false;
     this.renderRosters();
     if(!this.checkSetOver()) this.startActionPhase();
@@ -1790,8 +1818,60 @@ const G = {
   },
 };
 
+// ── CAREER MODE FIXTURE LOADER ────────────────────────────────────────────
+function applyCareerFixture() {
+  let raw;
+  try { raw = localStorage.getItem('mbl_fixture'); } catch(e) {}
+  if (!raw) return;
+  let fix;
+  try { fix = JSON.parse(raw); } catch(e) { return; }
+  if (!fix || !fix.careerMode) return;
+
+  // Override squads
+  G.home = fix.homeRoster.map(p => ({ ...p, maxEnd: p.maxEnd || p.end || 8 }));
+  G.away = fix.awayRoster.map(p => ({ ...p, maxEnd: p.maxEnd || p.end || 8 }));
+
+  // Override venue
+  G.venue = {
+    name:         fix.homeName,
+    regionTag:    '',
+    courtTN:      fix.courtTN || 7,
+    type:         'Ritual',
+    modifier:     'home',
+    note:         '',
+    agiBonus:     0,
+    rfBonus:      0,
+    drBonus:      0,
+    courtTNBonus: 0,
+  };
+
+  // Override match type / stakes
+  const stakeMap = { prestige: 1, 'proxy-war': 3, tribute: 2, ceremonial: 0 };
+  G.matchType = MATCH_TYPES[stakeMap[fix.stakesType] ?? 1];
+
+  // Save career fixture ref for dynamic labels
+  G._careerFix = fix;
+
+  // Update all hard-coded DOM labels
+  const hName = fix.homeName;
+  const aName = fix.awayName;
+  const el = id => document.getElementById(id);
+  if (el('home-team-label'))  el('home-team-label').textContent  = hName + ' Squad';
+  if (el('sb-home-name'))     el('sb-home-name').textContent     = hName;
+  if (el('sb-away-name'))     el('sb-away-name').textContent     = aName;
+  if (el('opp-banner'))       el('opp-banner').textContent       = `⚔ ${aName} is playing…`;
+  if (el('court-tn-label'))   el('court-tn-label').textContent   = `Court TN: ${fix.courtTN} · ${hName} · Ritual`;
+
+  // Cosmic label
+  const cosmicLbl = document.querySelector('.ct-label');
+  if (cosmicLbl) cosmicLbl.textContent = `Cosmic Significance — ${hName}`;
+}
+
 // Start game
-window.addEventListener('load', ()=>G.init());
+window.addEventListener('load', () => {
+  applyCareerFixture();
+  G.init();
+});
 </script>
 </body>
 </html>

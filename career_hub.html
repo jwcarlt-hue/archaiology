@@ -1550,6 +1550,57 @@ function generateScouts(site) {
 }
 
 // ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
+// MATCH RESULT READER — called when hub regains focus
+// ══════════════════════════════════════════════════════════
+function checkMatchResult() {
+  let raw;
+  try { raw = localStorage.getItem('mbl_result'); } catch(e) {}
+  if (!raw) return;
+  let res;
+  try { res = JSON.parse(raw); } catch(e) { return; }
+  if (!res || !res.careerMode) return;
+
+  // Clear so we don't reprocess on next render
+  try { localStorage.removeItem('mbl_result'); } catch(e) {}
+
+  // Apply result to state
+  const mt = res.matchType || 'Prestige';
+  const stakes = res.stakesType || 'prestige';
+  if (res.homeWon) {
+    if (stakes === 'prestige' || stakes === 'proxy-war') STATE.prestige  = Math.min(100, STATE.prestige + 8);
+    if (stakes === 'tribute')                            STATE.treasury  += 40;
+    if (stakes === 'ceremonial')                         STATE.prestige  = Math.min(100, STATE.prestige + 4);
+    STATE.obligation = Math.max(0, STATE.obligation - 5);
+  } else {
+    if (stakes === 'prestige' || stakes === 'proxy-war') STATE.prestige  = Math.max(0, STATE.prestige - 5);
+    if (stakes === 'tribute')                            STATE.treasury  = Math.max(0, STATE.treasury - 20);
+    STATE.obligation += 3;
+  }
+
+  // Dynasty log entry
+  const cal = computeDate(STATE.jdn);
+  const lcStr = cal ? cal.lcStr : '?';
+  const outcome = res.homeWon ? `Victory` : `Defeat`;
+  STATE.dynastyLog.unshift({
+    lc: lcStr,
+    text: `${outcome} vs ${res.awayName} (${mt} · ${res.homeSets}–${res.awaySets}). ${res.homeWon ? res.winReward : res.lossPenalty}`
+  });
+
+  // Move jdn forward after match (simulate time passing)
+  STATE.jdn += rng(7, 21);
+
+  // Surface a brief toast / modal
+  const title = res.homeWon ? `Victory — ${res.homeSets}–${res.awaySets}` : `Defeat — ${res.homeSets}–${res.awaySets}`;
+  const body  = res.homeWon
+    ? `${res.homeName} defeated ${res.awayName} in a ${mt} match. ${res.winReward}.`
+    : `${res.homeName} fell to ${res.awayName} in a ${mt} match. ${res.lossPenalty}.`;
+  showModal(title, body, [
+    { k: 'OK', text: 'Record this in the dynasty codex', effect: 'Continue' }
+  ]);
+}
+
+// ══════════════════════════════════════════════════════════
 // HUB RENDER
 // ══════════════════════════════════════════════════════════
 function renderHub() {
@@ -1627,6 +1678,8 @@ function renderFixture(cal) {
   const rivals = CAREER_SITES.filter(s=>s.name!==STATE.site.name&&s.era===STATE.site.era).slice(0,6);
   const rival  = pick(rivals) || CAREER_SITES[0];
   const stakes = pick(['prestige','proxy-war','tribute','ceremonial']);
+  // Store fixture on STATE so launchGame() can read it
+  STATE._fixture = { rival, stakes };
   const stakesCl = {prestige:'ft-stakes-prestige','proxy-war':'ft-stakes-proxy',tribute:'ft-stakes-proxy',ceremonial:'ft-stakes-prestige'}[stakes]||'ft-stakes-prestige';
   const daysTo = rng(8,42);
   const futureCal = computeDate(STATE.jdn + daysTo);
@@ -1918,8 +1971,82 @@ function advanceScout(name) {
 // ══════════════════════════════════════════════════════════
 // LAUNCH MATCH ENGINE
 // ══════════════════════════════════════════════════════════
+
+// Map career hub simple roster → mkPlayer-compatible stat objects
+function rosterToSquad(roster, site) {
+  return roster.map(p => {
+    const base = p.stat || 60;
+    const isPrime = p.phase === 'Prime';
+    const isYouth = p.phase === 'Youth';
+    const isVet   = p.phase === 'Veteran' || p.phase === 'Decline';
+    // Scale stats from base rating; each role flavours the distribution
+    const scale = (lo, hi) => Math.round(lo + (base - 40) / 60 * (hi - lo));
+    const roleStats = {
+      'Striker':          { ms:scale(4,8), dr:scale(3,7), cf:scale(5,9), vp:scale(3,6), eud:scale(3,6), pi:scale(4,7), tss:scale(3,7), ec:scale(3,6), aq:scale(3,6), li:scale(2,5), pwr:scale(5,9), agi:scale(4,8), rf:scale(3,6), end:scale(6,9) },
+      'Ring Specialist':  { ms:scale(3,7), dr:scale(2,6), cf:scale(4,8), vp:scale(5,9), eud:scale(4,7), pi:scale(5,8), tss:scale(4,8), ec:scale(3,6), aq:scale(4,7), li:scale(3,6), pwr:scale(3,7), agi:scale(5,9), rf:scale(6,10),end:scale(5,8) },
+      'Wall Player':      { ms:scale(4,7), dr:scale(5,9), cf:scale(3,7), vp:scale(3,6), eud:scale(4,7), pi:scale(4,7), tss:scale(3,6), ec:scale(4,7), aq:scale(3,6), li:scale(3,6), pwr:scale(6,10),agi:scale(4,8), rf:scale(3,6), end:scale(7,10)},
+      'Playmaker':        { ms:scale(5,9), dr:scale(3,6), cf:scale(4,8), vp:scale(4,7), eud:scale(4,7), pi:scale(5,9), tss:scale(5,9), ec:scale(5,8), aq:scale(5,8), li:scale(4,7), pwr:scale(3,7), agi:scale(5,9), rf:scale(4,7), end:scale(5,8) },
+      'Defender':         { ms:scale(3,7), dr:scale(6,10),cf:scale(3,6), vp:scale(2,5), eud:scale(3,6), pi:scale(4,7), tss:scale(3,6), ec:scale(4,7), aq:scale(3,6), li:scale(2,5), pwr:scale(5,9), agi:scale(4,8), rf:scale(2,5), end:scale(7,10)},
+      'Ritual Captain':   { ms:scale(4,8), dr:scale(3,7), cf:scale(4,8), vp:scale(4,8), eud:scale(5,9), pi:scale(6,10),tss:scale(4,8), ec:scale(6,10),aq:scale(5,9), li:scale(5,9), pwr:scale(3,7), agi:scale(4,8), rf:scale(6,10),end:scale(5,8) },
+    };
+    const s = roleStats[p.role] || roleStats['Striker'];
+    // Phase modifiers
+    if(isYouth) Object.keys(s).forEach(k => { s[k] = Math.max(1, s[k] - 1); });
+    if(isVet)   Object.keys(s).forEach(k => { s[k] = Math.max(1, s[k] - 1); });
+    return {
+      name:       p.name,
+      role:       p.role,
+      age:        isYouth ? rng(16,21) : isPrime ? rng(22,29) : rng(30,38),
+      ms:  s.ms,  dr:  s.dr,  cf:  s.cf,  vp:  s.vp,
+      eud: s.eud, pi:  s.pi,  tss: s.tss, ec:  s.ec,
+      aq:  s.aq,  li:  s.li,  pwr: s.pwr, agi: s.agi,
+      rf:  s.rf,  end: s.end, maxEnd: s.end,
+      injuryRisk:  isYouth ? 8 : isVet ? 18 : 10,
+      injured:    false,
+      rookieJitters: isYouth ? 1 : 0,
+      special:    p.noble ? (p.role === 'Ritual Captain' ? 'Cosmological Authority' : 'Noble Lineage') : '',
+      hidden:     '',
+      phase:      p.phase,
+    };
+  });
+}
+
+// Generate an away squad for a rival site (no saved roster — procedural)
+function generateAwayRoster(rival) {
+  const awayRoster = generateRoster(rival);
+  return rosterToSquad(awayRoster, rival);
+}
+
+// Store fixture context in localStorage, then open the match engine
 function launchGame() {
-  // Link to the existing mesoamerican_ballgame.html
+  const fix = STATE._fixture;
+  if (!fix) {
+    // Fallback: open default match if somehow called before fixture rendered
+    window.open('mesoamerican_ballgame.html', '_blank');
+    return;
+  }
+
+  const courtTN = 5 + Math.min(4, Math.floor(STATE.site.courts / 3));
+
+  const payload = {
+    careerMode:   true,
+    homeName:     STATE.site.name,
+    awayName:     fix.rival.name,
+    homeRoster:   rosterToSquad(STATE.roster, STATE.site),
+    awayRoster:   generateAwayRoster(fix.rival),
+    stakesType:   fix.stakes,
+    courtTN:      courtTN,
+    jdn:          STATE.jdn,
+    lat:          STATE.site.lat,
+    lng:          STATE.site.lng,
+  };
+
+  try {
+    localStorage.setItem('mbl_fixture', JSON.stringify(payload));
+  } catch(e) {
+    console.warn('Could not write fixture to localStorage:', e);
+  }
+
   window.open('mesoamerican_ballgame.html', '_blank');
 }
 
@@ -1928,6 +2055,14 @@ function launchGame() {
 // ══════════════════════════════════════════════════════════
 window.addEventListener('load', () => {
   renderSiteGrid();
+});
+
+// When the user returns to this tab after a match, read the result
+window.addEventListener('focus', () => {
+  if (STATE.site) checkMatchResult();
+});
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && STATE.site) checkMatchResult();
 });
 
 // Close modal on overlay click
