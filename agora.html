@@ -252,6 +252,7 @@ footer a{color:var(--smoke);}
   border-radius:50%;font-family:var(--ui);font-size:.72em;font-weight:700;flex-shrink:0;vertical-align:middle;}
 .school-dot{width:17px;height:17px;border-radius:50%;flex-shrink:0;color:#0d0907;
   font-family:var(--ui);font-size:.52rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.school-dot-dashed{background:none;border:2px dashed;}
 
 .rel-legend{display:flex;flex-direction:column;gap:.35rem;margin-top:.6rem;}
 .rel-chip{display:inline-block;font-family:var(--ui);font-size:.54rem;font-weight:700;letter-spacing:.05em;
@@ -375,6 +376,8 @@ footer a{color:var(--smoke);}
       <button class="mode-btn" data-mode="libraries">Libraries</button>
       <button class="mode-btn" data-mode="academy">Academy</button>
       <button class="mode-btn" data-mode="lyceum">Lyceum</button>
+      <button class="mode-btn" data-mode="stoa">Stoa</button>
+      <button class="mode-btn" data-mode="garden">Garden</button>
     </div>
   </div>
 
@@ -414,6 +417,18 @@ footer a{color:var(--smoke);}
         <div class="legend-row"><div class="school-dot" style="background:#cc7a4d;">8</div>Scholarch (head of the Peripatos)</div>
         <div class="legend-row" style="margin-top:.4rem;"><div class="school-dot" style="background:none;border:2px solid #cc7a4d;"></div>Later Peripatetic, not a clear head</div>
         <div class="dock-note" style="margin-top:.6rem;">The eight known heads of Aristotle's Lyceum (335 BCE) and the later Peripatetics down to Alexander of Aphrodisias, numbered by succession and plotted at birthplace. Click a place, then a figure.</div>
+      </div>
+      <div class="dock-card" id="dock-stoa" style="display:none;">
+        <div class="dock-card-label">The Stoa</div>
+        <div class="legend-row"><div class="school-dot" style="background:#b23a48;">7</div>Scholarch (head of the Stoa)</div>
+        <div class="legend-row" style="margin-top:.4rem;"><div class="school-dot" style="background:none;border:2px solid #b23a48;"></div>Later Stoic leader, not counted</div>
+        <div class="dock-note" style="margin-top:.6rem;">The seven heads of Zeno's Stoa (c. 300 BCE) down to Panaetius, numbered by succession and plotted at birthplace. Click a place, then a figure.</div>
+      </div>
+      <div class="dock-card" id="dock-garden" style="display:none;">
+        <div class="dock-card-label">The Garden</div>
+        <div class="legend-row"><div class="school-dot" style="background:#3f8a43;">9</div>Scholarch (head of the Garden)</div>
+        <div class="legend-row" style="margin-top:.4rem;"><div class="school-dot school-dot-dashed" style="border-color:#3f8a43;color:#3f8a43;">5</div>Head, birthplace unconfirmed</div>
+        <div class="dock-note" style="margin-top:.6rem;">The nine known heads of Epicurus's Garden (306 BCE), numbered by succession and plotted at birthplace. Three have no recorded birthplace and are not shown. Click a place, then a figure.</div>
       </div>
     </nav>
 
@@ -2192,26 +2207,37 @@ footer a{color:var(--smoke);}
       laterKicker:'Later Peripatetic',
       strand:{ lyceum:"The Lyceum", later:"Later Peripatetic · not a clear head" },
     },
+    stoa: {
+      json:'data/stoa.json', accent:'#b23a48', laterKey:'later',
+      laterKicker:'Later Stoic leader',
+      strand:{ stoa:"The Stoa", later:"Later Stoic · not a clear head" },
+    },
+    garden: {
+      json:'data/garden.json', accent:'#3f8a43', laterKey:'later',
+      laterKicker:'Epicurean head',
+      strand:{ garden:"The Garden", later:"Later Epicurean" },
+    },
   };
   const schoolState = {};  // id -> { loaded, data, clusters, byId, layer }
 
-  function schoolMarkerSvg(accent, label, hollow){
-    const fill = hollow ? 'none' : accent;
-    const txt  = hollow ? '' :
-      `<text x="11" y="14.6" text-anchor="middle" font-size="${String(label).length>1?8:9}" font-family="DM Sans,sans-serif" font-weight="700" fill="#0d0907">${label}</text>`;
+  function schoolMarkerSvg(accent, label, hollow, uncertain){
+    const open = hollow || uncertain;               // no solid fill
+    const dash = uncertain ? ' stroke-dasharray="2.6 2"' : '';
+    const txt  = (hollow || label === '') ? '' :
+      `<text x="11" y="14.6" text-anchor="middle" font-size="${String(label).length>1?8:9}" font-family="DM Sans,sans-serif" font-weight="700" fill="${uncertain?accent:'#0d0907'}">${label}</text>`;
     return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
-      <circle cx="11" cy="11" r="8.2" fill="${fill}" fill-opacity="${hollow?'0':'.95'}"
-        stroke="${hollow?accent:'rgba(255,255,255,.6)'}" stroke-width="${hollow?'2':'1.4'}"/>${txt}</svg>`;
+      <circle cx="11" cy="11" r="8.2" fill="${open?'none':accent}" fill-opacity="${open?'0':'.95'}"
+        stroke="${open?accent:'rgba(255,255,255,.6)'}" stroke-width="${open?'2':'1.4'}"${dash}/>${txt}</svg>`;
   }
   function schoolIcon(cfg, cl){
-    let label, hollow=false;
+    let label='', hollow=false, uncertain=false;
     if (cl.figs.length > 1){ label = cl.figs.length; }
     else {
       const f = cl.figs[0];
-      if (!f._head){ hollow = true; label=''; }
-      else label = (f.no == null ? '' : f.no);
+      if (!f._head){ hollow = true; }
+      else { label = (f.no == null ? '' : f.no); uncertain = !!f.uncertain; }
     }
-    return L.divIcon({ html: schoolMarkerSvg(cfg.accent, label, hollow), className:'', iconSize:[22,22], iconAnchor:[11,11] });
+    return L.divIcon({ html: schoolMarkerSvg(cfg.accent, label, hollow, uncertain), className:'', iconSize:[22,22], iconAnchor:[11,11] });
   }
 
   async function loadSchool(sid){
@@ -2323,12 +2349,12 @@ footer a{color:var(--smoke);}
 
 
   // ── Mode switch: Thinkers | Libraries | Academy | Lyceum on the one map ───
-  const SCHOOL_MODES = { academy:'dock-academy', lyceum:'dock-lyceum' };
+  const SCHOOL_MODES = { academy:'dock-academy', lyceum:'dock-lyceum', stoa:'dock-stoa', garden:'dock-garden' };
   function setMode(mode){
     if (mode === currentMode) return;
     currentMode = mode;
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === mode));
-    ['dock-thinkers','dock-libraries','dock-academy','dock-lyceum'].forEach(id => { const d=document.getElementById(id); if(d) d.style.display='none'; });
+    ['dock-thinkers','dock-libraries','dock-academy','dock-lyceum','dock-stoa','dock-garden'].forEach(id => { const d=document.getElementById(id); if(d) d.style.display='none'; });
     if (agoraLayer) map.removeLayer(agoraLayer);
     if (librariesLayer) map.removeLayer(librariesLayer);
     Object.values(schoolState).forEach(st => { if (st.layer) map.removeLayer(st.layer); });
