@@ -23,26 +23,12 @@ img{display:block;max-width:100%;}
 
 /* ─── masthead ─── */
 .masthead{position:sticky;top:0;z-index:1000;height:44px;background:var(--void-2);border-bottom:1px solid var(--hair);
-  display:flex;align-items:center;padding:0 1.2rem;gap:1.5rem;}
+  display:flex;align-items:center;padding:0 1.2rem;gap:1.5rem;overflow-x:auto;}
 .masthead::-webkit-scrollbar{display:none;}
 .rel-logo{font-family:var(--display);font-style:italic;font-size:1.05rem;font-weight:600;color:var(--parchment);text-decoration:none;white-space:nowrap;}
 .rel-logo span{color:var(--ember);}
 .rel-nav-link{font-family:var(--ui);font-size:.64rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--smoke);text-decoration:none;transition:color .2s;white-space:nowrap;}
 .rel-nav-link:hover,.rel-nav-link.active{color:var(--jade);}
-/* ── Site menu dropdowns (shared pattern; see site-navigation.md) ── */
-.nav-group{position:relative;display:flex;align-items:center;align-self:stretch;flex-shrink:0;}
-.nav-group-btn{background:none;border:0;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;padding:0;}
-.nav-group-btn,.nav-menu-link{font-family:var(--ui);}
-.nav-caret{width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid currentColor;opacity:.7;}
-.nav-menu{display:none;position:absolute;top:100%;left:-.9rem;min-width:190px;padding:.4rem 0;z-index:1001;
-  background:var(--void-2);border:1px solid var(--hair);border-top:1px solid var(--jade);}
-.nav-group:hover .nav-menu,.nav-group.open .nav-menu,.nav-group:focus-within .nav-menu{display:block;}
-.nav-menu-link{display:block;padding:.45rem .9rem;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--smoke);text-decoration:none;white-space:nowrap;}
-.nav-menu-link:hover,.nav-menu-link:focus{color:var(--parchment);background:rgba(255,255,255,.05);outline:none;}
-.nav-menu-link.active{color:var(--jade);}
-.rel-nav-link{white-space:nowrap;flex-shrink:0;}
-
 
 /* ─── hero ─── */
 .hero{position:relative;min-height:64vh;display:flex;align-items:flex-end;overflow:hidden;background:var(--void);}
@@ -262,6 +248,12 @@ footer a{color:var(--smoke);}
 .mode-btn:not(:last-child){border-right:1px solid var(--hair);}
 .mode-btn.active{background:var(--jade);color:var(--void);}
 .mode-btn:not(.active):hover{color:var(--parchment);}
+.acad-no-sm{display:inline-flex;align-items:center;justify-content:center;width:1.3em;height:1.3em;margin-right:.5em;
+  border-radius:50%;background:#8f86d6;color:#0d0907;font-family:var(--ui);font-size:.72em;font-weight:700;flex-shrink:0;vertical-align:middle;}
+.acad-no-sm.acad-no-hollow{background:none;border:1.5px solid #8f86d6;color:#8f86d6;}
+.acad-dot{width:17px;height:17px;border-radius:50%;flex-shrink:0;background:#8f86d6;color:#0d0907;
+  font-family:var(--ui);font-size:.52rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.acad-dot-hollow{background:none;border:2px solid #8f86d6;}
 
 .rel-legend{display:flex;flex-direction:column;gap:.35rem;margin-top:.6rem;}
 .rel-chip{display:inline-block;font-family:var(--ui);font-size:.54rem;font-weight:700;letter-spacing:.05em;
@@ -334,87 +326,19 @@ footer a{color:var(--smoke);}
 
 </style>
 <script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
-<style>
-/* ── Phone menu (below 760px the bar collapses to logo + Menu; see site-navigation.md) ── */
-.nav-burger{display:none;background:none;border:0;cursor:pointer;align-items:center;gap:.45rem;padding:0;margin-left:auto;font-family:var(--ui);}
-.nav-burger-icon{width:14px;height:10px;position:relative;border-top:1.5px solid currentColor;border-bottom:1.5px solid currentColor;}
-.nav-burger-icon::after{content:'';position:absolute;left:0;right:0;top:50%;border-top:1.5px solid currentColor;transform:translateY(-50%);}
-.nav-phone{display:none;}
-@media(max-width:760px){
-  .masthead .rel-nav-link:not(.nav-burger),.masthead .nav-group,.masthead-right{display:none !important;}
-  .nav-burger{display:inline-flex;}
-  .nav-phone.open{display:block;position:fixed;left:0;right:0;z-index:2000;overflow-y:auto;
-    background:var(--void-2);border-top:1px solid var(--jade);border-bottom:1px solid var(--hair);padding:.4rem 0 .8rem;}
-  .nav-phone-group{font-family:var(--ui);font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--jade);opacity:.8;padding:.9rem 1.2rem .3rem;}
-  .nav-phone-link{display:block;font-family:var(--ui);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--smoke);text-decoration:none;padding:.6rem 1.2rem;}
-  .nav-phone-link:hover,.nav-phone-link:focus{color:var(--parchment);background:rgba(255,255,255,.05);outline:none;}
-  .nav-phone-link.active{color:var(--jade);}
-}
-</style>
 </head>
 <body>
 
 <header class="masthead">
   <a class="rel-logo" href="index.html">arch<span>AI</span>ology</a>
   <a class="rel-nav-link" href="index.html">Home</a>
-  <a class="rel-nav-link" href="news.html">News</a>
-  <a class="rel-nav-link" href="map.html">Atlas</a>
-  <a class="rel-nav-link active" href="agora.html" aria-current="page">Living Agora</a>
-  <div class="nav-group">
-    <button class="rel-nav-link nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-regions">Regions<span class="nav-caret" aria-hidden="true"></span></button>
-    <div class="nav-menu" id="nav-regions">
-      <a class="nav-menu-link" href="luwian.html">Anatolia</a>
-      <a class="nav-menu-link" href="maya_inscriptions.html">Mundo Maya</a>
-      <a class="nav-menu-link" href="minoans.html">Minoans</a>
-    </div>
-  </div>
-  <div class="nav-group">
-    <button class="rel-nav-link nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-disciplines">Disciplines<span class="nav-caret" aria-hidden="true"></span></button>
-    <div class="nav-menu" id="nav-disciplines">
-      <a class="nav-menu-link" href="numismatics.html">Ancient Economy</a>
-      <a class="nav-menu-link" href="religion.html">Sacred Geography</a>
-      <a class="nav-menu-link" href="sky.html">Archaeoastronomy</a>
-      <a class="nav-menu-link" href="inscriptions.html">Epigraphy</a>
-      <a class="nav-menu-link" href="linguistics.html">Linguistics</a>
-      <a class="nav-menu-link" href="maritime.html">Maritime</a>
-      <a class="nav-menu-link" href="bioanthro.html">Bioanthropology</a>
-      <a class="nav-menu-link" href="lidar.html">LiDAR</a>
-    </div>
-  </div>
-  <div class="nav-group">
-    <button class="rel-nav-link nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-more">More<span class="nav-caret" aria-hidden="true"></span></button>
-    <div class="nav-menu" id="nav-more">
-      <a class="nav-menu-link" href="games.html">Games</a>
-      <a class="nav-menu-link" href="conferences.html">Conferences</a>
-    </div>
-  </div>
-  <button class="rel-nav-link nav-burger" type="button" aria-expanded="false" aria-controls="nav-phone"><span class="nav-burger-icon" aria-hidden="true"></span>Menu</button>
+  <a class="rel-nav-link" href="map.html">Map</a>
+  <a class="rel-nav-link" href="religion.html">Religion</a>
+  <a class="rel-nav-link active" href="agora.html">Agora</a>
+  <a class="rel-nav-link" href="sky.html">Sky Archive</a>
+  <a class="rel-nav-link" href="linguistics.html">Linguistics</a>
+  <a class="rel-nav-link" href="inscriptions.html">Inscriptions</a>
 </header>
-<nav class="nav-phone" id="nav-phone" aria-label="Site">
-  <div class="nav-phone-group">Explore</div>
-  <a class="nav-phone-link" href="index.html">Home</a>
-  <a class="nav-phone-link" href="news.html">News</a>
-  <a class="nav-phone-link" href="map.html">Atlas</a>
-  <a class="nav-phone-link active" href="agora.html" aria-current="page">Living Agora</a>
-  <div class="nav-phone-group">Regions</div>
-  <a class="nav-phone-link" href="luwian.html">Anatolia</a>
-  <a class="nav-phone-link" href="maya_inscriptions.html">Mundo Maya</a>
-  <a class="nav-phone-link" href="minoans.html">Minoans</a>
-  <div class="nav-phone-group">Disciplines</div>
-  <a class="nav-phone-link" href="numismatics.html">Ancient Economy</a>
-  <a class="nav-phone-link" href="religion.html">Sacred Geography</a>
-  <a class="nav-phone-link" href="sky.html">Archaeoastronomy</a>
-  <a class="nav-phone-link" href="inscriptions.html">Epigraphy</a>
-  <a class="nav-phone-link" href="linguistics.html">Linguistics</a>
-  <a class="nav-phone-link" href="maritime.html">Maritime</a>
-  <a class="nav-phone-link" href="bioanthro.html">Bioanthropology</a>
-  <a class="nav-phone-link" href="lidar.html">LiDAR</a>
-  <div class="nav-phone-group">More</div>
-  <a class="nav-phone-link" href="games.html">Games</a>
-  <a class="nav-phone-link" href="conferences.html">Conferences</a>
-</nav>
 
 <section class="hero">
   <div class="hero-bg"></div>
@@ -451,6 +375,7 @@ footer a{color:var(--smoke);}
     <div class="mode-switch">
       <button class="mode-btn active" data-mode="thinkers">Thinkers</button>
       <button class="mode-btn" data-mode="libraries">Libraries</button>
+      <button class="mode-btn" data-mode="academy">Academy</button>
     </div>
   </div>
 
@@ -478,6 +403,12 @@ footer a{color:var(--smoke);}
           <span class="rel-chip rel-comparative">Comparative</span>
           <span class="rel-chip rel-spec">Speculative</span>
         </div>
+      </div>
+      <div class="dock-card" id="dock-academy" style="display:none;">
+        <div class="dock-card-label">Plato's Academy</div>
+        <div class="legend-row"><div class="acad-dot">15</div>Scholarch (head of the school)</div>
+        <div class="legend-row" style="margin-top:.4rem;"><div class="acad-dot acad-dot-hollow"></div>Platonist who taught at Athens, not a head</div>
+        <div class="dock-note" style="margin-top:.6rem;">Every known head of Plato's Academy (387 BCE) and of the Neoplatonist school that revived it, numbered by succession and plotted at birthplace. Click a place, then a figure.</div>
       </div>
     </nav>
 
@@ -709,7 +640,7 @@ footer a{color:var(--smoke);}
 <div class="model-modal" id="modelModal">
   <div class="model-card">
     <div class="model-head"><span id="modelName"></span><button class="model-close" id="modelClose" aria-label="Close">&times;</button></div>
-    <model-viewer id="modelBig" class="model-big" camera-controls shadow-intensity="1" exposure="0.9" alt="3-D model"></model-viewer>
+    <model-viewer id="modelBig" class="model-big" camera-controls auto-rotate shadow-intensity="1" exposure="0.9" alt="3-D model"></model-viewer>
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -2118,7 +2049,7 @@ footer a{color:var(--smoke);}
     let html = '';
     if (p.model) {
       html += `<div class="lib-model-wrap">` +
-        `<model-viewer class="lib-model" src="${p.model}" camera-controls ` +
+        `<model-viewer class="lib-model" src="${p.model}" camera-controls auto-rotate ` +
         `shadow-intensity="1" exposure="0.9" interaction-prompt="none" alt="Reconstruction of ${p.name}"></model-viewer>` +
         `<button class="lib-expand" data-model="${p.model}" data-name="${(p.name||'').replace(/"/g,'&quot;')}" title="Expand model" aria-label="Expand model">⤢</button>` +
         `</div>` +
@@ -2235,64 +2166,192 @@ footer a{color:var(--smoke);}
     document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('open'); });
   })();
 
-  // ── Mode switch: Thinkers | Libraries on the one map ──────────────────────
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // ACADEMY — the heads (διάδοχοι) of Plato's school as a third mode. Loaded
+  // from data/academy.json. Numbered filled markers are scholarchs (Academy
+  // nos. 1–15, Neoplatonist 16–21); hollow markers are notable Platonists who
+  // taught at Athens in the ~490-year gap but were never heads. Clustered by
+  // birthplace, exactly like Thinkers.
+  // ══════════════════════════════════════════════════════════════════════════
+  const ACAD_JSON = 'data/academy.json';
+  const ACAD_ACCENT = '#8f86d6';
+  let academyLayer = null, academyLoaded = false, acadData = null;
+  const ACAD_CLUSTERS = {}, ACAD_BY_ID = {};
+
+  const ACAD_STRAND = {
+    academy:      "Plato's Academy",
+    neoplatonist: "Neoplatonist Athens",
+    gap:          "Platonist · not a head",
+  };
+
+  function acadMarkerSvg(label, hollow){
+    const fill = hollow ? 'none' : ACAD_ACCENT;
+    const txt  = hollow ? '' :
+      `<text x="11" y="14.6" text-anchor="middle" font-size="${String(label).length>1?8:9}" font-family="DM Sans,sans-serif" font-weight="700" fill="#0d0907">${label}</text>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+      <circle cx="11" cy="11" r="8.2" fill="${fill}" fill-opacity="${hollow?'0':'.95'}"
+        stroke="${hollow?ACAD_ACCENT:'rgba(255,255,255,.6)'}" stroke-width="${hollow?'2':'1.4'}"/>${txt}</svg>`;
+  }
+  function acadIcon(cl){
+    let label, hollow=false;
+    if (cl.figs.length > 1){ label = cl.figs.length; }
+    else {
+      const f = cl.figs[0];
+      if (f.strand === 'gap'){ hollow = true; label=''; }
+      else label = (f.no == null ? '' : f.no);
+    }
+    return L.divIcon({ html: acadMarkerSvg(label, hollow), className:'', iconSize:[22,22], iconAnchor:[11,11] });
+  }
+
+  async function loadAcademy(){
+    if (academyLoaded) return;
+    academyLoaded = true;
+    try {
+      acadData = await (await fetch(freshUrl(ACAD_JSON))).json();
+      const figs = (acadData.heads || []).filter(h => typeof h.lat === 'number')
+        .concat(acadData.platonists || []);
+      figs.forEach(f => {
+        ACAD_BY_ID[f.id] = f;
+        const k = f.lat.toFixed(4) + ',' + f.lng.toFixed(4);
+        (ACAD_CLUSTERS[k] || (ACAD_CLUSTERS[k] = { key:k, lat:f.lat, lng:f.lng, figs:[] })).figs.push(f);
+      });
+      // heads first (by succession), then gap platonists, within each cluster
+      Object.values(ACAD_CLUSTERS).forEach(cl => cl.figs.sort((a,b) => {
+        const an = (a.no==null||a.no==='?')?999:+a.no, bn=(b.no==null||b.no==='?')?999:+b.no;
+        return an - bn;
+      }));
+      const g = L.layerGroup();
+      Object.values(ACAD_CLUSTERS).forEach(cl => {
+        const names = cl.figs.map(f => (f.no!=null?f.no+'. ':'') + f.name).join(', ');
+        const place = cl.figs[0].birthplace + (cl.figs[0].today ? ' · ' + cl.figs[0].today : '');
+        const m = L.marker([cl.lat, cl.lng], { icon: acadIcon(cl) });
+        m.bindTooltip(`<b>${place}</b><br><span style="color:rgba(143,134,214,.95);font-size:.62rem">${names}</span>`, { sticky:true });
+        m.on('click', () => cl.figs.length === 1 ? showAcademyPerson(cl.figs[0].id, null) : showAcademyPlace(cl.key));
+        g.addLayer(m);
+      });
+      academyLayer = g;
+    } catch(e){ console.error('academy load failed', e); }
+  }
+
+  function acadPlaceLabel(cl){
+    const f = cl.figs[0];
+    return f.birthplace + (f.region ? ' · ' + f.region : '');
+  }
+
+  function showAcademyPlace(key){
+    const cl = ACAD_CLUSTERS[key];
+    if (!cl) return;
+    resetInfoDrawer();
+    const label = acadPlaceLabel(cl);
+    const today = cl.figs[0].today;
+    document.getElementById('infoKicker').textContent = 'Where they were born';
+    document.getElementById('infoKicker').style.color = ACAD_ACCENT;
+    document.getElementById('infoTitle').textContent = cl.figs[0].birthplace;
+    document.getElementById('infoBadges').innerHTML =
+      `<span class="info-badge" style="color:${ACAD_ACCENT};border-color:${ACAD_ACCENT}66;">${cl.figs.length} figures</span>` +
+      (today ? `<span class="info-badge">${today} today</span>` : '');
+    document.getElementById('infoCoords').textContent = `${cl.lat.toFixed(4)}, ${cl.lng.toFixed(4)}`;
+
+    const desc = document.getElementById('infoDesc');
+    desc.style.display = 'block';
+    desc.innerHTML =
+      `<div class="agora-sub">Heads and Platonists born at <b>${label}</b>. Select one for their card.</div>` +
+      cl.figs.map(f => {
+        const tag = f.no != null ? `<span class="acad-no-sm">${f.no}</span>` : `<span class="acad-no-sm acad-no-hollow">·</span>`;
+        return `<button class="agora-fig-btn" onclick="_acadPerson('${f.id}','${key}')">${tag}${f.name}` +
+               `<span class="role">${f.headship}</span></button>`;
+      }).join('');
+    document.getElementById('infoLinks').innerHTML =
+      `<a class="info-link" href="https://www.openstreetmap.org/?mlat=${cl.lat}&mlon=${cl.lng}&zoom=9" target="_blank" rel="noopener">OSM ↗</a>`;
+    openInfoDrawer();
+    map.flyTo([cl.lat, cl.lng], Math.max(map.getZoom(), 6), { duration:1 });
+  }
+
+  function showAcademyPerson(id, fromKey){
+    const f = ACAD_BY_ID[id];
+    if (!f) return;
+    resetInfoDrawer();
+    const k = document.getElementById('infoKicker');
+    k.textContent = f.no == null ? 'Platonist at Athens'
+      : (f.no === '?' ? 'A possible head' : `No. ${f.no} in the succession`);
+    k.style.color = ACAD_ACCENT;
+    document.getElementById('infoTitle').textContent = f.name;
+
+    const badges = [`<span class="info-badge" style="color:${ACAD_ACCENT};border-color:${ACAD_ACCENT}66;">${ACAD_STRAND[f.strand]||''}</span>`];
+    document.getElementById('infoBadges').innerHTML = badges.join('');
+
+    const line = [];
+    if (f.greek) line.push(f.greek);
+    if (f.headship) line.push(f.headship);
+    document.getElementById('infoCoords').innerHTML = line.join(' &middot; ') +
+      (f.birthplace ? `<br>born at ${f.birthplace}${f.today ? ' (' + f.today + ' today)' : ''}` : '');
+
+    const desc = document.getElementById('infoDesc');
+    desc.style.display = 'block';
+    desc.innerHTML = `<p style="margin-bottom:.4rem">${f.bio || ''}</p>`;
+
+    if (f.note){
+      const n = document.getElementById('infoNote');
+      n.style.display = 'block';
+      n.innerHTML = `<b style="color:rgba(143,134,214,.85)">On the record.</b> ${f.note}`;
+    }
+
+    const items = [];
+    const cl = ACAD_CLUSTERS[fromKey];
+    if (fromKey && cl && cl.figs.length > 1){
+      items.push(`<a class="info-link" href="javascript:void(0)" onclick="_acadPlace('${fromKey}')">‹ ${cl.figs[0].birthplace}</a>`);
+    }
+    let bioLabel = 'Biography';
+    try { bioLabel = new URL(f.bioUrl).hostname.replace('www.',''); } catch(e){}
+    if (f.bioUrl) items.push(`<a class="info-link" href="${f.bioUrl}" target="_blank" rel="noopener">${bioLabel} ↗</a>`);
+    items.push(`<a class="info-link" href="https://www.openstreetmap.org/?mlat=${f.lat}&mlon=${f.lng}&zoom=10" target="_blank" rel="noopener">OSM ↗</a>`);
+    document.getElementById('infoLinks').innerHTML = items.join('');
+
+    openInfoDrawer();
+    map.flyTo([f.lat, f.lng], Math.max(map.getZoom(), 6), { duration:1 });
+  }
+
+  window._acadPerson = function(id, key){ showAcademyPerson(id, key || null); };
+  window._acadPlace  = function(key){ showAcademyPlace(key); };
+
+
+  // ── Mode switch: Thinkers | Libraries | Academy on the one map ────────────
   function setMode(mode){
     if (mode === currentMode) return;
     currentMode = mode;
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === mode));
-    const thinkersDock = document.getElementById('dock-thinkers');
-    const libDock = document.getElementById('dock-libraries');
+    ['dock-thinkers','dock-libraries','dock-academy'].forEach(id => { const d=document.getElementById(id); if(d) d.style.display='none'; });
+    if (agoraLayer) map.removeLayer(agoraLayer);
+    if (librariesLayer) map.removeLayer(librariesLayer);
+    if (academyLayer) map.removeLayer(academyLayer);
+    closeInfoDrawer();
+
     if (mode === 'libraries'){
-      if (agoraLayer) map.removeLayer(agoraLayer);
-      thinkersDock.style.display = 'none'; libDock.style.display = '';
+      const d=document.getElementById('dock-libraries'); if(d) d.style.display='';
       loadLibraries().then(() => { if (librariesLayer){ librariesLayer.addTo(map); frameLibraries(); } });
+    } else if (mode === 'academy'){
+      const d=document.getElementById('dock-academy'); if(d) d.style.display='';
+      loadAcademy().then(() => {
+        if (academyLayer){
+          academyLayer.addTo(map);
+          try {
+            const pts = Object.values(ACAD_CLUSTERS).map(c => [c.lat, c.lng]);
+            if (pts.length) map.fitBounds(L.latLngBounds(pts), { padding:[45,45] });
+          } catch(e){}
+        }
+      });
     } else {
-      if (librariesLayer) map.removeLayer(librariesLayer);
-      libDock.style.display = 'none'; thinkersDock.style.display = '';
+      const d=document.getElementById('dock-thinkers'); if(d) d.style.display='';
       if (agoraOn && agoraLayer) agoraLayer.addTo(map);
       try { map.fitBounds(L.latLngBounds(AGORA_FIGURES.map(f => [f.lat, f.lng])), { padding:[45,45] }); } catch(e){}
     }
-    closeInfoDrawer();
   }
   document.querySelectorAll('.mode-btn').forEach(b =>
     b.addEventListener('click', () => setMode(b.getAttribute('data-mode'))));
 
 })();
 
-</script>
-<script>
-// Site menu dropdowns: tap/click to open (hover and keyboard focus handled in CSS)
-document.querySelectorAll('.nav-group-btn').forEach(btn => {
-  btn.addEventListener('click', e => {
-    const g = btn.parentElement, open = !g.classList.contains('open');
-    document.querySelectorAll('.nav-group.open').forEach(x => { x.classList.remove('open'); x.firstElementChild.setAttribute('aria-expanded', 'false'); });
-    g.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open));
-    e.stopPropagation();
-  });
-});
-document.addEventListener('click', e => e.isTrusted && document.querySelectorAll('.nav-group.open').forEach(x => {   // ignore script-generated clicks
-  x.classList.remove('open'); x.firstElementChild.setAttribute('aria-expanded', 'false'); }));
-document.addEventListener('keydown', e => { if (e.key === 'Escape') document.activeElement?.blur(); });
-</script>
-<script>
-// Phone menu: open under the bar, close on outside tap, Escape, or widening past the breakpoint
-(() => {
-  const btn = document.querySelector('.nav-burger'), panel = document.getElementById('nav-phone');
-  if (!btn || !panel) return;
-  const bar = btn.closest('.masthead');
-  const set = open => {
-    if (open) {
-      const top = Math.max(0, bar.getBoundingClientRect().bottom);
-      panel.style.top = top + 'px'; panel.style.maxHeight = (innerHeight - top) + 'px';
-    }
-    panel.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open));
-  };
-  btn.addEventListener('click', e => { set(!panel.classList.contains('open')); e.stopPropagation(); });
-  panel.addEventListener('click', e => e.stopPropagation());
-  document.addEventListener('click', e => { if (e.isTrusted) set(false); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
-  matchMedia('(min-width: 761px)').addEventListener('change', m => { if (m.matches) set(false); });
-})();
 </script>
 </body>
 </html>
