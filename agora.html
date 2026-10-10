@@ -248,12 +248,10 @@ footer a{color:var(--smoke);}
 .mode-btn:not(:last-child){border-right:1px solid var(--hair);}
 .mode-btn.active{background:var(--jade);color:var(--void);}
 .mode-btn:not(.active):hover{color:var(--parchment);}
-.acad-no-sm{display:inline-flex;align-items:center;justify-content:center;width:1.3em;height:1.3em;margin-right:.5em;
-  border-radius:50%;background:#8f86d6;color:#0d0907;font-family:var(--ui);font-size:.72em;font-weight:700;flex-shrink:0;vertical-align:middle;}
-.acad-no-sm.acad-no-hollow{background:none;border:1.5px solid #8f86d6;color:#8f86d6;}
-.acad-dot{width:17px;height:17px;border-radius:50%;flex-shrink:0;background:#8f86d6;color:#0d0907;
+.school-no-sm{display:inline-flex;align-items:center;justify-content:center;width:1.3em;height:1.3em;margin-right:.5em;
+  border-radius:50%;font-family:var(--ui);font-size:.72em;font-weight:700;flex-shrink:0;vertical-align:middle;}
+.school-dot{width:17px;height:17px;border-radius:50%;flex-shrink:0;color:#0d0907;
   font-family:var(--ui);font-size:.52rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
-.acad-dot-hollow{background:none;border:2px solid #8f86d6;}
 
 .rel-legend{display:flex;flex-direction:column;gap:.35rem;margin-top:.6rem;}
 .rel-chip{display:inline-block;font-family:var(--ui);font-size:.54rem;font-weight:700;letter-spacing:.05em;
@@ -376,6 +374,7 @@ footer a{color:var(--smoke);}
       <button class="mode-btn active" data-mode="thinkers">Thinkers</button>
       <button class="mode-btn" data-mode="libraries">Libraries</button>
       <button class="mode-btn" data-mode="academy">Academy</button>
+      <button class="mode-btn" data-mode="lyceum">Lyceum</button>
     </div>
   </div>
 
@@ -406,9 +405,15 @@ footer a{color:var(--smoke);}
       </div>
       <div class="dock-card" id="dock-academy" style="display:none;">
         <div class="dock-card-label">Plato's Academy</div>
-        <div class="legend-row"><div class="acad-dot">15</div>Scholarch (head of the school)</div>
-        <div class="legend-row" style="margin-top:.4rem;"><div class="acad-dot acad-dot-hollow"></div>Platonist who taught at Athens, not a head</div>
+        <div class="legend-row"><div class="school-dot" style="background:#8f86d6;">15</div>Scholarch (head of the school)</div>
+        <div class="legend-row" style="margin-top:.4rem;"><div class="school-dot" style="background:none;border:2px solid #8f86d6;"></div>Platonist who taught at Athens, not a head</div>
         <div class="dock-note" style="margin-top:.6rem;">Every known head of Plato's Academy (387 BCE) and of the Neoplatonist school that revived it, numbered by succession and plotted at birthplace. Click a place, then a figure.</div>
+      </div>
+      <div class="dock-card" id="dock-lyceum" style="display:none;">
+        <div class="dock-card-label">Aristotle's Lyceum</div>
+        <div class="legend-row"><div class="school-dot" style="background:#cc7a4d;">8</div>Scholarch (head of the Peripatos)</div>
+        <div class="legend-row" style="margin-top:.4rem;"><div class="school-dot" style="background:none;border:2px solid #cc7a4d;"></div>Later Peripatetic, not a clear head</div>
+        <div class="dock-note" style="margin-top:.6rem;">The eight known heads of Aristotle's Lyceum (335 BCE) and the later Peripatetics down to Alexander of Aphrodisias, numbered by succession and plotted at birthplace. Click a place, then a figure.</div>
       </div>
     </nav>
 
@@ -2168,98 +2173,100 @@ footer a{color:var(--smoke);}
 
 
   // ══════════════════════════════════════════════════════════════════════════
-  // ACADEMY — the heads (διάδοχοι) of Plato's school as a third mode. Loaded
-  // from data/academy.json. Numbered filled markers are scholarchs (Academy
-  // nos. 1–15, Neoplatonist 16–21); hollow markers are notable Platonists who
-  // taught at Athens in the ~490-year gap but were never heads. Clustered by
-  // birthplace, exactly like Thinkers.
+  // SCHOOLS — the successions of the ancient philosophical schools, each as its
+  // own mode on the one map. Driven entirely by config + a data file per school
+  // (data/<id>.json). Numbered filled markers are scholarchs (heads); hollow
+  // markers are figures later writers sometimes counted but who were not clear
+  // heads. Clustered by birthplace, exactly like Thinkers.
+  //   academy → the διάδοχοι of Plato's Academy + Neoplatonist Athens
+  //   lyceum  → the Περιπατητικοί, heads of Aristotle's Lyceum
   // ══════════════════════════════════════════════════════════════════════════
-  const ACAD_JSON = 'data/academy.json';
-  const ACAD_ACCENT = '#8f86d6';
-  let academyLayer = null, academyLoaded = false, acadData = null;
-  const ACAD_CLUSTERS = {}, ACAD_BY_ID = {};
-
-  const ACAD_STRAND = {
-    academy:      "Plato's Academy",
-    neoplatonist: "Neoplatonist Athens",
-    gap:          "Platonist · not a head",
+  const SCHOOLS = {
+    academy: {
+      json:'data/academy.json', accent:'#8f86d6', laterKey:'platonists',
+      laterKicker:'Platonist at Athens',
+      strand:{ academy:"Plato's Academy", neoplatonist:"Neoplatonist Athens", gap:"Platonist · not a head" },
+    },
+    lyceum: {
+      json:'data/lyceum.json', accent:'#cc7a4d', laterKey:'later',
+      laterKicker:'Later Peripatetic',
+      strand:{ lyceum:"The Lyceum", later:"Later Peripatetic · not a clear head" },
+    },
   };
+  const schoolState = {};  // id -> { loaded, data, clusters, byId, layer }
 
-  function acadMarkerSvg(label, hollow){
-    const fill = hollow ? 'none' : ACAD_ACCENT;
+  function schoolMarkerSvg(accent, label, hollow){
+    const fill = hollow ? 'none' : accent;
     const txt  = hollow ? '' :
       `<text x="11" y="14.6" text-anchor="middle" font-size="${String(label).length>1?8:9}" font-family="DM Sans,sans-serif" font-weight="700" fill="#0d0907">${label}</text>`;
     return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
       <circle cx="11" cy="11" r="8.2" fill="${fill}" fill-opacity="${hollow?'0':'.95'}"
-        stroke="${hollow?ACAD_ACCENT:'rgba(255,255,255,.6)'}" stroke-width="${hollow?'2':'1.4'}"/>${txt}</svg>`;
+        stroke="${hollow?accent:'rgba(255,255,255,.6)'}" stroke-width="${hollow?'2':'1.4'}"/>${txt}</svg>`;
   }
-  function acadIcon(cl){
+  function schoolIcon(cfg, cl){
     let label, hollow=false;
     if (cl.figs.length > 1){ label = cl.figs.length; }
     else {
       const f = cl.figs[0];
-      if (f.strand === 'gap'){ hollow = true; label=''; }
+      if (!f._head){ hollow = true; label=''; }
       else label = (f.no == null ? '' : f.no);
     }
-    return L.divIcon({ html: acadMarkerSvg(label, hollow), className:'', iconSize:[22,22], iconAnchor:[11,11] });
+    return L.divIcon({ html: schoolMarkerSvg(cfg.accent, label, hollow), className:'', iconSize:[22,22], iconAnchor:[11,11] });
   }
 
-  async function loadAcademy(){
-    if (academyLoaded) return;
-    academyLoaded = true;
+  async function loadSchool(sid){
+    if (schoolState[sid] && schoolState[sid].loaded) return schoolState[sid];
+    const cfg = SCHOOLS[sid];
+    const st = schoolState[sid] = { loaded:true, data:null, clusters:{}, byId:{}, layer:null };
     try {
-      acadData = await (await fetch(freshUrl(ACAD_JSON))).json();
-      const figs = (acadData.heads || []).filter(h => typeof h.lat === 'number')
-        .concat(acadData.platonists || []);
-      figs.forEach(f => {
-        ACAD_BY_ID[f.id] = f;
+      const data = st.data = await (await fetch(freshUrl(cfg.json))).json();
+      const heads = (data.heads || []).filter(h => typeof h.lat === 'number').map(h => Object.assign({_head:true}, h));
+      const later = (data[cfg.laterKey] || []).map(h => Object.assign({_head:false}, h));
+      heads.concat(later).forEach(f => {
+        st.byId[f.id] = f;
         const k = f.lat.toFixed(4) + ',' + f.lng.toFixed(4);
-        (ACAD_CLUSTERS[k] || (ACAD_CLUSTERS[k] = { key:k, lat:f.lat, lng:f.lng, figs:[] })).figs.push(f);
+        (st.clusters[k] || (st.clusters[k] = { key:k, lat:f.lat, lng:f.lng, figs:[] })).figs.push(f);
       });
-      // heads first (by succession), then gap platonists, within each cluster
-      Object.values(ACAD_CLUSTERS).forEach(cl => cl.figs.sort((a,b) => {
-        const an = (a.no==null||a.no==='?')?999:+a.no, bn=(b.no==null||b.no==='?')?999:+b.no;
-        return an - bn;
+      Object.values(st.clusters).forEach(cl => cl.figs.sort((a,b) => {
+        const an=(a.no==null||a.no==='?')?999:+a.no, bn=(b.no==null||b.no==='?')?999:+b.no; return an-bn;
       }));
       const g = L.layerGroup();
-      Object.values(ACAD_CLUSTERS).forEach(cl => {
+      Object.values(st.clusters).forEach(cl => {
         const names = cl.figs.map(f => (f.no!=null?f.no+'. ':'') + f.name).join(', ');
         const place = cl.figs[0].birthplace + (cl.figs[0].today ? ' · ' + cl.figs[0].today : '');
-        const m = L.marker([cl.lat, cl.lng], { icon: acadIcon(cl) });
-        m.bindTooltip(`<b>${place}</b><br><span style="color:rgba(143,134,214,.95);font-size:.62rem">${names}</span>`, { sticky:true });
-        m.on('click', () => cl.figs.length === 1 ? showAcademyPerson(cl.figs[0].id, null) : showAcademyPlace(cl.key));
+        const m = L.marker([cl.lat, cl.lng], { icon: schoolIcon(cfg, cl) });
+        m.bindTooltip(`<b>${place}</b><br><span style="color:${cfg.accent};font-size:.62rem">${names}</span>`, { sticky:true });
+        m.on('click', () => cl.figs.length === 1 ? showSchoolPerson(sid, cl.figs[0].id, null) : showSchoolPlace(sid, cl.key));
         g.addLayer(m);
       });
-      academyLayer = g;
-    } catch(e){ console.error('academy load failed', e); }
+      st.layer = g;
+    } catch(e){ console.error('school load failed: '+sid, e); }
+    return st;
   }
 
-  function acadPlaceLabel(cl){
-    const f = cl.figs[0];
-    return f.birthplace + (f.region ? ' · ' + f.region : '');
-  }
-
-  function showAcademyPlace(key){
-    const cl = ACAD_CLUSTERS[key];
-    if (!cl) return;
+  function showSchoolPlace(sid, key){
+    const cfg = SCHOOLS[sid], st = schoolState[sid];
+    const cl = st && st.clusters[key]; if (!cl) return;
     resetInfoDrawer();
-    const label = acadPlaceLabel(cl);
-    const today = cl.figs[0].today;
+    const f0 = cl.figs[0];
+    const label = f0.birthplace + (f0.region ? ' · ' + f0.region : '');
     document.getElementById('infoKicker').textContent = 'Where they were born';
-    document.getElementById('infoKicker').style.color = ACAD_ACCENT;
-    document.getElementById('infoTitle').textContent = cl.figs[0].birthplace;
+    document.getElementById('infoKicker').style.color = cfg.accent;
+    document.getElementById('infoTitle').textContent = f0.birthplace;
     document.getElementById('infoBadges').innerHTML =
-      `<span class="info-badge" style="color:${ACAD_ACCENT};border-color:${ACAD_ACCENT}66;">${cl.figs.length} figures</span>` +
-      (today ? `<span class="info-badge">${today} today</span>` : '');
+      `<span class="info-badge" style="color:${cfg.accent};border-color:${cfg.accent}66;">${cl.figs.length} figures</span>` +
+      (f0.today ? `<span class="info-badge">${f0.today} today</span>` : '');
     document.getElementById('infoCoords').textContent = `${cl.lat.toFixed(4)}, ${cl.lng.toFixed(4)}`;
 
     const desc = document.getElementById('infoDesc');
     desc.style.display = 'block';
     desc.innerHTML =
-      `<div class="agora-sub">Heads and Platonists born at <b>${label}</b>. Select one for their card.</div>` +
+      `<div class="agora-sub">Figures born at <b>${label}</b>. Select one for their card.</div>` +
       cl.figs.map(f => {
-        const tag = f.no != null ? `<span class="acad-no-sm">${f.no}</span>` : `<span class="acad-no-sm acad-no-hollow">·</span>`;
-        return `<button class="agora-fig-btn" onclick="_acadPerson('${f.id}','${key}')">${tag}${f.name}` +
+        const badge = f.no != null
+          ? `<span class="school-no-sm" style="background:${cfg.accent};color:#0d0907;">${f.no}</span>`
+          : `<span class="school-no-sm" style="background:none;border:1.5px solid ${cfg.accent};color:${cfg.accent};">·</span>`;
+        return `<button class="agora-fig-btn" onclick="_schoolPerson('${sid}','${f.id}','${key}')">${badge}${f.name}` +
                `<span class="role">${f.headship}</span></button>`;
       }).join('');
     document.getElementById('infoLinks').innerHTML =
@@ -2268,18 +2275,17 @@ footer a{color:var(--smoke);}
     map.flyTo([cl.lat, cl.lng], Math.max(map.getZoom(), 6), { duration:1 });
   }
 
-  function showAcademyPerson(id, fromKey){
-    const f = ACAD_BY_ID[id];
-    if (!f) return;
+  function showSchoolPerson(sid, id, fromKey){
+    const cfg = SCHOOLS[sid], st = schoolState[sid];
+    const f = st && st.byId[id]; if (!f) return;
     resetInfoDrawer();
     const k = document.getElementById('infoKicker');
-    k.textContent = f.no == null ? 'Platonist at Athens'
+    k.textContent = !f._head ? cfg.laterKicker
       : (f.no === '?' ? 'A possible head' : `No. ${f.no} in the succession`);
-    k.style.color = ACAD_ACCENT;
+    k.style.color = cfg.accent;
     document.getElementById('infoTitle').textContent = f.name;
-
-    const badges = [`<span class="info-badge" style="color:${ACAD_ACCENT};border-color:${ACAD_ACCENT}66;">${ACAD_STRAND[f.strand]||''}</span>`];
-    document.getElementById('infoBadges').innerHTML = badges.join('');
+    document.getElementById('infoBadges').innerHTML =
+      `<span class="info-badge" style="color:${cfg.accent};border-color:${cfg.accent}66;">${cfg.strand[f.strand]||''}</span>`;
 
     const line = [];
     if (f.greek) line.push(f.greek);
@@ -2294,13 +2300,13 @@ footer a{color:var(--smoke);}
     if (f.note){
       const n = document.getElementById('infoNote');
       n.style.display = 'block';
-      n.innerHTML = `<b style="color:rgba(143,134,214,.85)">On the record.</b> ${f.note}`;
+      n.innerHTML = `<b style="color:${cfg.accent}">On the record.</b> ${f.note}`;
     }
 
     const items = [];
-    const cl = ACAD_CLUSTERS[fromKey];
+    const cl = st.clusters[fromKey];
     if (fromKey && cl && cl.figs.length > 1){
-      items.push(`<a class="info-link" href="javascript:void(0)" onclick="_acadPlace('${fromKey}')">‹ ${cl.figs[0].birthplace}</a>`);
+      items.push(`<a class="info-link" href="javascript:void(0)" onclick="_schoolPlace('${sid}','${fromKey}')">‹ ${cl.figs[0].birthplace}</a>`);
     }
     let bioLabel = 'Biography';
     try { bioLabel = new URL(f.bioUrl).hostname.replace('www.',''); } catch(e){}
@@ -2312,31 +2318,32 @@ footer a{color:var(--smoke);}
     map.flyTo([f.lat, f.lng], Math.max(map.getZoom(), 6), { duration:1 });
   }
 
-  window._acadPerson = function(id, key){ showAcademyPerson(id, key || null); };
-  window._acadPlace  = function(key){ showAcademyPlace(key); };
+  window._schoolPerson = function(sid, id, key){ showSchoolPerson(sid, id, key || null); };
+  window._schoolPlace  = function(sid, key){ showSchoolPlace(sid, key); };
 
 
-  // ── Mode switch: Thinkers | Libraries | Academy on the one map ────────────
+  // ── Mode switch: Thinkers | Libraries | Academy | Lyceum on the one map ───
+  const SCHOOL_MODES = { academy:'dock-academy', lyceum:'dock-lyceum' };
   function setMode(mode){
     if (mode === currentMode) return;
     currentMode = mode;
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === mode));
-    ['dock-thinkers','dock-libraries','dock-academy'].forEach(id => { const d=document.getElementById(id); if(d) d.style.display='none'; });
+    ['dock-thinkers','dock-libraries','dock-academy','dock-lyceum'].forEach(id => { const d=document.getElementById(id); if(d) d.style.display='none'; });
     if (agoraLayer) map.removeLayer(agoraLayer);
     if (librariesLayer) map.removeLayer(librariesLayer);
-    if (academyLayer) map.removeLayer(academyLayer);
+    Object.values(schoolState).forEach(st => { if (st.layer) map.removeLayer(st.layer); });
     closeInfoDrawer();
 
     if (mode === 'libraries'){
       const d=document.getElementById('dock-libraries'); if(d) d.style.display='';
       loadLibraries().then(() => { if (librariesLayer){ librariesLayer.addTo(map); frameLibraries(); } });
-    } else if (mode === 'academy'){
-      const d=document.getElementById('dock-academy'); if(d) d.style.display='';
-      loadAcademy().then(() => {
-        if (academyLayer){
-          academyLayer.addTo(map);
+    } else if (SCHOOL_MODES[mode]){
+      const d=document.getElementById(SCHOOL_MODES[mode]); if(d) d.style.display='';
+      loadSchool(mode).then(st => {
+        if (st.layer){
+          st.layer.addTo(map);
           try {
-            const pts = Object.values(ACAD_CLUSTERS).map(c => [c.lat, c.lng]);
+            const pts = Object.values(st.clusters).map(c => [c.lat, c.lng]);
             if (pts.length) map.fitBounds(L.latLngBounds(pts), { padding:[45,45] });
           } catch(e){}
         }
